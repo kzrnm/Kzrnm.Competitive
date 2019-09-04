@@ -35,5 +35,19 @@ namespace AtCoderTest
             var inputReader = new ConsoleReader(new StringReader(input));
             Assert.Equal(output.Replace("\r\n", "\n").Trim(), new Program(inputReader).Calc().ToString());
         }
+
+        [Fact(Timeout = 2000)]
+        [DebuggerHidden]
+        public void FromFile()
+        {
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            using (var stream = assembly.GetManifestResourceStream("AtCoderTest.Input.txt"))
+            using (var tr = new StreamReader(stream))
+                if (!tr.EndOfStream)
+                {
+                    var result = new Program(new ConsoleReader(tr)).Calc();
+                    Console.WriteLine(result);
+                }
+        }
     }
 }

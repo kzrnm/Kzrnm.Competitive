@@ -10,12 +10,17 @@ namespace AtCoderProject.Hide.有向
 {
     class GraphBuilder
     {
-        public Node[] nodes;
+        private List<int>[] roots;
+        private List<int>[] children;
         public GraphBuilder(int count)
         {
-            this.nodes = new Node[count];
+            this.roots = new List<int>[count];
+            this.children = new List<int>[count];
             for (int i = 0; i < count; i++)
-                this.nodes[i] = new Node(i);
+            {
+                this.roots[i] = new List<int>();
+                this.children[i] = new List<int>();
+            }
         }
         public GraphBuilder(int count, IEnumerable<int[]> arrays) : this(count)
         {
@@ -24,22 +29,26 @@ namespace AtCoderProject.Hide.有向
         }
         public void Add(int from, int to)
         {
-            nodes[from].children.Add(nodes[to]);
-            nodes[to].roots.Add(nodes[from]);
+            children[from].Add(to);
+            roots[to].Add(from);
         }
+        public Node[] ToArray() =>
+            Enumerable
+            .Zip(roots, children, (r, c) => Tuple.Create(r, c))
+            .Select((t, i) => new Node(i, t.Item1.ToArray(), t.Item2.ToArray()))
+            .ToArray();
     }
-
-    public struct Node : IEquatable<Node>
+    public class Node : IEquatable<Node>
     {
-        public Node(int i)
+        public Node(int i, int[] roots, int[] children)
         {
             this.index = i;
-            this.roots = new HashSet<Node>();
-            this.children = new HashSet<Node>();
+            this.roots = roots;
+            this.children = children;
         }
         public int index;
-        public HashSet<Node> roots;
-        public HashSet<Node> children;
+        public int[] roots;
+        public int[] children;
 
         public override bool Equals(object obj)
         {
@@ -51,5 +60,4 @@ namespace AtCoderProject.Hide.有向
         public bool Equals(Node other) => this.index == other.index;
         public override int GetHashCode() => this.index;
     }
-
 }
