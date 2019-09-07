@@ -33,7 +33,11 @@ namespace AtCoderTest
         public void FromSource(string input, string output)
         {
             var inputReader = new ConsoleReader(new StringReader(input));
-            Assert.Equal(output.Replace("\r\n", "\n").Trim(), new Program(inputReader).Calc().ToString());
+            var result = new Program(inputReader).Calc();
+            if (result is double d)
+                Assert.Equal(double.Parse(output), d, 10);
+            else
+                Assert.Equal(output.Replace("\r\n", "\n").Trim(), result.ToString());
         }
 
         [Fact(Timeout = 2000)]
