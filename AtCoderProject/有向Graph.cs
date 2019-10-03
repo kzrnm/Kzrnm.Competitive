@@ -60,4 +60,62 @@ namespace AtCoderProject.Hide.有向
         public bool Equals(Node other) => this.index == other.index;
         public override int GetHashCode() => this.index;
     }
+
+    class GraphSearch
+    {
+        enum Status
+        {
+            None,
+            Active,
+            Done
+        }
+        Node[] graph;
+        Status[] statuses;
+        public GraphSearch(Node[] graph)
+        {
+            this.graph = graph;
+            this.statuses = new Status[graph.Length];
+        }
+        public int[] GetCycle()
+        {
+            for (int i = 0; i < graph.Length; i++)
+            {
+                if (statuses[i] == Status.None)
+                {
+                    var res = GetCycle(i);
+                    if (res != null)
+                    {
+                        res.Reverse();
+                        return res.ToArray();
+                    }
+                }
+            }
+            return null;
+        }
+        List<int> GetCycle(int v)
+        {
+            statuses[v] = Status.Active;
+
+            foreach (var child in graph[v].children)
+            {
+                switch (statuses[child])
+                {
+                    case Status.None:
+                        var list = GetCycle(child);
+                        if (list != null)
+                        {
+                            if (list.Count < 2 || list[0] != list[list.Count - 1])
+                                list.Add(v);
+                            return list;
+                        }
+                        break;
+                    case Status.Active:
+                        return new List<int> { child, v };
+                }
+            }
+
+            statuses[v] = Status.Done;
+            return null;
+        }
+    }
 }

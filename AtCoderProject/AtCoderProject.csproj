@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnionFind.cs" />
     <Compile Include="整数Mod.cs" />
     <Compile Include="有向Graph.cs" />
     <Compile Include="無向Graph.cs" />

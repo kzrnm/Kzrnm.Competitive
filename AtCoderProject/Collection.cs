@@ -1,4 +1,6 @@
 ﻿using System;
+using IEnumerable = System.Collections.IEnumerable;
+using IEnumerator = System.Collections.IEnumerator;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 namespace AtCoderProject.Hide
 {
     // キーの重複がOKな優先度付きキュー
-    class PriorityQueue<TKey, TValue>
+    class PriorityQueue<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
     {
         SortedDictionary<TKey, Queue<TValue>> dic;
 
@@ -29,39 +31,61 @@ namespace AtCoderProject.Hide
             Count--;
             return new KeyValuePair<TKey, TValue>(queue.Key, queue.Value.Dequeue());
         }
+
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+        {
+            foreach (var pair in dic)
+                foreach (var queue in pair.Value)
+                    yield return new KeyValuePair<TKey, TValue>(pair.Key, queue);
+        }
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => this.GetEnumerator();
+
         public PriorityQueue() { dic = new SortedDictionary<TKey, Queue<TValue>>(); }
         public PriorityQueue(IComparer<TKey> comparer) { dic = new SortedDictionary<TKey, Queue<TValue>>(comparer); }
     }
-    class SortedCollection<T> : List<T>
+    class SortedCollection<T> : ICollection<T>
     {
-        private IComparer<T> Comparer { get; }
+        SortedDictionary<T, int> dic;
         public SortedCollection() : this(Comparer<T>.Default) { }
-        public SortedCollection(IComparer<T> comparer) { this.Comparer = comparer; }
-        public new int Add(T item)
+        public SortedCollection(IComparer<T> comparer) { dic = new SortedDictionary<T, int>(comparer); }
+        public SortedCollection(IEnumerable<T> original) : this(original, Comparer<T>.Default) { }
+        public SortedCollection(IEnumerable<T> original, IComparer<T> comparer) : this(comparer)
         {
-            if (this.Count == 0)
-            {
-                base.Add(item);
-                return 0;
-            }
+            foreach (var item in original)
+                this.Add(item);
+        }
 
-            int start = 0;
-            int end = this.Count;
-            while (start != end)
-            {
-                var half = (start + end) / 2;
-                if (Comparer.Compare(item, this[half]) < 0)
-                {
-                    end = half;
-                }
-                else
-                {
-                    start = half + 1;
-                }
-            }
+        public bool IsReadOnly => false;
+        public int Count { get; private set; } = 0;
+        public void Add(T item)
+        {
+            if (dic.ContainsKey(item)) ++dic[item];
+            else dic[item] = 1;
+            Count++;
+        }
+        public void Clear() => dic.Clear();
+        public bool Contains(T item) => dic.ContainsKey(item);
+        public void CopyTo(T[] array, int arrayIndex) { throw new NotImplementedException(); }
 
-            Insert(start, item);
-            return start;
+        public bool Remove(T item)
+        {
+            int count;
+            if (dic.TryGetValue(item, out count))
+            {
+                if (count > 1) --dic[item];
+                else dic.Remove(item);
+                return true;
+            }
+            else
+                return false;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+        public IEnumerator<T> GetEnumerator()
+        {
+            foreach (var pair in dic)
+                foreach (var item in Enumerable.Repeat(pair.Key, pair.Value))
+                    yield return item;
         }
     }
 }

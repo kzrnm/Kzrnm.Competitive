@@ -97,16 +97,9 @@ namespace AtCoderProject.Hide
         public int size;
         public int limit;
     }
-
-    public class Utils
+    public static class Utility
     {
-        void 多次元配列の初期化(object[,] array, int n, int m, object defaultValue)
-        {
-            for (int i = 0; i < n; i++)
-                for (int j = 0; j < m; j++)
-                {
-                    array[i, j] = defaultValue;
-                }
-        }
+        public static IComparer<T> Reverse<T>(this IComparer<T> comparer)
+            => Comparer<T>.Create((x, y) => comparer.Compare(y, x));
     }
 }
