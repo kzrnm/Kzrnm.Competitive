@@ -18,12 +18,11 @@ namespace AtCoderProject
         }
 
         #region いつもの
-        private readonly ConsoleReader consoleReader;
+#pragma warning disable
+        private ConsoleReader consoleReader;
         public Program(ConsoleReader consoleReader) { this.consoleReader = consoleReader; }
         static void Main() => Console.WriteLine(new Program(new ConsoleReader(Console.In)).Calc()); static string AllLines<T>(IEnumerable<T> source) => string.Join("\n", source);
-        #endregion
     }
-#pragma warning disable
     public class ConsoleReader
     {
         private string[] ReadLineSplit() => textReader.ReadLine().Split(Array.Empty<char>(), StringSplitOptions.RemoveEmptyEntries);
@@ -72,4 +71,5 @@ namespace AtCoderProject
         }
         public RepeatReader Repeat(int count) => new RepeatReader(this, count);
     }
+    #endregion
 }
