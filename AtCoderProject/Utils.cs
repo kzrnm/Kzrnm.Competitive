@@ -12,6 +12,56 @@ using TextReader = System.IO.TextReader;
 
 namespace AtCoderProject.Hide
 {
+    struct Point : IEquatable<Point>
+    {
+        public int x;
+        public int y;
+        public Point(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+        public bool Equals(Point other) => this.x == other.x && this.y == other.y;
+        public override bool Equals(object obj)
+        {
+            if (obj is Point) return Equals((Point)obj);
+            return false;
+        }
+        public override int GetHashCode() => x << 16 | y;
+        public override string ToString() => $"({x}, {y})";
+    }
+
+
+    static class DicExt
+    {
+        public static V GetOrDefault<K, V>(IDictionary<K, V> dic, K key, V defaultValue = default(V))
+        {
+            V val;
+            return dic.TryGetValue(key, out val) ? val : defaultValue;
+        }
+        public static V GetOrInit<K, V>(IDictionary<K, V> dic, K key) where V : new()
+        {
+            V val;
+            if (dic.TryGetValue(key, out val))
+                return val;
+
+            val = new V();
+            dic.Add(key, val);
+            return val;
+        }
+    }
+
+    struct Work
+    {
+        public static Work Create(int[] l) => new Work { size = l[0], limit = l[1] };
+        public int size;
+        public int limit;
+    }
+    public static class Utility
+    {
+        public static IComparer<T> Reverse<T>(this IComparer<T> comparer)
+            => Comparer<T>.Create((x, y) => comparer.Compare(y, x));
+    }
     public class ConsoleReader
     {
         private string[] line = Array.Empty<string>();
@@ -59,47 +109,4 @@ namespace AtCoderProject.Hide
         public RepeatReader Repeat(int count) => new RepeatReader(this, count);
     }
 
-    struct Index : IEquatable<Index>
-    {
-        public int h;
-        public int w;
-        public Index(int i, int j)
-        {
-            this.h = i;
-            this.w = j;
-        }
-        public bool Equals(Index other) => this.h == other.h && this.w == other.w;
-    }
-
-
-    static class DicExt
-    {
-        public static V GetOrDefault<K, V>(IDictionary<K, V> dic, K key, V defaultValue = default(V))
-        {
-            V val;
-            return dic.TryGetValue(key, out val) ? val : defaultValue;
-        }
-        public static V GetOrInit<K, V>(IDictionary<K, V> dic, K key) where V : new()
-        {
-            V val;
-            if (dic.TryGetValue(key, out val))
-                return val;
-
-            val = new V();
-            dic.Add(key, val);
-            return val;
-        }
-    }
-
-    struct Work
-    {
-        public static Work Create(int[] l) => new Work { size = l[0], limit = l[1] };
-        public int size;
-        public int limit;
-    }
-    public static class Utility
-    {
-        public static IComparer<T> Reverse<T>(this IComparer<T> comparer)
-            => Comparer<T>.Create((x, y) => comparer.Compare(y, x));
-    }
 }
