@@ -119,3 +119,64 @@ namespace AtCoderProject.Hide.有向
         }
     }
 }
+
+namespace AtCoderProject.Hide.有向Length
+{
+    class GraphBuilder
+    {
+        private List<Next>[] roots;
+        private List<Next>[] children;
+        public GraphBuilder(int count)
+        {
+            this.roots = new List<Next>[count];
+            this.children = new List<Next>[count];
+            for (int i = 0; i < count; i++)
+            {
+                this.roots[i] = new List<Next>();
+                this.children[i] = new List<Next>();
+            }
+        }
+        public GraphBuilder(int count, IEnumerable<int[]> arrays) : this(count)
+        {
+            foreach (var item in arrays)
+                this.Add(item[0], item[1], item[2]);
+        }
+        public void Add(int from, int to, int length)
+        {
+            children[from].Add(new Next { to = to, length = length });
+            roots[to].Add(new Next { to = from, length = length });
+        }
+        public Node[] ToArray() =>
+            Enumerable
+            .Zip(roots, children, (r, c) => Tuple.Create(r, c))
+            .Select((t, i) => new Node(i, t.Item1.ToArray(), t.Item2.ToArray()))
+            .ToArray();
+    }
+    public struct Next
+    {
+        public int to;
+        public int length;
+    }
+    public class Node : IEquatable<Node>
+    {
+        public Node(int i, Next[] roots, Next[] children)
+        {
+            this.index = i;
+            this.roots = roots;
+            this.children = children;
+        }
+        public int index;
+        public Next[] roots;
+        public Next[] children;
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Node)
+                return this.Equals((Node)obj);
+            else
+                return false;
+        }
+        public bool Equals(Node other) => this.index == other.index;
+        public override int GetHashCode() => this.index;
+    }
+}
