@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace AtCoderProject.Hide
 {
-#pragma warning disable
     class UnionFind
     {
         int[] data;

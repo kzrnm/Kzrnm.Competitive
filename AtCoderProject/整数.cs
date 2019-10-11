@@ -16,12 +16,20 @@ namespace AtCoderProject.Hide
         {
             var gcd = nums[0];
             for (int i = 1; i < nums.Length; i++)
-            {
                 gcd = Gcd(nums[i], gcd);
-            }
             return gcd;
         }
         int Gcd(int a, int b) => b > a ? Gcd(b, a) : (b == 0 ? a : Gcd(b, a % b));
+
+        int Lcm(params int[] nums)
+        {
+            var lcm = nums[0];
+            for (int i = 1; i < nums.Length; i++)
+                lcm = Lcm(lcm, nums[i]);
+            return lcm;
+        }
+        int Lcm(int a, int b) => a / Gcd(a, b) * b;
+
         IEnumerable<int> GetYakusu(int n)
         {
             int amari;
