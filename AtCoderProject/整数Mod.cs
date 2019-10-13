@@ -53,6 +53,7 @@ struct Mod : IEquatable<Mod>
         private readonly Mod[] fac, finv;
         public Factor(int max)
         {
+            ++max;
             var inv = new Mod[max];
             fac = new Mod[max]; finv = new Mod[max];
             fac[0] = fac[1] = 1;
