@@ -16,6 +16,7 @@ namespace AtCoderProject.Hide
     {
         public int x;
         public int y;
+        public Point(int[] arr) : this(arr[0], arr[1]) { }
         public Point(int x, int y)
         {
             this.x = x;
@@ -27,7 +28,7 @@ namespace AtCoderProject.Hide
             if (obj is Point) return Equals((Point)obj);
             return false;
         }
-        public override int GetHashCode() => x << 16 | y;
+        public override int GetHashCode() => x ^ y;
         public override string ToString() => $"({x}, {y})";
     }
 
