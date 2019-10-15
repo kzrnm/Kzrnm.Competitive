@@ -46,6 +46,7 @@ namespace AtCoderProject.Hide
     class SortedCollection<T> : ICollection<T>
     {
         SortedDictionary<T, int> dic;
+        public T First => dic.Keys.First();
         public SortedCollection() : this(Comparer<T>.Default) { }
         public SortedCollection(IComparer<T> comparer) { dic = new SortedDictionary<T, int>(comparer); }
         public SortedCollection(IEnumerable<T> original) : this(original, Comparer<T>.Default) { }
@@ -72,6 +73,7 @@ namespace AtCoderProject.Hide
             int count;
             if (dic.TryGetValue(item, out count))
             {
+                Count--;
                 if (count > 1) --dic[item];
                 else dic.Remove(item);
                 return true;
