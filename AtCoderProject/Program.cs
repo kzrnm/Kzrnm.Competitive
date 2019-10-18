@@ -20,7 +20,7 @@ namespace AtCoderProject
 
         #region いつもの
 #pragma warning disable
-        private ConsoleReader consoleReader;
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] private ConsoleReader consoleReader;
         public Program(ConsoleReader consoleReader) { this.consoleReader = consoleReader; }
         static void Main() => Console.WriteLine(new Program(new ConsoleReader(Console.In)).Calc()); static string AllLines<T>(IEnumerable<T> source) => string.Join("\n", source);
     }
