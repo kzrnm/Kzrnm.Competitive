@@ -22,10 +22,10 @@ namespace AtCoderProject.Hide.有向
                 this.children[i] = new List<int>();
             }
         }
-        public GraphBuilder(int count, IEnumerable<int[]> arrays) : this(count)
+        public GraphBuilder(int count, ConsoleReader cr, int edgeCount) : this(count)
         {
-            foreach (var item in arrays)
-                this.Add(item[0], item[1]);
+            for (int i = 0; i < edgeCount; i++)
+                this.Add(cr.Int - 1, cr.Int - 1);
         }
         public void Add(int from, int to)
         {
@@ -50,6 +50,7 @@ namespace AtCoderProject.Hide.有向
         public int[] roots;
         public int[] children;
 
+        public override string ToString() => $"children: {string.Join(",", children)}";
         public override bool Equals(object obj)
         {
             if (obj is Node)
@@ -136,10 +137,10 @@ namespace AtCoderProject.Hide.有向Length
                 this.children[i] = new List<Next>();
             }
         }
-        public GraphBuilder(int count, IEnumerable<int[]> arrays) : this(count)
+        public GraphBuilder(int count, ConsoleReader cr, int edgeCount) : this(count)
         {
-            foreach (var item in arrays)
-                this.Add(item[0], item[1], item[2]);
+            for (int i = 0; i < edgeCount; i++)
+                this.Add(cr.Int - 1, cr.Int - 1, cr.Int);
         }
         public void Add(int from, int to, int length)
         {
@@ -156,6 +157,7 @@ namespace AtCoderProject.Hide.有向Length
     {
         public int to;
         public int length;
+        public override string ToString() => $"to: {to} length:{length}";
     }
     public class Node : IEquatable<Node>
     {

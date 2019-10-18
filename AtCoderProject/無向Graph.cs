@@ -17,10 +17,10 @@ namespace AtCoderProject.Hide.無向
             for (int i = 0; i < count; i++)
                 this.lists[i] = new List<int>();
         }
-        public GraphBuilder(int count, IEnumerable<int[]> arrays) : this(count)
+        public GraphBuilder(int count, ConsoleReader cr, int edgeCount) : this(count)
         {
-            foreach (var item in arrays)
-                this.Add(item[0], item[1]);
+            for (int i = 0; i < edgeCount; i++)
+                this.Add(cr.Int - 1, cr.Int - 1);
         }
         public void Add(int from, int to)
         {
@@ -41,6 +41,7 @@ namespace AtCoderProject.Hide.無向
     {
         public int to;
         public int length;
+        public override string ToString() => $"to: {to} length:{length}";
     }
     class LengthGraphBuilder
     {
@@ -51,10 +52,10 @@ namespace AtCoderProject.Hide.無向
             for (int i = 0; i < count; i++)
                 this.lists[i] = new List<Next>();
         }
-        public LengthGraphBuilder(int count, IEnumerable<int[]> arrays):this(count)
+        public LengthGraphBuilder(int count, ConsoleReader cr, int edgeCount) : this(count)
         {
-            foreach (var item in arrays)
-                this.Add(item[0], item[1], item[2]);
+            for (int i = 0; i < edgeCount; i++)
+                this.Add(cr.Int - 1, cr.Int - 1, cr.Int);
         }
         public void Add(int from, int to, int length)
         {
