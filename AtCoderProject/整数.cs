@@ -30,6 +30,11 @@ namespace AtCoderProject.Hide
         }
         int Lcm(int a, int b) => a / Gcd(a, b) * b;
 
+        /// <summary>
+        /// 約数
+        /// </summary>
+        /// <param name="num">約数を求める数</param>
+        /// <returns>約数の一覧</returns>
         IEnumerable<int> GetYakusu(int n)
         {
             int amari;
@@ -46,6 +51,11 @@ namespace AtCoderProject.Hide
             }
         }
 
+        /// <summary>
+        /// 素因数分解
+        /// </summary>
+        /// <param name="num">素因数分解する数</param>
+        /// <returns>素因数の一覧</returns>
         IEnumerable<int> Factoring(int num)
         {
             int o = 0;
