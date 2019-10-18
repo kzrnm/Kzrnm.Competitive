@@ -9,6 +9,29 @@ using System.Threading.Tasks;
 
 namespace AtCoderProject.Hide
 {
+    static class 順列を求める
+    {
+        static IEnumerable<T[]> Enumerate<T>(IReadOnlyCollection<T> items)
+        {
+            if (items.Count == 1)
+            {
+                yield return new T[] { items.First() };
+                yield break;
+            }
+            foreach (var item in items)
+            {
+                var ret = new T[items.Count];
+                ret[0] = item;
+                var nokori = new HashSet<T>(items);
+                nokori.Remove(item);
+                foreach (var right in Enumerate(nokori))
+                {
+                    right.CopyTo(ret, 1);
+                    yield return ret;
+                }
+            }
+        }
+    }
     // キーの重複がOKな優先度付きキュー
     class PriorityQueue<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
     {
