@@ -152,6 +152,57 @@ namespace AtCoderProject.Hide.有向Length
             .Zip(roots, children, (r, c) => Tuple.Create(r, c))
             .Select((t, i) => new Node(i, t.Item1.ToArray(), t.Item2.ToArray()))
             .ToArray();
+
+
+        public static long[,] WarshallFloyd(Node[] graph)
+        {
+            var res = new long[graph.Length, graph.Length];
+            for (int i = 0; i < graph.Length; i++)
+            {
+                for (int j = 0; j < graph.Length; j++)
+                {
+                    res[i, j] = long.MaxValue / 2;
+                }
+                res[i, i] = 0;
+                foreach (var next in graph[i].children)
+                    res[i, next.to] = next.length;
+            }
+            for (int k = 0; k < graph.Length; k++)
+                for (int i = 0; i < graph.Length; i++)
+                    for (int j = 0; j < graph.Length; j++)
+                        if (res[i, j] > res[i, k] + res[k, j])
+                            res[i, j] = res[i, k] + res[k, j];
+            return res;
+        }
+        public static long[] Dijkstra(Node[] graph, int start)
+        {
+            var res = new long[graph.Length];
+            for (int i = 0; i < res.Length; i++)
+                res[i] = int.MaxValue;
+            res[start] = 0;
+            var remains = new HashSet<int>(Enumerable.Range(0, graph.Length));
+            while (remains.Count > 0)
+            {
+                int minIndex = -1;
+                long min = long.MaxValue / 2;
+                foreach (var r in remains)
+                {
+                    if (min > res[r])
+                    {
+                        minIndex = r;
+                        min = res[r];
+                    }
+                }
+                remains.Remove(minIndex);
+                foreach (var next in graph[minIndex].children)
+                {
+                    var nextLength = min + next.length;
+                    if (res[next.to] > nextLength)
+                        res[next.to] = nextLength;
+                }
+            }
+            return res;
+        }
     }
     public struct Next
     {
