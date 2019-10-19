@@ -1,10 +1,14 @@
-﻿using System;
+﻿#region using
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using IEnumerable = System.Collections.IEnumerable;
+using IEnumerator = System.Collections.IEnumerator;
 using BitArray = System.Collections.BitArray;
 using BigInteger = System.Numerics.BigInteger;
 using TextReader = System.IO.TextReader;
 using System.Text;
+#endregion
 
 namespace AtCoderProject
 {
@@ -26,6 +30,7 @@ namespace AtCoderProject
     }
     static class Ext
     {
+        public static IComparer<T> Reverse<T>(this IComparer<T> comparer) => Comparer<T>.Create((x, y) => comparer.Compare(y, x));
         public static Dictionary<TKey, int> GroupCount<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) => source.GroupBy(keySelector).ToDictionary(g => g.Key, g => g.Count());
         public static Dictionary<TKey, int> GroupCount<TKey>(this IEnumerable<TKey> source) => source.GroupCount(i => i);
     }
