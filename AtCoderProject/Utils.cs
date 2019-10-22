@@ -70,6 +70,7 @@ namespace AtCoderProject.Hide
         private TextReader textReader;
         public ConsoleReader(TextReader tr) { textReader = tr; }
         public int Int => int.Parse(String);
+        public int Int0 => Int - 1;
         public long Long => long.Parse(String);
         public double Double => double.Parse(String);
         public string String
@@ -89,6 +90,7 @@ namespace AtCoderProject.Hide
             private string[] splited;
             public SplitLine(ConsoleReader cr) { splited = cr.textReader.ReadLine().Split(); }
             public int[] Int => String.Select(x => int.Parse(x)).ToArray();
+            public int[] Int0 => String.Select(x => int.Parse(x) - 1).ToArray();
             public long[] Long => String.Select(x => long.Parse(x)).ToArray();
             public double[] Double => String.Select(x => double.Parse(x)).ToArray();
             public string[] String => splited;
@@ -103,7 +105,7 @@ namespace AtCoderProject.Hide
 
             public IEnumerable<string> String => this.Select(cr => cr.String);
             public IEnumerable<int> Int => this.Select(cr => cr.Int);
-            public IEnumerable<int> Int0 => this.Select(cr => cr.Int - 1);
+            public IEnumerable<int> Int0 => this.Select(cr => cr.Int0);
             public IEnumerable<long> Long => this.Select(cr => cr.Long);
             public IEnumerable<double> Double => this.Select(cr => cr.Double);
         }
