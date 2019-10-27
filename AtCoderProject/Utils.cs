@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using BitArray = System.Collections.BitArray;
 using BigInteger = System.Numerics.BigInteger;
-using Unsafe = System.Runtime.CompilerServices.Unsafe;
 using TextReader = System.IO.TextReader;
 
 #pragma warning disable

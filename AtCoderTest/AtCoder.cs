@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using AtCoderProject;
 using Xunit;
 
@@ -22,7 +23,7 @@ namespace AtCoderTest
             };
             foreach (var (input, output) in data)
             {
-                if (input != "" && output != "")
+                if (!string.IsNullOrEmpty(input) && !string.IsNullOrEmpty(output))
                     yield return new[] { input, output };
             }
         }
@@ -38,20 +39,6 @@ namespace AtCoderTest
                 Assert.Equal(double.Parse(output), d, 10);
             else
                 Assert.Equal(output.Replace("\r\n", "\n").Trim(), result.ToString());
-        }
-
-        [Fact(Timeout = 2000)]
-        [DebuggerHidden]
-        public void FromFile()
-        {
-            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            using (var stream = assembly.GetManifestResourceStream("AtCoderTest.Input.txt"))
-            using (var tr = new StreamReader(stream))
-                if (!tr.EndOfStream)
-                {
-                    var result = new Program(new ConsoleReader(tr)).Calc();
-                    Console.WriteLine(result);
-                }
         }
     }
 }
