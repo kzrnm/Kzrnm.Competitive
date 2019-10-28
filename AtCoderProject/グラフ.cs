@@ -6,23 +6,30 @@ using System.Threading.Tasks;
 
 #pragma warning disable 
 
-namespace AtCoderProject.Hide.有向
+namespace AtCoderProject.Hide
 {
     class GraphBuilder
     {
         private List<int>[] roots;
         private List<int>[] children;
-        public GraphBuilder(int count)
+        public GraphBuilder(int count, bool isOriented = true)
         {
             this.roots = new List<int>[count];
             this.children = new List<int>[count];
             for (int i = 0; i < count; i++)
             {
-                this.roots[i] = new List<int>();
-                this.children[i] = new List<int>();
+                if (isOriented)
+                {
+                    this.roots[i] = new List<int>();
+                    this.children[i] = new List<int>();
+                }
+                else
+                {
+                    this.roots[i] = this.children[i] = new List<int>();
+                }
             }
         }
-        public GraphBuilder(int count, ConsoleReader cr, int edgeCount) : this(count)
+        public GraphBuilder(int count, ConsoleReader cr, int edgeCount, bool isOriented = true) : this(count, isOriented)
         {
             for (int i = 0; i < edgeCount; i++)
                 this.Add(cr.Int - 1, cr.Int - 1);
@@ -127,17 +134,24 @@ namespace AtCoderProject.Hide.有向Length
     {
         private List<Next>[] roots;
         private List<Next>[] children;
-        public GraphBuilder(int count)
+        public GraphBuilder(int count, bool isOriented = true)
         {
             this.roots = new List<Next>[count];
             this.children = new List<Next>[count];
             for (int i = 0; i < count; i++)
             {
-                this.roots[i] = new List<Next>();
-                this.children[i] = new List<Next>();
+                if (isOriented)
+                {
+                    this.roots[i] = new List<Next>();
+                    this.children[i] = new List<Next>();
+                }
+                else
+                {
+                    this.roots[i] = this.children[i] = new List<Next>();
+                }
             }
         }
-        public GraphBuilder(int count, ConsoleReader cr, int edgeCount) : this(count)
+        public GraphBuilder(int count, ConsoleReader cr, int edgeCount, bool isOriented = true) : this(count, isOriented)
         {
             for (int i = 0; i < edgeCount; i++)
                 this.Add(cr.Int - 1, cr.Int - 1, cr.Int);
@@ -153,56 +167,6 @@ namespace AtCoderProject.Hide.有向Length
             .Select((t, i) => new Node(i, t.Item1.ToArray(), t.Item2.ToArray()))
             .ToArray();
 
-
-        public static long[,] WarshallFloyd(Node[] graph)
-        {
-            var res = new long[graph.Length, graph.Length];
-            for (int i = 0; i < graph.Length; i++)
-            {
-                for (int j = 0; j < graph.Length; j++)
-                {
-                    res[i, j] = long.MaxValue / 2;
-                }
-                res[i, i] = 0;
-                foreach (var next in graph[i].children)
-                    res[i, next.to] = next.length;
-            }
-            for (int k = 0; k < graph.Length; k++)
-                for (int i = 0; i < graph.Length; i++)
-                    for (int j = 0; j < graph.Length; j++)
-                        if (res[i, j] > res[i, k] + res[k, j])
-                            res[i, j] = res[i, k] + res[k, j];
-            return res;
-        }
-        public static long[] Dijkstra(Node[] graph, int start)
-        {
-            var res = new long[graph.Length];
-            for (int i = 0; i < res.Length; i++)
-                res[i] = int.MaxValue;
-            res[start] = 0;
-            var remains = new HashSet<int>(Enumerable.Range(0, graph.Length));
-            while (remains.Count > 0)
-            {
-                int minIndex = -1;
-                long min = long.MaxValue / 2;
-                foreach (var r in remains)
-                {
-                    if (min > res[r])
-                    {
-                        minIndex = r;
-                        min = res[r];
-                    }
-                }
-                remains.Remove(minIndex);
-                foreach (var next in graph[minIndex].children)
-                {
-                    var nextLength = min + next.length;
-                    if (res[next.to] > nextLength)
-                        res[next.to] = nextLength;
-                }
-            }
-            return res;
-        }
     }
     public struct Next
     {
@@ -231,5 +195,57 @@ namespace AtCoderProject.Hide.有向Length
         }
         public bool Equals(Node other) => this.index == other.index;
         public override int GetHashCode() => this.index;
+    }
+
+    class ShortestPath
+    {
+        public static long[,] WarshallFloyd(Node[] graph)
+        {
+            var res = new long[graph.Length, graph.Length];
+            for (int i = 0; i < graph.Length; i++)
+            {
+                for (int j = 0; j < graph.Length; j++)
+                {
+                    res[i, j] = long.MaxValue / 2;
+                }
+                res[i, i] = 0;
+                foreach (var next in graph[i].children)
+                    res[i, next.to] = next.length;
+            }
+            for (int k = 0; k < graph.Length; k++)
+                for (int i = 0; i < graph.Length; i++)
+                    for (int j = 0; j < graph.Length; j++)
+                        if (res[i, j] > res[i, k] + res[k, j])
+                            res[i, j] = res[i, k] + res[k, j];
+            return res;
+        }
+        public static long[] Dijkstra(Node[] graph, int start)
+        {
+            var res = new long[graph.Length];
+            for (int i = 0; i < res.Length; i++)
+                res[i] = long.MaxValue / 2;
+            res[start] = 0;
+
+            var used = new bool[graph.Length];
+            int count = 0;
+            var remains = new PriorityQueue<long, int>();
+            for (int i = 0; i < res.Length; i++)
+                remains.Add(res[i], i);
+
+            while (remains.Count > 0)
+            {
+                var first = remains.Dequeue();
+                if (used[first.Value]) continue;
+                used[first.Value] = true;
+                if (++count >= graph.Length) break;
+                foreach (var next in graph[first.Value].children)
+                {
+                    var nextLength = first.Key + next.length;
+                    if (res[next.to] > nextLength)
+                        remains.Add(res[next.to] = nextLength, next.to);
+                }
+            }
+            return res;
+        }
     }
 }
