@@ -11,7 +11,7 @@ using TextReader = System.IO.TextReader;
 
 namespace AtCoderProject.Hide
 {
-    struct Point : IEquatable<Point>
+    struct Point : IEquatable<Point>, IComparable<Point>
     {
         public int x;
         public int y;
@@ -21,6 +21,9 @@ namespace AtCoderProject.Hide
             this.x = x;
             this.y = y;
         }
+
+        public int CompareTo(Point other) => this.x.CompareTo(other.x);
+
         public bool Equals(Point other) => this.x == other.x && this.y == other.y;
         public override bool Equals(object obj)
         {
