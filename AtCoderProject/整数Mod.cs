@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 // https://qiita.com/drken/items/3b4fdf0a78e7a138cd9a
 namespace AtCoderProject.Hide
@@ -81,4 +77,5 @@ namespace AtCoderProject.Hide
             public Mod FactorialInvers(int n) => finv[n];
         }
     }
+
 }
