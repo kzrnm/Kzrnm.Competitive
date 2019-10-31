@@ -20,6 +20,7 @@ namespace AtCoderProject.Hide
             return gcd;
         }
         int Gcd(int a, int b) => b > a ? Gcd(b, a) : (b == 0 ? a : Gcd(b, a % b));
+        int Lcm(int a, int b) => a / Gcd(a, b) * b;
 
         int Lcm(params int[] nums)
         {
@@ -28,7 +29,6 @@ namespace AtCoderProject.Hide
                 lcm = Lcm(lcm, nums[i]);
             return lcm;
         }
-        int Lcm(int a, int b) => a / Gcd(a, b) * b;
 
         /// <summary>
         /// 約数
