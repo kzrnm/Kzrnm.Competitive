@@ -1,5 +1,4 @@
-﻿#region using
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using IEnumerable = System.Collections.IEnumerable;
@@ -7,8 +6,7 @@ using IEnumerator = System.Collections.IEnumerator;
 using BitArray = System.Collections.BitArray;
 using BigInteger = System.Numerics.BigInteger;
 using TextReader = System.IO.TextReader;
-using System.Text;
-#endregion
+using static AtCoderProject.Global;
 
 namespace AtCoderProject
 {
@@ -27,6 +25,11 @@ namespace AtCoderProject
         [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] private ConsoleReader consoleReader;
         public Program(ConsoleReader consoleReader) { this.consoleReader = consoleReader; }
         static void Main() => Console.WriteLine(new Program(new ConsoleReader(Console.In)).Calc()); static string AllLines<T>(IEnumerable<T> source) => string.Join("\n", source);
+    }
+    static class Global
+    {
+        private class ComparerReverseImpl<T> : Comparer<T> where T : IComparable<T> { public override int Compare(T y, T x) => x.CompareTo(y); public override bool Equals(object obj) => obj != null && GetType() == obj.GetType(); public override int GetHashCode() => GetType().GetHashCode(); }
+        public static IComparer<T> ComparerReverse<T>() where T : IComparable<T> => new ComparerReverseImpl<T>();
     }
     static class Ext
     {
