@@ -30,6 +30,23 @@ namespace AtCoderProject
     {
         private class ComparerReverseImpl<T> : Comparer<T> where T : IComparable<T> { public override int Compare(T y, T x) => x.CompareTo(y); public override bool Equals(object obj) => obj != null && GetType() == obj.GetType(); public override int GetHashCode() => GetType().GetHashCode(); }
         public static IComparer<T> ComparerReverse<T>() where T : IComparable<T> => new ComparerReverseImpl<T>();
+        public static BigInteger ParseBigInteger(string s)
+        {
+            // MonoのBigInteger.Parseが遅いので自前実装
+            var res = BigInteger.Zero;
+            var splited = new string[(s.Length + 7) / 8];
+            for (int i = 0; i < splited.Length - 1; i++)
+            {
+                splited[i] = s.Substring(8 * i, 8);
+            }
+            splited[splited.Length - 1] = s.Substring(8 * (splited.Length - 1));
+            foreach (var sp in splited)
+            {
+                res *= (int)Math.Pow(10, sp.Length);
+                res += int.Parse(sp);
+            }
+            return res;
+        }
     }
     static class Ext
     {
