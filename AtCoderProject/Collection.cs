@@ -66,51 +66,171 @@ namespace AtCoderProject.Hide
         public PriorityQueue() { dic = new SortedDictionary<TKey, Queue<TValue>>(); }
         public PriorityQueue(IComparer<TKey> comparer) { dic = new SortedDictionary<TKey, Queue<TValue>>(comparer); }
     }
-    class SortedCollection<T> : ICollection<T>
+
+    [System.Diagnostics.DebuggerDisplay("Count = {Count}")]
+    class SortedCollection<T> : IList<T>
     {
-        SortedDictionary<T, int> dic;
-        public T First => dic.Keys.First();
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)] List<T> list;
+
         public SortedCollection() : this(Comparer<T>.Default) { }
-        public SortedCollection(IComparer<T> comparer) { dic = new SortedDictionary<T, int>(comparer); }
-        public SortedCollection(IEnumerable<T> original) : this(original, Comparer<T>.Default) { }
-        public SortedCollection(IEnumerable<T> original, IComparer<T> comparer) : this(comparer)
+        public SortedCollection(int capacity) : this(capacity, Comparer<T>.Default) { }
+        public SortedCollection(IComparer<T> comparer) { Comparer = comparer; list = new List<T>(); }
+        public SortedCollection(int capacity, IComparer<T> comparer) { Comparer = comparer; list = new List<T>(capacity); }
+
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] public IComparer<T> Comparer { get; }
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] public bool IsReadOnly => false;
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] public int Count => list.Count;
+
+        public T this[int index]
         {
-            foreach (var item in original)
-                this.Add(item);
+            get { return list[index]; }
+            set { list[index] = value; }
         }
 
-        public bool IsReadOnly => false;
-        public int Count { get; private set; } = 0;
-        public void Add(T item)
+        /// <summary>
+        /// 与えられた比較関数に従って，<paramref name="item"/> であるような最小のインデックスを取得します．見つからなかった場合は<paramref name="item"/>より大きい最小のインデックスのビット反転を返します.
+        /// </summary>
+        /// <typeparam name="T"><see cref="IList{T}"/> の要素の型を指定します．</typeparam>
+        /// <param name="item">対象となる要素</param>
+        /// <returns><paramref name="item"/> が見つかった場合は0-indexed でのインデックス．見つからなかった場合は<paramref name="item"/>より大きい最小のインデックスのビット反転.</returns>
+        /// <remarks> 比較関数に対して昇順であることを仮定しています．この関数は O(log N) で実行されます．</remarks>
+        public int BinarySearch(T item) => list.BinarySearch(item, Comparer);
+
+        private int BinarySearchImpl(T item, bool isLowerBound)
         {
-            if (dic.ContainsKey(item)) ++dic[item];
-            else dic[item] = 1;
-            Count++;
+            var l = 0;
+            var r = this.Count - 1;
+            while (l <= r)
+            {
+                var m = (l + r) / 2;
+                var res = Comparer.Compare(this[m], item);
+                if (res < 0 || (res == 0 && !isLowerBound)) l = m + 1;
+                else r = m - 1;
+            }
+            return l;
         }
-        public void Clear() => dic.Clear();
-        public bool Contains(T item) => dic.ContainsKey(item);
-        public void CopyTo(T[] array, int arrayIndex) { throw new NotImplementedException(); }
+
+        /// <summary>
+        ///　デフォルトの比較関数に従って，<paramref name="a"/> の要素のうち，<paramref name="item"/> 以上の要素であるような最小のインデックスを取得します．
+        /// </summary>
+        /// <typeparam name="T"><see cref="IList{T}"/> の要素の型を指定します．</typeparam>
+        /// <param name="a">対象となるコレクション</param>
+        /// <param name="item">対象となる要素</param>
+        /// <param name="f"></param>
+        /// <returns><paramref name="item"/> 以上の要素であるような最小の o-indexed でのインデックス．</returns>
+        /// <remarks> <paramref name="a"/> は比較関数に対して昇順であることを仮定しています．この関数は O(log N) で実行されます．</remarks>
+        public int LowerBound(T item) => BinarySearchImpl(item, true);
+
+        /// <summary>
+        ///　デフォルトの比較関数に従って，<paramref name="a"/> の要素のうち，<paramref name="v"/> より真に大きい要素が現れる最小のインデックスを取得します．
+        /// </summary>
+        /// <typeparam name="T"><see cref="IList{T}"/> の要素の型を指定します．</typeparam>
+        /// <param name="a">対象となるコレクション</param>
+        /// <param name="v">対象となる要素</param>
+        /// <param name="f"></param>
+        /// <returns><paramref name="v"/> 以上の要素であるような最小の o-indexed でのインデックス．</returns>
+        /// <remarks> <paramref name="a"/> は比較関数に対して昇順であることを仮定しています．この関数は O(log N) で実行されます．</remarks>
+        public int UpperBound(T item) => BinarySearchImpl(item, false);
+
+        void ICollection<T>.Add(T item) => this.Add(item);
+        public int Add(T item)
+        {
+            var index = BinarySearch(item);
+            if (index < 0)
+                index = ~index;
+            list.Insert(index, item);
+            return index;
+        }
+
+        public int IndexOf(T item)
+        {
+            var index = BinarySearch(item);
+            if (index >= 0) return index;
+            else return -1;
+        }
+        public bool Contains(T item) => BinarySearch(item) >= 0;
+        public void Clear() => list.Clear();
+        public void CopyTo(T[] array, int arrayIndex) => list.CopyTo(array, arrayIndex);
 
         public bool Remove(T item)
         {
-            int count;
-            if (dic.TryGetValue(item, out count))
-            {
-                Count--;
-                if (count > 1) --dic[item];
-                else dic.Remove(item);
-                return true;
-            }
-            else
+            int index = this.IndexOf(item);
+            if (index < 0)
                 return false;
+            list.RemoveAt(index);
+            return true;
         }
 
         IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
-        public IEnumerator<T> GetEnumerator()
+        public IEnumerator<T> GetEnumerator() => list.GetEnumerator();
+        public void Insert(int index, T item) { throw new NotImplementedException(); }
+        public void RemoveAt(int index) => list.RemoveAt(index);
+    }
+
+
+    [System.Diagnostics.DebuggerDisplay("Count = {Count}")]
+    class SortedUniqueCollection<T> : IList<T>
+    {
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)] List<T> list;
+
+        public SortedUniqueCollection() : this(Comparer<T>.Default) { }
+        public SortedUniqueCollection(int capacity) : this(capacity, Comparer<T>.Default) { }
+        public SortedUniqueCollection(IComparer<T> comparer) { Comparer = comparer; list = new List<T>(); }
+        public SortedUniqueCollection(int capacity, IComparer<T> comparer) { Comparer = comparer; list = new List<T>(capacity); }
+
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] public IComparer<T> Comparer { get; }
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] public bool IsReadOnly => false;
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] public int Count => list.Count;
+
+        public T this[int index]
         {
-            foreach (var pair in dic)
-                foreach (var item in Enumerable.Repeat(pair.Key, pair.Value))
-                    yield return item;
+            get { return list[index]; }
+            set { list[index] = value; }
         }
+
+        /// <summary>
+        /// 与えられた比較関数に従って，<paramref name="item"/> であるような最小のインデックスを取得します．見つからなかった場合は<paramref name="item"/>より大きい最小のインデックスのビット反転を返します.
+        /// </summary>
+        /// <typeparam name="T"><see cref="IList{T}"/> の要素の型を指定します．</typeparam>
+        /// <param name="item">対象となる要素</param>
+        /// <returns><paramref name="item"/> が見つかった場合は0-indexed でのインデックス．見つからなかった場合は<paramref name="item"/>より大きい最小のインデックスのビット反転.</returns>
+        /// <remarks> 比較関数に対して昇順であることを仮定しています．この関数は O(log N) で実行されます．</remarks>
+        public int BinarySearch(T item) => list.BinarySearch(item, Comparer);
+
+        void ICollection<T>.Add(T item) => this.Add(item);
+        public int Add(T item)
+        {
+            var index = BinarySearch(item);
+            if (index < 0)
+                index = ~index;
+            else
+                return -1;
+            list.Insert(index, item);
+            return index;
+        }
+
+        public int IndexOf(T item)
+        {
+            var index = BinarySearch(item);
+            if (index >= 0) return index;
+            else return -1;
+        }
+        public bool Contains(T item) => BinarySearch(item) >= 0;
+        public void Clear() => list.Clear();
+        public void CopyTo(T[] array, int arrayIndex) => list.CopyTo(array, arrayIndex);
+
+        public bool Remove(T item)
+        {
+            int index = this.IndexOf(item);
+            if (index < 0)
+                return false;
+            list.RemoveAt(index);
+            return true;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+        public IEnumerator<T> GetEnumerator() => list.GetEnumerator();
+        public void Insert(int index, T item) { throw new NotImplementedException(); }
+        public void RemoveAt(int index) => list.RemoveAt(index);
     }
 }
