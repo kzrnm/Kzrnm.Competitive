@@ -199,6 +199,27 @@ namespace AtCoderProject.Hide.有向Length
 
     class ShortestPath
     {
+        public static int[] BFS(Node[] graph, int from)
+        {
+            var res = Enumerable.Repeat(int.MaxValue, graph.Length).ToArray();
+            var queue = new Queue<int>();
+            queue.Enqueue(from);
+            res[from] = 0;
+            while (queue.Count > 0)
+            {
+                var cur = queue.Dequeue();
+                foreach (var n in graph[cur].children.Select(node => node.to))
+                {
+                    var to = res[cur] + 1;
+                    if (res[n] > to)
+                    {
+                        res[n] = to;
+                        queue.Enqueue(n);
+                    }
+                }
+            }
+            return res;
+        }
         public static long[,] WarshallFloyd(Node[] graph)
         {
             var res = new long[graph.Length, graph.Length];
