@@ -33,7 +33,7 @@ namespace AtCoderProject.Hide
         }
 
 
-        static int BinarySearch<T>(IList<T> a, T v, IComparer<T> cmp, bool islb)
+        static int BinarySearch<T>(IList<T> a, T v, IComparer<T> cmp, bool isLowerBound)
         {
             var l = 0;
             var r = a.Count - 1;
@@ -41,7 +41,7 @@ namespace AtCoderProject.Hide
             {
                 var m = (l + r) / 2;
                 var res = cmp.Compare(a[m], v);
-                if (res < 0 || (res == 0 && !islb)) l = m + 1;
+                if (res < 0 || (res == 0 && !isLowerBound)) l = m + 1;
                 else r = m - 1;
             }
             return l;
