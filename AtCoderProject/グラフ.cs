@@ -39,6 +39,28 @@ namespace AtCoderProject.Hide
             children[from].Add(to);
             roots[to].Add(from);
         }
+        public Node[] ToTree(int root)
+        {
+            var res = new Node[this.children.Length];
+            res[root] = new Node(root, null, null);
+            res[root].roots = Array.Empty<int>();
+            InitTree(root, res);
+            return res;
+        }
+
+        private void InitTree(int from, Node[] res)
+        {
+            if (res[from].roots.Length == 0)
+                res[from].children = this.children[from].ToArray();
+            else
+                res[from].children = this.children[from].Where(c => c != res[from].roots[0]).ToArray();
+
+            foreach (var child in res[from].children)
+            {
+                res[child] = new Node(child, new[] { from }, null);
+                InitTree(child, res);
+            }
+        }
         public Node[] ToArray() =>
             Enumerable
             .Zip(roots, children, (r, c) => Tuple.Create(r, c))
@@ -84,13 +106,13 @@ namespace AtCoderProject.Hide
             this.graph = graph;
             this.statuses = new Status[graph.Length];
         }
-        public int[] GetCycle()
+        public int[] GetCycleDFS()
         {
             for (int i = 0; i < graph.Length; i++)
             {
                 if (statuses[i] == Status.None)
                 {
-                    var res = GetCycle(i);
+                    var res = GetCycleDFS(i);
                     if (res != null)
                     {
                         res.Reverse();
@@ -100,7 +122,7 @@ namespace AtCoderProject.Hide
             }
             return null;
         }
-        List<int> GetCycle(int v)
+        List<int> GetCycleDFS(int v)
         {
             statuses[v] = Status.Active;
 
@@ -109,7 +131,7 @@ namespace AtCoderProject.Hide
                 switch (statuses[child])
                 {
                     case Status.None:
-                        var list = GetCycle(child);
+                        var list = GetCycleDFS(child);
                         if (list != null)
                         {
                             if (list.Count < 2 || list[0] != list[list.Count - 1])
@@ -124,6 +146,67 @@ namespace AtCoderProject.Hide
 
             statuses[v] = Status.Done;
             return null;
+        }
+
+        class BFSData
+        {
+            public readonly int[] current;
+            public readonly bool[] used;
+            public BFSData(int[] current, bool[] used)
+            {
+                this.current = current;
+                this.used = used;
+            }
+        }
+        public int[] GetCycleBFS()
+        {
+            for (int i = 0; i < graph.Length; i++)
+            {
+                if (statuses[i] == Status.None)
+                {
+                    var res = GetCycleBFS(i);
+                    if (res != null)
+                        return res;
+                }
+            }
+            return null;
+        }
+        int[] GetCycleBFS(int v)
+        {
+            int[] res = null;
+            statuses[v] = Status.Active;
+            var queue = new Queue<BFSData>();
+            var bfsd = new BFSData(new[] { v }, new bool[graph.Length]);
+            bfsd.used[v] = true;
+            queue.Enqueue(bfsd);
+            while (queue.Count > 0)
+            {
+                bfsd = queue.Dequeue();
+                foreach (var child in graph[bfsd.current[bfsd.current.Length - 1]].children)
+                {
+                    if (bfsd.used[child])
+                    {
+                        var index = Array.IndexOf(bfsd.current, child);
+                        if (res == null || res.Length > bfsd.current.Length + 1 - index)
+                        {
+                            res = new int[bfsd.current.Length + 1 - index];
+                            Array.Copy(bfsd.current, index, res, 0, bfsd.current.Length - index);
+                            res[res.Length - 1] = child;
+                        }
+                    }
+                    else if (res == null)
+                    {
+                        statuses[child] = Status.Done;
+                        var next = new int[bfsd.current.Length + 1];
+                        Array.Copy(bfsd.current, next, bfsd.current.Length);
+                        next[next.Length - 1] = child;
+                        var nextUsed = (bool[])bfsd.used.Clone();
+                        nextUsed[child] = true;
+                        queue.Enqueue(new BFSData(next, nextUsed));
+                    }
+                }
+            }
+            return res;
         }
     }
 }
