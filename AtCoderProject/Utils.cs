@@ -34,6 +34,24 @@ namespace AtCoderProject.Hide
         public override string ToString() => $"({x}, {y})";
     }
 
+    class Sums
+    {
+        private int[] impl;
+        public Sums(int[] arr)
+        {
+            impl = new int[arr.Length + 1];
+            for (int i = 0; i < arr.Length; i++)
+                impl[i + 1] = impl[i] + arr[i];
+        }
+        public int this[int toExclusive]
+        {
+            get { return impl[toExclusive]; }
+        }
+        public int this[int from, int toExclusive]
+        {
+            get { return impl[toExclusive] - impl[from]; }
+        }
+    }
 
     static class DicExt
     {
