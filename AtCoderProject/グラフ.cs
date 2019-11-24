@@ -39,33 +39,71 @@ namespace AtCoderProject.Hide
             children[from].Add(to);
             roots[to].Add(from);
         }
-        public Node[] ToTree(int root)
+        public TreeNode[] ToTree(int root)
         {
-            var res = new Node[this.children.Length];
-            res[root] = new Node(root, null, null);
-            res[root].roots = Array.Empty<int>();
-            InitTree(root, res);
+            var res = new TreeNode[this.children.Length];
+            res[root] = new TreeNode(root, -1, this.children[root].ToArray());
+
+            var queue = new Queue<int>();
+            foreach (var child in res[root].children)
+            {
+                res[child] = new TreeNode(child, root, null);
+                queue.Enqueue(child);
+            }
+
+            while (queue.Count > 0)
+            {
+                var from = queue.Dequeue();
+                if (res[from].root == -1)
+                    res[from].children = this.children[from].ToArray();
+                else
+                {
+                    var children = new List<int>(this.children[from].Count);
+                    foreach (var c in this.children[from])
+                        if (c != res[from].root)
+                            children.Add(c);
+
+                    res[from].children = children.ToArray();
+                }
+
+                foreach (var child in res[from].children)
+                {
+                    res[child] = new TreeNode(child, from, null);
+                    queue.Enqueue(child);
+                }
+            }
+
             return res;
         }
 
-        private void InitTree(int from, Node[] res)
-        {
-            if (res[from].roots.Length == 0)
-                res[from].children = this.children[from].ToArray();
-            else
-                res[from].children = this.children[from].Where(c => c != res[from].roots[0]).ToArray();
-
-            foreach (var child in res[from].children)
-            {
-                res[child] = new Node(child, new[] { from }, null);
-                InitTree(child, res);
-            }
-        }
         public Node[] ToArray() =>
             Enumerable
             .Zip(roots, children, (r, c) => Tuple.Create(r, c))
             .Select((t, i) => new Node(i, t.Item1.ToArray(), t.Item2.ToArray()))
             .ToArray();
+    }
+    public class TreeNode : IEquatable<TreeNode>
+    {
+        public TreeNode(int i, int root, int[] children)
+        {
+            this.index = i;
+            this.root = root;
+            this.children = children;
+        }
+        public int index;
+        public int root;
+        public int[] children;
+
+        public override string ToString() => $"children: {string.Join(",", children)}";
+        public override bool Equals(object obj)
+        {
+            if (obj is TreeNode)
+                return this.Equals((TreeNode)obj);
+            else
+                return false;
+        }
+        public bool Equals(TreeNode other) => this.index == other.index;
+        public override int GetHashCode() => this.index;
     }
     public class Node : IEquatable<Node>
     {
