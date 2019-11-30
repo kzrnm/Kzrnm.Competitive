@@ -30,7 +30,7 @@ namespace AtCoderProject.Hide
             if (obj is Point) return Equals((Point)obj);
             return false;
         }
-        public override int GetHashCode() => x ^ y;
+        public override int GetHashCode() => ((x << 5) + x) ^ y;
         public override string ToString() => $"({x}, {y})";
     }
 
