@@ -316,6 +316,7 @@ namespace AtCoderProject.Hide.有向Length
         }
         public bool Equals(Node other) => this.index == other.index;
         public override int GetHashCode() => this.index;
+        public override string ToString() => $"children: ({string.Join("),(", children)})";
     }
 
     class ShortestPath
