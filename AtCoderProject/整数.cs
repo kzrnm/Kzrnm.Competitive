@@ -38,6 +38,7 @@ namespace AtCoderProject.Hide
         IEnumerable<int> GetYakusu(int n)
         {
             int amari;
+            var list = new List<int>();
             var sqrt = (int)Math.Sqrt(n);
             for (int i = 1; i <= sqrt; i++)
             {
@@ -46,9 +47,11 @@ namespace AtCoderProject.Hide
                 {
                     yield return i;
                     if (i != d)
-                        yield return d;
+                        list.Add(d);
                 }
             }
+            for (int i = list.Count - 1; i >= 0; i--)
+                yield return list[i];
         }
 
         /// <summary>
