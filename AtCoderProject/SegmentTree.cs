@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 namespace AtCoderProject.Hide
 {
 #pragma warning disable
+    [System.Diagnostics.DebuggerTypeProxy(typeof(SegmentTreeDebugView))]
     class SegmentTree
     {
         // この辺は場合によって変える
         private long defaultValue = 0;
-        private long Which(long left, long right)
+        private long Operate(long v1, long v2)
         {
-            return Math.Max(left, right);
+            return v1 + v2;
         }
-
 
         private int origLength;
         private int rootLength;
@@ -40,19 +40,76 @@ namespace AtCoderProject.Hide
             while (index > 0)
             {
                 index = (index - 1) >> 1;
-                tree[index] = Which(tree[index * 2 + 1], tree[index * 2 + 2]);
+                tree[index] = Operate(tree[index * 2 + 1], tree[index * 2 + 2]);
             }
         }
 
-        public long Query(int fromInclusive, int toExclusive) => Query(fromInclusive, toExclusive, 0, 0, rootLength);
-        public long Query(int fromInclusive, int toExclusive, int nodeIndex, int nodeStart, int nodeEnd)
+        public long Query(int fromInclusive, int toExclusive)
         {
-            if (nodeEnd <= fromInclusive || toExclusive <= nodeStart) return defaultValue;
-            if (fromInclusive <= nodeStart && nodeEnd <= toExclusive) return tree[nodeIndex];
+            var result = defaultValue;
+            var l = fromInclusive + rootLength - 1;
+            var r = toExclusive + rootLength - 1;
 
-            var left = Query(fromInclusive, toExclusive, nodeIndex * 2 + 1, nodeStart, (nodeStart + nodeEnd) / 2);
-            var right = Query(fromInclusive, toExclusive, nodeIndex * 2 + 2, (nodeStart + nodeEnd) / 2, nodeEnd);
-            return Which(left, right);
+            while (l < r)
+            {
+                if ((l & 1) == 0)
+                    result = Operate(result, tree[l]);
+                if ((r & 1) == 0)
+                    result = Operate(result, tree[r - 1]);
+                l = l / 2;
+                r = (r - 1) / 2;
+            }
+
+            return result;
+        }
+
+
+        [System.Diagnostics.DebuggerDisplay("{value}", Name = "{key}")]
+        internal class KeyValuePairs
+        {
+            private string key;
+            private long value;
+
+            public KeyValuePairs(string key, long value)
+            {
+                this.key = key;
+                this.value = value;
+            }
+        }
+        class SegmentTreeDebugView
+        {
+            private SegmentTree segmentTree;
+            public SegmentTreeDebugView(SegmentTree segmentTree)
+            {
+                this.segmentTree = segmentTree;
+            }
+
+            [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)]
+            public KeyValuePairs[] Tree
+            {
+                get
+                {
+                    var keys = new List<KeyValuePairs>(segmentTree.tree.Length);
+                    for (int len = segmentTree.rootLength; len > 0; len >>= 1)
+                    {
+                        var unit = segmentTree.rootLength / len;
+                        for (int i = 0; i < len; i++)
+                        {
+                            var index = i + len - 1;
+                            if (unit == 1)
+                                keys.Add(new KeyValuePairs($"{i}", segmentTree.tree[index]));
+                            else
+                            {
+                                var from = i * unit;
+                                keys.Add(new KeyValuePairs($"[{from}-{from + unit})", segmentTree.tree[index]));
+                            }
+                        }
+                    }
+                    return keys.ToArray();
+                }
+            }
         }
     }
+
+
 }
