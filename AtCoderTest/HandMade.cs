@@ -10,7 +10,6 @@ using Xunit;
 public class HandMade
 {
     [Fact(Timeout = 2000)]
-    [DebuggerHidden]
     public void TestByLogicalInput()
     {
         var sb = new StringBuilder();
