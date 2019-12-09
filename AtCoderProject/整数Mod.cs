@@ -7,6 +7,7 @@ namespace AtCoderProject.Hide
     {
         public const long mod = 1000000007;
         public readonly long val;
+        public Mod(long val, bool isValid) : this(isValid ? val % mod : val) { }
         public Mod(long val) { this.val = val; }
         public override bool Equals(object obj) => (obj is Mod) ? this == ((Mod)obj) : false;
         public bool Equals(Mod obj) => this == obj;
