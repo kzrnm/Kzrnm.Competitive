@@ -38,6 +38,30 @@ namespace AtCoderProject
     }
     static class Ext
     {
+        public static Tuple<int, int> MaxBy(this int[] arr)
+        {
+            var max = int.MinValue;
+            var maxIndex = -1;
+            for (int i = 0; i < arr.Length; i++)
+                if (max < arr[i])
+                {
+                    maxIndex = i;
+                    max = arr[i];
+                }
+            return Tuple.Create(maxIndex, max);
+        }
+        public static Tuple<int, int> MinBy(this int[] arr)
+        {
+            var min = int.MaxValue;
+            var minIndex = -1;
+            for (int i = 0; i < arr.Length; i++)
+                if (min > arr[i])
+                {
+                    minIndex = i;
+                    min = arr[i];
+                }
+            return Tuple.Create(minIndex, min);
+        }
         public static IComparer<T> Reverse<T>(this IComparer<T> comparer) => Comparer<T>.Create((x, y) => comparer.Compare(y, x));
         public static Dictionary<TKey, int> GroupCount<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) => source.GroupBy(keySelector).ToDictionary(g => g.Key, g => g.Count());
         public static Dictionary<TKey, int> GroupCount<TKey>(this IEnumerable<TKey> source) => source.GroupCount(i => i);
