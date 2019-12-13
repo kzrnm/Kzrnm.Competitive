@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -9,13 +10,20 @@ using Xunit;
 
 public class HandMade
 {
+    class MyStringBuilder : IEnumerable
+    {
+        StringBuilder sb = new StringBuilder();
+        public override string ToString() => sb.ToString();
+        public void Add(string s) => sb.AppendLine(s);
+        IEnumerator IEnumerable.GetEnumerator() => throw new NotSupportedException();
+    }
     [Fact(Timeout = 2000)]
     public void TestByLogicalInput()
     {
-        var sb = new StringBuilder();
+        var sb = new MyStringBuilder
         {
 
-        }
+        };
         var input = sb.ToString();
         if (string.IsNullOrEmpty(input)) return;
         using var sr = new StringReader(input);
