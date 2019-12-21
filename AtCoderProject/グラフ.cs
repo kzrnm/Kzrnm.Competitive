@@ -41,13 +41,14 @@ namespace AtCoderProject.Hide
         }
         public TreeNode[] ToTree(int root)
         {
+            if (this.roots[0] != this.children[0]) throw new Exception("木には無向グラフをしたほうが良い");
             var res = new TreeNode[this.children.Length];
             res[root] = new TreeNode(root, -1, this.children[root].ToArray());
 
             var queue = new Queue<int>();
             foreach (var child in res[root].children)
             {
-                res[child] = new TreeNode(child, root, null);
+                res[child] = new TreeNode(child, root, Array.Empty<int>());
                 queue.Enqueue(child);
             }
 
@@ -68,7 +69,7 @@ namespace AtCoderProject.Hide
 
                 foreach (var child in res[from].children)
                 {
-                    res[child] = new TreeNode(child, from, null);
+                    res[child] = new TreeNode(child, from, Array.Empty<int>());
                     queue.Enqueue(child);
                 }
             }
