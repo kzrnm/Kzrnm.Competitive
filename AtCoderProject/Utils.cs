@@ -89,6 +89,35 @@ namespace AtCoderProject.Hide
         }
     }
 
+    class Matrix
+    {
+        long[,] Pow(long[,] mat, int y)
+        {
+            var K = mat.GetLength(0);
+            long[,] res = new long[K, K];
+            for (var i = 0; i < K; i++)
+                res[i, i] = 1;
+            for (; y > 0; y >>= 1)
+            {
+                if ((y & 1) == 1) res = Mul(res, mat);
+                mat = Mul(mat, mat);
+            }
+            return res;
+        }
+        long[,] Mul(long[,] l, long[,] r)
+        {
+            var h = l.GetLength(0);
+            var w = r.GetLength(1);
+            var K = l.GetLength(1);
+
+            long[,] res = new long[K, K];
+            for (var i = 0; i < K; i++)
+                for (var j = 0; j < K; j++)
+                    for (var k = 0; k < K; k++)
+                        res[i, j] += l[i, k] * r[k, j];
+            return res;
+        }
+    }
     static class DicExt
     {
         public static V GetOrDefault<K, V>(IDictionary<K, V> dic, K key, V defaultValue = default(V))
