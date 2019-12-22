@@ -38,29 +38,67 @@ namespace AtCoderProject
     }
     static class Ext
     {
-        public static Tuple<int, int> MaxBy(this int[] arr)
+        public static T[][] Chunk<T>(this T[,] source)
         {
-            var max = int.MinValue;
-            var maxIndex = -1;
-            for (int i = 0; i < arr.Length; i++)
-                if (max < arr[i])
+            var len0 = source.GetLength(0);
+            var len1 = source.GetLength(1);
+            var res = new T[len0][];
+            for (int i = 0; i < len0; i++)
+            {
+                res[i] = new T[len1];
+                for (int j = 0; j < len1; j++)
                 {
-                    maxIndex = i;
-                    max = arr[i];
+                    res[i][j] = source[i, j];
                 }
-            return Tuple.Create(maxIndex, max);
+            }
+            return res;
         }
-        public static Tuple<int, int> MinBy(this int[] arr)
+
+        public static Tuple<TSource, TMax> MaxBy<TSource, TMax>
+            (this IEnumerable<TSource> source, Func<TSource, TMax> maxBySelector)
+            where TMax : IComparable<TMax>
         {
-            var min = int.MaxValue;
-            var minIndex = -1;
-            for (int i = 0; i < arr.Length; i++)
-                if (min > arr[i])
+            TMax max;
+            TSource maxByItem;
+
+            var e = source.GetEnumerator();
+            e.MoveNext();
+            maxByItem = e.Current;
+            max = maxBySelector(maxByItem);
+            while (e.MoveNext())
+            {
+                var item = e.Current;
+                var next = maxBySelector(item);
+                if (max.CompareTo(next) < 0)
                 {
-                    minIndex = i;
-                    min = arr[i];
+                    max = next;
+                    maxByItem = item;
                 }
-            return Tuple.Create(minIndex, min);
+            }
+            return Tuple.Create(maxByItem, max);
+        }
+        public static Tuple<TSource, TMin> MinBy<TSource, TMin>
+            (this IEnumerable<TSource> source, Func<TSource, TMin> minBySelector)
+            where TMin : IComparable<TMin>
+        {
+            TMin min;
+            TSource minByItem;
+
+            var e = source.GetEnumerator();
+            e.MoveNext();
+            minByItem = e.Current;
+            min = minBySelector(minByItem);
+            while (e.MoveNext())
+            {
+                var item = e.Current;
+                var next = minBySelector(item);
+                if (min.CompareTo(next) > 0)
+                {
+                    min = next;
+                    minByItem = item;
+                }
+            }
+            return Tuple.Create(minByItem, min);
         }
         public static IComparer<T> Reverse<T>(this IComparer<T> comparer) => Comparer<T>.Create((x, y) => comparer.Compare(y, x));
         public static Dictionary<TKey, int> GroupCount<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) => source.GroupBy(keySelector).ToDictionary(g => g.Key, g => g.Count());
