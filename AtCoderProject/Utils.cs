@@ -38,7 +38,32 @@ namespace AtCoderProject.Hide
         public override int GetHashCode() => ((x << 5) + x) ^ y;
         public override string ToString() => $"({x}, {y})";
     }
+    struct Status : IEquatable<Status>, IComparable<Status>
+    {
+        public enum Type
+        {
+            End,
+            Start,
+        }
+        public int i;
+        public Type t;
+        public Status(int i, Type t)
+        {
+            this.i = i;
+            this.t = t;
+        }
 
+        public int CompareTo(Status other) => this.i.CompareTo(other.i);
+
+        public bool Equals(Status other) => this.i == other.i && this.t == other.t;
+        public override bool Equals(object obj)
+        {
+            if (obj is Status) return Equals((Status)obj);
+            return false;
+        }
+        public override int GetHashCode() => i ^ ((int)t << 30);
+        public override string ToString() => $"({i}, {t})";
+    }
     class Sums
     {
         private int[] impl;
