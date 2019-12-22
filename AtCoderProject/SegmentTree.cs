@@ -46,21 +46,22 @@ namespace AtCoderProject.Hide
 
         public long Query(int fromInclusive, int toExclusive)
         {
-            var result = defaultValue;
+            var leftResult = defaultValue;
+            var rightResult = defaultValue;
             var l = fromInclusive + rootLength - 1;
             var r = toExclusive + rootLength - 1;
 
             while (l < r)
             {
                 if ((l & 1) == 0)
-                    result = Operate(result, tree[l]);
+                    leftResult = Operate(leftResult, tree[l]);
                 if ((r & 1) == 0)
-                    result = Operate(result, tree[r - 1]);
+                    rightResult = Operate(tree[r - 1], rightResult);
                 l = l / 2;
                 r = (r - 1) / 2;
             }
 
-            return result;
+            return Operate(leftResult, rightResult);
         }
 
 
