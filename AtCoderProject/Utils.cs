@@ -22,6 +22,11 @@ namespace AtCoderProject.Hide
             this.y = y;
         }
 
+        public int Inner(Point other) => x * other.x + y * other.y;
+        public int Cross(Point other) => x * other.y - y * other.x;
+        public static Point operator +(Point a, Point b) => new Point(a.x + b.x, a.y + b.y);
+        public static Point operator -(Point a, Point b) => new Point(a.x - b.x, a.y - b.y);
+
         public int CompareTo(Point other) => this.x.CompareTo(other.x);
 
         public bool Equals(Point other) => this.x == other.x && this.y == other.y;
