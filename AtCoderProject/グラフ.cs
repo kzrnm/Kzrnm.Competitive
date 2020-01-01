@@ -250,7 +250,7 @@ namespace AtCoderProject.Hide
     }
 }
 
-namespace AtCoderProject.Hide.有向Length
+namespace AtCoderProject.Hide.Length
 {
     class GraphBuilder
     {
