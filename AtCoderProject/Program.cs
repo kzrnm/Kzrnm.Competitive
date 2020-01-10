@@ -38,6 +38,16 @@ namespace AtCoderProject
     }
     static class Ext
     {
+        public static T[] Sort<T>(this T[] arr)
+        {
+            Array.Sort(arr);
+            return arr;
+        }
+        public static T[] Reverse<T>(this T[] arr)
+        {
+            Array.Reverse(arr);
+            return arr;
+        }
         public static T[][] Chunk<T>(this T[,] source)
         {
             var len0 = source.GetLength(0);
