@@ -58,7 +58,7 @@ namespace AtCoderProject.Hide
                 fac[0] = fac[1] = 1;
                 finv[0] = finv[1] = 1;
                 inv[1] = 1;
-                for (int i = 2; i < max; i++)
+                for (var i = 2; i < max; i++)
                 {
                     fac[i] = fac[i - 1] * i;
                     inv[i] = mod - inv[mod % i].val * (mod / i) % mod;

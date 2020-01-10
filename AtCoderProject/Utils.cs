@@ -72,7 +72,7 @@ namespace AtCoderProject.Hide
         {
             this.Length = arr.Length;
             impl = new int[arr.Length + 1];
-            for (int i = 0; i < arr.Length; i++)
+            for (var i = 0; i < arr.Length; i++)
                 impl[i + 1] = impl[i] + arr[i];
         }
         public int this[int toExclusive]
@@ -94,8 +94,8 @@ namespace AtCoderProject.Hide
             this.Length1 = arr.Length;
             this.Length2 = arr[0].Length;
             impl = new int[Length1 + 1, Length2 + 1];
-            for (int i = 0; i < Length1; i++)
-                for (int j = 0; j < Length2; j++)
+            for (var i = 0; i < Length1; i++)
+                for (var j = 0; j < Length2; j++)
                     impl[i + 1, j + 1] = impl[i + 1, j] + impl[i, j + 1] - impl[i, j] + arr[i][j];
         }
         public Sums2D(int[,] arr)
@@ -103,8 +103,8 @@ namespace AtCoderProject.Hide
             this.Length1 = arr.GetLength(0);
             this.Length2 = arr.GetLength(1);
             impl = new int[Length1 + 1, Length2 + 1];
-            for (int i = 0; i < Length1; i++)
-                for (int j = 0; j < Length2; j++)
+            for (var i = 0; i < Length1; i++)
+                for (var j = 0; j < Length2; j++)
                     impl[i + 1, j + 1] = impl[i + 1, j] + impl[i, j + 1] - impl[i, j] + arr[i, j];
         }
         public int this[int left, int rightExclusive, int top, int bottomExclusive]

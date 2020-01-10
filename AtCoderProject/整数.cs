@@ -15,7 +15,7 @@ namespace AtCoderProject.Hide
         int Gcd(params int[] nums)
         {
             var gcd = nums[0];
-            for (int i = 1; i < nums.Length; i++)
+            for (var i = 1; i < nums.Length; i++)
                 gcd = Gcd(nums[i], gcd);
             return gcd;
         }
@@ -25,7 +25,7 @@ namespace AtCoderProject.Hide
         int Lcm(params int[] nums)
         {
             var lcm = nums[0];
-            for (int i = 1; i < nums.Length; i++)
+            for (var i = 1; i < nums.Length; i++)
                 lcm = Lcm(lcm, nums[i]);
             return lcm;
         }
@@ -40,7 +40,7 @@ namespace AtCoderProject.Hide
             int amari;
             var list = new List<int>();
             var sqrt = (int)Math.Sqrt(n);
-            for (int i = 1; i <= sqrt; i++)
+            for (var i = 1; i <= sqrt; i++)
             {
                 var d = Math.DivRem(n, i, out amari);
                 if (amari == 0)
@@ -50,7 +50,7 @@ namespace AtCoderProject.Hide
                         list.Add(d);
                 }
             }
-            for (int i = list.Count - 1; i >= 0; i--)
+            for (var i = list.Count - 1; i >= 0; i--)
                 yield return list[i];
         }
 
@@ -111,7 +111,7 @@ namespace AtCoderProject.Hide
             var primes = new HashSet<int> { 2, 3, 5, 7 };
             var searches = new int[n + 1];
             int current;
-            for (int i = 10; i <= n; i += 10)
+            for (var i = 10; i <= n; i += 10)
             {
                 current = i + 1;
                 if (current > n) break;
@@ -138,12 +138,12 @@ namespace AtCoderProject.Hide
             while (current <= sqrtN)
             {
                 primes.Add(current);
-                for (int i = current; i <= n; i += current + current)
+                for (var i = current; i <= n; i += current + current)
                     searches[i] = current;
 
                 while (searches[current] > 0) current += 2;
             }
-            for (int i = current; i <= n; i += 2)
+            for (var i = current; i <= n; i += 2)
                 if (searches[i] == 0)
                     primes.Add(i);
 
@@ -185,7 +185,7 @@ namespace AtCoderProject.Hide
                 fac[0] = fac[1] = 1;
                 finv[0] = finv[1] = 1;
                 inv[1] = 1;
-                for (int i = 2; i < maxN; i++)
+                for (var i = 2; i < maxN; i++)
                 {
                     fac[i] = fac[i - 1] * i % mod;
                     inv[i] = mod - inv[mod % i] * (mod / i) % mod;

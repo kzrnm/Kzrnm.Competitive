@@ -23,7 +23,7 @@ namespace AtCoderProject.Hide
 
         public SegmentTree(long[] initArray) : this(initArray.Length)
         {
-            for (int i = 0; i < initArray.Length; i++)
+            for (var i = 0; i < initArray.Length; i++)
                 Update(i, initArray[i]);
         }
         public SegmentTree(int size)
@@ -91,10 +91,10 @@ namespace AtCoderProject.Hide
                 get
                 {
                     var keys = new List<KeyValuePairs>(segmentTree.tree.Length);
-                    for (int len = segmentTree.rootLength; len > 0; len >>= 1)
+                    for (var len = segmentTree.rootLength; len > 0; len >>= 1)
                     {
                         var unit = segmentTree.rootLength / len;
-                        for (int i = 0; i < len; i++)
+                        for (var i = 0; i < len; i++)
                         {
                             var index = i + len - 1;
                             if (unit == 1)

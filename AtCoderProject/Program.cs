@@ -21,7 +21,7 @@ namespace AtCoderProject
             // MonoのBigInteger.Parseが遅いので自前実装
             var res = BigInteger.Zero;
             var splited = new string[(s.Length + 7) / 8];
-            for (int i = 0; i < splited.Length - 1; i++)
+            for (var i = 0; i < splited.Length - 1; i++)
             {
                 splited[i] = s.Substring(8 * i, 8);
             }
@@ -43,10 +43,10 @@ namespace AtCoderProject
             var len0 = source.GetLength(0);
             var len1 = source.GetLength(1);
             var res = new T[len0][];
-            for (int i = 0; i < len0; i++)
+            for (var i = 0; i < len0; i++)
             {
                 res[i] = new T[len1];
-                for (int j = 0; j < len1; j++)
+                for (var j = 0; j < len1; j++)
                 {
                     res[i][j] = source[i, j];
                 }

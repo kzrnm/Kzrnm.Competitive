@@ -16,7 +16,7 @@ namespace AtCoderProject.Hide
         {
             this.roots = new List<int>[count];
             this.children = new List<int>[count];
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 if (isOriented)
                 {
@@ -31,7 +31,7 @@ namespace AtCoderProject.Hide
         }
         public GraphBuilder(int count, ConsoleReader cr, int edgeCount, bool isOriented = true) : this(count, isOriented)
         {
-            for (int i = 0; i < edgeCount; i++)
+            for (var i = 0; i < edgeCount; i++)
                 this.Add(cr.Int - 1, cr.Int - 1);
         }
         public void Add(int from, int to)
@@ -147,7 +147,7 @@ namespace AtCoderProject.Hide
         }
         public int[] GetCycleDFS()
         {
-            for (int i = 0; i < graph.Length; i++)
+            for (var i = 0; i < graph.Length; i++)
             {
                 if (statuses[i] == Status.None)
                 {
@@ -199,7 +199,7 @@ namespace AtCoderProject.Hide
         }
         public int[] GetCycleBFS()
         {
-            for (int i = 0; i < graph.Length; i++)
+            for (var i = 0; i < graph.Length; i++)
             {
                 if (statuses[i] == Status.None)
                 {
@@ -260,7 +260,7 @@ namespace AtCoderProject.Hide.Length
         {
             this.roots = new List<Next>[count];
             this.children = new List<Next>[count];
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 if (isOriented)
                 {
@@ -275,7 +275,7 @@ namespace AtCoderProject.Hide.Length
         }
         public GraphBuilder(int count, ConsoleReader cr, int edgeCount, bool isOriented = true) : this(count, isOriented)
         {
-            for (int i = 0; i < edgeCount; i++)
+            for (var i = 0; i < edgeCount; i++)
                 this.Add(cr.Int - 1, cr.Int - 1, cr.Int);
         }
         public void Add(int from, int to, int length)
@@ -346,9 +346,9 @@ namespace AtCoderProject.Hide.Length
         public static long[,] WarshallFloyd(Node[] graph)
         {
             var res = new long[graph.Length, graph.Length];
-            for (int i = 0; i < graph.Length; i++)
+            for (var i = 0; i < graph.Length; i++)
             {
-                for (int j = 0; j < graph.Length; j++)
+                for (var j = 0; j < graph.Length; j++)
                 {
                     res[i, j] = long.MaxValue / 2;
                 }
@@ -356,9 +356,9 @@ namespace AtCoderProject.Hide.Length
                 foreach (var next in graph[i].children)
                     res[i, next.to] = next.length;
             }
-            for (int k = 0; k < graph.Length; k++)
-                for (int i = 0; i < graph.Length; i++)
-                    for (int j = 0; j < graph.Length; j++)
+            for (var k = 0; k < graph.Length; k++)
+                for (var i = 0; i < graph.Length; i++)
+                    for (var j = 0; j < graph.Length; j++)
                         if (res[i, j] > res[i, k] + res[k, j])
                             res[i, j] = res[i, k] + res[k, j];
             return res;
@@ -366,14 +366,14 @@ namespace AtCoderProject.Hide.Length
         public static long[] Dijkstra(Node[] graph, int start)
         {
             var res = new long[graph.Length];
-            for (int i = 0; i < res.Length; i++)
+            for (var i = 0; i < res.Length; i++)
                 res[i] = long.MaxValue / 2;
             res[start] = 0;
 
             var used = new bool[graph.Length];
             int count = 0;
             var remains = new PriorityQueue<long, int>();
-            for (int i = 0; i < res.Length; i++)
+            for (var i = 0; i < res.Length; i++)
                 remains.Add(res[i], i);
 
             while (remains.Count > 0)
