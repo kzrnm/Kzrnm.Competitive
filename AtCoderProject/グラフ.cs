@@ -43,12 +43,12 @@ namespace AtCoderProject.Hide
         {
             if (this.roots[0] != this.children[0]) throw new Exception("木には無向グラフをしたほうが良い");
             var res = new TreeNode[this.children.Length];
-            res[root] = new TreeNode(root, -1, this.children[root].ToArray());
+            res[root] = new TreeNode(root, -1, 0, this.children[root].ToArray());
 
             var queue = new Queue<int>();
             foreach (var child in res[root].children)
             {
-                res[child] = new TreeNode(child, root, Array.Empty<int>());
+                res[child] = new TreeNode(child, root, 1, Array.Empty<int>());
                 queue.Enqueue(child);
             }
 
@@ -69,7 +69,7 @@ namespace AtCoderProject.Hide
 
                 foreach (var child in res[from].children)
                 {
-                    res[child] = new TreeNode(child, from, Array.Empty<int>());
+                    res[child] = new TreeNode(child, from, res[from].depth + 1, Array.Empty<int>());
                     queue.Enqueue(child);
                 }
             }
@@ -83,16 +83,18 @@ namespace AtCoderProject.Hide
             .Select((t, i) => new Node(i, t.Item1.ToArray(), t.Item2.ToArray()))
             .ToArray();
     }
-    public class TreeNode : IEquatable<TreeNode>
+    class TreeNode : IEquatable<TreeNode>
     {
-        public TreeNode(int i, int root, int[] children)
+        public TreeNode(int i, int root, int depth, int[] children)
         {
             this.index = i;
             this.root = root;
             this.children = children;
+            this.depth = depth;
         }
         public int index;
         public int root;
+        public int depth;
         public int[] children;
 
         public override string ToString() => $"children: {string.Join(",", children)}";
@@ -106,7 +108,7 @@ namespace AtCoderProject.Hide
         public bool Equals(TreeNode other) => this.index == other.index;
         public override int GetHashCode() => this.index;
     }
-    public class Node : IEquatable<Node>
+    class Node : IEquatable<Node>
     {
         public Node(int i, int[] roots, int[] children)
         {
@@ -130,6 +132,67 @@ namespace AtCoderProject.Hide
         public override int GetHashCode() => this.index;
     }
 
+    class LowestCommonAncestor // 最小共通祖先
+    {
+        private TreeNode[] tree;
+
+        // kprv[u,k] 頂点uの2^k個上の祖先頂点v, 0<=k<logN
+        private int[,] kprv;
+        private int logN;
+        public LowestCommonAncestor(TreeNode[] tree, int root = 0)
+        {
+            if (tree.Length == 0) throw new ArgumentException(nameof(tree));
+
+            this.tree = tree;
+            this.logN = (int)(Math.Log(tree.Length, 2) + 1);
+            this.kprv = new int[tree.Length, logN];
+            for (int v = 0; v < tree.Length; v++)
+            {
+                this.kprv[v, 0] = tree[v].root;
+            }
+            for (int k = 0; k < logN - 1; k++)
+            {
+                for (int v = 0; v < tree.Length; v++)
+                {
+                    if (this.kprv[v, k] < 0)
+                        this.kprv[v, k + 1] = -1;
+                    else
+                        this.kprv[v, k + 1] = this.kprv[this.kprv[v, k], k];
+                }
+            }
+        }
+
+        public int Lca(int u, int v)
+        {
+            if (Depth(u) > Depth(v))
+            {
+                var tmp = u;
+                u = v;
+                v = tmp;
+            }
+            for (int k = 0; k <= logN; k++)
+            {
+                if ((((Depth(v) - Depth(u)) >> k) & 1) == 1)
+                {
+                    v = kprv[v, k];
+                }
+            }
+            if (u == v)
+                return u;
+
+            for (int k = logN - 1; k >= 0; k--)
+            {
+                if (kprv[u, k] != kprv[v, k] && kprv[u, k] != -1 && kprv[v, k] != -1)
+                {
+                    u = kprv[u, k];
+                    v = kprv[v, k];
+                }
+            }
+            return kprv[u, 0];
+        }
+
+        int Depth(int index) => tree[index].depth;
+    }
     class GraphSearch
     {
         enum Status
