@@ -9,6 +9,7 @@ using BitArray = System.Collections.BitArray;
 using BigInteger = System.Numerics.BigInteger;
 using TextReader = System.IO.TextReader;
 using static AtCoderProject.Global;
+using static AtCoderProject.NumGlobal;
 
 namespace AtCoderProject
 {
@@ -16,6 +17,11 @@ namespace AtCoderProject
     {
         private class ComparerReverseImpl<T> : Comparer<T> where T : IComparable<T> { public override int Compare(T y, T x) => x.CompareTo(y); public override bool Equals(object obj) => obj != null && GetType() == obj.GetType(); public override int GetHashCode() => GetType().GetHashCode(); }
         public static IComparer<T> ComparerReverse<T>() where T : IComparable<T> => new ComparerReverseImpl<T>();
+        public static string AllLines<T>(IEnumerable<T> source) => string.Join("\n", source);
+        public static string AllJoin<T>(IEnumerable<T> source) => string.Join(" ", source);
+    }
+    static class NumGlobal
+    {
         public static BigInteger ParseBigInteger(string s)
         {
             // MonoのBigInteger.Parseが遅いので自前実装
@@ -33,8 +39,63 @@ namespace AtCoderProject
             }
             return res;
         }
-        public static string AllLines<T>(IEnumerable<T> source) => string.Join("\n", source);
-        public static string AllJoin<T>(IEnumerable<T> source) => string.Join(" ", source);
+        public static int BitCount(int x)
+        {
+            x = x - ((x >> 1) & 0x55555555);
+            x = (x & 0x33333333) + ((x >> 2) & 0x33333333);
+            x = (x + (x >> 4)) & 0x0f0f0f0f;
+            x = x + (x >> 8);
+            x = x + (x >> 16);
+            return x & 0x3f;
+        }
+        public static int BitCount(long x)
+        {
+            x = x - ((x >> 1) & 0x5555555555555555);
+            x = (x & 0x3333333333333333) + ((x >> 2) & 0x3333333333333333);
+            x = (x + (x >> 4)) & 0x0f0f0f0f0f0f0f0f;
+            x = x + (x >> 8);
+            x = x + (x >> 16);
+            x = x + (x >> 32);
+            return (int)(x & 0x0000007f);
+        }
+        public static int MSB(int x)
+        {
+            x |= (x >> 1);
+            x |= (x >> 2);
+            x |= (x >> 4);
+            x |= (x >> 8);
+            x |= (x >> 16);
+            return BitCount(x) - 1;
+        }
+        public static int MSB(long x)
+        {
+            x |= (x >> 1);
+            x |= (x >> 2);
+            x |= (x >> 4);
+            x |= (x >> 8);
+            x |= (x >> 16);
+            x |= (x >> 32);
+            return BitCount(x) - 1;
+        }
+        public static int LSB(int x)
+        {
+            x |= (x << 1);
+            x |= (x << 2);
+            x |= (x << 4);
+            x |= (x << 8);
+            x |= (x << 16);
+            return 32 - BitCount(x);
+        }
+        public static int LSB(long x)
+        {
+            x |= (x << 1);
+            x |= (x << 2);
+            x |= (x << 4);
+            x |= (x << 8);
+            x |= (x << 16);
+            x |= (x << 32);
+            return 64 - BitCount(x);
+        }
     }
     static class Ext
     {
