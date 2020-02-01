@@ -14,20 +14,20 @@ namespace AtCoderProject.Hide
     static class 二分探索
     {
         /// <summary>
-        /// 与えられた<paramref name="predicate"/> の結果がtrueであるような最大の数値を取得します．
+        /// 与えられた<paramref name="predicate"/> の結果がtrueであるような最大の数値を二分法で取得します．
         /// </summary>
         /// <param name="l">最小値</param>
         /// <param name="r">最大値</param>
         /// <param name="predicate">判定条件</param>
         /// <returns><paramref name="predicate"/> がtrueを返す最大の o-indexed でのインデックス．</returns>
         /// <remarks> <paramref name="predicate"/> はある範囲以下の全ての数でtrueとなりある範囲以上でfalseとなると仮定します．この関数は O(log N) で実行されます．</remarks>
-        static int BinarySearch(int l, int r, Predicate<int> predicate)
+        static int Bisection(int l, int r, Predicate<int> predicate)
         {
             while (l < r)
             {
-                var m = (l + r) / 2;
-                if (predicate(m)) r = m;
-                else l = m + 1;
+                var m = (l + r + 1) / 2;
+                if (predicate(m)) l = m;
+                else r = m - 1;
             }
             return l;
         }
