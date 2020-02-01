@@ -32,7 +32,7 @@ namespace AtCoderProject.Hide
         public bool Equals(Point other) => this.x == other.x && this.y == other.y;
         public override bool Equals(object obj)
         {
-            if (obj is Point) return Equals((Point)obj);
+            if (obj is Point p) return Equals(p);
             return false;
         }
         public override int GetHashCode() => ((x << 5) + x) ^ y;
@@ -58,7 +58,7 @@ namespace AtCoderProject.Hide
         public bool Equals(Status other) => this.i == other.i && this.t == other.t;
         public override bool Equals(object obj)
         {
-            if (obj is Status) return Equals((Status)obj);
+            if (obj is Status s) return Equals(s);
             return false;
         }
         public override int GetHashCode() => i ^ ((int)t << 30);
