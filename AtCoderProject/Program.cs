@@ -7,6 +7,7 @@ using IEnumerator = System.Collections.IEnumerator;
 using BitArray = System.Collections.BitArray;
 using BigInteger = System.Numerics.BigInteger;
 using TextReader = System.IO.TextReader;
+using System.Runtime.CompilerServices;
 using static Global;
 using static NumGlobal;
 
