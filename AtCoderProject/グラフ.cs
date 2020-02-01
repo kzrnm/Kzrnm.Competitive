@@ -166,9 +166,7 @@ namespace AtCoderProject.Hide
         {
             if (Depth(u) > Depth(v))
             {
-                var tmp = u;
-                u = v;
-                v = tmp;
+                (u, v) = (v, u);
             }
             for (int k = 0; k <= logN; k++)
             {

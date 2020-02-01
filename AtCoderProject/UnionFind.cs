@@ -27,9 +27,7 @@ namespace AtCoderProject.Hide
             if (xRoot == yRoot) return;
             else if (data[yRoot] < data[xRoot])//y側の方が多い場合は逆にする
             {
-                var tmp = yRoot;
-                yRoot = xRoot;
-                xRoot = tmp;
+                (xRoot, yRoot) = (yRoot, xRoot);
             }
             data[xRoot] += data[yRoot];
             data[yRoot] = xRoot;
