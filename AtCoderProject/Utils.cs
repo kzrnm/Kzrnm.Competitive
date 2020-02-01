@@ -75,14 +75,8 @@ namespace AtCoderProject.Hide
             for (var i = 0; i < arr.Length; i++)
                 impl[i + 1] = impl[i] + arr[i];
         }
-        public long this[int toExclusive]
-        {
-            get { return impl[toExclusive]; }
-        }
-        public long this[int from, int toExclusive]
-        {
-            get { return impl[toExclusive] - impl[from]; }
-        }
+        public long this[int toExclusive] => impl[toExclusive];
+        public long this[int from, int toExclusive] => impl[toExclusive] - impl[from];
     }
     class Sums2D
     {
@@ -108,15 +102,10 @@ namespace AtCoderProject.Hide
                     impl[i + 1, j + 1] = impl[i + 1, j] + impl[i, j + 1] - impl[i, j] + arr[i, j];
         }
         public long this[int left, int rightExclusive, int top, int bottomExclusive]
-        {
-            get
-            {
-                return impl[rightExclusive, bottomExclusive]
+            => impl[rightExclusive, bottomExclusive]
                   - impl[left, bottomExclusive]
                   - impl[rightExclusive, top]
                   + impl[left, top];
-            }
-        }
     }
 
     class Matrix
@@ -159,4 +148,4 @@ namespace AtCoderProject.Hide
         public static IComparer<T> Reverse<T>(this IComparer<T> comparer)
             => Comparer<T>.Create((x, y) => comparer.Compare(y, x));
     }
- }
+}

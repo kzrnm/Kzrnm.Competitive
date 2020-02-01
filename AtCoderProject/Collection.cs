@@ -83,8 +83,8 @@ namespace AtCoderProject.Hide
 
         public T this[int index]
         {
-            get { return list[index]; }
-            set { list[index] = value; }
+            get => list[index];
+            set => list[index] = value;
         }
 
         /// <summary>
@@ -184,8 +184,8 @@ namespace AtCoderProject.Hide
 
         public T this[int index]
         {
-            get { return list[index]; }
-            set { list[index] = value; }
+            get => list[index];
+            set => list[index] = value;
         }
 
         /// <summary>
