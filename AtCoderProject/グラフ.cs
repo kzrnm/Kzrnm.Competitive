@@ -79,8 +79,8 @@ namespace AtCoderProject.Hide
 
         public Node[] ToArray() =>
             Enumerable
-            .Zip(roots, children, (r, c) => Tuple.Create(r, c))
-            .Select((t, i) => new Node(i, t.Item1.ToArray(), t.Item2.ToArray()))
+            .Zip(roots, children, (root, child) => (root, child))
+            .Select((t, i) => new Node(i, t.root.ToArray(), t.child.ToArray()))
             .ToArray();
     }
     class TreeNode : IEquatable<TreeNode>
@@ -348,8 +348,8 @@ namespace AtCoderProject.Hide.Length
         }
         public Node[] ToArray() =>
             Enumerable
-            .Zip(roots, children, (r, c) => Tuple.Create(r, c))
-            .Select((t, i) => new Node(i, t.Item1.ToArray(), t.Item2.ToArray()))
+            .Zip(roots, children, (root, child) => (root, child))
+            .Select((t, i) => new Node(i, t.root.ToArray(), t.child.ToArray()))
             .ToArray();
 
     }

@@ -118,8 +118,7 @@ static class Ext
         Array.Reverse(arr);
         return arr;
     }
-
-    public static Tuple<TSource, TMax> MaxBy<TSource, TMax>
+    public static (TSource item, TMax max) MaxBy<TSource, TMax>
         (this IEnumerable<TSource> source, Func<TSource, TMax> maxBySelector)
         where TMax : IComparable<TMax>
     {
@@ -140,9 +139,9 @@ static class Ext
                 maxByItem = item;
             }
         }
-        return Tuple.Create(maxByItem, max);
+        return (maxByItem, max);
     }
-    public static Tuple<TSource, TMin> MinBy<TSource, TMin>
+    public static (TSource item, TMin min) MinBy<TSource, TMin>
         (this IEnumerable<TSource> source, Func<TSource, TMin> minBySelector)
         where TMin : IComparable<TMin>
     {
@@ -163,7 +162,7 @@ static class Ext
                 minByItem = item;
             }
         }
-        return Tuple.Create(minByItem, min);
+        return (minByItem, min);
     }
     public static IComparer<T> Reverse<T>(this IComparer<T> comparer) => Comparer<T>.Create((x, y) => comparer.Compare(y, x));
     public static Dictionary<TKey, int> GroupCount<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) => source.GroupBy(keySelector).ToDictionary(g => g.Key, g => g.Count());
