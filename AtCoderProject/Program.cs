@@ -168,6 +168,16 @@ static class Ext
     public static IComparer<T> Reverse<T>(this IComparer<T> comparer) => Comparer<T>.Create((x, y) => comparer.Compare(y, x));
     public static Dictionary<TKey, int> GroupCount<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) => source.GroupBy(keySelector).ToDictionary(g => g.Key, g => g.Count());
     public static Dictionary<TKey, int> GroupCount<TKey>(this IEnumerable<TKey> source) => source.GroupCount(i => i);
+    public static V GetOrDefault<K, V>(this IDictionary<K, V> dic, K key, V defaultValue = default(V)) => dic.TryGetValue(key, out V val) ? val : defaultValue;
+    public static V GetOrInit<K, V>(this IDictionary<K, V> dic, K key) where V : new()
+    {
+        if (dic.TryGetValue(key, out V val))
+            return val;
+
+        val = new V();
+        dic.Add(key, val);
+        return val;
+    }
 }
 #pragma warning disable CA1819
 [System.Diagnostics.DebuggerNonUserCode]
