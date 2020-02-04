@@ -12,7 +12,7 @@ public class HandMade
 {
     class MyStringBuilder : IEnumerable
     {
-        StringBuilder sb = new StringBuilder();
+        private readonly StringBuilder sb = new StringBuilder();
         public override string ToString() => sb.ToString();
         public void Add(string s) => sb.AppendLine(s);
         IEnumerator IEnumerable.GetEnumerator() => throw new NotSupportedException();
