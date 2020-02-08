@@ -20,6 +20,16 @@ static class Global
 }
 static class NumGlobal
 {
+    public static int Pow(int x, int y)
+    {
+        int res = 1;
+        for (; y > 0; y >>= 1)
+        {
+            if ((y & 1) == 1) res *= x;
+            x *= x;
+        }
+        return res;
+    }
     public static BigInteger ParseBigInteger(string s)
     {
         // MonoのBigInteger.Parseが遅いので自前実装
