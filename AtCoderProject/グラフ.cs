@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Global;
 
 #pragma warning disable
 
@@ -385,7 +386,7 @@ namespace AtCoderProject.Hide.Length
     {
         public static int[] BFS(Node[] graph, int from)
         {
-            var res = Enumerable.Repeat(int.MaxValue, graph.Length).ToArray();
+            var res = new int[graph.Length].Fill(int.MaxValue);
             var queue = new Queue<int>();
             queue.Enqueue(from);
             res[from] = 0;

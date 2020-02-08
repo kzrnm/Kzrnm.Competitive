@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace AtCoderProject.Hide
 {
     class UnionFind
@@ -11,7 +12,7 @@ namespace AtCoderProject.Hide
         int[] data;
         public UnionFind(int size)
         {
-            this.data = Enumerable.Repeat(-1, size).ToArray();
+            this.data = new int[size].Fill(-1);
         }
 
         public int Root(int x)

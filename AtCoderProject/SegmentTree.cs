@@ -78,7 +78,7 @@ namespace AtCoderProject.Hide
         {
             origLength = size;
             for (rootLength = 1; rootLength < size; rootLength <<= 1) { }
-            tree = Enumerable.Repeat(defaultValue, 2 * rootLength - 1).ToArray();
+            tree = new long[2 * rootLength - 1].Fill(defaultValue);
         }
 
         public void Update(int index, long value)
