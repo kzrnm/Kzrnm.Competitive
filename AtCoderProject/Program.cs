@@ -97,6 +97,25 @@ static class NumGlobal
 }
 static class Ext
 {
+    public static T[] Init<T>(this T[] arr, Func<T> factory)
+    {
+        for (int i = 0; i < arr.Length; i++)
+            arr[i] = factory();
+        return arr;
+    }
+    public static T[] Fill<T>(this T[] arr, T value)
+    {
+        for (var i = 0; i < arr.Length; i++)
+            arr[i] = value;
+        return arr;
+    }
+    public static T[,] Fill<T>(this T[,] arr, T value)
+    {
+        for (var i = 0; i < arr.GetLength(0); i++)
+            for (var j = 0; j < arr.GetLength(1); j++)
+                arr[i, j] = value;
+        return arr;
+    }
     public static T[] Sort<T>(this T[] arr)
     {
         Array.Sort(arr);
