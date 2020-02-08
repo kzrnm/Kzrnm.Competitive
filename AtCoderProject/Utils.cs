@@ -11,10 +11,10 @@ using TextReader = System.IO.TextReader;
 
 namespace AtCoderProject.Hide
 {
-    struct Point : IEquatable<Point>, IComparable<Point>
+    readonly struct Point : IEquatable<Point>, IComparable<Point>
     {
-        public int x;
-        public int y;
+        public readonly int x;
+        public readonly int y;
         public Point(int[] arr) : this(arr[0], arr[1]) { }
         public Point(int x, int y)
         {
@@ -136,16 +136,5 @@ namespace AtCoderProject.Hide
                         res[i, j] += l[i, k] * r[k, j];
             return res;
         }
-    }
-    struct Work
-    {
-        public static Work Create(int[] l) => new Work { size = l[0], limit = l[1] };
-        public int size;
-        public int limit;
-    }
-    public static class Utility
-    {
-        public static IComparer<T> Reverse<T>(this IComparer<T> comparer)
-            => Comparer<T>.Create((x, y) => comparer.Compare(y, x));
     }
 }

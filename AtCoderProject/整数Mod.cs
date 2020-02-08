@@ -3,7 +3,7 @@
 // https://qiita.com/drken/items/3b4fdf0a78e7a138cd9a
 namespace AtCoderProject.Hide
 {
-    struct Mod : IEquatable<Mod>
+    readonly struct Mod : IEquatable<Mod>
     {
         public const long mod = 1000000007;
         public readonly long val;
