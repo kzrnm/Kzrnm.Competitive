@@ -101,7 +101,7 @@ static class Ext
 {
     public static T[] Fill<T>(this T[] arr, T value)
     {
-        for (var i = 0; i < arr.Length; i++) arr[i] = value;
+        Array.Fill(arr, value);
         return arr;
     }
     public static T[] Sort<T>(this T[] arr)
