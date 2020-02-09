@@ -74,8 +74,8 @@ namespace AtCoderProject.Hide
 
         public SortedCollection() : this(Comparer<T>.Default) { }
         public SortedCollection(int capacity) : this(capacity, Comparer<T>.Default) { }
-        public SortedCollection(IComparer<T> comparer) { Comparer = comparer; list = new List<T>(); }
-        public SortedCollection(int capacity, IComparer<T> comparer) { Comparer = comparer; list = new List<T>(capacity); }
+        public SortedCollection(IComparer<T> comparer) { this.Comparer = comparer; list = new List<T>(); }
+        public SortedCollection(int capacity, IComparer<T> comparer) { this.Comparer = comparer; list = new List<T>(capacity); }
 
         [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] public IComparer<T> Comparer { get; }
         [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] public bool IsReadOnly => false;
@@ -94,7 +94,7 @@ namespace AtCoderProject.Hide
         /// <param name="item">対象となる要素</param>
         /// <returns><paramref name="item"/> が見つかった場合は0-indexed でのインデックス．見つからなかった場合は<paramref name="item"/>より大きい最小のインデックスのビット反転.</returns>
         /// <remarks> 比較関数に対して昇順であることを仮定しています．この関数は O(log N) で実行されます．</remarks>
-        public int BinarySearch(T item) => list.BinarySearch(item, Comparer);
+        public int BinarySearch(T item) => list.BinarySearch(item, this.Comparer);
 
         private int BinarySearchImpl(T item, bool isLowerBound)
         {
@@ -103,7 +103,7 @@ namespace AtCoderProject.Hide
             while (l <= r)
             {
                 var m = (l + r) / 2;
-                var res = Comparer.Compare(this[m], item);
+                var res = this.Comparer.Compare(this[m], item);
                 if (res < 0 || (res == 0 && !isLowerBound)) l = m + 1;
                 else r = m - 1;
             }
@@ -175,8 +175,8 @@ namespace AtCoderProject.Hide
 
         public SortedUniqueCollection() : this(Comparer<T>.Default) { }
         public SortedUniqueCollection(int capacity) : this(capacity, Comparer<T>.Default) { }
-        public SortedUniqueCollection(IComparer<T> comparer) { Comparer = comparer; list = new List<T>(); }
-        public SortedUniqueCollection(int capacity, IComparer<T> comparer) { Comparer = comparer; list = new List<T>(capacity); }
+        public SortedUniqueCollection(IComparer<T> comparer) { this.Comparer = comparer; list = new List<T>(); }
+        public SortedUniqueCollection(int capacity, IComparer<T> comparer) { this.Comparer = comparer; list = new List<T>(capacity); }
 
         [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] public IComparer<T> Comparer { get; }
         [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] public bool IsReadOnly => false;
@@ -195,7 +195,7 @@ namespace AtCoderProject.Hide
         /// <param name="item">対象となる要素</param>
         /// <returns><paramref name="item"/> が見つかった場合は0-indexed でのインデックス．見つからなかった場合は<paramref name="item"/>より大きい最小のインデックスのビット反転.</returns>
         /// <remarks> 比較関数に対して昇順であることを仮定しています．この関数は O(log N) で実行されます．</remarks>
-        public int BinarySearch(T item) => list.BinarySearch(item, Comparer);
+        public int BinarySearch(T item) => list.BinarySearch(item, this.Comparer);
 
         void ICollection<T>.Add(T item) => this.Add(item);
         public int Add(T item)
@@ -232,5 +232,120 @@ namespace AtCoderProject.Hide
         public IEnumerator<T> GetEnumerator() => list.GetEnumerator();
         public void Insert(int index, T item) { throw new NotImplementedException(); }
         public void RemoveAt(int index) => list.RemoveAt(index);
+    }
+
+    // ある範囲の数値を管理するHashSetのようなもの
+    class IntSet : ISet<int>
+    {
+        private bool[] impl;
+        public IntSet(int size)
+        {
+            impl = new bool[size];
+        }
+
+        public int Count { private set; get; }
+
+        public bool IsReadOnly => false;
+
+        public bool Add(int item)
+        {
+            if (impl.Length <= item)
+                return false;
+            if (impl[item])
+                return false;
+            impl[item] = true;
+            ++Count;
+            return true;
+        }
+
+        public void Clear()
+        {
+            impl = new bool[impl.Length];
+            Count = 0;
+        }
+        public bool Remove(int item)
+        {
+            if (impl.Length <= item)
+                return false;
+            if (!impl[item])
+                return false;
+            impl[item] = false;
+            return true;
+        }
+
+
+        public bool Contains(int item) => impl[item];
+
+        public void CopyTo(int[] array, int arrayIndex)
+        {
+            for (int i = 0; i < impl.Length; i++)
+                if (impl[i])
+                    array[arrayIndex++] = i;
+        }
+
+        public void ExceptWith(IEnumerable<int> other)
+        {
+            foreach (var item in other)
+                impl[item] = false;
+        }
+
+        public void IntersectWith(IEnumerable<int> other)
+        {
+            var next = new bool[impl.Length];
+            foreach (var item in other)
+                if (impl[item])
+                    next[item] = true;
+            impl = next;
+        }
+        public void UnionWith(IEnumerable<int> other)
+        {
+            foreach (var item in other)
+                impl[item] = true;
+        }
+
+
+        bool ISet<int>.IsProperSubsetOf(IEnumerable<int> other) { throw new NotSupportedException(); }
+
+        bool ISet<int>.IsProperSupersetOf(IEnumerable<int> other)
+        {
+            var cnt = 0;
+            foreach (var item in other)
+            {
+                ++cnt;
+                if (!impl[item])
+                    return false;
+            }
+            return this.Count != cnt;
+        }
+
+        bool ISet<int>.IsSubsetOf(IEnumerable<int> other) { throw new NotSupportedException(); }
+        bool ISet<int>.IsSupersetOf(IEnumerable<int> other)
+        {
+            foreach (var item in other)
+                if (!impl[item])
+                    return false;
+            return true;
+        }
+
+        bool ISet<int>.Overlaps(IEnumerable<int> other)
+        {
+            foreach (var item in other)
+                if (impl[item])
+                    return true;
+            return false;
+        }
+
+        bool ISet<int>.SetEquals(IEnumerable<int> other) { throw new NotSupportedException(); }
+        void ISet<int>.SymmetricExceptWith(IEnumerable<int> other) { throw new NotSupportedException(); }
+        void ICollection<int>.Add(int item) => this.Add(item);
+
+        public IEnumerator<int> GetEnumerator()
+        {
+            for (var i = 0; i < impl.Length; i++)
+                if (impl[i])
+                    yield return i;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
     }
 }
