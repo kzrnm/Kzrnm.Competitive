@@ -13,6 +13,49 @@ using static NumGlobal;
 
 static class Global
 {
+    public static T[] NewArray<T>(int len0, T value) => new T[len0].Fill(value);
+    public static T[] NewArray<T>(int len0, Func<T> factory)
+    {
+        var arr = new T[len0];
+        for (int i = 0; i < arr.Length; i++) arr[i] = factory();
+        return arr;
+    }
+    public static T[][] NewArray<T>(int len0, int len1, T value) where T : struct
+    {
+        var arr = new T[len0][];
+        for (int i = 0; i < arr.Length; i++) arr[i] = NewArray<T>(len1, value);
+        return arr;
+    }
+    public static T[][] NewArray<T>(int len0, int len1, Func<T> factory)
+    {
+        var arr = new T[len0][];
+        for (int i = 0; i < arr.Length; i++) arr[i] = NewArray<T>(len1, factory);
+        return arr;
+    }
+    public static T[][][] NewArray<T>(int len0, int len1, int len2, T value) where T : struct
+    {
+        var arr = new T[len0][][];
+        for (int i = 0; i < arr.Length; i++) arr[i] = NewArray<T>(len1, len2, value);
+        return arr;
+    }
+    public static T[][][] NewArray<T>(int len0, int len1, int len2, Func<T> factory)
+    {
+        var arr = new T[len0][][];
+        for (int i = 0; i < arr.Length; i++) arr[i] = NewArray<T>(len1, len2, factory);
+        return arr;
+    }
+    public static T[][][][] NewArray<T>(int len0, int len1, int len2, int len3, T value) where T : struct
+    {
+        var arr = new T[len0][][][];
+        for (int i = 0; i < arr.Length; i++) arr[i] = NewArray<T>(len1, len2, len3, value);
+        return arr;
+    }
+    public static T[][][][] NewArray<T>(int len0, int len1, int len2, int len3, Func<T> factory)
+    {
+        var arr = new T[len0][][][];
+        for (int i = 0; i < arr.Length; i++) arr[i] = NewArray<T>(len1, len2, len3, factory);
+        return arr;
+    }
     private class ComparerReverseImpl<T> : Comparer<T> where T : IComparable<T> { public override int Compare(T y, T x) => x.CompareTo(y); public override bool Equals(object obj) => obj != null && GetType() == obj.GetType(); public override int GetHashCode() => GetType().GetHashCode(); }
     public static IComparer<T> ComparerReverse<T>() where T : IComparable<T> => new ComparerReverseImpl<T>();
     public static string AllLines<T>(IEnumerable<T> source) => string.Join("\n", source);
@@ -107,23 +150,9 @@ static class NumGlobal
 }
 static class Ext
 {
-    public static T[] Init<T>(this T[] arr, Func<T> factory)
-    {
-        for (int i = 0; i < arr.Length; i++)
-            arr[i] = factory();
-        return arr;
-    }
     public static T[] Fill<T>(this T[] arr, T value)
     {
-        for (var i = 0; i < arr.Length; i++)
-            arr[i] = value;
-        return arr;
-    }
-    public static T[,] Fill<T>(this T[,] arr, T value)
-    {
-        for (var i = 0; i < arr.GetLength(0); i++)
-            for (var j = 0; j < arr.GetLength(1); j++)
-                arr[i, j] = value;
+        for (var i = 0; i < arr.Length; i++) arr[i] = value;
         return arr;
     }
     public static T[] Sort<T>(this T[] arr)
@@ -213,6 +242,7 @@ public class Program
     public object Calc()
     {
         var N = cr.Int;
+        var arr = NewArray(N, 2, 4, new KeyValuePair<string, int>("foo", 2));
         return N;
     }
 }
