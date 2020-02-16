@@ -89,63 +89,12 @@ static class NumGlobal
         }
         return res;
     }
-    public static int BitCount(int x)
-    {
-        x -= ((x >> 1) & 0x55555555);
-        x = (x & 0x33333333) + ((x >> 2) & 0x33333333);
-        x = (x + (x >> 4)) & 0x0f0f0f0f;
-        x += (x >> 8);
-        x += (x >> 16);
-        return x & 0x3f;
-    }
-    public static int BitCount(long x)
-    {
-        x -= ((x >> 1) & 0x5555555555555555);
-        x = (x & 0x3333333333333333) + ((x >> 2) & 0x3333333333333333);
-        x = (x + (x >> 4)) & 0x0f0f0f0f0f0f0f0f;
-        x += (x >> 8);
-        x += (x >> 16);
-        x += (x >> 32);
-        return (int)(x & 0x0000007f);
-    }
-    public static int MSB(int x)
-    {
-        x |= (x >> 1);
-        x |= (x >> 2);
-        x |= (x >> 4);
-        x |= (x >> 8);
-        x |= (x >> 16);
-        return BitCount(x) - 1;
-    }
-    public static int MSB(long x)
-    {
-        x |= (x >> 1);
-        x |= (x >> 2);
-        x |= (x >> 4);
-        x |= (x >> 8);
-        x |= (x >> 16);
-        x |= (x >> 32);
-        return BitCount(x) - 1;
-    }
-    public static int LSB(int x)
-    {
-        x |= (x << 1);
-        x |= (x << 2);
-        x |= (x << 4);
-        x |= (x << 8);
-        x |= (x << 16);
-        return 32 - BitCount(x);
-    }
-    public static int LSB(long x)
-    {
-        x |= (x << 1);
-        x |= (x << 2);
-        x |= (x << 4);
-        x |= (x << 8);
-        x |= (x << 16);
-        x |= (x << 32);
-        return 64 - BitCount(x);
-    }
+    public static int BitCount(int x) { x -= (x >> 1) & 0x55555555; x = (x & 0x33333333) + ((x >> 2) & 0x33333333); x = (x + (x >> 4)) & 0x0f0f0f0f; x += x >> 8; x += x >> 16; return x & 0x3f; }
+    public static int BitCount(long x) { x -= (x >> 1) & 0x5555555555555555; x = (x & 0x3333333333333333) + ((x >> 2) & 0x3333333333333333); x = (x + (x >> 4)) & 0x0f0f0f0f0f0f0f0f; x += x >> 8; x += x >> 16; x += x >> 32; return (int)(x & 0x0000007f); }
+    public static int MSB(int x) { x |= x >> 1; x |= x >> 2; x |= x >> 4; x |= x >> 8; x |= x >> 16; return BitCount(x) - 1; }
+    public static int MSB(long x) { x |= x >> 1; x |= x >> 2; x |= x >> 4; x |= x >> 8; x |= x >> 16; x |= x >> 32; return BitCount(x) - 1; }
+    public static int LSB(int x) { x |= x << 1; x |= x << 2; x |= x << 4; x |= x << 8; x |= x << 16; return 32 - BitCount(x); }
+    public static int LSB(long x) { x |= x << 1; x |= x << 2; x |= x << 4; x |= x << 8; x |= x << 16; x |= x << 32; return 64 - BitCount(x); }
 }
 static class Ext
 {
@@ -168,21 +117,6 @@ static class Ext
     {
         Array.Reverse(arr);
         return arr;
-    }
-    public static T[][] Chunk<T>(this T[,] source)
-    {
-        var len0 = source.GetLength(0);
-        var len1 = source.GetLength(1);
-        var res = new T[len0][];
-        for (var i = 0; i < len0; i++)
-        {
-            res[i] = new T[len1];
-            for (var j = 0; j < len1; j++)
-            {
-                res[i][j] = source[i, j];
-            }
-        }
-        return res;
     }
 
     public static Tuple<TSource, TMax> MaxBy<TSource, TMax>
