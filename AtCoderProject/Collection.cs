@@ -102,7 +102,7 @@ namespace AtCoderProject.Hide
             var r = this.Count - 1;
             while (l <= r)
             {
-                var m = (l + r) / 2;
+                var m = (l + r) >> 1;
                 var res = this.Comparer.Compare(this[m], item);
                 if (res < 0 || (res == 0 && !isLowerBound)) l = m + 1;
                 else r = m - 1;

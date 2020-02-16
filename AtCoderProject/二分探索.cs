@@ -25,7 +25,7 @@ namespace AtCoderProject.Hide
         {
             while (l < r)
             {
-                var m = (l + r + 1) / 2;
+                var m = (l + r + 1) >> 1;
                 if (predicate(m)) l = m;
                 else r = m - 1;
             }
@@ -39,7 +39,7 @@ namespace AtCoderProject.Hide
             var r = a.Count - 1;
             while (l <= r)
             {
-                var m = (l + r) / 2;
+                var m = (l + r) >> 1;
                 var res = cmp.Compare(a[m], v);
                 if (res < 0 || (res == 0 && !isLowerBound)) l = m + 1;
                 else r = m - 1;
