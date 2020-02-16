@@ -1,5 +1,4 @@
 ﻿#region いつもの
-#pragma warning disable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,37 +22,37 @@ static class Global
     public static T[][] NewArray<T>(int len0, int len1, T value) where T : struct
     {
         var arr = new T[len0][];
-        for (int i = 0; i < arr.Length; i++) arr[i] = NewArray<T>(len1, value);
+        for (int i = 0; i < arr.Length; i++) arr[i] = NewArray(len1, value);
         return arr;
     }
     public static T[][] NewArray<T>(int len0, int len1, Func<T> factory)
     {
         var arr = new T[len0][];
-        for (int i = 0; i < arr.Length; i++) arr[i] = NewArray<T>(len1, factory);
+        for (int i = 0; i < arr.Length; i++) arr[i] = NewArray(len1, factory);
         return arr;
     }
     public static T[][][] NewArray<T>(int len0, int len1, int len2, T value) where T : struct
     {
         var arr = new T[len0][][];
-        for (int i = 0; i < arr.Length; i++) arr[i] = NewArray<T>(len1, len2, value);
+        for (int i = 0; i < arr.Length; i++) arr[i] = NewArray(len1, len2, value);
         return arr;
     }
     public static T[][][] NewArray<T>(int len0, int len1, int len2, Func<T> factory)
     {
         var arr = new T[len0][][];
-        for (int i = 0; i < arr.Length; i++) arr[i] = NewArray<T>(len1, len2, factory);
+        for (int i = 0; i < arr.Length; i++) arr[i] = NewArray(len1, len2, factory);
         return arr;
     }
     public static T[][][][] NewArray<T>(int len0, int len1, int len2, int len3, T value) where T : struct
     {
         var arr = new T[len0][][][];
-        for (int i = 0; i < arr.Length; i++) arr[i] = NewArray<T>(len1, len2, len3, value);
+        for (int i = 0; i < arr.Length; i++) arr[i] = NewArray(len1, len2, len3, value);
         return arr;
     }
     public static T[][][][] NewArray<T>(int len0, int len1, int len2, int len3, Func<T> factory)
     {
         var arr = new T[len0][][][];
-        for (int i = 0; i < arr.Length; i++) arr[i] = NewArray<T>(len1, len2, len3, factory);
+        for (int i = 0; i < arr.Length; i++) arr[i] = NewArray(len1, len2, len3, factory);
         return arr;
     }
     private class ComparerReverseImpl<T> : Comparer<T> where T : IComparable<T> { public override int Compare(T y, T x) => x.CompareTo(y); public override bool Equals(object obj) => obj != null && GetType() == obj.GetType(); public override int GetHashCode() => GetType().GetHashCode(); }
@@ -92,21 +91,21 @@ static class NumGlobal
     }
     public static int BitCount(int x)
     {
-        x = x - ((x >> 1) & 0x55555555);
+        x -= ((x >> 1) & 0x55555555);
         x = (x & 0x33333333) + ((x >> 2) & 0x33333333);
         x = (x + (x >> 4)) & 0x0f0f0f0f;
-        x = x + (x >> 8);
-        x = x + (x >> 16);
+        x += (x >> 8);
+        x += (x >> 16);
         return x & 0x3f;
     }
     public static int BitCount(long x)
     {
-        x = x - ((x >> 1) & 0x5555555555555555);
+        x -= ((x >> 1) & 0x5555555555555555);
         x = (x & 0x3333333333333333) + ((x >> 2) & 0x3333333333333333);
         x = (x + (x >> 4)) & 0x0f0f0f0f0f0f0f0f;
-        x = x + (x >> 8);
-        x = x + (x >> 16);
-        x = x + (x >> 32);
+        x += (x >> 8);
+        x += (x >> 16);
+        x += (x >> 32);
         return (int)(x & 0x0000007f);
     }
     public static int MSB(int x)
@@ -158,6 +157,11 @@ static class Ext
     public static T[] Sort<T>(this T[] arr)
     {
         Array.Sort(arr);
+        return arr;
+    }
+    public static string[] Sort(this string[] arr)
+    {
+        Array.Sort(arr, StringComparer.OrdinalIgnoreCase);
         return arr;
     }
     public static T[] Reverse<T>(this T[] arr)
@@ -231,6 +235,7 @@ static class Ext
     public static Dictionary<TKey, int> GroupCount<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) => source.GroupBy(keySelector).ToDictionary(g => g.Key, g => g.Count());
     public static Dictionary<TKey, int> GroupCount<TKey>(this IEnumerable<TKey> source) => source.GroupCount(i => i);
 }
+#pragma warning disable CA1819
 public class ConsoleReader { private string[] ReadLineSplit() => textReader.ReadLine().Split(Array.Empty<char>(), StringSplitOptions.RemoveEmptyEntries); private string[] line = Array.Empty<string>(); private int linePosition; private TextReader textReader; public ConsoleReader(TextReader tr) { textReader = tr; } public int Int => int.Parse(String); public int Int0 => Int - 1; public long Long => long.Parse(String); public double Double => double.Parse(String); public string String { get { if (linePosition >= line.Length) { linePosition = 0; line = ReadLineSplit(); } return line[linePosition++]; } } public class SplitLine { private string[] splited; public SplitLine(ConsoleReader cr) { splited = cr.ReadLineSplit(); cr.line = Array.Empty<string>(); } public int[] Int => String.Select(x => int.Parse(x)).ToArray(); public int[] Int0 => String.Select(x => int.Parse(x) - 1).ToArray(); public long[] Long => String.Select(x => long.Parse(x)).ToArray(); public double[] Double => String.Select(x => double.Parse(x)).ToArray(); public string[] String => splited; } public SplitLine Split => new SplitLine(this); public class RepeatReader : IEnumerable<ConsoleReader> { ConsoleReader cr; int count; public RepeatReader(ConsoleReader cr, int count) { this.cr = cr; this.count = count; } public IEnumerator<ConsoleReader> GetEnumerator() => Enumerable.Repeat(cr, count).GetEnumerator(); System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator(); public string[] String => this.Select(cr => cr.String).ToArray(); public int[] Int => this.Select(cr => cr.Int).ToArray(); public int[] Int0 => this.Select(cr => cr.Int - 1).ToArray(); public long[] Long => this.Select(cr => cr.Long).ToArray(); public double[] Double => this.Select(cr => cr.Double).ToArray(); } public RepeatReader Repeat(int count) => new RepeatReader(this, count); }
 public class Program
 {
@@ -242,7 +247,7 @@ public class Program
     public object Calc()
     {
         var N = cr.Int;
-        var arr = NewArray(N, 2, 4, new KeyValuePair<string, int>("foo", 2));
+
         return N;
     }
 }
