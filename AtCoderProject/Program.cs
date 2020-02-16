@@ -236,10 +236,11 @@ static class Ext
     public static Dictionary<TKey, int> GroupCount<TKey>(this IEnumerable<TKey> source) => source.GroupCount(i => i);
 }
 #pragma warning disable CA1819
-public class ConsoleReader { private string[] ReadLineSplit() => textReader.ReadLine().Split(Array.Empty<char>(), StringSplitOptions.RemoveEmptyEntries); private string[] line = Array.Empty<string>(); private int linePosition; private TextReader textReader; public ConsoleReader(TextReader tr) { textReader = tr; } public int Int => int.Parse(String); public int Int0 => Int - 1; public long Long => long.Parse(String); public double Double => double.Parse(String); public string String { get { if (linePosition >= line.Length) { linePosition = 0; line = ReadLineSplit(); } return line[linePosition++]; } } public class SplitLine { private string[] splited; public SplitLine(ConsoleReader cr) { splited = cr.ReadLineSplit(); cr.line = Array.Empty<string>(); } public int[] Int => String.Select(x => int.Parse(x)).ToArray(); public int[] Int0 => String.Select(x => int.Parse(x) - 1).ToArray(); public long[] Long => String.Select(x => long.Parse(x)).ToArray(); public double[] Double => String.Select(x => double.Parse(x)).ToArray(); public string[] String => splited; } public SplitLine Split => new SplitLine(this); public class RepeatReader : IEnumerable<ConsoleReader> { ConsoleReader cr; int count; public RepeatReader(ConsoleReader cr, int count) { this.cr = cr; this.count = count; } public IEnumerator<ConsoleReader> GetEnumerator() => Enumerable.Repeat(cr, count).GetEnumerator(); System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator(); public string[] String => this.Select(cr => cr.String).ToArray(); public int[] Int => this.Select(cr => cr.Int).ToArray(); public int[] Int0 => this.Select(cr => cr.Int - 1).ToArray(); public long[] Long => this.Select(cr => cr.Long).ToArray(); public double[] Double => this.Select(cr => cr.Double).ToArray(); } public RepeatReader Repeat(int count) => new RepeatReader(this, count); }
+public class ConsoleReader { private string[] ReadLineSplit() => textReader.ReadLine().Split(Array.Empty<char>(), StringSplitOptions.RemoveEmptyEntries); private string[] line = Array.Empty<string>(); private int linePosition; private TextReader textReader; public ConsoleReader(TextReader tr) { textReader = tr; } public int Int => int.Parse(String); public int Int0 => Int - 1; public long Long => long.Parse(String); public double Double => double.Parse(String); public string String { get { if (linePosition >= line.Length) { linePosition = 0; line = ReadLineSplit(); } return line[linePosition++]; } } public class SplitLine { public SplitLine(ConsoleReader cr) { String = cr.ReadLineSplit(); cr.line = Array.Empty<string>(); } public int[] Int => String.Select(x => int.Parse(x)).ToArray(); public int[] Int0 => String.Select(x => int.Parse(x) - 1).ToArray(); public long[] Long => String.Select(x => long.Parse(x)).ToArray(); public double[] Double => String.Select(x => double.Parse(x)).ToArray(); public string[] String { get; } } public SplitLine Split => new SplitLine(this); public class RepeatReader { ConsoleReader cr; int count; public RepeatReader(ConsoleReader cr, int count) { this.cr = cr; this.count = count; } public T[] Select<T>(Func<ConsoleReader, T> factory) { var arr = new T[count]; for (int i = 0; i < count; i++) arr[i] = factory(cr); return arr; } public string[] String => this.Select(cr => cr.String); public int[] Int => this.Select(cr => cr.Int); public int[] Int0 => this.Select(cr => cr.Int - 1); public long[] Long => this.Select(cr => cr.Long); public double[] Double => this.Select(cr => cr.Double); } public RepeatReader Repeat(int count) => new RepeatReader(this, count); }
 public class Program
 {
     [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] private ConsoleReader cr;
+
     public Program(ConsoleReader consoleReader) { this.cr = consoleReader; }
     static void Main() => Console.WriteLine(new Program(new ConsoleReader(Console.In)).Calc());
 
@@ -247,6 +248,8 @@ public class Program
     public object Calc()
     {
         var N = cr.Int;
+
+        var arrs = cr.Repeat(N).Select(cr => cr.Split.Int);
 
         return N;
     }
