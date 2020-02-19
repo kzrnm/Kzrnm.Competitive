@@ -10,7 +10,6 @@ namespace AtCoderProject.Hide
 {
     // https://bitbucket.org/camypaper/complib/src/master/lib/Algorithms/BinarySearch.cs
 
-
     static class 二分探索
     {
         /// <summary>
@@ -91,4 +90,5 @@ namespace AtCoderProject.Hide
         /// <remarks> <paramref name="a"/> は比較関数に対して昇順であることを仮定しています．この関数は O(log N) で実行されます．</remarks>
         public static int UpperBound<T>(this IList<T> a, T v) => BinarySearch(a, v, Comparer<T>.Default, false);
     }
+
 }
