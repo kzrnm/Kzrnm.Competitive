@@ -66,34 +66,34 @@ namespace AtCoderProject.Hide
     }
     class Sums
     {
-        private int[] impl;
+        private long[] impl;
         public int Length { get; }
         public Sums(int[] arr)
         {
             this.Length = arr.Length;
-            impl = new int[arr.Length + 1];
+            impl = new long[arr.Length + 1];
             for (var i = 0; i < arr.Length; i++)
                 impl[i + 1] = impl[i] + arr[i];
         }
-        public int this[int toExclusive]
+        public long this[int toExclusive]
         {
             get { return impl[toExclusive]; }
         }
-        public int this[int from, int toExclusive]
+        public long this[int from, int toExclusive]
         {
             get { return impl[toExclusive] - impl[from]; }
         }
     }
     class Sums2D
     {
-        private int[,] impl;
+        private long[,] impl;
         public int Length1 { get; }
         public int Length2 { get; }
         public Sums2D(int[][] arr)
         {
             this.Length1 = arr.Length;
             this.Length2 = arr[0].Length;
-            impl = new int[Length1 + 1, Length2 + 1];
+            impl = new long[Length1 + 1, Length2 + 1];
             for (var i = 0; i < Length1; i++)
                 for (var j = 0; j < Length2; j++)
                     impl[i + 1, j + 1] = impl[i + 1, j] + impl[i, j + 1] - impl[i, j] + arr[i][j];
@@ -102,12 +102,12 @@ namespace AtCoderProject.Hide
         {
             this.Length1 = arr.GetLength(0);
             this.Length2 = arr.GetLength(1);
-            impl = new int[Length1 + 1, Length2 + 1];
+            impl = new long[Length1 + 1, Length2 + 1];
             for (var i = 0; i < Length1; i++)
                 for (var j = 0; j < Length2; j++)
                     impl[i + 1, j + 1] = impl[i + 1, j] + impl[i, j + 1] - impl[i, j] + arr[i, j];
         }
-        public int this[int left, int rightExclusive, int top, int bottomExclusive]
+        public long this[int left, int rightExclusive, int top, int bottomExclusive]
         {
             get
             {
