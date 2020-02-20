@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace AtCoderProject.Hide
 {
-#pragma warning disable
     [System.Diagnostics.DebuggerTypeProxy(typeof(BinaryIndexedTreeDebugView))]
     class BinaryIndexedTree
     {
@@ -105,7 +104,7 @@ namespace AtCoderProject.Hide
                     leftResult = Operate(leftResult, tree[l]);
                 if ((r & 1) == 0)
                     rightResult = Operate(tree[r - 1], rightResult);
-                l = l / 2;
+                l /= 2;
                 r = (r - 1) / 2;
             }
 

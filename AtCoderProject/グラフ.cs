@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using static Global;
 
-#pragma warning disable
 
 namespace AtCoderProject.Hide
 {
@@ -283,7 +282,7 @@ namespace AtCoderProject.Hide
             while (queue.Count > 0)
             {
                 bfsd = queue.Dequeue();
-                foreach (var child in graph[bfsd.current[bfsd.current.Length - 1]].children)
+                foreach (var child in graph[bfsd.current[^1]].children)
                 {
                     if (bfsd.used[child])
                     {
@@ -292,7 +291,7 @@ namespace AtCoderProject.Hide
                         {
                             res = new int[bfsd.current.Length + 1 - index];
                             Array.Copy(bfsd.current, index, res, 0, bfsd.current.Length - index);
-                            res[res.Length - 1] = child;
+                            res[^1] = child;
                         }
                     }
                     else if (res == null)
@@ -300,7 +299,7 @@ namespace AtCoderProject.Hide
                         statuses[child] = Status.Done;
                         var next = new int[bfsd.current.Length + 1];
                         Array.Copy(bfsd.current, next, bfsd.current.Length);
-                        next[next.Length - 1] = child;
+                        next[^1] = child;
                         var nextUsed = (bool[])bfsd.used.Clone();
                         nextUsed[child] = true;
                         queue.Enqueue(new BFSData(next, nextUsed));

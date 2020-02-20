@@ -7,7 +7,6 @@ using BitArray = System.Collections.BitArray;
 using BigInteger = System.Numerics.BigInteger;
 using TextReader = System.IO.TextReader;
 
-#pragma warning disable
 
 namespace AtCoderProject.Hide
 {
@@ -125,8 +124,6 @@ namespace AtCoderProject.Hide
         }
         long[,] Mul(long[,] l, long[,] r)
         {
-            var h = l.GetLength(0);
-            var w = r.GetLength(1);
             var K = l.GetLength(1);
 
             long[,] res = new long[K, K];

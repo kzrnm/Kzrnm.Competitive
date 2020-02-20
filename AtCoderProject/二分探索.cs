@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-#pragma warning disable
 
 namespace AtCoderProject.Hide
 {

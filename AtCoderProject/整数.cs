@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using BitArray = System.Collections.BitArray;
 using BigInteger = System.Numerics.BigInteger;
 
-#pragma warning disable 
 
 namespace AtCoderProject.Hide
 {
@@ -37,12 +36,11 @@ namespace AtCoderProject.Hide
         /// <returns>約数の一覧</returns>
         IEnumerable<int> GetYakusu(int n)
         {
-            int amari;
             var list = new List<int>();
             var sqrt = (int)Math.Sqrt(n);
             for (var i = 1; i <= sqrt; i++)
             {
-                var d = Math.DivRem(n, i, out amari);
+                var d = Math.DivRem(n, i, out int amari);
                 if (amari == 0)
                 {
                     yield return i;

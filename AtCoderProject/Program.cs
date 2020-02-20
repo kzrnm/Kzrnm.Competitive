@@ -82,7 +82,7 @@ static class NumGlobal
         {
             splited[i] = s.Substring(8 * i, 8);
         }
-        splited[splited.Length - 1] = s.Substring(8 * (splited.Length - 1));
+        splited[^1] = s.Substring(8 * (splited.Length - 1));
         foreach (var sp in splited)
         {
             res *= (int)Math.Pow(10, sp.Length);
@@ -168,7 +168,7 @@ static class Ext
     public static IComparer<T> Reverse<T>(this IComparer<T> comparer) => Comparer<T>.Create((x, y) => comparer.Compare(y, x));
     public static Dictionary<TKey, int> GroupCount<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) => source.GroupBy(keySelector).ToDictionary(g => g.Key, g => g.Count());
     public static Dictionary<TKey, int> GroupCount<TKey>(this IEnumerable<TKey> source) => source.GroupCount(i => i);
-    public static V GetOrDefault<K, V>(this IDictionary<K, V> dic, K key, V defaultValue = default(V)) => dic.TryGetValue(key, out V val) ? val : defaultValue;
+    public static V GetOrDefault<K, V>(this IDictionary<K, V> dic, K key, V defaultValue = default) => dic.TryGetValue(key, out V val) ? val : defaultValue;
     public static V GetOrInit<K, V>(this IDictionary<K, V> dic, K key) where V : new()
     {
         if (dic.TryGetValue(key, out V val))
@@ -193,9 +193,7 @@ public class Program
     public object Calc()
     {
         var N = cr.Int;
-
         var arrs = cr.Repeat(N).Select(cr => cr.Split.Int);
-
         return N;
     }
 }
