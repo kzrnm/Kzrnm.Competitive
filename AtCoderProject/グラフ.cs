@@ -139,7 +139,7 @@ namespace AtCoderProject.Hide
         // kprv[u,k] 頂点uの2^k個上の祖先頂点v, 0<=k<logN
         private int[,] kprv;
         private int logN;
-        public LowestCommonAncestor(TreeNode[] tree, int root = 0)
+        public LowestCommonAncestor(TreeNode[] tree)
         {
             if (tree.Length == 0) throw new ArgumentException(nameof(tree));
 
