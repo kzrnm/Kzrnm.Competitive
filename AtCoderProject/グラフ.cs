@@ -136,8 +136,8 @@ namespace AtCoderProject.Hide
     {
         private TreeNode[] tree;
 
-        // kprv[u,k] 頂点uの2^k個上の祖先頂点v, 0<=k<logN
-        private int[,] kprv;
+        // kprv[u][k] 頂点uの2^k個上の祖先頂点v, 0<=k<logN
+        private int[][] kprv;
         private int logN;
         public LowestCommonAncestor(TreeNode[] tree)
         {
@@ -145,19 +145,19 @@ namespace AtCoderProject.Hide
 
             this.tree = tree;
             this.logN = (int)(Math.Log(tree.Length, 2) + 1);
-            this.kprv = new int[tree.Length, logN];
+            this.kprv = NewArray(tree.Length, logN, 0);
             for (int v = 0; v < tree.Length; v++)
             {
-                this.kprv[v, 0] = tree[v].root;
+                this.kprv[v][0] = tree[v].root;
             }
             for (int k = 0; k < logN - 1; k++)
             {
                 for (int v = 0; v < tree.Length; v++)
                 {
-                    if (this.kprv[v, k] < 0)
-                        this.kprv[v, k + 1] = -1;
+                    if (this.kprv[v][k] < 0)
+                        this.kprv[v][k + 1] = -1;
                     else
-                        this.kprv[v, k + 1] = this.kprv[this.kprv[v, k], k];
+                        this.kprv[v][k + 1] = this.kprv[this.kprv[v][k]][k];
                 }
             }
         }
@@ -172,7 +172,7 @@ namespace AtCoderProject.Hide
             {
                 if ((((Depth(v) - Depth(u)) >> k) & 1) == 1)
                 {
-                    v = kprv[v, k];
+                    v = kprv[v][k];
                 }
             }
             if (u == v)
@@ -180,13 +180,13 @@ namespace AtCoderProject.Hide
 
             for (int k = logN - 1; k >= 0; k--)
             {
-                if (kprv[u, k] != kprv[v, k] && kprv[u, k] != -1 && kprv[v, k] != -1)
+                if (kprv[u][k] != kprv[v][k] && kprv[u][k] != -1 && kprv[v][k] != -1)
                 {
-                    u = kprv[u, k];
-                    v = kprv[v, k];
+                    u = kprv[u][k];
+                    v = kprv[v][k];
                 }
             }
-            return kprv[u, 0];
+            return kprv[u][0];
         }
 
         int Depth(int index) => tree[index].depth;
@@ -404,24 +404,24 @@ namespace AtCoderProject.Hide.Length
             }
             return res;
         }
-        public static long[,] WarshallFloyd(Node[] graph)
+        public static long[][] WarshallFloyd(Node[] graph)
         {
-            var res = new long[graph.Length, graph.Length];
+            var res = NewArray(graph.Length, graph.Length, 0L);
             for (var i = 0; i < graph.Length; i++)
             {
                 for (var j = 0; j < graph.Length; j++)
                 {
-                    res[i, j] = long.MaxValue / 2;
+                    res[i][j] = long.MaxValue / 2;
                 }
-                res[i, i] = 0;
+                res[i][i] = 0;
                 foreach (var next in graph[i].children)
-                    res[i, next.to] = next.length;
+                    res[i][next.to] = next.length;
             }
             for (var k = 0; k < graph.Length; k++)
                 for (var i = 0; i < graph.Length; i++)
                     for (var j = 0; j < graph.Length; j++)
-                        if (res[i, j] > res[i, k] + res[k, j])
-                            res[i, j] = res[i, k] + res[k, j];
+                        if (res[i][j] > res[i][k] + res[k][j])
+                            res[i][j] = res[i][k] + res[k][j];
             return res;
         }
         public static long[] Dijkstra(Node[] graph, int start)
