@@ -76,7 +76,7 @@ namespace AtCoderProject.Hide
                 impl[i + 1] = impl[i] + arr[i];
         }
         public long this[int toExclusive] => impl[toExclusive];
-        public long this[int from, int toExclusive] => impl[toExclusive] - impl[from];
+        public long this[Range range] => impl[range.End.GetOffset(Length)] - impl[range.Start.GetOffset(Length)];
     }
     class Sums2D
     {
@@ -92,11 +92,20 @@ namespace AtCoderProject.Hide
                 for (var j = 0; j < Length2; j++)
                     impl[i + 1][j + 1] = impl[i + 1][j] + impl[i][j + 1] - impl[i][j] + arr[i][j];
         }
-        public long this[int left, int rightExclusive, int top, int bottomExclusive]
-            => impl[rightExclusive][bottomExclusive]
-                  - impl[left][bottomExclusive]
-                  - impl[rightExclusive][top]
-                  + impl[left][top];
+        public long this[Range width, Range height]
+        {
+            get
+            {
+                int left = width.Start.GetOffset(Length1);
+                int rightExclusive = width.End.GetOffset(Length1);
+                int top = height.Start.GetOffset(Length2);
+                int bottomExclusive = height.End.GetOffset(Length2);
+                return impl[rightExclusive][bottomExclusive]
+                      - impl[left][bottomExclusive]
+                      - impl[rightExclusive][top]
+                      + impl[left][top];
+            }
+        }
     }
 
     class Matrix
