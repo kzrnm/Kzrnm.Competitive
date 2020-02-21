@@ -163,7 +163,7 @@ namespace AtCoderProject.Hide
 
         IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
         public IEnumerator<T> GetEnumerator() => list.GetEnumerator();
-        public void Insert(int index, T item) { throw new NotImplementedException(); }
+        public void Insert(int index, T item) => throw new NotImplementedException();
         public void RemoveAt(int index) => list.RemoveAt(index);
     }
 
@@ -230,7 +230,7 @@ namespace AtCoderProject.Hide
 
         IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
         public IEnumerator<T> GetEnumerator() => list.GetEnumerator();
-        public void Insert(int index, T item) { throw new NotImplementedException(); }
+        public void Insert(int index, T item) => throw new NotImplementedException();
         public void RemoveAt(int index) => list.RemoveAt(index);
     }
 
