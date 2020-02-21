@@ -140,34 +140,4 @@ namespace AtCoderProject.Hide
             return res;
         }
     }
-    static class DicExt
-    {
-        public static V GetOrDefault<K, V>(IDictionary<K, V> dic, K key, V defaultValue = default(V))
-        {
-            V val;
-            return dic.TryGetValue(key, out val) ? val : defaultValue;
-        }
-        public static V GetOrInit<K, V>(IDictionary<K, V> dic, K key) where V : new()
-        {
-            V val;
-            if (dic.TryGetValue(key, out val))
-                return val;
-
-            val = new V();
-            dic.Add(key, val);
-            return val;
-        }
-    }
-
-    struct Work
-    {
-        public static Work Create(int[] l) => new Work { size = l[0], limit = l[1] };
-        public int size;
-        public int limit;
-    }
-    public static class Utility
-    {
-        public static IComparer<T> Reverse<T>(this IComparer<T> comparer)
-            => Comparer<T>.Create((x, y) => comparer.Compare(y, x));
-    }
 }
