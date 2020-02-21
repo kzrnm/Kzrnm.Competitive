@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BitArray = System.Collections.BitArray;
 using BigInteger = System.Numerics.BigInteger;
 using TextReader = System.IO.TextReader;
+using static Global;
 
 #pragma warning disable
 
@@ -86,47 +87,38 @@ namespace AtCoderProject.Hide
     }
     class Sums2D
     {
-        private long[,] impl;
+        private long[][] impl;
         public int Length1 { get; }
         public int Length2 { get; }
         public Sums2D(int[][] arr)
         {
             this.Length1 = arr.Length;
             this.Length2 = arr[0].Length;
-            impl = new long[Length1 + 1, Length2 + 1];
+            impl = NewArray(Length1 + 1, Length2 + 1, 0L);
             for (var i = 0; i < Length1; i++)
                 for (var j = 0; j < Length2; j++)
-                    impl[i + 1, j + 1] = impl[i + 1, j] + impl[i, j + 1] - impl[i, j] + arr[i][j];
-        }
-        public Sums2D(int[,] arr)
-        {
-            this.Length1 = arr.GetLength(0);
-            this.Length2 = arr.GetLength(1);
-            impl = new long[Length1 + 1, Length2 + 1];
-            for (var i = 0; i < Length1; i++)
-                for (var j = 0; j < Length2; j++)
-                    impl[i + 1, j + 1] = impl[i + 1, j] + impl[i, j + 1] - impl[i, j] + arr[i, j];
+                    impl[i + 1][j + 1] = impl[i + 1][j] + impl[i][j + 1] - impl[i][j] + arr[i][j];
         }
         public long this[int left, int rightExclusive, int top, int bottomExclusive]
         {
             get
             {
-                return impl[rightExclusive, bottomExclusive]
-                  - impl[left, bottomExclusive]
-                  - impl[rightExclusive, top]
-                  + impl[left, top];
+                return impl[rightExclusive][bottomExclusive]
+                  - impl[left][bottomExclusive]
+                  - impl[rightExclusive][top]
+                  + impl[left][top];
             }
         }
     }
 
     class Matrix
     {
-        long[,] Pow(long[,] mat, int y)
+        long[][] Pow(long[][] mat, int y)
         {
-            var K = mat.GetLength(0);
-            long[,] res = new long[K, K];
-            for (var i = 0; i < K; i++)
-                res[i, i] = 1;
+            var K = mat.Length;
+            long[][] res = NewArray(K, K, 0L);
+            for (var i = 0; i < res.Length; i++)
+                res[i][i] = 1;
             for (; y > 0; y >>= 1)
             {
                 if ((y & 1) == 1) res = Mul(res, mat);
@@ -134,17 +126,17 @@ namespace AtCoderProject.Hide
             }
             return res;
         }
-        long[,] Mul(long[,] l, long[,] r)
+        long[][] Mul(long[][] l, long[][] r)
         {
-            var h = l.GetLength(0);
-            var w = r.GetLength(1);
-            var K = l.GetLength(1);
+            var h = l.Length;
+            var w = r[0].Length;
+            var K = l[0].Length;
 
-            long[,] res = new long[K, K];
-            for (var i = 0; i < K; i++)
-                for (var j = 0; j < K; j++)
-                    for (var k = 0; k < K; k++)
-                        res[i, j] += l[i, k] * r[k, j];
+            long[][] res = NewArray(K, K, 0L);
+            for (var i = 0; i < res.Length; i++)
+                for (var j = 0; j < res.Length; j++)
+                    for (var k = 0; k < res.Length; k++)
+                        res[i][j] += l[i][k] * r[k][j];
             return res;
         }
     }
@@ -178,4 +170,4 @@ namespace AtCoderProject.Hide
         public static IComparer<T> Reverse<T>(this IComparer<T> comparer)
             => Comparer<T>.Create((x, y) => comparer.Compare(y, x));
     }
- }
+}
