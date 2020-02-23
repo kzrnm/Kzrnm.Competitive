@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
-using BitArray = System.Collections.BitArray;
 using BigInteger = System.Numerics.BigInteger;
 using TextReader = System.IO.TextReader;
 using static Global;
