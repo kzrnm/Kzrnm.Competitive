@@ -33,7 +33,7 @@ namespace AtCoderProject.Hide
         public GraphBuilder(int count, ConsoleReader cr, int edgeCount, bool isOriented = true) : this(count, isOriented)
         {
             for (var i = 0; i < edgeCount; i++)
-                this.Add(cr.Int - 1, cr.Int - 1);
+                this.Add(cr.Int0, cr.Int0);
         }
         public void Add(int from, int to)
         {
