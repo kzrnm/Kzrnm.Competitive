@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
 using System.Linq;
+using static NumGlobal;
 
 #pragma warning disable 
 
@@ -31,6 +32,13 @@ namespace AtCoderProject.Hide
             return false;
         }
         public override int GetHashCode() => this.num.GetHashCode();
+        public IEnumerable<int> Bits()
+        {
+            var msb = MSB(this) + 1;
+            for (var i = 0; i < msb; i++)
+                if (((num >> i) & 1) == 1)
+                    yield return i;
+        }
         public IEnumerator<bool> GetEnumerator()
         {
             const int len = sizeof(long) * 8;
