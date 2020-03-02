@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static Global;
 
 
 namespace AtCoderProject.Hide
@@ -12,7 +11,7 @@ namespace AtCoderProject.Hide
         int[] data;
         public UnionFind(int size)
         {
-            this.data = new int[size].Fill(-1);
+            this.data = NewArray(size, -1);
         }
 
         public int Root(int x)

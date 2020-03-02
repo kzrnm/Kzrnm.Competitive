@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static Global;
 
 namespace AtCoderProject.Hide
 {
+
     [System.Diagnostics.DebuggerTypeProxy(typeof(BinaryIndexedTreeDebugView))]
     class BinaryIndexedTree
     {
@@ -64,7 +64,6 @@ namespace AtCoderProject.Hide
             return v1 + v2;
         }
 
-        private int origLength;
         private int rootLength;
         private long[] tree;
 
@@ -75,9 +74,8 @@ namespace AtCoderProject.Hide
         }
         public SegmentTree(int size)
         {
-            origLength = size;
             for (rootLength = 1; rootLength < size; rootLength <<= 1) { }
-            tree = new long[2 * rootLength - 1].Fill(defaultValue);
+            tree = NewArray(2 * rootLength - 1, defaultValue);
         }
 
         public void Update(int index, long value)
@@ -112,8 +110,8 @@ namespace AtCoderProject.Hide
         }
 
 
-        [System.Diagnostics.DebuggerDisplay("{value}", Name = "{key}")]
-        internal class KeyValuePairs
+        [System.Diagnostics.DebuggerDisplay("{" + nameof(value) + "}", Name = "{" + nameof(key) + "}")]
+        internal struct KeyValuePairs
         {
             private string key;
             private long value;
@@ -158,6 +156,5 @@ namespace AtCoderProject.Hide
             }
         }
     }
-
 
 }

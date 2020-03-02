@@ -1,5 +1,7 @@
 param([Parameter(Mandatory = $true)][string]$Url, [Parameter()][string]$Cookie, [Parameter()][string]$CookieFile)
 
+[Reflection.Assembly]::LoadFrom("$PSScriptRoot\AngleSharp.dll") | Out-Null
+
 if (-not $Cookie) { 
     if (-not $CookieFile) {
         $CookieFile = "$PSScriptRoot\cookie.txt"
@@ -8,9 +10,8 @@ if (-not $Cookie) {
 }
 
 [string]$html = (Invoke-WebRequest -Uri $Url -Headers @{"Cookie" = $Cookie; }).Content
-[Reflection.Assembly]::LoadFile("$PSScriptRoot\AngleSharp.dll") | Out-Null
-$document = [AngleSharp.Html.Parser.HtmlParser]::new().ParseDocument($html)
 
+$document = [AngleSharp.Html.Parser.HtmlParser]::new().ParseDocument($html)
 $taskStatement = $document.GetElementById("task-statement");
 $ja = $taskStatement.GetElementsByClassName("lang-ja")[0];
 $parts = $ja.GetElementsByClassName("part");

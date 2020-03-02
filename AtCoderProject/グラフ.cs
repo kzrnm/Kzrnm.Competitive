@@ -385,7 +385,7 @@ namespace AtCoderProject.Hide.Length
     {
         public static int[] BFS(Node[] graph, int from)
         {
-            var res = new int[graph.Length].Fill(int.MaxValue);
+            var res = NewArray(graph.Length, int.MaxValue);
             var queue = new Queue<int>();
             queue.Enqueue(from);
             res[from] = 0;
