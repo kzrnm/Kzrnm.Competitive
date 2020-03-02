@@ -5,7 +5,6 @@ using IEnumerator = System.Collections.IEnumerator;
 using System.Linq;
 using static NumGlobal;
 
-#pragma warning disable 
 
 namespace AtCoderProject.Hide
 {
