@@ -84,7 +84,7 @@ namespace AtCoderProject.Hide
             .Select((t, i) => new Node(i, t.Item1.ToArray(), t.Item2.ToArray()))
             .ToArray();
     }
-    class TreeNode : IEquatable<TreeNode>
+    class TreeNode
     {
         public TreeNode(int i, int root, int depth, int[] children)
         {
@@ -109,7 +109,7 @@ namespace AtCoderProject.Hide
         public bool Equals(TreeNode other) => this.index == other.index;
         public override int GetHashCode() => this.index;
     }
-    class Node : IEquatable<Node>
+    class Node
     {
         public Node(int i, int[] roots, int[] children)
         {
@@ -360,7 +360,7 @@ namespace AtCoderProject.Hide.Length
         public int length;
         public override string ToString() => $"to: {to} length:{length}";
     }
-    public class Node : IEquatable<Node>
+    public class Node
     {
         public Node(int i, Next[] roots, Next[] children)
         {
