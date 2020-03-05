@@ -340,7 +340,7 @@ namespace AtCoderProject.Hide.Length
         public GraphBuilder(int count, ConsoleReader cr, int edgeCount, bool isOriented = true) : this(count, isOriented)
         {
             for (var i = 0; i < edgeCount; i++)
-                this.Add(cr.Int - 1, cr.Int - 1, cr.Int);
+                this.Add(cr.Int0, cr.Int0, cr.Int);
         }
         public void Add(int from, int to, int length)
         {
