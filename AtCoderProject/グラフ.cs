@@ -93,9 +93,9 @@ namespace AtCoderProject.Hide
             this.children = children;
             this.depth = depth;
         }
-        public int index;
-        public int root;
-        public int depth;
+        public readonly int index;
+        public readonly int root;
+        public readonly int depth;
         public int[] children;
 
         public override string ToString() => $"children: {string.Join(",", children)}";
@@ -117,9 +117,9 @@ namespace AtCoderProject.Hide
             this.roots = roots;
             this.children = children;
         }
-        public int index;
-        public int[] roots;
-        public int[] children;
+        public readonly int index;
+        public readonly int[] roots;
+        public readonly int[] children;
 
         public override string ToString() => $"children: {string.Join(",", children)}";
         public override bool Equals(object obj)
@@ -352,13 +352,76 @@ namespace AtCoderProject.Hide.Length
             .Zip(roots, children, (r, c) => Tuple.Create(r, c))
             .Select((t, i) => new Node(i, t.Item1.ToArray(), t.Item2.ToArray()))
             .ToArray();
+        public TreeNode[] ToTree(int root)
+        {
+            if (this.roots[0] != this.children[0]) throw new Exception("木には無向グラフをしたほうが良い");
+            var res = new TreeNode[this.children.Length];
+            res[root] = new TreeNode(root, -1, 0, 0, this.children[root].ToArray());
 
+            var queue = new Queue<int>();
+            foreach (var child in res[root].children)
+            {
+                res[child.to] = new TreeNode(child.to, root, 1, child.length, Array.Empty<Next>());
+                queue.Enqueue(child.to);
+            }
+
+            while (queue.Count > 0)
+            {
+                var from = queue.Dequeue();
+                if (res[from].root == -1)
+                    res[from].children = this.children[from].ToArray();
+                else
+                {
+                    var children = new List<Next>(this.children[from].Count);
+                    foreach (var c in this.children[from])
+                        if (c.to != res[from].root)
+                            children.Add(c);
+
+                    res[from].children = children.ToArray();
+                }
+
+                foreach (var child in res[from].children)
+                {
+                    res[child.to] = new TreeNode(child.to, from, res[from].depth + 1, res[from].depthLength + child.length, Array.Empty<Next>());
+                    queue.Enqueue(child.to);
+                }
+            }
+
+            return res;
+        }
     }
     public struct Next
     {
         public int to;
         public int length;
         public override string ToString() => $"to: {to} length:{length}";
+    }
+    class TreeNode
+    {
+        public TreeNode(int i, int root, int depth, long depthLength, Next[] children)
+        {
+            this.index = i;
+            this.root = root;
+            this.children = children;
+            this.depth = depth;
+            this.depthLength = depthLength;
+        }
+        public readonly int index;
+        public readonly int root;
+        public readonly int depth;
+        public readonly long depthLength;
+        public Next[] children;
+
+        public override string ToString() => $"children: {string.Join(",", children)}";
+        public override bool Equals(object obj)
+        {
+            if (obj is TreeNode)
+                return this.Equals((TreeNode)obj);
+            else
+                return false;
+        }
+        public bool Equals(TreeNode other) => this.index == other.index;
+        public override int GetHashCode() => this.index;
     }
     public class Node
     {
