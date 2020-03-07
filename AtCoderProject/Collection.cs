@@ -11,33 +11,34 @@ namespace AtCoderProject.Hide
 {
     static class 順列を求める
     {
-        public static T[][] Enumerate<T>(T[] arr) => Enumerate(new ArraySegment<T>(arr));
-        static T[][] Enumerate<T>(ArraySegment<T> items)
+        static T[][] Enumerate<T>(T[] items)
         {
-            if (items.Count == 0)
-                throw new IndexOutOfRangeException();
-            if (items.Count == 1)
-                return new T[][] { items.ToArray() };
-
-            var arr = items.ToArray();
-            var size = 1;
-            for (int i = 2; i <= items.Count; i++)
-                size *= i;
-            var ret = new T[size][];
-            for (int i = 0; i < items.Count; i++)
+            static T[][] EnumerateImpl(ReadOnlySpan<T> items)
             {
-                var tmp = arr[i];
-                arr[i] = arr[0];
-                arr[0] = tmp;
-                foreach (var item in Enumerate(new ArraySegment<T>(arr, 1, arr.Length - 1)))
-                {
-                    ret[--size] = new T[items.Count];
-                    ret[size][0] = arr[0];
-                    item.CopyTo(ret[size], 1);
-                };
-            }
+                if (items.Length == 0)
+                    throw new IndexOutOfRangeException();
+                if (items.Length == 1)
+                    return new T[][] { items.ToArray() };
 
-            return ret;
+                var arr = items.ToArray();
+                var size = 1;
+                for (int i = 2; i <= items.Length; i++)
+                    size *= i;
+                var ret = new T[size][];
+                for (int i = 0; i < items.Length; i++)
+                {
+                    (arr[0], arr[i]) = (arr[i], arr[0]);
+                    foreach (var item in EnumerateImpl(new ReadOnlySpan<T>(arr).Slice(1)))
+                    {
+                        ret[--size] = new T[items.Length];
+                        ret[size][0] = arr[0];
+                        item.CopyTo(new Span<T>(ret[size]).Slice(1));
+                    };
+                }
+
+                return ret;
+            }
+            return EnumerateImpl(items);
         }
     }
     // キーの重複がOKな優先度付きキュー
