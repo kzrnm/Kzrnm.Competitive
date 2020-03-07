@@ -11,8 +11,7 @@ namespace AtCoderProject.Hide
 {
     static class 順列を求める
     {
-        public static T[][] Enumerate<T>(T[] arr) => Enumerate(new ArraySegment<T>(arr));
-        static T[][] Enumerate<T>(ArraySegment<T> items)
+        static T[][] Enumerate<T>(IList<T> items)
         {
             if (items.Count == 0)
                 throw new IndexOutOfRangeException();
