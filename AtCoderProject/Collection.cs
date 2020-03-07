@@ -88,13 +88,13 @@ namespace AtCoderProject.Hide
         }
 
         /// <summary>
-        /// 与えられた比較関数に従って，<paramref name="item"/> であるような最小のインデックスを取得します．見つからなかった場合は<paramref name="item"/>より大きい最小のインデックスのビット反転を返します.
+        /// 与えられた比較関数に従って，<paramref name="item"/> であるような最小のインデックスを取得します←ほんとに？．見つからなかった場合は<paramref name="item"/>より大きい最小のインデックスのビット反転を返します.
         /// </summary>
         /// <typeparam name="T"><see cref="IList{T}"/> の要素の型を指定します．</typeparam>
         /// <param name="item">対象となる要素</param>
         /// <returns><paramref name="item"/> が見つかった場合は0-indexed でのインデックス．見つからなかった場合は<paramref name="item"/>より大きい最小のインデックスのビット反転.</returns>
         /// <remarks> 比較関数に対して昇順であることを仮定しています．この関数は O(log N) で実行されます．</remarks>
-        public int BinarySearch(T item) => list.BinarySearch(item, this.Comparer);
+        protected int BinarySearch(T item) => list.BinarySearch(item, this.Comparer);
 
         private int BinarySearchImpl(T item, bool isLowerBound)
         {
@@ -189,13 +189,13 @@ namespace AtCoderProject.Hide
         }
 
         /// <summary>
-        /// 与えられた比較関数に従って，<paramref name="item"/> であるような最小のインデックスを取得します．見つからなかった場合は<paramref name="item"/>より大きい最小のインデックスのビット反転を返します.
+        /// 与えられた比較関数に従って，<paramref name="item"/> であるような最小のインデックスを取得します←ほんとに？．見つからなかった場合は<paramref name="item"/>より大きい最小のインデックスのビット反転を返します.
         /// </summary>
         /// <typeparam name="T"><see cref="IList{T}"/> の要素の型を指定します．</typeparam>
         /// <param name="item">対象となる要素</param>
         /// <returns><paramref name="item"/> が見つかった場合は0-indexed でのインデックス．見つからなかった場合は<paramref name="item"/>より大きい最小のインデックスのビット反転.</returns>
         /// <remarks> 比較関数に対して昇順であることを仮定しています．この関数は O(log N) で実行されます．</remarks>
-        public int BinarySearch(T item) => list.BinarySearch(item, this.Comparer);
+        protected int BinarySearch(T item) => list.BinarySearch(item, this.Comparer);
 
         void ICollection<T>.Add(T item) => this.Add(item);
         public int Add(T item)
