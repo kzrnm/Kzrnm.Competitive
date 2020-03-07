@@ -11,25 +11,33 @@ namespace AtCoderProject.Hide
 {
     static class 順列を求める
     {
-        static IEnumerable<T[]> Enumerate<T>(IReadOnlyCollection<T> items)
+        public static T[][] Enumerate<T>(T[] arr) => Enumerate(new ArraySegment<T>(arr));
+        static T[][] Enumerate<T>(ArraySegment<T> items)
         {
+            if (items.Count == 0)
+                throw new IndexOutOfRangeException();
             if (items.Count == 1)
+                return new T[][] { items.ToArray() };
+
+            var arr = items.ToArray();
+            var size = 1;
+            for (int i = 2; i <= items.Count; i++)
+                size *= i;
+            var ret = new T[size][];
+            for (int i = 0; i < items.Count; i++)
             {
-                yield return new T[] { items.First() };
-                yield break;
-            }
-            foreach (var item in items)
-            {
-                var ret = new T[items.Count];
-                ret[0] = item;
-                var nokori = new HashSet<T>(items);
-                nokori.Remove(item);
-                foreach (var right in Enumerate(nokori))
+                var tmp = arr[i];
+                arr[i] = arr[0];
+                arr[0] = tmp;
+                foreach (var item in Enumerate(new ArraySegment<T>(arr, 1, arr.Length - 1)))
                 {
-                    right.CopyTo(ret, 1);
-                    yield return ret;
-                }
+                    ret[--size] = new T[items.Count];
+                    ret[size][0] = arr[0];
+                    item.CopyTo(ret[size], 1);
+                };
             }
+
+            return ret;
         }
     }
     // キーの重複がOKな優先度付きキュー
