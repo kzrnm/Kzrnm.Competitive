@@ -40,6 +40,50 @@ namespace AtCoderProject.Hide
         }
     }
     // キーの重複がOKな優先度付きキュー
+
+
+    [System.Diagnostics.DebuggerDisplay("Count = {" + nameof(Count) + "}")]
+    class SortedMultiSet<TKey> : IEnumerable<TKey>
+    {
+        SortedDictionary<TKey, int> dic;
+
+        public int Count { get; private set; } = 0;
+
+        public void Add(TKey key)
+        {
+            int val;
+            dic.TryGetValue(key, out val);
+            dic[key] = val + 1;
+            Count++;
+        }
+        public bool Remove(TKey key)
+        {
+            int val;
+            dic.TryGetValue(key, out val);
+            if (val == 0)
+                return false;
+
+            if (val == 1)
+                dic.Remove(key);
+            else
+                dic[key] = val - 1;
+            Count--;
+            return true;
+        }
+
+        public IEnumerator<TKey> GetEnumerator()
+        {
+            foreach (var pair in dic)
+                for (int i = 0; i < pair.Value; i++)
+                    yield return pair.Key;
+        }
+        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+
+        public SortedMultiSet() { dic = new SortedDictionary<TKey, int>(); }
+        public SortedMultiSet(IComparer<TKey> comparer) { dic = new SortedDictionary<TKey, int>(comparer); }
+    }
+
+    [System.Diagnostics.DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     class PriorityQueue<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
     {
         SortedDictionary<TKey, Queue<TValue>> dic;
@@ -68,13 +112,13 @@ namespace AtCoderProject.Hide
                 foreach (var queue in pair.Value)
                     yield return new KeyValuePair<TKey, TValue>(pair.Key, queue);
         }
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => this.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 
         public PriorityQueue() { dic = new SortedDictionary<TKey, Queue<TValue>>(); }
         public PriorityQueue(IComparer<TKey> comparer) { dic = new SortedDictionary<TKey, Queue<TValue>>(comparer); }
     }
 
-    [System.Diagnostics.DebuggerDisplay("Count = {Count}")]
+    [System.Diagnostics.DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     class SortedCollection<T> : IList<T>
     {
         [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)] List<T> list;
@@ -175,7 +219,7 @@ namespace AtCoderProject.Hide
     }
 
 
-    [System.Diagnostics.DebuggerDisplay("Count = {Count}")]
+    [System.Diagnostics.DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     class SortedUniqueCollection<T> : IList<T>
     {
         [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)] List<T> list;
