@@ -72,20 +72,24 @@ static class NumGlobal
         }
         return res;
     }
-    public static BigInteger ParseBigInteger(string s)
+    public static BigInteger ParseBigInteger(ReadOnlySpan<char> s)
     {
         // MonoのBigInteger.Parseが遅いので自前実装
-        var res = BigInteger.Zero;
-        var splited = new string[(s.Length + 7) / 8];
-        for (var i = 0; i < splited.Length - 1; i++)
+        BigInteger res;
+        if (s.Length % 9 == 0)
+            res = 0;
+        else
         {
-            splited[i] = s.Substring(8 * i, 8);
+            res = new BigInteger(int.Parse(s.Slice(0, s.Length % 9)));
+            s = s.Slice(s.Length % 9);
         }
-        splited[^1] = s.Substring(8 * (splited.Length - 1));
-        foreach (var sp in splited)
+
+        while (s.Length > 0)
         {
-            res *= (int)Math.Pow(10, sp.Length);
+            var sp = s.Slice(0, 9);
+            res *= 1000_000_000;
             res += int.Parse(sp);
+            s = s.Slice(9);
         }
         return res;
     }
