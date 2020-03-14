@@ -39,8 +39,6 @@ namespace AtCoderProject.Hide
             return ret;
         }
     }
-    // キーの重複がOKな優先度付きキュー
-
 
     [System.Diagnostics.DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     class SortedMultiSet<TKey> : IEnumerable<TKey>
@@ -83,6 +81,8 @@ namespace AtCoderProject.Hide
         public SortedMultiSet(IComparer<TKey> comparer) { dic = new SortedDictionary<TKey, int>(comparer); }
     }
 
+
+    // キーの重複がOKな優先度付きキュー
     [System.Diagnostics.DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     class PriorityQueue<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
     {
