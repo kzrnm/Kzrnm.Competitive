@@ -12,7 +12,7 @@ namespace AtCoderProject.Hide
     {
         private List<int>[] roots;
         private List<int>[] children;
-        public GraphBuilder(int count, bool isOriented = true)
+        public GraphBuilder(int count, bool isOriented)
         {
             this.roots = new List<int>[count];
             this.children = new List<int>[count];
@@ -29,7 +29,7 @@ namespace AtCoderProject.Hide
                 }
             }
         }
-        public GraphBuilder(int count, ConsoleReader cr, int edgeCount, bool isOriented = true) : this(count, isOriented)
+        public GraphBuilder(int count, ConsoleReader cr, int edgeCount, bool isOriented) : this(count, isOriented)
         {
             for (var i = 0; i < edgeCount; i++)
                 this.Add(cr.Int0, cr.Int0);
@@ -317,7 +317,7 @@ namespace AtCoderProject.Hide.Length
     {
         private List<Next>[] roots;
         private List<Next>[] children;
-        public GraphBuilder(int count, bool isOriented = true)
+        public GraphBuilder(int count, bool isOriented)
         {
             this.roots = new List<Next>[count];
             this.children = new List<Next>[count];
@@ -334,7 +334,7 @@ namespace AtCoderProject.Hide.Length
                 }
             }
         }
-        public GraphBuilder(int count, ConsoleReader cr, int edgeCount, bool isOriented = true) : this(count, isOriented)
+        public GraphBuilder(int count, ConsoleReader cr, int edgeCount, bool isOriented) : this(count, isOriented)
         {
             for (var i = 0; i < edgeCount; i++)
                 this.Add(cr.Int0, cr.Int0, cr.Int);

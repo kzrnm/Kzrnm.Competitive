@@ -6,9 +6,10 @@ namespace AtCoderProject.Hide
     readonly struct Mod : IEquatable<Mod>
     {
         public const long mod = 1000000007;
+        public static readonly Mod invalid = new Mod(-1, false);
         public readonly long val;
-        public Mod(long val, bool isValid) : this(isValid ? val % mod : val) { }
-        public Mod(long val) { this.val = val; }
+        private Mod(long val, bool isValid) : this(val) { if (!isValid) this.val = val; }
+        public Mod(long val) { this.val = val % mod; if (this.val < 0) this.val += mod; }
         public override bool Equals(object obj) => (obj is Mod) ? this == ((Mod)obj) : false;
         public bool Equals(Mod obj) => this == obj;
         public override int GetHashCode() => val.GetHashCode();

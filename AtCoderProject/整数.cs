@@ -54,46 +54,27 @@ namespace AtCoderProject.Hide
         /// </summary>
         /// <param name="num">素因数分解する数</param>
         /// <returns>素因数の一覧</returns>
-        IEnumerable<int> Factoring(int num)
+        Dictionary<int, int> PrimeFactoring(int num)
         {
-            int o = 0;
-            int sqrt = (int)Math.Sqrt(num);
-            int amari;
-            foreach (var p in new[] { 2, 3, 5, 7 })
+            var primes = Eratosthenes((int)Math.Sqrt(num));
+            var primeFactors = new Dictionary<int, int>();
+
+            foreach (var p in primes)
             {
-                while (true)
+                if (num < 2) break;
+                while (num % p == 0)
                 {
-                    var d = Math.DivRem(num, p, out amari);
-                    if (amari == 0)
-                    {
-                        yield return p;
-                        num = d;
-                    }
-                    else if (num == 1) yield break;
-                    else break;
+                    int v;
+                    primeFactors.TryGetValue(p, out v);
+                    primeFactors[p] = v + 1;
+                    num /= p;
                 }
             }
 
-            while (num > 1)
-            {
-                o += 10;
-                if (sqrt < o) break;
-                foreach (var p in new[] { o + 1, o + 3, o + 7, o + 9 })
-                {
-                    while (true)
-                    {
-                        var d = Math.DivRem(num, p, out amari);
-                        if (amari == 0)
-                        {
-                            yield return p;
-                            num = d;
-                        }
-                        else if (num == 1) yield break;
-                        else break;
-                    }
-                }
-            }
-            yield return num;
+            if (num > 1)
+                primeFactors[num] = 1;
+
+            return primeFactors;
         }
 
         /// <summary>
