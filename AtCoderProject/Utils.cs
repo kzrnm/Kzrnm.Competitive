@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BigInteger = System.Numerics.BigInteger;
-using TextReader = System.IO.TextReader;
 using static Global;
+using static NumGlobal;
+using IEnumerable = System.Collections.IEnumerable;
+using IEnumerator = System.Collections.IEnumerator;
+using BigInteger = System.Numerics.BigInteger;
 
-#pragma warning disable
 
 namespace AtCoderProject.Hide
 {
@@ -112,9 +113,48 @@ namespace AtCoderProject.Hide
         }
     }
 
+    struct BitArray : IEquatable<BitArray>, IEnumerable<bool>
+    {
+        private readonly long num;
+        public BitArray(long num) { this.num = num; }
+        public bool this[int index] => ((num >> index) & 1) != 0;
+
+        public static BitArray operator &(BitArray bits, long r) => new BitArray(bits.num & r);
+        public static BitArray operator |(BitArray bits, long r) => new BitArray(bits.num | r);
+        public static BitArray operator ^(BitArray bits, long r) => new BitArray(bits.num ^ r);
+        public static BitArray operator +(BitArray bits, long r) => new BitArray(bits.num + r);
+        public static BitArray operator -(BitArray bits, long r) => new BitArray(bits.num - r);
+        public static implicit operator BitArray(long num) => new BitArray(num);
+        public static implicit operator long(BitArray bits) => bits.num;
+
+        public override string ToString() => Convert.ToString(num, 2).PadLeft(sizeof(long) * 8, '0');
+        public bool Equals(BitArray other) => this.num == other.num;
+        public override bool Equals(object obj)
+        {
+            if (obj is BitArray)
+                return this.Equals((BitArray)obj);
+            return false;
+        }
+        public override int GetHashCode() => this.num.GetHashCode();
+        public IEnumerable<int> Bits()
+        {
+            var msb = MSB(this) + 1;
+            for (var i = 0; i < msb; i++)
+                if (((num >> i) & 1) == 1)
+                    yield return i;
+        }
+        public IEnumerator<bool> GetEnumerator()
+        {
+            const int len = sizeof(long) * 8;
+            for (var i = 0; i < len; i++)
+                yield return ((num >> i) & 1) == 1;
+        }
+        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+    }
+
     class Matrix
     {
-        long[][] Pow(long[][] mat, int y)
+        public long[][] Pow(long[][] mat, int y)
         {
             var K = mat.Length;
             long[][] res = NewArray(K, K, 0L);
@@ -127,7 +167,7 @@ namespace AtCoderProject.Hide
             }
             return res;
         }
-        long[][] Mul(long[][] l, long[][] r)
+        public long[][] Mul(long[][] l, long[][] r)
         {
             var h = l.Length;
             var w = r[0].Length;
