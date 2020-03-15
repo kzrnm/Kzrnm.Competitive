@@ -11,6 +11,7 @@ using static NumGlobal;
 
 static class Global
 {
+    public static void Swap<T>(ref T a, ref T b) { T tmp = a; a = b; b = tmp; }
     public static T[] NewArray<T>(int len0, T value) => new T[len0].Fill(value);
     public static T[] NewArray<T>(int len0, Func<T> factory)
     {
