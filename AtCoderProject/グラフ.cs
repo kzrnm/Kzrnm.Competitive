@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Global;
+using static NumGlobal;
 
 
 namespace AtCoderProject.Hide
@@ -187,7 +188,7 @@ namespace AtCoderProject.Hide
             if (tree.Length == 0) throw new ArgumentException(nameof(tree));
 
             this.tree = tree;
-            this.logN = (int)(Math.Log(tree.Length, 2) + 1);
+            this.logN = MSB(tree.Length) + 1;
             this.kprv = NewArray(tree.Length, logN, 0);
             for (int v = 0; v < tree.Length; v++)
             {
