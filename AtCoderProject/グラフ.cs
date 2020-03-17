@@ -132,6 +132,49 @@ namespace AtCoderProject.Hide
         public override int GetHashCode() => this.index;
     }
 
+    static class GraphUtil
+    {
+        public static int[] 強連結成分分解(this Node[] graph)
+        {
+            var sumi = new bool[graph.Length];
+            Span<int> Dfs1(int index, Span<int> jun)
+            {
+                if (sumi[index])
+                    return jun;
+                sumi[index] = true;
+                foreach (var child in graph[index].children)
+                {
+                    jun = Dfs1(child, jun);
+                }
+                jun[jun.Length - 1] = index;
+                jun = jun.Slice(0, jun.Length - 1);
+                return jun;
+            }
+
+            var jun = new int[graph.Length];
+            var junsp = jun.AsSpan();
+            for (int i = 0; i < graph.Length; i++)
+                junsp = Dfs1(i, junsp);
+
+            var res = NewArray(graph.Length, -1);
+            bool Dfs2(int index, int group)
+            {
+                if (res[index] >= 0)
+                    return false;
+                res[index] = group;
+                foreach (var r in graph[index].roots)
+                    Dfs2(r, group);
+                return true;
+            }
+
+            var g = 0;
+            foreach (var i in jun)
+                if (Dfs2(i, g))
+                    g++;
+            return res;
+        }
+    }
+  
     class LowestCommonAncestor // 最小共通祖先
     {
         private TreeNode[] tree;
