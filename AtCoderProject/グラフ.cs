@@ -355,7 +355,7 @@ namespace AtCoderProject.Hide
     }
 }
 
-namespace AtCoderProject.Hide.Length
+namespace AtCoderProject.Hide.重み付き
 {
     class GraphBuilder
     {
@@ -383,10 +383,10 @@ namespace AtCoderProject.Hide.Length
             for (var i = 0; i < edgeCount; i++)
                 this.Add(cr.Int0, cr.Int0, cr.Int);
         }
-        public void Add(int from, int to, int length)
+        public void Add(int from, int to, int value)
         {
-            children[from].Add(new Next { to = to, length = length });
-            roots[to].Add(new Next { to = from, length = length });
+            children[from].Add(new Next { to = to, value = value });
+            roots[to].Add(new Next { to = from, value = value });
         }
         public Node[] ToArray() =>
             Enumerable
@@ -402,7 +402,7 @@ namespace AtCoderProject.Hide.Length
             var queue = new Queue<int>();
             foreach (var child in res[root].children)
             {
-                res[child.to] = new TreeNode(child.to, root, 1, child.length, Array.Empty<Next>());
+                res[child.to] = new TreeNode(child.to, root, 1, child.value, Array.Empty<Next>());
                 queue.Enqueue(child.to);
             }
 
@@ -423,7 +423,7 @@ namespace AtCoderProject.Hide.Length
 
                 foreach (var child in res[from].children)
                 {
-                    res[child.to] = new TreeNode(child.to, from, res[from].depth + 1, res[from].depthLength + child.length, Array.Empty<Next>());
+                    res[child.to] = new TreeNode(child.to, from, res[from].depth + 1, res[from].depthLength + child.value, Array.Empty<Next>());
                     queue.Enqueue(child.to);
                 }
             }
@@ -434,8 +434,8 @@ namespace AtCoderProject.Hide.Length
     public struct Next
     {
         public int to;
-        public int length;
-        public override string ToString() => $"to: {to} length:{length}";
+        public int value;
+        public override string ToString() => $"to: {to} value:{value}";
     }
     class TreeNode
     {
@@ -522,7 +522,7 @@ namespace AtCoderProject.Hide.Length
                 }
                 res[i][i] = 0;
                 foreach (var next in graph[i].children)
-                    res[i][next.to] = next.length;
+                    res[i][next.to] = next.value;
             }
             for (var k = 0; k < graph.Length; k++)
                 for (var i = 0; i < graph.Length; i++)
@@ -552,7 +552,7 @@ namespace AtCoderProject.Hide.Length
                 if (++count >= graph.Length) break;
                 foreach (var next in graph[first.Value].children)
                 {
-                    var nextLength = first.Key + next.length;
+                    var nextLength = first.Key + next.value;
                     if (res[next.to] > nextLength)
                         remains.Add(res[next.to] = nextLength, next.to);
                 }
