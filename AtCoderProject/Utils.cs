@@ -21,8 +21,14 @@ namespace AtCoderProject.Hide
             this.y = y;
         }
 
-        public int Inner(Point other) => x * other.x + y * other.y;
-        public int Cross(Point other) => x * other.y - y * other.x;
+        public double Distance(Point other) => Math.Sqrt(Distance2(other));
+        private long Distance2(Point other)
+        {
+            var p = other - this;
+            return (long)p.x * p.x + (long)p.y * p.y;
+        }
+        public long Inner(Point other) => (long)x * other.x + (long)y * other.y;
+        public long Cross(Point other) => (long)x * other.y - (long)y * other.x;
         public static Point operator +(Point a, Point b) => new Point(a.x + b.x, a.y + b.y);
         public static Point operator -(Point a, Point b) => new Point(a.x - b.x, a.y - b.y);
         public int CompareTo(Point other)
