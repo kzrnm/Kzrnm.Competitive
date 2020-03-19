@@ -33,11 +33,7 @@ namespace AtCoderProject.Hide
         }
 
         public bool Equals(Point other) => this.x == other.x && this.y == other.y;
-        public override bool Equals(object obj)
-        {
-            if (obj is Point) return Equals((Point)obj);
-            return false;
-        }
+        public override bool Equals(object obj) => obj is Point && Equals((Point)obj);
         public override int GetHashCode() => ((x << 5) + x) ^ y;
         public override string ToString() => $"({x}, {y})";
     }
@@ -59,11 +55,7 @@ namespace AtCoderProject.Hide
         public int CompareTo(Status other) => this.i.CompareTo(other.i);
 
         public bool Equals(Status other) => this.i == other.i && this.t == other.t;
-        public override bool Equals(object obj)
-        {
-            if (obj is Status) return Equals((Status)obj);
-            return false;
-        }
+        public override bool Equals(object obj) => obj is Status && Equals((Status)obj);
         public override int GetHashCode() => i ^ ((int)t << 30);
         public override string ToString() => $"({i}, {t})";
     }
@@ -129,12 +121,7 @@ namespace AtCoderProject.Hide
 
         public override string ToString() => Convert.ToString(num, 2).PadLeft(sizeof(long) * 8, '0');
         public bool Equals(BitArray other) => this.num == other.num;
-        public override bool Equals(object obj)
-        {
-            if (obj is BitArray)
-                return this.Equals((BitArray)obj);
-            return false;
-        }
+        public override bool Equals(object obj) => obj is BitArray && Equals((BitArray)obj);
         public override int GetHashCode() => this.num.GetHashCode();
         public IEnumerable<int> Bits()
         {
