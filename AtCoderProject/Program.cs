@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
+using Unsafe = System.Runtime.CompilerServices.Unsafe;
 using BigInteger = System.Numerics.BigInteger;
 using TextReader = System.IO.TextReader;
-using System.Runtime.CompilerServices;
+using StringBuilder = System.Text.StringBuilder;
 using static Global;
 using static NumGlobal;
 
@@ -128,7 +129,6 @@ static class Ext
     {
         TMax max;
         TSource maxByItem;
-
         var e = source.GetEnumerator();
         e.MoveNext();
         maxByItem = e.Current;
@@ -171,15 +171,16 @@ static class Ext
     public static IComparer<T> Reverse<T>(this IComparer<T> comparer) => Comparer<T>.Create((x, y) => comparer.Compare(y, x));
     public static Dictionary<TKey, int> GroupCount<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) => source.GroupBy(keySelector).ToDictionary(g => g.Key, g => g.Count());
     public static Dictionary<TKey, int> GroupCount<TKey>(this IEnumerable<TKey> source) => source.GroupCount(i => i);
-    public static V GetOrDefault<K, V>(this IDictionary<K, V> dic, K key, V defaultValue = default) => dic.TryGetValue(key, out V val) ? val : defaultValue;
-    public static V GetOrInit<K, V>(this IDictionary<K, V> dic, K key) where V : new()
+    public static TValue Get<TKey, TValue>(this Dictionary<TKey, TValue> dic, TKey key)
     {
-        if (dic.TryGetValue(key, out V val))
-            return val;
-
-        val = new V();
-        dic.Add(key, val);
-        return val;
+        dic.TryGetValue(key, out var v);
+        return v;
+    }
+    public static TValue GetOrInit<TKey, TValue>(this Dictionary<TKey, TValue> dic, TKey key, TValue value)
+    {
+        if (dic.TryGetValue(key, out var v))
+            return v;
+        return dic[key] = value;
     }
 }
 #pragma warning disable CA1819
