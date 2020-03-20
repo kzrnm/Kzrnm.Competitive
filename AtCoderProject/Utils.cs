@@ -21,8 +21,17 @@ namespace AtCoderProject.Hide
             this.y = y;
         }
 
-        public int Inner(Point other) => x * other.x + y * other.y;
-        public int Cross(Point other) => x * other.y - y * other.x;
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public void Deconstruct(out int v1, out int v2) { v1 = x; v2 = y; }
+        public static implicit operator Point(Tuple<int, int> tuple) => new Point(tuple.Item1, tuple.Item2);
+        public double Distance(Point other) => Math.Sqrt(Distance2(other));
+        private long Distance2(Point other)
+        {
+            var p = other - this;
+            return (long)p.x * p.x + (long)p.y * p.y;
+        }
+        public long Inner(Point other) => (long)x * other.x + (long)y * other.y;
+        public long Cross(Point other) => (long)x * other.y - (long)y * other.x;
         public static Point operator +(Point a, Point b) => new Point(a.x + b.x, a.y + b.y);
         public static Point operator -(Point a, Point b) => new Point(a.x - b.x, a.y - b.y);
         public int CompareTo(Point other)
@@ -33,11 +42,7 @@ namespace AtCoderProject.Hide
         }
 
         public bool Equals(Point other) => this.x == other.x && this.y == other.y;
-        public override bool Equals(object obj)
-        {
-            if (obj is Point p) return Equals(p);
-            return false;
-        }
+        public override bool Equals(object obj) => obj is Point && Equals((Point)obj);
         public override int GetHashCode() => ((x << 5) + x) ^ y;
         public override string ToString() => $"({x}, {y})";
     }
@@ -59,11 +64,7 @@ namespace AtCoderProject.Hide
         public int CompareTo(Status other) => this.i.CompareTo(other.i);
 
         public bool Equals(Status other) => this.i == other.i && this.t == other.t;
-        public override bool Equals(object obj)
-        {
-            if (obj is Status s) return Equals(s);
-            return false;
-        }
+        public override bool Equals(object obj) => obj is Status && Equals((Status)obj);
         public override int GetHashCode() => i ^ ((int)t << 30);
         public override string ToString() => $"({i}, {t})";
     }
@@ -127,12 +128,7 @@ namespace AtCoderProject.Hide
 
         public override string ToString() => Convert.ToString(num, 2).PadLeft(sizeof(long) * 8, '0');
         public bool Equals(BitArray other) => this.num == other.num;
-        public override bool Equals(object obj)
-        {
-            if (obj is BitArray)
-                return this.Equals((BitArray)obj);
-            return false;
-        }
+        public override bool Equals(object obj) => obj is BitArray && Equals((BitArray)obj);
         public override int GetHashCode() => this.num.GetHashCode();
         public IEnumerable<int> Bits()
         {
