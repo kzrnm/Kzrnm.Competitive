@@ -6,6 +6,7 @@ using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
 using BigInteger = System.Numerics.BigInteger;
 using TextReader = System.IO.TextReader;
+using StringBuilder = System.Text.StringBuilder;
 using static Global;
 using static NumGlobal;
 
