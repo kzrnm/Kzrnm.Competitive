@@ -21,6 +21,9 @@ namespace AtCoderProject.Hide
             this.y = y;
         }
 
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public void Deconstruct(out int v1, out int v2) { v1 = x; v2 = y; }
+        public static implicit operator Point(Tuple<int, int> tuple) => new Point(tuple.Item1, tuple.Item2);
         public double Distance(Point other) => Math.Sqrt(Distance2(other));
         private long Distance2(Point other)
         {
