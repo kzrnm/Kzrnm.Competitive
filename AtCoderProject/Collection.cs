@@ -32,7 +32,7 @@ namespace AtCoderProject.Hide
                     {
                         ret[--size] = new T[items.Length];
                         ret[size][0] = arr[0];
-                        item.CopyTo(new Span<T>(ret[size]).Slice(1));
+                        item.CopyTo(ret[size], 1);
                     };
                 }
 
@@ -51,15 +51,13 @@ namespace AtCoderProject.Hide
 
         public void Add(TKey key)
         {
-            int val;
-            dic.TryGetValue(key, out val);
+            dic.TryGetValue(key, out var val);
             dic[key] = val + 1;
             Count++;
         }
         public bool Remove(TKey key)
         {
-            int val;
-            dic.TryGetValue(key, out val);
+            dic.TryGetValue(key, out var val);
             if (val == 0)
                 return false;
 
@@ -86,7 +84,7 @@ namespace AtCoderProject.Hide
 
     // キーの重複がOKな優先度付きキュー
     [System.Diagnostics.DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    class PriorityQueue<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
+    class PriorityQueue<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>, IReadOnlyCollection<KeyValuePair<TKey, TValue>>
     {
         SortedDictionary<TKey, Queue<TValue>> dic;
 
@@ -111,8 +109,8 @@ namespace AtCoderProject.Hide
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
             foreach (var pair in dic)
-                foreach (var queue in pair.Value)
-                    yield return new KeyValuePair<TKey, TValue>(pair.Key, queue);
+                foreach (var val in pair.Value)
+                    yield return new KeyValuePair<TKey, TValue>(pair.Key, val);
         }
         IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 
