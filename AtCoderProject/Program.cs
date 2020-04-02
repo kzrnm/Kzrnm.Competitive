@@ -75,7 +75,7 @@ static class NumGlobal
     }
     public static BigInteger ParseBigInteger(string s)
     {
-        // MonoのBigInteger.Parseが遅いので自前実装
+        // 自前実装の方が速い
         var res = BigInteger.Zero;
         var splited = new string[(s.Length + 7) / 8];
         for (var i = 0; i < splited.Length - 1; i++)
