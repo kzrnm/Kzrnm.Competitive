@@ -104,21 +104,12 @@ static class Ext
         for (var i = 0; i < arr.Length; i++) arr[i] = value;
         return arr;
     }
-    public static T[] Sort<T>(this T[] arr)
-    {
-        Array.Sort(arr);
-        return arr;
-    }
-    public static string[] Sort(this string[] arr)
-    {
-        Array.Sort(arr, StringComparer.OrdinalIgnoreCase);
-        return arr;
-    }
-    public static T[] Reverse<T>(this T[] arr)
-    {
-        Array.Reverse(arr);
-        return arr;
-    }
+    public static T[] Sort<T>(this T[] arr) { Array.Sort(arr); return arr; }
+    public static string[] Sort(this string[] arr) => Sort(arr, StringComparer.OrdinalIgnoreCase);
+    public static T[] Sort<T, U>(this T[] arr, Func<T, U> selector) where U : IComparable<U> => Sort(arr, (a, b) => selector(a).CompareTo(selector(b)));
+    public static T[] Sort<T>(this T[] arr, Comparison<T> comparison) { Array.Sort(arr, comparison); return arr; }
+    public static T[] Sort<T>(this T[] arr, IComparer<T> comparer) { Array.Sort(arr, comparer); return arr; }
+    public static T[] Reverse<T>(this T[] arr) { Array.Reverse(arr); return arr; }
 
     public static Tuple<TSource, TMax> MaxBy<TSource, TMax>
         (this IEnumerable<TSource> source, Func<TSource, TMax> maxBySelector)
