@@ -99,7 +99,7 @@ namespace AtCoderProject.Hide
         public override string ToString() => $"{numerator}/{denominator}";
         public override bool Equals(object obj) => obj is Fraction && Equals((Fraction)obj);
         public bool Equals(Fraction other) => this.numerator == other.numerator && this.denominator == other.denominator;
-        public override int GetHashCode() => ((numerator.GetHashCode() << 5) + numerator.GetHashCode()) ^ denominator.GetHashCode();
+        public override int GetHashCode() => HashCode.Combine(numerator, denominator);
 
         public static implicit operator Fraction(long x) => new Fraction(x, 1);
         public int CompareTo(Fraction other) => (this.numerator * other.denominator).CompareTo(other.numerator * this.denominator);

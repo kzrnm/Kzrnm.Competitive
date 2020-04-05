@@ -43,30 +43,8 @@ namespace AtCoderProject.Hide
 
         public bool Equals(Point other) => this.x == other.x && this.y == other.y;
         public override bool Equals(object obj) => obj is Point && Equals((Point)obj);
-        public override int GetHashCode() => ((x << 5) + x) ^ y;
+        public override int GetHashCode() => HashCode.Combine(x, y);
         public override string ToString() => $"({x}, {y})";
-    }
-    struct Status : IEquatable<Status>, IComparable<Status>
-    {
-        public enum Type
-        {
-            End,
-            Start,
-        }
-        public int i;
-        public Type t;
-        public Status(int i, Type t)
-        {
-            this.i = i;
-            this.t = t;
-        }
-
-        public int CompareTo(Status other) => this.i.CompareTo(other.i);
-
-        public bool Equals(Status other) => this.i == other.i && this.t == other.t;
-        public override bool Equals(object obj) => obj is Status && Equals((Status)obj);
-        public override int GetHashCode() => i ^ ((int)t << 30);
-        public override string ToString() => $"({i}, {t})";
     }
     class Sums
     {
