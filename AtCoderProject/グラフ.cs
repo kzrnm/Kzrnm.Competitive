@@ -484,7 +484,7 @@ namespace AtCoderProject.Hide.重み付き
             return res;
         }
     }
-    public struct Next
+    struct Next
     {
         public int to;
         public int value;
@@ -517,7 +517,7 @@ namespace AtCoderProject.Hide.重み付き
         public bool Equals(TreeNode other) => this.index == other.index;
         public override int GetHashCode() => this.index;
     }
-    public class Node
+    class Node
     {
         public Node(int i, Next[] roots, Next[] children)
         {

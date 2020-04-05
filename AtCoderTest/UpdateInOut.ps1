@@ -1,5 +1,7 @@
 param([Parameter(Mandatory = $true)][string]$Url, [Parameter()][string]$Cookie, [Parameter()][string]$CookieFile)
 
+$ErrorActionPreference="Stop"
+
 [Reflection.Assembly]::LoadFrom("$PSScriptRoot\AngleSharp.dll") | Out-Null
 
 if (-not $Cookie) { 

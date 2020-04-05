@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using static Global;
+using static NumGlobal;
 
 namespace AtCoderProject.Hide
 {
@@ -74,7 +75,7 @@ namespace AtCoderProject.Hide
         }
         public SegmentTree(int size)
         {
-            for (rootLength = 1; rootLength < size; rootLength <<= 1) { }
+            rootLength = 1 << (MSB(size) + 1);
             tree = NewArray(2 * rootLength - 1, defaultValue);
         }
 

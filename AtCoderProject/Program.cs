@@ -75,7 +75,7 @@ static class NumGlobal
     }
     public static BigInteger ParseBigInteger(ReadOnlySpan<char> s)
     {
-        // MonoのBigInteger.Parseが遅いので自前実装
+        // 自前実装の方が速い
         BigInteger res;
         if (s.Length % 9 == 0)
             res = 0;
@@ -108,21 +108,12 @@ static class Ext
         Array.Fill(arr, value);
         return arr;
     }
-    public static T[] Sort<T>(this T[] arr)
-    {
-        Array.Sort(arr);
-        return arr;
-    }
-    public static string[] Sort(this string[] arr)
-    {
-        Array.Sort(arr, StringComparer.OrdinalIgnoreCase);
-        return arr;
-    }
-    public static T[] Reverse<T>(this T[] arr)
-    {
-        Array.Reverse(arr);
-        return arr;
-    }
+    public static T[] Sort<T>(this T[] arr) { Array.Sort(arr); return arr; }
+    public static string[] Sort(this string[] arr) => Sort(arr, StringComparer.OrdinalIgnoreCase);
+    public static T[] Sort<T, U>(this T[] arr, Func<T, U> selector) where U : IComparable<U> => Sort(arr, (a, b) => selector(a).CompareTo(selector(b)));
+    public static T[] Sort<T>(this T[] arr, Comparison<T> comparison) { Array.Sort(arr, comparison); return arr; }
+    public static T[] Sort<T>(this T[] arr, IComparer<T> comparer) { Array.Sort(arr, comparer); return arr; }
+    public static T[] Reverse<T>(this T[] arr) { Array.Reverse(arr); return arr; }
     public static (TSource item, TMax max) MaxBy<TSource, TMax>
         (this IEnumerable<TSource> source, Func<TSource, TMax> maxBySelector)
         where TMax : IComparable<TMax>
