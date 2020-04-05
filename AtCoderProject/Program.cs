@@ -110,7 +110,20 @@ static class Ext
     public static T[] Sort<T>(this T[] arr, Comparison<T> comparison) { Array.Sort(arr, comparison); return arr; }
     public static T[] Sort<T>(this T[] arr, IComparer<T> comparer) { Array.Sort(arr, comparer); return arr; }
     public static T[] Reverse<T>(this T[] arr) { Array.Reverse(arr); return arr; }
-
+    public static Tuple<int, T> MaxBy<T>(this T[] arr) where T : IComparable<T>
+    {
+        T max = arr[0];
+        int maxIndex = 0;
+        for (int i = 0; i < arr.Length; i++)
+        {
+            if (max.CompareTo(arr[i]) < 0)
+            {
+                max = arr[i];
+                maxIndex = i;
+            }
+        }
+        return Tuple.Create(maxIndex, max);
+    }
     public static Tuple<TSource, TMax> MaxBy<TSource, TMax>
         (this IEnumerable<TSource> source, Func<TSource, TMax> maxBySelector)
         where TMax : IComparable<TMax>
@@ -133,6 +146,20 @@ static class Ext
             }
         }
         return Tuple.Create(maxByItem, max);
+    }
+    public static Tuple<int, T> MinBy<T>(this T[] arr) where T : IComparable<T>
+    {
+        T min = arr[0];
+        int minIndex = 0;
+        for (int i = 0; i < arr.Length; i++)
+        {
+            if (min.CompareTo(arr[i]) > 0)
+            {
+                min = arr[i];
+                minIndex = i;
+            }
+        }
+        return Tuple.Create(minIndex, min);
     }
     public static Tuple<TSource, TMin> MinBy<TSource, TMin>
         (this IEnumerable<TSource> source, Func<TSource, TMin> minBySelector)
