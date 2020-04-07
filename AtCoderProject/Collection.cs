@@ -11,7 +11,7 @@ namespace AtCoderProject.Hide
 {
     static class 順列を求める
     {
-        static T[][] Enumerate<T>(IList<T> items)
+        static T[][] Permutation<T>(IList<T> items)
         {
             if (items.Count == 0)
                 throw new IndexOutOfRangeException();
@@ -28,7 +28,7 @@ namespace AtCoderProject.Hide
                 var tmp = arr[i];
                 arr[i] = arr[0];
                 arr[0] = tmp;
-                foreach (var item in Enumerate(new ArraySegment<T>(arr, 1, arr.Length - 1)))
+                foreach (var item in Permutation(new ArraySegment<T>(arr, 1, arr.Length - 1)))
                 {
                     ret[--size] = new T[items.Count];
                     ret[size][0] = arr[0];
