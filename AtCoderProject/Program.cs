@@ -184,6 +184,18 @@ static class Ext
         }
         return Tuple.Create(minByItem, min);
     }
+    public static IEnumerable<TSource> Append<TSource>(this IEnumerable<TSource> source, TSource element)
+    {
+        foreach (var item in source)
+            yield return item;
+        yield return element;
+    }
+    public static IEnumerable<TSource> Prepend<TSource>(this IEnumerable<TSource> source, TSource element)
+    {
+        yield return element;
+        foreach (var item in source)
+            yield return item;
+    }
     public static IComparer<T> Reverse<T>(this IComparer<T> comparer) => Comparer<T>.Create((x, y) => comparer.Compare(y, x));
     public static Dictionary<TKey, int> GroupCount<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) => source.GroupBy(keySelector).ToDictionary(g => g.Key, g => g.Count());
     public static Dictionary<TKey, int> GroupCount<TKey>(this IEnumerable<TKey> source) => source.GroupCount(i => i);
