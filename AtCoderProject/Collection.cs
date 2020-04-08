@@ -603,6 +603,7 @@ namespace AtCoderProject.Hide
                 this.Size = size;
                 return oldsize != size;
             }
+            public override string ToString() => $"Size = {Size}, Item = {Item}";
         }
         private enum TreeRotation
         {
