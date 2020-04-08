@@ -114,6 +114,20 @@ static class Ext
     public static T[] Sort<T>(this T[] arr, Comparison<T> comparison) { Array.Sort(arr, comparison); return arr; }
     public static T[] Sort<T>(this T[] arr, IComparer<T> comparer) { Array.Sort(arr, comparer); return arr; }
     public static T[] Reverse<T>(this T[] arr) { Array.Reverse(arr); return arr; }
+    public static (int index, T max) MaxBy<T>(this T[] arr) where T : IComparable<T>
+    {
+        T max = arr[0];
+        int maxIndex = 0;
+        for (int i = 0; i < arr.Length; i++)
+        {
+            if (max.CompareTo(arr[i]) < 0)
+            {
+                max = arr[i];
+                maxIndex = i;
+            }
+        }
+        return (maxIndex, max);
+    }
     public static (TSource item, TMax max) MaxBy<TSource, TMax>
         (this IEnumerable<TSource> source, Func<TSource, TMax> maxBySelector)
         where TMax : IComparable<TMax>
@@ -135,6 +149,20 @@ static class Ext
             }
         }
         return (maxByItem, max);
+    }
+    public static (int index, T min) MinBy<T>(this T[] arr) where T : IComparable<T>
+    {
+        T min = arr[0];
+        int minIndex = 0;
+        for (int i = 0; i < arr.Length; i++)
+        {
+            if (min.CompareTo(arr[i]) > 0)
+            {
+                min = arr[i];
+                minIndex = i;
+            }
+        }
+        return (minIndex, min);
     }
     public static (TSource item, TMin min) MinBy<TSource, TMin>
         (this IEnumerable<TSource> source, Func<TSource, TMin> minBySelector)
@@ -174,6 +202,7 @@ static class Ext
         return dic[key] = value;
     }
 }
+class ΔDebugView<T> { private IEnumerable<T> collection; public ΔDebugView(IEnumerable<T> collection) { this.collection = collection ?? throw new ArgumentNullException(nameof(collection)); }[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)] public T[] Items => collection.ToArray(); }
 #pragma warning disable CA1819
 [System.Diagnostics.DebuggerNonUserCode]
 public class ConsoleReader { private string[] ReadLineSplit() => textReader.ReadLine().Split(Array.Empty<char>(), StringSplitOptions.RemoveEmptyEntries); private string[] line = Array.Empty<string>(); private int linePosition; private TextReader textReader; public ConsoleReader(TextReader tr) { textReader = tr; } public int Int => int.Parse(String); public int Int0 => Int - 1; public long Long => long.Parse(String); public double Double => double.Parse(String); public string String { get { if (linePosition >= line.Length) { linePosition = 0; line = ReadLineSplit(); } return line[linePosition++]; } } public class SplitLine { public SplitLine(ConsoleReader cr) { String = cr.ReadLineSplit(); cr.line = Array.Empty<string>(); } public int[] Int => String.Select(x => int.Parse(x)).ToArray(); public int[] Int0 => String.Select(x => int.Parse(x) - 1).ToArray(); public long[] Long => String.Select(x => long.Parse(x)).ToArray(); public double[] Double => String.Select(x => double.Parse(x)).ToArray(); public string[] String { get; } } public SplitLine Split => new SplitLine(this); public class RepeatReader { ConsoleReader cr; int count; public RepeatReader(ConsoleReader cr, int count) { this.cr = cr; this.count = count; } public T[] Select<T>(Func<ConsoleReader, T> factory) { var arr = new T[count]; for (int i = 0; i < count; i++) arr[i] = factory(cr); return arr; } public string[] String => this.Select(cr => cr.String); public int[] Int => this.Select(cr => cr.Int); public int[] Int0 => this.Select(cr => cr.Int - 1); public long[] Long => this.Select(cr => cr.Long); public double[] Double => this.Select(cr => cr.Double); } public RepeatReader Repeat(int count) => new RepeatReader(this, count); }
