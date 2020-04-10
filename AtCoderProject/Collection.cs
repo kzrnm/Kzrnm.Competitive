@@ -508,21 +508,52 @@ namespace AtCoderProject.Hide
             internal Enumerator(Set<T> set, bool reverse, Node startNode)
             {
                 tree = set;
-                stack = new Stack<Node>(2 * (MSB(set.Count + 1) + 1));
+                stack = new Stack<Node>(2 * (MSB(tree.Count + 1) + 1));
                 current = null;
                 this.reverse = reverse;
-                Intialize(startNode ?? tree.root);
+                if (startNode == null)
+                    IntializeAll();
+                else
+                    Intialize(startNode);
             }
-            private void Intialize(Node startNode)
+            private void IntializeAll()
             {
-                current = null;
-                var node = startNode;
+                var node = tree.root;
                 while (node != null)
                 {
                     var next = reverse ? node.Right : node.Left;
                     stack.Push(node);
                     node = next;
                 }
+            }
+            private void Intialize(Node startNode)
+            {
+                current = null;
+                var node = startNode;
+                var list = new List<Node>(MSB(tree.Count + 1) + 1);
+                while (node != null)
+                {
+                    list.Add(node);
+                    var parent = node.Parent;
+                    if (parent == null)
+                        break;
+
+                    if (reverse)
+                    {
+                        if (parent.Left == node)
+                            break;
+                    }
+                    else
+                    {
+                        if (parent.Right == node)
+                            break;
+                    }
+                    node = parent;
+                }
+
+                list.Reverse();
+                foreach (var n in list)
+                    stack.Push(n);
             }
 
             public T Current => current == null ? default(T) : current.Item;
@@ -546,6 +577,7 @@ namespace AtCoderProject.Hide
                 return true;
             }
 
+
             object IEnumerator.Current => this.Current;
             public void Dispose() { }
             public void Reset() { throw new NotSupportedException(); }
@@ -564,7 +596,16 @@ namespace AtCoderProject.Hide
                     _left = value;
                     if (value != null)
                         value.Parent = this;
-                    for (var cur = this; cur != null && cur.UpdateSize(); cur = cur.Parent) { }
+                    for (var cur = this; cur != null; cur = cur.Parent)
+                    {
+                        if (!cur.UpdateSize())
+                            break;
+                        if (cur.Parent != null && cur.Parent.Left != cur && cur.Parent.Right != cur)
+                        {
+                            cur.Parent = null;
+                            break;
+                        }
+                    }
                 }
             }
             private Node _right;
@@ -576,7 +617,16 @@ namespace AtCoderProject.Hide
                     _right = value;
                     if (value != null)
                         value.Parent = this;
-                    for (var cur = this; cur != null && cur.UpdateSize(); cur = cur.Parent) { }
+                    for (var cur = this; cur != null; cur = cur.Parent)
+                    {
+                        if (!cur.UpdateSize())
+                            break;
+                        if (cur.Parent != null && cur.Parent.Left != cur && cur.Parent.Right != cur)
+                        {
+                            cur.Parent = null;
+                            break;
+                        }
+                    }
                 }
             }
 
