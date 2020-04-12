@@ -11,35 +11,7 @@ namespace AtCoderProject.Hide
 {
     static class 順列を求める
     {
-        static T[][] Permutation<T>(T[] items)
-        {
-            static T[][] PermutationImpl(ReadOnlySpan<T> items)
-            {
-                if (items.Length == 0)
-                    throw new IndexOutOfRangeException();
-                if (items.Length == 1)
-                    return new T[][] { items.ToArray() };
-
-                var arr = items.ToArray();
-                var size = 1;
-                for (int i = 2; i <= items.Length; i++)
-                    size *= i;
-                var ret = new T[size][];
-                for (int i = 0; i < items.Length; i++)
-                {
-                    (arr[0], arr[i]) = (arr[i], arr[0]);
-                    foreach (var item in PermutationImpl(new ReadOnlySpan<T>(arr).Slice(1)))
-                    {
-                        ret[--size] = new T[items.Length];
-                        ret[size][0] = arr[0];
-                        item.CopyTo(ret[size], 1);
-                    };
-                }
-
-                return ret;
-            }
-            return PermutationImpl(items);
-        }
+        static T[][] Permutation<T>(T[] items) { static T[][] PermutationImpl(ReadOnlySpan<T> items) { if (items.Length == 0) throw new IndexOutOfRangeException(); if (items.Length == 1) return new T[][] { items.ToArray() }; var arr = items.ToArray(); var size = 1; for (int i = 2; i <= items.Length; i++) size *= i; var ret = new T[size][]; for (int i = 0; i < items.Length; i++) { (arr[0], arr[i]) = (arr[i], arr[0]); foreach (var item in PermutationImpl(new ReadOnlySpan<T>(arr).Slice(1))) { ret[--size] = new T[items.Length]; ret[size][0] = arr[0]; item.CopyTo(ret[size], 1); }; } return ret; } return PermutationImpl(items); }
     }
 
     // キーの重複がOKな優先度付きキュー
@@ -48,33 +20,12 @@ namespace AtCoderProject.Hide
     class PriorityQueue<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>, IReadOnlyCollection<KeyValuePair<TKey, TValue>>
     {
         SortedDictionary<TKey, Queue<TValue>> dic;
-
         public int Count { get; private set; } = 0;
+        public void Add(TKey key, TValue value) { if (!dic.ContainsKey(key)) dic[key] = new Queue<TValue>(); dic[key].Enqueue(value); Count++; }
+        public KeyValuePair<TKey, TValue> Dequeue() { var queue = dic.First(); if (queue.Value.Count <= 1) dic.Remove(queue.Key); Count--; return new KeyValuePair<TKey, TValue>(queue.Key, queue.Value.Dequeue()); }
 
-        public void Add(TKey key, TValue value)
-        {
-            if (!dic.ContainsKey(key)) dic[key] = new Queue<TValue>();
-
-            dic[key].Enqueue(value);
-            Count++;
-        }
-
-        public KeyValuePair<TKey, TValue> Dequeue()
-        {
-            var queue = dic.First();
-            if (queue.Value.Count <= 1) dic.Remove(queue.Key);
-            Count--;
-            return new KeyValuePair<TKey, TValue>(queue.Key, queue.Value.Dequeue());
-        }
-
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
-        {
-            foreach (var pair in dic)
-                foreach (var val in pair.Value)
-                    yield return new KeyValuePair<TKey, TValue>(pair.Key, val);
-        }
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() { foreach (var pair in dic) foreach (var val in pair.Value) yield return new KeyValuePair<TKey, TValue>(pair.Key, val); }
         IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
-
         public PriorityQueue() { dic = new SortedDictionary<TKey, Queue<TValue>>(); }
         public PriorityQueue(IComparer<TKey> comparer) { dic = new SortedDictionary<TKey, Queue<TValue>>(comparer); }
     }
@@ -85,403 +36,40 @@ namespace AtCoderProject.Hide
     class Set<T> : ICollection<T>, IReadOnlyCollection<T>
     {
         public virtual bool IsMulti => false;
-        public T Min
-        {
-            get
-            {
-                if (root == null)
-                    return default;
-                var cur = root;
-                for (; cur.Left != null; cur = cur.Left) { }
-                return cur.Item;
-            }
-        }
-        public T Max
-        {
-            get
-            {
-                if (root == null)
-                    return default;
-                var cur = root;
-                for (; cur.Right != null; cur = cur.Right) { }
-                return cur.Item;
-            }
-        }
-        public Node FindNode(T item)
-        {
-            Node current = root;
-            while (current != null)
-            {
-                int order = Comparer.Compare(item, current.Item);
-                if (order == 0)
-                    return current;
-                else
-                    current = (order < 0) ? current.Left : current.Right;
-            }
-            return null;
-        }
-        public int Index(Node node)
-        {
-            var ret = NodeSize(node.Left);
-            Node prev = node;
-            node = node.Parent;
-            while (prev != root)
-            {
-                if (node.Left != prev)
-                {
-                    ret += NodeSize(node.Left) + 1;
-                }
-                prev = node;
-                node = node.Parent;
-            }
-            return ret;
-        }
-        public Node FindByIndex(int index)
-        {
-            var current = root;
-            var currentIndex = current.Size - NodeSize(current.Right) - 1;
-            while (currentIndex != index)
-            {
-                if (currentIndex > index)
-                {
-                    current = current.Left;
-                    if (current == null)
-                        break;
-                    currentIndex -= NodeSize(current.Right) + 1;
-                }
-                else
-                {
-                    current = current.Right;
-                    if (current == null)
-                        break;
-                    currentIndex += NodeSize(current.Left) + 1;
-                }
-            }
-            return current;
-        }
-        public Node FindNodeLowerBound(T item)
-        {
-            Node right = null;
-            Node current = root;
+        public T Min { get { if (root == null) return default; var cur = root; for (; cur.Left != null; cur = cur.Left) { } return cur.Item; } }
+        public T Max { get { if (root == null) return default; var cur = root; for (; cur.Right != null; cur = cur.Right) { } return cur.Item; } }
+        public Node FindNode(T item) { Node current = root; while (current != null) { int order = Comparer.Compare(item, current.Item); if (order == 0) return current; else current = (order < 0) ? current.Left : current.Right; } return null; }
+        public int Index(Node node) { var ret = NodeSize(node.Left); Node prev = node; node = node.Parent; while (prev != root) { if (node.Left != prev) { ret += NodeSize(node.Left) + 1; } prev = node; node = node.Parent; } return ret; }
+        public Node FindByIndex(int index) { var current = root; var currentIndex = current.Size - NodeSize(current.Right) - 1; while (currentIndex != index) { if (currentIndex > index) { current = current.Left; if (current == null) break; currentIndex -= NodeSize(current.Right) + 1; } else { current = current.Right; if (current == null) break; currentIndex += NodeSize(current.Left) + 1; } } return current; }
+        public Node FindNodeLowerBound(T item) { Node right = null; Node current = root; while (current != null) { if (Comparer.Compare(item, current.Item) <= 0) { right = current; current = current.Left; } else { current = current.Right; } } return right; }
+        public Node FindNodeUpperBound(T item) { Node right = null; Node current = root; while (current != null) { if (Comparer.Compare(item, current.Item) < 0) { right = current; current = current.Left; } else { current = current.Right; } } return right; }
 
-            while (current != null)
-            {
-                if (Comparer.Compare(item, current.Item) <= 0)
-                {
-                    right = current;
-                    current = current.Left;
-                }
-                else
-                {
-                    current = current.Right;
-                }
-            }
-            return right;
-        }
-        public Node FindNodeUpperBound(T item)
-        {
-            Node right = null;
-            Node current = root;
-
-            while (current != null)
-            {
-                if (Comparer.Compare(item, current.Item) < 0)
-                {
-                    right = current;
-                    current = current.Left;
-                }
-                else
-                {
-                    current = current.Right;
-                }
-            }
-            return right;
-        }
-
-        public IEnumerable<T> Reversed()
-        {
-            var e = new Enumerator(this, true, null);
-            while (e.MoveNext())
-                yield return e.Current;
-        }
+        public IEnumerable<T> Reversed() { var e = new Enumerator(this, true, null); while (e.MoveNext()) yield return e.Current; }
         public IEnumerable<T> Enumerate(Node from) => Enumerate(from, false);
-        public IEnumerable<T> Enumerate(Node from, bool reverse)
-        {
-            var e = new Enumerator(this, reverse, from);
-            while (e.MoveNext())
-                yield return e.Current;
-        }
+        public IEnumerable<T> Enumerate(Node from, bool reverse) { var e = new Enumerator(this, reverse, from); while (e.MoveNext()) yield return e.Current; }
 
         public Set() : this(Comparer<T>.Default) { }
         public Set(IEnumerable<T> collection) : this(collection, Comparer<T>.Default) { }
         public Set(IComparer<T> comparer) { this.Comparer = comparer; }
-        public Set(IEnumerable<T> collection, IComparer<T> comparer)
-        {
-            this.Comparer = comparer;
-            var arr = InitArray(collection);
-            this.root = ConstructRootFromSortedArray(arr, 0, arr.Length - 1, null);
-        }
-        protected T[] InitArray(IEnumerable<T> collection)
-        {
-            T[] arr;
-            if (this.IsMulti)
-            {
-                arr = collection.ToArray();
-                Array.Sort(arr, this.Comparer);
-            }
-            else
-            {
-                var list = new List<T>(collection);
-                list.Sort(this.Comparer);
-                for (int i = list.Count - 1; i > 0; i--)
-                    if (this.Comparer.Compare(list[i - 1], list[i]) == 0)
-                        list.RemoveAt(i);
-                arr = list.ToArray();
-            }
-            return arr;
-        }
+        public Set(IEnumerable<T> collection, IComparer<T> comparer) { this.Comparer = comparer; var arr = InitArray(collection); this.root = ConstructRootFromSortedArray(arr, 0, arr.Length - 1, null); }
+        protected T[] InitArray(IEnumerable<T> collection) { T[] arr; if (this.IsMulti) { arr = collection.ToArray(); Array.Sort(arr, this.Comparer); } else { var list = new List<T>(collection); list.Sort(this.Comparer); for (int i = list.Count - 1; i > 0; i--) if (this.Comparer.Compare(list[i - 1], list[i]) == 0) list.RemoveAt(i); arr = list.ToArray(); } return arr; }
 
         public int Count => NodeSize(root);
         protected static int NodeSize(Node node) => node == null ? 0 : node.Size;
         public IComparer<T> Comparer { get; }
         bool ICollection<T>.IsReadOnly => false;
-        private static Node ConstructRootFromSortedArray(T[] arr, int startIndex, int endIndex, Node redNode)
-        {
-            int size = endIndex - startIndex + 1;
-            if (size == 0)
-            {
-                return null;
-            }
-            Node root;
-            if (size == 1)
-            {
-                root = new Node(arr[startIndex], false);
-                if (redNode != null)
-                {
-                    root.Left = redNode;
-                }
-            }
-            else if (size == 2)
-            {
-                root = new Node(arr[startIndex], false)
-                {
-                    Right = new Node(arr[endIndex], false)
-                };
-                root.Right.IsRed = true;
-                if (redNode != null)
-                {
-                    root.Left = redNode;
-                }
-            }
-            else if (size == 3)
-            {
-                root = new Node(arr[startIndex + 1], false)
-                {
-                    Right = new Node(arr[endIndex], false)
-                };
-                var left = new Node(arr[startIndex], false);
-                if (redNode != null)
-                {
-                    left.Left = redNode;
-                }
-                root.Left = left;
-            }
-            else
-            {
-                int midpt = ((startIndex + endIndex) / 2);
-                root = new Node(arr[midpt], false)
-                {
-                    Left = ConstructRootFromSortedArray(arr, startIndex, midpt - 1, redNode)
-                };
-                if (size % 2 == 0)
-                {
-                    root.Right = ConstructRootFromSortedArray(arr, midpt + 2, endIndex, new Node(arr[midpt + 1], true));
-                }
-                else
-                {
-                    root.Right = ConstructRootFromSortedArray(arr, midpt + 1, endIndex, null);
-                }
-            }
-            return root;
-        }
+
         private Node root;
 
-        public void Add(T item)
-        {
-            if (root == null)
-            {
-                root = new Node(item, false);
-                return;
-            }
-
-            Node current = root;
-            Node parent = null;
-            Node grandParent = null;
-            Node greatGrandParent = null;
-
-            int order = 0;
-            while (current != null)
-            {
-                order = Comparer.Compare(item, current.Item);
-                if (order == 0 && !this.IsMulti)
-                {
-                    root.IsRed = false;
-                    return;
-                }
-
-                if (Is4Node(current))
-                {
-                    Split4Node(current);
-                    if (IsRed(parent) == true)
-                    {
-                        InsertionBalance(current, ref parent, grandParent, greatGrandParent);
-                    }
-                }
-                greatGrandParent = grandParent;
-                grandParent = parent;
-                parent = current;
-                current = (order < 0) ? current.Left : current.Right;
-            }
-
-            Node node = new Node(item);
-            if (order > 0)
-                parent.Right = node;
-            else
-                parent.Left = node;
-
-            if (parent.IsRed)
-                InsertionBalance(node, ref parent, grandParent, greatGrandParent);
-
-            root.IsRed = false;
-        }
-        public bool Remove(T item)
-        {
-            if (root == null)
-                return false;
-
-            Node current = root;
-            Node parent = null;
-            Node grandParent = null;
-            Node match = null;
-            Node parentOfMatch = null;
-            bool foundMatch = false;
-            while (current != null)
-            {
-                if (Is2Node(current))
-                {
-                    if (parent == null)
-                    {
-                        current.IsRed = true;
-                    }
-                    else
-                    {
-                        Node sibling = GetSibling(current, parent);
-                        if (sibling.IsRed)
-                        {
-                            if (parent.Right == sibling)
-                                RotateLeft(parent);
-                            else
-                                RotateRight(parent);
-
-                            parent.IsRed = true;
-                            sibling.IsRed = false;
-                            ReplaceChildOfNodeOrRoot(grandParent, parent, sibling);
-                            grandParent = sibling;
-                            if (parent == match)
-                                parentOfMatch = sibling;
-
-                            sibling = (parent.Left == current) ? parent.Right : parent.Left;
-                        }
-
-                        if (Is2Node(sibling))
-                        {
-                            Merge2Nodes(parent, current, sibling);
-                        }
-                        else
-                        {
-                            TreeRotation rotation = RotationNeeded(parent, current, sibling);
-                            Node newGrandParent = null;
-                            switch (rotation)
-                            {
-                                case TreeRotation.RightRotation:
-                                    sibling.Left.IsRed = false;
-                                    newGrandParent = RotateRight(parent);
-                                    break;
-                                case TreeRotation.LeftRotation:
-                                    sibling.Right.IsRed = false;
-                                    newGrandParent = RotateLeft(parent);
-                                    break;
-
-                                case TreeRotation.RightLeftRotation:
-                                    newGrandParent = RotateRightLeft(parent);
-                                    break;
-
-                                case TreeRotation.LeftRightRotation:
-                                    newGrandParent = RotateLeftRight(parent);
-                                    break;
-                            }
-
-                            newGrandParent.IsRed = parent.IsRed;
-                            parent.IsRed = false;
-                            current.IsRed = true;
-                            ReplaceChildOfNodeOrRoot(grandParent, parent, newGrandParent);
-                            if (parent == match)
-                            {
-                                parentOfMatch = newGrandParent;
-                            }
-                        }
-                    }
-                }
-
-                int order = foundMatch ? -1 : Comparer.Compare(item, current.Item);
-                if (order == 0)
-                {
-                    foundMatch = true;
-                    match = current;
-                    parentOfMatch = parent;
-                }
-
-                grandParent = parent;
-                parent = current;
-
-                if (order < 0)
-                {
-                    current = current.Left;
-                }
-                else
-                {
-                    current = current.Right;
-                }
-            }
-
-            if (match != null)
-            {
-                ReplaceNode(match, parentOfMatch, parent, grandParent);
-            }
-
-            if (root != null)
-            {
-                root.IsRed = false;
-            }
-            return foundMatch;
-        }
-        public virtual void Clear()
-        {
-            root = null;
-        }
-
+        private static Node ConstructRootFromSortedArray(T[] arr, int startIndex, int endIndex, Node redNode) { int size = endIndex - startIndex + 1; if (size == 0) { return null; } Node root; if (size == 1) { root = new Node(arr[startIndex], false); if (redNode != null) { root.Left = redNode; } } else if (size == 2) { root = new Node(arr[startIndex], false) { Right = new Node(arr[endIndex], false) }; root.Right.IsRed = true; if (redNode != null) { root.Left = redNode; } } else if (size == 3) { root = new Node(arr[startIndex + 1], false) { Right = new Node(arr[endIndex], false) }; var left = new Node(arr[startIndex], false); if (redNode != null) { left.Left = redNode; } root.Left = left; } else { int midpt = ((startIndex + endIndex) / 2); root = new Node(arr[midpt], false) { Left = ConstructRootFromSortedArray(arr, startIndex, midpt - 1, redNode) }; if (size % 2 == 0) { root.Right = ConstructRootFromSortedArray(arr, midpt + 2, endIndex, new Node(arr[midpt + 1], true)); } else { root.Right = ConstructRootFromSortedArray(arr, midpt + 1, endIndex, null); } } return root; }
+        public void Add(T item) { if (root == null) { root = new Node(item, false); return; } Node current = root; Node parent = null; Node grandParent = null; Node greatGrandParent = null; int order = 0; while (current != null) { order = Comparer.Compare(item, current.Item); if (order == 0 && !this.IsMulti) { root.IsRed = false; return; } if (Is4Node(current)) { Split4Node(current); if (IsRed(parent) == true) { InsertionBalance(current, ref parent, grandParent, greatGrandParent); } } greatGrandParent = grandParent; grandParent = parent; parent = current; current = (order < 0) ? current.Left : current.Right; } Node node = new Node(item); if (order > 0) parent.Right = node; else parent.Left = node; if (parent.IsRed) InsertionBalance(node, ref parent, grandParent, greatGrandParent); root.IsRed = false; }
+        public bool Remove(T item) { if (root == null) return false; Node current = root; Node parent = null; Node grandParent = null; Node match = null; Node parentOfMatch = null; bool foundMatch = false; while (current != null) { if (Is2Node(current)) { if (parent == null) { current.IsRed = true; } else { Node sibling = GetSibling(current, parent); if (sibling.IsRed) { if (parent.Right == sibling) RotateLeft(parent); else RotateRight(parent); parent.IsRed = true; sibling.IsRed = false; ReplaceChildOfNodeOrRoot(grandParent, parent, sibling); grandParent = sibling; if (parent == match) parentOfMatch = sibling; sibling = (parent.Left == current) ? parent.Right : parent.Left; } if (Is2Node(sibling)) { Merge2Nodes(parent, current, sibling); } else { TreeRotation rotation = RotationNeeded(parent, current, sibling); Node newGrandParent = null; switch (rotation) { case TreeRotation.RightRotation: sibling.Left.IsRed = false; newGrandParent = RotateRight(parent); break; case TreeRotation.LeftRotation: sibling.Right.IsRed = false; newGrandParent = RotateLeft(parent); break; case TreeRotation.RightLeftRotation: newGrandParent = RotateRightLeft(parent); break; case TreeRotation.LeftRightRotation: newGrandParent = RotateLeftRight(parent); break; } newGrandParent.IsRed = parent.IsRed; parent.IsRed = false; current.IsRed = true; ReplaceChildOfNodeOrRoot(grandParent, parent, newGrandParent); if (parent == match) { parentOfMatch = newGrandParent; } } } } int order = foundMatch ? -1 : Comparer.Compare(item, current.Item); if (order == 0) { foundMatch = true; match = current; parentOfMatch = parent; } grandParent = parent; parent = current; if (order < 0) { current = current.Left; } else { current = current.Right; } } if (match != null) { ReplaceNode(match, parentOfMatch, parent, grandParent); } if (root != null) { root.IsRed = false; } return foundMatch; }
+        public virtual void Clear() { root = null; }
         public virtual bool Contains(T item) => FindNode(item) != null;
-
-
-        public void CopyTo(T[] array, int arrayIndex)
-        {
-            foreach (var item in this)
-                array[arrayIndex++] = item;
-        }
+        public void CopyTo(T[] array, int arrayIndex) { foreach (var item in this) array[arrayIndex++] = item; }
 
         public Enumerator GetEnumerator() => new Enumerator(this);
         IEnumerator<T> IEnumerable<T>.GetEnumerator() => new Enumerator(this);
-
         IEnumerator IEnumerable.GetEnumerator() => new Enumerator(this);
 
         #region private
@@ -507,46 +95,13 @@ namespace AtCoderProject.Hide
 
             private bool reverse;
             internal Enumerator(Set<T> set) : this(set, false, null) { }
-            internal Enumerator(Set<T> set, bool reverse, Node startNode)
-            {
-                tree = set;
-                stack = new Stack<Node>(2 * (MSB(set.Count + 1) + 1));
-                current = null;
-                this.reverse = reverse;
-                Intialize(startNode ?? tree.root);
-            }
-            private void Intialize(Node startNode)
-            {
-                current = null;
-                var node = startNode;
-                while (node != null)
-                {
-                    var next = reverse ? node.Right : node.Left;
-                    stack.Push(node);
-                    node = next;
-                }
-            }
+            internal Enumerator(Set<T> set, bool reverse, Node startNode) { tree = set; stack = new Stack<Node>(2 * (MSB(tree.Count + 1) + 1)); current = null; this.reverse = reverse; if (startNode == null) IntializeAll(); else Intialize(startNode); }
+            private void IntializeAll() { var node = tree.root; while (node != null) { var next = reverse ? node.Right : node.Left; stack.Push(node); node = next; } }
+            private void Intialize(Node startNode) { current = null; var node = startNode; var list = new List<Node>(MSB(tree.Count + 1) + 1); while (node != null) { list.Add(node); var parent = node.Parent; if (parent == null) break; if (reverse) { if (parent.Left == node) break; } else { if (parent.Right == node) break; } node = parent; } list.Reverse(); foreach (var n in list) stack.Push(n); }
 
             public T Current => current == null ? default : current.Item;
 
-            public bool MoveNext()
-            {
-                if (stack.Count == 0)
-                {
-                    current = null;
-                    return false;
-                }
-
-                current = stack.Pop();
-                var node = reverse ? current.Left : current.Right;
-                while (node != null)
-                {
-                    var next = reverse ? node.Right : node.Left;
-                    stack.Push(node);
-                    node = next;
-                }
-                return true;
-            }
+            public bool MoveNext() { if (stack.Count == 0) { current = null; return false; } current = stack.Pop(); var node = reverse ? current.Left : current.Right; while (node != null) { var next = reverse ? node.Right : node.Left; stack.Push(node); node = next; } return true; }
 
             object IEnumerator.Current => this.Current;
             public void Dispose() { }
@@ -558,53 +113,14 @@ namespace AtCoderProject.Hide
             public T Item;
             public Node Parent { get; private set; }
             private Node _left;
-            public Node Left
-            {
-                get { return _left; }
-                set
-                {
-                    _left = value;
-                    if (value != null)
-                        value.Parent = this;
-                    for (var cur = this; cur != null && cur.UpdateSize(); cur = cur.Parent) { }
-                }
-            }
+            public Node Left { get { return _left; } set { _left = value; if (value != null) value.Parent = this; for (var cur = this; cur != null; cur = cur.Parent) { if (!cur.UpdateSize()) break; if (cur.Parent != null && cur.Parent.Left != cur && cur.Parent.Right != cur) { cur.Parent = null; break; } } } }
             private Node _right;
-            public Node Right
-            {
-                get { return _right; }
-                set
-                {
-                    _right = value;
-                    if (value != null)
-                        value.Parent = this;
-                    for (var cur = this; cur != null && cur.UpdateSize(); cur = cur.Parent) { }
-                }
-            }
+            public Node Right { get { return _right; } set { _right = value; if (value != null) value.Parent = this; for (var cur = this; cur != null; cur = cur.Parent) { if (!cur.UpdateSize()) break; if (cur.Parent != null && cur.Parent.Left != cur && cur.Parent.Right != cur) { cur.Parent = null; break; } } } }
 
             public int Size { get; private set; } = 1;
-            public Node(T item)
-            {
-                this.Item = item;
-                IsRed = true;
-            }
-
-            public Node(T item, bool isRed)
-            {
-                this.Item = item;
-                this.IsRed = isRed;
-            }
-            public bool UpdateSize()
-            {
-                var oldsize = this.Size;
-                var size = 1;
-                if (Left != null)
-                    size += Left.Size;
-                if (Right != null)
-                    size += Right.Size;
-                this.Size = size;
-                return oldsize != size;
-            }
+            public Node(T item) { this.Item = item; IsRed = true; }
+            public Node(T item, bool isRed) { this.Item = item; this.IsRed = isRed; }
+            public bool UpdateSize() { var oldsize = this.Size; var size = 1; if (Left != null) size += Left.Size; if (Right != null) size += Right.Size; this.Size = size; return oldsize != size; }
             public override string ToString() => $"Size = {Size}, Item = {Item}";
         }
         private enum TreeRotation
