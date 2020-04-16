@@ -222,7 +222,7 @@ public class Program
     [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] private ConsoleReader cr;
 
     public Program(ConsoleReader consoleReader) { this.cr = consoleReader; }
-    static void Main(string[] args) => Console.WriteLine(new Program(new ConsoleReader(args.Length > 0 ? new System.IO.StreamReader(args[0]) : Console.In)).Calc());
+    static void Main() => Console.WriteLine(new Program(new ConsoleReader(Console.In)).Calc());
 
     #endregion
     public object Calc()
