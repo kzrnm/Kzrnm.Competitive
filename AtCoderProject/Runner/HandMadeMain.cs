@@ -34,7 +34,7 @@ namespace AtCoderProject.Runner
     }
     class MyStringBuilder : IEnumerable
     {
-        private readonly StringBuilder sb = new StringBuilder();
+        public readonly StringBuilder sb = new StringBuilder();
         public int Length => sb.Length;
         public override string ToString() => sb.ToString();
         public void Add(object o) => sb.AppendLine(o.ToString());
