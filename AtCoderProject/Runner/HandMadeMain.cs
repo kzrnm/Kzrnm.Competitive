@@ -38,6 +38,7 @@ namespace AtCoderProject.Runner
         public int Length => sb.Length;
         public override string ToString() => sb.ToString();
         public void Add(object o) => sb.AppendLine(o.ToString());
+        public void Add(string s) => sb.AppendLine(s);
         public void Add(params object[] objs) => sb.AppendLine(string.Join(" ", objs));
         public void Add<T>(IEnumerable<T> objs) => sb.AppendLine(string.Join(" ", objs));
         IEnumerator IEnumerable.GetEnumerator() { throw new NotSupportedException(); }
