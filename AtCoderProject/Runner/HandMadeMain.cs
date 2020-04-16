@@ -7,16 +7,6 @@ using System.Text;
 
 namespace AtCoderProject.Runner
 {
-    class MyStringBuilder : IEnumerable
-    {
-        private readonly StringBuilder sb = new StringBuilder();
-        public int Length => sb.Length;
-        public override string ToString() => sb.ToString();
-        public void Add(object o) => sb.AppendLine(o.ToString());
-        public void Add(params object[] objs) => sb.AppendLine(string.Join(" ", objs));
-        public void Add<T>(IEnumerable<T> objs) => sb.AppendLine(string.Join(" ", objs));
-        IEnumerator IEnumerable.GetEnumerator() { throw new NotSupportedException(); }
-    }
     static class HandMadeMain
     {
         static void Main(string[] args)
@@ -41,5 +31,15 @@ namespace AtCoderProject.Runner
             var result = new Program(new ConsoleReader(tr)).Calc();
             Console.WriteLine(result);
         }
+    }
+    class MyStringBuilder : IEnumerable
+    {
+        private readonly StringBuilder sb = new StringBuilder();
+        public int Length => sb.Length;
+        public override string ToString() => sb.ToString();
+        public void Add(object o) => sb.AppendLine(o.ToString());
+        public void Add(params object[] objs) => sb.AppendLine(string.Join(" ", objs));
+        public void Add<T>(IEnumerable<T> objs) => sb.AppendLine(string.Join(" ", objs));
+        IEnumerator IEnumerable.GetEnumerator() { throw new NotSupportedException(); }
     }
 }
