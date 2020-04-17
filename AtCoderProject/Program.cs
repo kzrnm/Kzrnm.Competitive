@@ -103,6 +103,7 @@ static class NumGlobal
 }
 static class Ext
 {
+    public static long ToLong(this int i) => i;
     public static T[] Fill<T>(this T[] arr, T value)
     {
         Array.Fill(arr, value);

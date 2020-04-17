@@ -147,8 +147,8 @@ namespace AtCoderProject.Hide
                 {
                     jun = Dfs1(child, jun);
                 }
-                jun[jun.Length - 1] = index;
-                jun = jun.Slice(0, jun.Length - 1);
+                jun[^1] = index;
+                jun = jun[0..^1];
                 return jun;
             }
 
@@ -226,7 +226,29 @@ namespace AtCoderProject.Hide
                 }
             }
         }
-
+        public static Node[] 最小全域木BFS(this Node[] graph)
+        {
+            var sumi = new bool[graph.Length];
+            var gb = new GraphBuilder(graph.Length, false);
+            var queue = new Queue<int>(graph.Length);
+            queue.Enqueue(0);
+            sumi[0] = true;
+            while (queue.Count > 0)
+            {
+                var cur = queue.Dequeue();
+                sumi[cur] = true;
+                foreach (var child in graph[cur].children)
+                {
+                    if (!sumi[child])
+                    {
+                        sumi[child] = true;
+                        gb.Add(cur, child);
+                        queue.Enqueue(child);
+                    }
+                }
+            }
+            return gb.ToArray();
+        }
     }
 
     class LowestCommonAncestor // 最小共通祖先
@@ -331,7 +353,7 @@ namespace AtCoderProject.Hide
                         var list = GetCycleDFS(child);
                         if (list != null)
                         {
-                            if (list.Count < 2 || list[0] != list[list.Count - 1])
+                            if (list.Count < 2 || list[0] != list[^1])
                                 list.Add(v);
                             return list;
                         }
@@ -595,7 +617,49 @@ namespace AtCoderProject.Hide.重み付き
             }
         }
     }
+    static class 最小全域木
+    {
+        public static Node[] Kruskal(this Node[] graph)
+        {
+            var gb = new GraphBuilder(graph.Length, false);
+            var uf = new UnionFind(graph.Length);
+            var edges = new List<(int from, int to, int value)>();
+            foreach (var node in graph)
+                foreach (var next in node.children)
+                    edges.Add((node.index, next.to, next.value));
+            edges.Sort(Comparer<(int from, int to, int value)>.Create((t1, t2) => t1.value.CompareTo(t2.value)));
+            foreach (var (from, to, value) in edges)
+            {
+                if (!uf.IsSameSet(from, to))
+                {
+                    uf.UnionSet(from, to);
+                    gb.Add(from, to, value);
+                }
+            }
+            return gb.ToArray();
+        }
 
+        public static Node[] Prim(this Node[] graph)
+        {
+            var sumi = new bool[graph.Length];
+            var pq = new PriorityQueue<int, (int from, int to)>();
+            var gb = new GraphBuilder(graph.Length, false);
+            sumi[0] = true;
+            foreach (var next in graph[0].children)
+                pq.Add(next.value, (0, next.to));
+            for (int i = 1; i < graph.Length; i++)
+            {
+                var t = pq.Dequeue();
+                if (sumi[t.Value.to]) { --i; continue; }
+                sumi[t.Value.to] = true;
+                gb.Add(t.Value.from, t.Value.to, t.Key);
+                foreach (var next in graph[t.Value.to].children)
+                    if (!sumi[next.to])
+                        pq.Add(next.value, (t.Value.to, next.to));
+            }
+            return gb.ToArray();
+        }
+    }
     class ShortestPath
     {
         public static int[] BFS(Node[] graph, int from)
@@ -670,9 +734,8 @@ namespace AtCoderProject.Hide.重み付き
     }
 }
 
-namespace AtCoderProject.Hide.Other
+namespace AtCoderProject.Hide
 {
-
     class UnionFind
     {
         int[] data;
@@ -687,19 +750,17 @@ namespace AtCoderProject.Hide.Other
             return data[x] = Root(data[x]);
         }
         public int Count(int x) => -data[Root(x)];
-        public void UnionSet(int x, int y)
+        public void UnionSet(int x, int y) => TryUnionSet(x, y);
+        public bool TryUnionSet(int x, int y)
         {
             var xRoot = Root(x);
             var yRoot = Root(y);
-            if (xRoot == yRoot) return;
+            if (xRoot == yRoot) return false;
             else if (data[yRoot] < data[xRoot])//y側の方が多い場合は逆にする
-            {
-                var tmp = yRoot;
-                yRoot = xRoot;
-                xRoot = tmp;
-            }
+                (xRoot, yRoot) = (yRoot, xRoot);
             data[xRoot] += data[yRoot];
             data[yRoot] = xRoot;
+            return true;
         }
         public bool IsSameSet(int x, int y) => Root(x) == Root(y);
     }
