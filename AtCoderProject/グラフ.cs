@@ -224,7 +224,29 @@ namespace AtCoderProject.Hide
                 }
             }
         }
-
+        public static Node[] 最小全域木BFS(this Node[] graph)
+        {
+            var sumi = new bool[graph.Length];
+            var gb = new GraphBuilder(graph.Length, false);
+            var queue = new Queue<int>(graph.Length);
+            queue.Enqueue(0);
+            sumi[0] = true;
+            while (queue.Count > 0)
+            {
+                var cur = queue.Dequeue();
+                sumi[cur] = true;
+                foreach (var child in graph[cur].children)
+                {
+                    if (!sumi[child])
+                    {
+                        sumi[child] = true;
+                        gb.Add(cur, child);
+                        queue.Enqueue(child);
+                    }
+                }
+            }
+            return gb.ToArray();
+        }
     }
 
     class LowestCommonAncestor // 最小共通祖先
@@ -596,7 +618,49 @@ namespace AtCoderProject.Hide.重み付き
             }
         }
     }
+    static class 最小全域木
+    {
+        public static Node[] Kruskal(this Node[] graph)
+        {
+            var gb = new GraphBuilder(graph.Length, false);
+            var uf = new UnionFind(graph.Length);
+            var edges = new List<Tuple<int, int, int>>();
+            foreach (var node in graph)
+                foreach (var next in node.children)
+                    edges.Add(Tuple.Create(node.index, next.to, next.value));
+            edges.Sort(Comparer<Tuple<int, int, int>>.Create((t1, t2) => t1.Item3.CompareTo(t2.Item3)));
+            foreach (var e in edges)
+            {
+                if (!uf.IsSameSet(e.Item1, e.Item2))
+                {
+                    uf.UnionSet(e.Item1, e.Item2);
+                    gb.Add(e.Item1, e.Item2, e.Item3);
+                }
+            }
+            return gb.ToArray();
+        }
 
+        public static Node[] Prim(this Node[] graph)
+        {
+            var sumi = new bool[graph.Length];
+            var pq = new PriorityQueue<int, Tuple<int, int>>();
+            var gb = new GraphBuilder(graph.Length, false);
+            sumi[0] = true;
+            foreach (var next in graph[0].children)
+                pq.Add(next.value, Tuple.Create(0, next.to));
+            for (int i = 1; i < graph.Length; i++)
+            {
+                var t = pq.Dequeue();
+                if (sumi[t.Value.Item2]) { --i; continue; }
+                sumi[t.Value.Item2] = true;
+                gb.Add(t.Value.Item1, t.Value.Item2, t.Key);
+                foreach (var next in graph[t.Value.Item2].children)
+                    if (!sumi[next.to])
+                        pq.Add(next.value, Tuple.Create(t.Value.Item2, next.to));
+            }
+            return gb.ToArray();
+        }
+    }
     class ShortestPath
     {
         public static int[] BFS(Node[] graph, int from)
@@ -671,9 +735,8 @@ namespace AtCoderProject.Hide.重み付き
     }
 }
 
-namespace AtCoderProject.Hide.Other
+namespace AtCoderProject.Hide
 {
-
     class UnionFind
     {
         int[] data;
