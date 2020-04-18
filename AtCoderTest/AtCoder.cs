@@ -32,7 +32,7 @@ public class AtCoder
     [DebuggerHidden]
     public void FromSource(string input, string output)
     {
-        var inputReader = new ConsoleReader(new StringReader(input));
+        var inputReader = new AtCoderProject.Reader.ConsoleReader(input);
         var result = new Program(inputReader).Calc();
         if (result is double d)
             Assert.Equal(double.Parse(output), d, 10);
