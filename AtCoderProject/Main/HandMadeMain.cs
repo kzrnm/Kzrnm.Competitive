@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AtCoderProject.Reader;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -16,19 +17,15 @@ namespace AtCoderProject.Runner
 
             };
 
-            TextReader tr;
+            Program p;
             if (args.Length > 0)
-                tr = new StreamReader(args[0]);
+                p = new Program(new ConsoleReader(new FileStream(args[0], FileMode.Open)));
             else if (sb.Length > 0)
-                tr = new StringReader(sb.ToString());
+                p = new Program(new ConsoleReader(sb.ToString()));
             else
-                tr = Console.In;
-            Run(tr);
-        }
+                p = new Program(new ConsoleReader(Console.OpenStandardInput(), Console.InputEncoding));
 
-        private static void Run(TextReader tr)
-        {
-            var result = new Program(new ConsoleReader(tr)).Calc();
+            var result = p.Calc();
             Console.WriteLine(result);
         }
     }

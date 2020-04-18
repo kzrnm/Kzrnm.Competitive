@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ConsoleReader = AtCoderProject.Reader.ConsoleReader;
 using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
 using Unsafe = System.Runtime.CompilerServices.Unsafe;
@@ -204,15 +205,128 @@ static class Ext
     }
 }
 class ΔDebugView<T> { private IEnumerable<T> collection; public ΔDebugView(IEnumerable<T> collection) { this.collection = collection ?? throw new ArgumentNullException(nameof(collection)); }[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)] public T[] Items => collection.ToArray(); }
+namespace AtCoderProject.Reader
+{
+    using System.IO;
+    using System.Text;
+    using System.Diagnostics;
+    using System.Runtime.CompilerServices;
 #pragma warning disable CA1819
-[System.Diagnostics.DebuggerNonUserCode]
-public class ConsoleReader { private string[] ReadLineSplit() => textReader.ReadLine().Split(Array.Empty<char>(), StringSplitOptions.RemoveEmptyEntries); private string[] line = Array.Empty<string>(); private int linePosition; private TextReader textReader; public ConsoleReader(TextReader tr) { textReader = tr; } public int Int => int.Parse(String); public int Int0 => Int - 1; public long Long => long.Parse(String); public double Double => double.Parse(String); public string String { get { if (linePosition >= line.Length) { linePosition = 0; line = ReadLineSplit(); } return line[linePosition++]; } }[System.Diagnostics.DebuggerNonUserCode] public class SplitLine { public SplitLine(ConsoleReader cr) { String = cr.ReadLineSplit(); cr.line = Array.Empty<string>(); } public int[] Int => String.Select(x => int.Parse(x)).ToArray(); public int[] Int0 => String.Select(x => int.Parse(x) - 1).ToArray(); public long[] Long => String.Select(x => long.Parse(x)).ToArray(); public double[] Double => String.Select(x => double.Parse(x)).ToArray(); public string[] String { get; } } public SplitLine Split => new SplitLine(this);[System.Diagnostics.DebuggerNonUserCode] public class RepeatReader { ConsoleReader cr; int count; public RepeatReader(ConsoleReader cr, int count) { this.cr = cr; this.count = count; } public T[] Select<T>(Func<ConsoleReader, T> factory) { var arr = new T[count]; for (int i = 0; i < count; i++) arr[i] = factory(cr); return arr; } public string[] String => this.Select(cr => cr.String); public int[] Int => this.Select(cr => cr.Int); public int[] Int0 => this.Select(cr => cr.Int - 1); public long[] Long => this.Select(cr => cr.Long); public double[] Double => this.Select(cr => cr.Double); } public RepeatReader Repeat(int count) => new RepeatReader(this, count); }
+    [DebuggerNonUserCode]
+    public class ConsoleReader
+    {
+        const int BufSize = 1 << 12;
+        private readonly byte[] buffer = new byte[BufSize];
+        private readonly Stream input;
+        private readonly Encoding encoding;
+        private int pos = 0;
+        private int len = 0;
+        public ConsoleReader(Stream input, Encoding encoding) { this.input = input; this.encoding = encoding; }
+        public ConsoleReader(Stream input) : this(input, Encoding.UTF8) { }
+        public ConsoleReader(string text) : this(new MemoryStream(Encoding.UTF8.GetBytes(text))) { }
+        private void MoveNext() { if (++pos >= len) { len = input.Read(buffer, 0, buffer.Length); if (len == 0) { buffer[0] = 10; } pos = 0; } }
+
+        public int Int
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                int res = 0;
+                bool neg = false;
+                while (buffer[pos] < 48) { neg = buffer[pos] == 45; MoveNext(); }
+                do { res = res * 10 + (buffer[pos] ^ 48); MoveNext(); } while (48 <= buffer[pos]);
+                return neg ? -res : res;
+            }
+        }
+        public int Int0 => this.Int - 1;
+        public long Long
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                long res = 0;
+                bool neg = false;
+                while (buffer[pos] < 48) { neg = buffer[pos] == 45; MoveNext(); }
+                do { res = res * 10 + (buffer[pos] ^ 48); MoveNext(); } while (48 <= buffer[pos]);
+                return neg ? -res : res;
+            }
+        }
+        public long Long0 => this.Long - 1;
+        public string String
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                var sb = new List<byte>();
+                while (buffer[pos] <= 32) MoveNext();
+                do { sb.Add(buffer[pos]); MoveNext(); } while (32 < buffer[pos]);
+                return this.encoding.GetString(sb.ToArray());
+            }
+        }
+        public string Ascii
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                var sb = new StringBuilder();
+                while (buffer[pos] <= 32) MoveNext();
+                do { sb.Append((char)buffer[pos]); MoveNext(); } while (32 < buffer[pos]);
+                return sb.ToString();
+            }
+        }
+        public string Line
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get
+            {
+                var sb = new List<byte>();
+                while (buffer[pos] < 32) MoveNext();
+                do { sb.Add(buffer[pos]); MoveNext(); } while (buffer[pos] != 10 && buffer[pos] != 13);
+                return this.encoding.GetString(sb.ToArray());
+            }
+        }
+        public double Double => double.Parse(this.Ascii);
+
+        [DebuggerNonUserCode]
+        public struct RepeatReader
+        {
+            ConsoleReader cr;
+            int count;
+            public RepeatReader(ConsoleReader cr, int count) { this.cr = cr; this.count = count; }
+            public T[] Select<T>(Func<ConsoleReader, T> factory) { var arr = new T[count]; for (var i = 0; i < count; i++) arr[i] = factory(cr); return arr; }
+            public string[] Line { get { var arr = new string[count]; for (var i = 0; i < count; i++) arr[i] = cr.Line; return arr; } }
+            public string[] String { get { var arr = new string[count]; for (var i = 0; i < count; i++) arr[i] = cr.String; return arr; } }
+            public string[] Ascii { get { var arr = new string[count]; for (var i = 0; i < count; i++) arr[i] = cr.Ascii; return arr; } }
+            public int[] Int { get { var arr = new int[count]; for (var i = 0; i < count; i++) arr[i] = cr.Int; return arr; } }
+            public int[] Int0 { get { var arr = new int[count]; for (var i = 0; i < count; i++) arr[i] = cr.Int0; return arr; } }
+            public long[] Long { get { var arr = new long[count]; for (var i = 0; i < count; i++) arr[i] = cr.Long; return arr; } }
+            public long[] Long0 { get { var arr = new long[count]; for (var i = 0; i < count; i++) arr[i] = cr.Long0; return arr; } }
+            public double[] Double { get { var arr = new double[count]; for (var i = 0; i < count; i++) arr[i] = cr.Double; return arr; } }
+        }
+        public RepeatReader Repeat(int count) => new RepeatReader(this, count);
+
+        [DebuggerNonUserCode]
+        public struct SplitReader
+        {
+            ConsoleReader cr;
+            public SplitReader(ConsoleReader cr) { this.cr = cr; }
+            public string[] String { get { while (cr.buffer[cr.pos] <= 32) cr.MoveNext(); var list = new List<string>(); do { if (cr.buffer[cr.pos] < 32) cr.MoveNext(); else list.Add(cr.String); } while (cr.buffer[cr.pos] != 10 && cr.buffer[cr.pos] != 13); return list.ToArray(); } }
+            public string[] Ascii { get { while (cr.buffer[cr.pos] <= 32) cr.MoveNext(); var list = new List<string>(); do { if (cr.buffer[cr.pos] < 32) cr.MoveNext(); else list.Add(cr.Ascii); } while (cr.buffer[cr.pos] != 10 && cr.buffer[cr.pos] != 13); return list.ToArray(); } }
+            public int[] Int { get { while (cr.buffer[cr.pos] <= 32) cr.MoveNext(); var list = new List<int>(); do { if (cr.buffer[cr.pos] < 32) cr.MoveNext(); else list.Add(cr.Int); } while (cr.buffer[cr.pos] != 10 && cr.buffer[cr.pos] != 13); return list.ToArray(); } }
+            public int[] Int0 { get { while (cr.buffer[cr.pos] <= 32) cr.MoveNext(); var list = new List<int>(); do { if (cr.buffer[cr.pos] < 32) cr.MoveNext(); else list.Add(cr.Int0); } while (cr.buffer[cr.pos] != 10 && cr.buffer[cr.pos] != 13); return list.ToArray(); } }
+            public long[] Long { get { while (cr.buffer[cr.pos] <= 32) cr.MoveNext(); var list = new List<long>(); do { if (cr.buffer[cr.pos] < 32) cr.MoveNext(); else list.Add(cr.Long); } while (cr.buffer[cr.pos] != 10 && cr.buffer[cr.pos] != 13); return list.ToArray(); } }
+            public long[] Long0 { get { while (cr.buffer[cr.pos] <= 32) cr.MoveNext(); var list = new List<long>(); do { if (cr.buffer[cr.pos] < 32) cr.MoveNext(); else list.Add(cr.Long0); } while (cr.buffer[cr.pos] != 10 && cr.buffer[cr.pos] != 13); return list.ToArray(); } }
+            public double[] Double { get { while (cr.buffer[cr.pos] <= 32) cr.MoveNext(); var list = new List<double>(); do { if (cr.buffer[cr.pos] < 32) cr.MoveNext(); else list.Add(cr.Double); } while (cr.buffer[cr.pos] != 10 && cr.buffer[cr.pos] != 13); return list.ToArray(); } }
+        }
+        public SplitReader Split => new SplitReader(this);
+    }
+}
 public class Program
 {
     [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] private ConsoleReader cr;
 
     public Program(ConsoleReader consoleReader) { this.cr = consoleReader; }
-    static void Main() => Console.WriteLine(new Program(new ConsoleReader(Console.In)).Calc());
+    static void Main() => Console.WriteLine(new Program(new ConsoleReader(Console.OpenStandardInput())).Calc());
 
     #endregion
     public object Calc()
