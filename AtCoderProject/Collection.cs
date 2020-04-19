@@ -14,18 +14,64 @@ namespace AtCoderProject.Hide
         static T[][] Permutation<T>(IList<T> items) { if (items.Count == 0) throw new IndexOutOfRangeException(); if (items.Count == 1) return new T[][] { items.ToArray() }; var arr = items.ToArray(); var size = 1; for (int i = 2; i <= items.Count; i++) size *= i; var ret = new T[size][]; for (int i = 0; i < items.Count; i++) { var tmp = arr[i]; arr[i] = arr[0]; arr[0] = tmp; foreach (var item in Permutation(new ArraySegment<T>(arr, 1, arr.Length - 1))) { ret[--size] = new T[items.Count]; ret[size][0] = arr[0]; item.CopyTo(ret[size], 1); }; } return ret; }
     }
 
-    // キーの重複がOKな優先度付きキュー
-    [System.Diagnostics.DebuggerTypeProxy(typeof(ΔDebugView<>))]
     [System.Diagnostics.DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    class PriorityQueue<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
+    class PriorityQueue<TKey, TValue>
     {
-        SortedDictionary<TKey, Queue<TValue>> dic; public int Count { get; private set; } = 0;
-        public void Add(TKey key, TValue value) { if (!dic.ContainsKey(key)) dic[key] = new Queue<TValue>(); dic[key].Enqueue(value); Count++; }
-        public KeyValuePair<TKey, TValue> Dequeue() { var queue = dic.First(); if (queue.Value.Count <= 1) dic.Remove(queue.Key); Count--; return new KeyValuePair<TKey, TValue>(queue.Key, queue.Value.Dequeue()); }
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() { foreach (var pair in dic) foreach (var queue in pair.Value) yield return new KeyValuePair<TKey, TValue>(pair.Key, queue); }
-        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
-        public PriorityQueue() { dic = new SortedDictionary<TKey, Queue<TValue>>(); }
-        public PriorityQueue(IComparer<TKey> comparer) { dic = new SortedDictionary<TKey, Queue<TValue>>(comparer); }
+        private readonly List<KeyValuePair<TKey, TValue>> data;
+        private readonly IComparer<TKey> comparer;
+        public PriorityQueue() : this(Comparer<TKey>.Default) { }
+        public PriorityQueue(int capacity) : this(capacity, Comparer<TKey>.Default) { }
+        public PriorityQueue(IComparer<TKey> comparer) { this.data = new List<KeyValuePair<TKey, TValue>>(); this.comparer = comparer; }
+        public PriorityQueue(int capacity, IComparer<TKey> comparer) { this.data = new List<KeyValuePair<TKey, TValue>>(capacity); this.comparer = comparer; }
+
+        public int Count => data.Count;
+        public KeyValuePair<TKey, TValue> Peek => data[0];
+
+        public void Add(TKey key, TValue value)
+        {
+            data.Add(new KeyValuePair<TKey, TValue>(key, value));
+            UpdateUp(data.Count - 1);
+        }
+        public KeyValuePair<TKey, TValue> Dequeue()
+        {
+            var res = data[0];
+            data[0] = data[data.Count - 1];
+            data.RemoveAt(data.Count - 1);
+            UpdateDown(0);
+            return res;
+        }
+
+        private void UpdateUp(int i)
+        {
+            if (i > 0)
+            {
+                var p = (i - 1) >> 1;
+                if (comparer.Compare(data[i].Key, data[p].Key) < 0)
+                {
+                    var tmp = data[p];
+                    data[p] = data[i];
+                    data[i] = tmp;
+                    UpdateUp(p);
+                }
+            }
+        }
+        private void UpdateDown(int i)
+        {
+            var n = data.Count;
+            var child = 2 * i + 1;
+            if (child < n)
+            {
+                if (child != n - 1 && comparer.Compare(data[child].Key, data[child + 1].Key) > 0)
+                    child++;
+                if (comparer.Compare(data[i].Key, data[child].Key) > 0)
+                {
+                    var tmp = data[child];
+                    data[child] = data[i];
+                    data[i] = tmp;
+                    UpdateDown(child);
+                }
+            }
+        }
     }
 
 
