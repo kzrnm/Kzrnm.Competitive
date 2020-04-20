@@ -337,10 +337,10 @@ public class Program
     [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] private ConsoleReader cr;
 
     public Program(ConsoleReader consoleReader) { this.cr = consoleReader; }
-    static void Main() => Console.WriteLine(new Program(new ConsoleReader(Console.OpenStandardInput())).Calc());
-
+    static void Main() => Console.WriteLine(new Program(new ConsoleReader(Console.OpenStandardInput())).Result());
     #endregion
-    public object Calc()
+    public string Result() { var obj = Calc(); if (obj is bool) return (bool)obj ? "Yes" : "No"; if (obj is double) return ((double)obj).ToString("0.####################"); return obj.ToString(); }
+    private object Calc()
     {
         var N = cr.Int;
         var arr = cr.Split.Int;

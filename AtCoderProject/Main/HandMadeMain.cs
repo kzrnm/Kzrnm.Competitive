@@ -25,7 +25,7 @@ namespace AtCoderProject.Runner
             else
                 p = new Program(new ConsoleReader(Console.OpenStandardInput(), Console.InputEncoding));
 
-            var result = p.Calc();
+            var result = p.Result();
             Console.WriteLine(result);
         }
     }
