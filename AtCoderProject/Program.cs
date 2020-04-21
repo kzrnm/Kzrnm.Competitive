@@ -326,13 +326,13 @@ public class Program
     [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] private ConsoleReader cr;
 
     public Program(ConsoleReader consoleReader) { this.cr = consoleReader; }
-    static void Main() => Console.WriteLine(new Program(new ConsoleReader(Console.OpenStandardInput())).Calc());
-
+    static void Main() => Console.WriteLine(new Program(new ConsoleReader(Console.OpenStandardInput())).Result());
     #endregion
+    public string Result() => Calc() switch { bool b => b ? "Yes" : "No", double d => d.ToString("0.####################"), object o => o.ToString(), };
     public object Calc()
     {
         var N = cr.Int;
-        var arrs = cr.Repeat(N).Select(cr => cr.Split.Int);
+        var arr = cr.Repeat(N).Int;
         return N;
     }
 }

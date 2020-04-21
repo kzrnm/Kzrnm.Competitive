@@ -10,6 +10,7 @@ namespace AtCoderProject.Runner
 {
     static class HandMadeMain
     {
+        internal static Random rnd = new Random();
         static void Main(string[] args)
         {
             var sb = new MyStringBuilder
@@ -25,7 +26,7 @@ namespace AtCoderProject.Runner
             else
                 p = new Program(new ConsoleReader(Console.OpenStandardInput(), Console.InputEncoding));
 
-            var result = p.Calc();
+            var result = p.Result();
             Console.WriteLine(result);
         }
     }
