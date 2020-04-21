@@ -10,6 +10,7 @@ namespace AtCoderProject.Runner
 {
     static class HandMadeMain
     {
+        internal static Random rnd = new Random();
         static void Main(string[] args)
         {
             var sb = new MyStringBuilder
