@@ -2,13 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using static Global;
-using static NumGlobal;
+using static AtCoderProject.Global;
+using static AtCoderProject.NumGlobal;
 
 #pragma warning disable
-
 namespace AtCoderProject.Hide
 {
     class GraphBuilder

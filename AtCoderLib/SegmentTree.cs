@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using static Global;
-using static NumGlobal;
+using static AtCoderProject.Global;
+using static AtCoderProject.NumGlobal;
 
 namespace AtCoderProject.Hide
 {
