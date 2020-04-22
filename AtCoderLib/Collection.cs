@@ -4,7 +4,7 @@ using IEnumerator = System.Collections.IEnumerator;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using static NumGlobal;
+using static AtCoderProject.NumGlobal;
 
 
 namespace AtCoderProject.Hide
