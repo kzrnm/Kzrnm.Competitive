@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using AtCoderProject;
+using System.Collections.Generic;
+
 
 
 
@@ -61,4 +63,8 @@ class PriorityQueue<TKey, TValue>
             }
         }
     }
+
+#pragma warning disable IDE0051
+    [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)] private KeyValuePair<TKey, TValue>[] Items => data.ToArray().Sort((a, b) => comparer.Compare(a.Key, b.Key));
+
 }

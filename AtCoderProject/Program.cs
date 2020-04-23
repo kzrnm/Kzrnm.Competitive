@@ -101,7 +101,7 @@ namespace AtCoderProject
         public static int LSB(int x) { x |= x << 1; x |= x << 2; x |= x << 4; x |= x << 8; x |= x << 16; return 32 - BitCount(x); }
         public static int LSB(long x) { x |= x << 1; x |= x << 2; x |= x << 4; x |= x << 8; x |= x << 16; x |= x << 32; return 64 - BitCount(x); }
     }
-    static class Ext
+    public static class Ext
     {
         public static long ToLong(this int i) => i;
         public static T[] Fill<T>(this T[] arr, T value)
