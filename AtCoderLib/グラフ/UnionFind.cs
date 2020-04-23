@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using static AtCoderProject.Global;
 
 class UnionFind
 {

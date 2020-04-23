@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 
 
-ref struct BoyerMoore  // https://algoful.com/Archive/Algorithm/BMSearch
+class BoyerMoore  // https://algoful.com/Archive/Algorithm/BMSearch
 {
-    ReadOnlySpan<char> pattern;
+    string pattern;
     Dictionary<char, int> table;
-    public BoyerMoore(ReadOnlySpan<char> pattern) { this.pattern = pattern; table = CreateTable(pattern); }
-    static Dictionary<char, int> CreateTable(ReadOnlySpan<char> pattern)
+    public BoyerMoore(string pattern) { this.pattern = pattern; table = CreateTable(pattern); }
+    static Dictionary<char, int> CreateTable(string pattern)
     {
         var table = new Dictionary<char, int>();
         for (int i = 0; i < pattern.Length; i++)
@@ -22,7 +22,7 @@ ref struct BoyerMoore  // https://algoful.com/Archive/Algorithm/BMSearch
     /// </summary>
     /// <param name="target"></param>
     /// <returns></returns>
-    public int Match(ReadOnlySpan<char> target)
+    public int Match(string target)
     {
         var i = pattern.Length - 1;
         while (i < target.Length)

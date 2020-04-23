@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-static class GraphUtil
+static class WGraphUtil
 {
     public static int MaxFlow(this WNode[] graph, int from, int to)
     {

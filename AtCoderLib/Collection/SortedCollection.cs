@@ -2,11 +2,9 @@
 using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
 using System.Collections.Generic;
+using AtCoderProject;
 
-
-
-
-    [System.Diagnostics.DebuggerTypeProxy(typeof(ΔDebugView<>))]
+[System.Diagnostics.DebuggerTypeProxy(typeof(ΔDebugView<>))]
     [System.Diagnostics.DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     class SortedCollection<T> : IList<T>
     {

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 
 
-ref struct KMP // https://algoful.com/Archive/Algorithm/KMPSearch
+class KMP // https://algoful.com/Archive/Algorithm/KMPSearch
 {
-    ReadOnlySpan<char> pattern;
+    string pattern;
     int[] table;
-    public KMP(ReadOnlySpan<char> pattern) { this.pattern = pattern; table = CreateTable(pattern); }
-    static int[] CreateTable(ReadOnlySpan<char> pattern)
+    public KMP(string pattern) { this.pattern = pattern; table = CreateTable(pattern); }
+    static int[] CreateTable(string pattern)
     {
         var table = new int[pattern.Length + 1];
         table[0] = -1;
@@ -20,7 +20,7 @@ ref struct KMP // https://algoful.com/Archive/Algorithm/KMPSearch
         return table;
     }
 
-    public IEnumerable<int> Matches(ReadOnlySpan<char> target)
+    public IEnumerable<int> Matches(string target)
     {
         for (int i = 0, p = 0; i < target.Length;)
         {

@@ -22,6 +22,7 @@ class RollingHash
     public int length;
     public RollingHash(ReadOnlySpan<char> s)
     {
+        this.length = s.Length;
         hash1 = new RollingHashUInt64(s);
         hash2 = new RollingHashFast(s);
     }
@@ -40,6 +41,7 @@ class RollingHash
         public int length;
         public RollingHashUInt64(ReadOnlySpan<char> s)
         {
+            this.length = s.Length;
             pow = new ulong[s.Length + 1];
             pow[0] = 1;
             for (int i = 0; i < s.Length; i++)
@@ -74,6 +76,7 @@ class RollingHash
         public int length;
         public RollingHashFast(ReadOnlySpan<char> s)
         {
+            this.length = s.Length;
             hash = new ulong[s.Length + 1];
             for (int i = 0; i < s.Length; i++)
                 hash[i + 1] = CalcMod(Mul(hash[i], Base) + s[i]);
