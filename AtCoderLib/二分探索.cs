@@ -1,44 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
+// https://qiita.com/drken/items/97e37dd6143e33a64c8c
 // https://bitbucket.org/camypaper/complib/src/master/lib/Algorithms/BinarySearch.cs
-
 static class 二分探索
 {
-    /// <summary>
-    /// 与えられた<paramref name="predicate"/> の結果がtrueであるような最大の数値を二分法で取得します．
-    /// </summary>
-    /// <param name="l">最小値</param>
-    /// <param name="r">最大値</param>
-    /// <param name="predicate">判定条件</param>
-    /// <returns><paramref name="predicate"/> がtrueを返す最大の o-indexed でのインデックス．</returns>
-    /// <remarks> <paramref name="predicate"/> はある範囲以下の全ての数でtrueとなりある範囲以上でfalseとなると仮定します．この関数は O(log N) で実行されます．</remarks>
-    static int Bisection(int l, int r, Predicate<int> predicate)
+    public static int BinarySearch(int ok, int ng, Predicate<int> isOK)
     {
-        while (l < r)
+        while (Math.Abs(ok - ng) > 1)
         {
-            var m = (l + r + 1) >> 1;
-            if (predicate(m)) l = m;
-            else r = m - 1;
+            var m = (ok + ng) / 2;
+            if (isOK(m)) ok = m;
+            else ng = m;
         }
-        return l;
+        return ok;
     }
-
 
     static int BinarySearch<T>(IList<T> a, T v, IComparer<T> cmp, bool isLowerBound)
-    {
-        var l = 0;
-        var r = a.Count - 1;
-        while (l <= r)
-        {
-            var m = (l + r) >> 1;
-            var res = cmp.Compare(a[m], v);
-            if (res < 0 || (res == 0 && !isLowerBound)) l = m + 1;
-            else r = m - 1;
-        }
-        return l;
-    }
+        => BinarySearch(a.Count, -1, m => { var c = cmp.Compare(a[m], v); return c > 0 || (c == 0 && !isLowerBound); });
+
 
     /// <summary>
     /// 与えられた比較関数に従って，<paramref name="a"/> の要素のうち，<paramref name="v"/> 以上の要素であるような最小のインデックスを取得します．
