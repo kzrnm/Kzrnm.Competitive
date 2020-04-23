@@ -10,24 +10,19 @@ ref struct KMP // https://algoful.com/Archive/Algorithm/KMPSearch
     static int[] CreateTable(ReadOnlySpan<char> pattern)
     {
         var table = new int[pattern.Length + 1];
-        int j = 0;
-        for (int i = 1; i < table.Length; i++)
+        table[0] = -1;
+        int j = -1;
+        for (int i = 0; i < pattern.Length; i++)
         {
-            if (i < pattern.Length && pattern[i] == pattern[j])
-                table[i] = j++;
-            else
-            {
-                table[i] = j;
-                j = 0;
-            }
+            while (j >= 0 && pattern[i] != pattern[j]) j = table[j];
+            table[i + 1] = ++j;
         }
         return table;
     }
 
     public IEnumerable<int> Matches(ReadOnlySpan<char> target)
     {
-        int i = 0, p = 0;
-        while (i < target.Length && p < pattern.Length)
+        for (int i = 0, p = 0; i < target.Length;)
         {
             if (target[i] == pattern[p])
             {
