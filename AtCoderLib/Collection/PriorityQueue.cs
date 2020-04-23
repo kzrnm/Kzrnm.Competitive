@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using AtCoderProject;
+using System.Collections.Generic;
+
 
 
 
@@ -17,5 +19,8 @@ class PriorityQueue<TKey, TValue>
     public KeyValuePair<TKey, TValue> Dequeue() { var res = data[0]; data[0] = data[^1]; data.RemoveAt(data.Count - 1); UpdateDown(0); return res; }
     private void UpdateUp(int i) { if (i > 0) { var p = (i - 1) >> 1; if (comparer.Compare(data[i].Key, data[p].Key) < 0) { (data[p], data[i]) = (data[i], data[p]); UpdateUp(p); } } }
     private void UpdateDown(int i) { var n = data.Count; var child = 2 * i + 1; if (child < n) { if (child != n - 1 && comparer.Compare(data[child].Key, data[child + 1].Key) > 0) child++; if (comparer.Compare(data[i].Key, data[child].Key) > 0) { (data[child], data[i]) = (data[i], data[child]); UpdateDown(child); } } }
+
+#pragma warning disable IDE0051
+    [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)] private KeyValuePair<TKey, TValue>[] Items => data.ToArray().Sort((a, b) => comparer.Compare(a.Key, b.Key));
 }
 
