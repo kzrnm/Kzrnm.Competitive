@@ -64,6 +64,10 @@ namespace AtCoderProject
         public static IComparer<T> ComparerReverse<T>() where T : IComparable<T> => new ComparerReverseImpl<T>();
         public static string AllLines<T>(IEnumerable<T> source) => string.Join("\n", source);
         public static string AllJoin<T>(IEnumerable<T> source) => string.Join(" ", source);
+        public static bool UpdateMax(ref int r, int val) { if (r < val) { r = val; return true; } return false; }
+        public static bool UpdateMax(ref long r, long val) { if (r < val) { r = val; return true; } return false; }
+        public static bool UpdateMin(ref int r, int val) { if (r > val) { r = val; return true; } return false; }
+        public static bool UpdateMin(ref long r, long val) { if (r > val) { r = val; return true; } return false; }
     }
     public static class NumGlobal
     {
