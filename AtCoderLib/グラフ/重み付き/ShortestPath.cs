@@ -5,7 +5,7 @@ using static AtCoderProject.Global;
 
 class ShortestPath
 {
-    public static int[] BFS(WNode[] graph, int from)
+    int[] BFS(WNode[] graph, int from)
     {
         var res = NewArray(graph.Length, int.MaxValue);
         var queue = new Queue<int>();
@@ -26,7 +26,7 @@ class ShortestPath
         }
         return res;
     }
-    public static long[][] WarshallFloyd(WNode[] graph)
+    long[][] WarshallFloyd(WNode[] graph)
     {
         var res = NewArray(graph.Length, graph.Length, 0L);
         for (var i = 0; i < graph.Length; i++)
@@ -46,7 +46,7 @@ class ShortestPath
                         res[i][j] = res[i][k] + res[k][j];
         return res;
     }
-    public static long[] Dijkstra(WNode[] graph, int start)
+    long[] Dijkstra(WNode[] graph, int start)
     {
         var res = new long[graph.Length];
         for (var i = 0; i < res.Length; i++)
