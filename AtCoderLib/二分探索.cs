@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 // https://qiita.com/drken/items/97e37dd6143e33a64c8c
 // https://bitbucket.org/camypaper/complib/src/master/lib/Algorithms/BinarySearch.cs
-
 static class 二分探索
 {
     public static int BinarySearch(int ok, int ng, Predicate<int> isOK)

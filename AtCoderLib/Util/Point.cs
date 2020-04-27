@@ -1,10 +1,10 @@
 ﻿using System;
 
 
-struct Point : IEquatable<Point>, IComparable<Point>
+readonly struct Point : IEquatable<Point>, IComparable<Point>
 {
-    public int x;
-    public int y;
+    public readonly int x;
+    public readonly int y;
     public Point(int[] arr) : this(arr[0], arr[1]) { }
     public Point(int x, int y)
     {
@@ -14,7 +14,7 @@ struct Point : IEquatable<Point>, IComparable<Point>
 
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public void Deconstruct(out int v1, out int v2) { v1 = x; v2 = y; }
-    public static implicit operator Point(Tuple<int, int> tuple) => new Point(tuple.Item1, tuple.Item2);
+    public static implicit operator Point((int x, int y) tuple) => new Point(tuple.x, tuple.y);
     public double Distance(Point other) => Math.Sqrt(Distance2(other));
     private long Distance2(Point other)
     {
@@ -34,6 +34,7 @@ struct Point : IEquatable<Point>, IComparable<Point>
 
     public bool Equals(Point other) => this.x == other.x && this.y == other.y;
     public override bool Equals(object obj) => obj is Point && Equals((Point)obj);
-    public override int GetHashCode() => ((x << 5) + x) ^ y;
+    public override int GetHashCode() => HashCode.Combine(x, y);
     public override string ToString() => $"({x}, {y})";
 }
+

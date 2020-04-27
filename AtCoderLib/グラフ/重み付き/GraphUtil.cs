@@ -7,10 +7,10 @@ static class WGraphUtil
 {
     public static int MaxFlow(this WNode[] graph, int from, int to)
     {
-        var capacities = new Dictionary<Tuple<int, int>, int>();
+        var capacities = new Dictionary<(int from, int to), int>();
         for (int i = 0; i < graph.Length; i++)
             foreach (var next in graph[i].children)
-                capacities.Add(Tuple.Create(i, next.to), next.value);
+                capacities.Add((i, next.to), next.value);
 
         var children = new HashSet<int>[graph.Length];
         for (int i = 0; i < children.Length; i++)
@@ -18,21 +18,21 @@ static class WGraphUtil
         var ret = 0;
         while (true)
         {
-            var routes = new Tuple<int, int>[children.Length][];
+            var routes = new (int from, int to)[children.Length][];
             var queue = new Queue<int>(children.Length);
-            routes[from] = Array.Empty<Tuple<int, int>>();
+            routes[from] = Array.Empty<ValueTuple<int, int>>();
             queue.Enqueue(from);
             while (queue.Count > 0 && routes[to] == null)
             {
                 var cur = queue.Dequeue();
                 foreach (var child in children[cur])
                 {
-                    var route = Tuple.Create(cur, child);
+                    var route = (cur, child);
                     if (routes[child] == null && capacities[route] > 0)
                     {
-                        routes[child] = new Tuple<int, int>[routes[cur].Length + 1];
+                        routes[child] = new (int from, int to)[routes[cur].Length + 1];
                         routes[cur].CopyTo(routes[child], 0);
-                        routes[child][routes[child].Length - 1] = route;
+                        routes[child][^1] = route;
                         queue.Enqueue(child);
                     }
                 }
@@ -49,10 +49,9 @@ static class WGraphUtil
             {
                 capacities[route] -= min;
 
-                var rev = Tuple.Create(route.Item2, route.Item1);
-                children[route.Item2].Add(route.Item1);
-                int v;
-                capacities.TryGetValue(rev, out v);
+                var rev = (route.to, route.from);
+                children[route.to].Add(route.from);
+                capacities.TryGetValue(rev, out int v);
                 capacities[rev] = v + min;
             }
         }

@@ -37,9 +37,7 @@ class LowestCommonAncestor // 最小共通祖先
     {
         if (Depth(u) > Depth(v))
         {
-            var tmp = u;
-            u = v;
-            v = tmp;
+            (u, v) = (v, u);
         }
         for (int k = 0; k <= logN; k++)
         {

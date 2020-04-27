@@ -17,10 +17,10 @@ class SegmentTree
     private int rootLength;
     private long[] tree;
 
-    public SegmentTree(long[] initArray) : this(initArray.Length)
+    public SegmentTree(ReadOnlySpan<long> initSpan) : this(initSpan.Length)
     {
-        for (var i = 0; i < initArray.Length; i++)
-            Update(i, initArray[i]);
+        for (var i = 0; i < initSpan.Length; i++)
+            Update(i, initSpan[i]);
     }
     public SegmentTree(int size)
     {
@@ -106,4 +106,3 @@ class SegmentTree
         }
     }
 }
-

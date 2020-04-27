@@ -1,51 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using static AtCoderProject.Global;
 
 static class GraphUtil
 {
     public static int[] 強連結成分分解(this Node[] graph)
     {
-        int j = graph.Length;
-        var jun = new int[graph.Length];
         var sumi = new bool[graph.Length];
-        Action<int> dfs1 = null;
-        dfs1 = index =>
+        Span<int> Dfs1(int index, Span<int> jun)
         {
             if (sumi[index])
-                return;
+                return jun;
             sumi[index] = true;
             foreach (var child in graph[index].children)
-                dfs1(child);
-            jun[--j] = index;
-        };
+            {
+                jun = Dfs1(child, jun);
+            }
+            jun[^1] = index;
+            jun = jun[0..^1];
+            return jun;
+        }
+
+        var jun = new int[graph.Length];
+        var junsp = jun.AsSpan();
         for (int i = 0; i < graph.Length; i++)
-            dfs1(i);
+            junsp = Dfs1(i, junsp);
 
         var res = NewArray(graph.Length, -1);
-        Func<int, int, bool> dfs2 = null;
-        dfs2 = (index, group) =>
+        bool Dfs2(int index, int group)
         {
             if (res[index] >= 0)
                 return false;
             res[index] = group;
             foreach (var r in graph[index].roots)
-                dfs2(r, group);
+                Dfs2(r, group);
             return true;
-        };
+        }
 
         var g = 0;
         foreach (var i in jun)
-            if (dfs2(i, g))
+            if (Dfs2(i, g))
                 g++;
         return res;
     }
+
     public static int MaxFlow(this Node[] graph, int from, int to)
     {
-        var capacities = new Dictionary<Tuple<int, int>, int>();
+        var capacities = new Dictionary<(int from, int to), int>();
         for (int i = 0; i < graph.Length; i++)
             foreach (var next in graph[i].children)
-                capacities.Add(Tuple.Create(i, next), 1);
+                capacities.Add((i, next), 1);
 
         var children = new HashSet<int>[graph.Length];
         for (int i = 0; i < children.Length; i++)
@@ -53,21 +58,21 @@ static class GraphUtil
         var ret = 0;
         while (true)
         {
-            var routes = new Tuple<int, int>[children.Length][];
+            var routes = new (int from, int to)[children.Length][];
             var queue = new Queue<int>(children.Length);
-            routes[from] = Array.Empty<Tuple<int, int>>();
+            routes[from] = Array.Empty<ValueTuple<int, int>>();
             queue.Enqueue(from);
             while (queue.Count > 0 && routes[to] == null)
             {
                 var cur = queue.Dequeue();
                 foreach (var child in children[cur])
                 {
-                    var route = Tuple.Create(cur, child);
+                    var route = (cur, child);
                     if (routes[child] == null && capacities[route] > 0)
                     {
-                        routes[child] = new Tuple<int, int>[routes[cur].Length + 1];
+                        routes[child] = new (int from, int to)[routes[cur].Length + 1];
                         routes[cur].CopyTo(routes[child], 0);
-                        routes[child][routes[child].Length - 1] = route;
+                        routes[child][^1] = route;
                         queue.Enqueue(child);
                     }
                 }
@@ -84,10 +89,9 @@ static class GraphUtil
             {
                 capacities[route] -= min;
 
-                var rev = Tuple.Create(route.Item2, route.Item1);
-                children[route.Item2].Add(route.Item1);
-                int v;
-                capacities.TryGetValue(rev, out v);
+                var rev = (route.to, route.from);
+                children[route.to].Add(route.from);
+                capacities.TryGetValue(rev, out int v);
                 capacities[rev] = v + min;
             }
         }

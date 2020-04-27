@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 
 class KMP // https://algoful.com/Archive/Algorithm/KMPSearch

@@ -80,5 +80,4 @@ class 素数
 
         return primes;
     }
-
 }

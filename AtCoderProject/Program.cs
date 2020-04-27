@@ -6,6 +6,7 @@ using AtCoderProject;
 using ConsoleReader = AtCoderProject.Reader.ConsoleReader;
 using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
+using Unsafe = System.Runtime.CompilerServices.Unsafe;
 using BigInteger = System.Numerics.BigInteger;
 using TextReader = System.IO.TextReader;
 using StringBuilder = System.Text.StringBuilder;
@@ -16,7 +17,6 @@ namespace AtCoderProject
 {
     public static class Global
     {
-        public static void Swap<T>(ref T a, ref T b) { T tmp = a; a = b; b = tmp; }
         public static T[] NewArray<T>(int len0, T value) => new T[len0].Fill(value);
         public static T[] NewArray<T>(int len0, Func<T> factory)
         {
@@ -64,10 +64,6 @@ namespace AtCoderProject
         public static IComparer<T> ComparerReverse<T>() where T : IComparable<T> => new ComparerReverseImpl<T>();
         public static string AllLines<T>(IEnumerable<T> source) => string.Join("\n", source);
         public static string AllJoin<T>(IEnumerable<T> source) => string.Join(" ", source);
-        public static bool UpdateMax(ref int r, int val) { if (r < val) { r = val; return true; } return false; }
-        public static bool UpdateMax(ref long r, long val) { if (r < val) { r = val; return true; } return false; }
-        public static bool UpdateMin(ref int r, int val) { if (r > val) { r = val; return true; } return false; }
-        public static bool UpdateMin(ref long r, long val) { if (r > val) { r = val; return true; } return false; }
     }
     public static class NumGlobal
     {
@@ -81,20 +77,24 @@ namespace AtCoderProject
             }
             return res;
         }
-        public static BigInteger ParseBigInteger(string s)
+        public static BigInteger ParseBigInteger(ReadOnlySpan<char> s)
         {
             // 自前実装の方が速い
-            var res = BigInteger.Zero;
-            var splited = new string[(s.Length + 7) / 8];
-            for (var i = 0; i < splited.Length - 1; i++)
+            BigInteger res;
+            if (s.Length % 9 == 0)
+                res = 0;
+            else
             {
-                splited[i] = s.Substring(8 * i, 8);
+                res = new BigInteger(int.Parse(s.Slice(0, s.Length % 9)));
+                s = s.Slice(s.Length % 9);
             }
-            splited[splited.Length - 1] = s.Substring(8 * (splited.Length - 1));
-            foreach (var sp in splited)
+
+            while (s.Length > 0)
             {
-                res *= (int)Math.Pow(10, sp.Length);
+                var sp = s.Slice(0, 9);
+                res *= 1000_000_000;
                 res += int.Parse(sp);
+                s = s.Slice(9);
             }
             return res;
         }
@@ -107,10 +107,15 @@ namespace AtCoderProject
     }
     public static class Ext
     {
+        public static bool UpdateMax(this ref int r, int val) { if (r < val) { r = val; return true; } return false; }
+        public static bool UpdateMax(this ref long r, long val) { if (r < val) { r = val; return true; } return false; }
+        public static bool UpdateMin(this ref int r, int val) { if (r > val) { r = val; return true; } return false; }
+        public static bool UpdateMin(this ref long r, long val) { if (r > val) { r = val; return true; } return false; }
+
         public static long ToLong(this int i) => i;
         public static T[] Fill<T>(this T[] arr, T value)
         {
-            for (var i = 0; i < arr.Length; i++) arr[i] = value;
+            Array.Fill(arr, value);
             return arr;
         }
         public static T[] Sort<T>(this T[] arr) { Array.Sort(arr); return arr; }
@@ -119,7 +124,7 @@ namespace AtCoderProject
         public static T[] Sort<T>(this T[] arr, Comparison<T> comparison) { Array.Sort(arr, comparison); return arr; }
         public static T[] Sort<T>(this T[] arr, IComparer<T> comparer) { Array.Sort(arr, comparer); return arr; }
         public static T[] Reverse<T>(this T[] arr) { Array.Reverse(arr); return arr; }
-        public static Tuple<int, T> MaxBy<T>(this T[] arr) where T : IComparable<T>
+        public static (int index, T max) MaxBy<T>(this T[] arr) where T : IComparable<T>
         {
             T max = arr[0];
             int maxIndex = 0;
@@ -131,15 +136,14 @@ namespace AtCoderProject
                     maxIndex = i;
                 }
             }
-            return Tuple.Create(maxIndex, max);
+            return (maxIndex, max);
         }
-        public static Tuple<TSource, TMax> MaxBy<TSource, TMax>
+        public static (TSource item, TMax max) MaxBy<TSource, TMax>
             (this IEnumerable<TSource> source, Func<TSource, TMax> maxBySelector)
             where TMax : IComparable<TMax>
         {
             TMax max;
             TSource maxByItem;
-
             var e = source.GetEnumerator();
             e.MoveNext();
             maxByItem = e.Current;
@@ -154,9 +158,9 @@ namespace AtCoderProject
                     maxByItem = item;
                 }
             }
-            return Tuple.Create(maxByItem, max);
+            return (maxByItem, max);
         }
-        public static Tuple<int, T> MinBy<T>(this T[] arr) where T : IComparable<T>
+        public static (int index, T min) MinBy<T>(this T[] arr) where T : IComparable<T>
         {
             T min = arr[0];
             int minIndex = 0;
@@ -168,9 +172,9 @@ namespace AtCoderProject
                     minIndex = i;
                 }
             }
-            return Tuple.Create(minIndex, min);
+            return (minIndex, min);
         }
-        public static Tuple<TSource, TMin> MinBy<TSource, TMin>
+        public static (TSource item, TMin min) MinBy<TSource, TMin>
             (this IEnumerable<TSource> source, Func<TSource, TMin> minBySelector)
             where TMin : IComparable<TMin>
         {
@@ -191,38 +195,24 @@ namespace AtCoderProject
                     minByItem = item;
                 }
             }
-            return Tuple.Create(minByItem, min);
-        }
-        public static IEnumerable<TSource> Append<TSource>(this IEnumerable<TSource> source, TSource element)
-        {
-            foreach (var item in source)
-                yield return item;
-            yield return element;
-        }
-        public static IEnumerable<TSource> Prepend<TSource>(this IEnumerable<TSource> source, TSource element)
-        {
-            yield return element;
-            foreach (var item in source)
-                yield return item;
+            return (minByItem, min);
         }
         public static IComparer<T> Reverse<T>(this IComparer<T> comparer) => Comparer<T>.Create((x, y) => comparer.Compare(y, x));
         public static Dictionary<TKey, int> GroupCount<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) => source.GroupBy(keySelector).ToDictionary(g => g.Key, g => g.Count());
         public static Dictionary<TKey, int> GroupCount<TKey>(this IEnumerable<TKey> source) => source.GroupCount(i => i);
         public static TValue Get<TKey, TValue>(this Dictionary<TKey, TValue> dic, TKey key)
         {
-            TValue v;
-            dic.TryGetValue(key, out v);
+            dic.TryGetValue(key, out var v);
             return v;
         }
         public static TValue GetOrInit<TKey, TValue>(this Dictionary<TKey, TValue> dic, TKey key, TValue value)
         {
-            TValue v;
-            if (dic.TryGetValue(key, out v))
+            if (dic.TryGetValue(key, out var v))
                 return v;
             return dic[key] = value;
         }
     }
-    public class ΔDebugView<T> { private IEnumerable<T> collection; public ΔDebugView(IEnumerable<T> collection) { if (collection == null) throw new ArgumentNullException(nameof(collection)); this.collection = collection; }[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)] public T[] Items => collection.ToArray(); }
+    public class ΔDebugView<T> { private IEnumerable<T> collection; public ΔDebugView(IEnumerable<T> collection) { this.collection = collection ?? throw new ArgumentNullException(nameof(collection)); }[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)] public T[] Items => collection.ToArray(); }
 }
 namespace AtCoderProject.Reader
 {
@@ -347,11 +337,11 @@ public class Program
     public Program(ConsoleReader consoleReader) { this.cr = consoleReader; }
     static void Main() => Console.WriteLine(new Program(new ConsoleReader(Console.OpenStandardInput())).Result());
     #endregion
-    public string Result() { var obj = Calc(); if (obj is bool) return (bool)obj ? "Yes" : "No"; if (obj is double) return ((double)obj).ToString("0.####################"); return obj.ToString(); }
-    private object Calc()
+    public string Result() => Calc() switch { bool b => b ? "Yes" : "No", double d => d.ToString("0.####################"), object o => o.ToString(), };
+    public object Calc()
     {
         var N = cr.Int;
-        var arr = cr.Split.Int;
+        var arr = cr.Repeat(N).Int;
         return N;
     }
 }

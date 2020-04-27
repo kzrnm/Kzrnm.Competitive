@@ -1,5 +1,6 @@
-﻿using static AtCoderProject.Global;
-
+﻿using System;
+using System.Collections.Generic;
+using static AtCoderProject.Global;
 
 class UnionFind
 {
@@ -22,11 +23,7 @@ class UnionFind
         var yRoot = Root(y);
         if (xRoot == yRoot) return false;
         else if (data[yRoot] < data[xRoot])//y側の方が多い場合は逆にする
-        {
-            var tmp = yRoot;
-            yRoot = xRoot;
-            xRoot = tmp;
-        }
+            (xRoot, yRoot) = (yRoot, xRoot);
         data[xRoot] += data[yRoot];
         data[yRoot] = xRoot;
         return true;

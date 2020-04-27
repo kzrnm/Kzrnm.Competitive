@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using static AtCoderProject.Global;
 using static AtCoderProject.NumGlobal;
+
 class GraphSearch
 {
     enum Status
@@ -45,7 +46,7 @@ class GraphSearch
                     var list = GetCycleDFS(child);
                     if (list != null)
                     {
-                        if (list.Count < 2 || list[0] != list[list.Count - 1])
+                        if (list.Count < 2 || list[0] != list[^1])
                             list.Add(v);
                         return list;
                     }
@@ -93,7 +94,7 @@ class GraphSearch
         while (queue.Count > 0)
         {
             bfsd = queue.Dequeue();
-            foreach (var child in graph[bfsd.current[bfsd.current.Length - 1]].children)
+            foreach (var child in graph[bfsd.current[^1]].children)
             {
                 if (bfsd.used[child])
                 {
@@ -102,7 +103,7 @@ class GraphSearch
                     {
                         res = new int[bfsd.current.Length + 1 - index];
                         Array.Copy(bfsd.current, index, res, 0, bfsd.current.Length - index);
-                        res[res.Length - 1] = child;
+                        res[^1] = child;
                     }
                 }
                 else if (res == null)
@@ -110,7 +111,7 @@ class GraphSearch
                     statuses[child] = Status.Done;
                     var next = new int[bfsd.current.Length + 1];
                     Array.Copy(bfsd.current, next, bfsd.current.Length);
-                    next[next.Length - 1] = child;
+                    next[^1] = child;
                     var nextUsed = (bool[])bfsd.used.Clone();
                     nextUsed[child] = true;
                     queue.Enqueue(new BFSData(next, nextUsed));

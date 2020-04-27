@@ -2,7 +2,7 @@
 
 
 // https://qiita.com/drken/items/3b4fdf0a78e7a138cd9a
-struct Mod : IEquatable<Mod>
+readonly struct Mod : IEquatable<Mod>
 {
     public const long mod = 1000000007;
     public static readonly Mod invalid = new Mod(-1, false);
@@ -78,4 +78,3 @@ struct Mod : IEquatable<Mod>
         public Mod FactorialInvers(int n) => finv[n];
     }
 }
-

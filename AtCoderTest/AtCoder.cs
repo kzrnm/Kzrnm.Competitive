@@ -34,8 +34,8 @@ public class AtCoder
     {
         var inputReader = new AtCoderProject.Reader.ConsoleReader(input);
         var result = new Program(inputReader).Result();
-        if (result is double d)
-            Assert.Equal(double.Parse(output), d, 10);
+        if (double.TryParse(result, out var d))
+            Assert.Equal(double.Parse(result), d, 10);
         else
             Assert.Equal(output.Replace("\r\n", "\n").Trim(), result.ToString());
     }

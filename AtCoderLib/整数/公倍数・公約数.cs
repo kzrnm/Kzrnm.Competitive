@@ -1,6 +1,7 @@
 ﻿class 公倍数_公約数
 {
 
+
     int Gcd(params int[] nums)
     {
         var gcd = nums[0];

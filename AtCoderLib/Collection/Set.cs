@@ -12,8 +12,8 @@ using static AtCoderProject.NumGlobal;
 class Set<T> : ICollection<T>, IReadOnlyCollection<T>
 {
     public virtual bool IsMulti => false;
-    public T Min { get { if (root == null) return default(T); var cur = root; for (; cur.Left != null; cur = cur.Left) { } return cur.Item; } }
-    public T Max { get { if (root == null) return default(T); var cur = root; for (; cur.Right != null; cur = cur.Right) { } return cur.Item; } }
+    public T Min { get { if (root == null) return default; var cur = root; for (; cur.Left != null; cur = cur.Left) { } return cur.Item; } }
+    public T Max { get { if (root == null) return default; var cur = root; for (; cur.Right != null; cur = cur.Right) { } return cur.Item; } }
     public Node FindNode(T item) { Node current = root; while (current != null) { int order = Comparer.Compare(item, current.Item); if (order == 0) return current; else current = (order < 0) ? current.Left : current.Right; } return null; }
     public int Index(Node node) { var ret = NodeSize(node.Left); Node prev = node; node = node.Parent; while (prev != root) { if (node.Left != prev) { ret += NodeSize(node.Left) + 1; } prev = node; node = node.Parent; } return ret; }
     public Node FindByIndex(int index) { var current = root; var currentIndex = current.Size - NodeSize(current.Right) - 1; while (currentIndex != index) { if (currentIndex > index) { current = current.Left; if (current == null) break; currentIndex -= NodeSize(current.Right) + 1; } else { current = current.Right; if (current == null) break; currentIndex += NodeSize(current.Left) + 1; } } return current; }
@@ -75,7 +75,7 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
         private void IntializeAll() { var node = tree.root; while (node != null) { var next = reverse ? node.Right : node.Left; stack.Push(node); node = next; } }
         private void Intialize(Node startNode) { current = null; var node = startNode; var list = new List<Node>(MSB(tree.Count + 1) + 1); while (node != null) { list.Add(node); var parent = node.Parent; if (parent == null) break; if (reverse) { if (parent.Left == node) break; } else { if (parent.Right == node) break; } node = parent; } list.Reverse(); foreach (var n in list) stack.Push(n); }
 
-        public T Current => current == null ? default(T) : current.Item;
+        public T Current => current == null ? default : current.Item;
 
         public bool MoveNext() { if (stack.Count == 0) { current = null; return false; } current = stack.Pop(); var node = reverse ? current.Left : current.Right; while (node != null) { var next = reverse ? node.Right : node.Left; stack.Push(node); node = next; } return true; }
 

@@ -1,5 +1,6 @@
 ﻿using static AtCoderProject.Global;
 
+
 class Matrix
 {
     public long[][] Pow(long[][] mat, int y)
@@ -17,10 +18,7 @@ class Matrix
     }
     public long[][] Mul(long[][] l, long[][] r)
     {
-        var h = l.Length;
-        var w = r[0].Length;
         var K = l[0].Length;
-
         long[][] res = NewArray(K, K, 0L);
         for (var i = 0; i < res.Length; i++)
             for (var j = 0; j < res.Length; j++)

@@ -1,8 +1,7 @@
 ﻿using System;
 
 // 有理数
-// 有理数
-struct Fraction : IEquatable<Fraction>, IComparable<Fraction>
+readonly struct Fraction : IEquatable<Fraction>, IComparable<Fraction>
 {
     static long Gcd(long a, long b) => b > a ? Gcd(b, a) : (b == 0 ? a : Gcd(b, a % b));
     public readonly long numerator; // 分子
@@ -18,7 +17,7 @@ struct Fraction : IEquatable<Fraction>, IComparable<Fraction>
     public override string ToString() => $"{numerator}/{denominator}";
     public override bool Equals(object obj) => obj is Fraction && Equals((Fraction)obj);
     public bool Equals(Fraction other) => this.numerator == other.numerator && this.denominator == other.denominator;
-    public override int GetHashCode() => ((numerator.GetHashCode() << 5) + numerator.GetHashCode()) ^ denominator.GetHashCode();
+    public override int GetHashCode() => HashCode.Combine(numerator, denominator);
 
     public static implicit operator Fraction(long x) => new Fraction(x, 1);
     public int CompareTo(Fraction other) => (this.numerator * other.denominator).CompareTo(other.numerator * this.denominator);

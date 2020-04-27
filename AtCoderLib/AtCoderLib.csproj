@@ -1,15 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
-    <LangVersion>6</LangVersion>
+    <TargetFramework>netcoreapp31</TargetFramework>
     <Platforms>AnyCPU;x86</Platforms>
+    <LangVersion>8</LangVersion>
     <NoWarn>IDE0044;IDE0051</NoWarn>
     <PlatformTarget>x64</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AtCoderProject\AtCoderProject.csproj" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
   </ItemGroup>
 
 </Project>

@@ -9,7 +9,7 @@ class SuffixArray
     int[] SA;
     int[] rank;
     SparseTableRMQ rmq;
-    public SuffixArray(string str)
+    public SuffixArray(ReadOnlySpan<char> str)
     {
         N = str.Length;
         S = new int[N + 1];

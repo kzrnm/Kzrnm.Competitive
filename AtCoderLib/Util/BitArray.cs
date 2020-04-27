@@ -4,7 +4,7 @@ using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
 using static AtCoderProject.NumGlobal;
 
-struct BitArray : IEquatable<BitArray>, IEnumerable<bool>
+readonly struct BitArray : IEquatable<BitArray>, IEnumerable<bool>
 {
     private readonly long num;
     public BitArray(long num) { this.num = num; }

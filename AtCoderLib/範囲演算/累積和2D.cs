@@ -1,6 +1,7 @@
 ﻿using System;
 using static AtCoderProject.Global;
 
+
 class Sums2D
 {
     private long[][] impl;
@@ -15,14 +16,18 @@ class Sums2D
             for (var j = 0; j < Length2; j++)
                 impl[i + 1][j + 1] = impl[i + 1][j] + impl[i][j + 1] - impl[i][j] + arr[i][j];
     }
-    public long this[int left, int rightExclusive, int top, int bottomExclusive]
+    public long this[Range width, Range height]
     {
         get
         {
+            int left = width.Start.GetOffset(Length1);
+            int rightExclusive = width.End.GetOffset(Length1);
+            int top = height.Start.GetOffset(Length2);
+            int bottomExclusive = height.End.GetOffset(Length2);
             return impl[rightExclusive][bottomExclusive]
-              - impl[left][bottomExclusive]
-              - impl[rightExclusive][top]
-              + impl[left][top];
+                  - impl[left][bottomExclusive]
+                  - impl[rightExclusive][top]
+                  + impl[left][top];
         }
     }
 }

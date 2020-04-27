@@ -1,5 +1,4 @@
-﻿
-[System.Diagnostics.DebuggerTypeProxy(typeof(BinaryIndexedTreeDebugView))]
+﻿[System.Diagnostics.DebuggerTypeProxy(typeof(BinaryIndexedTreeDebugView))]
 class BinaryIndexedTree
 {
     public void Add(int i, long w)
