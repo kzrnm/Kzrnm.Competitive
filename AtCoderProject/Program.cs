@@ -220,7 +220,6 @@ namespace AtCoderProject.Reader
     using System.Text;
     using System.Diagnostics;
     using System.Runtime.CompilerServices;
-#pragma warning disable CA1819
     [DebuggerNonUserCode]
     public class ConsoleReader
     {
