@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using AtCoderProject;
 using AtCoderTest;
 using Xunit;
@@ -27,6 +28,7 @@ public class AtCoder
         }
     }
 
+    static Regex doubleRegex = new Regex(@"\d+\.\d+", RegexOptions.IgnoreCase);
     [Theory(Timeout = 200)]
     [MemberData(nameof(Source))]
     [DebuggerHidden]
@@ -34,8 +36,8 @@ public class AtCoder
     {
         var inputReader = new AtCoderProject.Reader.ConsoleReader(input);
         var result = new Program(inputReader).Result();
-        if (double.TryParse(result, out var d))
-            Assert.Equal(double.Parse(result), d, 10);
+        if (doubleRegex.IsMatch(output))
+            Assert.Equal(double.Parse(output), double.Parse(result), 10);
         else
             Assert.Equal(output.Replace("\r\n", "\n").Trim(), result.ToString());
     }
