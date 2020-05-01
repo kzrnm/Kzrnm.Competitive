@@ -56,8 +56,7 @@ class ShortestPath
         var used = new bool[graph.Length];
         int count = 0;
         var remains = new PriorityQueue<long, int>();
-        for (var i = 0; i < res.Length; i++)
-            remains.Add(res[i], i);
+        remains.Add(0, start);
 
         while (remains.Count > 0)
         {
