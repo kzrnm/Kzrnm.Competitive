@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AtCoderProject;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using static AtCoderProject.Global;
@@ -48,9 +49,7 @@ class ShortestPath
     }
     long[] Dijkstra(WNode[] graph, int start)
     {
-        var res = new long[graph.Length];
-        for (var i = 0; i < res.Length; i++)
-            res[i] = long.MaxValue / 2;
+        var res = NewArray(graph.Length, long.MaxValue / 2);
         res[start] = 0;
 
         var used = new bool[graph.Length];
@@ -71,6 +70,19 @@ class ShortestPath
                     remains.Add(res[next.to] = nextLength, next.to);
             }
         }
+        return res;
+    }
+    long[] BellmanFord(WNode[] graph, int start)
+    {
+        var res = NewArray(graph.Length, long.MaxValue / 2);
+        res[start] = 0;
+
+        for (int i = 1; i <= graph.Length; i++)
+            foreach (var node in graph)
+                foreach (var next in node.children)
+                    if (res[next.to].UpdateMin(res[node.index] + next.value))
+                        if (i == graph.Length)
+                            throw new InvalidOperationException("負の閉路");
         return res;
     }
 }
