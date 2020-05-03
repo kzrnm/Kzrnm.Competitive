@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AtCoderProject;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using static AtCoderProject.Global;
@@ -118,5 +119,24 @@ static class GraphUtil
             }
         }
         return gb.ToArray();
+    }
+}
+
+class ShortestPathBFS
+{
+    int[] BFS(Node[] graph, int from)
+    {
+        var res = NewArray(graph.Length, int.MaxValue);
+        var queue = new Queue<int>();
+        queue.Enqueue(from);
+        res[from] = 0;
+        while (queue.Count > 0)
+        {
+            var cur = queue.Dequeue();
+            foreach (var child in graph[cur].children)
+                if (res[child].UpdateMin(res[cur] + 1))
+                    queue.Enqueue(child);
+        }
+        return res;
     }
 }

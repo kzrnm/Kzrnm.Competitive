@@ -6,27 +6,6 @@ using static AtCoderProject.Global;
 
 class ShortestPath
 {
-    int[] BFS(WNode[] graph, int from)
-    {
-        var res = NewArray(graph.Length, int.MaxValue);
-        var queue = new Queue<int>();
-        queue.Enqueue(from);
-        res[from] = 0;
-        while (queue.Count > 0)
-        {
-            var cur = queue.Dequeue();
-            foreach (var n in graph[cur].children.Select(node => node.to))
-            {
-                var to = res[cur] + 1;
-                if (res[n] > to)
-                {
-                    res[n] = to;
-                    queue.Enqueue(n);
-                }
-            }
-        }
-        return res;
-    }
     long[][] WarshallFloyd(WNode[] graph)
     {
         var res = NewArray(graph.Length, graph.Length, 0L);
