@@ -7,7 +7,7 @@ using static AtCoderProject.NumGlobal;
 [System.Diagnostics.DebuggerTypeProxy(typeof(SegmentTreeDebugView))]
 class SegmentTree
 {
-    // この辺は場合によって変える
+    /* この辺は場合によって変える */
     private long defaultValue = 0;
     private long Operate(long v1, long v2)
     {

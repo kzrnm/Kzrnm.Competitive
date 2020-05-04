@@ -3,7 +3,6 @@ using System.Linq;
 
 class SuffixArray
 {
-#pragma warning disable IDE0059,IDE0060
     int[] S;
     int N;
     int[] SA;
@@ -33,12 +32,12 @@ class SuffixArray
         for (int i = 0; i < v.Length; i++) b[v[i]]++;
         for (int i = 1; i < b.Length; i++) b[i] += b[i - 1];
     }
-    void InducedSort(int[] v, int[] sa, int mv, int[] b, bool[] isl)
+    void InducedSort(int[] v, int[] sa, int[] b, bool[] isl)
     {
         CreateBeginBucket(v, b);
         for (int i = 0; i < v.Length; i++) if (sa[i] > 0 && isl[sa[i] - 1]) sa[b[v[sa[i] - 1]]++] = sa[i] - 1;
     }
-    void InvertInducedSort(int[] v, int[] sa, int mv, int[] b, bool[] isl)
+    void InvertInducedSort(int[] v, int[] sa, int[] b, bool[] isl)
     {
         CreateEndBucket(v, b);
         for (int i = v.Length - 1; i >= 0; i--)
@@ -56,8 +55,8 @@ class SuffixArray
             isl[i] = v[i] > v[i + 1] || (v[i] == v[i + 1] && isl[i + 1]);
         CreateEndBucket(v, b);
         for (int i = 0; i < v.Length; i++) if (IsLMS(i, isl)) sa[--b[v[i]]] = i;
-        InducedSort(v, sa, mv, b, isl);
-        InvertInducedSort(v, sa, mv, b, isl);
+        InducedSort(v, sa, b, isl);
+        InvertInducedSort(v, sa, b, isl);
 
 
         var cur = 0;
@@ -87,8 +86,8 @@ class SuffixArray
         CreateEndBucket(v, b);
         for (int i = 0; i < sa.Length; i++) sa[i] = -1;
         for (int i = nextsa.Length - 1; i >= 0; i--) sa[--b[v[reord[nextsa[i]]]]] = reord[nextsa[i]];
-        InducedSort(v, sa, mv, b, isl);
-        InvertInducedSort(v, sa, mv, b, isl);
+        InducedSort(v, sa, b, isl);
+        InvertInducedSort(v, sa, b, isl);
         return sa;
     }
     bool IsLMS(int x, bool[] isl) { return x > 0 && isl[x - 1] && !isl[x]; }
@@ -106,23 +105,16 @@ class SuffixArray
         }
         rmq = new SparseTableRMQ(h);
     }
-    /// <summary>
-    /// s[<paramref name="i"/>:] と s[<paramref name="j"/>:] の最大共通接頭辞を O(loglogN) で計算します。
-    /// </summary>
-    /// <returns></returns>
+    /** <summary>s[<paramref name="i"/>:] と s[<paramref name="j"/>:] の最大共通接頭辞を O(loglogN) で計算します。</summary> */
     public int GetLCP(int i, int j)
     {
         i = rank[i]; j = rank[j];
         return rmq.Query(Math.Min(i, j), Math.Max(i, j));
     }
-    /// <summary>
-    /// rankがiのものを返す
-    /// </summary>
+    /** <summary>rankが[<paramref name="index"/>:]のものを返す</summary> */
     public int this[int index] => index == 0 ? N : SA[index - 1];
 
-    /// <summary>
-    /// s[i:]のランクを返す
-    /// </summary>
+    /** <summary>s[<paramref name="index"/>:]のランクを返す</summary> */
     public int Rank(int index) => rank[index];
 
     #region SparseTableRMQ
@@ -148,9 +140,7 @@ class SuffixArray
                     A[d + n + j] = Math.Min(A[d + j], A[d + j + i]);
             }
         }
-        /// <summary>
-        /// value of [l,r)
-        /// </summary>
+        /** <summary>value of [<paramref name="l"/>,<paramref name="r"/>)</summary> */
         public int Query(int l, int r)
         {
             r--;
@@ -159,9 +149,7 @@ class SuffixArray
             s = ((z & 0x0000ff00) != 0 ? 1 : 0) << 3; z >>= s; e <<= s; k |= s;
             s = ((z & 0x000000f0) != 0 ? 1 : 0) << 2; z >>= s; e <<= s; k |= s;
             s = ((z & 0x0000000c) != 0 ? 1 : 0) << 1; z >>= s; e <<= s; k |= s;
-            s = ((z & 0x00000002) != 0 ? 1 : 0) << 0; z >>= s; e <<= s; k |= s;
-            //var vl = A[l + n * k];
-            //var vr = A[r - e + 1 + (n * k)];
+            s = ((z & 0x00000002) != 0 ? 1 : 0) << 0; e <<= s; k |= s;
             return Math.Min(A[l + (n * k)], A[r + (n * k) - e + 1]);
         }
     }

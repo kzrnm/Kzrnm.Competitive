@@ -20,7 +20,6 @@ class PriorityQueue<TKey, TValue>
     private void UpdateUp(int i) { if (i > 0) { var p = (i - 1) >> 1; if (comparer.Compare(data[i].Key, data[p].Key) < 0) { (data[p], data[i]) = (data[i], data[p]); UpdateUp(p); } } }
     private void UpdateDown(int i) { var n = data.Count; var child = 2 * i + 1; if (child < n) { if (child != n - 1 && comparer.Compare(data[child].Key, data[child + 1].Key) > 0) child++; if (comparer.Compare(data[i].Key, data[child].Key) > 0) { (data[child], data[i]) = (data[i], data[child]); UpdateDown(child); } } }
 
-#pragma warning disable IDE0051
     [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)] private KeyValuePair<TKey, TValue>[] Items => data.ToArray().Sort((a, b) => comparer.Compare(a.Key, b.Key));
 }
 

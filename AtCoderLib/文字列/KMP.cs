@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
+/* https://algoful.com/Archive/Algorithm/KMPSearch */
 
-class KMP // https://algoful.com/Archive/Algorithm/KMPSearch
+class KMP 
 {
     string pattern;
     int[] table;
@@ -25,20 +26,11 @@ class KMP // https://algoful.com/Archive/Algorithm/KMPSearch
         for (int i = 0, p = 0; i < target.Length;)
         {
             if (target[i] == pattern[p])
-            {
-                // 文字が一致していれば次の文字に進む
-                i++; p++;
-            }
+            { i++; p++; }
             else if (p == 0)
-            {
-                // パターン先頭文字が不一致の場合、次の文字
                 i++;
-            }
             else
-            {
-                // 不一致の場合、パターンのどの位置から再開するか設定
                 p = table[p];
-            }
 
             if (p == pattern.Length)
             {

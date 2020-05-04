@@ -4,11 +4,13 @@ using System.Collections.Generic;
 
 class 素数
 {
-    /// <summary>
-    /// 素因数分解
-    /// </summary>
-    /// <param name="num">素因数分解する数</param>
-    /// <returns>素因数の一覧</returns>
+    /**
+     * <summary>
+     * 素因数分解
+     * </summary>
+     * <param name="num">素因数分解する数</param>
+     * <returns>素因数の一覧</returns>
+     */
     Dictionary<int, int> PrimeFactoring(int num)
     {
         var primes = Eratosthenes((int)Math.Sqrt(num));
@@ -31,12 +33,13 @@ class 素数
 
         return primeFactors;
     }
-
-    /// <summary>
-    /// エラトステネスの篩で素数一覧を返す
-    /// </summary>
-    /// <param name="n">上限</param>
-    /// <returns>素数一覧</returns>
+    /**
+     * <summary>
+     * エラトステネスの篩で素数一覧を返す
+     * </summary>
+     * <param name="n">上限</param>
+     * <returns>素数一覧</returns>
+     */
     static HashSet<int> Eratosthenes(int n)
     {
         var primes = new HashSet<int> { 2, 3, 5, 7 };

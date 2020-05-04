@@ -4,11 +4,13 @@ using System.Collections.Generic;
 
 class 約数
 {
-    /// <summary>
-    /// 約数
-    /// </summary>
-    /// <param name="num">約数を求める数</param>
-    /// <returns>約数の一覧</returns>
+    /**
+     * <summary>
+     * 約数
+     * </summary>
+     * <param name="num">約数を求める数</param>
+     * <returns>約数の一覧</returns>
+     */
     IEnumerable<int> GetYakusu(int n)
     {
         var list = new List<int>();

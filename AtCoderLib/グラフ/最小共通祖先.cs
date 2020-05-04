@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using static AtCoderProject.Global;
 using static AtCoderProject.NumGlobal;
 
-class LowestCommonAncestor // 最小共通祖先
+/**
+ * <summary>最小共通祖先</summary> 
+ */
+class LowestCommonAncestor
 {
     private TreeNode[] tree;
 
-    // kprv[u][k] 頂点uの2^k個上の祖先頂点v, 0<=k<logN
+    /** <summary>
+     *  kprv[u][k] 頂点uの2^k個上の祖先頂点v, 0<=k<logN
+     *  </summary>
+     */
     private int[][] kprv;
     private int logN;
     public LowestCommonAncestor(TreeNode[] tree)

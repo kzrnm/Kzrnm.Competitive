@@ -28,12 +28,12 @@ class RollingHash
     }
 
 
-    /// <summary>[<paramref name="l"/>, <paramref name="r"/>) のハッシュ</summary>
+    /** <summary>[<paramref name="l"/>, <paramref name="r"/>) のハッシュ</summary> */
     public Hash Slice(int l, int r) => new Hash { a = hash1.Slice(l, r), b = hash2.Slice(l, r) };
     public Hash this[Range range] => Slice(range.Start.GetOffset(length), range.End.GetOffset(length));
 
 
-    public class RollingHashUInt64 // https://webbibouroku.com/Blog/Article/cs-rollinghash
+    public class RollingHashUInt64 /* https://webbibouroku.com/Blog/Article/cs-rollinghash */
     {
         static uint B = (uint)rnd.Next(129, int.MaxValue);
         public ulong[] pow;
@@ -51,12 +51,12 @@ class RollingHash
                 hash[i + 1] = hash[i] * B + s[i];
         }
 
-        /// <summary>[<paramref name="l"/>, <paramref name="r"/>) のハッシュ</summary>
+        /** <summary>[<paramref name="l"/>, <paramref name="r"/>) のハッシュ</summary> */
         public ulong Slice(int l, int r) => hash[r] - (hash[l] * pow[r - l]);
         public ulong this[Range range] => Slice(range.Start.GetOffset(length), range.End.GetOffset(length));
     }
 
-    public class RollingHashFast //https://qiita.com/keymoon/items/11fac5627672a6d6a9f6#%E9%AB%98%E9%80%9F%E3%81%AA%E3%83%AD%E3%83%AA%E3%83%8F%E3%82%92%E6%B1%82%E3%82%81%E3%81%A6%E3%83%A1%E3%83%AB%E3%82%BB%E3%83%B3%E3%83%8C%E7%B4%A0%E6%95%B0mod
+    public class RollingHashFast /* https://qiita.com/keymoon/items/11fac5627672a6d6a9f6#%E9%AB%98%E9%80%9F%E3%81%AA%E3%83%AD%E3%83%AA%E3%83%8F%E3%82%92%E6%B1%82%E3%82%81%E3%81%A6%E3%83%A1%E3%83%AB%E3%82%BB%E3%83%B3%E3%83%8C%E7%B4%A0%E6%95%B0mod */
     {
         const int MAX_LENGTH = 500000;
         const ulong MASK30 = (1UL << 30) - 1;

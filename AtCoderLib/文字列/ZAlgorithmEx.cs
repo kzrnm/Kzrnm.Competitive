@@ -1,9 +1,11 @@
 ﻿
 using System;
 
-class ZAlgorithmEx  // https://bitbucket.org/camypaper/complib/src/master/lib/Strings/ZAlgorithm.cs
+/* https://bitbucket.org/camypaper/complib/src/master/lib/Strings/ZAlgorithm.cs */
+
+class ZAlgorithmEx  
 {
-    /// <summary> <paramref name="s"/> と <paramref name="s"/>[i:] の最長共通接頭辞を O(|<paramref name="s"/>|) で求める。</summary>
+    /** <summary> <paramref name="s"/> と <paramref name="s"/>[i:] の最長共通接頭辞を O(|<paramref name="s"/>|) で求める。</summary> */
     int[] ZAlgorithm(ReadOnlySpan<char> s)
     {
         var a = new int[s.Length + 1];

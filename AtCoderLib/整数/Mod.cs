@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-// https://qiita.com/drken/items/3b4fdf0a78e7a138cd9a
+/* https://qiita.com/drken/items/3b4fdf0a78e7a138cd9a */
 readonly struct Mod : IEquatable<Mod>
 {
     public const long mod = 1000000007;
@@ -66,7 +66,7 @@ readonly struct Mod : IEquatable<Mod>
             }
         }
 
-        // 二項係数計算
+        /** <summary>組み合わせ関数(二項係数)</summary> */
         public Mod Combine(int n, int k)
         {
             if (n < k) return 0;

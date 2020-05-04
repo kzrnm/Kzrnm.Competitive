@@ -79,7 +79,7 @@ namespace AtCoderProject
         }
         public static BigInteger ParseBigInteger(ReadOnlySpan<char> s)
         {
-            // 自前実装の方が速い
+            /* 自前実装の方が速い */
             BigInteger res;
             if (s.Length % 9 == 0)
                 res = 0;

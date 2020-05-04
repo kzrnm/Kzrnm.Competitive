@@ -1,11 +1,13 @@
 ﻿using System;
 
-// 有理数
+/** <summary>有理数</summary> */
 readonly struct Fraction : IEquatable<Fraction>, IComparable<Fraction>
 {
     static long Gcd(long a, long b) => b > a ? Gcd(b, a) : (b == 0 ? a : Gcd(b, a % b));
-    public readonly long numerator; // 分子
-    public readonly long denominator; // 分母
+    /** <summary>分子</summary> */
+    public readonly long numerator;
+    /** <summary>分母</summary> */
+    public readonly long denominator;
     public Fraction(long 分子, long 分母)
     {
         var sign = Math.Sign(分子) * Math.Sign(分母);

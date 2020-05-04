@@ -22,7 +22,7 @@ class UnionFind
         var xRoot = Root(x);
         var yRoot = Root(y);
         if (xRoot == yRoot) return false;
-        else if (data[yRoot] < data[xRoot])//y側の方が多い場合は逆にする
+        else if (data[yRoot] < data[xRoot])/*y側の方が多い場合は逆にする*/
             (xRoot, yRoot) = (yRoot, xRoot);
         data[xRoot] += data[yRoot];
         data[yRoot] = xRoot;

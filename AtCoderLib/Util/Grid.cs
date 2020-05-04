@@ -7,7 +7,7 @@ using static AtCoderProject.Global;
 
 class Grid
 {
-    // https://atcoder.jp/contests/abc088/tasks/abc088_d
+    /* https://atcoder.jp/contests/abc088/tasks/abc088_d */
     ConsoleReader cr;
 
 
