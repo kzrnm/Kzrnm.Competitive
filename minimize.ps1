@@ -13,7 +13,7 @@
         $sb.AppendLine($lines.Current) | Out-Null
     }
 
-    $sb.AppendLine()
+    $sb.AppendLine() | Out-Null
 
     do {
         $line = $lines.Current
@@ -27,12 +27,12 @@
     } while ($lines.MoveNext() -and ($lines.Current -ne '#endregion'))
 
     if ($lines.Current -eq '#endregion') {
-        $sb.AppendLine("`r`n#endregion")
+        $sb.AppendLine("`r`n#endregion") | Out-Null
         while ($lines.MoveNext()) {
             $sb.AppendLine($lines.Current) | Out-Null
         }
     }
-    $sb.ToString() > $filepath
+    $sb.ToString() | Out-File $filepath
 }
 function Compress-CSharp {
     param (
@@ -57,7 +57,7 @@ function Compress-CSharp {
         $line = $lines.Current
         $sb.Append($line) | Out-Null
         if ($line.StartsWith('//')) {
-            $sb.Append("`r`n") | Out-Null
+            # do-nothing
         }
         else {
             $sb.Append(" ") | Out-Null
@@ -65,7 +65,7 @@ function Compress-CSharp {
     } while ($lines.MoveNext())
 
     if ($MethodOnly) { $sb.Insert($sb.Length - 2, "`r`n") | Out-Null }
-    $sb.ToString() > $filepath
+    $sb.ToString() | Out-File $filepath
 }
 
 Compress-Main "$PSScriptRoot\AtCoderProject\Program.cs"
