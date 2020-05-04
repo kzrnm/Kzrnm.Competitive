@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 /* https://algoful.com/Archive/Algorithm/KMPSearch */
 
-class KMP 
+class KMP
 {
     string pattern;
     int[] table;

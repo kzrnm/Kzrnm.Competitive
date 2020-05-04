@@ -67,7 +67,7 @@ static class 二分探索
      * <remarks> <paramref name="a"/> は比較関数に対して昇順であることを仮定しています．この関数は O(log N) で実行されます．</remarks>
     */
     public static int UpperBound<T>(this IList<T> a, T v) => BinarySearch(a, v, Comparer<T>.Default, false);
- 
+
     private static int BinarySearch<T>(IList<T> a, T v, IComparer<T> cmp, bool isLowerBound)
     {
         int ok = a.Count;
