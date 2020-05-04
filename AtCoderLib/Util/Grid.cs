@@ -8,6 +8,7 @@ using static AtCoderProject.Global;
 class Grid
 {
     /* https://atcoder.jp/contests/abc088/tasks/abc088_d */
+#pragma warning disable CS0649
     ConsoleReader cr;
 
 
