@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
-class BoyerMoore  /* https://algoful.com/Archive/Algorithm/BMSearch */
+#region https://algoful.com/Archive/Algorithm/BMSearch
+#endregion
+class BoyerMoore
 {
     string pattern;
     Dictionary<char, int> table;

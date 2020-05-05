@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-/* https://qiita.com/drken/items/97e37dd6143e33a64c8c */
-/* https://bitbucket.org/camypaper/complib/src/master/lib/Algorithms/BinarySearch.cs */
+#region https://qiita.com/drken/items/97e37dd6143e33a64c8c
+#endregion
 static class 二分探索
 {
     public static int BinarySearch(int ok, int ng, Predicate<int> isOK)
@@ -16,6 +16,9 @@ static class 二分探索
         return ok;
     }
 
+
+
+    /* https://bitbucket.org/camypaper/complib/src/master/lib/Algorithms/BinarySearch.cs */
     /**
      * <summary>
      * 与えられた比較関数に従って，<paramref name="a"/> の要素のうち，<paramref name="v"/> 以上の要素であるような最小のインデックスを取得します．

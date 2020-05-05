@@ -1,7 +1,8 @@
 ﻿using System;
 
 
-/* https://qiita.com/drken/items/3b4fdf0a78e7a138cd9a */
+#region https://qiita.com/drken/items/3b4fdf0a78e7a138cd9a 
+#endregion
 readonly struct Mod : IEquatable<Mod>
 {
     public const long mod = 1000000007;

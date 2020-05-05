@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-/* https://algoful.com/Archive/Algorithm/KMPSearch */
 
+#region https://algoful.com/Archive/Algorithm/KMPSearch
+#endregion
 class KMP
 {
     string pattern;
