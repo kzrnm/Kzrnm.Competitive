@@ -11,7 +11,7 @@ class SegmentTree
     private long defaultValue = 0;
     private long Operate(long v1, long v2)
     {
-        return v1 + v2;
+        return Math.Max(v1, v2);
     }
 
     private int rootLength;
