@@ -242,7 +242,7 @@ namespace AtCoderProject.Reader
                 int res = 0;
                 bool neg = false;
                 while (buffer[pos] < 48) { neg = buffer[pos] == 45; MoveNext(); }
-                do { res = res * 10 + (buffer[pos] ^ 48); MoveNext(); } while (48 <= buffer[pos]);
+                do { res = checked(res * 10 + (buffer[pos] ^ 48)); MoveNext(); } while (48 <= buffer[pos]);
                 return neg ? -res : res;
             }
         }
