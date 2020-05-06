@@ -220,7 +220,7 @@ namespace AtCoderProject.Reader
     using System.Text;
     using System.Diagnostics;
     using System.Runtime.CompilerServices;
-    [DebuggerNonUserCode]
+    [DebuggerStepThrough]
     public class ConsoleReader
     {
         const int BufSize = 1 << 12;
