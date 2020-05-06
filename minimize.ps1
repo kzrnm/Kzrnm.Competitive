@@ -75,7 +75,7 @@ Compress-Main "$PSScriptRoot\AtCoderProject\Program.cs"
     'AtCoderLib\Collection\PriorityQueue.cs',
     'AtCoderLib\Collection\Set.cs',
     'AtCoderLib\Collection\SortedCollection.cs',
-    'AtCoderLib\Util\BitArray.cs',
+    'AtCoderLib\Util\Bit.cs',
     'AtCoderLib\グラフ\重み付き\重み付きグラフ.cs',
     'AtCoderLib\グラフ\UnionFind.cs',
     'AtCoderLib\グラフ\最小共通祖先.cs',
