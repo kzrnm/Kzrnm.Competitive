@@ -2,8 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AtCoderProject;
-using ConsoleReader = AtCoderProject.Reader.ConsoleReader;
+using AtCoderProject.Reader;
 using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
 using Unsafe = System.Runtime.CompilerServices.Unsafe;
@@ -327,6 +326,37 @@ namespace AtCoderProject.Reader
             public double[] Double { get { while (cr.buffer[cr.pos] <= 32) cr.MoveNext(); var list = new List<double>(); do { if (cr.buffer[cr.pos] < 32) cr.MoveNext(); else list.Add(cr.Double); } while (cr.buffer[cr.pos] != 10 && cr.buffer[cr.pos] != 13); return list.ToArray(); } }
         }
         public SplitReader Split => new SplitReader(this);
+
+        public static implicit operator int0(ConsoleReader cr) => new int0(cr.Int0);
+        public static implicit operator long0(ConsoleReader cr) => new long0(cr.Long0);
+        public static implicit operator int(ConsoleReader cr) => cr.Int;
+        public static implicit operator long(ConsoleReader cr) => cr.Long;
+        public static implicit operator string(ConsoleReader cr) => cr.Ascii;
+        public void Deconstruct(out ConsoleReader o1, out ConsoleReader o2) => (o1, o2) = (this, this);
+        public void Deconstruct(out ConsoleReader o1, out ConsoleReader o2, out ConsoleReader o3) =>
+            (o1, o2, o3) = (this, this, this);
+        public void Deconstruct(out ConsoleReader o1, out ConsoleReader o2, out ConsoleReader o3, out ConsoleReader o4) =>
+            (o1, o2, o3, o4) = (this, this, this, this);
+        public void Deconstruct(out ConsoleReader o1, out ConsoleReader o2, out ConsoleReader o3, out ConsoleReader o4, out ConsoleReader o5) =>
+            (o1, o2, o3, o4, o5) = (this, this, this, this, this);
+        public void Deconstruct(out ConsoleReader o1, out ConsoleReader o2, out ConsoleReader o3, out ConsoleReader o4, out ConsoleReader o5, out ConsoleReader o6) =>
+            (o1, o2, o3, o4, o5, o6) = (this, this, this, this, this, this);
+        public void Deconstruct(out ConsoleReader o1, out ConsoleReader o2, out ConsoleReader o3, out ConsoleReader o4, out ConsoleReader o5, out ConsoleReader o6, out ConsoleReader o7) =>
+            (o1, o2, o3, o4, o5, o6, o7) = (this, this, this, this, this, this, this);
+        public void Deconstruct(out ConsoleReader o1, out ConsoleReader o2, out ConsoleReader o3, out ConsoleReader o4, out ConsoleReader o5, out ConsoleReader o6, out ConsoleReader o7, out ConsoleReader o8) =>
+            (o1, o2, o3, o4, o5, o6, o7, o8) = (this, this, this, this, this, this, this, this);
+    }
+    public struct int0
+    {
+        private readonly int v;
+        public int0(int v) { this.v = v; }
+        public static implicit operator int(int0 i0) => i0.v;
+    }
+    public struct long0
+    {
+        private readonly long v;
+        public long0(long v) { this.v = v; }
+        public static implicit operator long(long0 i0) => i0.v;
     }
 }
 public class Program
@@ -339,7 +369,7 @@ public class Program
     public string Result() => Calc() switch { bool b => b ? "Yes" : "No", double d => d.ToString("0.####################"), object o => o.ToString(), };
     public object Calc()
     {
-        var N = cr.Int;
+        (int N, long K, string s) = cr;
         var arr = cr.Repeat(N).Int;
         return N;
     }
