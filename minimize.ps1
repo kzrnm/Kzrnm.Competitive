@@ -69,7 +69,7 @@ function Compress-CSharp {
     $sb.ToString() | Out-File $filepath
 }
 
-Compress-Main "$PSScriptRoot\AtCoderProject\Program.cs"
+Compress-Main "$PSScriptRoot\AtCoderProject\Main\Program.cs"
 
 @(
     'AtCoderLib\Collection\PriorityQueue.cs',
