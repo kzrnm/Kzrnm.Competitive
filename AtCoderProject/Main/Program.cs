@@ -294,7 +294,7 @@ namespace AtCoderProject.Reader
         }
         public double Double => double.Parse(this.Ascii);
 
-        [DebuggerNonUserCode]
+        [DebuggerStepThrough]
         public struct RepeatReader
         {
             ConsoleReader cr;
@@ -309,10 +309,15 @@ namespace AtCoderProject.Reader
             public long[] Long { get { var arr = new long[count]; for (var i = 0; i < count; i++) arr[i] = cr.Long; return arr; } }
             public long[] Long0 { get { var arr = new long[count]; for (var i = 0; i < count; i++) arr[i] = cr.Long0; return arr; } }
             public double[] Double { get { var arr = new double[count]; for (var i = 0; i < count; i++) arr[i] = cr.Double; return arr; } }
+
+            public static implicit operator int[](RepeatReader rr) => rr.Int;
+            public static implicit operator long[](RepeatReader rr) => rr.Long;
+            public static implicit operator double[](RepeatReader rr) => rr.Double;
+            public static implicit operator string[](RepeatReader rr) => rr.Ascii;
         }
         public RepeatReader Repeat(int count) => new RepeatReader(this, count);
 
-        [DebuggerNonUserCode]
+        [DebuggerStepThrough]
         public struct SplitReader
         {
             ConsoleReader cr;
@@ -324,13 +329,17 @@ namespace AtCoderProject.Reader
             public long[] Long { get { while (cr.buffer[cr.pos] <= 32) cr.MoveNext(); var list = new List<long>(); do { if (cr.buffer[cr.pos] < 32) cr.MoveNext(); else list.Add(cr.Long); } while (cr.buffer[cr.pos] != 10 && cr.buffer[cr.pos] != 13); return list.ToArray(); } }
             public long[] Long0 { get { while (cr.buffer[cr.pos] <= 32) cr.MoveNext(); var list = new List<long>(); do { if (cr.buffer[cr.pos] < 32) cr.MoveNext(); else list.Add(cr.Long0); } while (cr.buffer[cr.pos] != 10 && cr.buffer[cr.pos] != 13); return list.ToArray(); } }
             public double[] Double { get { while (cr.buffer[cr.pos] <= 32) cr.MoveNext(); var list = new List<double>(); do { if (cr.buffer[cr.pos] < 32) cr.MoveNext(); else list.Add(cr.Double); } while (cr.buffer[cr.pos] != 10 && cr.buffer[cr.pos] != 13); return list.ToArray(); } }
+
+            public static implicit operator int[](SplitReader sr) => sr.Int;
+            public static implicit operator long[](SplitReader sr) => sr.Long;
+            public static implicit operator double[](SplitReader sr) => sr.Double;
+            public static implicit operator string[](SplitReader sr) => sr.Ascii;
         }
         public SplitReader Split => new SplitReader(this);
 
-        public static implicit operator int0(ConsoleReader cr) => new int0(cr.Int0);
-        public static implicit operator long0(ConsoleReader cr) => new long0(cr.Long0);
         public static implicit operator int(ConsoleReader cr) => cr.Int;
         public static implicit operator long(ConsoleReader cr) => cr.Long;
+        public static implicit operator double(ConsoleReader cr) => cr.Double;
         public static implicit operator string(ConsoleReader cr) => cr.Ascii;
         public void Deconstruct(out ConsoleReader o1, out ConsoleReader o2) => (o1, o2) = (this, this);
         public void Deconstruct(out ConsoleReader o1, out ConsoleReader o2, out ConsoleReader o3) =>
@@ -346,18 +355,6 @@ namespace AtCoderProject.Reader
         public void Deconstruct(out ConsoleReader o1, out ConsoleReader o2, out ConsoleReader o3, out ConsoleReader o4, out ConsoleReader o5, out ConsoleReader o6, out ConsoleReader o7, out ConsoleReader o8) =>
             (o1, o2, o3, o4, o5, o6, o7, o8) = (this, this, this, this, this, this, this, this);
     }
-    public struct int0
-    {
-        private readonly int v;
-        public int0(int v) { this.v = v; }
-        public static implicit operator int(int0 i0) => i0.v;
-    }
-    public struct long0
-    {
-        private readonly long v;
-        public long0(long v) { this.v = v; }
-        public static implicit operator long(long0 i0) => i0.v;
-    }
 }
 public class Program
 {
@@ -369,8 +366,9 @@ public class Program
     public string Result() => Calc() switch { bool b => b ? "Yes" : "No", double d => d.ToString("0.####################"), object o => o.ToString(), };
     public object Calc()
     {
-        (int N, long K, string s) = cr;
-        var arr = cr.Repeat(N).Int;
+        int N = cr;
+        (long K, string s) = cr;
+        int[] arr = cr.Repeat(N);
         return N;
     }
 }
