@@ -63,6 +63,7 @@ namespace AtCoderProject
         public static IComparer<T> ComparerReverse<T>() where T : IComparable<T> => new ComparerReverseImpl<T>();
         public static string AllLines<T>(IEnumerable<T> source) => string.Join("\n", source);
         public static string AllJoin<T>(IEnumerable<T> source) => string.Join(" ", source);
+        public static string AllGrid<T>(IEnumerable<IEnumerable<T>> source) => AllLines(source.Select(AllJoin));
     }
     public static class NumGlobal
     {
