@@ -7,7 +7,6 @@ using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
 using Unsafe = System.Runtime.CompilerServices.Unsafe;
 using BigInteger = System.Numerics.BigInteger;
-using TextReader = System.IO.TextReader;
 using StringBuilder = System.Text.StringBuilder;
 using static AtCoderProject.Global;
 using static AtCoderProject.NumGlobal;
