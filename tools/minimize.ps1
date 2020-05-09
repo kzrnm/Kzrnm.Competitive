@@ -1,4 +1,5 @@
-﻿function Compress-Main {
+﻿$SolutionRoot = "$PSScriptRoot\.."
+function Compress-Main {
     param (
         [System.IO.FileInfo]$filepath
     )
@@ -69,7 +70,7 @@ function Compress-CSharp {
     $sb.ToString() | Out-File $filepath
 }
 
-Compress-Main "$PSScriptRoot\AtCoderProject\Main\Program.cs"
+Compress-Main "$SolutionRoot\AtCoderProject\Main\Program.cs"
 
 @(
     'AtCoderLib\Collection\PriorityQueue.cs',
@@ -86,8 +87,8 @@ Compress-Main "$PSScriptRoot\AtCoderProject\Main\Program.cs"
     'AtCoderLib\範囲演算\累積和2D.cs',
     'AtCoderLib\文字列\RollingHash.cs',
     'AtCoderLib\文字列\SuffixArray.cs'
-) | ForEach-Object { Compress-CSharp "$PSScriptRoot\$_" } 
+) | ForEach-Object { Compress-CSharp "$SolutionRoot\$_" } 
 @(
     'AtCoderLib\グラフ\重み付き\ShortestPath.cs'
-) | ForEach-Object { Compress-CSharp "$PSScriptRoot\$_" -MethodOnly } 
-dotnet-format.exe
+) | ForEach-Object { Compress-CSharp "$SolutionRoot\$_" -MethodOnly } 
+dotnet-format.exe -w "$PSScriptRoot\.."

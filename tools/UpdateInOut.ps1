@@ -2,7 +2,7 @@ param([Parameter(Mandatory = $true)][string]$Url, [Parameter()][string]$Cookie, 
 
 $ErrorActionPreference="Stop"
 
-[Reflection.Assembly]::LoadFrom("$PSScriptRoot\AngleSharp.dll") | Out-Null
+[Reflection.Assembly]::LoadFrom("$PSScriptRoot\DLL\AngleSharp.dll") | Out-Null
 
 if (-not $Cookie) { 
     if (-not $CookieFile) {
@@ -36,7 +36,7 @@ foreach ($part in $parts) {
     }
 }
 
-$inoutXmlPath = "$PSScriptRoot\InOut.resx"
+$inoutXmlPath = "$PSScriptRoot\..\AtCoderProject\Tests\InOut.resx"
 $inoutXml = [Xml](Get-Content $inoutXmlPath)
 $datas = ($inoutXml.GetElementsByTagName("data") | Sort-Object -property @{Expression = { $_.Attributes["name"].Value } })
 
