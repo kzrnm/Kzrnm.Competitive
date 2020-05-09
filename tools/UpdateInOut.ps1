@@ -1,24 +1,18 @@
-param([Parameter(Mandatory = $true)][string]$Url, [Parameter()][string]$Cookie, [Parameter()][string]$CookieFile)
+using namespace System.Collections.Generic;
 
-$ErrorActionPreference="Stop"
+param([Parameter(Mandatory = $true, Position=0)][string]$Url)
 
-[Reflection.Assembly]::LoadFrom("$PSScriptRoot\DLL\AngleSharp.dll") | Out-Null
+$ErrorActionPreference = "Stop"
 
-if (-not $Cookie) { 
-    if (-not $CookieFile) {
-        $CookieFile = "$PSScriptRoot\cookie.txt"
-    }
-    $Cookie = Get-Content $CookieFile
-}
+. "$PSScriptRoot\parse.ps1"
+[System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms") | Out-Null
 
-[string]$html = (Invoke-WebRequest -Uri $Url -Headers @{"Cookie" = $Cookie; }).Content
-
-$document = [AngleSharp.Html.Parser.HtmlParser]::new().ParseDocument($html)
+$document = Get-Parsed-AtCoder $Url
 $taskStatement = $document.GetElementById("task-statement");
 $ja = $taskStatement.GetElementsByClassName("lang-ja")[0];
 $parts = $ja.GetElementsByClassName("part");
-$inputList = [System.Collections.Generic.List[string]]::new()
-$outputList = [System.Collections.Generic.List[string]]::new()
+$inputList = [List[string]]::new()
+$outputList = [List[string]]::new()
 
 foreach ($part in $parts) {
     $h3 = $part.GetElementsByTagName("h3")[0];
