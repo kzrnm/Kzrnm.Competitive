@@ -18,7 +18,7 @@ function Get-Parsed-AtCoder {
     return [AngleSharp.Html.Parser.HtmlParser]::new().ParseDocument($html)
 }
 
-function Get-Parsed-InOut {
+function Get-InOut {
     param(
         [Parameter(Mandatory = $true)]
         [AngleSharp.Html.Dom.IHtmlDocument]
@@ -26,7 +26,6 @@ function Get-Parsed-InOut {
     )
     
     $parts = $document.GetElementById("task-statement").
-    GetElementsByClassName("lang-ja")[0].
     GetElementsByClassName("part");
     $inputList = [List[string]]::new()
     $outputList = [List[string]]::new()
@@ -35,10 +34,10 @@ function Get-Parsed-InOut {
         $h3 = $part.GetElementsByTagName("h3")[0];
         $list = $null
     
-        if ($h3.TextContent -match "入力例 (\d+)") {
+        if ($h3.TextContent -match "入力例 *(\d+)") {
             $list = $inputList;
         }
-        elseif ($h3.TextContent -match "出力例 (\d+)") {
+        elseif ($h3.TextContent -match "出力例 *(\d+)") {
             $list = $outputList;
         }
 
@@ -47,7 +46,7 @@ function Get-Parsed-InOut {
         }
     }
 
-    [System.Linq.Enumerable]::Zip($inputList, $outputList)
+    return [System.Linq.Enumerable]::Zip($inputList, $outputList)
 }
 
 function Update-InOut {
@@ -56,7 +55,6 @@ function Update-InOut {
         [ValueTuple[string, string][]]
         $inouts
     )
-    
 
     $inoutXmlPath = "$PSScriptRoot\..\AtCoderProject\Tests\InOut.resx"
     $writer = [System.Resources.ResXResourceWriter]::new($inoutXmlPath)
@@ -75,10 +73,145 @@ function Update-InOut {
         $writer.Close()
     }
 }
-function Wait {
-    Start-Sleep -Seconds 2    
+
+class ATVariable {
+    [string]$name
+    ATVariable([string]$name) {
+        $this.name = $name
+    }
+
+    [string]ToInit() {
+        return "$($this.name) = cr;"
+    }
+    [string]ToDefine() {
+        return "int $($this.name);"
+    }
+}
+class ATArray {
+    [string]$name
+    [string]$length
+    ATArray([string]$name, [string]$length) {
+        $this.name = $name
+        $this.length = $length
+    }
+
+    [string]ToInit() {
+        return "$($this.name) = cr.Repeat($($this.length));"
+    }
+    [string]ToDefine() {
+        return "int[] $($this.name);"
+    }
+}
+class ATGrid {
+    [string]$length
+    ATGrid([string]$length) {
+        $this.length = $length
+    }
+
+    [string]ToInit() {
+        return "grid = cr.Repeat($($this.length));"
+    }
+    [string]ToDefine() {
+        return "string[] grid;"
+    }
+}
+class ATTuples {
+    [string[]]$names
+    [string]$length
+    [string]$typename
+    [string]$varname
+    ATTuples([string[]]$names, [string]$length) {
+        $this.names = $names
+        $this.length = $length
+        $this.varname = $this.names -join ''
+        $this.typename = "(" + (($this.names | ForEach-Object { "int $_" }) -join "," ) + ")"
+    }
+
+    [string]ToInit() {
+        return "$($this.varname) = cr.Repeat($($this.length)).Select<$($this.typename)>(cr => ($(@('cr')*$this.names.Length -join ',')));"
+    }
+    [string]ToDefine() {
+        return "$($this.typename)[] $($this.varname);"
+    }
+}
+function Get-Parsed-Input {
+    param(
+        [Parameter(Mandatory = $true)]
+        [AngleSharp.Html.Dom.IHtmlDocument]
+        $document
+    )
+    
+    $lines = $document.GetElementById("task-statement").
+    GetElementsByClassName("part") |
+    Where-Object { $_.GetElementsByTagName("h3")[0].TextContent -like "入*力" } |
+    ForEach-Object { $_.GetElementsByTagName('pre')[0].InnerHtml -split "`n" } 
+    for ($i = 0; $i -lt $lines.Length; $i++) {
+        $line = [string[]](([Xml]"<root>$($lines[$i])</root>").GetElementsByTagName('var') | 
+            ForEach-Object ChildNodes |
+            ForEach-Object Value)
+        if (-not $line) { continue }
+        $first = $line[0]
+        if ($first -eq ':') { }
+        elseif ($first -eq '\vdots') { }
+        elseif ( $first -match '^(.+?)_(.+)$' ) {
+            $ml = $Matches
+            if ($line.Length -gt 1) {
+                $line[$line.Length - 1] -match '^(.+?)_(.+)$' | Out-Null
+                $ml2 = $Matches
+                if ($ml[1] -eq $ml2[1]) {
+                    # 1行すべて同じ文字
+                    [ATArray]::new($ml2[1], $ml2[2])
+                } 
+                elseif ($ml[2] -notmatch '^\d+$') {
+                    # 非数値の添字が来るまで回す
+                    if (-not $ml[2].Contains('{')) {
+                        # 1次元タプル配列っぽい
+                        $ms = ($line | ForEach-Object { $_ -match '^(.+?)_(.+)$' | Out-Null; $Matches })
+                        if ($ms | Where-Object { $ml[2] -ne $_[2] }) {
+                            # 配列が紛れている
+                        }
+                        else {
+                            [ATTuples]::new(($ms | Foreach-Object { $_[1] }) , $ml[2])
+                        }
+                    }
+                }
+            }
+            elseif ($ml[2] -notmatch '^\d+$') {
+                if ($ml[2].Contains('{')) {
+                    # 要素が1つなのに2次元っぽいならたぶんグリッド
+                    $sp = ($ml[2] -split ' ')
+                    $spl = $sp[$sp.Length - 1]
+                    if ($spl -match '^.+_\{(\D)\D\}$') {
+                        [ATGrid]::new($Matches[1])
+                    }
+                }
+                else {
+                    # 添字ありだが1行に1つなら、たぶん配列ということにする
+                    [ATArray]::new($ml[1], $ml[2]) 
+                }
+            }
+        }
+        else {
+            # 添字なし
+            $line | ForEach-Object { [ATVariable]::new($_) } 
+        }
+    }
+}
+
+function Update-Input {
+    param(
+        $vars
+    )
+    $mainPath = "$PSScriptRoot\..\AtCoderProject\Main\Program.cs"
+    $main = (Get-Content $mainPath -Raw)
+    ($main -replace "object +Calc\(\)[\s\S]*" , "object Calc(){") > $mainPath
+    $vars | ForEach-Object { $_.ToInit() } >> $mainPath
+    "return 1;}" >> $mainPath
+    $vars | ForEach-Object { $_.ToDefine() } >> $mainPath
+    "}" >> $mainPath
 }
 
 $document = (Get-Parsed-AtCoder)
-Wait &
-Update-InOut (Get-Parsed-InOut $document) &
+Update-InOut (Get-InOut $document)
+Update-Input (Get-Parsed-Input $document)
+dotnet-format.exe -f "$PSScriptRoot\..\AtCoderProject"
