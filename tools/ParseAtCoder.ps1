@@ -102,6 +102,23 @@ class ATArray {
         return "int[] $($this.name);"
     }
 }
+class ATArray2 {
+    [string]$name
+    [string]$length1
+    [string]$length2
+    ATArray2([string]$name, [string]$length1, [string]$length2) {
+        $this.name = $name
+        $this.length1 = $length1
+        $this.length2 = $length2
+    }
+
+    [string]ToInit() {
+        return "$($this.name) = cr.Repeat($($this.length1)).Select(cr => cr.Repeat($($this.length2)).Int);"
+    }
+    [string]ToDefine() {
+        return "int[][] $($this.name);"
+    }
+}
 class ATGrid {
     [string]$length
     ATGrid([string]$length) {
@@ -160,7 +177,16 @@ function Get-Parsed-Input {
                 $ml2 = $Matches
                 if ($ml[1] -eq $ml2[1]) {
                     # 1行すべて同じ文字
-                    [ATArray]::new($ml2[1], $ml2[2])
+                    if (-not $ml[2].Contains('{')) {
+                        # 1次元
+                        [ATArray]::new($ml2[1], $ml2[2])
+                    }
+                    else {
+                        # 2次元
+                        if ($ml2[2] -match '^\{(\D)(\D)\}$') {
+                            [ATArray2]::new($ml2[1], $Matches[1], $Matches[2])
+                        }
+                    }
                 } 
                 elseif ($ml[2] -notmatch '^\d+$') {
                     # 非数値の添字が来るまで回す
