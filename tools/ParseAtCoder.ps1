@@ -59,14 +59,17 @@ function Update-InOut {
     $inoutXmlPath = "$PSScriptRoot\..\AtCoderProject\Tests\InOut.resx"
     $writer = [System.Resources.ResXResourceWriter]::new($inoutXmlPath)
     try {
-        $i = 0
-        $inouts | ForEach-Object {
-            $in = $_.Item1
-            $out = $_.Item2
+        for ($i = 0; $i -lt 6; $i++) {
+            if ($i -lt $inouts.Length) {
+                $in = $inouts[$i].Item1
+                $out = $inouts[$i].Item2
+            }
+            else {
+                $in = $out = ''
+            }
             [char]$c = [int][char]'A' + $i
             $writer.AddResource("${c}_IN", $in)
             $writer.AddResource("${c}_OUT", $out)
-            $i++
         }
     }
     finally {
