@@ -172,6 +172,7 @@ function Get-Parsed-Input {
         if (-not $line) { continue }
         $first = $line[0]
         if ($first -eq ':') { }
+        elseif ($first -eq '.') { }
         elseif ($first -eq '\vdots') { }
         elseif ( $first -match '^(.+?)_(.+)$' ) {
             $ml = $Matches
@@ -193,13 +194,14 @@ function Get-Parsed-Input {
                 } 
                 elseif ($ml[2] -notmatch '^\d+$') {
                     # 非数値の添字が来るまで回す
-                    if (-not $ml[2].Contains('{')) {
+                    $ms = ($line | ForEach-Object { $_ -match '^(.+?)_(.+)$' | Out-Null; $Matches })
+                    if ($ms.Length -eq [HashSet[string]]::new([string[]]($ms | ForEach-Object { $_[1] })).Count -and [HashSet[string]]::new([string[]]($ms | ForEach-Object { $_[2] })).Count -eq 1) {
                         # 1次元タプル配列っぽい
-                        $ms = ($line | ForEach-Object { $_ -match '^(.+?)_(.+)$' | Out-Null; $Matches })
-                        if ($ms | Where-Object { $ml[2] -ne $_[2] }) {
-                            # 配列が紛れている
+                        if ($ml[2] -match '\{(\D.*)\}') {
+                            $l = $Matches[1]
+                            [ATTuples]::new(($ms | Foreach-Object { $_[1] }) , $l)
                         }
-                        else {
+                        elseif (-not $ml[2].Contains('_')) {
                             [ATTuples]::new(($ms | Foreach-Object { $_[1] }) , $ml[2])
                         }
                     }
