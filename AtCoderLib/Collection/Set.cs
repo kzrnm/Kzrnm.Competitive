@@ -23,7 +23,7 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
     {
         get
         {
-            if (root == null) return default(T);
+            if (root == null) return default;
             var cur = root;
             while (cur.Left != null) { cur = cur.Left; }
             return cur.Item;
@@ -33,7 +33,7 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
     {
         get
         {
-            if (root == null) return default(T);
+            if (root == null) return default;
             var cur = root;
             while (cur.Right != null) { cur = cur.Right; }
             return cur.Item;
@@ -90,6 +90,7 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
     {
         Node right = null;
         Node current = root;
+        if (current == null) return (null, -1);
         int ri = -1;
         int ci = NodeSize(current.Left);
         while (true)
@@ -129,6 +130,7 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
     public IEnumerable<T> Enumerate(Node from) => Enumerate(from, false);
     public IEnumerable<T> Enumerate(Node from, bool reverse)
     {
+        if (from == null) yield break;
         var e = new Enumerator(this, reverse, from);
         while (e.MoveNext()) yield return e.Current;
     }
@@ -166,7 +168,7 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
 
     public int Count => NodeSize(root);
     protected static int NodeSize(Node node) => node == null ? 0 : node.Size;
-    public readonly IComparer<T> comparer;
+    protected readonly IComparer<T> comparer;
     bool ICollection<T>.IsReadOnly => false;
 
     private Node root;
@@ -188,17 +190,21 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
                 }
                 break;
             case 2:
-                root = new Node(arr[startIndex], false);
-                root.Right = new Node(arr[endIndex], true);
+                root = new Node(arr[startIndex], false)
+                {
+                    Right = new Node(arr[endIndex], true)
+                };
                 if (redNode != null)
                 {
                     root.Left = redNode;
                 }
                 break;
             case 3:
-                root = new Node(arr[startIndex + 1], false);
-                root.Left = new Node(arr[startIndex], false);
-                root.Right = new Node(arr[endIndex], false);
+                root = new Node(arr[startIndex + 1], false)
+                {
+                    Left = new Node(arr[startIndex], false),
+                    Right = new Node(arr[endIndex], false)
+                };
                 if (redNode != null)
                 {
                     root.Left.Left = redNode;
@@ -206,11 +212,13 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
                 break;
             default:
                 int midpt = ((startIndex + endIndex) / 2);
-                root = new Node(arr[midpt], false);
-                root.Left = ConstructRootFromSortedArray(arr, startIndex, midpt - 1, redNode);
-                root.Right = size % 2 == 0 ?
+                root = new Node(arr[midpt], false)
+                {
+                    Left = ConstructRootFromSortedArray(arr, startIndex, midpt - 1, redNode),
+                    Right = size % 2 == 0 ?
                     ConstructRootFromSortedArray(arr, midpt + 2, endIndex, new Node(arr[midpt + 1], true)) :
-                    ConstructRootFromSortedArray(arr, midpt + 1, endIndex, null);
+                    ConstructRootFromSortedArray(arr, midpt + 1, endIndex, null)
+                };
                 break;
         }
         return root;
@@ -249,7 +257,7 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
             current = (order < 0) ? current.Left : current.Right;
         }
         Node node = new Node(item, true);
-        if (order > 0) parent.Right = node;
+        if (order >= 0) parent.Right = node;
         else parent.Left = node;
         if (parent.IsRed) InsertionBalance(node, ref parent, grandParent, greatGrandParent);
         root.IsRed = false;
@@ -302,7 +310,6 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
                         {
                             parentOfMatch = newGrandParent;
                         }
-                        grandParent = newGrandParent;
                     }
                 }
             }
@@ -508,39 +515,85 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
         private Node current;
 
         private bool reverse;
-        internal Enumerator(Set<T> set) : this(set, false, null)
-        {
-
-        }
+        internal Enumerator(Set<T> set) : this(set, false, null) { }
         internal Enumerator(Set<T> set, bool reverse, Node startNode)
         {
-            tree = set; stack = new Stack<Node>(2 * Log2(tree.Count + 1)); current = null; this.reverse = reverse; if (startNode == null) IntializeAll(); else Intialize(startNode);
+            tree = set;
+            stack = new Stack<Node>(2 * Log2(tree.Count + 1));
+            current = null;
+            this.reverse = reverse;
+            if (startNode == null) IntializeAll();
+            else Intialize(startNode);
+
         }
         private void IntializeAll()
         {
-            var node = tree.root; while (node != null)
+            var node = tree.root;
+            while (node != null)
             {
-                var next = reverse ? node.Right : node.Left; stack.Push(node); node = next;
+                var next = reverse ? node.Right : node.Left;
+                stack.Push(node); node = next;
             }
         }
         private void Intialize(Node startNode)
         {
-            current = null; var node = startNode; var list = new List<Node>(Log2(tree.Count + 1)); while (node != null)
+            if (startNode == null)
+                throw new InvalidOperationException(nameof(startNode) + "is null");
+            current = null;
+            var node = startNode;
+            var list = new List<Node>(Log2(tree.Count + 1));
+            var comparer = tree.comparer;
+
+            if (reverse)
             {
-                list.Add(node); var parent = node.Parent; if (parent == null) break; if (reverse)
+                while (node != null)
                 {
-                    if (parent.Left == node) break;
+                    list.Add(node);
+                    var parent = node.Parent;
+                    if (parent == null || parent.Left == node) { node = parent; break; }
+                    node = parent;
                 }
-                else
+                while (node != null)
                 {
-                    if (parent.Right == node) break;
+                    var parent = node.Parent;
+                    if (parent == null || parent.Right == node) { node = parent; break; }
+                    node = parent;
                 }
-                node = parent;
+                while (node != null)
+                {
+                    if (comparer.Compare(startNode.Item, node.Item) >= 0)
+                        list.Add(node);
+                    node = node.Parent;
+                }
             }
-            list.Reverse(); foreach (var n in list) stack.Push(n);
+            else
+            {
+                while (node != null)
+                {
+                    list.Add(node);
+                    var parent = node.Parent;
+                    if (parent == null || parent.Right == node) { node = parent; break; }
+                    node = parent;
+                }
+                while (node != null)
+                {
+                    var parent = node.Parent;
+                    if (parent == null || parent.Left == node) { node = parent; break; }
+                    node = parent;
+                }
+                while (node != null)
+                {
+                    if (comparer.Compare(startNode.Item, node.Item) <= 0)
+                        list.Add(node);
+                    node = node.Parent;
+                }
+            }
+
+            list.Reverse();
+            foreach (var n in list) stack.Push(n);
         }
         private static int Log2(int num) => num == 0 ? 0 : NumGlobal.MSB(num) + 1;
-        public T Current => current == null ? default(T) : current.Item;
+        public T Current => current == null ? default : current.Item;
 
         public bool MoveNext()
         {
@@ -637,7 +690,6 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
     }
     private enum TreeRotation : byte
     {
-
         Left = 1,
         Right = 2,
         RightLeft = 3,
