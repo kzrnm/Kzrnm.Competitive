@@ -59,8 +59,6 @@ namespace AtCoderProject
             for (int i = 0; i < arr.Length; i++) arr[i] = NewArray(len1, len2, len3, factory);
             return arr;
         }
-        private class ComparerReverseImpl<T> : Comparer<T> where T : IComparable<T> { public override int Compare(T y, T x) => x.CompareTo(y); public override bool Equals(object obj) => obj != null && GetType() == obj.GetType(); public override int GetHashCode() => GetType().GetHashCode(); }
-        public static IComparer<T> ComparerReverse<T>() where T : IComparable<T> => new ComparerReverseImpl<T>();
         public static string AllLines<T>(IEnumerable<T> source) => string.Join("\n", source);
         public static string AllJoin<T>(IEnumerable<T> source) => string.Join(" ", source);
         public static string AllGrid<T>(IEnumerable<IEnumerable<T>> source) => AllLines(source.Select(AllJoin));
@@ -211,6 +209,14 @@ namespace AtCoderProject
                 return v;
             return dic[key] = value;
         }
+    }
+    public class ReverseComparer<T> : Comparer<T> where T : IComparable<T>
+    {
+        private static ReverseComparer<T> defaultComparer;
+        public static new IComparer<T> Default => defaultComparer ?? (defaultComparer = new ReverseComparer<T>());
+        public override int Compare(T y, T x) => x.CompareTo(y);
+        public override bool Equals(object obj) => obj != null && GetType() == obj.GetType();
+        public override int GetHashCode() => GetType().GetHashCode();
     }
     public class ΔDebugView<T> { private IEnumerable<T> collection; public ΔDebugView(IEnumerable<T> collection) { this.collection = collection ?? throw new ArgumentNullException(nameof(collection)); }[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)] public T[] Items => collection.ToArray(); }
 }
