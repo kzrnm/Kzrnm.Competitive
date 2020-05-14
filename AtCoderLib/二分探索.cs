@@ -30,7 +30,7 @@ static class 二分探索
      * <returns><paramref name="v"/> 以上の要素であるような最小の o-indexed でのインデックス．</returns>
      * <remarks> <paramref name="a"/> は比較関数に対して昇順であることを仮定しています．この関数は O(log N) で実行されます．</remarks>
     */
-    public static int LowerBound<T>(this IList<T> a, T v, Comparison<T> f) => BinarySearch(a, v, Comparer<T>.Create(f), true);
+    public static int LowerBound<T>(this IList<T> a, T v, IComparer<T> cmp) => BinarySearch(a, v, cmp, true);
 
     /**
      * <summary>
@@ -56,7 +56,7 @@ static class 二分探索
      * <returns><paramref name="v"/> 以上の要素であるような最小の o-indexed でのインデックス．</returns>
      * <remarks> <paramref name="a"/> は比較関数に対して昇順であることを仮定しています．この関数は O(log N) で実行されます．</remarks>
     */
-    public static int UpperBound<T>(this IList<T> a, T v, Comparison<T> cmp) => BinarySearch(a, v, Comparer<T>.Create(cmp), false);
+    public static int UpperBound<T>(this IList<T> a, T v, IComparer<T> cmp) => BinarySearch(a, v, cmp, false);
 
     /**
      * <summary>
@@ -71,7 +71,7 @@ static class 二分探索
     */
     public static int UpperBound<T>(this IList<T> a, T v) => BinarySearch(a, v, Comparer<T>.Default, false);
 
-    private static int BinarySearch<T>(IList<T> a, T v, IComparer<T> cmp, bool isLowerBound)
+    private static int BinarySearch<T>(this IList<T> a, T v, IComparer<T> cmp, bool isLowerBound)
     {
         int ok = a.Count;
         int ng = -1;
