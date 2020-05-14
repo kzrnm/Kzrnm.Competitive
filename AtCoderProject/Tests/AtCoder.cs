@@ -28,7 +28,7 @@ namespace AtCoderProject.Tests
             }
         }
 
-        static Regex doubleRegex = new Regex(@"\d+\.\d+", RegexOptions.IgnoreCase);
+        static Regex doubleRegex = new Regex(@"^\d+\.\d+$", RegexOptions.IgnoreCase);
         [Theory(Timeout = 200)]
         [MemberData(nameof(Source))]
         [DebuggerHidden]
