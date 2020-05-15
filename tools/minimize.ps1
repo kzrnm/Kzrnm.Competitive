@@ -88,6 +88,8 @@ Compress-Main "$SolutionRoot\AtCoderProject\Main\Program.cs"
     'AtCoderLib\文字列\SuffixArray.cs'
 ) | ForEach-Object { Compress-CSharp "$SolutionRoot\$_" } 
 @(
+    'AtCoderLib\Collection\座標圧縮.cs',
+    'AtCoderLib\Collection\順列を求める.cs',
     'AtCoderLib\グラフ\重み付き\ShortestPath.cs'
 ) | ForEach-Object { Compress-CSharp "$SolutionRoot\$_" -MethodOnly } 
 dotnet-format.exe -w "$PSScriptRoot\.."
