@@ -82,7 +82,6 @@ Compress-Main "$SolutionRoot\AtCoderProject\Main\Program.cs"
     'AtCoderLib\グラフ\重みなしグラフ.cs',
     'AtCoderLib\整数\Bit.cs',
     'AtCoderLib\整数\Mod.cs',
-    'AtCoderLib\整数\有理数.cs',
     'AtCoderLib\範囲演算\累積和.cs',
     'AtCoderLib\範囲演算\累積和2D.cs',
     'AtCoderLib\文字列\SuffixArray.cs'
