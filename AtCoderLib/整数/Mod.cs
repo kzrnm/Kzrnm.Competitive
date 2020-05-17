@@ -15,6 +15,7 @@ readonly struct Mod : IEquatable<Mod>
     public override int GetHashCode() => val.GetHashCode();
     public override string ToString() => val.ToString();
     public static implicit operator Mod(long x) => new Mod(x);
+    public static Mod operator -(Mod x) => x;
     public static Mod operator +(Mod x, Mod y) => (x.val + y.val) % mod;
     public static Mod operator -(Mod x, Mod y) => x.val >= y.val ? (x.val - y.val) % mod : (x.val - y.val) % mod + mod;
     public static Mod operator *(Mod x, Mod y) => (x.val * y.val) % mod;

@@ -24,6 +24,7 @@ readonly struct Fraction : IEquatable<Fraction>, IComparable<Fraction>
     public static implicit operator Fraction(long x) => new Fraction(x, 1);
     public int CompareTo(Fraction other) => (this.numerator * other.denominator).CompareTo(other.numerator * this.denominator);
 
+    public static Fraction operator -(Fraction x) => new Fraction(-x.numerator, x.denominator);
     public static Fraction operator +(Fraction x, Fraction y)
     {
         var gcd = Gcd(x.denominator, y.denominator);
