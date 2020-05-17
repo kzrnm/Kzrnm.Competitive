@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 #region https://qiita.com/drken/items/97e37dd6143e33a64c8c
 #endregion
+
+
 static class 二分探索
 {
     public static int BinarySearch(int ok, int ng, Predicate<int> isOK)
