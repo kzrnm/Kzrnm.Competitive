@@ -16,7 +16,7 @@ class SegmentTree
 
     private int rootLength;
     private long[] tree;
-
+    public int Length => rootLength;
     public SegmentTree(ReadOnlySpan<long> initSpan) : this(initSpan.Length)
     {
         for (var i = 0; i < initSpan.Length; i++)
@@ -39,6 +39,7 @@ class SegmentTree
         }
     }
 
+    public long Slice(int from, int length) => Query(from, from + length);
     public long Query(int fromInclusive, int toExclusive)
     {
         var leftResult = defaultValue;

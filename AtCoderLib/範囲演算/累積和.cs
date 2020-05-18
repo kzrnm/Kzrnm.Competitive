@@ -4,15 +4,15 @@ using static AtCoderProject.Global;
 
 class Sums
 {
-    private long[] impl;
-    public int Length { get; }
+    private readonly long[] impl;
+    public int Length => impl.Length - 1;
     public Sums(int[] arr)
     {
-        this.Length = arr.Length;
         impl = new long[arr.Length + 1];
         for (var i = 0; i < arr.Length; i++)
             impl[i + 1] = impl[i] + arr[i];
     }
+    public long Slice(int from, int length) => impl[from + length] - impl[from];
     public long this[int toExclusive] => impl[toExclusive];
-    public long this[Range range] => impl[range.End.GetOffset(Length)] - impl[range.Start.GetOffset(Length)];
+    public long this[int from, int toExclusive] => impl[toExclusive] - impl[from];
 }

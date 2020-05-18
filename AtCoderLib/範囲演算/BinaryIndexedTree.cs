@@ -13,9 +13,12 @@ class BinaryIndexedTree
             res += tree[i];
         return res;
     }
+
     public long Sum(int from, int toExclusive) => Sum(toExclusive) - Sum(from);
 
     private long[] tree;
+    public int Length => tree.Length - 1;
+    public long Slice(int from, int length) => Sum(from, from + length);
 
     public BinaryIndexedTree(int size)
     {
