@@ -4,17 +4,11 @@ using System.Collections.Generic;
 
 class 素数
 {
-    /**
-     * <summary>
-     * 素因数分解
-     * </summary>
-     * <param name="num">素因数分解する数</param>
-     * <returns>素因数の一覧</returns>
-     */
-    Dictionary<int, int> PrimeFactoring(int num)
+
+    Dictionary<long, int> PrimeFactoring(long num)
     {
-        var primes = Eratosthenes((int)Math.Sqrt(num));
-        var primeFactors = new Dictionary<int, int>();
+        var primes = Eratosthenes((long)Math.Sqrt(num));
+        var primeFactors = new Dictionary<long, int>();
 
         foreach (var p in primes)
         {
@@ -33,17 +27,12 @@ class 素数
 
         return primeFactors;
     }
-    /**
-     * <summary>
-     * エラトステネスの篩で素数一覧を返す
-     * </summary>
-     * <param name="n">上限</param>
-     * <returns>素数一覧</returns>
-     */
-    static HashSet<int> Eratosthenes(int n)
+
+
+    static HashSet<long> Eratosthenes(long n)
     {
-        var primes = new HashSet<int> { 2, 3, 5, 7 };
-        var searches = new int[n + 1];
+        var primes = new HashSet<long> { 2, 3, 5, 7 };
+        var searches = new long[n + 1];
         int current;
         for (var i = 10; i <= n; i += 10)
         {
@@ -67,7 +56,7 @@ class 素数
             if (current % 3 == 0 || current % 7 == 0)
                 searches[current] = 7;
         }
-        var sqrtN = (int)Math.Sqrt(n);
+        var sqrtN = (long)Math.Sqrt(n);
         current = 11;
         while (current <= sqrtN)
         {
@@ -83,4 +72,6 @@ class 素数
 
         return primes;
     }
+
+
 }
