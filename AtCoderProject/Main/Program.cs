@@ -1,4 +1,4 @@
-﻿#region いつもの
+#region いつもの
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -213,7 +213,7 @@ namespace AtCoderProject
     public class ReverseComparer<T> : Comparer<T> where T : IComparable<T>
     {
         private static ReverseComparer<T> defaultComparer;
-        public static new IComparer<T> Default => defaultComparer ?? (defaultComparer = new ReverseComparer<T>());
+        public static new IComparer<T> Default => defaultComparer ??= new ReverseComparer<T>();
         public override int Compare(T y, T x) => x.CompareTo(y);
         public override bool Equals(object obj) => obj != null && GetType() == obj.GetType();
         public override int GetHashCode() => GetType().GetHashCode();
