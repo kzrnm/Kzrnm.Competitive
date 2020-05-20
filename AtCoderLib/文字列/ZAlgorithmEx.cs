@@ -1,9 +1,9 @@
 ﻿
 using System;
-
-
 #region https://bitbucket.org/camypaper/complib/src/master/lib/Strings/ZAlgorithm.cs
 #endregion
+
+
 class ZAlgorithmEx
 {
     /** <summary> <paramref name="s"/> と <paramref name="s"/>[i:] の最長共通接頭辞を O(|<paramref name="s"/>|) で求める。</summary> */
