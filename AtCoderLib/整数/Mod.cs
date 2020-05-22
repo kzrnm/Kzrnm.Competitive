@@ -10,15 +10,15 @@ readonly struct Mod : IEquatable<Mod>
     public readonly long val;
     private Mod(long val, bool isValid) : this(val) { if (!isValid) this.val = val; }
     public Mod(long val) { this.val = val % mod; if (this.val < 0) this.val += mod; }
-    public override bool Equals(object obj) => (obj is Mod) ? this == ((Mod)obj) : false;
-    public bool Equals(Mod obj) => this == obj;
+    public override bool Equals(object obj) => (obj is Mod) && this == ((Mod)obj);
+    public bool Equals(Mod obj) => this.val == obj.val;
     public override int GetHashCode() => val.GetHashCode();
     public override string ToString() => val.ToString();
     public static implicit operator Mod(long x) => new Mod(x);
-    public static Mod operator -(Mod x) => x;
-    public static Mod operator +(Mod x, Mod y) => (x.val + y.val) % mod;
-    public static Mod operator -(Mod x, Mod y) => x.val >= y.val ? (x.val - y.val) % mod : (x.val - y.val) % mod + mod;
-    public static Mod operator *(Mod x, Mod y) => (x.val * y.val) % mod;
+    public static Mod operator -(Mod x) => new Mod(-x.val);
+    public static Mod operator +(Mod x, Mod y) => new Mod(x.val + y.val);
+    public static Mod operator -(Mod x, Mod y) => new Mod(x.val - y.val);
+    public static Mod operator *(Mod x, Mod y) => new Mod(x.val * y.val);
     public static Mod operator /(Mod x, Mod y) => x * y.Inverse();
     public static bool operator ==(Mod x, Mod y) => x.val == y.val;
     public static bool operator !=(Mod x, Mod y) => x.val != y.val;
