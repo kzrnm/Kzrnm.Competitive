@@ -1,11 +1,12 @@
 ﻿using System;
+using AtCoderProject.Reader;
 
 
 readonly struct Point : IEquatable<Point>, IComparable<Point>
 {
     public readonly int x;
     public readonly int y;
-    public Point(int[] arr) : this(arr[0], arr[1]) { }
+    public Point(ConsoleReader cr) : this(cr, cr) { }
     public Point(int x, int y)
     {
         this.x = x;

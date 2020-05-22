@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AtCoderProject.Reader;
+using System;
 
 
 #region https://qiita.com/drken/items/3b4fdf0a78e7a138cd9a 
@@ -15,6 +16,7 @@ readonly struct Mod : IEquatable<Mod>
     public override int GetHashCode() => val.GetHashCode();
     public override string ToString() => val.ToString();
     public static implicit operator Mod(long x) => new Mod(x);
+    public static implicit operator Mod(ConsoleReader cr) => new Mod(cr.Long);
     public static Mod operator -(Mod x) => new Mod(-x.val);
     public static Mod operator +(Mod x, Mod y) => new Mod(x.val + y.val);
     public static Mod operator -(Mod x, Mod y) => new Mod(x.val - y.val);
