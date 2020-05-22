@@ -59,6 +59,56 @@ readonly struct PointD : IEquatable<PointD>, IComparable<PointD>
     // A*x+B*y=C
     public static (double A, double B, double C) 垂直二等分線(PointD a, PointD b)
         => (a.x - b.x, a.y - b.y, (a.x * a.x - b.x * b.x + a.y * a.y - b.y * b.y) * .5);
+
+
+    // A*x+B*y+C=0, U*x+V*y+W=0の交点
+    public static PointD 直線と直線の交点(double a, double b, double c, double u, double v, double w)
+    {
+        var dd = a * v - b * u;
+        return new PointD((b * w - c * v) / dd, (c * u - a * w) / dd);
+    }
+
+
+    // A*x+B*y+C=0, Pを中心とする半径rの円の交点
+    public static PointD[] 直線と円の交点(double a, double b, double c, PointD p, double r)
+    {
+        var l = a * a + b * b;
+        var k = a * p.x + b * p.y + c;
+        var d = l * r * r - k * k;
+
+        if (d < 0)
+            return Array.Empty<PointD>();
+
+        if (d == 0)
+            return new[]
+            {
+                new PointD(p.x - a * k / l, p.y - b * k / l),
+            };
+
+        var ds = Math.Sqrt(d);
+        var apl = a / l;
+        var bpl = b / l;
+        var xc = p.x - apl * k;
+        var yc = p.y - bpl * k;
+        var xd = bpl * ds;
+        var yd = apl * ds;
+        return new[]
+        {
+            new PointD(xc - xd, yc + yd),
+            new PointD(xc + xd, yc - yd),
+        };
+    }
+
+
+    public static PointD[] 円の交点(PointD p1, double r1, PointD p2, double r2)
+    {
+        var xx = p1.x - p2.x;
+        var yy = p1.y - p2.y;
+        return 直線と円の交点(
+            xx,
+            yy,
+            0.5 * ((r1 - r2) * (r1 + r2) - xx * (p1.x + p2.x) - yy * (p1.y + p2.y)), p1, r1);
+    }
 }
 
 
