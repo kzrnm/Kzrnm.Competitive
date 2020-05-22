@@ -20,8 +20,7 @@ class SegmentTree
     public SegmentTree(long[] initArray) : this(initArray.Length)
     {
         var rootLength = this.Length;
-        for (var i = 0; i < initArray.Length; i++)
-            tree[i + rootLength - 1] = initArray[i];
+        Array.Copy(initArray, 0, tree, rootLength - 1, initArray.Length);
         for (int i = rootLength - 2; i >= 0; i--)
             tree[i] = Operate(tree[(i << 1) + 1], tree[(i << 1) + 2]);
     }
@@ -65,8 +64,8 @@ class SegmentTree
     }
 
 
-    [System.Diagnostics.DebuggerDisplay("{" + nameof(value) + "}", Name = "{" + nameof(key) + "}")]
-    internal struct KeyValuePairs
+    [System.Diagnostics.DebuggerDisplay("{" + nameof(value) + "}", Name = "{" + nameof(key) + ",nq}")]
+    struct KeyValuePairs
     {
         private string key;
         private long value;
