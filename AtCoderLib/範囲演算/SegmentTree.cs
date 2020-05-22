@@ -8,29 +8,32 @@ using static AtCoderProject.NumGlobal;
 class SegmentTree
 {
     /* この辺は場合によって変える */
-    private long defaultValue = 0;
+    private const long defaultValue = 0;
     private long Operate(long v1, long v2)
     {
         return Math.Max(v1, v2);
     }
 
-    private int rootLength;
     private long[] tree;
-    public int Length => rootLength;
-    public SegmentTree(ReadOnlySpan<long> initSpan) : this(initSpan.Length)
+    public int Length { get; }
+
+    public SegmentTree(long[] initArray) : this(initArray.Length)
     {
-        for (var i = 0; i < initSpan.Length; i++)
-            Update(i, initSpan[i]);
+        var rootLength = this.Length;
+        for (var i = 0; i < initArray.Length; i++)
+            tree[i + rootLength - 1] = initArray[i];
+        for (int i = rootLength - 2; i >= 0; i--)
+            tree[i] = Operate(tree[(i << 1) + 1], tree[(i << 1) + 2]);
     }
     public SegmentTree(int size)
     {
-        rootLength = 1 << (MSB(size) + 1);
-        tree = NewArray(2 * rootLength - 1, defaultValue);
+        Length = 1 << (MSB(size - 1) + 1);
+        tree = NewArray((Length << 1) - 1, defaultValue);
     }
 
     public void Update(int index, long value)
     {
-        index += rootLength - 1;
+        index += Length - 1;
         tree[index] = value;
         while (index > 0)
         {
@@ -44,8 +47,9 @@ class SegmentTree
     {
         var leftResult = defaultValue;
         var rightResult = defaultValue;
-        var l = fromInclusive + rootLength - 1;
-        var r = toExclusive + rootLength - 1;
+        var segSize = Length - 1;
+        var l = fromInclusive + segSize;
+        var r = toExclusive + segSize;
 
         while (l < r)
         {
@@ -87,9 +91,9 @@ class SegmentTree
             get
             {
                 var keys = new List<KeyValuePairs>(segmentTree.tree.Length);
-                for (var len = segmentTree.rootLength; len > 0; len >>= 1)
+                for (var len = segmentTree.Length; len > 0; len >>= 1)
                 {
-                    var unit = segmentTree.rootLength / len;
+                    var unit = segmentTree.Length / len;
                     for (var i = 0; i < len; i++)
                     {
                         var index = i + len - 1;
