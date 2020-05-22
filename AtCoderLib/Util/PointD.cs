@@ -55,6 +55,10 @@ readonly struct PointD : IEquatable<PointD>, IComparable<PointD>
             + new PointD(ac * cosB * b.x / d, ac * cosB * b.y / d)
             + new PointD(ab * cosC * c.x / d, ab * cosC * c.y / d);
     }
+
+    // A*x+B*y=C
+    public static (double A, double B, double C) 垂直二等分線(PointD a, PointD b)
+        => (a.x - b.x, a.y - b.y, (a.x * a.x - b.x * b.x + a.y * a.y - b.y * b.y) * .5);
 }
 
 
