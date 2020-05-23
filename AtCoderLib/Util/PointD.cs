@@ -79,17 +79,14 @@ readonly struct PointD : IEquatable<PointD>, IComparable<PointD>
         if (d < 0)
             return Array.Empty<PointD>();
 
-        if (d == 0)
-            return new[]
-            {
-                new PointD(p.x - a * k / l, p.y - b * k / l),
-            };
-
-        var ds = Math.Sqrt(d);
         var apl = a / l;
         var bpl = b / l;
         var xc = p.x - apl * k;
         var yc = p.y - bpl * k;
+        if (d == 0)
+            return new[] { new PointD(xc, yc), };
+
+        var ds = Math.Sqrt(d);
         var xd = bpl * ds;
         var yd = apl * ds;
         return new[]
