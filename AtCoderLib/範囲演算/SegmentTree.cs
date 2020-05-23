@@ -97,7 +97,7 @@ class SegmentTree
                     {
                         var index = i + len - 1;
                         if (unit == 1)
-                            keys.Add(new KeyValuePairs($"{i}", segmentTree.tree[index]));
+                            keys.Add(new KeyValuePairs($"[{i}]", segmentTree.tree[index]));
                         else
                         {
                             var from = i * unit;
