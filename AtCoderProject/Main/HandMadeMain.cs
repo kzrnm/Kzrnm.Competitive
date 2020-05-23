@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace AtCoderProject.Runner
@@ -18,6 +19,11 @@ namespace AtCoderProject.Runner
 
             };
 
+
+            var fileInput = LoadInput();
+            if (!string.IsNullOrWhiteSpace(fileInput))
+                sb.Add(fileInput);
+
             Program p;
             if (args.Length > 0)
                 p = new Program(new ConsoleReader(new FileStream(args[0], FileMode.Open)));
@@ -29,6 +35,13 @@ namespace AtCoderProject.Runner
             var result = p.Result();
             Console.WriteLine(result);
         }
+        static string LoadInput()
+        {
+            const string path = @"AtCoderProject.Main.input.txt";
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(path))
+            using (var sr = new StreamReader(stream))
+                return sr.ReadToEnd();
+        }
     }
     class MyStringBuilder : IEnumerable
     {
@@ -39,6 +52,7 @@ namespace AtCoderProject.Runner
         public void Add(string s) => sb.AppendLine(s);
         public void Add(params object[] objs) => sb.AppendLine(string.Join(" ", objs));
         public void Add<T>(IEnumerable<T> objs) => sb.AppendLine(string.Join(" ", objs));
+        public void Clear() => sb.Clear();
         IEnumerator IEnumerable.GetEnumerator() { throw new NotSupportedException(); }
     }
 }
