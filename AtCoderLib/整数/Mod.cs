@@ -1,5 +1,6 @@
 ﻿using AtCoderProject.Reader;
 using System;
+using System.Collections.Generic;
 
 
 #region https://qiita.com/drken/items/3b4fdf0a78e7a138cd9a 
@@ -80,5 +81,14 @@ readonly struct Mod : IEquatable<Mod>
 
         public Mod Factorial(int n) => fac[n];
         public Mod FactorialInvers(int n) => finv[n];
+    }
+}
+static class ModExt
+{
+    public static Mod Sum(this IEnumerable<Mod> source)
+    {
+        Mod sum = 0;
+        foreach (var v in source) sum += v;
+        return sum;
     }
 }
