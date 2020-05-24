@@ -72,7 +72,7 @@ function Compress-CSharp {
 
 Compress-Main "$SolutionRoot\AtCoderProject\Main\Program.cs"
 
-@(
+$targetFiles = @(
     'AtCoderLib\Collection\PriorityQueue.cs',
     'AtCoderLib\Collection\Set.cs',
     'AtCoderLib\Collection\SortedCollection.cs',
@@ -82,13 +82,17 @@ Compress-Main "$SolutionRoot\AtCoderProject\Main\Program.cs"
     'AtCoderLib\グラフ\重みなしグラフ.cs',
     'AtCoderLib\整数\Bit.cs',
     'AtCoderLib\整数\Mod.cs',
+    'AtCoderLib\範囲演算\特殊なBIT\BinaryIndexedTree2D.cs',
+    'AtCoderLib\範囲演算\特殊なBIT\RangeBinaryIndexedTree.cs',
     'AtCoderLib\範囲演算\累積和.cs',
     'AtCoderLib\範囲演算\累積和2D.cs',
     'AtCoderLib\文字列\SuffixArray.cs'
-) | ForEach-Object { Compress-CSharp "$SolutionRoot\$_" } 
-@(
+)
+$methodTargetFiles = @(
     'AtCoderLib\Collection\座標圧縮.cs',
     'AtCoderLib\Collection\順列を求める.cs',
     'AtCoderLib\グラフ\重み付き\ShortestPath.cs'
-) | ForEach-Object { Compress-CSharp "$SolutionRoot\$_" -MethodOnly } 
-dotnet-format.exe -w "$PSScriptRoot\.."
+) 
+$targetFiles | ForEach-Object { Compress-CSharp "$SolutionRoot\$_" } 
+$methodTargetFiles | ForEach-Object { Compress-CSharp "$SolutionRoot\$_" -MethodOnly } 
+dotnet-format.exe -w "$PSScriptRoot\.." --files (($methodTargetFiles + $targetFiles) -join ',')
