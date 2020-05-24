@@ -1,4 +1,9 @@
-﻿[System.Diagnostics.DebuggerTypeProxy(typeof(BinaryIndexedTreeDebugView))]
+﻿using System;
+using static AtCoderProject.NumGlobal;
+
+
+
+[System.Diagnostics.DebuggerTypeProxy(typeof(BinaryIndexedTreeDebugView))]
 class BinaryIndexedTree
 {
     private long Operate(long v, long w) => v + w;
@@ -16,6 +21,21 @@ class BinaryIndexedTree
     }
 
     public long Sum(int from, int toExclusive) => Sum(toExclusive) - Sum(from);
+    public int LowerBound(long w)
+    {
+        if (w <= 0) return 0;
+        int x = 0;
+        for (int k = 1 << MSB(tree.Length - 1); k > 0; k >>= 1)
+        {
+            var nx = x + k;
+            if (nx < tree.Length && tree[nx] < w)
+            {
+                x = nx;
+                w -= tree[nx];
+            }
+        }
+        return x;
+    }
 
     private long[] tree;
     public int Length => tree.Length - 1;
@@ -27,7 +47,7 @@ class BinaryIndexedTree
     }
     public BinaryIndexedTree(long[] initArray) : this(initArray.Length)
     {
-        System.Array.Copy(initArray, 0, tree, 1, initArray.Length);
+        Array.Copy(initArray, 0, tree, 1, initArray.Length);
         for (int i = 1; i < tree.Length; i++)
         {
             var ni = i + (i & -i);
