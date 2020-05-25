@@ -106,6 +106,16 @@ readonly struct PointD : IEquatable<PointD>, IComparable<PointD>
             yy,
             0.5 * ((r1 - r2) * (r1 + r2) - xx * (p1.x + p2.x) - yy * (p1.y + p2.y)), p1, r1);
     }
+
+    public static bool 線分が交差しているか(PointD a1, PointD b1, PointD a2, PointD b2)
+    {
+        var ta = (a2.x - b2.x) * (a1.y - a2.y) + (a2.y - b2.y) * (a2.x - a1.x);
+        var tb = (a2.x - b2.x) * (b1.y - a2.y) + (a2.y - b2.y) * (a2.x - b1.x);
+        var tc = (a1.x - b1.x) * (a2.y - a1.y) + (a1.y - b1.y) * (a1.x - a2.x);
+        var td = (a1.x - b1.x) * (b2.y - a1.y) + (a1.y - b1.y) * (a1.x - b2.x);
+
+        return tc * td < 0 && ta * tb < 0;
+    }
 }
 
 
