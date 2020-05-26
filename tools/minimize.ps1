@@ -73,6 +73,7 @@ function Compress-CSharp {
 Compress-Main "$SolutionRoot\AtCoderProject\Main\Program.cs"
 
 $targetFiles = @(
+    'AtCoderLib\Collection\Deque.cs',
     'AtCoderLib\Collection\PriorityQueue.cs',
     'AtCoderLib\Collection\Set.cs',
     'AtCoderLib\Collection\SortedCollection.cs',
