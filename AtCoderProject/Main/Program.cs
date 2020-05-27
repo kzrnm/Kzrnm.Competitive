@@ -10,10 +10,10 @@ using Unsafe = System.Runtime.CompilerServices.Unsafe;
 using BigInteger = System.Numerics.BigInteger;
 using StringBuilder = System.Text.StringBuilder;
 using static AtCoderProject.Global;
-using static AtCoderProject.NumGlobal;
 
 namespace AtCoderProject
 {
+    using System.Diagnostics;
     public static class Global
     {
         public static T[] NewArray<T>(int len0, T value) => new T[len0].Fill(value);
@@ -59,12 +59,11 @@ namespace AtCoderProject
             for (int i = 0; i < arr.Length; i++) arr[i] = NewArray(len1, len2, len3, factory);
             return arr;
         }
+
         public static string AllLines<T>(IEnumerable<T> source) => string.Join("\n", source);
         public static string AllJoin<T>(IEnumerable<T> source) => string.Join(" ", source);
         public static string AllGrid<T>(IEnumerable<IEnumerable<T>> source) => AllLines(source.Select(AllJoin));
-    }
-    public static class NumGlobal
-    {
+
         public static int Pow(int x, int y)
         {
             int res = 1;
@@ -102,9 +101,8 @@ namespace AtCoderProject
         public static int MSB(long x) { x |= x >> 1; x |= x >> 2; x |= x >> 4; x |= x >> 8; x |= x >> 16; x |= x >> 32; return BitCount(x) - 1; }
         public static int LSB(int x) { x |= x << 1; x |= x << 2; x |= x << 4; x |= x << 8; x |= x << 16; return 32 - BitCount(x); }
         public static int LSB(long x) { x |= x << 1; x |= x << 2; x |= x << 4; x |= x << 8; x |= x << 16; x |= x << 32; return 64 - BitCount(x); }
-    }
-    public static class Ext
-    {
+
+
         public static bool UpdateMax(this ref int r, int val) { if (r < val) { r = val; return true; } return false; }
         public static bool UpdateMax(this ref long r, long val) { if (r < val) { r = val; return true; } return false; }
         public static bool UpdateMin(this ref int r, int val) { if (r > val) { r = val; return true; } return false; }
@@ -218,7 +216,7 @@ namespace AtCoderProject
         public override bool Equals(object obj) => obj != null && GetType() == obj.GetType();
         public override int GetHashCode() => GetType().GetHashCode();
     }
-    public class ΔDebugView<T> { private IEnumerable<T> collection; public ΔDebugView(IEnumerable<T> collection) { this.collection = collection ?? throw new ArgumentNullException(nameof(collection)); }[System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)] public T[] Items => collection.ToArray(); }
+    public class ΔDebugView<T> { private IEnumerable<T> collection; public ΔDebugView(IEnumerable<T> collection) { this.collection = collection ?? throw new ArgumentNullException(nameof(collection)); }[DebuggerBrowsable(DebuggerBrowsableState.RootHidden)] public T[] Items => collection.ToArray(); }
 }
 namespace AtCoderProject.Reader
 {
@@ -369,11 +367,22 @@ public class Program
 
     public Program(ConsoleReader consoleReader) { this.cr = consoleReader; }
     static void Main() => Console.WriteLine(new Program(new ConsoleReader(Console.OpenStandardInput())).Result());
+    public string Result() => Result(Calc());
+    string Result(IEnumerable col) => AllLines(col.Cast<object>());
+    string Result(double d) => d.ToString("0.####################");
+    string Result(object o) => o switch
+    {
+        string s => s,
+        bool b => Result(b),
+        double d => Result(d),
+        IEnumerable col => Result(col),
+        _ => o.ToString()
+    };
     #endregion
-    public string Result() => Calc() switch { bool b => b ? "Yes" : "No", double d => d.ToString("0.####################"), object o => o.ToString(), };
+    string Result(bool b) => b ? "Yes" : "No";
     public object Calc()
     {
-        int N = cr;
+        int N = cr; 
         (long K, string s) = cr;
         int[] arr = cr.Repeat(N);
         return N;

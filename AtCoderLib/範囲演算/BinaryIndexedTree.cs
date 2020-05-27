@@ -1,5 +1,5 @@
 ﻿using System;
-using static AtCoderProject.NumGlobal;
+using static AtCoderProject.Global;
 
 
 

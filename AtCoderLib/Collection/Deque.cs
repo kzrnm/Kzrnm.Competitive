@@ -1,7 +1,7 @@
 ﻿using AtCoderProject;
 using System;
 using System.Collections.Generic;
-using static AtCoderProject.NumGlobal;
+using static AtCoderProject.Global;
 using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
 

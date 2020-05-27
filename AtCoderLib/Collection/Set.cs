@@ -1,9 +1,10 @@
 ﻿using AtCoderProject;
 using System;
-using IEnumerable = System.Collections.IEnumerable;
-using IEnumerator = System.Collections.IEnumerator;
 using System.Collections.Generic;
 using System.Linq;
+using static AtCoderProject.Global;
+using IEnumerable = System.Collections.IEnumerable;
+using IEnumerator = System.Collections.IEnumerator;
 
 
 [System.Diagnostics.DebuggerTypeProxy(typeof(ΔDebugView<>))]
@@ -592,7 +593,7 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
             list.Reverse();
             foreach (var n in list) stack.Push(n);
         }
-        private static int Log2(int num) => num == 0 ? 0 : NumGlobal.MSB(num) + 1;
+        private static int Log2(int num) => num == 0 ? 0 : MSB(num) + 1;
         public T Current => current == null ? default : current.Item;
 
         public bool MoveNext()

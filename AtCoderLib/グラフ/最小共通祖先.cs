@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using static AtCoderProject.Global;
-using static AtCoderProject.NumGlobal;
 
 /**
  * <summary>最小共通祖先</summary> 
