@@ -1,14 +1,14 @@
 #region いつもの
+using AtCoderProject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AtCoderProject;
+using static AtCoderProject.Global;
+using BigInteger = System.Numerics.BigInteger;
 using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
-using Unsafe = System.Runtime.CompilerServices.Unsafe;
-using BigInteger = System.Numerics.BigInteger;
 using StringBuilder = System.Text.StringBuilder;
-using static AtCoderProject.Global;
+using Unsafe = System.Runtime.CompilerServices.Unsafe;
 
 namespace AtCoderProject
 {
