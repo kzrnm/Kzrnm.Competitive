@@ -365,13 +365,16 @@ namespace AtCoderProject
             (o1, o2, o3, o4, o5, o6, o7, o8) = (this, this, this, this, this, this, this, this);
     }
     [DebuggerStepThrough]
-    public class ConsoleWriter : StreamWriter
+    public class ConsoleWriter
     {
-        public ConsoleWriter(Stream output) : base(output, Console.OutputEncoding) { }
-        public ConsoleWriter(Stream output, Encoding encoding) : base(output, encoding) { }
+        private readonly StreamWriter sw;
 
-        public override void Write(bool b) => Write(Program.Result(b));
-        public override void Write(double d) => Write(Program.Result(d));
+
+        public ConsoleWriter(Stream output) : this(output, Console.OutputEncoding) { }
+        public ConsoleWriter(Stream output, Encoding encoding) { sw = new StreamWriter(output, encoding); }
+        public void Flush() => sw.Flush();
+        public void WriteLine(string str) => sw.WriteLine(str);
+        public void WriteLine<T>(T obj) => sw.WriteLine(obj.ToString());
         public void WriteLineJoin<T>(IEnumerable<T> col) => WriteMany(' ', col);
         public void WriteLines<T>(IEnumerable<T> col) => WriteMany('\n', col);
         public void WriteLineGrid<T>(IEnumerable<IEnumerable<T>> cols)
@@ -385,13 +388,13 @@ namespace AtCoderProject
             var en = col.GetEnumerator();
             if (!en.MoveNext())
                 return;
-            Write(en.Current.ToString());
+            sw.Write(en.Current.ToString());
             while (en.MoveNext())
             {
-                Write(sep);
-                Write(en.Current.ToString());
+                sw.Write(sep);
+                sw.Write(en.Current.ToString());
             }
-            WriteLine();
+            sw.WriteLine();
         }
     }
 }
@@ -403,8 +406,8 @@ public partial class Program
     static void Main() => new Program(new ConsoleReader(Console.OpenStandardInput()), new ConsoleWriter(Console.OpenStandardOutput())).Run();
     private void Run(Action calc) { calc(); cw.Flush(); }
     private void Run<T>(Func<T> calc) { cw.WriteLine(calc()); cw.Flush(); }
-    private void Run(Func<double> calc) { cw.WriteLine(calc()); cw.Flush(); }
-    private void Run(Func<bool> calc) { cw.WriteLine(calc()); cw.Flush(); }
+    private void Run(Func<double> calc) { cw.WriteLine(Result(calc())); cw.Flush(); }
+    private void Run(Func<bool> calc) { cw.WriteLine(Result(calc())); cw.Flush(); }
 }
 public partial class Program
 {
