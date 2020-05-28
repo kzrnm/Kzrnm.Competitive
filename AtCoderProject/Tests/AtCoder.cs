@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AtCoderProject.IO;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -34,8 +35,13 @@ namespace AtCoderProject.Tests
         [DebuggerHidden]
         public void FromSource(string input, string output)
         {
-            var inputReader = new AtCoderProject.Reader.ConsoleReader(input);
-            var result = new Program(inputReader).Result();
+            using var inSteam = new MemoryStream(Encoding.UTF8.GetBytes(input));
+            using var outStream = new MemoryStream(30 * 100000);
+            var cr = new ConsoleReader(inSteam, Encoding.UTF8);
+            var cw = new ConsoleWriter(outStream, Encoding.UTF8);
+            new Program(cr, cw).Run();
+
+            var result = Encoding.UTF8.GetString(outStream.ToArray());
             if (doubleRegex.IsMatch(output))
                 Assert.Equal(double.Parse(output), double.Parse(result), 10);
             else

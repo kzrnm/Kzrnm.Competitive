@@ -1,4 +1,4 @@
-﻿using AtCoderProject.Reader;
+﻿using AtCoderProject.IO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,16 +24,16 @@ namespace AtCoderProject.Runner
             if (!string.IsNullOrWhiteSpace(fileInput))
                 sb.Add(fileInput);
 
-            Program p;
+            ConsoleReader reader;
+            var writer = new ConsoleWriter(Console.OpenStandardOutput());
             if (args.Length > 0)
-                p = new Program(new ConsoleReader(new FileStream(args[0], FileMode.Open)));
+                reader = new ConsoleReader(new FileStream(args[0], FileMode.Open), Encoding.UTF8);
             else if (sb.Length > 0)
-                p = new Program(new ConsoleReader(sb.ToString()));
+                reader = new ConsoleReader(new MemoryStream(Encoding.UTF8.GetBytes(sb.ToString())), Encoding.UTF8);
             else
-                p = new Program(new ConsoleReader(Console.OpenStandardInput(), Console.InputEncoding));
+                reader = new ConsoleReader(Console.OpenStandardInput());
 
-            var result = p.Result();
-            Console.WriteLine(result);
+            new Program(reader, writer).Run();
         }
         static string LoadInput()
         {
