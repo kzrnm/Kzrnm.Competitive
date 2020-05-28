@@ -399,7 +399,7 @@ namespace AtCoderProject.IO
         }
     }
 }
-public class Program
+public partial class Program
 {
     [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] public ConsoleReader cr;
     [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] public ConsoleWriter cw;
@@ -409,6 +409,9 @@ public class Program
     private void Run<T>(Func<T> calc) { cw.WriteLine(calc()); cw.Flush(); }
     private void Run(Func<double> calc) { cw.WriteLine(calc()); cw.Flush(); }
     private void Run(Func<bool> calc) { cw.WriteLine(calc()); cw.Flush(); }
+}
+public partial class Program
+{
     public static string Result(double d) => d.ToString("0.####################", System.Globalization.CultureInfo.InvariantCulture);
     #endregion
     public static string Result(bool b) => b ? "Yes" : "No";
