@@ -10,7 +10,6 @@ using Unsafe = System.Runtime.CompilerServices.Unsafe;
 using BigInteger = System.Numerics.BigInteger;
 using StringBuilder = System.Text.StringBuilder;
 using static AtCoderProject.Global;
-using System.IO;
 
 namespace AtCoderProject
 {
@@ -61,9 +60,6 @@ namespace AtCoderProject
             return arr;
         }
 
-        public static string AllLines<T>(IEnumerable<T> source) => string.Join("\n", source);
-        public static string AllJoin<T>(IEnumerable<T> source) => string.Join(" ", source);
-        public static string AllGrid<T>(IEnumerable<IEnumerable<T>> source) => AllLines(source.Select(AllJoin));
 
         public static int Pow(int x, int y)
         {
@@ -225,6 +221,8 @@ namespace AtCoderProject.IO
     using System.Text;
     using System.Diagnostics;
     using System.Runtime.CompilerServices;
+    using System.Globalization;
+
     [DebuggerStepThrough]
     public class ConsoleReader
     {
@@ -236,7 +234,6 @@ namespace AtCoderProject.IO
         private int len = 0;
         public ConsoleReader(Stream input, Encoding encoding) { this.input = input; this.encoding = encoding; }
         public ConsoleReader(Stream input) : this(input, Console.InputEncoding) { }
-        public ConsoleReader(string text) : this(new MemoryStream(Encoding.UTF8.GetBytes(text))) { }
         private void MoveNext() { if (++pos >= len) { len = input.Read(buffer, 0, buffer.Length); if (len == 0) { buffer[0] = 10; } pos = 0; } }
 
         public int Int
@@ -376,32 +373,53 @@ namespace AtCoderProject.IO
     {
         public ConsoleWriter(Stream output) : base(output, Console.OutputEncoding) { }
         public ConsoleWriter(Stream output, Encoding encoding) : base(output, encoding) { }
+
         public override void Write(bool b) => Write(Program.Result(b));
-        public override void WriteLine(bool b) => WriteLine(Program.Result(b));
         public override void Write(double d) => Write(Program.Result(d));
-        public override void WriteLine(double d) => WriteLine(Program.Result(d));
-        public void WriteLineJoin<T>(IEnumerable<T> col) => WriteLine(AllJoin(col));
-        public void WriteLines<T>(IEnumerable<T> col) => WriteLine(AllLines(col));
-        public void WriteLineGrid<T>(IEnumerable<IEnumerable<T>> cols) => WriteLine(AllGrid(cols));
+        public void WriteLineJoin<T>(IEnumerable<T> col) => WriteMany(' ', col);
+        public void WriteLines<T>(IEnumerable<T> col) => WriteMany('\n', col);
+        public void WriteLineGrid<T>(IEnumerable<IEnumerable<T>> cols)
+        {
+            var en = cols.GetEnumerator();
+            while (en.MoveNext())
+                WriteLineJoin(en.Current);
+        }
+        private void WriteMany<T>(char sep, IEnumerable<T> col)
+        {
+            var en = col.GetEnumerator();
+            if (!en.MoveNext())
+                return;
+            Write(en.Current.ToString());
+            while (en.MoveNext())
+            {
+                Write(sep);
+                Write(en.Current.ToString());
+            }
+            WriteLine();
+        }
     }
 }
 public class Program
 {
     [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] public ConsoleReader cr;
     [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] public ConsoleWriter cw;
-    public Program(Stream input, Stream output) : this(new ConsoleReader(input), new ConsoleWriter(output)) { }
-    public Program(ConsoleReader reader, ConsoleWriter writer) { this.cr = reader; this.cw = writer; }
-    static void Main() => new Program(Console.OpenStandardInput(), Console.OpenStandardOutput()).Run();
-    public void Run() { Calc(); cw.Flush(); }
-    public static string Result<T>(IEnumerable<T> col) => AllLines(col);
-    public static string Result(double d) => d.ToString("0.####################");
+    public Program(ConsoleReader reader, ConsoleWriter writer) { this.cr = reader; this.cw = writer; System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture; }
+    static void Main() => new Program(new ConsoleReader(Console.OpenStandardInput()), new ConsoleWriter(Console.OpenStandardOutput())).Run();
+    private void Run(Action calc) { calc(); cw.Flush(); }
+    private void Run<T>(Func<T> calc) { cw.WriteLine(calc()); cw.Flush(); }
+    private void Run(Func<double> calc) { cw.WriteLine(calc()); cw.Flush(); }
+    private void Run(Func<bool> calc) { cw.WriteLine(calc()); cw.Flush(); }
+    public static string Result(double d) => d.ToString("0.####################", System.Globalization.CultureInfo.InvariantCulture);
     #endregion
     public static string Result(bool b) => b ? "Yes" : "No";
-    private void Calc()
+    public void Run() => Run(() =>
     {
-        int N = cr; 
-        (long K, string s) = cr;
-        int[] arr = cr.Repeat(N);
-        return N;
-    }
+        N = cr;
+        arr = cr.Repeat(N);
+
+
+        cw.WriteLineJoin(arr);
+    });
+    int N;
+    int[] arr;
 }

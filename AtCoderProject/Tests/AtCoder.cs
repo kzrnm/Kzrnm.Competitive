@@ -32,20 +32,21 @@ namespace AtCoderProject.Tests
         static Regex doubleRegex = new Regex(@"^\d+\.\d+$", RegexOptions.IgnoreCase);
         [Theory(Timeout = 200)]
         [MemberData(nameof(Source))]
-        [DebuggerHidden]
         public void FromSource(string input, string output)
         {
-            using var inSteam = new MemoryStream(Encoding.UTF8.GetBytes(input));
+            var encoding = new UTF8Encoding(false);
+            using var inSteam = new MemoryStream(encoding.GetBytes(input));
             using var outStream = new MemoryStream(30 * 100000);
-            var cr = new ConsoleReader(inSteam, Encoding.UTF8);
-            var cw = new ConsoleWriter(outStream, Encoding.UTF8);
+            var cr = new ConsoleReader(inSteam, encoding);
+            var cw = new ConsoleWriter(outStream, encoding);
             new Program(cr, cw).Run();
 
-            var result = Encoding.UTF8.GetString(outStream.ToArray());
+            var result = encoding.GetString(outStream.ToArray());
             if (doubleRegex.IsMatch(output))
                 Assert.Equal(double.Parse(output), double.Parse(result), 10);
             else
-                Assert.Equal(output.Replace("\r\n", "\n").Trim(), result.ToString());
+                Assert.Equal(Normalize(output), Normalize(result));
         }
+        private string Normalize(string s) => s.Replace("\r\n", "\n").Trim();
     }
 }

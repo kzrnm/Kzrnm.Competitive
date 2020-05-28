@@ -27,9 +27,9 @@ namespace AtCoderProject.Runner
             ConsoleReader reader;
             var writer = new ConsoleWriter(Console.OpenStandardOutput());
             if (args.Length > 0)
-                reader = new ConsoleReader(new FileStream(args[0], FileMode.Open), Encoding.UTF8);
+                reader = new ConsoleReader(new FileStream(args[0], FileMode.Open), new UTF8Encoding(false));
             else if (sb.Length > 0)
-                reader = new ConsoleReader(new MemoryStream(Encoding.UTF8.GetBytes(sb.ToString())), Encoding.UTF8);
+                reader = new ConsoleReader(new MemoryStream(new UTF8Encoding(false).GetBytes(sb.ToString())), Encoding.UTF8);
             else
                 reader = new ConsoleReader(Console.OpenStandardInput());
 
@@ -38,9 +38,9 @@ namespace AtCoderProject.Runner
         static string LoadInput()
         {
             const string path = @"AtCoderProject.Main.input.txt";
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(path))
-            using (var sr = new StreamReader(stream))
-                return sr.ReadToEnd();
+            using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(path);
+            using var sr = new StreamReader(stream);
+            return sr.ReadToEnd();
         }
     }
     class MyStringBuilder : IEnumerable
