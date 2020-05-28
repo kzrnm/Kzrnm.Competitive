@@ -404,24 +404,28 @@ public partial class Program
     [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] public ConsoleWriter cw;
     public Program(ConsoleReader reader, ConsoleWriter writer) { this.cr = reader; this.cw = writer; System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture; }
     static void Main() => new Program(new ConsoleReader(Console.OpenStandardInput()), new ConsoleWriter(Console.OpenStandardOutput())).Run();
-    private void Run(Action calc) { calc(); cw.Flush(); }
-    private void Run<T>(Func<T> calc) { cw.WriteLine(calc()); cw.Flush(); }
-    private void Run(Func<double> calc) { cw.WriteLine(Result(calc())); cw.Flush(); }
-    private void Run(Func<bool> calc) { cw.WriteLine(Result(calc())); cw.Flush(); }
+    public void Run()
+    {
+        var res = Calc();
+        if (res is double)
+            cw.WriteLine(Result((double)res));
+        else if (res is bool)
+            cw.WriteLine(Result((bool)res));
+        else if (res != null)
+            cw.WriteLine(res.ToString());
+        cw.Flush();
+    }
 }
 public partial class Program
 {
     public static string Result(double d) => d.ToString("0.####################", System.Globalization.CultureInfo.InvariantCulture);
     #endregion
     public static string Result(bool b) => b ? "Yes" : "No";
-    public void Run() => Run(() =>
+    private object Calc()
     {
         N = cr;
-        arr = cr.Repeat(N);
 
-
-        cw.WriteLineJoin(arr);
-    });
+        return null;
+    }
     int N;
-    int[] arr;
 }
