@@ -1,5 +1,5 @@
 ﻿using System;
-using AtCoderProject.IO;
+using AtCoderProject;
 
 
 readonly struct Point : IEquatable<Point>, IComparable<Point>

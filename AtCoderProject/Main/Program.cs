@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AtCoderProject;
-using AtCoderProject.IO;
 using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
 using Unsafe = System.Runtime.CompilerServices.Unsafe;
@@ -13,7 +12,10 @@ using static AtCoderProject.Global;
 
 namespace AtCoderProject
 {
+    using System.IO;
+    using System.Text;
     using System.Diagnostics;
+    using System.Runtime.CompilerServices;
     public static class Global
     {
         public static T[] NewArray<T>(int len0, T value) => new T[len0].Fill(value);
@@ -214,14 +216,7 @@ namespace AtCoderProject
         public override int GetHashCode() => GetType().GetHashCode();
     }
     public class ΔDebugView<T> { private IEnumerable<T> collection; public ΔDebugView(IEnumerable<T> collection) { this.collection = collection ?? throw new ArgumentNullException(nameof(collection)); }[DebuggerBrowsable(DebuggerBrowsableState.RootHidden)] public T[] Items => collection.ToArray(); }
-}
-namespace AtCoderProject.IO
-{
-    using System.IO;
-    using System.Text;
-    using System.Diagnostics;
-    using System.Runtime.CompilerServices;
-    using System.Globalization;
+
 
     [DebuggerStepThrough]
     public class ConsoleReader
@@ -369,6 +364,7 @@ namespace AtCoderProject.IO
         public void Deconstruct(out ConsoleReader o1, out ConsoleReader o2, out ConsoleReader o3, out ConsoleReader o4, out ConsoleReader o5, out ConsoleReader o6, out ConsoleReader o7, out ConsoleReader o8) =>
             (o1, o2, o3, o4, o5, o6, o7, o8) = (this, this, this, this, this, this, this, this);
     }
+    [DebuggerStepThrough]
     public class ConsoleWriter : StreamWriter
     {
         public ConsoleWriter(Stream output) : base(output, Console.OutputEncoding) { }
