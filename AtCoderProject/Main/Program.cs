@@ -371,26 +371,24 @@ namespace AtCoderProject
     public class ConsoleWriter
     {
         private readonly StreamWriter sw;
-
-
         public ConsoleWriter(Stream output) : this(output, Console.OutputEncoding) { }
         public ConsoleWriter(Stream output, Encoding encoding) { sw = new StreamWriter(output, encoding); }
         public void Flush() => sw.Flush();
-        public void WriteLine(string str) => sw.WriteLine(str);
-        public void WriteLine<T>(T obj) => sw.WriteLine(obj.ToString());
-        public void WriteLineJoin<T>(IEnumerable<T> col) => WriteMany(' ', col);
-        public void WriteLines<T>(IEnumerable<T> col) => WriteMany('\n', col);
-        public void WriteLineGrid<T>(IEnumerable<IEnumerable<T>> cols)
+        public ConsoleWriter WriteLine<T>(T obj) { sw.WriteLine(obj.ToString()); return this; }
+        public ConsoleWriter WriteLineJoin<T>(IEnumerable<T> col) => WriteMany(' ', col);
+        public ConsoleWriter WriteLines<T>(IEnumerable<T> col) => WriteMany('\n', col);
+        public ConsoleWriter WriteLineGrid<T>(IEnumerable<IEnumerable<T>> cols)
         {
             var en = cols.GetEnumerator();
             while (en.MoveNext())
                 WriteLineJoin(en.Current);
+            return this;
         }
-        private void WriteMany<T>(char sep, IEnumerable<T> col)
+        private ConsoleWriter WriteMany<T>(char sep, IEnumerable<T> col)
         {
             var en = col.GetEnumerator();
             if (!en.MoveNext())
-                return;
+                return this;
             sw.Write(en.Current.ToString());
             while (en.MoveNext())
             {
@@ -398,6 +396,7 @@ namespace AtCoderProject
                 sw.Write(en.Current.ToString());
             }
             sw.WriteLine();
+            return this;
         }
     }
 }
