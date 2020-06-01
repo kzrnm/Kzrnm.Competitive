@@ -313,6 +313,7 @@ namespace AtCoderProject
             int count;
             public RepeatReader(ConsoleReader cr, int count) { this.cr = cr; this.count = count; }
             public T[] Select<T>(Func<ConsoleReader, T> factory) { var arr = new T[count]; for (var i = 0; i < count; i++) arr[i] = factory(cr); return arr; }
+            public T[] Select<T>(Func<ConsoleReader, int, T> factory) { var arr = new T[count]; for (var i = 0; i < count; i++) arr[i] = factory(cr, i); return arr; }
             public string[] Line { get { var arr = new string[count]; for (var i = 0; i < count; i++) arr[i] = cr.Line; return arr; } }
             public string[] String { get { var arr = new string[count]; for (var i = 0; i < count; i++) arr[i] = cr.String; return arr; } }
             public string[] Ascii { get { var arr = new string[count]; for (var i = 0; i < count; i++) arr[i] = cr.Ascii; return arr; } }
