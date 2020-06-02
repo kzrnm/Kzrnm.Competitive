@@ -7,7 +7,7 @@ class 素数
 
     Dictionary<long, int> PrimeFactoring(long num)
     {
-        var primes = Eratosthenes((long)Math.Sqrt(num));
+        var primes = Eratosthenes((int)(Math.Sqrt(num) + .5));
         var primeFactors = new Dictionary<long, int>();
 
         foreach (var p in primes)
@@ -29,10 +29,10 @@ class 素数
     }
 
 
-    static HashSet<long> Eratosthenes(long n)
+    static HashSet<int> Eratosthenes(int n)
     {
-        var primes = new HashSet<long> { 2, 3, 5, 7 };
-        var searches = new long[n + 1];
+        var primes = new HashSet<int> { 2, 3, 5, 7 };
+        var searches = new int[n + 1];
         int current;
         for (var i = 10; i <= n; i += 10)
         {
@@ -56,12 +56,11 @@ class 素数
             if (current % 3 == 0 || current % 7 == 0)
                 searches[current] = 7;
         }
-        var sqrtN = (long)Math.Sqrt(n);
         current = 11;
-        while (current <= sqrtN)
+        while (current * current <= n)
         {
             primes.Add(current);
-            for (var i = current; i <= n; i += current + current)
+            for (var i = current; i <= n; i += (current << 1))
                 searches[i] = current;
 
             while (searches[current] > 0) current += 2;
