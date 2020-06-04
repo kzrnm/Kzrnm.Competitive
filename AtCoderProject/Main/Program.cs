@@ -98,10 +98,10 @@ namespace AtCoderProject
         public static int PopCount(int x) => BitOperations.PopCount((uint)x);
         public static int PopCount(long x) => BitOperations.PopCount((ulong)x);
         public static int PopCount(ulong x) => BitOperations.PopCount(x);
-        public static int MSB(int x) => BitOperations.Log2((uint)x);
-        public static int MSB(long x) => BitOperations.Log2((ulong)x);
+        public static int MSB(int x) =>   BitOperations.Log2((uint)x);
+        public static int MSB(long x) =>  BitOperations.Log2((ulong)x);
         public static int MSB(ulong x) => BitOperations.Log2(x);
-        public static int LSB(int x) => BitOperations.TrailingZeroCount((uint)x);
+        public static int LSB(int x) =>  BitOperations.TrailingZeroCount((uint)x);
         public static int LSB(long x) => BitOperations.TrailingZeroCount((ulong)x);
         public static int LSB(ulong x) => BitOperations.TrailingZeroCount(x);
 
