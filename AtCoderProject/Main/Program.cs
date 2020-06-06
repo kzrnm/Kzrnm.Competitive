@@ -98,10 +98,10 @@ namespace AtCoderProject
         public static int PopCount(int x) => BitOperations.PopCount((uint)x);
         public static int PopCount(long x) => BitOperations.PopCount((ulong)x);
         public static int PopCount(ulong x) => BitOperations.PopCount(x);
-        public static int MSB(int x) =>   BitOperations.Log2((uint)x);
-        public static int MSB(long x) =>  BitOperations.Log2((ulong)x);
+        public static int MSB(int x) => BitOperations.Log2((uint)x);
+        public static int MSB(long x) => BitOperations.Log2((ulong)x);
         public static int MSB(ulong x) => BitOperations.Log2(x);
-        public static int LSB(int x) =>  BitOperations.TrailingZeroCount((uint)x);
+        public static int LSB(int x) => BitOperations.TrailingZeroCount((uint)x);
         public static int LSB(long x) => BitOperations.TrailingZeroCount((ulong)x);
         public static int LSB(ulong x) => BitOperations.TrailingZeroCount(x);
 
@@ -292,7 +292,7 @@ namespace AtCoderProject
             get
             {
                 var sb = new List<byte>();
-                while (buffer[pos] < 32) MoveNext();
+                while (buffer[pos] <= 32) MoveNext();
                 do { sb.Add(buffer[pos]); MoveNext(); } while (buffer[pos] != 10 && buffer[pos] != 13);
                 return this.encoding.GetString(sb.ToArray());
             }
@@ -302,7 +302,7 @@ namespace AtCoderProject
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
             {
-                while (buffer[pos] < 32) MoveNext();
+                while (buffer[pos] <= 32) MoveNext();
                 char res = (char)buffer[pos];
                 MoveNext();
                 return res;
