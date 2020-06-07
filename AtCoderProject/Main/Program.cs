@@ -202,6 +202,13 @@ namespace AtCoderProject
         public static IComparer<T> Reverse<T>(this IComparer<T> comparer) => Comparer<T>.Create((x, y) => comparer.Compare(y, x));
         public static Dictionary<TKey, int> GroupCount<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) => source.GroupBy(keySelector).ToDictionary(g => g.Key, g => g.Count());
         public static Dictionary<TKey, int> GroupCount<TKey>(this IEnumerable<TKey> source) => source.GroupCount(i => i);
+
+        public static ref T Get<T>(this T[] arr, int index)
+        {
+            if (index < 0)
+                return ref arr[arr.Length + index];
+            return ref arr[index];
+        }
         public static TValue Get<TKey, TValue>(this Dictionary<TKey, TValue> dic, TKey key)
         {
             dic.TryGetValue(key, out var v);
