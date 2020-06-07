@@ -14,24 +14,26 @@ class SegmentTree
     }
 
     private long[] tree;
+    public readonly int rootLength;
     public int Length { get; }
 
     public SegmentTree(long[] initArray) : this(initArray.Length)
     {
-        var rootLength = this.Length;
+        var rootLength = this.rootLength;
         Array.Copy(initArray, 0, tree, rootLength - 1, initArray.Length);
         for (int i = rootLength - 2; i >= 0; i--)
             tree[i] = Operate(tree[(i << 1) + 1], tree[(i << 1) + 2]);
     }
     public SegmentTree(int size)
     {
-        Length = 1 << (MSB(size - 1) + 1);
-        tree = NewArray((Length << 1) - 1, defaultValue);
+        this.Length = size;
+        rootLength = 1 << (MSB(size - 1) + 1);
+        tree = NewArray((rootLength << 1) - 1, defaultValue);
     }
 
     public void Update(int index, long value)
     {
-        index += Length - 1;
+        index += rootLength - 1;
         tree[index] = value;
         while (index > 0)
         {
@@ -45,7 +47,7 @@ class SegmentTree
     {
         var leftResult = defaultValue;
         var rightResult = defaultValue;
-        var segSize = Length - 1;
+        var segSize = rootLength - 1;
         var l = fromInclusive + segSize;
         var r = toExclusive + segSize;
 
@@ -89,9 +91,9 @@ class SegmentTree
             get
             {
                 var keys = new List<KeyValuePairs>(segmentTree.tree.Length);
-                for (var len = segmentTree.Length; len > 0; len >>= 1)
+                for (var len = segmentTree.rootLength; len > 0; len >>= 1)
                 {
-                    var unit = segmentTree.Length / len;
+                    var unit = segmentTree.rootLength / len;
                     for (var i = 0; i < len; i++)
                     {
                         var index = i + len - 1;
