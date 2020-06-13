@@ -386,14 +386,31 @@ namespace AtCoderProject
         public ConsoleWriter(Stream output) : this(output, Console.OutputEncoding) { }
         public ConsoleWriter(Stream output, Encoding encoding) { sw = new StreamWriter(output, encoding); }
         public void Flush() => sw.Flush();
+        public ConsoleWriter WriteLine(ReadOnlySpan<char> obj) { sw.WriteLine(obj); return this; }
         public ConsoleWriter WriteLine<T>(T obj) { sw.WriteLine(obj.ToString()); return this; }
+        public ConsoleWriter WriteLineJoin<T>(ReadOnlySpan<T> col) => WriteMany(' ', col);
         public ConsoleWriter WriteLineJoin<T>(IEnumerable<T> col) => WriteMany(' ', col);
+        public ConsoleWriter WriteLines<T>(ReadOnlySpan<T> col) => WriteMany('\n', col);
         public ConsoleWriter WriteLines<T>(IEnumerable<T> col) => WriteMany('\n', col);
         public ConsoleWriter WriteLineGrid<T>(IEnumerable<IEnumerable<T>> cols)
         {
             var en = cols.GetEnumerator();
             while (en.MoveNext())
                 WriteLineJoin(en.Current);
+            return this;
+        }
+        private ConsoleWriter WriteMany<T>(char sep, ReadOnlySpan<T> col)
+        {
+            var en = col.GetEnumerator();
+            if (!en.MoveNext())
+                return this;
+            sw.Write(en.Current.ToString());
+            while (en.MoveNext())
+            {
+                sw.Write(sep);
+                sw.Write(en.Current.ToString());
+            }
+            sw.WriteLine();
             return this;
         }
         private ConsoleWriter WriteMany<T>(char sep, IEnumerable<T> col)
