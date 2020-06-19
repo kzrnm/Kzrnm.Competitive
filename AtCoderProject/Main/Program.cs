@@ -384,7 +384,7 @@ namespace AtCoderProject
     [DebuggerStepThrough]
     public class ConsoleWriter
     {
-        private readonly StreamWriter sw;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)] public readonly StreamWriter sw;
         public ConsoleWriter(Stream output) : this(output, Console.OutputEncoding) { }
         public ConsoleWriter(Stream output, Encoding encoding) { sw = new StreamWriter(output, encoding); }
         public void Flush() => sw.Flush();
