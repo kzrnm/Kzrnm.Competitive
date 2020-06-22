@@ -240,7 +240,7 @@ function Update-Input {
     )
     $mainPath = "$PSScriptRoot\..\AtCoderProject\Main\Program.cs"
     $main = (Get-Content $mainPath -Raw)
-    ($main -replace 'object Calc()[\s\S]*', 'object Calc(){') > $mainPath
+    ($main -replace 'public static string Result\(bool b\)[\s\S]*', ('public static string Result(bool b) => b ? "Yes" : "No";' + "`r`nprivate object Calc(){")) > $mainPath
     $vars | ForEach-Object { $_.ToInit() } >> $mainPath
     "return null;}" >> $mainPath
     $vars | ForEach-Object { $_.ToDefine() } >> $mainPath
