@@ -76,6 +76,23 @@ class WGraphBuilder
 
         return res;
     }
+    public WGraphBuilder Clone()
+    {
+        var count = this.roots.Length;
+        var isOriented = this.roots[0] != this.children[0];
+        var cl = new WGraphBuilder(count, isOriented);
+        for (int i = 0; i < count; i++)
+        {
+            if (isOriented)
+            {
+                cl.children[i] = this.children[i].ToList();
+                cl.roots[i] = this.roots[i].ToList();
+            }
+            else
+                cl.children[i] = cl.roots[i] = this.roots[i].ToList();
+        }
+        return cl;
+    }
 }
 struct Next
 {
