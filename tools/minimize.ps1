@@ -78,6 +78,7 @@ $targetFiles = @(
     'AtCoderLib\Collection\Set.cs',
     'AtCoderLib\Collection\SortedCollection.cs',
     'AtCoderLib\グラフ\重み付き\重み付きグラフ.cs',
+    'AtCoderLib\グラフ\重み付き\流量とコストを持つグラフ.cs',
     'AtCoderLib\グラフ\UnionFind.cs',
     'AtCoderLib\グラフ\最小共通祖先.cs',
     'AtCoderLib\グラフ\重みなしグラフ.cs',
