@@ -211,12 +211,12 @@ namespace AtCoderProject
                 return ref arr[arr.Length + index];
             return ref arr[index];
         }
-        public static TValue Get<TKey, TValue>(this Dictionary<TKey, TValue> dic, TKey key)
+        public static TValue Get<TKey, TValue>(this IDictionary<TKey, TValue> dic, TKey key)
         {
             dic.TryGetValue(key, out var v);
             return v;
         }
-        public static TValue GetOrInit<TKey, TValue>(this Dictionary<TKey, TValue> dic, TKey key, TValue value)
+        public static TValue GetOrInit<TKey, TValue>(this IDictionary<TKey, TValue> dic, TKey key, TValue value)
         {
             if (dic.TryGetValue(key, out var v))
                 return v;
