@@ -247,7 +247,12 @@ function Update-Input {
     "}" >> $mainPath
 }
 
-$document = (Get-Parsed-AtCoder)
-Update-InOut (Get-InOut $document)
-Update-Input (Get-Parsed-Input $document)
-dotnet-format.exe -f "$PSScriptRoot\..\AtCoderProject"
+function Main {
+    Set-Variable -Name "lastAtCoderUrl" -Value $Url -Scope Global
+    $document = (Get-Parsed-AtCoder)
+    Update-InOut (Get-InOut $document)
+    Update-Input (Get-Parsed-Input $document)
+    dotnet-format.exe -f "$PSScriptRoot\..\AtCoderProject"
+}
+
+Main
