@@ -12,26 +12,27 @@ namespace AtCoderProject.Tests
 {
     public class AtCoder
     {
-        public static IEnumerable<object[]> Source()
+        private class ResouceSource : TheoryData<string, string>
         {
-            var data = new[] {
-                (InOut.A_IN, InOut.A_OUT),
-                (InOut.B_IN, InOut.B_OUT),
-                (InOut.C_IN, InOut.C_OUT),
-                (InOut.D_IN, InOut.D_OUT),
-                (InOut.E_IN, InOut.E_OUT),
-                (InOut.F_IN, InOut.F_OUT),
-            };
-            foreach (var (input, output) in data)
+            public ResouceSource()
             {
-                if (!string.IsNullOrEmpty(input) && !string.IsNullOrEmpty(output))
-                    yield return new[] { input, output };
+                Add(InOut.A_IN, InOut.A_OUT);
+                Add(InOut.B_IN, InOut.B_OUT);
+                Add(InOut.C_IN, InOut.C_OUT);
+                Add(InOut.D_IN, InOut.D_OUT);
+                Add(InOut.E_IN, InOut.E_OUT);
+                Add(InOut.F_IN, InOut.F_OUT);
+            }
+            public new void Add(string p1, string p2)
+            {
+                if (!string.IsNullOrEmpty(p1) && !string.IsNullOrEmpty(p2))
+                    base.Add(p1, p2);
             }
         }
 
         static Regex doubleRegex = new Regex(@"^\d+\.\d+$", RegexOptions.IgnoreCase);
         [Theory(Timeout = 200)]
-        [MemberData(nameof(Source))]
+        [ClassData(typeof(ResouceSource))]
         public void FromSource(string input, string output)
         {
             var encoding = new UTF8Encoding(false);
