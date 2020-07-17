@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using static AtCoderProject.Global;
+using System.Numerics;
+
 
 static class Bit
 {
@@ -10,41 +10,24 @@ static class Bit
     public static bool On(this int num, int index) => ((num >> index) & 1) != 0;
     public static bool On(this long num, int index) => ((num >> index) & 1) != 0;
     public static bool On(this ulong num, int index) => ((num >> index) & 1) != 0;
-    private static IEnumerable<int> BitsClasic(this int num)
-    {
-        for (var i = 0; num > 0; i++, num >>= 1)
-            if ((num & 1) == 1)
-                yield return i;
-    }
-    public static EnumerableBits32 Bits(this int num) => new EnumerableBits32(num);
-    public static EnumerableBits32 Bits(this uint num) => new EnumerableBits32(num);
-    public static EnumerableBits64 Bits(this long num) => new EnumerableBits64(num);
-    public static EnumerableBits64 Bits(this ulong num) => new EnumerableBits64(num);
-    public struct EnumerableBits64
+    public static Enumerator Bits(this int num) => new Enumerator(num);
+    public static Enumerator Bits(this uint num) => new Enumerator(num);
+    public static Enumerator Bits(this long num) => new Enumerator(num);
+    public static Enumerator Bits(this ulong num) => new Enumerator(num);
+    public struct Enumerator
     {
         private ulong num;
-        public EnumerableBits64(long num) : this((ulong)num) { }
-        public EnumerableBits64(ulong num) { this.num = num; this.Current = 0; }
-        public EnumerableBits64 GetEnumerator() => this;
+        public Enumerator(int num) : this((ulong)(uint)num) { }
+        public Enumerator(long num) : this((ulong)num) { }
+        public Enumerator(ulong num) { this.num = num; Current = -1; }
+        public Enumerator GetEnumerator() => this;
         public int Current { get; private set; }
         public bool MoveNext()
         {
             if (num == 0) return false;
-            num &= ~1UL << (Current = LSB(num));
-            return true;
-        }
-    }
-    public struct EnumerableBits32
-    {
-        private uint num;
-        public EnumerableBits32(int num) : this((uint)num) { }
-        public EnumerableBits32(uint num) { this.num = num; this.Current = 0; }
-        public EnumerableBits32 GetEnumerator() => this;
-        public int Current { get; private set; }
-        public bool MoveNext()
-        {
-            if (num == 0) return false;
-            num &= ~1U << (Current = LSB(num));
+            var lsb1 = BitOperations.TrailingZeroCount(num) + 1;
+            Current += lsb1;
+            num >>= lsb1;
             return true;
         }
     }
