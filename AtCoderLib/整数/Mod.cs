@@ -25,6 +25,21 @@ readonly struct Mod : IEquatable<Mod>
     public static Mod operator /(Mod x, Mod y) => x * y.Inverse();
     public static bool operator ==(Mod x, Mod y) => x.val == y.val;
     public static bool operator !=(Mod x, Mod y) => x.val != y.val;
+    public static long EuclidInverse(long a, long mod)
+    {
+        long b = mod, u = 1, v = 0;
+        while (b > 0)
+        {
+            long t = a / b;
+            a -= t * b;
+            (a, b) = (b, a);
+            u -= t * v; 
+            (u, v) = (v, u);
+        }
+        u %= mod;
+        if (u < 0) u += mod;
+        return u;
+    }
     public Mod Inverse()
     {
         long a = val, b = mod, u = 1, v = 0;
