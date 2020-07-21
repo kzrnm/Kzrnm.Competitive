@@ -57,6 +57,11 @@ readonly struct PointD : IEquatable<PointD>, IComparable<PointD>
     }
 
     // A*x+B*y=C
+    public (double A, double B, double C) 直線(PointD other)
+        => (other.y - this.y, this.x - other.x, this.y * (other.x - this.x) - this.x * (other.y - this.y));
+
+
+    // A*x+B*y=C
     public static (double A, double B, double C) 垂直二等分線(PointD a, PointD b)
         => (a.x - b.x, a.y - b.y, (a.x * a.x - b.x * b.x + a.y * a.y - b.y * b.y) * .5);
 
