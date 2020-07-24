@@ -40,6 +40,7 @@ readonly struct PointD : IEquatable<PointD>, IComparable<PointD>
     public override int GetHashCode() => HashCode.Combine(x, y);
     public override string ToString() => $"({x}, {y})";
 
+
     public static PointD 外心(PointD a, PointD b, PointD c)
     {
         var ab = a.Distance(b);
@@ -56,14 +57,15 @@ readonly struct PointD : IEquatable<PointD>, IComparable<PointD>
             + new PointD(ab * cosC * c.x / d, ab * cosC * c.y / d);
     }
 
-    // A*x+B*y=C
+    public double 直線との距離(double A, double B, double C)
+        => Math.Abs(A * x + B * y + C) / Math.Sqrt(A * A + B * B);
+
+    // A*x+B*y+C=0
     public (double A, double B, double C) 直線(PointD other)
         => (other.y - this.y, this.x - other.x, this.y * (other.x - this.x) - this.x * (other.y - this.y));
-
-
-    // A*x+B*y=C
+    // A*x+B*y+C=0
     public static (double A, double B, double C) 垂直二等分線(PointD a, PointD b)
-        => (a.x - b.x, a.y - b.y, (a.x * a.x - b.x * b.x + a.y * a.y - b.y * b.y) * .5);
+        => (a.x - b.x, a.y - b.y, (a.x * a.x - b.x * b.x + a.y * a.y - b.y * b.y) * -.5);
 
 
     // A*x+B*y+C=0, U*x+V*y+W=0の交点
