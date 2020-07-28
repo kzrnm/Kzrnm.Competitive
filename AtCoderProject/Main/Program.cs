@@ -66,9 +66,9 @@ namespace AtCoderProject
         }
 
 
-        public static int Pow(int x, int y)
+        public static long Pow(long x, int y)
         {
-            int res = 1;
+            long res = 1;
             for (; y > 0; y >>= 1)
             {
                 if ((y & 1) == 1) res *= x;
