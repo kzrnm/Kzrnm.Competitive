@@ -207,7 +207,7 @@ namespace AtCoderProject
         public static Dictionary<TKey, int> GroupCount<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) => source.GroupBy(keySelector).ToDictionary(g => g.Key, g => g.Count());
         public static Dictionary<TKey, int> GroupCount<TKey>(this IEnumerable<TKey> source) => source.GroupCount(i => i);
         private class UnsafeList<T> { public T[] arr; }
-        public static Span<T> AsSpan<T>(this List<T> list) => Unsafe.As<UnsafeList<T>>(list).arr;
+        public static Span<T> AsSpan<T>(this List<T> list) => Unsafe.As<UnsafeList<T>>(list).arr.AsSpan(0, list.Count);
         public static ref T Get<T>(this T[] arr, int index)
         {
             if (index < 0)
