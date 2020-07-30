@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using static AtCoderProject.Global;
 
 class UnionFind
@@ -29,4 +30,5 @@ class UnionFind
         return true;
     }
     public bool IsSameSet(int x, int y) => Root(x) == Root(y);
+    public int ForestCount() => data.Count(n => n < 0);
 }
