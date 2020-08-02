@@ -113,11 +113,16 @@ namespace AtCoderProject
     public static class Ext
     {
 
-        public static bool UpdateMax(this ref int r, int val) { if (r < val) { r = val; return true; } return false; }
-        public static bool UpdateMax(this ref long r, long val) { if (r < val) { r = val; return true; } return false; }
-        public static bool UpdateMin(this ref int r, int val) { if (r > val) { r = val; return true; } return false; }
-        public static bool UpdateMin(this ref long r, long val) { if (r > val) { r = val; return true; } return false; }
-
+        public static bool UpdateMax<T>(this ref T r, T val) where T : struct, IComparable<T>
+        {
+            if (r.CompareTo(val) < 0) { r = val; return true; }
+            return false;
+        }
+        public static bool UpdateMin<T>(this ref T r, T val) where T : struct, IComparable<T>
+        {
+            if (r.CompareTo(val) > 0) { r = val; return true; }
+            return false;
+        }
         public static long ToLong(this int i) => i;
         public static T[] Fill<T>(this T[] arr, T value)
         {
