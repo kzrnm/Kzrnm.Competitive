@@ -1,6 +1,7 @@
 ﻿using AtCoderProject;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 
 #region https://qiita.com/drken/items/3b4fdf0a78e7a138cd9a 
@@ -8,10 +9,10 @@ using System.Collections.Generic;
 readonly struct Mod : IEquatable<Mod>
 {
     public const long mod = 1000000007;
-    public static readonly Mod invalid = new Mod(-1, false);
+    public static readonly Mod invalid;
     public readonly long val;
-    private Mod(long val, bool isValid) : this(val) { if (!isValid) this.val = val; }
     public Mod(long val) { this.val = val % mod; if (this.val < 0) this.val += mod; }
+    static Mod() { Unsafe.As<Mod, long>(ref invalid) = -1; }
     public override bool Equals(object obj) => (obj is Mod) && this == ((Mod)obj);
     public bool Equals(Mod obj) => this.val == obj.val;
     public override int GetHashCode() => val.GetHashCode();
