@@ -2,36 +2,40 @@
 using System.Collections.Generic;
 using static AtCoderProject.Global;
 
-
-[System.Diagnostics.DebuggerTypeProxy(typeof(SegmentTreeDebugView))]
-class SegmentTree
+class SegmentTree : SegmentTreeImpl<long>
 {
-    /* この辺は場合によって変える */
-    private const long defaultValue = 0;
-    private long Operate(long v1, long v2)
-    {
-        return Math.Max(v1, v2);
-    }
+    protected override long DefaultValue => 0;
+    protected override long Operate(long v1, long v2) => Math.Max(v1, v2);
+    public SegmentTree(long[] initArray) : base(initArray) { }
+    public SegmentTree(int size) : base(size) { }
+}
 
-    private long[] tree;
+
+[System.Diagnostics.DebuggerTypeProxy(typeof(SegmentTreeImpl<>.SegmentTreeDebugView))]
+abstract class SegmentTreeImpl<T> where T : struct
+{
+    protected abstract T DefaultValue { get; }
+    protected abstract T Operate(T v1, T v2);
+
+    private T[] tree;
     public readonly int rootLength;
     public int Length { get; }
 
-    public SegmentTree(long[] initArray) : this(initArray.Length)
+    public SegmentTreeImpl(T[] initArray) : this(initArray.Length)
     {
         var rootLength = this.rootLength;
         Array.Copy(initArray, 0, tree, rootLength - 1, initArray.Length);
         for (int i = rootLength - 2; i >= 0; i--)
             tree[i] = Operate(tree[(i << 1) + 1], tree[(i << 1) + 2]);
     }
-    public SegmentTree(int size)
+    public SegmentTreeImpl(int size)
     {
         this.Length = size;
         rootLength = 1 << (MSB(size - 1) + 1);
-        tree = NewArray((rootLength << 1) - 1, defaultValue);
+        tree = NewArray((rootLength << 1) - 1, DefaultValue);
     }
 
-    public void Update(int index, long value)
+    public void Update(int index, T value)
     {
         index += rootLength - 1;
         tree[index] = value;
@@ -42,11 +46,11 @@ class SegmentTree
         }
     }
 
-    public long Slice(int from, int length) => Query(from, from + length);
-    public long Query(int fromInclusive, int toExclusive)
+    public T Slice(int from, int length) => Query(from, from + length);
+    public T Query(int fromInclusive, int toExclusive)
     {
-        var leftResult = defaultValue;
-        var rightResult = defaultValue;
+        var leftResult = DefaultValue;
+        var rightResult = DefaultValue;
         var segSize = rootLength - 1;
         var l = fromInclusive + segSize;
         var r = toExclusive + segSize;
@@ -69,9 +73,9 @@ class SegmentTree
     struct KeyValuePairs
     {
         private string key;
-        private long value;
+        private T value;
 
-        public KeyValuePairs(string key, long value)
+        public KeyValuePairs(string key, T value)
         {
             this.key = key;
             this.value = value;
@@ -79,8 +83,8 @@ class SegmentTree
     }
     class SegmentTreeDebugView
     {
-        private SegmentTree segmentTree;
-        public SegmentTreeDebugView(SegmentTree segmentTree)
+        private SegmentTreeImpl<T> segmentTree;
+        public SegmentTreeDebugView(SegmentTreeImpl<T> segmentTree)
         {
             this.segmentTree = segmentTree;
         }

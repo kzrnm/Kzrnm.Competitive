@@ -85,6 +85,7 @@ function Main {
         'AtCoderLib\グラフ\重みなしグラフ.cs',
         'AtCoderLib\整数\Bit.cs',
         'AtCoderLib\整数\Mod.cs',
+        'AtCoderLib\範囲演算\SegmentTree.cs',
         'AtCoderLib\範囲演算\特殊なBIT\BinaryIndexedTree2D.cs',
         'AtCoderLib\範囲演算\特殊なBIT\RangeBinaryIndexedTree.cs',
         'AtCoderLib\範囲演算\累積和.cs',
