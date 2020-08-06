@@ -7,12 +7,12 @@ using System.Collections.Generic;
 
 static class 二分探索
 {
-    public static int BinarySearch(int ok, int ng, Predicate<int> isOK)
+    public static int BinarySearch(int ok, int ng, Predicate<int> Ok)
     {
         while (Math.Abs(ok - ng) > 1)
         {
             var m = (ok + ng) / 2;
-            if (isOK(m)) ok = m;
+            if (Ok(m)) ok = m;
             else ng = m;
         }
         return ok;
