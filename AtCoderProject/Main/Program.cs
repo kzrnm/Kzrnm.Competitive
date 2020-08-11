@@ -131,7 +131,7 @@ namespace AtCoderProject
         }
         public static T[] Sort<T>(this T[] arr) { Array.Sort(arr); return arr; }
         public static string[] Sort(this string[] arr) => Sort(arr, StringComparer.OrdinalIgnoreCase);
-        public static T[] Sort<T, U>(this T[] arr, Expression<Func<T, U>> selector) where U : IComparable<U> => Sort(arr, new ExpComparer<T, U>(selector));
+        public static T[] Sort<T, U>(this T[] arr, Expression<Func<T, U>> selector) where U : IComparable<U> => Sort(arr, ExComparer<T>.CreateExp(selector));
         public static T[] Sort<T>(this T[] arr, Comparison<T> comparison) { Array.Sort(arr, comparison); return arr; }
         public static T[] Sort<T>(this T[] arr, IComparer<T> comparer) { Array.Sort(arr, comparer); return arr; }
         public static T[] Reverse<T>(this T[] arr) { Array.Reverse(arr); return arr; }
@@ -231,44 +231,48 @@ namespace AtCoderProject
             return dic[key] = value;
         }
     }
-    public class ExpComparer<T, K> : IComparer<T> where K : IComparable<K>
+    public static class ExComparer<T>
     {
-        private class ParameterReplaceVisitor : ExpressionVisitor
+        class ExpressionComparer<K> : IComparer<T> where K : IComparable<K>
         {
-            private readonly ParameterExpression from;
-            private readonly ParameterExpression to;
-            public ParameterReplaceVisitor(ParameterExpression from, ParameterExpression to)
+            private class ParameterReplaceVisitor : ExpressionVisitor
             {
-                this.from = from;
-                this.to = to;
+                private readonly ParameterExpression from;
+                private readonly ParameterExpression to;
+                public ParameterReplaceVisitor(ParameterExpression from, ParameterExpression to)
+                {
+                    this.from = from;
+                    this.to = to;
+                }
+                protected override Expression VisitParameter(ParameterExpression node) => node == from ? to : base.VisitParameter(node);
             }
-            protected override Expression VisitParameter(ParameterExpression node) => node == from ? to : base.VisitParameter(node);
-        }
 
-        private readonly Func<T, T, int> func;
-        public ExpComparer(Expression<Func<T, K>> expression)
-        {
-            var paramA = expression.Parameters[0];
-            var paramB = Expression.Parameter(typeof(T));
-            var f2 = (Expression<Func<T, K>>)new ParameterReplaceVisitor(expression.Parameters[0], paramB).Visit(expression);
-            var compExp = Expression.Lambda<Func<T, T, int>>(Expression.Call(
-                    expression.Body,
-                    typeof(K).GetMethod(nameof(IComparable<K>.CompareTo), new[] { typeof(K) }),
-                    f2.Body),
-                    paramA, paramB);
-            this.func = compExp.Compile();
+            readonly Func<T, T, int> func;
+            public ExpressionComparer(Expression<Func<T, K>> expression)
+            {
+                var paramA = expression.Parameters[0];
+                var paramB = Expression.Parameter(typeof(T));
+                var f2 = (Expression<Func<T, K>>)new ParameterReplaceVisitor(expression.Parameters[0], paramB).Visit(expression);
+                var compExp = Expression.Lambda<Func<T, T, int>>(Expression.Call(
+                        expression.Body,
+                        typeof(K).GetMethod(nameof(IComparable<K>.CompareTo), new[] { typeof(K) }),
+                        f2.Body),
+                        paramA, paramB);
+                this.func = compExp.Compile();
+            }
+            public int Compare(T x, T y) => func(x, y);
+            public override bool Equals(object obj) => obj is ExpressionComparer<K> c && this.func == c.func;
+            public override int GetHashCode() => func.GetHashCode();
         }
-        public int Compare(T x, T y) => func(x, y);
-        public override bool Equals(object obj) => obj != null && GetType() == obj.GetType();
-        public override int GetHashCode() => GetType().GetHashCode();
-    }
-    public class ReverseComparer<T> : IComparer<T> where T : IComparable<T>
-    {
-        private static ReverseComparer<T> defaultComparer;
-        public static IComparer<T> Default => defaultComparer ??= new ReverseComparer<T>();
-        public int Compare(T y, T x) => x.CompareTo(y);
-        public override bool Equals(object obj) => obj != null && GetType() == obj.GetType();
-        public override int GetHashCode() => GetType().GetHashCode();
+        class ReverseComparer : IComparer<T>
+        {
+            private static Comparer<T> orig = Comparer<T>.Default;
+            public int Compare(T y, T x) => orig.Compare(x, y);
+            public override bool Equals(object obj) => obj is ReverseComparer;
+            public override int GetHashCode() => GetType().GetHashCode();
+        }
+        public static IComparer<T> CreateExp<K>(Expression<Func<T, K>> expression) where K : IComparable<K> => new ExpressionComparer<K>(expression);
+        public static IComparer<T> DefaultReverse => new ReverseComparer();
     }
     public class ΔDebugView<T> { private IEnumerable<T> collection; public ΔDebugView(IEnumerable<T> collection) { this.collection = collection ?? throw new ArgumentNullException(nameof(collection)); }[DebuggerBrowsable(DebuggerBrowsableState.RootHidden)] public T[] Items => collection.ToArray(); }
 
