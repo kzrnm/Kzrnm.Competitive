@@ -211,8 +211,7 @@ namespace AtCoderProject
         public static IComparer<T> Reverse<T>(this IComparer<T> comparer) => Comparer<T>.Create((x, y) => comparer.Compare(y, x));
         public static Dictionary<TKey, int> GroupCount<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) => source.GroupBy(keySelector).ToDictionary(g => g.Key, g => g.Count());
         public static Dictionary<TKey, int> GroupCount<TKey>(this IEnumerable<TKey> source) => source.GroupCount(i => i);
-        private class UnsafeList<T> { public T[] arr; }
-        public static Span<T> AsSpan<T>(this List<T> list) => Unsafe.As<UnsafeList<T>>(list).arr.AsSpan(0, list.Count);
+        public static Span<T> AsSpan<T>(this List<T> list, int start = 0) => Unsafe.As<Tuple<T[]>>(list).Item1.AsSpan(start, list.Count);
         public static ref T Get<T>(this T[] arr, int index)
         {
             if (index < 0)
