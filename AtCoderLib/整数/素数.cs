@@ -1,37 +1,60 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 
-class 素数
+class PrimeNumber : ICollection<int>
 {
+    HashSet<int> primes;
+    public int Count => primes.Count;
+    public bool IsReadOnly => true;
 
-    Dictionary<long, int> PrimeFactoring(long num)
+    public PrimeNumber(int max)
     {
-        var primes = Eratosthenes((int)(Math.Sqrt(num) + .5));
+        primes = Eratosthenes(max);
+    }
+    public Dictionary<long, int> PrimeFactoring(long num)
+    {
         var primeFactors = new Dictionary<long, int>();
-
+        foreach (var p in EnumerateFactor(num))
+        {
+            primeFactors.TryGetValue(p, out var v);
+            primeFactors[p] = v + 1;
+        }
+        return primeFactors;
+    }
+    public Dictionary<int, int> PrimeFactoring(int num)
+    {
+        var primeFactors = new Dictionary<int, int>();
+        foreach (var pl in EnumerateFactor(num))
+        {
+            var p = (int)pl;
+            primeFactors.TryGetValue(p, out var v);
+            primeFactors[p] = v + 1;
+        }
+        return primeFactors;
+    }
+    private IEnumerable<long> EnumerateFactor(long num)
+    {
         foreach (var p in primes)
         {
             if (num < 2) break;
             while (num % p == 0)
             {
-                int v;
-                primeFactors.TryGetValue(p, out v);
-                primeFactors[p] = v + 1;
+                yield return p;
                 num /= p;
             }
         }
-
-        if (num > 1)
-            primeFactors[num] = 1;
-
-        return primeFactors;
+        if (num > 1) yield return num;
     }
-
-
-    static HashSet<int> Eratosthenes(int n)
+    HashSet<int> Eratosthenes(int n)
     {
         var primes = new HashSet<int> { 2, 3, 5, 7 };
+        if (n < 11)
+        {
+            primes.RemoveWhere(p => p > n);
+            return primes;
+        }
         var searches = new int[n + 1];
         int current;
         for (var i = 10; i <= n; i += 10)
@@ -72,5 +95,12 @@ class 素数
         return primes;
     }
 
-
+    public void Add(int item) => throw new NotSupportedException();
+    public void Clear() => throw new NotSupportedException();
+    public bool Contains(int item) => primes.Contains(item);
+    public void CopyTo(int[] array, int arrayIndex) => primes.CopyTo(array, arrayIndex);
+    public bool Remove(int item) => throw new NotSupportedException();
+    public HashSet<int>.Enumerator GetEnumerator() => primes.GetEnumerator();
+    IEnumerator<int> IEnumerable<int>.GetEnumerator() => primes.GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => primes.GetEnumerator();
 }
