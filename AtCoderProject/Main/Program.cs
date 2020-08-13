@@ -246,13 +246,13 @@ namespace AtCoderProject
                 protected override Expression VisitParameter(ParameterExpression node) => node == from ? to : base.VisitParameter(node);
             }
 
-            readonly Func<T, T, int> func;
+            readonly Comparison<T> func;
             public ExpressionComparer(Expression<Func<T, K>> expression)
             {
                 var paramA = expression.Parameters[0];
                 var paramB = Expression.Parameter(typeof(T));
                 var f2 = (Expression<Func<T, K>>)new ParameterReplaceVisitor(expression.Parameters[0], paramB).Visit(expression);
-                var compExp = Expression.Lambda<Func<T, T, int>>(Expression.Call(
+                var compExp = Expression.Lambda<Comparison<T>>(Expression.Call(
                         expression.Body,
                         typeof(K).GetMethod(nameof(IComparable<K>.CompareTo), new[] { typeof(K) }),
                         f2.Body),
