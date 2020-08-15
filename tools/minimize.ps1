@@ -96,7 +96,7 @@ function Main {
     $methodTargetFiles = @(
         'AtCoderLib\Collection\座標圧縮.cs',
         'AtCoderLib\Collection\順列を求める.cs',
-        'AtCoderLib\グラフ\重み付き\ShortestPath.cs'
+        'AtCoderLib\グラフ\重み付き\GraphUtil.cs'
     ) 
     $targetFiles | ForEach-Object { Compress-CSharp "$SolutionRoot\$_" } 
     $methodTargetFiles | ForEach-Object { Compress-CSharp "$SolutionRoot\$_" -MethodOnly } 
