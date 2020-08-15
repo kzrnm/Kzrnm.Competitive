@@ -78,6 +78,7 @@ function Main {
         'AtCoderLib\Collection\PriorityQueue.cs',
         'AtCoderLib\Collection\Set.cs',
         'AtCoderLib\Collection\SortedCollection.cs',
+        'AtCoderLib\Collection\Trie.cs',
         'AtCoderLib\グラフ\重み付き\重み付きグラフ.cs',
         'AtCoderLib\グラフ\重み付き\流量とコストを持つグラフ.cs',
         'AtCoderLib\グラフ\UnionFind.cs',
