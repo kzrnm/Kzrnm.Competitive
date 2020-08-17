@@ -100,6 +100,11 @@ struct Next
 {
     public int to;
     public int value;
+    public void Deconstruct(out int to, out int value)
+    {
+        to = this.to;
+        value = this.value;
+    }
     public override string ToString() => $"to: {to} value:{value}";
 }
 class WTreeNode

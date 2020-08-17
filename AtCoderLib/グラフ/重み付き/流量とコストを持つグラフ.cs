@@ -104,6 +104,12 @@ struct NextD
     public int to;
     public int capacity;
     public long cost;
+    public void Deconstruct(out int to, out int capacity, out long cost)
+    {
+        to = this.to;
+        capacity = this.capacity;
+        cost = this.cost;
+    }
     public override string ToString() => $"to: {to} value:{capacity}/{cost}";
 }
 class WTreeNodeD
