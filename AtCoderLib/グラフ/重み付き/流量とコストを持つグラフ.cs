@@ -32,6 +32,8 @@ class WGraphBuilderD
         for (var i = 0; i < edgeCount; i++)
             this.Add(cr.Int0, cr.Int0, cr.Int, cr.Int);
     }
+    public static WTreeNodeD[] MakeTree(int count, ConsoleReader cr, int root = 0)
+        => new WGraphBuilderD(count, cr, count - 1, false).ToTree(root);
     public void Add(int from, int to, int capacity, long cost)
     {
         children[from].Add(new NextD { to = to, capacity = capacity, cost = cost });
@@ -42,7 +44,7 @@ class WGraphBuilderD
         .Zip(roots, children, (root, child) => (root, child))
         .Select((t, i) => new WNodeD(i, t.root.ToArray(), t.child.ToArray()))
         .ToArray();
-    public WTreeNodeD[] ToTree(int root)
+    public WTreeNodeD[] ToTree(int root = 0)
     {
         if (this.roots[0] != this.children[0]) throw new Exception("木には無向グラフをしたほうが良い");
         var res = new WTreeNodeD[this.children.Length];

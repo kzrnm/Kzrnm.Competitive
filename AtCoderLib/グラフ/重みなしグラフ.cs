@@ -30,12 +30,14 @@ class GraphBuilder
         for (var i = 0; i < edgeCount; i++)
             this.Add(cr.Int0, cr.Int0);
     }
+    public static TreeNode[] MakeTree(int count, ConsoleReader cr, int root = 0)
+        => new GraphBuilder(count, cr, count - 1, false).ToTree(root);
     public void Add(int from, int to)
     {
         children[from].Add(to);
         roots[to].Add(from);
     }
-    public TreeNode[] ToTree(int root)
+    public TreeNode[] ToTree(int root = 0)
     {
         if (this.roots[0] != this.children[0]) throw new Exception("木には無向グラフをしたほうが良い");
         var res = new TreeNode[this.children.Length];
