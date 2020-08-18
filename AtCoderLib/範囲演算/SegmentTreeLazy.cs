@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using static AtCoderProject.Global;
 
+
+
+
 class SegmentTreeLazy : SegmentTreeLazyImpl<long, long>
 {
     protected override long DefaultValue => 0;
@@ -12,23 +15,21 @@ class SegmentTreeLazy : SegmentTreeLazyImpl<long, long>
     public SegmentTreeLazy(long[] initArray) : base(initArray) { }
     public SegmentTreeLazy(int size) : base(size) { }
 }
-
-
 [System.Diagnostics.DebuggerTypeProxy(typeof(SegmentTreeLazyImpl<,>.SegmentTreeLazyDebugView))]
-abstract class SegmentTreeLazyImpl<T, L> where T : struct where L : struct
+abstract class SegmentTreeLazyImpl<TValue, TOp> where TValue : struct where TOp : struct
 {
-    protected abstract T DefaultValue { get; }
-    protected abstract L DefaultLazy { get; }
-    protected abstract T Operate(T v1, T v2);
-    protected abstract T Apply(T v, L l);
-    protected abstract L Merge(L l1, L l2);
+    protected abstract TValue DefaultValue { get; }
+    protected abstract TOp DefaultLazy { get; }
+    protected abstract TValue Operate(TValue v1, TValue v2);
+    protected abstract TValue Apply(TValue v, TOp l);
+    protected abstract TOp Merge(TOp l1, TOp l2);
 
-    private T[] tree;
-    private L[] lazy;
+    private TValue[] tree;
+    private TOp[] lazy;
     public readonly int rootLength;
     public int Length { get; }
 
-    public SegmentTreeLazyImpl(T[] initArray) : this(initArray.Length)
+    public SegmentTreeLazyImpl(TValue[] initArray) : this(initArray.Length)
     {
         var rootLength = this.rootLength;
         Array.Copy(initArray, 0, tree, rootLength - 1, initArray.Length);
@@ -52,9 +53,9 @@ abstract class SegmentTreeLazyImpl<T, L> where T : struct where L : struct
         tree[k] = Apply(tree[k], lazy[k]);
         lazy[k] = DefaultLazy;
     }
-    public void Update(int fromInclusive, int toExclusive, L value)
+    public void Update(int fromInclusive, int toExclusive, TOp value)
     {
-        void Update(int fromInclusive, int toExclusive, L value, int k, int l, int r)
+        void Update(int fromInclusive, int toExclusive, TOp value, int k, int l, int r)
         {
             Eval(k);
             if (fromInclusive <= l && r <= toExclusive)
@@ -72,10 +73,10 @@ abstract class SegmentTreeLazyImpl<T, L> where T : struct where L : struct
         Update(fromInclusive, toExclusive, value, 0, 0, rootLength);
     }
 
-    public T Slice(int from, int length) => Query(from, from + length);
-    public T Query(int fromInclusive, int toExclusive)
+    public TValue Slice(int from, int length) => Query(from, from + length);
+    public TValue Query(int fromInclusive, int toExclusive)
     {
-        T Query(int fromInclusive, int toExclusive, int k, int l, int r)
+        TValue Query(int fromInclusive, int toExclusive, int k, int l, int r)
         {
             Eval(k);
             if (r <= fromInclusive || toExclusive <= l) return DefaultValue;
@@ -93,9 +94,9 @@ abstract class SegmentTreeLazyImpl<T, L> where T : struct where L : struct
     struct KeyValuePairs
     {
         private string key;
-        private (T value, L lazy) value;
+        private (TValue value, TOp lazy) value;
 
-        public KeyValuePairs(string key, (T value, L lazy) value)
+        public KeyValuePairs(string key, (TValue value, TOp lazy) value)
         {
             this.key = key;
             this.value = value;
@@ -103,8 +104,8 @@ abstract class SegmentTreeLazyImpl<T, L> where T : struct where L : struct
     }
     class SegmentTreeLazyDebugView
     {
-        private SegmentTreeLazyImpl<T, L> segmentTree;
-        public SegmentTreeLazyDebugView(SegmentTreeLazyImpl<T, L> segmentTree)
+        private SegmentTreeLazyImpl<TValue, TOp> segmentTree;
+        public SegmentTreeLazyDebugView(SegmentTreeLazyImpl<TValue, TOp> segmentTree)
         {
             this.segmentTree = segmentTree;
         }
