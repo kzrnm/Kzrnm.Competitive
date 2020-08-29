@@ -15,7 +15,7 @@ static class 最小全域木
         edges.Sort(Comparer<(int from, int to, int value)>.Create((t1, t2) => t1.value.CompareTo(t2.value)));
         foreach (var (from, to, value) in edges)
         {
-            if (!uf.IsSameSet(from, to))
+            if (!uf.IsSameRoot(from, to))
             {
                 uf.UnionSet(from, to);
                 gb.Add(from, to, value);

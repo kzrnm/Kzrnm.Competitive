@@ -16,9 +16,8 @@ class UnionFind
         if (data[x] < 0) return x;
         return data[x] = Root(data[x]);
     }
-    public int Count(int x) => -data[Root(x)];
-    public void UnionSet(int x, int y) => TryUnionSet(x, y);
-    public bool TryUnionSet(int x, int y)
+    public int Size(int x) => -data[Root(x)];
+    public bool UnionSet(int x, int y)
     {
         var xRoot = Root(x);
         var yRoot = Root(y);
@@ -29,6 +28,7 @@ class UnionFind
         data[yRoot] = xRoot;
         return true;
     }
-    public bool IsSameSet(int x, int y) => Root(x) == Root(y);
-    public int ForestCount() => data.Count(n => n < 0);
+    public bool IsSameRoot(int x, int y) => Root(x) == Root(y);
+    public IEnumerable<int> EnumerateRoots()
+        => Enumerable.Range(0, data.Length).Where(i => data[i] < 0);
 }
