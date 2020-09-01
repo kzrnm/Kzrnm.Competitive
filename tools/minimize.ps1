@@ -76,6 +76,7 @@ function Main {
     $targetFiles = @(
         'AtCoderLib\Collection\Deque.cs',
         'AtCoderLib\Collection\PriorityQueue.cs',
+        'AtCoderLib\Collection\Boost\PriorityQueueRef.cs',
         'AtCoderLib\Collection\Set.cs',
         'AtCoderLib\Collection\SortedCollection.cs',
         'AtCoderLib\Collection\Trie.cs',
