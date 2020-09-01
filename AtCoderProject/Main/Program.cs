@@ -286,7 +286,7 @@ namespace AtCoderProject
         private int pos = 0;
         private int len = 0;
         public ConsoleReader(Stream input, Encoding encoding) { this.input = input; this.encoding = encoding; }
-        public ConsoleReader(Stream input) : this(input, Console.InputEncoding) { }
+        public ConsoleReader() : this(Console.OpenStandardInput(), Console.InputEncoding) { }
         private void MoveNext() { if (++pos >= len) { len = input.Read(buffer, 0, buffer.Length); if (len == 0) { buffer[0] = 10; } pos = 0; } }
 
         public int Int
@@ -427,7 +427,7 @@ namespace AtCoderProject
     public class ConsoleWriter
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] public readonly StreamWriter sw;
-        public ConsoleWriter(Stream output) : this(output, Console.OutputEncoding) { }
+        public ConsoleWriter() : this(Console.OpenStandardOutput(), Console.OutputEncoding) { }
         public ConsoleWriter(Stream output, Encoding encoding) { sw = new StreamWriter(output, encoding); }
         public void Flush() => sw.Flush();
         public ConsoleWriter WriteLine(ReadOnlySpan<char> obj) { sw.WriteLine(obj); return this; }
@@ -478,7 +478,7 @@ public partial class Program
     [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] public ConsoleReader cr;
     [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)] public ConsoleWriter cw;
     public Program(ConsoleReader reader, ConsoleWriter writer) { this.cr = reader; this.cw = writer; System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture; }
-    static void Main() => new Program(new ConsoleReader(Console.OpenStandardInput()), new ConsoleWriter(Console.OpenStandardOutput())).Run();
+    static void Main() => new Program(new ConsoleReader(), new ConsoleWriter()).Run();
     public void Run()
     {
         var res = Calc();
