@@ -422,6 +422,26 @@ namespace AtCoderProject
         public ConsoleWriter WriteLine<T>(T obj) { sw.WriteLine(obj.ToString()); return this; }
         public ConsoleWriter WriteLineJoin<T>(ReadOnlySpan<T> col) => WriteMany(' ', col);
         public ConsoleWriter WriteLineJoin<T>(IEnumerable<T> col) => WriteMany(' ', col);
+        public ConsoleWriter WriteLineJoin<T>(params T[] col) => WriteMany(' ', col);
+        public ConsoleWriter WriteLineJoin(params object[] col) => WriteMany(' ', col);
+        public ConsoleWriter WriteLineJoin<T1, T2>(T1 v1, T2 v2)
+        {
+            sw.Write(v1.ToString()); sw.Write(' ');
+            sw.WriteLine(v2.ToString()); return this;
+        }
+        public ConsoleWriter WriteLineJoin<T1, T2, T3>(T1 v1, T2 v2, T3 v3)
+        {
+            sw.Write(v1.ToString()); sw.Write(' ');
+            sw.Write(v2.ToString()); sw.Write(' ');
+            sw.WriteLine(v3.ToString()); return this;
+        }
+        public ConsoleWriter WriteLineJoin<T1, T2, T3, T4>(T1 v1, T2 v2, T3 v3, T4 v4)
+        {
+            sw.Write(v1.ToString()); sw.Write(' ');
+            sw.Write(v2.ToString()); sw.Write(' ');
+            sw.Write(v3.ToString()); sw.Write(' ');
+            sw.WriteLine(v4.ToString()); return this;
+        }
         public ConsoleWriter WriteLines<T>(ReadOnlySpan<T> col) => WriteMany('\n', col);
         public ConsoleWriter WriteLines<T>(IEnumerable<T> col) => WriteMany('\n', col);
         public ConsoleWriter WriteLineGrid<T>(IEnumerable<IEnumerable<T>> cols)
