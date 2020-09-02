@@ -1,6 +1,7 @@
 ﻿using AtCoderProject;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using static AtCoderProject.Global;
 using IEnumerable = System.Collections.IEnumerable;
@@ -224,12 +225,13 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
         }
         return root;
     }
-    public void Add(T item)
+    void ICollection<T>.Add(T item) => this.Add(item);
+    public bool Add(T item)
     {
         if (root == null)
         {
             root = new Node(item, false);
-            return;
+            return true;
         }
         Node current = root;
         Node parent = null;
@@ -241,8 +243,9 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
             order = comparer.Compare(item, current.Item);
             if (order == 0 && !this.IsMulti)
             {
+                current.Item = item;
                 root.IsRed = false;
-                return;
+                return false;
             }
             if (Is4Node(current))
             {
@@ -262,6 +265,7 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
         else parent.Left = node;
         if (parent.IsRed) InsertionBalance(node, ref parent, grandParent, greatGrandParent);
         root.IsRed = false;
+        return true;
     }
     public bool Remove(T item)
     {
@@ -620,7 +624,6 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
     }
     public class Node
     {
-
         public bool IsRed;
         public T Item;
         public Node Parent
