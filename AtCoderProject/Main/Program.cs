@@ -287,6 +287,7 @@ namespace AtCoderProject
         private int len = 0;
         public ConsoleReader(Stream input, Encoding encoding) { this.input = input; this.encoding = encoding; }
         public ConsoleReader() : this(Console.OpenStandardInput(), Console.InputEncoding) { }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void MoveNext() { if (++pos >= len) { len = input.Read(buffer, 0, buffer.Length); if (len == 0) { buffer[0] = 10; } pos = 0; } }
 
         public int Int
@@ -409,19 +410,6 @@ namespace AtCoderProject
         public static implicit operator long(ConsoleReader cr) => cr.Long;
         public static implicit operator double(ConsoleReader cr) => cr.Double;
         public static implicit operator string(ConsoleReader cr) => cr.Ascii;
-        public void Deconstruct(out ConsoleReader o1, out ConsoleReader o2) => (o1, o2) = (this, this);
-        public void Deconstruct(out ConsoleReader o1, out ConsoleReader o2, out ConsoleReader o3) =>
-            (o1, o2, o3) = (this, this, this);
-        public void Deconstruct(out ConsoleReader o1, out ConsoleReader o2, out ConsoleReader o3, out ConsoleReader o4) =>
-            (o1, o2, o3, o4) = (this, this, this, this);
-        public void Deconstruct(out ConsoleReader o1, out ConsoleReader o2, out ConsoleReader o3, out ConsoleReader o4, out ConsoleReader o5) =>
-            (o1, o2, o3, o4, o5) = (this, this, this, this, this);
-        public void Deconstruct(out ConsoleReader o1, out ConsoleReader o2, out ConsoleReader o3, out ConsoleReader o4, out ConsoleReader o5, out ConsoleReader o6) =>
-            (o1, o2, o3, o4, o5, o6) = (this, this, this, this, this, this);
-        public void Deconstruct(out ConsoleReader o1, out ConsoleReader o2, out ConsoleReader o3, out ConsoleReader o4, out ConsoleReader o5, out ConsoleReader o6, out ConsoleReader o7) =>
-            (o1, o2, o3, o4, o5, o6, o7) = (this, this, this, this, this, this, this);
-        public void Deconstruct(out ConsoleReader o1, out ConsoleReader o2, out ConsoleReader o3, out ConsoleReader o4, out ConsoleReader o5, out ConsoleReader o6, out ConsoleReader o7, out ConsoleReader o8) =>
-            (o1, o2, o3, o4, o5, o6, o7, o8) = (this, this, this, this, this, this, this, this);
     }
     [DebuggerStepThrough]
     public class ConsoleWriter
