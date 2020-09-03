@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AtCoderProject.Tests {
+namespace AtCoderRunner {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace AtCoderProject.Tests {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AtCoderProject.Tests.InOut", typeof(InOut).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AtCoderRunner.InOut", typeof(InOut).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,7 @@ namespace AtCoderProject.Tests {
         }
         
         /// <summary>
-        ///   3 2
-        ///2
-        ///1 3
-        ///1
-        ///3 に類似しているローカライズされた文字列を検索します。
+        ///    に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string A_IN {
             get {
@@ -74,7 +70,7 @@ namespace AtCoderProject.Tests {
         }
         
         /// <summary>
-        ///   1 に類似しているローカライズされた文字列を検索します。
+        ///    に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string A_OUT {
             get {
@@ -83,13 +79,7 @@ namespace AtCoderProject.Tests {
         }
         
         /// <summary>
-        ///   3 3
-        ///1
-        ///3
-        ///1
-        ///3
-        ///1
-        ///3 に類似しているローカライズされた文字列を検索します。
+        ///    に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string B_IN {
             get {
@@ -98,7 +88,7 @@ namespace AtCoderProject.Tests {
         }
         
         /// <summary>
-        ///   2 に類似しているローカライズされた文字列を検索します。
+        ///    に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string B_OUT {
             get {

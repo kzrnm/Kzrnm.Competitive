@@ -71,7 +71,7 @@ function Compress-CSharp {
 }
 function Main {
 
-    Compress-Main "$SolutionRoot\AtCoderProject\Main\Program.cs"
+    Compress-Main "$SolutionRoot\AtCoderProject\Program.cs"
 
     $targetFiles = @(
         'AtCoderLib\Collection\Deque.cs',

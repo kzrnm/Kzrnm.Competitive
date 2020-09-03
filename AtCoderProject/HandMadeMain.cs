@@ -53,7 +53,7 @@ namespace AtCoderProject.Runner
         }
         static string LoadInput()
         {
-            const string path = @"AtCoderProject.Main.input.txt";
+            const string path = @"AtCoderProject.input.txt";
             using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(path);
             using var sr = new StreamReader(stream);
             return sr.ReadToEnd().Trim();

@@ -56,7 +56,7 @@ function Update-InOut {
         $inouts
     )
 
-    $inoutXmlPath = "$PSScriptRoot\..\AtCoderProject\Tests\InOut.resx"
+    $inoutXmlPath = "$PSScriptRoot\..\AtCoderRunner\InOut.resx"
     $writer = [System.Resources.ResXResourceWriter]::new($inoutXmlPath)
     try {
         for ($i = 0; $i -lt 6; $i++) {
@@ -238,7 +238,7 @@ function Update-Input {
     param(
         $vars
     )
-    $mainPath = "$PSScriptRoot\..\AtCoderProject\Main\Program.cs"
+    $mainPath = "$PSScriptRoot\..\AtCoderProject\Program.cs"
     $main = (Get-Content $mainPath -Raw)
     ($main -replace 'public static string Result\(bool b\)[\s\S]*', ('public static string Result(bool b) => b ? "Yes" : "No";' + "`r`nprivate object Calc(){")) > $mainPath
     $vars | ForEach-Object { $_.ToInit() } >> $mainPath

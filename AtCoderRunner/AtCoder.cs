@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Xunit;
 
-namespace AtCoderProject.Tests
+namespace AtCoderRunner
 {
     public class AtCoder
     {
