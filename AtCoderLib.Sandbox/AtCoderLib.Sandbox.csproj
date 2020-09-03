@@ -5,6 +5,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Platforms>AnyCPU;x86</Platforms>
     <PlatformTarget>x64</PlatformTarget>
+    <NoWarn>1701;1702;CA1034;CA1822</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

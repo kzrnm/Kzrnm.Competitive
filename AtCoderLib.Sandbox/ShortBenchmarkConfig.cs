@@ -2,9 +2,9 @@
 using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Jobs;
 
-public class MyBenchmarkConfig : ManualConfig
+public class ShortBenchmarkConfig : ManualConfig
 {
-    public MyBenchmarkConfig()
+    public ShortBenchmarkConfig()
     {
         AddDiagnoser(MemoryDiagnoser.Default);
         AddJob(Job.ShortRun.WithLaunchCount(1).WithIterationCount(1).WithWarmupCount(1));

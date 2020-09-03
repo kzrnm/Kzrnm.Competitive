@@ -7,16 +7,16 @@ using System.Collections.Generic;
 
 
 
-[Config(typeof(MyBenchmarkConfig))]
+[Config(typeof(ShortBenchmarkConfig))]
 [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
 [CategoriesColumn]
-public class 二分探索
+public class 二分探索Bench
 {
     const int N = 100000;
     int[] arr;
     int[] rev;
     IComparer<int> revCmp = ExComparer<int>.DefaultReverse;
-    public 二分探索()
+    public 二分探索Bench()
     {
         arr = Util.MakeIntArray(N);
         Array.Sort(arr);

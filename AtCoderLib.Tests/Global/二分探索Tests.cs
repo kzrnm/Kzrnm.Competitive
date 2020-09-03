@@ -6,12 +6,12 @@ using AtCoderProject;
 
 namespace AtCoderLib.Tests.Global
 {
-    public class “ñ•ª’TõTest
+    public class “ñ•ª’TõTests
     {
         const int N = 40000;
         int[] arr;
         int[] rev;
-        public “ñ•ª’TõTest()
+        public “ñ•ª’TõTests()
         {
             arr = Util.MakeIntArray(N).Select(i => i % 17659).ToArray();
             Array.Sort(arr);

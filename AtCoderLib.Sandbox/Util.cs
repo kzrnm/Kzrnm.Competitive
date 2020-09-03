@@ -34,4 +34,6 @@ class Xorshift
     }
     public int Next() => (int)NextUInt32();
     public long NextLong() => ((long)NextUInt32() << 32) | NextUInt32();
+    public double NextDouble() => (double)NextUInt32() / uint.MaxValue;
+    public int Next(int min, int maxExclusive) => min + (int)((maxExclusive - min) * NextDouble());
 }

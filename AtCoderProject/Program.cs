@@ -79,6 +79,7 @@ namespace AtCoderProject
         public static BigInteger ParseBigInteger(ReadOnlySpan<char> s)
         {
             /* 自前実装の方が速い */
+            if (s[0] == '-') return -ParseBigInteger(s[1..]);
             BigInteger res;
             if (s.Length % 9 == 0)
                 res = 0;
@@ -123,14 +124,13 @@ namespace AtCoderProject
             if (r.CompareTo(val) > 0) { r = val; return true; }
             return false;
         }
-        public static long ToLong(this int i) => i;
         public static T[] Fill<T>(this T[] arr, T value)
         {
             Array.Fill(arr, value);
             return arr;
         }
         public static T[] Sort<T>(this T[] arr) { Array.Sort(arr); return arr; }
-        public static string[] Sort(this string[] arr) => Sort(arr, StringComparer.OrdinalIgnoreCase);
+        public static string[] Sort(this string[] arr) => Sort(arr, StringComparer.Ordinal);
         public static T[] Sort<T, U>(this T[] arr, Expression<Func<T, U>> selector) where U : IComparable<U> => Sort(arr, ExComparer<T>.CreateExp(selector));
         public static T[] Sort<T>(this T[] arr, Comparison<T> comparison) { Array.Sort(arr, comparison); return arr; }
         public static T[] Sort<T>(this T[] arr, IComparer<T> comparer) { Array.Sort(arr, comparer); return arr; }
@@ -143,6 +143,23 @@ namespace AtCoderProject
             {
                 if (max.CompareTo(arr[i]) < 0)
                 {
+                    max = arr[i];
+                    maxIndex = i;
+                }
+            }
+            return (maxIndex, max);
+        }
+        public static (int index, T max) MaxBy<T, TMax>(this T[] arr, Func<T, TMax> maxBySelector) where TMax : IComparable<TMax>
+        {
+            var maxItem = maxBySelector(arr[0]);
+            var max = arr[0];
+            int maxIndex = 0;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                var nx = maxBySelector(arr[i]);
+                if (maxItem.CompareTo(nx) < 0)
+                {
+                    maxItem = nx;
                     max = arr[i];
                     maxIndex = i;
                 }
@@ -185,6 +202,23 @@ namespace AtCoderProject
             }
             return (minIndex, min);
         }
+        public static (int index, T min) MinBy<T, TMin>(this T[] arr, Func<T, TMin> minBySelector) where TMin : IComparable<TMin>
+        {
+            var minItem = minBySelector(arr[0]);
+            var min = arr[0];
+            int minIndex = 0;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                var nx = minBySelector(arr[i]);
+                if (minItem.CompareTo(nx) > 0)
+                {
+                    minItem = nx;
+                    min = arr[i];
+                    minIndex = i;
+                }
+            }
+            return (minIndex, min);
+        }
         public static (TSource item, TMin min) MinBy<TSource, TMin>
             (this IEnumerable<TSource> source, Func<TSource, TMin> minBySelector)
             where TMin : IComparable<TMin>
@@ -208,7 +242,6 @@ namespace AtCoderProject
             }
             return (minByItem, min);
         }
-        public static IComparer<T> Reverse<T>(this IComparer<T> comparer) => Comparer<T>.Create((x, y) => comparer.Compare(y, x));
         public static Dictionary<TKey, int> GroupCount<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) => source.GroupBy(keySelector).ToDictionary(g => g.Key, g => g.Count());
         public static Dictionary<TKey, int> GroupCount<TKey>(this IEnumerable<TKey> source) => source.GroupCount(i => i);
         public static Span<T> AsSpan<T>(this List<T> list, int start = 0) => Unsafe.As<Tuple<T[]>>(list).Item1.AsSpan(start, list.Count);
@@ -222,12 +255,6 @@ namespace AtCoderProject
         {
             dic.TryGetValue(key, out var v);
             return v;
-        }
-        public static TValue GetOrInit<TKey, TValue>(this IDictionary<TKey, TValue> dic, TKey key, TValue value)
-        {
-            if (dic.TryGetValue(key, out var v))
-                return v;
-            return dic[key] = value;
         }
     }
     public static class ExComparer<T>
@@ -271,7 +298,7 @@ namespace AtCoderProject
             public override int GetHashCode() => GetType().GetHashCode();
         }
         public static IComparer<T> CreateExp<K>(Expression<Func<T, K>> expression) where K : IComparable<K> => new ExpressionComparer<K>(expression);
-        public static IComparer<T> DefaultReverse => new ReverseComparer();
+        public static readonly IComparer<T> DefaultReverse = new ReverseComparer();
     }
     public class ΔDebugView<T> { private IEnumerable<T> collection; public ΔDebugView(IEnumerable<T> collection) { this.collection = collection ?? throw new ArgumentNullException(nameof(collection)); }[DebuggerBrowsable(DebuggerBrowsableState.RootHidden)] public T[] Items => collection.ToArray(); }
 
@@ -420,6 +447,7 @@ namespace AtCoderProject
         public void Flush() => sw.Flush();
         public ConsoleWriter WriteLine(ReadOnlySpan<char> obj) { sw.WriteLine(obj); return this; }
         public ConsoleWriter WriteLine<T>(T obj) { sw.WriteLine(obj.ToString()); return this; }
+        public ConsoleWriter WriteLineJoin<T>(Span<T> col) => WriteMany(' ', (ReadOnlySpan<T>)col);
         public ConsoleWriter WriteLineJoin<T>(ReadOnlySpan<T> col) => WriteMany(' ', col);
         public ConsoleWriter WriteLineJoin<T>(IEnumerable<T> col) => WriteMany(' ', col);
         public ConsoleWriter WriteLineJoin<T>(params T[] col) => WriteMany(' ', col);
@@ -442,13 +470,13 @@ namespace AtCoderProject
             sw.Write(v3.ToString()); sw.Write(' ');
             sw.WriteLine(v4.ToString()); return this;
         }
+        public ConsoleWriter WriteLines<T>(Span<T> col) => WriteMany('\n', (ReadOnlySpan<T>)col);
         public ConsoleWriter WriteLines<T>(ReadOnlySpan<T> col) => WriteMany('\n', col);
         public ConsoleWriter WriteLines<T>(IEnumerable<T> col) => WriteMany('\n', col);
         public ConsoleWriter WriteLineGrid<T>(IEnumerable<IEnumerable<T>> cols)
         {
-            var en = cols.GetEnumerator();
-            while (en.MoveNext())
-                WriteLineJoin(en.Current);
+            foreach (var col in cols)
+                WriteLineJoin(col);
             return this;
         }
         private ConsoleWriter WriteMany<T>(char sep, ReadOnlySpan<T> col)
