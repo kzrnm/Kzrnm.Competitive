@@ -20,7 +20,7 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
      * https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
      */
 
-    public virtual bool IsMulti => false;
+    public bool IsMulti { get; }
     public T Min
     {
         get
@@ -137,16 +137,18 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
         while (e.MoveNext()) yield return e.Current;
     }
 
-    public Set() : this(Comparer<T>.Default) { }
-    public Set(IEnumerable<T> collection) : this(collection, Comparer<T>.Default) { }
-    public Set(IComparer<T> comparer)
+    public Set(bool isMulti = false) : this(Comparer<T>.Default, isMulti) { }
+    public Set(IEnumerable<T> collection, bool isMulti = false) : this(collection, Comparer<T>.Default, isMulti) { }
+    public Set(IComparer<T> comparer, bool isMulti = false)
     {
         this.comparer = comparer;
+        this.IsMulti = isMulti;
     }
-    public Set(IEnumerable<T> collection, IComparer<T> comparer)
+    public Set(IEnumerable<T> collection, IComparer<T> comparer, bool isMulti = false)
     {
         this.comparer = comparer; var arr = InitArray(collection);
         this.root = ConstructRootFromSortedArray(arr, 0, arr.Length - 1, null);
+        this.IsMulti = isMulti;
     }
     protected T[] InitArray(IEnumerable<T> collection)
     {
@@ -699,12 +701,4 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
         RightLeft = 3,
         LeftRight = 4,
     }
-}
-class MultiSet<T> : Set<T>
-{
-    public override bool IsMulti => true;
-    public MultiSet() : base() { }
-    public MultiSet(IEnumerable<T> collection) : base(collection) { }
-    public MultiSet(IComparer<T> comparer) : base(comparer) { }
-    public MultiSet(IEnumerable<T> collection, IComparer<T> comparer) : base(collection, comparer) { }
 }

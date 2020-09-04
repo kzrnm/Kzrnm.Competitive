@@ -14,10 +14,10 @@ class Set<TKey, TValue> : Set<KeyValuePair<TKey, TValue>>, IDictionary<TKey, TVa
         public int Compare(KeyValuePair<TKey, TValue> x, KeyValuePair<TKey, TValue> y)
             => comparer.Compare(x.Key, y.Key);
     }
-    public Set() : base(new KeyComparer(Comparer<TKey>.Default)) { }
-    public Set(IEnumerable<KeyValuePair<TKey, TValue>> collection) : base(collection, new KeyComparer(Comparer<TKey>.Default)) { }
-    public Set(IComparer<TKey> comparer) : base(new KeyComparer(comparer)) { }
-    public Set(IEnumerable<KeyValuePair<TKey, TValue>> collection, IComparer<TKey> comparer) : base(collection, new KeyComparer(comparer)) { }
+    public Set(bool isMulti = false) : base(new KeyComparer(Comparer<TKey>.Default), isMulti) { }
+    public Set(IEnumerable<KeyValuePair<TKey, TValue>> collection, bool isMulti = false) : base(collection, new KeyComparer(Comparer<TKey>.Default), isMulti) { }
+    public Set(IComparer<TKey> comparer, bool isMulti = false) : base(new KeyComparer(comparer), isMulti) { }
+    public Set(IEnumerable<KeyValuePair<TKey, TValue>> collection, IComparer<TKey> comparer, bool isMulti = false) : base(collection, new KeyComparer(comparer), isMulti) { }
     void IDictionary<TKey, TValue>.Add(TKey key, TValue value) => Add(key, value);
     public bool Add(TKey key, TValue value) => Add(new KeyValuePair<TKey, TValue>(key, value));
     ICollection<TKey> IDictionary<TKey, TValue>.Keys => throw new NotSupportedException();
