@@ -17,7 +17,7 @@ abstract class SegmentTreeImpl<T> where T : struct
     protected abstract T DefaultValue { get; }
     protected abstract T Operate(T v1, T v2);
 
-    private T[] tree;
+    protected T[] tree;
     public readonly int rootLength;
     public int Length { get; }
 

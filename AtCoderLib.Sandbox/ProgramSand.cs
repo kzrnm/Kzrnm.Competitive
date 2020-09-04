@@ -24,6 +24,8 @@ class ProgramSand
                 //nameof(SuffixArrayCreateBench),
                 //nameof(SuffixArrayBench),
                 //nameof(ZAlgorithmBench),
+
+                //nameof(SegmentTreeBench),
             };
 
             if (args.Length == 1)
