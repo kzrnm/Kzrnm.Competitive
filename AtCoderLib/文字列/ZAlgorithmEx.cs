@@ -7,7 +7,7 @@ using System;
 class ZAlgorithmEx
 {
     /** <summary> <paramref name="s"/> と <paramref name="s"/>[i:] の最長共通接頭辞を O(|<paramref name="s"/>|) で求める。</summary> */
-    int[] ZAlgorithm(ReadOnlySpan<char> s)
+    public static int[] ZAlgorithm(ReadOnlySpan<char> s)
     {
         var a = new int[s.Length + 1];
         a[0] = s.Length;

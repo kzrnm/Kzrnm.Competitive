@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 public static class Util
 {
@@ -16,6 +17,19 @@ public static class Util
         for (int i = 0; i < res.Length; i++) res[i] = rnd.NextLong();
         return res;
     }
+    private static string[] EnumerateStr()
+    {
+        var arr = Enumerable.Repeat('a', 1000).ToArray();
+        var res = new string[26];
+        for (int i = 0; i < 26; i++)
+        {
+            arr[^1] = (char)('a' + i);
+            res[i] = new string(arr);
+        }
+        return res;
+    }
+    public static readonly string[] Strs = EnumerateStr();
+    public static readonly string Str = string.Join("", Strs);
 }
 
 class Xorshift

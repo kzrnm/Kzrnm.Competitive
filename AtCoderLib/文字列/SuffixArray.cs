@@ -17,6 +17,7 @@ class SuffixArray
         SA = Sais(S, S.Max());
         rank = new int[N + 1];
         for (int i = 0; i <= N; i++) rank[SA[i]] = i;
+        BuildLCP();
     }
 
     void CreateBeginBucket(int[] v, int[] b)
@@ -92,7 +93,7 @@ class SuffixArray
     }
     bool IsLMS(int x, bool[] isl) { return x > 0 && isl[x - 1] && !isl[x]; }
 
-    public void BuildLCP()
+    private void BuildLCP()
     {
         var k = 0;
         var h = new int[N];

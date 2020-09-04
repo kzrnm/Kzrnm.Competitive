@@ -16,16 +16,20 @@ class ProgramSand
                 //nameof(ConsoleReaderBenchSplit),
                 //nameof(ConsoleReaderBenchRepeat),
                 //nameof(ConsoleWriterBench),
+                
+                //nameof(CreateBench),
+                //nameof(BMBench),
+                //nameof(KMPBench),
+                //nameof(RollingHashBench),
+                //nameof(SuffixArrayCreateBench),
+                //nameof(SuffixArrayBench),
+                //nameof(ZAlgorithmBench),
             };
 
             if (args.Length == 1)
                 args = Array.Empty<string>();
         }
         BenchmarkSwitcher.
-            FromAssembly(typeof(ProgramSand).Assembly).Run(args
-#if DEBUG
-            , new BenchmarkDotNet.Configs.DebugInProcessConfig()
-#endif
-            );
+            FromAssembly(typeof(ProgramSand).Assembly).Run(args);
     }
 }

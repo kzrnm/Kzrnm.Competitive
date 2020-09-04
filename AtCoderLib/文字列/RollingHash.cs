@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Cryptography;
 
 class RollingHash
 {
@@ -19,18 +18,17 @@ class RollingHash
 
     public RollingHashUInt64 hash1;
     public RollingHashFast hash2;
-    public int length;
+    public int Length { get; }
     public RollingHash(ReadOnlySpan<char> s)
     {
-        this.length = s.Length;
+        this.Length = s.Length;
         hash1 = new RollingHashUInt64(s);
         hash2 = new RollingHashFast(s);
     }
 
 
-    /** <summary>[<paramref name="l"/>, <paramref name="r"/>) のハッシュ</summary> */
-    public Hash Slice(int l, int r) => new Hash { a = hash1.Slice(l, r), b = hash2.Slice(l, r) };
-    public Hash this[Range range] => Slice(range.Start.GetOffset(length), range.End.GetOffset(length));
+    /** <summary>[<paramref name="from"/>, <paramref name="len"/>) のハッシュ</summary> */
+    public Hash Slice(int from, int len) => new Hash { a = hash1.Slice(from, len), b = hash2.Slice(from, len) };
 
 
     public class RollingHashUInt64 /* https://webbibouroku.com/Blog/Article/cs-rollinghash */
@@ -38,10 +36,10 @@ class RollingHash
         static uint B = (uint)rnd.Next(129, int.MaxValue);
         public ulong[] pow;
         public ulong[] hash;
-        public int length;
+        public int Length { get; }
         public RollingHashUInt64(ReadOnlySpan<char> s)
         {
-            this.length = s.Length;
+            this.Length = s.Length;
             pow = new ulong[s.Length + 1];
             pow[0] = 1;
             for (int i = 0; i < s.Length; i++)
@@ -51,9 +49,8 @@ class RollingHash
                 hash[i + 1] = hash[i] * B + s[i];
         }
 
-        /** <summary>[<paramref name="l"/>, <paramref name="r"/>) のハッシュ</summary> */
-        public ulong Slice(int l, int r) => hash[r] - (hash[l] * pow[r - l]);
-        public ulong this[Range range] => Slice(range.Start.GetOffset(length), range.End.GetOffset(length));
+        /** <summary>[<paramref name="from"/>, <paramref name="len"/>) のハッシュ</summary> */
+        public ulong Slice(int from, int len) => hash[from + len] - (hash[from] * pow[len]);
     }
 
     public class RollingHashFast /* https://qiita.com/keymoon/items/11fac5627672a6d6a9f6#%E9%AB%98%E9%80%9F%E3%81%AA%E3%83%AD%E3%83%AA%E3%83%8F%E3%82%92%E6%B1%82%E3%82%81%E3%81%A6%E3%83%A1%E3%83%AB%E3%82%BB%E3%83%B3%E3%83%8C%E7%B4%A0%E6%95%B0mod */
@@ -73,17 +70,16 @@ class RollingHash
         }
 
         ulong[] hash;
-        public int length;
+        public int Length { get; }
         public RollingHashFast(ReadOnlySpan<char> s)
         {
-            this.length = s.Length;
+            this.Length = s.Length;
             hash = new ulong[s.Length + 1];
             for (int i = 0; i < s.Length; i++)
                 hash[i + 1] = CalcMod(Mul(hash[i], Base) + s[i]);
         }
 
-        public ulong Slice(int l, int r) => CalcMod(hash[r] + POSITIVIZER - Mul(hash[l], powMemo[r - l]));
-        public ulong this[Range range] => Slice(range.Start.GetOffset(length), range.End.GetOffset(length));
+        public ulong Slice(int from, int len) => CalcMod(hash[from + len] + POSITIVIZER - Mul(hash[from], powMemo[len]));
 
         private static ulong Mul(ulong l, ulong r)
         {

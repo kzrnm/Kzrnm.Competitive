@@ -54,24 +54,24 @@ public class GlobalBench
     }
 
 
-    //[Benchmark]
-    //[BenchmarkCategory("BitOp")]
-    //public int PopCount()
-    //{
-    //    return Global.PopCount(-1L);
-    //}
+    [Benchmark]
+    [BenchmarkCategory("BitOp")]
+    public int PopCount()
+    {
+        return Global.PopCount(-1L);
+    }
 
-    //[Benchmark]
-    //[BenchmarkCategory("BitOp")]
-    //public int MSB()
-    //{
-    //    return Global.MSB(-1L);
-    //}
+    [Benchmark]
+    [BenchmarkCategory("BitOp")]
+    public int MSB()
+    {
+        return Global.MSB(-1L);
+    }
 
-    //[Benchmark]
-    //[BenchmarkCategory("BitOp")]
-    //public int LSB()
-    //{
-    //    return Global.LSB(-1L);
-    //}
+    [Benchmark]
+    [BenchmarkCategory("BitOp")]
+    public int LSB()
+    {
+        return Global.LSB(-1L);
+    }
 }

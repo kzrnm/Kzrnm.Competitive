@@ -11,7 +11,7 @@ namespace AtCoderLib.Tests.Global
 {
     public class ConsoleWriterTests
     {
-        private const int BufSize = 1 << 16;
+        private const int BufSize = 1 << 8;
         private readonly byte[] buffer = new byte[BufSize];
         private readonly string newLine;
         private readonly MemoryStream stream;

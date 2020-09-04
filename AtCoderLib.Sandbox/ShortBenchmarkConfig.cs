@@ -2,7 +2,12 @@
 using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Jobs;
 
-public class ShortBenchmarkConfig : ManualConfig
+public class ShortBenchmarkConfig
+#if DEBUG
+    : DebugInProcessConfig
+{ }
+#else
+    : ManualConfig
 {
     public ShortBenchmarkConfig()
     {
@@ -10,3 +15,4 @@ public class ShortBenchmarkConfig : ManualConfig
         AddJob(Job.ShortRun.WithLaunchCount(1).WithIterationCount(1).WithWarmupCount(1));
     }
 }
+#endif
