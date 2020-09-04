@@ -11,10 +11,10 @@ ref struct PriorityQueueRef<T>
     private ListRef<T> data;
     private readonly IComparer<T> comparer;
 
-    public PriorityQueueRef(Span<T> orig) : this(orig, Comparer<T>.Default) { }
-    public PriorityQueueRef(Span<T> orig, IComparer<T> comparer)
+    public PriorityQueueRef(Span<T> buffer) : this(buffer, Comparer<T>.Default) { }
+    public PriorityQueueRef(Span<T> buffer, IComparer<T> comparer)
     {
-        this.data = new ListRef<T>(orig);
+        this.data = new ListRef<T>(buffer);
         this.comparer = comparer;
     }
     [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
@@ -61,6 +61,6 @@ ref struct PriorityQueueRef<T>
             }
         }
     }
-
+    public void Clear() => data.Clear();
     [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)] private T[] Items => data.ToArray().Sort(comparer);
 }

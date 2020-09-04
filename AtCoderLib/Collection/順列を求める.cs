@@ -4,7 +4,7 @@ using System.Linq;
 
 static class 順列を求める
 {
-    static IEnumerable<T[]> Permutation<T>(IEnumerable<T> orig) where T : IComparable<T>
+    public static IEnumerable<T[]> Permutation<T>(IEnumerable<T> orig) where T : IComparable<T>
     {
         var arr = orig.ToArray();
         while (true)

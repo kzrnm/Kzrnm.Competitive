@@ -66,7 +66,7 @@ class PriorityQueue<T>
             }
         }
     }
-
+    public void Clear() => data.Clear();
     [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)] private T[] Items => data.ToArray().Sort(comparer);
 }
 

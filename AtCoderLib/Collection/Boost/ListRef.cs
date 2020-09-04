@@ -7,10 +7,10 @@ ref struct ListRef<T>
 {
     [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)]
     private Span<T> data;
-    private Span<T> orig;
-    public ListRef(Span<T> orig)
+    private Span<T> buffer;
+    public ListRef(Span<T> buffer)
     {
-        this.orig = orig;
+        this.buffer = buffer;
         this.data = default;
     }
     public ref T this[int index] => ref data[index];
@@ -18,11 +18,11 @@ ref struct ListRef<T>
 
     public void Add(T item)
     {
-        data = orig.Slice(0, data.Length + 1);
+        data = buffer.Slice(0, data.Length + 1);
         data[^1] = item;
     }
 
-    public void Clear() => data.Clear();
+    public void Clear() => data = default;
 
     public void CopyTo(Span<T> dest) => data.CopyTo(dest);
 

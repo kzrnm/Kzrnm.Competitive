@@ -17,6 +17,12 @@ class ProgramSand
                 //nameof(ConsoleReaderBenchRepeat),
                 //nameof(ConsoleWriterBench),
                 
+                nameof(PriorityQueueBench),
+                //nameof(PermutationBench),
+
+
+                //nameof(SegmentTreeBench),
+
                 //nameof(CreateBench),
                 //nameof(BMBench),
                 //nameof(KMPBench),
@@ -24,8 +30,6 @@ class ProgramSand
                 //nameof(SuffixArrayCreateBench),
                 //nameof(SuffixArrayBench),
                 //nameof(ZAlgorithmBench),
-
-                //nameof(SegmentTreeBench),
             };
 
             if (args.Length == 1)
