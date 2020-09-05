@@ -7,7 +7,7 @@ class BinaryIndexedTree2D
             for (var ww = w + 1; ww < tree[hh].Length; ww += (ww & -ww))
                 tree[hh][ww] += v;
     }
-    public long Sum(int hExclusive, int wExclusive)
+    public long Query(int hExclusive, int wExclusive)
     {
         long res = 0;
         for (var h = hExclusive; h > 0; h -= (h & -h))
@@ -42,7 +42,10 @@ class BinaryIndexedTree2D
         public long Slice(int wFrom, int length)
         {
             var wToExclusive = wFrom + length;
-            return bit.Sum(hToExclusive, wToExclusive) - bit.Sum(hFrom, wFrom);
+            return bit.Query(hToExclusive, wToExclusive)
+                - bit.Query(hToExclusive, wFrom)
+                - bit.Query(hFrom, wToExclusive)
+                + bit.Query(hFrom, wFrom);
         }
     }
 }

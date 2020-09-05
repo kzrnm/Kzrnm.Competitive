@@ -5,23 +5,23 @@ using static AtCoderProject.Global;
 
 
 
-class SegmentTreeLazy : SegmentTreeLazyImpl<long, long>
+class SegmentTreeLazy : SegmentTreeLazyAbstract<long, long>
 {
     protected override long DefaultValue => 0;
     protected override long DefaultLazy => 0;
     protected override long Operate(long v1, long v2) => Math.Max(v1, v2);
-    protected override long Apply(long v, long l) => v + l;
+    protected override long ApplyLazy(long v, long l) => v + l;
     protected override long Merge(long l1, long l2) => l1 + l2;
     public SegmentTreeLazy(long[] initArray) : base(initArray) { }
     public SegmentTreeLazy(int size) : base(size) { }
 }
-[System.Diagnostics.DebuggerTypeProxy(typeof(SegmentTreeLazyImpl<,>.SegmentTreeLazyDebugView))]
-abstract class SegmentTreeLazyImpl<TValue, TOp> where TValue : struct where TOp : struct
+[System.Diagnostics.DebuggerTypeProxy(typeof(SegmentTreeLazyAbstract<,>.SegmentTreeLazyDebugView))]
+abstract class SegmentTreeLazyAbstract<TValue, TOp> where TValue : struct where TOp : struct
 {
-    protected abstract TValue DefaultValue { get; }
-    protected abstract TOp DefaultLazy { get; }
+    protected virtual TValue DefaultValue => default;
+    protected virtual TOp DefaultLazy => default;
     protected abstract TValue Operate(TValue v1, TValue v2);
-    protected abstract TValue Apply(TValue v, TOp l);
+    protected abstract TValue ApplyLazy(TValue v, TOp l);
     protected abstract TOp Merge(TOp l1, TOp l2);
 
     private TValue[] tree;
@@ -29,14 +29,14 @@ abstract class SegmentTreeLazyImpl<TValue, TOp> where TValue : struct where TOp 
     public readonly int rootLength;
     public int Length { get; }
 
-    public SegmentTreeLazyImpl(TValue[] initArray) : this(initArray.Length)
+    public SegmentTreeLazyAbstract(TValue[] initArray) : this(initArray.Length)
     {
         var rootLength = this.rootLength;
         Array.Copy(initArray, 0, tree, rootLength - 1, initArray.Length);
         for (int i = rootLength - 2; i >= 0; i--)
             tree[i] = Operate(tree[(i << 1) + 1], tree[(i << 1) + 2]);
     }
-    public SegmentTreeLazyImpl(int size)
+    public SegmentTreeLazyAbstract(int size)
     {
         this.Length = size;
         rootLength = 1 << (MSB(size - 1) + 1);
@@ -45,17 +45,18 @@ abstract class SegmentTreeLazyImpl<TValue, TOp> where TValue : struct where TOp 
     }
     protected void Eval(int k)
     {
+        if (EqualityComparer<TOp>.Default.Equals(lazy[k], DefaultLazy)) return;
         if (k < rootLength - 1)
         {
             lazy[k * 2 + 1] = Merge(lazy[k * 2 + 1], lazy[k]);
             lazy[k * 2 + 2] = Merge(lazy[k * 2 + 2], lazy[k]);
         }
-        tree[k] = Apply(tree[k], lazy[k]);
+        tree[k] = ApplyLazy(tree[k], lazy[k]);
         lazy[k] = DefaultLazy;
     }
-    public void Update(int fromInclusive, int toExclusive, TOp value)
+    public void Apply(int fromInclusive, int toExclusive, TOp value)
     {
-        void Update(int fromInclusive, int toExclusive, TOp value, int k, int l, int r)
+        void Apply(int fromInclusive, int toExclusive, TOp value, int k, int l, int r)
         {
             Eval(k);
             if (fromInclusive <= l && r <= toExclusive)
@@ -65,12 +66,12 @@ abstract class SegmentTreeLazyImpl<TValue, TOp> where TValue : struct where TOp 
             }
             else if (fromInclusive < r && l < toExclusive)
             {
-                Update(fromInclusive, toExclusive, value, k * 2 + 1, l, (l + r) / 2);
-                Update(fromInclusive, toExclusive, value, k * 2 + 2, (l + r) / 2, r);
+                Apply(fromInclusive, toExclusive, value, k * 2 + 1, l, (l + r) >> 1);
+                Apply(fromInclusive, toExclusive, value, k * 2 + 2, (l + r) >> 1, r);
                 tree[k] = Operate(tree[k * 2 + 1], tree[k * 2 + 2]);
             }
         }
-        Update(fromInclusive, toExclusive, value, 0, 0, rootLength);
+        Apply(fromInclusive, toExclusive, value, 0, 0, rootLength);
     }
 
     public TValue Slice(int from, int length) => Query(from, from + length);
@@ -82,8 +83,8 @@ abstract class SegmentTreeLazyImpl<TValue, TOp> where TValue : struct where TOp 
             if (r <= fromInclusive || toExclusive <= l) return DefaultValue;
             else if (fromInclusive <= l && r <= toExclusive) return tree[k];
             else return Operate(
-                Query(fromInclusive, toExclusive, k * 2 + 1, l, (l + r) / 2),
-                Query(fromInclusive, toExclusive, k * 2 + 2, (l + r) / 2, r)
+                Query(fromInclusive, toExclusive, k * 2 + 1, l, (l + r) >> 1),
+                Query(fromInclusive, toExclusive, k * 2 + 2, (l + r) >> 1, r)
                 );
         }
         return Query(fromInclusive, toExclusive, 0, 0, rootLength);
@@ -104,8 +105,8 @@ abstract class SegmentTreeLazyImpl<TValue, TOp> where TValue : struct where TOp 
     }
     class SegmentTreeLazyDebugView
     {
-        private SegmentTreeLazyImpl<TValue, TOp> segmentTree;
-        public SegmentTreeLazyDebugView(SegmentTreeLazyImpl<TValue, TOp> segmentTree)
+        private SegmentTreeLazyAbstract<TValue, TOp> segmentTree;
+        public SegmentTreeLazyDebugView(SegmentTreeLazyAbstract<TValue, TOp> segmentTree)
         {
             this.segmentTree = segmentTree;
         }

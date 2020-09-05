@@ -2,33 +2,31 @@
 using System.Collections.Generic;
 using static AtCoderProject.Global;
 
-class SegmentTree : SegmentTreeImpl<long>
+class SegmentTree : SegmentTreeAbstract<long>
 {
     protected override long DefaultValue => 0;
     protected override long Operate(long v1, long v2) => Math.Max(v1, v2);
     public SegmentTree(long[] initArray) : base(initArray) { }
     public SegmentTree(int size) : base(size) { }
 }
-
-
-[System.Diagnostics.DebuggerTypeProxy(typeof(SegmentTreeImpl<>.SegmentTreeDebugView))]
-abstract class SegmentTreeImpl<T> where T : struct
+[System.Diagnostics.DebuggerTypeProxy(typeof(SegmentTreeAbstract<>.DebugView))]
+abstract class SegmentTreeAbstract<T> where T : struct
 {
-    protected abstract T DefaultValue { get; }
+    protected virtual T DefaultValue => default;
     protected abstract T Operate(T v1, T v2);
 
     protected T[] tree;
     public readonly int rootLength;
     public int Length { get; }
 
-    public SegmentTreeImpl(T[] initArray) : this(initArray.Length)
+    public SegmentTreeAbstract(T[] initArray) : this(initArray.Length)
     {
         var rootLength = this.rootLength;
         Array.Copy(initArray, 0, tree, rootLength - 1, initArray.Length);
         for (int i = rootLength - 2; i >= 0; i--)
             tree[i] = Operate(tree[(i << 1) + 1], tree[(i << 1) + 2]);
     }
-    public SegmentTreeImpl(int size)
+    public SegmentTreeAbstract(int size)
     {
         this.Length = size;
         rootLength = 1 << (MSB(size - 1) + 1);
@@ -81,10 +79,10 @@ abstract class SegmentTreeImpl<T> where T : struct
             this.value = value;
         }
     }
-    class SegmentTreeDebugView
+    class DebugView
     {
-        private SegmentTreeImpl<T> segmentTree;
-        public SegmentTreeDebugView(SegmentTreeImpl<T> segmentTree)
+        private SegmentTreeAbstract<T> segmentTree;
+        public DebugView(SegmentTreeAbstract<T> segmentTree)
         {
             this.segmentTree = segmentTree;
         }

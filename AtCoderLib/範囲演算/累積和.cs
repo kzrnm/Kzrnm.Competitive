@@ -1,8 +1,4 @@
-﻿using System;
-using static AtCoderProject.Global;
-
-
-class Sums
+﻿class Sums
 {
     private readonly long[] impl;
     public int Length => impl.Length - 1;

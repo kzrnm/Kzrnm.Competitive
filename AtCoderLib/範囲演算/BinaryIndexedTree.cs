@@ -3,7 +3,7 @@ using static AtCoderProject.Global;
 
 
 
-[System.Diagnostics.DebuggerTypeProxy(typeof(BinaryIndexedTreeDebugView))]
+[System.Diagnostics.DebuggerTypeProxy(typeof(DebugView))]
 class BinaryIndexedTree
 {
     private long Operate(long v, long w) => v + w;
@@ -12,7 +12,7 @@ class BinaryIndexedTree
         for (++i; i < tree.Length; i += (i & -i))
             tree[i] = Operate(tree[i], w);
     }
-    public long Sum(int toExclusive)
+    public long Query(int toExclusive)
     {
         long res = 0;
         for (var i = toExclusive; i > 0; i -= (i & -i))
@@ -20,7 +20,8 @@ class BinaryIndexedTree
         return res;
     }
 
-    public long Sum(int from, int toExclusive) => Sum(toExclusive) - Sum(from);
+    public long Query(int from, int toExclusive) => Query(toExclusive) - Query(from);
+    ///* <summary>非負整数だけが使われる総和を求めるBITにだけ使える二分探索。0,1で便利</summary> */
     public int LowerBound(long w)
     {
         if (w <= 0) return 0;
@@ -39,7 +40,7 @@ class BinaryIndexedTree
 
     private long[] tree;
     public int Length => tree.Length - 1;
-    public long Slice(int from, int length) => Sum(from, from + length);
+    public long Slice(int from, int length) => Query(from + length) - Query(from);
 
     public BinaryIndexedTree(int size)
     {
@@ -56,10 +57,10 @@ class BinaryIndexedTree
         }
     }
 
-    public class BinaryIndexedTreeDebugView
+    public class DebugView
     {
         private BinaryIndexedTree bit;
-        public BinaryIndexedTreeDebugView(BinaryIndexedTree bit)
+        public DebugView(BinaryIndexedTree bit)
         {
             this.bit = bit;
         }
@@ -72,7 +73,7 @@ class BinaryIndexedTree
                 var res = new string[bit.tree.Length - 1];
                 for (var i = 0; i < res.Length; i++)
                 {
-                    res[i] = $"data:{bit.tree[i + 1]} single:{bit.Sum(i, i + 1)}";
+                    res[i] = $"data:{bit.tree[i + 1]} single:{bit.Query(i, i + 1)}";
                 }
                 return res;
             }

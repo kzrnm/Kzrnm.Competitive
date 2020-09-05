@@ -1,4 +1,4 @@
-﻿class RangeBinaryIndexedTree
+﻿class BinaryIndexedTreeRange
 {
     private void Add(long[] tree, int i, long w)
     {
@@ -20,7 +20,6 @@
         return res;
     }
     public long Sum(int toExclusive) => Sum(tree1, toExclusive) + Sum(tree2, toExclusive) * toExclusive;
-
     public long Sum(int from, int toExclusive) => Sum(toExclusive) - Sum(from);
 
     private long[] tree1;
@@ -28,7 +27,7 @@
     public int Length => tree1.Length - 1;
     public long Slice(int from, int length) => Sum(from, from + length);
 
-    public RangeBinaryIndexedTree(int size)
+    public BinaryIndexedTreeRange(int size)
     {
         tree1 = new long[size + 1];
         tree2 = new long[size + 1];

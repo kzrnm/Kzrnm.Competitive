@@ -90,7 +90,7 @@ function Main {
         'AtCoderLib\整数\Mod.cs',
         'AtCoderLib\整数\素数.cs',
         'AtCoderLib\範囲演算\特殊なBIT\BinaryIndexedTree2D.cs',
-        'AtCoderLib\範囲演算\特殊なBIT\RangeBinaryIndexedTree.cs',
+        'AtCoderLib\範囲演算\特殊なBIT\BinaryIndexedTreeRange.cs',
         'AtCoderLib\範囲演算\累積和.cs',
         'AtCoderLib\範囲演算\累積和2D.cs',
         'AtCoderLib\文字列\SuffixArray.cs'

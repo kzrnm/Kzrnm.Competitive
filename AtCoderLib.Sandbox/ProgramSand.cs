@@ -17,11 +17,12 @@ class ProgramSand
                 //nameof(ConsoleReaderBenchRepeat),
                 //nameof(ConsoleWriterBench),
                 
-                nameof(PriorityQueueBench),
+                //nameof(PriorityQueueBench),
                 //nameof(PermutationBench),
 
 
-                //nameof(SegmentTreeBench),
+                //nameof(BitAndSegmentTreeBench),
+                nameof(StarrySkyAndSegmentTreeLazyBench),
 
                 //nameof(CreateBench),
                 //nameof(BMBench),
