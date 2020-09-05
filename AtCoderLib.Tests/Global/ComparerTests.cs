@@ -7,7 +7,7 @@ using System.Numerics;
 using System.Text;
 using Xunit;
 
-namespace AtCoderLib.Tests.Global
+namespace AtCoderLib.Global
 {
     public class ComparerTests
     {

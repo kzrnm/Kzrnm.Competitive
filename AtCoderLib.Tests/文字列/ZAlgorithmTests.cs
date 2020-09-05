@@ -2,7 +2,7 @@
 using System.Linq;
 using Xunit;
 
-namespace AtCoderLib.Tests.文字列
+namespace AtCoderLib.文字列
 {
     public class ZAlgorithmTests
     {

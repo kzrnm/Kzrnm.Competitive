@@ -6,7 +6,7 @@ using System.Text;
 using AtCoderProject;
 using Xunit;
 
-namespace AtCoderLib.Tests.範囲演算
+namespace AtCoderLib.範囲演算
 {
     public class SegmentTreeTests
     {

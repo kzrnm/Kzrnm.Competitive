@@ -12,7 +12,7 @@ using Xunit;
 
 #pragma warning disable CA1810 // Initialize reference type static fields inline
 
-namespace AtCoderLib.Tests.Global
+namespace AtCoderLib.Global
 {
     public class ConsoleReaderTests
     {
