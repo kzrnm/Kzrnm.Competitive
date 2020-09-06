@@ -8,8 +8,8 @@ using static AtCoderProject.Global;
 
 class WGraphBuilderD
 {
-    private List<NextD>[] roots;
-    private List<NextD>[] children;
+    List<NextD>[] roots;
+    List<NextD>[] children;
     public WGraphBuilderD(int count, bool isOriented)
     {
         this.roots = new List<NextD>[count];

@@ -6,8 +6,8 @@ using System.Linq;
 
 class GraphBuilder
 {
-    private List<int>[] roots;
-    private List<int>[] children;
+    List<int>[] roots;
+    List<int>[] children;
     public GraphBuilder(int count, bool isOriented)
     {
         this.roots = new List<int>[count];

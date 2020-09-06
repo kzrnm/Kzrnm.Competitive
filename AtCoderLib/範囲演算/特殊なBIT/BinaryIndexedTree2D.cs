@@ -16,7 +16,7 @@ class BinaryIndexedTree2D
         return res;
     }
 
-    private long[][] tree;
+    long[][] tree;
     public int Length => tree.Length - 1;
     public Slicer Slice(int from, int length) => new Slicer(this, from, from + length);
 
@@ -28,9 +28,9 @@ class BinaryIndexedTree2D
 
     public ref struct Slicer
     {
-        private readonly BinaryIndexedTree2D bit;
-        private readonly int hFrom;
-        private readonly int hToExclusive;
+        readonly BinaryIndexedTree2D bit;
+        readonly int hFrom;
+        readonly int hToExclusive;
         public int Length { get; }
         public Slicer(BinaryIndexedTree2D bit, int hFrom, int hToExclusive)
         {

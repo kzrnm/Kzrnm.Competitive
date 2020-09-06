@@ -55,7 +55,7 @@ static class 二分探索
     /**<summary>デフォルトの比較関数に従って，<paramref name="a"/> の要素のうち，<paramref name="v"/> より真に大きい要素が現れる最小のインデックスを取得します．</summary><typeparam name="T"><see cref="ReadOnlySpan{T}"/> の要素の型を指定します．</typeparam><param name="a">対象となるコレクション</param><param name="v">対象となる要素</param><param name="f"></param><returns><paramref name="v"/> 以上の要素であるような最小の o-indexed でのインデックス．</returns><remarks> <paramref name="a"/> は比較関数に対して昇順であることを仮定しています．この関数は O(log N) で実行されます．</remarks> */
     public static int UpperBound<T>(this ReadOnlySpan<T> a, T v) => BinarySearch(a, v, Comparer<T>.Default, false);
 
-    private static int BinarySearch<T>(this IList<T> a, T v, IComparer<T> cmp, bool isLowerBound)
+    static int BinarySearch<T>(this IList<T> a, T v, IComparer<T> cmp, bool isLowerBound)
     {
         int ok = a.Count;
         int ng = -1;
@@ -68,7 +68,7 @@ static class 二分探索
         }
         return ok;
     }
-    private static int BinarySearch<T>(this ReadOnlySpan<T> a, T v, IComparer<T> cmp, bool isLowerBound)
+    static int BinarySearch<T>(this ReadOnlySpan<T> a, T v, IComparer<T> cmp, bool isLowerBound)
     {
         int ok = a.Length;
         int ng = -1;

@@ -6,8 +6,8 @@
 ref struct ListRef<T>
 {
     [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)]
-    private Span<T> data;
-    private Span<T> buffer;
+    Span<T> data;
+    Span<T> buffer;
     public ListRef(Span<T> buffer)
     {
         this.buffer = buffer;

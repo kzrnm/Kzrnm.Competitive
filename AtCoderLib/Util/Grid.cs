@@ -12,7 +12,7 @@ class Grid
     ConsoleReader cr;
 
 
-    private object Calc()
+    object Calc()
     {
         var H = cr.Int;
         var W = cr.Int;

@@ -11,8 +11,8 @@ class StarrySkyTree
     protected virtual long OpDefault => default;
     protected virtual long Merge(long v1, long v2) => Math.Max(v1, v2);
 
-    private long[] lazy;
-    private long[] data;
+    long[] lazy;
+    long[] data;
     public readonly int rootLength;
     public int Length { get; }
     public StarrySkyTree(int size)
@@ -55,8 +55,8 @@ class StarrySkyTree
     [System.Diagnostics.DebuggerDisplay("{" + nameof(value) + "}", Name = "{" + nameof(key) + ",nq}")]
     struct KeyValuePairs
     {
-        private string key;
-        private (long data, long lazy) value;
+        string key;
+        (long data, long lazy) value;
 
         public KeyValuePairs(string key, (long data, long lazy) value)
         {
@@ -66,7 +66,7 @@ class StarrySkyTree
     }
     class DebugView
     {
-        private StarrySkyTree tree;
+        StarrySkyTree tree;
         public DebugView(StarrySkyTree tree)
         {
             this.tree = tree;

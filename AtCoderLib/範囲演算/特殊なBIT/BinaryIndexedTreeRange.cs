@@ -1,6 +1,6 @@
 ﻿class BinaryIndexedTreeRange
 {
-    private void Add(long[] tree, int i, long w)
+    void Add(long[] tree, int i, long w)
     {
         for (++i; i < tree1.Length; i += (i & -i))
             tree[i] += w;
@@ -12,7 +12,7 @@
         Add(tree2, from, w);
         Add(tree2, to, -w);
     }
-    private long Sum(long[] tree, int toExclusive)
+    long Sum(long[] tree, int toExclusive)
     {
         long res = 0;
         for (var i = toExclusive; i > 0; i -= (i & -i))
@@ -22,8 +22,8 @@
     public long Sum(int toExclusive) => Sum(tree1, toExclusive) + Sum(tree2, toExclusive) * toExclusive;
     public long Sum(int from, int toExclusive) => Sum(toExclusive) - Sum(from);
 
-    private long[] tree1;
-    private long[] tree2;
+    long[] tree1;
+    long[] tree2;
     public int Length => tree1.Length - 1;
     public long Slice(int from, int length) => Sum(from, from + length);
 

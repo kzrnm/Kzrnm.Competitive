@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 class Set<TKey, TValue> : Set<KeyValuePair<TKey, TValue>>, IDictionary<TKey, TValue>
 {
-    private class KeyComparer : IComparer<KeyValuePair<TKey, TValue>>
+    class KeyComparer : IComparer<KeyValuePair<TKey, TValue>>
     {
         public readonly IComparer<TKey> comparer;
         public KeyComparer(IComparer<TKey> comparer)

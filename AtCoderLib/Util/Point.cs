@@ -17,7 +17,7 @@ readonly struct Point : IEquatable<Point>, IComparable<Point>
     public void Deconstruct(out int v1, out int v2) { v1 = x; v2 = y; }
     public static implicit operator Point((int x, int y) tuple) => new Point(tuple.x, tuple.y);
     public double Distance(Point other) => Math.Sqrt(Distance2(other));
-    private long Distance2(Point other)
+    long Distance2(Point other)
     {
         var p = other - this;
         return (long)p.x * p.x + (long)p.y * p.y;

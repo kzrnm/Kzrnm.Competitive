@@ -24,8 +24,8 @@ abstract class SegmentTreeLazyAbstract<TValue, TOp> where TValue : struct where 
     protected abstract TValue ApplyLazy(TValue v, TOp l);
     protected abstract TOp Merge(TOp l1, TOp l2);
 
-    private TValue[] tree;
-    private TOp[] lazy;
+    TValue[] tree;
+    TOp[] lazy;
     public readonly int rootLength;
     public int Length { get; }
 
@@ -94,8 +94,8 @@ abstract class SegmentTreeLazyAbstract<TValue, TOp> where TValue : struct where 
     [System.Diagnostics.DebuggerDisplay("{" + nameof(value) + "}", Name = "{" + nameof(key) + ",nq}")]
     struct KeyValuePairs
     {
-        private string key;
-        private (TValue value, TOp lazy) value;
+        string key;
+        (TValue value, TOp lazy) value;
 
         public KeyValuePairs(string key, (TValue value, TOp lazy) value)
         {
@@ -105,7 +105,7 @@ abstract class SegmentTreeLazyAbstract<TValue, TOp> where TValue : struct where 
     }
     class SegmentTreeLazyDebugView
     {
-        private SegmentTreeLazyAbstract<TValue, TOp> segmentTree;
+        SegmentTreeLazyAbstract<TValue, TOp> segmentTree;
         public SegmentTreeLazyDebugView(SegmentTreeLazyAbstract<TValue, TOp> segmentTree)
         {
             this.segmentTree = segmentTree;

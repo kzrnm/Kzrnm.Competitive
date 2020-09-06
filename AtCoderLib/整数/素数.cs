@@ -34,7 +34,7 @@ class PrimeNumber : ICollection<int>
         }
         return primeFactors;
     }
-    private IEnumerable<long> EnumerateFactor(long num)
+    IEnumerable<long> EnumerateFactor(long num)
     {
         foreach (var p in primes)
         {

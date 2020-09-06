@@ -93,7 +93,7 @@ class SuffixArray
     }
     bool IsLMS(int x, bool[] isl) { return x > 0 && isl[x - 1] && !isl[x]; }
 
-    private void BuildLCP()
+    void BuildLCP()
     {
         var k = 0;
         var h = new int[N];

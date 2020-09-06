@@ -40,7 +40,7 @@ class PriorityQueue<T>
         UpdateDown(0);
         return res;
     }
-    private void UpdateUp(int i)
+    void UpdateUp(int i)
     {
         if (i > 0)
         {
@@ -52,7 +52,7 @@ class PriorityQueue<T>
             }
         }
     }
-    private void UpdateDown(int i)
+    void UpdateDown(int i)
     {
         var n = data.Count;
         var child = 2 * i + 1;
@@ -67,13 +67,13 @@ class PriorityQueue<T>
         }
     }
     public void Clear() => data.Clear();
-    [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)] private T[] Items => data.ToArray().Sort(comparer);
+    [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)] T[] Items => data.ToArray().Sort(comparer);
 }
 
 
 class PriorityQueue<TKey, TValue> : PriorityQueue<KeyValuePair<TKey, TValue>>
 {
-    private class KeyComparer : IComparer<KeyValuePair<TKey, TValue>>
+    class KeyComparer : IComparer<KeyValuePair<TKey, TValue>>
     {
         public readonly IComparer<TKey> comparer;
         public KeyComparer(IComparer<TKey> comparer)

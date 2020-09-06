@@ -1,6 +1,6 @@
 ﻿class Sums2D
 {
-    private readonly long[][] impl;
+    readonly long[][] impl;
     public int Length => impl.Length - 1;
     public Sums2D(int[][] arr)
     {
@@ -16,9 +16,9 @@
     public Slicer Slice(int left, int length) => new Slicer(impl, left, left + length);
     public ref struct Slicer
     {
-        private readonly long[][] impl;
-        private readonly int left;
-        private readonly int rightExclusive;
+        readonly long[][] impl;
+        readonly int left;
+        readonly int rightExclusive;
         public int Length { get; }
         public Slicer(long[][] impl, int left, int rightExclusive)
         {

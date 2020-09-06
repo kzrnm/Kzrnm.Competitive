@@ -8,8 +8,8 @@ using System.Collections.Generic;
 [System.Diagnostics.DebuggerDisplay("Count = {" + nameof(Count) + "}")]
 ref struct PriorityQueueRef<T>
 {
-    private ListRef<T> data;
-    private readonly IComparer<T> comparer;
+    ListRef<T> data;
+    readonly IComparer<T> comparer;
 
     public PriorityQueueRef(Span<T> buffer) : this(buffer, Comparer<T>.Default) { }
     public PriorityQueueRef(Span<T> buffer, IComparer<T> comparer)
@@ -35,7 +35,7 @@ ref struct PriorityQueueRef<T>
         UpdateDown(0);
         return res;
     }
-    private void UpdateUp(int i)
+    void UpdateUp(int i)
     {
         if (i > 0)
         {
@@ -47,7 +47,7 @@ ref struct PriorityQueueRef<T>
             }
         }
     }
-    private void UpdateDown(int i)
+    void UpdateDown(int i)
     {
         var n = data.Count;
         var child = 2 * i + 1;
@@ -62,5 +62,5 @@ ref struct PriorityQueueRef<T>
         }
     }
     public void Clear() => data.Clear();
-    [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)] private T[] Items => data.ToArray().Sort(comparer);
+    [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)] T[] Items => data.ToArray().Sort(comparer);
 }

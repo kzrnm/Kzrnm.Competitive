@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 class Trie<TKey, TValue>
 {
-    private readonly Dictionary<TKey, Trie<TKey, TValue>> children;
+    readonly Dictionary<TKey, Trie<TKey, TValue>> children;
     public bool HasValue { private set; get; }
-    private TValue _Value;
+    TValue _Value;
     public TValue Value
     {
         set
@@ -35,7 +35,7 @@ class Trie<TKey, TValue>
         }
         return trie;
     }
-    private bool GetAllChildren(ReadOnlySpan<TKey> key, out Stack<(TKey k, Trie<TKey, TValue> trie)> stack)
+    bool GetAllChildren(ReadOnlySpan<TKey> key, out Stack<(TKey k, Trie<TKey, TValue> trie)> stack)
     {
         stack = new Stack<(TKey k, Trie<TKey, TValue>)>();
         var trie = this;
@@ -80,7 +80,7 @@ class Trie<TKey, TValue>
         value = child.Value;
         return true;
     }
-    private IEnumerable<KeyValuePair<TKey[], TValue>> All(List<TKey> list)
+    IEnumerable<KeyValuePair<TKey[], TValue>> All(List<TKey> list)
     {
         if (this.HasValue)
             yield return KeyValuePair.Create(list.ToArray(), this.Value);
@@ -98,11 +98,11 @@ class Trie<TKey, TValue>
         => new MatchEnumerator(this, key);
     public ref struct MatchEnumerator
     {
-        private Trie<TKey, TValue> trie;
-        private readonly ReadOnlySpan<TKey> span;
+        Trie<TKey, TValue> trie;
+        readonly ReadOnlySpan<TKey> span;
         public MatchEnumerator Current => this;
-        private int len;
-        private TValue value;
+        int len;
+        TValue value;
         public MatchEnumerator(Trie<TKey, TValue> trie, ReadOnlySpan<TKey> span)
         {
             this.trie = trie;

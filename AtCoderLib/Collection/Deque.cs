@@ -12,10 +12,10 @@ using IEnumerator = System.Collections.IEnumerator;
 [System.Diagnostics.DebuggerDisplay("Count = {" + nameof(Count) + "}")]
 class Deque<T> : IEnumerable<T>, IReadOnlyCollection<T>, ICollection<T>
 {
-    private T[] data;
-    private int mask;
-    private int head;
-    private int tail;
+    T[] data;
+    int mask;
+    int head;
+    int tail;
 
     public Deque() : this(8) { }
     public Deque(int capacity)
@@ -55,7 +55,7 @@ class Deque<T> : IEnumerable<T>, IReadOnlyCollection<T>, ICollection<T>
         if (head == tail) Expand();
     }
 
-    private void Expand()
+    void Expand()
     {
         var oldSize = data.Length;
         var newArray = new T[oldSize << 1];
@@ -116,9 +116,9 @@ class Deque<T> : IEnumerable<T>, IReadOnlyCollection<T>, ICollection<T>
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     public struct Enumerator : IEnumerator<T>, IEnumerator
     {
-        private readonly Deque<T> deque;
-        private readonly bool isReverse;
-        private int index;
+        readonly Deque<T> deque;
+        readonly bool isReverse;
+        int index;
         public readonly int last;
         public T Current => deque.data[index];
         public Enumerator(Deque<T> deque, bool isReverse)

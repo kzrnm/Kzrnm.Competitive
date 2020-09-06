@@ -2,7 +2,7 @@
 
 class RollingHash
 {
-    private static Random rnd = new Random();
+    static Random rnd = new Random();
     public struct Hash : IEquatable<Hash>
     {
         public ulong a;
@@ -81,7 +81,7 @@ class RollingHash
 
         public ulong Slice(int from, int len) => CalcMod(hash[from + len] + POSITIVIZER - Mul(hash[from], powMemo[len]));
 
-        private static ulong Mul(ulong l, ulong r)
+        static ulong Mul(ulong l, ulong r)
         {
             var lu = l >> 31;
             var ld = l & MASK31;
@@ -91,7 +91,7 @@ class RollingHash
             return ((lu * ru) << 1) + ld * rd + ((middleBit & MASK30) << 31) + (middleBit >> 30);
         }
 
-        private static ulong Mul(ulong l, uint r)
+        static ulong Mul(ulong l, uint r)
         {
             var lu = l >> 31;
             var rd = r & MASK31;
@@ -99,7 +99,7 @@ class RollingHash
             return (l & MASK31) * rd + ((middleBit & MASK30) << 31) + (middleBit >> 30);
         }
 
-        private static ulong CalcMod(ulong val)
+        static ulong CalcMod(ulong val)
         {
             val = (val & MOD) + (val >> 61);
             if (val >= MOD) val -= MOD;

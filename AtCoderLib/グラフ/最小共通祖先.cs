@@ -7,14 +7,14 @@ using static AtCoderProject.Global;
  */
 class LowestCommonAncestor
 {
-    private TreeNode[] tree;
+    TreeNode[] tree;
 
     /** <summary>
      *  kprv[u][k] 頂点uの2^k個上の祖先頂点v, 0<=k<logN
      *  </summary>
      */
-    private int[][] kprv;
-    private int logN;
+    int[][] kprv;
+    int logN;
     public LowestCommonAncestor(TreeNode[] tree)
     {
         if (tree.Length == 0) throw new ArgumentException(nameof(tree));

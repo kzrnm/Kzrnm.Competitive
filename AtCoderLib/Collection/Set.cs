@@ -175,9 +175,9 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
     protected readonly IComparer<T> comparer;
     bool ICollection<T>.IsReadOnly => false;
 
-    private Node root;
+    Node root;
 
-    private static Node ConstructRootFromSortedArray(T[] arr, int startIndex, int endIndex, Node redNode)
+    static Node ConstructRootFromSortedArray(T[] arr, int startIndex, int endIndex, Node redNode)
     {
         int size = endIndex - startIndex + 1;
         Node root;
@@ -356,11 +356,11 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
     IEnumerator IEnumerable.GetEnumerator() => new Enumerator(this);
 
     #region private
-    private static bool Is2Node(Node node) => IsNonNullBlack(node) && IsNullOrBlack(node.Left) && IsNullOrBlack(node.Right); private static bool Is4Node(Node node) => IsNonNullRed(node.Left) && IsNonNullRed(node.Right);
-    private static bool IsNonNullRed(Node node) => node != null && node.IsRed;
-    private static bool IsNonNullBlack(Node node) => node != null && !node.IsRed;
-    private static bool IsNullOrBlack(Node node) => node == null || !node.IsRed;
-    private void ReplaceNode(Node match, Node parentOfMatch, Node succesor, Node parentOfSuccesor)
+    static bool Is2Node(Node node) => IsNonNullBlack(node) && IsNullOrBlack(node.Left) && IsNullOrBlack(node.Right); static bool Is4Node(Node node) => IsNonNullRed(node.Left) && IsNonNullRed(node.Right);
+    static bool IsNonNullRed(Node node) => node != null && node.IsRed;
+    static bool IsNonNullBlack(Node node) => node != null && !node.IsRed;
+    static bool IsNullOrBlack(Node node) => node == null || !node.IsRed;
+    void ReplaceNode(Node match, Node parentOfMatch, Node succesor, Node parentOfSuccesor)
     {
         if (succesor == match)
         {
@@ -385,23 +385,23 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
         }
         ReplaceChildOrRoot(parentOfMatch, match, succesor);
     }
-    private static void Merge2Nodes(Node parent)
+    static void Merge2Nodes(Node parent)
     {
         parent.IsRed = false;
         parent.Left.IsRed = true;
         parent.Right.IsRed = true;
     }
-    private static void Split4Node(Node node)
+    static void Split4Node(Node node)
     {
         node.IsRed = true;
         node.Left.IsRed = false;
         node.Right.IsRed = false;
     }
-    private static Node GetSibling(Node node, Node parent)
+    static Node GetSibling(Node node, Node parent)
     {
         return parent.Left == node ? parent.Right : parent.Left;
     }
-    private void InsertionBalance(Node current, ref Node parent, Node grandParent, Node greatGrandParent)
+    void InsertionBalance(Node current, ref Node parent, Node grandParent, Node greatGrandParent)
     {
         bool parentIsOnRight = grandParent.Right == parent;
         bool currentIsOnRight = parent.Right == current;
@@ -420,7 +420,7 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
         ReplaceChildOrRoot(greatGrandParent, grandParent, newChildOfGreatGrandParent);
 
     }
-    private static Node Rotate(Node node, TreeRotation rotation)
+    static Node Rotate(Node node, TreeRotation rotation)
     {
         switch (rotation)
         {
@@ -438,14 +438,14 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
                 throw new InvalidOperationException();
         }
     }
-    private static Node RotateLeft(Node node)
+    static Node RotateLeft(Node node)
     {
         Node child = node.Right;
         node.Right = child.Left;
         child.Left = node;
         return child;
     }
-    private static Node RotateLeftRight(Node node)
+    static Node RotateLeftRight(Node node)
     {
         Node child = node.Left;
         Node grandChild = child.Right;
@@ -456,14 +456,14 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
         grandChild.Left = child;
         return grandChild;
     }
-    private static Node RotateRight(Node node)
+    static Node RotateRight(Node node)
     {
         Node child = node.Left;
         node.Left = child.Right;
         child.Right = node;
         return child;
     }
-    private static Node RotateRightLeft(Node node)
+    static Node RotateRightLeft(Node node)
     {
         Node child = node.Right;
         Node grandChild = child.Left;
@@ -474,7 +474,7 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
         grandChild.Right = child;
         return grandChild;
     }
-    private void ReplaceChildOrRoot(Node parent, Node child, Node newChild)
+    void ReplaceChildOrRoot(Node parent, Node child, Node newChild)
     {
         if (parent != null)
         {
@@ -492,7 +492,7 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
             root = newChild;
         }
     }
-    private static TreeRotation GetRotation(Node parent, Node current, Node sibling)
+    static TreeRotation GetRotation(Node parent, Node current, Node sibling)
     {
         if (IsNonNullRed(sibling.Left))
         {
@@ -516,12 +516,12 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
     public struct Enumerator : IEnumerator<T>
     {
 
-        private Set<T> tree;
+        Set<T> tree;
 
-        private Stack<Node> stack;
-        private Node current;
+        Stack<Node> stack;
+        Node current;
 
-        private bool reverse;
+        bool reverse;
         internal Enumerator(Set<T> set) : this(set, false, null) { }
         internal Enumerator(Set<T> set, bool reverse, Node startNode)
         {
@@ -533,7 +533,7 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
             else Intialize(startNode);
 
         }
-        private void IntializeAll()
+        void IntializeAll()
         {
             var node = tree.root;
             while (node != null)
@@ -542,7 +542,7 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
                 stack.Push(node); node = next;
             }
         }
-        private void Intialize(Node startNode)
+        void Intialize(Node startNode)
         {
             if (startNode == null)
                 throw new InvalidOperationException(nameof(startNode) + "is null");
@@ -599,7 +599,7 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
             list.Reverse();
             foreach (var n in list) stack.Push(n);
         }
-        private static int Log2(int num) => num == 0 ? 0 : MSB(num) + 1;
+        static int Log2(int num) => num == 0 ? 0 : MSB(num) + 1;
         public T Current => current == null ? default : current.Item;
 
         public bool MoveNext()
@@ -632,7 +632,7 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
         {
             get; private set;
         }
-        private Node _left;
+        Node _left;
         public Node Left
         {
             get
@@ -653,7 +653,7 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
                 }
             }
         }
-        private Node _right;
+        Node _right;
         public Node Right
         {
             get
@@ -694,7 +694,7 @@ class Set<T> : ICollection<T>, IReadOnlyCollection<T>
         }
         public override string ToString() => $"Size = {Size}, Item = {Item}";
     }
-    private enum TreeRotation : byte
+    enum TreeRotation : byte
     {
         Left = 1,
         Right = 2,

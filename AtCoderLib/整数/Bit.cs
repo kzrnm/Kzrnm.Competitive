@@ -18,7 +18,7 @@ static class Bit
     public static Enumerator Bits(this ulong num) => new Enumerator(num);
     public struct Enumerator : IEnumerable<int>, IEnumerator<int>
     {
-        private ulong num;
+        ulong num;
         public Enumerator(int num) : this((ulong)(uint)num) { }
         public Enumerator(long num) : this((ulong)num) { }
         public Enumerator(ulong num) { this.num = num; Current = -1; }
@@ -35,7 +35,7 @@ static class Bit
             else MoveNextLogical();
             return true;
         }
-        private void MoveNextLogical()
+        void MoveNextLogical()
         {
             var lsb1 = BitOperations.TrailingZeroCount(num) + 1;
             if (lsb1 == 64) num = 0;

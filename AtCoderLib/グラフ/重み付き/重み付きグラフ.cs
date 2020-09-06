@@ -5,8 +5,8 @@ using System.Linq;
 
 class WGraphBuilder
 {
-    private List<Next>[] roots;
-    private List<Next>[] children;
+    List<Next>[] roots;
+    List<Next>[] children;
     public WGraphBuilder(int count, bool isOriented)
     {
         this.roots = new List<Next>[count];

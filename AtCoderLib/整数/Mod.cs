@@ -27,8 +27,10 @@ readonly struct Mod : IEquatable<Mod>
     public static Mod operator /(Mod x, Mod y) => x * y.Inverse();
     public static bool operator ==(Mod x, Mod y) => x.val == y.val;
     public static bool operator !=(Mod x, Mod y) => x.val != y.val;
+
+    #region Inverse
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-    private static long EuclideanInverseCore(long a, long mod)
+    static long EuclideanInverseCore(long a, long mod)
     {
         // ax+by=dの解を求める
         // (u,v,a) => (x,y,d)となっている
@@ -43,7 +45,7 @@ readonly struct Mod : IEquatable<Mod>
         return u;
     }
 
-    private static long[] MakeInverseCache()
+    static long[] MakeInverseCache()
     {
         var res = new long[1 + (int)Math.Sqrt(mod)];
         res[1] = 1;
@@ -53,8 +55,8 @@ readonly struct Mod : IEquatable<Mod>
         }
         return res;
     }
-    private static long[] _InvCache;
-    private static long[] InvCache => _InvCache ??= MakeInverseCache();
+    static long[] _InvCache;
+    static long[] InvCache => _InvCache ??= MakeInverseCache();
     static Mod EuclideanInverseCache(long a)
     {
         var cache = InvCache;
@@ -70,6 +72,8 @@ readonly struct Mod : IEquatable<Mod>
         return u;
     }
     public Mod Inverse() => useInvCache ? EuclideanInverseCache(val) : EuclideanInverseCore(val, mod);
+    #endregion Inverse
+
     public static Mod Pow(Mod x, int y)
     {
         Mod res = 1;
@@ -89,7 +93,7 @@ readonly struct Mod : IEquatable<Mod>
     public static Factors CreateFactor(int max) => new Factors(max);
     public class Factors
     {
-        private readonly Mod[] fac, finv;
+        readonly Mod[] fac, finv;
         public Factors(int max)
         {
             ++max;

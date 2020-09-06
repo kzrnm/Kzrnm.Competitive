@@ -1,6 +1,6 @@
 ﻿class Sums
 {
-    private readonly long[] impl;
+    readonly long[] impl;
     public int Length => impl.Length - 1;
     public Sums(int[] arr)
     {

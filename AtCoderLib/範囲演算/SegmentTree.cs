@@ -70,8 +70,8 @@ abstract class SegmentTreeAbstract<T> where T : struct
     [System.Diagnostics.DebuggerDisplay("{" + nameof(value) + "}", Name = "{" + nameof(key) + ",nq}")]
     struct KeyValuePairs
     {
-        private string key;
-        private T value;
+        string key;
+        T value;
 
         public KeyValuePairs(string key, T value)
         {
@@ -81,7 +81,7 @@ abstract class SegmentTreeAbstract<T> where T : struct
     }
     class DebugView
     {
-        private SegmentTreeAbstract<T> segmentTree;
+        SegmentTreeAbstract<T> segmentTree;
         public DebugView(SegmentTreeAbstract<T> segmentTree)
         {
             this.segmentTree = segmentTree;

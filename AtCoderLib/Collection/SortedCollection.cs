@@ -37,7 +37,7 @@ class SortedCollection<T> : IList<T>
     */
     protected int BinarySearch(T item) => list.BinarySearch(item, this.Comparer);
 
-    private int BinarySearchImpl(T item, bool isLowerBound)
+    int BinarySearchImpl(T item, bool isLowerBound)
     {
         var l = 0;
         var r = this.Count - 1;

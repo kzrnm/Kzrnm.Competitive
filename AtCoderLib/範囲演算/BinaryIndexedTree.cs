@@ -6,7 +6,7 @@ using static AtCoderProject.Global;
 [System.Diagnostics.DebuggerTypeProxy(typeof(DebugView))]
 class BinaryIndexedTree
 {
-    private long Operate(long v, long w) => v + w;
+    long Operate(long v, long w) => v + w;
     public void Add(int i, long w)
     {
         for (++i; i < tree.Length; i += (i & -i))
@@ -38,7 +38,7 @@ class BinaryIndexedTree
         return x;
     }
 
-    private long[] tree;
+    long[] tree;
     public int Length => tree.Length - 1;
     public long Slice(int from, int length) => Query(from + length) - Query(from);
 
@@ -59,7 +59,7 @@ class BinaryIndexedTree
 
     public class DebugView
     {
-        private BinaryIndexedTree bit;
+        BinaryIndexedTree bit;
         public DebugView(BinaryIndexedTree bit)
         {
             this.bit = bit;
