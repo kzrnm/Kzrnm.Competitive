@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Numerics;
-
+using System.Collections;
+using System.Collections.Generic;
+using Bmi1 = System.Runtime.Intrinsics.X86.Bmi1.X64;
 
 static class Bit
 {
@@ -14,7 +15,7 @@ static class Bit
     public static Enumerator Bits(this uint num) => new Enumerator(num);
     public static Enumerator Bits(this long num) => new Enumerator(num);
     public static Enumerator Bits(this ulong num) => new Enumerator(num);
-    public struct Enumerator
+    public struct Enumerator : IEnumerable<int>, IEnumerator<int>
     {
         private ulong num;
         public Enumerator(int num) : this((ulong)(uint)num) { }
@@ -25,10 +26,14 @@ static class Bit
         public bool MoveNext()
         {
             if (num == 0) return false;
-            var lsb1 = BitOperations.TrailingZeroCount(num) + 1;
-            Current += lsb1;
-            num >>= lsb1;
+            Current = unchecked((int)Bmi1.TrailingZeroCount(num));
+            num = Bmi1.ResetLowestSetBit(num);
             return true;
         }
+        object IEnumerator.Current => Current;
+        void IEnumerator.Reset() => throw new NotSupportedException();
+        void IDisposable.Dispose() { }
+        IEnumerator<int> IEnumerable<int>.GetEnumerator() => this;
+        IEnumerator IEnumerable.GetEnumerator() => this;
     }
 }

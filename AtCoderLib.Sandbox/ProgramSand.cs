@@ -20,9 +20,11 @@ class ProgramSand
                 //nameof(PriorityQueueBench),
                 //nameof(PermutationBench),
 
+                nameof(BitEnumerateBench),
+                //nameof(BitOnBench),
 
                 //nameof(BitAndSegmentTreeBench),
-                nameof(StarrySkyAndSegmentTreeLazyBench),
+                //nameof(StarrySkyAndSegmentTreeLazyBench),
 
                 //nameof(CreateBench),
                 //nameof(BMBench),
