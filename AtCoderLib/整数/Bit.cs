@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using Bmi1 = System.Runtime.Intrinsics.X86.Bmi1.X64;
 
 static class Bit
@@ -26,9 +27,20 @@ static class Bit
         public bool MoveNext()
         {
             if (num == 0) return false;
-            Current = unchecked((int)Bmi1.TrailingZeroCount(num));
-            num = Bmi1.ResetLowestSetBit(num);
+            if (Bmi1.IsSupported)
+            {
+                Current = unchecked((int)Bmi1.TrailingZeroCount(num));
+                num = Bmi1.ResetLowestSetBit(num);
+            }
+            else MoveNextLogical();
             return true;
+        }
+        private void MoveNextLogical()
+        {
+            var lsb1 = BitOperations.TrailingZeroCount(num) + 1;
+            if (lsb1 == 64) num = 0;
+            Current += lsb1;
+            num >>= lsb1;
         }
         object IEnumerator.Current => Current;
         void IEnumerator.Reset() => throw new NotSupportedException();

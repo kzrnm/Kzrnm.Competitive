@@ -1,12 +1,24 @@
 ﻿using FluentAssertions;
 using System;
-using System.Collections.Generic;
 using Xunit;
+using System.Runtime.Intrinsics.X86;
 
 namespace AtCoderLib.整数
 {
     public class BitTests
     {
+        sealed class OnlyX64TheoryAttribute : TheoryAttribute
+        {
+            public OnlyX64TheoryAttribute()
+            {
+                if (!Bmi1.X64.IsSupported)
+                {
+                    Skip = "Not Support Bmi1.X64";
+                }
+            }
+        }
+
+
         public static TheoryData BitStringInt32_Data = new TheoryData<int, int, string>
         {
             { 0, 0, "0" },
@@ -23,7 +35,7 @@ namespace AtCoderLib.整数
         [Theory]
         [MemberData(nameof(BitStringInt32_Data))]
         [Trait("Category", "BitString")]
-        public void BitStringInt32(int num, int len, string expected)
+        public void BitStringInt32Test(int num, int len, string expected)
         {
             num.ToBitString(len).Should().Be(expected);
         }
@@ -44,7 +56,7 @@ namespace AtCoderLib.整数
         [Theory]
         [MemberData(nameof(BitStringInt64_Data))]
         [Trait("Category", "BitString")]
-        public void BitStringInt64(long num, int len, string expected)
+        public void BitStringInt64Test(long num, int len, string expected)
         {
             num.ToBitString(len).Should().Be(expected);
         }
@@ -63,14 +75,14 @@ namespace AtCoderLib.整数
         [Theory]
         [MemberData(nameof(BitStringUInt64_Data))]
         [Trait("Category", "BitString")]
-        public void BitStringUInt64(ulong num, int len, string expected)
+        public void BitStringUInt64Test(ulong num, int len, string expected)
         {
             num.ToBitString(len).Should().Be(expected);
         }
 
         [Fact]
         [Trait("Category", "BitString")]
-        public void BitStringDefault()
+        public void BitStringDefaultTest()
         {
             0.ToBitString().Should().Be(new string('0', 32));
             0L.ToBitString().Should().Be(new string('0', 64));
@@ -92,10 +104,10 @@ namespace AtCoderLib.整数
             { 1 << 20, new[]{ 20 } },
             { 0, Array.Empty<int>() },
         };
-        [Theory]
+        [OnlyX64Theory]
         [MemberData(nameof(BitEnumerateInt32_Data))]
         [Trait("Category", "BitEnumerate")]
-        public void BitEnumerateInt32(int num, int[] expected)
+        public void BitEnumerateInt32Test(int num, int[] expected)
         {
             num.Bits().Should().Equal(expected);
         }
@@ -114,10 +126,10 @@ namespace AtCoderLib.整数
             { 1 << 20, new[]{ 20 } },
             { 0, Array.Empty<int>() },
         };
-        [Theory]
+        [OnlyX64Theory]
         [MemberData(nameof(BitEnumerateUInt32_Data))]
         [Trait("Category", "BitEnumerate")]
-        public void BitEnumerateUInt32(uint num, int[] expected)
+        public void BitEnumerateUInt32Test(uint num, int[] expected)
         {
             num.Bits().Should().Equal(expected);
         }
@@ -139,10 +151,10 @@ namespace AtCoderLib.整数
             { 1L << 20, new[]{ 20 } },
             { 0, Array.Empty<int>() },
         };
-        [Theory]
+        [OnlyX64Theory]
         [MemberData(nameof(BitEnumerateInt64_Data))]
         [Trait("Category", "BitEnumerate")]
-        public void BitEnumerateInt64(long num, int[] expected)
+        public void BitEnumerateInt64Test(long num, int[] expected)
         {
             num.Bits().Should().Equal(expected);
         }
@@ -164,10 +176,10 @@ namespace AtCoderLib.整数
             { 1L << 20, new[]{ 20 } },
             { 0, Array.Empty<int>() },
         };
-        [Theory]
+        [OnlyX64Theory]
         [MemberData(nameof(BitEnumerateUInt64_Data))]
         [Trait("Category", "BitEnumerate")]
-        public void BitEnumerateUInt64(ulong num, int[] expected)
+        public void BitEnumerateUInt64Test(ulong num, int[] expected)
         {
             num.Bits().Should().Equal(expected);
         }

@@ -37,5 +37,4 @@
             lcm = Lcm(lcm, nums[i]);
         return lcm;
     }
-
 }

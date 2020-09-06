@@ -1,7 +1,7 @@
 ﻿using AtCoderProject;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using Unsafe = System.Runtime.CompilerServices.Unsafe;
 
 
 #region https://qiita.com/drken/items/3b4fdf0a78e7a138cd9a 
@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 readonly struct Mod : IEquatable<Mod>
 {
     public const long mod = 1000000007;
+    const bool useInvCache = true;
     public static readonly Mod invalid;
     public readonly long val;
     public Mod(long val) { this.val = val % mod; if (this.val < 0) this.val += mod; }
@@ -26,36 +27,49 @@ readonly struct Mod : IEquatable<Mod>
     public static Mod operator /(Mod x, Mod y) => x * y.Inverse();
     public static bool operator ==(Mod x, Mod y) => x.val == y.val;
     public static bool operator !=(Mod x, Mod y) => x.val != y.val;
-    public static long EuclidInverse(long a, long mod)
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+    private static long EuclideanInverseCore(long a, long mod)
     {
+        // ax+by=dの解を求める
+        // (u,v,a) => (x,y,d)となっている
+        // dは最終的にaとbのgcdとなる
         long b = mod, u = 1, v = 0;
         while (b > 0)
         {
             long t = a / b;
-            a -= t * b;
-            (a, b) = (b, a);
-            u -= t * v; 
-            (u, v) = (v, u);
+            (a, b) = (b, a - t * b);
+            (u, v) = (v, u - t * v);
         }
-        u %= mod;
-        if (u < 0) u += mod;
         return u;
     }
-    public Mod Inverse()
+
+    private static long[] MakeInverseCache()
     {
-        long a = val, b = mod, u = 1, v = 0;
+        var res = new long[1 + (int)Math.Sqrt(mod)];
+        res[1] = 1;
+        for (int i = 2; i < res.Length; i++)
+        {
+            res[i] = (-res[mod % i] * (mod / i)) % mod;
+        }
+        return res;
+    }
+    private static long[] _InvCache;
+    private static long[] InvCache => _InvCache ??= MakeInverseCache();
+    static Mod EuclideanInverseCache(long a)
+    {
+        var cache = InvCache;
+        long b = mod, u = 1, v = 0;
         while (b > 0)
         {
+            if (0 <= a && a < cache.Length)
+                return cache[a] * u;
             long t = a / b;
-            var b2 = a - t * b;
-            a = b; b = b2;
-            var v2 = u - t * v;
-            u = v; v = v2;
+            (a, b) = (b, a - t * b);
+            (u, v) = (v, u - t * v);
         }
-        u %= mod;
-        if (u < 0) u += mod;
         return u;
     }
+    public Mod Inverse() => useInvCache ? EuclideanInverseCache(val) : EuclideanInverseCore(val, mod);
     public static Mod Pow(Mod x, int y)
     {
         Mod res = 1;
@@ -66,12 +80,17 @@ readonly struct Mod : IEquatable<Mod>
         }
         return res;
     }
-
-    public static Factor CreateFactor(int max) => new Factor(max);
-    public class Factor
+    public static long EuclideanInverse(long a, long mod)
+    {
+        var u = EuclideanInverseCore(a, mod) % mod;
+        if (u < 0) u += mod;
+        return u;
+    }
+    public static Factors CreateFactor(int max) => new Factors(max);
+    public class Factors
     {
         private readonly Mod[] fac, finv;
-        public Factor(int max)
+        public Factors(int max)
         {
             ++max;
             var inv = new Mod[max];
@@ -88,7 +107,7 @@ readonly struct Mod : IEquatable<Mod>
         }
 
         /** <summary>組み合わせ関数(二項係数)</summary> */
-        public Mod Combine(int n, int k)
+        public Mod Combination(int n, int k)
         {
             if (n < k) return 0;
             if (n < 0 || k < 0) return 0;
