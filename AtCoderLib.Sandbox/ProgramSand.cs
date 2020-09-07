@@ -12,6 +12,7 @@ class ProgramSand
                 //nameof(ExComparerBench),
                 //nameof(ExtBench),
                 //nameof(GlobalBench),
+                //nameof(GcdBench),
                 //nameof(ConsoleReaderBenchSingle),
                 //nameof(ConsoleReaderBenchSplit),
                 //nameof(ConsoleReaderBenchRepeat),
@@ -20,10 +21,11 @@ class ProgramSand
                 //nameof(PriorityQueueBench),
                 //nameof(PermutationBench),
 
+                nameof(EratosthenesBench),
                 //nameof(BitEnumerateBench),
                 //nameof(BitOnBench),
                 //nameof(ModInvCacheBench),
-                nameof(ModBench),
+                //nameof(ModBench),
 
                 //nameof(BitAndSegmentTreeBench),
                 //nameof(StarrySkyAndSegmentTreeLazyBench),

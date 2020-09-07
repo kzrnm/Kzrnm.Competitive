@@ -1,98 +1,112 @@
-﻿using System;
+﻿using AtCoderProject;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Linq;
 
 class PrimeNumber : ICollection<int>
 {
-    HashSet<int> primes;
-    public int Count => primes.Count;
+    int[] primes;
+    int[] searches;
+    public int Count => primes.Length;
     public bool IsReadOnly => true;
 
     public PrimeNumber(int max)
     {
-        primes = Eratosthenes(max);
+        (primes, searches) = Eratosthenes(max);
     }
     public Dictionary<long, int> PrimeFactoring(long num)
     {
         var primeFactors = new Dictionary<long, int>();
         foreach (var p in EnumerateFactor(num))
         {
-            primeFactors.TryGetValue(p, out var v);
-            primeFactors[p] = v + 1;
+            primeFactors[p] = primeFactors.Get(p) + 1;
         }
         return primeFactors;
     }
     public Dictionary<int, int> PrimeFactoring(int num)
     {
+        if (num < searches.Length) return PrimeFactoringFast(num);
         var primeFactors = new Dictionary<int, int>();
         foreach (var pl in EnumerateFactor(num))
         {
             var p = (int)pl;
-            primeFactors.TryGetValue(p, out var v);
-            primeFactors[p] = v + 1;
+            primeFactors[p] = primeFactors.Get(p) + 1;
         }
         return primeFactors;
     }
     IEnumerable<long> EnumerateFactor(long num)
     {
+        if ((long)primes[^1] * primes[^1] < num) throw new ArgumentOutOfRangeException(nameof(num));
         foreach (var p in primes)
         {
             if (num < 2) break;
-            while (num % p == 0)
-            {
+            while (DivIfMulti(ref num, p))
                 yield return p;
-                num /= p;
-            }
         }
         if (num > 1) yield return num;
+
+        static bool DivIfMulti(ref long num, long p)
+        {
+            Math.DivRem(num, p, out var d);
+            if (d == 0)
+            {
+                num /= p;
+                return true;
+            }
+            return false;
+        }
     }
-    HashSet<int> Eratosthenes(int n)
+    Dictionary<int, int> PrimeFactoringFast(int num)
     {
-        var primes = new HashSet<int> { 2, 3, 5, 7 };
-        if (n < 11)
+        if (num >= searches.Length) throw new ArgumentOutOfRangeException(nameof(num));
+        var primeFactors = new Dictionary<int, int>();
+        while (num > 1)
         {
-            primes.RemoveWhere(p => p > n);
-            return primes;
+            primeFactors[searches[num]] = primeFactors.Get(searches[num]) + 1;
+            num /= searches[num];
         }
+        return primeFactors;
+    }
+    static (int[] primes, int[] searches) Eratosthenes(int n)
+    {
         var searches = new int[n + 1];
-        int current;
-        for (var i = 10; i <= n; i += 10)
+        Array.Copy(new int[11] { 0, 1, 2, 3, 2, 5, 2, 7, 2, 3, 2 }, searches, Math.Min(11, searches.Length));
+
+        var primes = new List<int>(n) { 2, 3, 5, 7 };
+        if (n < 11) return (primes.TakeWhile(p => p <= n).ToArray(), searches);
+
+        for (int i = 11; i < searches.Length; i += 2)
         {
-            current = i + 1;
-            if (current > n) break;
-            if (current % 3 == 0 || current % 7 == 0)
-                searches[current] = 7;
-            current = i + 3;
-            if (current > n) break;
-            if (current % 3 == 0 || current % 7 == 0)
-                searches[current] = 7;
-            current = i + 5;
-            if (current > n) break;
-            searches[current] = 5;
-            current = i + 7;
-            if (current > n) break;
-            if (current % 3 == 0 || current % 7 == 0)
-                searches[current] = 7;
-            current = i + 9;
-            if (current > n) break;
-            if (current % 3 == 0 || current % 7 == 0)
-                searches[current] = 7;
+            searches[i - 1] = 2;
+            if (i % 3 == 0)
+                searches[i] = 3;
+            else if (i % 5 == 0)
+                searches[i] = 5;
+            else if (i % 7 == 0)
+                searches[i] = 7;
         }
-        current = 11;
+        if (n % 2 == 0) searches[n] = 2;
+
+        var current = 11;
         while (current * current <= n)
         {
             primes.Add(current);
-            for (var i = current; i <= n; i += (current << 1))
-                searches[i] = current;
+            var c2 = current << 1;
+            for (var i = current; i < searches.Length; i += c2)
+                if (searches[i] == 0)
+                    searches[i] = current;
 
             while (searches[current] > 0) current += 2;
         }
-        for (var i = current; i <= n; i += 2)
+        for (var i = current; i < searches.Length; i += 2)
             if (searches[i] == 0)
+            {
+                searches[i] = i;
                 primes.Add(i);
+            }
 
-        return primes;
+        return (primes.ToArray(), searches);
     }
 
     public void Add(int item) => throw new NotSupportedException();
@@ -100,7 +114,7 @@ class PrimeNumber : ICollection<int>
     public bool Contains(int item) => primes.Contains(item);
     public void CopyTo(int[] array, int arrayIndex) => primes.CopyTo(array, arrayIndex);
     public bool Remove(int item) => throw new NotSupportedException();
-    public HashSet<int>.Enumerator GetEnumerator() => primes.GetEnumerator();
-    IEnumerator<int> IEnumerable<int>.GetEnumerator() => primes.GetEnumerator();
+    public ReadOnlySpan<int>.Enumerator GetEnumerator() => new ReadOnlySpan<int>(primes).GetEnumerator();
+    IEnumerator<int> IEnumerable<int>.GetEnumerator() => ((IEnumerable<int>)primes).GetEnumerator();
     IEnumerator IEnumerable.GetEnumerator() => primes.GetEnumerator();
 }

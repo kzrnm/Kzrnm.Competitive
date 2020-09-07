@@ -21,6 +21,40 @@ namespace AtCoderProject
 
     public static class Global
     {
+        public static int Gcd(params int[] nums)
+        {
+            var gcd = nums[0];
+            for (var i = 1; i < nums.Length; i++)
+                gcd = Gcd(nums[i], gcd);
+            return gcd;
+        }
+        public static int Gcd(int a, int b) => b > a ? Gcd(b, a) : (b == 0 ? a : Gcd(b, a % b));
+        public static int Lcm(int a, int b) => a / Gcd(a, b) * b;
+        public static int Lcm(params int[] nums)
+        {
+            var lcm = nums[0];
+            for (var i = 1; i < nums.Length; i++)
+                lcm = Lcm(lcm, nums[i]);
+            return lcm;
+        }
+        public static long Gcd(params long[] nums)
+        {
+            var gcd = nums[0];
+            for (var i = 1; i < nums.Length; i++)
+                gcd = Gcd(nums[i], gcd);
+            return gcd;
+        }
+        public static long Gcd(long a, long b) => b > a ? Gcd(b, a) : (b == 0 ? a : Gcd(b, a % b));
+        public static long Lcm(long a, long b) => a / Gcd(a, b) * b;
+
+        public static long Lcm(params long[] nums)
+        {
+            var lcm = nums[0];
+            for (var i = 1; i < nums.Length; i++)
+                lcm = Lcm(lcm, nums[i]);
+            return lcm;
+        }
+
         public static T[] NewArray<T>(int len0, T value) => new T[len0].Fill(value);
         public static T[] NewArray<T>(int len0, Func<T> factory)
         {

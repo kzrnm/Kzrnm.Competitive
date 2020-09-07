@@ -1,9 +1,10 @@
 ﻿using System;
+using static AtCoderProject.Global;
 
-/** <summary>有理数</summary> */
+
+/** <summary>有理数を既約分数で表す</summary> */
 readonly struct Fraction : IEquatable<Fraction>, IComparable<Fraction>
 {
-    static long Gcd(long a, long b) => b > a ? Gcd(b, a) : (b == 0 ? a : Gcd(b, a % b));
     /** <summary>分子</summary> */
     public readonly long numerator;
     /** <summary>分母</summary> */
