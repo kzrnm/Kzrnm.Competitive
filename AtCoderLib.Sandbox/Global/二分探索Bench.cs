@@ -13,9 +13,9 @@ using System.Collections.Generic;
 public class 二分探索Bench
 {
     const int N = 100000;
-    int[] arr;
-    int[] rev;
-    IComparer<int> revCmp = ExComparer<int>.DefaultReverse;
+    readonly int[] arr;
+    readonly int[] rev;
+    readonly IComparer<int> revCmp = ExComparer<int>.DefaultReverse;
     public 二分探索Bench()
     {
         arr = Util.MakeIntArray(N);
