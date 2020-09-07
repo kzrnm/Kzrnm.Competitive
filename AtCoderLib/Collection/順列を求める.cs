@@ -20,7 +20,7 @@ static class 順列を求める
                 if (arr[i].CompareTo(arr[j]) < 0)
                     break;
             (arr[i], arr[j]) = (arr[j], arr[i]);
-            arr.AsSpan(i + 1).Reverse();
+            Array.Reverse(arr, i + 1, arr.Length - i - 1);
         }
     }
 

@@ -35,9 +35,11 @@ class Trie<TKey, TValue>
         }
         return trie;
     }
-    bool GetAllChildren(ReadOnlySpan<TKey> key, out Stack<(TKey k, Trie<TKey, TValue> trie)> stack)
+    public void Add(ReadOnlySpan<TKey> key, TValue value)
+        => GetChild(key, true).Value = value;
+    public bool Remove(ReadOnlySpan<TKey> key)
     {
-        stack = new Stack<(TKey k, Trie<TKey, TValue>)>();
+        var stack = new Stack<(TKey k, Trie<TKey, TValue> trie)>(key.Length + 1);
         var trie = this;
         stack.Push((default, trie));
         foreach (var k in key)
@@ -46,21 +48,15 @@ class Trie<TKey, TValue>
             if (trie == null) return false;
             stack.Push((k, trie));
         }
-        return true;
-    }
-    public void Add(ReadOnlySpan<TKey> key, TValue value)
-        => GetChild(key, true).Value = value;
-    public bool Remove(ReadOnlySpan<TKey> key)
-    {
-        if (!GetAllChildren(key, out var stack)) return false;
+
         var cur = stack.Pop();
         if (!cur.trie.HasValue) return false;
         cur.trie.HasValue = false;
         while (stack.Count > 0 && !cur.trie.HasValue && cur.trie.children.Count == 0)
         {
-            var (k, _) = cur;
+            var prevK = cur.k;
             cur = stack.Pop();
-            cur.trie.children.Remove(k);
+            cur.trie.children.Remove(prevK);
         }
         return true;
     }
