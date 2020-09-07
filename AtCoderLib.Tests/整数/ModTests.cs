@@ -1,5 +1,6 @@
 ﻿using AtCoderProject;
 using FluentAssertions;
+using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -22,6 +23,16 @@ namespace AtCoderLib.整数
         public void InvalidTest()
         {
             Mod.invalid.val.Should().Be(-1);
+        }
+
+        [Fact]
+        [Trait("Category", "Normal")]
+        public void UnsafeTest()
+        {
+            var arr = Util.MakeIntArray(1000);
+            arr.Any(num => num < 0).Should().BeTrue();
+            foreach (var num in arr)
+                Mod.Unsafe(num).val.Should().Be(num);
         }
 
         public static TheoryData Construct_Data = new TheoryData<long, long>
@@ -164,9 +175,12 @@ namespace AtCoderLib.整数
         [Trait("Category", "Function")]
         [InlineData(1, 1, 1)]
         [InlineData(1, 1024, 1)]
+        [InlineData(2, 10, 1024)]
+        [InlineData(2, 1024, 812734592)]
         public void PowTest(long x, int y, long expected)
         {
             Mod.Pow(x, y).Should().Be(new Mod(expected));
+            new Mod(x).Pow(y).Should().Be(new Mod(expected));
         }
 
         public static TheoryData Sum_Data = new TheoryData<long[], long>
@@ -200,6 +214,14 @@ namespace AtCoderLib.整数
             (Mod.EuclideanInverse(num, mod) * num % mod).Should().Be(1);
         }
 
+        [Fact]
+        [Trait("Category", "Function")]
+        public void CrtTest()
+        {
+            Mod.Crt(Array.Empty<long>(), Array.Empty<long>()).Should().Be((0, 1));
+            Mod.Crt(new long[] { 2, 3, 2 }, new long[] { 3, 5, 7 }).Should().Be((23, 105));
+            Mod.Crt(new long[] { 1, 1, 4, 6 }, new long[] { 3, 5, 7, 11 }).Should().Be((886, 1155));
+        }
 
         [Fact]
         [Trait("Category", "Factors")]

@@ -21,9 +21,10 @@ class ProgramSand
                 //nameof(PriorityQueueBench),
                 //nameof(PermutationBench),
 
-                nameof(EratosthenesBench),
+                //nameof(EratosthenesBench),
                 //nameof(BitEnumerateBench),
                 //nameof(BitOnBench),
+                nameof(ModConstructBench),
                 //nameof(ModInvCacheBench),
                 //nameof(ModBench),
 
