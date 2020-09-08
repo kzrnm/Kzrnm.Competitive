@@ -21,7 +21,7 @@ class BinaryIndexedTree
     }
 
     public long Query(int from, int toExclusive) => Query(toExclusive) - Query(from);
-    ///* <summary>非負整数だけが使われる総和を求めるBITにだけ使える二分探索。0,1で便利</summary> */
+    /** <summary>非負整数だけが使われる総和を求めるBITにだけ使える二分探索。0,1で便利</summary> */
     public int LowerBound(long w)
     {
         if (w <= 0) return 0;

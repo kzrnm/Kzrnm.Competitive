@@ -167,8 +167,7 @@ class Convolution
         }
     }
 
-    ///* <summary>畳み込み</summary>
-    /// <returns>c[i]=Sum(<paramref name="arr"/>[j]*<paramref name="brr"/>[i-j]) mod <paramref name="mod"/> 0&lt;j&lt;=iとなる配列</returns>*/
+    /** <summary>畳み込み</summary><returns>c[i]=Sum(<paramref name="arr"/>[j]*<paramref name="brr"/>[i-j]) mod <paramref name="mod"/> 0&lt;j&lt;=iとなる配列</returns>*/
     public long[] 畳み込み(long[] arr, long[] brr)
     {
         if (arr.Length == 0 || brr.Length == 0) return Array.Empty<long>();
@@ -213,8 +212,7 @@ class Convolution
         }
     }
 
-    ///* <summary>畳み込み</summary>
-    /// <returns>c[i]=Sum(<paramref name="arr"/>[j]*<paramref name="brr"/>[i-j]) 0&lt;j&lt;=iとなる配列</returns>*/
+    /** <summary>畳み込み</summary><returns>c[i]=Sum(<paramref name="arr"/>[j]*<paramref name="brr"/>[i-j]) 0&lt;j&lt;=iとなる配列</returns>*/
     public static long[] 畳み込みLong(long[] arr, long[] brr)
     {
         if (arr.Length == 0 || brr.Length == 0) return Array.Empty<long>();

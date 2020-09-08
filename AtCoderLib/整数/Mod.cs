@@ -97,7 +97,7 @@ readonly struct Mod : IEquatable<Mod>
         return u;
     }
 
-    ///*<summary>中国剰余定理。<paramref name="r"/>[i] mod <paramref name="m"/>[i]を満たすものを返す。</summary><returns><paramref name="mod"/>(<paramref name="m"/>[i]のLCM)での解<paramref name="y"/>を返す。答えがない場合は (0,0)、引数が空の時は (0,1)を返す。</returns>
+    /**<summary>中国剰余定理。<paramref name="r"/>[i] mod <paramref name="m"/>[i]を満たすものを返す。</summary><returns><paramref name="mod"/>(<paramref name="m"/>[i]のLCM)での解<paramref name="y"/>を返す。答えがない場合は (0,0)、引数が空の時は (0,1)を返す。</returns>*/
     public static (long y, long mod) Crt(IReadOnlyCollection<long> r, IReadOnlyCollection<long> m)
     {
         System.Diagnostics.Debug.Assert(r.Count == m.Count, $"{nameof(r)}.Count != {nameof(m)}.Count");
