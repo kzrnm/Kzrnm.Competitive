@@ -31,23 +31,30 @@ namespace AtCoderLib.範囲演算
         public void MaxSeg()
         {
             var seg = new SegmentTree(10);
-            for (int i = 0; i < 10; i++) seg[i].Should().Be(0);
-            seg[0..10].Should().Be(0);
+            for (int i = 0; i < 10; i++) seg[i].Should().Be(long.MinValue);
+            seg[0..10].Should().Be(long.MinValue);
             seg.Update(1, 10);
             seg[1].Should().Be(10);
-            seg[0..1].Should().Be(0);
-            seg[2..10].Should().Be(0);
+            seg[0..1].Should().Be(long.MinValue);
+            seg[2..10].Should().Be(long.MinValue);
             seg[0..10].Should().Be(10);
             seg.Update(2, 7);
             seg[2].Should().Be(7);
-            seg[0..1].Should().Be(0);
+            seg[0..1].Should().Be(long.MinValue);
             seg[2..10].Should().Be(7);
             seg[0..10].Should().Be(10);
             seg.Update(1, 1);
             seg[1].Should().Be(1);
-            seg[0..1].Should().Be(0);
+            seg[0..1].Should().Be(long.MinValue);
             seg[2..10].Should().Be(7);
             seg[0..10].Should().Be(7);
+
+            for (int i = 0; i < 10; i++)
+                seg.Update(i, i);
+
+            for (int l = 0; l < 10; l++)
+                for (int r = l + 1; r <= 10; r++)
+                    seg[l..r].Should().Be(r - 1);
         }
 
 
@@ -96,6 +103,27 @@ namespace AtCoderLib.範囲演算
             seg[0..1].Should().Be(0);
             seg[2..10].Should().Be(7);
             seg[0..10].Should().Be(8);
+
+
+            for (int i = 0; i < 10; i++)
+                seg.Update(i, i);
+
+            for (int l = 0; l < 10; l++)
+                for (int r = l + 1; r <= 10; r++)
+                    seg[l..r].Should().Be(((long)r - l) * (r - 1 + l) / 2);
+
+
+            seg.MaxRight(0, n => n < 20).Should().Be(6);
+            seg.MaxRight(2, n => n < 20).Should().Be(6);
+            seg.MaxRight(3, n => n < 20).Should().Be(7);
+            seg.MaxRight(7, n => n < 20).Should().Be(9);
+            seg.MaxRight(8, n => n < 20).Should().Be(10);
+            seg.MaxRight(9, n => n < 20).Should().Be(10);
+
+            seg.MinLeft(10, n => n < 20).Should().Be(8);
+            seg.MinLeft(9, n => n < 20).Should().Be(7);
+            seg.MinLeft(8, n => n < 20).Should().Be(5);
+            seg.MinLeft(7, n => n < 20).Should().Be(3);
         }
     }
 }
