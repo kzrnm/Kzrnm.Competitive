@@ -79,7 +79,6 @@ function Main {
         'AtCoderLib\Collection\Boost\ListRef.cs',
         'AtCoderLib\Collection\Boost\PriorityQueueRef.cs',
         'AtCoderLib\Collection\Set.cs',
-        'AtCoderLib\Collection\SortedCollection.cs',
         'AtCoderLib\Collection\Trie.cs',
         'AtCoderLib\グラフ\重み付き\重み付きグラフ.cs',
         'AtCoderLib\グラフ\重み付き\流量とコストを持つグラフ.cs',
@@ -89,6 +88,7 @@ function Main {
         'AtCoderLib\整数\Bit.cs',
         'AtCoderLib\整数\Mod.cs',
         'AtCoderLib\整数\素数.cs',
+        'AtCoderLib\整数\畳み込み.cs',
         'AtCoderLib\範囲演算\特殊なBIT\BinaryIndexedTree2D.cs',
         'AtCoderLib\範囲演算\特殊なBIT\BinaryIndexedTreeRange.cs',
         'AtCoderLib\範囲演算\累積和.cs',
@@ -102,7 +102,7 @@ function Main {
     ) 
     $targetFiles | ForEach-Object { Compress-CSharp "$SolutionRoot\$_" } 
     $methodTargetFiles | ForEach-Object { Compress-CSharp "$SolutionRoot\$_" -MethodOnly } 
-    dotnet-format.exe -w "$PSScriptRoot\.." --files (($methodTargetFiles + $targetFiles) -join ',')
+    dotnet-format.exe -w "$PSScriptRoot\..\AtCoderLib" --files (($methodTargetFiles + $targetFiles) -join ',')
 }
 
 Main
