@@ -28,68 +28,130 @@ abstract class SegmentTreeLazyAbstract<TValue, TOp> where TValue : struct where 
     TOp[] lazy;
     public readonly int rootLength;
     public int Length { get; }
-
+    private readonly int log;
     public SegmentTreeLazyAbstract(TValue[] initArray) : this(initArray.Length)
     {
-        var rootLength = this.rootLength;
-        Array.Copy(initArray, 0, tree, rootLength - 1, initArray.Length);
-        for (int i = rootLength - 2; i >= 0; i--)
-            tree[i] = Operate(tree[(i << 1) + 1], tree[(i << 1) + 2]);
+        Array.Copy(initArray, 0, tree, rootLength, initArray.Length);
+        for (int i = rootLength - 1; i >= 1; i--)
+            Update(i);
     }
     public SegmentTreeLazyAbstract(int size)
     {
         this.Length = size;
-        rootLength = 1 << (MSB(size - 1) + 1);
-        lazy = NewArray((rootLength << 1) - 1, DefaultLazy);
-        tree = NewArray((rootLength << 1) - 1, DefaultValue);
+        this.log = MSB(size - 1) + 1;
+        rootLength = 1 << log;
+        lazy = NewArray(rootLength, DefaultLazy);
+        tree = NewArray(rootLength << 1, DefaultValue);
     }
-    protected void Eval(int k)
+    void Update(int index) => tree[index] = Operate(tree[2 * index], tree[2 * index + 1]);
+
+    void AllApply(int k, TOp f)
     {
-        if (EqualityComparer<TOp>.Default.Equals(lazy[k], DefaultLazy)) return;
-        if (k < rootLength - 1)
-        {
-            lazy[k * 2 + 1] = Merge(lazy[k * 2 + 1], lazy[k]);
-            lazy[k * 2 + 2] = Merge(lazy[k * 2 + 2], lazy[k]);
-        }
-        tree[k] = ApplyLazy(tree[k], lazy[k]);
+        tree[k] = ApplyLazy(tree[k], f);
+        if (k < rootLength) lazy[k] = Merge(f, lazy[k]);
+    }
+    void Push(int k)
+    {
+        AllApply(2 * k, lazy[k]);
+        AllApply(2 * k + 1, lazy[k]);
         lazy[k] = DefaultLazy;
     }
-    public void Apply(int fromInclusive, int toExclusive, TOp value)
+    public TValue this[int index]
     {
-        void Apply(int fromInclusive, int toExclusive, TOp value, int k, int l, int r)
+        set
         {
-            Eval(k);
-            if (fromInclusive <= l && r <= toExclusive)
-            {
-                lazy[k] = Merge(lazy[k], value);
-                Eval(k);
-            }
-            else if (fromInclusive < r && l < toExclusive)
-            {
-                Apply(fromInclusive, toExclusive, value, k * 2 + 1, l, (l + r) >> 1);
-                Apply(fromInclusive, toExclusive, value, k * 2 + 2, (l + r) >> 1, r);
-                tree[k] = Operate(tree[k * 2 + 1], tree[k * 2 + 2]);
-            }
+            index += rootLength;
+            for (int i = log; i >= 1; i--) Push(index >> i);
+            tree[index] = value;
+            for (int i = 1; i <= log; i++) Update(index >> i);
         }
-        Apply(fromInclusive, toExclusive, value, 0, 0, rootLength);
+        get
+        {
+            index += rootLength;
+            for (int i = log; i >= 1; i--) Push(index >> i);
+            return tree[index];
+        }
     }
 
     public TValue Slice(int from, int length) => Query(from, from + length);
-    public TValue Query(int fromInclusive, int toExclusive)
+    public TValue Query(int from, int toExclusive)
     {
-        TValue Query(int fromInclusive, int toExclusive, int k, int l, int r)
+
+        if (from == toExclusive) return DefaultValue;
+
+        from += rootLength;
+        toExclusive += rootLength;
+
+        for (int i = log; i >= 1; i--)
         {
-            Eval(k);
-            if (r <= fromInclusive || toExclusive <= l) return DefaultValue;
-            else if (fromInclusive <= l && r <= toExclusive) return tree[k];
-            else return Operate(
-                Query(fromInclusive, toExclusive, k * 2 + 1, l, (l + r) >> 1),
-                Query(fromInclusive, toExclusive, k * 2 + 2, (l + r) >> 1, r)
-                );
+            if (((from >> i) << i) != from) Push(from >> i);
+            if (((toExclusive >> i) << i) != toExclusive) Push(toExclusive >> i);
         }
-        return Query(fromInclusive, toExclusive, 0, 0, rootLength);
+
+        TValue sml = DefaultValue, smr = DefaultValue;
+        while (from < toExclusive)
+        {
+            if ((from & 1) != 0) sml = Operate(sml, tree[from++]);
+            if ((toExclusive & 1) != 0) smr = Operate(tree[--toExclusive], smr);
+            from >>= 1;
+            toExclusive >>= 1;
+        }
+
+        return Operate(sml, smr);
+    }
+    public TValue QueryAll() => tree[1];
+
+
+    public void Apply(int index, TOp f)
+    {
+        index += rootLength;
+        for (int i = log; i >= 1; i--) Push(index >> i);
+        tree[index] = ApplyLazy(tree[index], f);
+        for (int i = 1; i <= log; i++) Update(index >> i);
+    }
+    public void Apply(int from, int toExclusive, TOp f)
+    {
+        if (from == toExclusive) return;
+
+        from += rootLength;
+        toExclusive += rootLength;
+
+        for (int i = log; i >= 1; i--)
+        {
+            if (((from >> i) << i) != from) Push(from >> i);
+            if (((toExclusive >> i) << i) != toExclusive) Push((toExclusive - 1) >> i);
+        }
+
+        {
+            int l2 = from, r2 = toExclusive;
+            while (from < toExclusive)
+            {
+                if ((from & 1) != 0) AllApply(from++, f);
+                if ((toExclusive & 1) != 0) AllApply(--toExclusive, f);
+                from >>= 1;
+                toExclusive >>= 1;
+            }
+            from = l2;
+            toExclusive = r2;
+        }
+
+        for (int i = 1; i <= log; i++)
+        {
+            if (((from >> i) << i) != from) Update(from >> i);
+            if (((toExclusive >> i) << i) != toExclusive) Update((toExclusive - 1) >> i);
+        }
     }
 
+    /** <summary>二分探索</summary><returns>[r = l もしくは f(op(a[l], a[l + 1], ..., a[r - 1])) = true]&amp;&amp;[r = n もしくは f(op(a[l], a[l + 1], ..., a[r])) = false]となるrのいずれか。aが単調ならば前者を満たす最大のr</returns>*/
+    public int MaxRight(int left, Predicate<TValue> ok)
+    {
+        throw new NotImplementedException();
+    }
+    /** <summary>二分探索</summary><returns>[l = r もしくは f(op(a[l], a[l + 1], ..., a[r - 1])) = true]&amp;&amp;[l = 0 もしくは f(op(a[l - 1], a[l + 1], ..., a[r - 1])) = false]となるlのいずれか。aが単調ならば前者を満たす最小のl</returns>*/
+    public int MinLeft(int rightExclude, Predicate<TValue> ok)
+    {
+        throw new NotImplementedException();
+    }
 
     [System.Diagnostics.DebuggerDisplay("{" + nameof(value) + "}", Name = "{" + nameof(key) + ",nq}")]
     struct KeyValuePairs
@@ -122,7 +184,7 @@ abstract class SegmentTreeLazyAbstract<TValue, TOp> where TValue : struct where 
                     var unit = segmentTree.rootLength / len;
                     for (var i = 0; i < len; i++)
                     {
-                        var index = i + len - 1;
+                        var index = i + len;
                         if (unit == 1)
                             keys.Add(new KeyValuePairs($"[{i}]", (segmentTree.tree[index], segmentTree.lazy[index])));
                         else

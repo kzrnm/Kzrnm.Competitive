@@ -21,9 +21,7 @@ abstract class SegmentTreeAbstract<T> where T : struct
 
     public SegmentTreeAbstract(T[] initArray) : this(initArray.Length)
     {
-        var rootLength = this.rootLength;
         Array.Copy(initArray, 0, tree, rootLength, initArray.Length);
-
         for (int i = rootLength - 1; i >= 1; i--)
             Update(i);
     }
@@ -33,15 +31,18 @@ abstract class SegmentTreeAbstract<T> where T : struct
         rootLength = 1 << (MSB(size - 1) + 1);
         tree = NewArray(rootLength << 1, DefaultValue);
     }
-    void Update(int index) => tree[index] = Operate(tree[index * 2], tree[index * 2 + 1]);
-    public void Update(int index, T value)
+    void Update(int index) => tree[index] = Operate(tree[2 * index], tree[2 * index + 1]);
+    public T this[int index]
     {
-        index += rootLength;
-        tree[index] = value;
-        while (index > 0)
-            Update(index >>= 1);
+        set
+        {
+            index += rootLength;
+            tree[index] = value;
+            while (index > 0)
+                Update(index >>= 1);
+        }
+        get => tree[index + rootLength];
     }
-    public T this[int index] => tree[index + rootLength];
 
     public T Slice(int from, int length) => Query(from, from + length);
     public T Query(int fromInclusive, int toExclusive)
@@ -63,6 +64,7 @@ abstract class SegmentTreeAbstract<T> where T : struct
 
         return Operate(leftResult, rightResult);
     }
+    public T QueryAll() => tree[1];
 
     /** <summary>二分探索</summary><returns>[r = l もしくは f(op(a[l], a[l + 1], ..., a[r - 1])) = true]&amp;&amp;[r = n もしくは f(op(a[l], a[l + 1], ..., a[r])) = false]となるrのいずれか。aが単調ならば前者を満たす最大のr</returns>*/
     public int MaxRight(int left, Predicate<T> ok)

@@ -24,12 +24,12 @@ class ProgramSand
                 //nameof(EratosthenesBench),
                 //nameof(BitEnumerateBench),
                 //nameof(BitOnBench),
-                nameof(ModConstructBench),
+                //nameof(ModConstructBench),
                 //nameof(ModInvCacheBench),
                 //nameof(ModBench),
 
                 //nameof(BitAndSegmentTreeBench),
-                //nameof(StarrySkyAndSegmentTreeLazyBench),
+                nameof(StarrySkyAndSegmentTreeLazyBench),
 
                 //nameof(CreateBench),
                 //nameof(BMBench),

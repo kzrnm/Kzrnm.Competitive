@@ -39,7 +39,7 @@ public class BitAndSegmentTreeBench
     public void SegAdd()
     {
         for (int i = 0; i < N; i++)
-            seg.Update(i, i);
+            seg[i] += i;
     }
     [Benchmark]
     [BenchmarkCategory("Add")]

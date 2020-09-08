@@ -33,24 +33,28 @@ namespace AtCoderLib.範囲演算
             var seg = new SegmentTree(10);
             for (int i = 0; i < 10; i++) seg[i].Should().Be(long.MinValue);
             seg[0..10].Should().Be(long.MinValue);
-            seg.Update(1, 10);
+            seg.QueryAll().Should().Be(long.MinValue);
+            seg[1] = 10;
             seg[1].Should().Be(10);
             seg[0..1].Should().Be(long.MinValue);
             seg[2..10].Should().Be(long.MinValue);
             seg[0..10].Should().Be(10);
-            seg.Update(2, 7);
+            seg.QueryAll().Should().Be(10);
+            seg[2] = 7;
             seg[2].Should().Be(7);
             seg[0..1].Should().Be(long.MinValue);
             seg[2..10].Should().Be(7);
             seg[0..10].Should().Be(10);
-            seg.Update(1, 1);
+            seg.QueryAll().Should().Be(10);
+            seg[1] = 1;
             seg[1].Should().Be(1);
             seg[0..1].Should().Be(long.MinValue);
             seg[2..10].Should().Be(7);
             seg[0..10].Should().Be(7);
+            seg.QueryAll().Should().Be(7);
 
             for (int i = 0; i < 10; i++)
-                seg.Update(i, i);
+                seg[i] = i;
 
             for (int l = 0; l < 10; l++)
                 for (int r = l + 1; r <= 10; r++)
@@ -88,25 +92,29 @@ namespace AtCoderLib.範囲演算
             var seg = new SegmentTreeSum(10);
             for (int i = 0; i < 10; i++) seg[i].Should().Be(0);
             seg[0..10].Should().Be(0);
-            seg.Update(1, 10);
+            seg.QueryAll().Should().Be(0);
+            seg[1] = 10;
             seg[1].Should().Be(10);
             seg[0..1].Should().Be(0);
             seg[2..10].Should().Be(0);
             seg[0..10].Should().Be(10);
-            seg.Update(2, 7);
+            seg.QueryAll().Should().Be(10);
+            seg[2] = 7;
             seg[2].Should().Be(7);
             seg[0..1].Should().Be(0);
             seg[2..10].Should().Be(7);
             seg[0..10].Should().Be(17);
-            seg.Update(1, 1);
+            seg.QueryAll().Should().Be(17);
+            seg[1] = 1;
             seg[1].Should().Be(1);
             seg[0..1].Should().Be(0);
             seg[2..10].Should().Be(7);
             seg[0..10].Should().Be(8);
+            seg.QueryAll().Should().Be(8);
 
 
             for (int i = 0; i < 10; i++)
-                seg.Update(i, i);
+                seg[i] = i;
 
             for (int l = 0; l < 10; l++)
                 for (int r = l + 1; r <= 10; r++)
