@@ -17,7 +17,7 @@ class UnionFind
         return data[x] = Root(data[x]);
     }
     public int Size(int x) => -data[Root(x)];
-    public bool UnionSet(int x, int y)
+    public bool Merge(int x, int y)
     {
         var xRoot = Root(x);
         var yRoot = Root(y);

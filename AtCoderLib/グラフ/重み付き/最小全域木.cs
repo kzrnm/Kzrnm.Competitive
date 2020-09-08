@@ -17,7 +17,7 @@ static class 最小全域木
         {
             if (!uf.IsSameRoot(from, to))
             {
-                uf.UnionSet(from, to);
+                uf.Merge(from, to);
                 gb.Add(from, to, value);
             }
         }
