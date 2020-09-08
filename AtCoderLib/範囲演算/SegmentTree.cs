@@ -43,6 +43,7 @@ abstract class SegmentTreeAbstract<T> where T : struct
             tree[index] = Operate(tree[index * 2 + 1], tree[index * 2 + 2]);
         }
     }
+    public T this[int index] => tree[index + rootLength - 1];
 
     public T Slice(int from, int length) => Query(from, from + length);
     public T Query(int fromInclusive, int toExclusive)

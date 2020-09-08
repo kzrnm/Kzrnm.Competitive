@@ -31,16 +31,20 @@ namespace AtCoderLib.範囲演算
         public void MaxSeg()
         {
             var seg = new SegmentTree(10);
+            for (int i = 0; i < 10; i++) seg[i].Should().Be(0);
             seg[0..10].Should().Be(0);
             seg.Update(1, 10);
+            seg[1].Should().Be(10);
             seg[0..1].Should().Be(0);
             seg[2..10].Should().Be(0);
             seg[0..10].Should().Be(10);
             seg.Update(2, 7);
+            seg[2].Should().Be(7);
             seg[0..1].Should().Be(0);
             seg[2..10].Should().Be(7);
             seg[0..10].Should().Be(10);
             seg.Update(1, 1);
+            seg[1].Should().Be(1);
             seg[0..1].Should().Be(0);
             seg[2..10].Should().Be(7);
             seg[0..10].Should().Be(7);
@@ -75,16 +79,20 @@ namespace AtCoderLib.範囲演算
         public void SumSeg()
         {
             var seg = new SegmentTreeSum(10);
+            for (int i = 0; i < 10; i++) seg[i].Should().Be(0);
             seg[0..10].Should().Be(0);
             seg.Update(1, 10);
+            seg[1].Should().Be(10);
             seg[0..1].Should().Be(0);
             seg[2..10].Should().Be(0);
             seg[0..10].Should().Be(10);
             seg.Update(2, 7);
+            seg[2].Should().Be(7);
             seg[0..1].Should().Be(0);
             seg[2..10].Should().Be(7);
             seg[0..10].Should().Be(17);
             seg.Update(1, 1);
+            seg[1].Should().Be(1);
             seg[0..1].Should().Be(0);
             seg[2..10].Should().Be(7);
             seg[0..10].Should().Be(8);
