@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace AtCoder
+namespace AtCoder.GraphAcl
 {
     public class DSU
     {
@@ -23,22 +23,22 @@ namespace AtCoder
         }
 
         /// <summary>
-        /// 頂点 <paramref name="a"/> と頂点 <paramref name="b"/> を結ぶ辺を追加し、それらの代表元を返します。
+        /// 頂点 <paramref name="a"/> と頂点 <paramref name="b"/> を結ぶ辺がなければ追加します。追加されたかどうかを返します。
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="a"/>, <paramref name="b"/>&lt;n</para>
         /// <para>計算量: ならしO(a(n))</para>
         /// </remarks>
-        public int Merge(int a, int b)
+        public bool Merge(int a, int b)
         {
             Debug.Assert(0 <= a && a < Count);
             Debug.Assert(0 <= b && b < Count);
             int x = Leader(a), y = Leader(b);
-            if (x == y) return x;
+            if (x == y) return false;
             if (-ParentOrSize[x] < -ParentOrSize[y]) (x, y) = (y, x);
             ParentOrSize[x] += ParentOrSize[y];
             ParentOrSize[y] = x;
-            return x;
+            return true;
         }
 
         /// <summary>

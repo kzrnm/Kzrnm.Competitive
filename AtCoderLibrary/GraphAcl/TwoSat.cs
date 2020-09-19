@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace AtCoder
+namespace AtCoder.GraphAcl
 {
     /// <summary>
     /// 2-SATを解きます。 

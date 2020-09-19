@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace AtCoder
+namespace AtCoder.GraphAcl
 {
     /// <summary>
     /// 有向グラフを強連結成分分解します。

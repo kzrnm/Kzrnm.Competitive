@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace AtCoder
+namespace AtCoder.GraphAcl
 {
     public interface ICastOperator<TFrom, TTo>
         where TFrom : struct

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace AtCoder
+namespace AtCoder.GraphAcl
 {
     /// <summary>
     /// 最大フロー問題 を解くライブラリ(int版)です。
