@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
 
-namespace AtCoder
+namespace AtCoder.DataStructure
 {
     /// <summary>
     /// モノイドを定義するインターフェイスです。

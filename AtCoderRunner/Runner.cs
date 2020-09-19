@@ -26,7 +26,7 @@ namespace AtCoderRunner
             }
         }
 
-        static Regex doubleRegex = new Regex(@"^\d+\.\d+$", RegexOptions.IgnoreCase);
+        static readonly Regex doubleRegex = new Regex(@"^\d+\.\d+$", RegexOptions.IgnoreCase);
         [Theory(Timeout = 200)]
         [ClassData(typeof(ResouceSource))]
         public void FromSource(string input, string output)

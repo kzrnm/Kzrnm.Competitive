@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AtCoder.Algebra;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace AtCoder

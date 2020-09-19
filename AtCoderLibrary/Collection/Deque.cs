@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using AtCoder.Internal;
 using AtCoder.Util.Internal;
 
-namespace AtCoder.Stl
+namespace AtCoder.Collection
 {
 
     [System.Diagnostics.DebuggerTypeProxy(typeof(CollectionDebugView<>))]

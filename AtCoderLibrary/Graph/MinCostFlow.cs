@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AtCoder.Algebra;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -348,8 +349,10 @@ namespace AtCoder
             TCap flow = default;
             TCost cost = default;
             TCost prev_cost = costOp.Decrement(default); //-1
-            var result = new List<(TCap cap, TCost cost)>();
-            result.Add((flow, cost));
+            var result = new List<(TCap cap, TCost cost)>
+            {
+                (flow, cost)
+            };
             while (capOp.LessThan(flow, flowLimit))
             {
                 if (!DualRef()) break;

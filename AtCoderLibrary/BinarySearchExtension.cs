@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AtCoder.Stl
+namespace AtCoder
 {
     public static class BinarySearchExtension
     {
         public static int BinarySearch(int ok, int ng, Predicate<int> Ok)
         {
-            while (System.Math.Abs(ok - ng) > 1)
+            while (Math.Abs(ok - ng) > 1)
             {
                 var m = (ok + ng) >> 1;
                 if (Ok(m)) ok = m;

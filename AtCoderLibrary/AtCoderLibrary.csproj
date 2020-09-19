@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -6,9 +6,12 @@
     <OutputType>Library</OutputType>
     <LangVersion>8</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    
+    <NoWarn>1701;1702;CA1034;CA1036;CA1815</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AtCoderAnalyzer" Version="1.0.1" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
   </ItemGroup>
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using AtCoder.Internal;
@@ -7,6 +8,53 @@ namespace AtCoder
 {
     public static class MathLib
     {
+
+        /// <summary>
+        /// <paramref name="n"/> の約数を返します。
+        /// </summary>
+        public static IEnumerable<int> Divisor(int n)
+        {
+            var list = new List<int>();
+
+            for (int i = 1, d = Math.DivRem(n, i, out int amari);
+                i <= d;
+                i++, d = Math.DivRem(n, i, out amari))
+            {
+                if (amari == 0)
+                {
+                    yield return i;
+                    if (i != d)
+                        list.Add(d);
+                }
+            }
+
+            for (var i = list.Count - 1; i >= 0; i--)
+                yield return list[i];
+        }
+
+        /// <summary>
+        /// <paramref name="n"/> の約数を返します。
+        /// </summary>
+        public static IEnumerable<long> Divisor(long n)
+        {
+            var list = new List<long>();
+
+            for (long i = 1, d = Math.DivRem(n, i, out long amari);
+                i <= d;
+                i++, d = Math.DivRem(n, i, out amari))
+            {
+                if (amari == 0)
+                {
+                    yield return i;
+                    if (i != d)
+                        list.Add(d);
+                }
+            }
+
+            for (var i = list.Count - 1; i >= 0; i--)
+                yield return list[i];
+        }
+
         /// <summary>
         /// <paramref name="x"/>^<paramref name="n"/> mod <paramref name="m"/> を返します。
         /// </summary>
@@ -378,7 +426,7 @@ namespace AtCoder
                 return result;
             }
 
-            StaticModInt<TMod> TakeMod(ulong x) => StaticModInt<TMod>.Raw((int)(x % default(TMod).Mod));
+            static StaticModInt<TMod> TakeMod(ulong x) => StaticModInt<TMod>.Raw((int)(x % default(TMod).Mod));
         }
 
         /// <summary>
@@ -529,7 +577,7 @@ namespace AtCoder
             }
 
 
-            ulong[] Convolution<TMod>(ReadOnlySpan<long> a, ReadOnlySpan<long> b) where TMod : struct, IStaticMod
+            static ulong[] Convolution<TMod>(ReadOnlySpan<long> a, ReadOnlySpan<long> b) where TMod : struct, IStaticMod
             {
                 int z = 1 << Internal.InternalBit.CeilPow2(a.Length + b.Length - 1);
 

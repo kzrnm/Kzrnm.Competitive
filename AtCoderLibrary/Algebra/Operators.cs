@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AtCoder
+namespace AtCoder.Algebra
 {
 #pragma warning disable CA1815
     public interface IAddOperator<T>

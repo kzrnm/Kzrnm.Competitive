@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace AtCoder
+namespace AtCoder.DataStructure.String
 {
     public static partial class StringLib
     {

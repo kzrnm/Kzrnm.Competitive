@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AtCoder.Stl
+namespace AtCoder.Collection
 {
     [System.Diagnostics.DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class PriorityQueue<T>

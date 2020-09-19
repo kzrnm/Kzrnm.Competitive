@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -6,11 +7,11 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using AtCoder.Util.Internal;
 
-namespace AtCoder.Stl
+namespace AtCoder.Collection
 {
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class Set<T> : ICollection<T>, IReadOnlyCollection<T>
+    public class SetDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
     {
         /*
          * Original is SortedSet<T>
@@ -28,32 +29,32 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 ";
 
         public bool IsMulti { get; }
-        public T Min
+        public KeyValuePair<TKey, TValue> Min
         {
             get
             {
                 if (root == null) return default;
                 var cur = root;
                 while (cur.Left != null) { cur = cur.Left; }
-                return cur.Item;
+                return cur.Pair;
             }
         }
-        public T Max
+        public KeyValuePair<TKey, TValue> Max
         {
             get
             {
                 if (root == null) return default;
                 var cur = root;
                 while (cur.Right != null) { cur = cur.Right; }
-                return cur.Item;
+                return cur.Pair;
             }
         }
-        public Node FindNode(T item)
+        public Node FindNode(TKey key)
         {
             Node current = root;
             while (current != null)
             {
-                int order = comparer.Compare(item, current.Item);
+                int order = comparer.Compare(key, current.Key);
                 if (order == 0) return current;
                 current = order < 0 ? current.Left : current.Right;
             }
@@ -95,7 +96,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
             return current;
         }
-        public (Node node, int index) BinarySearch(T item, bool isLowerBound)
+        public (Node node, int index) BinarySearch(TKey key, bool isLowerBound)
         {
             Node right = null;
             Node current = root;
@@ -104,7 +105,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             int ci = NodeSize(current.Left);
             while (true)
             {
-                var order = comparer.Compare(item, current.Item);
+                var order = comparer.Compare(key, current.Key);
                 if (order < 0 || (isLowerBound && order == 0))
                 {
                     right = current;
@@ -124,53 +125,55 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
             return (right, ri);
         }
-        public Node FindNodeLowerBound(T item) => BinarySearch(item, true).node;
-        public Node FindNodeUpperBound(T item) => BinarySearch(item, false).node;
-        public T LowerBoundItem(T item) => BinarySearch(item, true).node.Item;
-        public T UpperBoundItem(T item) => BinarySearch(item, false).node.Item;
-        public int LowerBoundIndex(T item) => BinarySearch(item, true).index;
-        public int UpperBoundIndex(T item) => BinarySearch(item, false).index;
+        public Node FindNodeLowerBound(TKey key) => BinarySearch(key, true).node;
+        public Node FindNodeUpperBound(TKey key) => BinarySearch(key, false).node;
+        public KeyValuePair<TKey, TValue> LowerBoundItem(TKey key) => BinarySearch(key, true).node.Pair;
+        public KeyValuePair<TKey, TValue> UpperBoundItem(TKey key) => BinarySearch(key, false).node.Pair;
+        public int LowerBoundIndex(TKey key) => BinarySearch(key, true).index;
+        public int UpperBoundIndex(TKey key) => BinarySearch(key, false).index;
 
-        public IEnumerable<T> Reversed()
+        public IEnumerable<KeyValuePair<TKey, TValue>> Reversed()
         {
             var e = new Enumerator(this, true, null);
             while (e.MoveNext()) yield return e.Current;
         }
-        public IEnumerable<T> Enumerate(Node from) => Enumerate(from, false);
-        public IEnumerable<T> Enumerate(Node from, bool reverse)
+        public IEnumerable<KeyValuePair<TKey, TValue>> Enumerate(Node from) => Enumerate(from, false);
+        public IEnumerable<KeyValuePair<TKey, TValue>> Enumerate(Node from, bool reverse)
         {
             if (from == null) yield break;
             var e = new Enumerator(this, reverse, from);
             while (e.MoveNext()) yield return e.Current;
         }
 
-        public Set(bool isMulti = false) : this(Comparer<T>.Default, isMulti) { }
-        public Set(IEnumerable<T> collection, bool isMulti = false) : this(collection, Comparer<T>.Default, isMulti) { }
-        public Set(IComparer<T> comparer, bool isMulti = false)
+        public SetDictionary(bool isMulti = false) : this(Comparer<TKey>.Default, isMulti) { }
+        public SetDictionary(IDictionary<TKey, TValue> dict, bool isMulti = false) : this(dict, Comparer<TKey>.Default, isMulti) { }
+        public SetDictionary(IComparer<TKey> comparer, bool isMulti = false)
         {
             this.comparer = comparer;
-            this.IsMulti = isMulti;
+            IsMulti = isMulti;
         }
-        public Set(IEnumerable<T> collection, IComparer<T> comparer, bool isMulti = false)
+        public SetDictionary(IDictionary<TKey, TValue> dict, IComparer<TKey> comparer, bool isMulti = false)
         {
-            this.comparer = comparer; var arr = InitArray(collection);
-            this.root = ConstructRootFromSortedArray(arr, 0, arr.Length - 1, null);
-            this.IsMulti = isMulti;
+            this.comparer = comparer;
+            var arr = InitArray(dict);
+            root = ConstructRootFromSortedArray(arr, 0, arr.Length - 1, null);
+            IsMulti = isMulti;
         }
-        protected T[] InitArray(IEnumerable<T> collection)
+        protected KeyValuePair<TKey, TValue>[] InitArray(IEnumerable<KeyValuePair<TKey, TValue>> collection)
         {
-            T[] arr;
-            if (this.IsMulti)
+            var comparer = Comparer<KeyValuePair<TKey, TValue>>.Create((a, b) => this.comparer.Compare(a.Key, b.Key));
+            KeyValuePair<TKey, TValue>[] arr;
+            if (IsMulti)
             {
                 arr = collection.ToArray();
-                Array.Sort(arr, this.comparer);
+                Array.Sort(arr, comparer);
             }
             else
             {
-                var list = new List<T>(collection);
-                list.Sort(this.comparer);
+                var list = new List<KeyValuePair<TKey, TValue>>(collection);
+                list.Sort(comparer);
                 for (int i = list.Count - 1; i > 0; i--)
-                    if (this.comparer.Compare(list[i - 1], list[i]) == 0)
+                    if (this.comparer.Compare(list[i - 1].Key, list[i].Key) == 0)
                         list.RemoveAt(i);
                 arr = list.ToArray();
             }
@@ -179,12 +182,18 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 
         public int Count => NodeSize(root);
         protected static int NodeSize(Node node) => node == null ? 0 : node.Size;
-        protected readonly IComparer<T> comparer;
-        bool ICollection<T>.IsReadOnly => false;
+        protected readonly IComparer<TKey> comparer;
+        bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => false;
+        ICollection<TKey> IDictionary<TKey, TValue>.Keys => throw new NotSupportedException();
+        ICollection<TValue> IDictionary<TKey, TValue>.Values => throw new NotSupportedException();
+        IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => throw new NotSupportedException();
+        IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values => throw new NotSupportedException();
+        public TValue this[TKey key] { get => throw new NotSupportedException(); set => throw new NotSupportedException(); }
+
 
         Node root;
 
-        static Node ConstructRootFromSortedArray(T[] arr, int startIndex, int endIndex, Node redNode)
+        static Node ConstructRootFromSortedArray(KeyValuePair<TKey, TValue>[] arr, int startIndex, int endIndex, Node redNode)
         {
             int size = endIndex - startIndex + 1;
             Node root;
@@ -234,12 +243,14 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
             return root;
         }
-        void ICollection<T>.Add(T item) => this.Add(item);
-        public bool Add(T item)
+
+        void IDictionary<TKey, TValue>.Add(TKey key, TValue value) => Add(key, value);
+        void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> pair) => Add(pair.Key, pair.Value);
+        public bool Add(TKey key, TValue value)
         {
             if (root == null)
             {
-                root = new Node(item, false);
+                root = new Node(key, value, false);
                 return true;
             }
             Node current = root;
@@ -249,10 +260,10 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             int order = 0;
             while (current != null)
             {
-                order = comparer.Compare(item, current.Item);
-                if (order == 0 && !this.IsMulti)
+                order = comparer.Compare(key, current.Key);
+                if (order == 0 && !IsMulti)
                 {
-                    current.Item = item;
+                    current.Key = key;
                     root.IsRed = false;
                     return false;
                 }
@@ -269,14 +280,14 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 parent = current;
                 current = (order < 0) ? current.Left : current.Right;
             }
-            Node node = new Node(item, true);
+            Node node = new Node(key, value, true);
             if (order >= 0) parent.Right = node;
             else parent.Left = node;
             if (parent.IsRed) InsertionBalance(node, ref parent, grandParent, greatGrandParent);
             root.IsRed = false;
             return true;
         }
-        public bool Remove(T item)
+        public bool Remove(TKey key)
         {
             if (root == null) return false;
             Node current = root;
@@ -327,8 +338,80 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                         }
                     }
                 }
-                int order = foundMatch ? -1 : comparer.Compare(item, current.Item);
+                int order = foundMatch ? -1 : comparer.Compare(key, current.Key);
                 if (order == 0)
+                {
+                    foundMatch = true;
+                    match = current;
+                    parentOfMatch = parent;
+                }
+                grandParent = parent;
+                parent = current;
+                current = order < 0 ? current.Left : current.Right;
+            }
+            if (match != null)
+            {
+                ReplaceNode(match, parentOfMatch, parent, grandParent);
+            }
+            if (root != null)
+            {
+                root.IsRed = false;
+            }
+            return foundMatch;
+        }
+        bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> pair)
+        {
+            if (root == null) return false;
+            Node current = root;
+            Node parent = null;
+            Node grandParent = null;
+            Node match = null;
+            Node parentOfMatch = null;
+            bool foundMatch = false;
+            while (current != null)
+            {
+                if (Is2Node(current))
+                {
+                    if (parent == null)
+                    {
+                        current.IsRed = true;
+                    }
+                    else
+                    {
+                        Node sibling = GetSibling(current, parent);
+                        if (sibling.IsRed)
+                        {
+                            if (parent.Right == sibling) RotateLeft(parent);
+                            else RotateRight(parent);
+
+                            parent.IsRed = true;
+                            sibling.IsRed = false;
+                            ReplaceChildOrRoot(grandParent, parent, sibling);
+                            grandParent = sibling;
+                            if (parent == match) parentOfMatch = sibling;
+                            sibling = (parent.Left == current) ? parent.Right : parent.Left;
+                        }
+                        if (Is2Node(sibling))
+                        {
+                            Merge2Nodes(parent);
+                        }
+                        else
+                        {
+                            TreeRotation rotation = GetRotation(parent, current, sibling);
+                            Node newGrandParent = Rotate(parent, rotation);
+                            newGrandParent.IsRed = parent.IsRed;
+                            parent.IsRed = false;
+                            current.IsRed = true;
+                            ReplaceChildOrRoot(grandParent, parent, newGrandParent);
+                            if (parent == match)
+                            {
+                                parentOfMatch = newGrandParent;
+                            }
+                        }
+                    }
+                }
+                int order = foundMatch ? -1 : comparer.Compare(pair.Key, current.Key);
+                if (order == 0 && EqualityComparer<TValue>.Default.Equals(pair.Value, current.Value))
                 {
                     foundMatch = true;
                     match = current;
@@ -352,15 +435,37 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         {
             root = null;
         }
-        public bool Contains(T item) => FindNode(item) != null;
-        public void CopyTo(T[] array, int arrayIndex)
+        public bool ContainsKey(TKey key) => FindNode(key) != null;
+        bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> pair)
+        {
+            var node = FindNodeLowerBound(pair.Key);
+            if (node == null) return false;
+            var e = new Enumerator(this, false, node);
+            while (e.MoveNext())
+            {
+                if (comparer.Compare(pair.Key, e.Current.Key) != 0) break;
+                if (EqualityComparer<TValue>.Default.Equals(pair.Value, e.Current.Value)) return true;
+            }
+            return false;
+        }
+        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
             foreach (var item in this) array[arrayIndex++] = item;
         }
-
+        public bool TryGetValue(TKey key, out TValue value)
+        {
+            var node = FindNode(key);
+            if (node == null)
+            {
+                value = default;
+                return false;
+            }
+            value = node.Value;
+            return true;
+        }
         public Enumerator GetEnumerator() => new Enumerator(this);
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() => new Enumerator(this);
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => new Enumerator(this);
+        IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator() => new Enumerator(this);
+        IEnumerator IEnumerable.GetEnumerator() => new Enumerator(this);
 
         #region private
         static bool Is2Node(Node node) => IsNonNullBlack(node) && IsNullOrBlack(node.Left) && IsNullOrBlack(node.Right); static bool Is4Node(Node node) => IsNonNullRed(node.Left) && IsNonNullRed(node.Right);
@@ -520,17 +625,16 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         }
         #endregion private
 
-        public struct Enumerator : IEnumerator<T>
+        public struct Enumerator : IEnumerator<KeyValuePair<TKey, TValue>>
         {
 
-            Set<T> tree;
-
-            Stack<Node> stack;
+            readonly SetDictionary<TKey, TValue> tree;
+            readonly Stack<Node> stack;
             Node current;
 
-            bool reverse;
-            internal Enumerator(Set<T> set) : this(set, false, null) { }
-            internal Enumerator(Set<T> set, bool reverse, Node startNode)
+            readonly bool reverse;
+            internal Enumerator(SetDictionary<TKey, TValue> set) : this(set, false, null) { }
+            internal Enumerator(SetDictionary<TKey, TValue> set, bool reverse, Node startNode)
             {
                 tree = set;
                 stack = new Stack<Node>(2 * Log2(tree.Count + 1));
@@ -575,7 +679,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                     }
                     while (node != null)
                     {
-                        if (comparer.Compare(startNode.Item, node.Item) >= 0)
+                        if (comparer.Compare(startNode.Key, node.Key) >= 0)
                             list.Add(node);
                         node = node.Parent;
                     }
@@ -597,7 +701,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                     }
                     while (node != null)
                     {
-                        if (comparer.Compare(startNode.Item, node.Item) <= 0)
+                        if (comparer.Compare(startNode.Key, node.Key) <= 0)
                             list.Add(node);
                         node = node.Parent;
                     }
@@ -608,7 +712,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             static int Log2(int num) => BitOperations.Log2((uint)num) + 1;
-            public T Current => current == null ? default : current.Item;
+            public KeyValuePair<TKey, TValue> Current => current == null ? default : current.Pair;
 
             public bool MoveNext()
             {
@@ -627,7 +731,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 return true;
             }
 
-            object System.Collections.IEnumerator.Current => this.Current;
+            object IEnumerator.Current => Current;
             public void Dispose() { }
             public void Reset() => throw new NotSupportedException();
 
@@ -635,7 +739,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         public class Node
         {
             public bool IsRed;
-            public T Item;
+            public TKey Key;
+            public TValue Value;
+            public KeyValuePair<TKey, TValue> Pair => KeyValuePair.Create(Key, Value);
             public Node Parent
             {
                 get; private set;
@@ -687,20 +793,28 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             {
                 get; private set;
             } = 1;
-            public Node(T item, bool isRed)
+            public Node(KeyValuePair<TKey, TValue> pair, bool isRed)
             {
-                this.Item = item; this.IsRed = isRed;
+                Key = pair.Key;
+                Value = pair.Value;
+                IsRed = isRed;
+            }
+            public Node(TKey key, TValue value, bool isRed)
+            {
+                Key = key;
+                Value = value;
+                IsRed = isRed;
             }
             public bool UpdateSize()
             {
-                var oldsize = this.Size;
+                var oldsize = Size;
                 var size = 1;
                 if (Left != null) size += Left.Size;
                 if (Right != null) size += Right.Size;
-                this.Size = size;
+                Size = size;
                 return oldsize != size;
             }
-            public override string ToString() => $"Size = {Size}, Item = {Item}";
+            public override string ToString() => $"Size = {Size}, Item = {Key}";
         }
         enum TreeRotation : byte
         {

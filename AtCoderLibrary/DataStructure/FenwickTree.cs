@@ -1,8 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using AtCoder.Algebra;
 using AtCoder.Internal;
 
-namespace AtCoder
+namespace AtCoder.DataStructure
 {
 
     /// <summary>

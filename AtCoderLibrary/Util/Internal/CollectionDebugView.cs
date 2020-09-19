@@ -7,7 +7,7 @@ namespace AtCoder.Util.Internal
 {
     internal class CollectionDebugView<T>
     {
-        private IEnumerable<T> collection;
+        private readonly IEnumerable<T> collection;
         public CollectionDebugView(IEnumerable<T> collection)
         {
             this.collection = collection ?? throw new ArgumentNullException(nameof(collection));
