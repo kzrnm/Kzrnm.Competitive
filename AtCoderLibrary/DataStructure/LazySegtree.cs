@@ -56,6 +56,7 @@ namespace AtCoder.DataStructure
         /// 数列 a の長さ n を返します。
         /// </summary>
         public int Length { get; }
+        public TValue Slice(int from, int length) => Prod(from, from + length);
 
         private readonly int log;
         private readonly int size;

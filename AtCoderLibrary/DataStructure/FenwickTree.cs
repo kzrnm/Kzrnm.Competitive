@@ -96,7 +96,14 @@ namespace AtCoder.DataStructure
         where TOp : IAddOperator<TValue>, ISubtractOperator<TValue>
     {
         private static readonly TOp op = default;
-        private readonly TValue[] data;
+        internal readonly TValue[] data;
+
+
+        /// <summary>
+        /// 数列 a の長さ n を返します。
+        /// </summary>
+        public int Length { get; }
+        public TValue Slice(int from, int length) => Sum(from, from + length);
 
         /// <summary>
         /// 長さ <paramref name="n"/> の配列aを持つ <see cref="FenwickTree{TValue, TOp}"/> クラスの新しいインスタンスを作ります。
@@ -109,6 +116,7 @@ namespace AtCoder.DataStructure
         public FenwickTree(int n)
         {
             Debug.Assert(unchecked((uint)n <= 100_000_000));
+            Length = n;
             data = new TValue[n + 1];
         }
 
@@ -145,7 +153,7 @@ namespace AtCoder.DataStructure
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private TValue Sum(int r)
+        public TValue Sum(int r)
         {
             TValue s = default;
             for (; r > 0; r -= InternalBit.ExtractLowestSetBit(r))
@@ -154,7 +162,6 @@ namespace AtCoder.DataStructure
             }
             return s;
         }
-
 
         [DebuggerDisplay("Value = {" + nameof(value) + "}, Sum = {" + nameof(sum) + "}")]
         internal struct DebugItem
