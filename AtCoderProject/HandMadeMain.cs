@@ -1,4 +1,6 @@
-﻿using AtCoder.IO;
+using AtCoder;
+using AtCoder.Expand;
+using AtCoder.IO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +8,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AtCoderProject.Runner
 {
@@ -20,11 +24,19 @@ namespace AtCoderProject.Runner
 
             };
 
-
             return sb;
         }
+        static bool toClipboard = false;
         static void Main(string[] args)
         {
+            if (args.Length == 1 && args[0] == "expand")
+            {
+                Console.WriteLine(ExpandCode());
+                return;
+            }
+
+            var task = ExpandTask();
+
             var sb = Build();
 
             var fileInput = LoadInput();
@@ -51,6 +63,7 @@ namespace AtCoderProject.Runner
             var stopwatch = Stopwatch.StartNew();
             new Program(reader, writer).Run();
             Trace.WriteLine($"---end({stopwatch.ElapsedMilliseconds}ms)---");
+            task.Wait();
         }
         static string LoadInput()
         {
@@ -59,6 +72,26 @@ namespace AtCoderProject.Runner
             using var sr = new StreamReader(stream);
             return sr.ReadToEnd().Trim();
         }
+
+        static Task ExpandTask([CallerFilePath] string path = null)
+            => Task.Run(() =>
+            {
+                var inpath = path.Replace("HandMadeMain.cs", "Program.cs");
+                var outpath = path.Replace("HandMadeMain.cs", "Combined.csx");
+                Expander.Expand(inpath, outpath, checkLastWriteTime: true, expandMethod: ExpandMethod.Strict);
+                if (toClipboard)
+                {
+                    var psi = new ProcessStartInfo("cmd.exe", $"/c \"type {outpath} | clip\"")
+                    {
+                        CreateNoWindow = false,
+                    };
+                    Process.Start(psi);
+                }
+            });
+
+        static string ExpandCode([CallerFilePath] string path = null)
+            => CodeExpander.Expand(File.ReadAllText(path.Replace("HandMadeMain.cs", "Program.cs")), expandMethod: ExpandMethod.Strict);
+
     }
     class MyStringBuilder : IEnumerable
     {

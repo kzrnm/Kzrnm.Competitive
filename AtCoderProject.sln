@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AtCoderProject", "AtCoderPr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AtCoderRunner", "AtCoderRunner\AtCoderRunner.csproj", "{E0B3F1BE-5E29-4597-B1EB-E997043FF86C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtCoderLibrary", "AtCoderLibrary\AtCoderLibrary.csproj", "{A15C8364-A80E-4D65-99D1-6A6BD79D40FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AtCoderLibrary", "AtCoderLibrary\AtCoderLibrary.csproj", "{A15C8364-A80E-4D65-99D1-6A6BD79D40FB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7F7E6A99-AA2D-4730-9BB4-32AF88F3BF06}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
