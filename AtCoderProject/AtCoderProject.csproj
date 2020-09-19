@@ -19,7 +19,19 @@
 
   <ItemGroup>
     <PackageReference Include="AtCoderAnalyzer" Version="1.0.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.0.0" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AtCoderLibrary\AtCoderLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="AtCoder.Expander">
+      <HintPath>..\AtCoder.Expander.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 
 </Project>

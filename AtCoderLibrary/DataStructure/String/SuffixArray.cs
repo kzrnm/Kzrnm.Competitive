@@ -15,6 +15,7 @@ namespace AtCoder.DataStructure.String
         public static SuffixArray Create<T>(T[] str) where T : IComparable<T> => new SuffixArray(Global.Compressed(str));
         public SuffixArray(int[] S)
         {
+            this.S = S;
             N = S.Length;
             SA = Sais(S, S.Max());
             rank = new int[N + 1];
