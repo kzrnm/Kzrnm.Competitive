@@ -40,7 +40,7 @@ jobs:
         with:
           dotnet-version: 3.1
       - name: Expand
-        run: dotnet run -v normal --project SourceCodeEmbeder/SourceCodeEmbeder.csproj AtCoderLibrary/
+        run: dotnet run -v normal --project tools/SourceCodeEmbeder/SourceCodeEmbeder.csproj AtCoderLibrary/
         timeout-minutes: 2
       - name: Git Auto Commit
         uses: stefanzweifel/git-auto-commit-action@v4.5.1
