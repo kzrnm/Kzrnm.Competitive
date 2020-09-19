@@ -5,8 +5,8 @@ namespace AtCoder.GraphAcl
 {
     public class DSU
     {
-        private int Count;
-        private int[] ParentOrSize;
+        public int Count { get; }
+        private readonly int[] ParentOrSize;
 
         /// <summary>
         /// <see cref="DSU"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺のグラフとして初期化します。
