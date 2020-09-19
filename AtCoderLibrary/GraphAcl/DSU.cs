@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace AtCoder.GraphAcl
@@ -91,31 +92,28 @@ namespace AtCoder.GraphAcl
         /// </summary>
         /// <para>計算量: O(n)</para>
         /// <returns>「一つの連結成分の頂点番号のリスト」のリスト。</returns>
-        public Span<int[]> Groups()
+        public int[][] Groups()
         {
             int[] leaderBuf = new int[Count];
             int[] id = new int[Count];
-            Span<int[]> result = new int[Count][];
+            var result = new List<int[]>(Count);
             int groupCount = 0;
             for (int i = 0; i < leaderBuf.Length; i++)
             {
                 leaderBuf[i] = Leader(i);
                 if (i == leaderBuf[i])
                 {
-                    id[i] = groupCount;
-                    result[id[i]] = new int[-ParentOrSize[i]];
-                    groupCount++;
+                    id[i] = groupCount++;
+                    result.Add(new int[-ParentOrSize[i]]);
                 }
             }
             int[] ind = new int[groupCount];
-            result = result.Slice(0, groupCount);
             for (int i = 0; i < leaderBuf.Length; i++)
             {
                 var leaderID = id[leaderBuf[i]];
-                result[leaderID][ind[leaderID]] = i;
-                ind[leaderID]++;
+                result[leaderID][ind[leaderID]++] = i;
             }
-            return result;
+            return result.ToArray();
         }
     }
 }

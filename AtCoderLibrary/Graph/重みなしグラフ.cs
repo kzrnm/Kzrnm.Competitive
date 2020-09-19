@@ -133,13 +133,7 @@ namespace AtCoder.Graph
         public readonly int[] children;
 
         public override string ToString() => $"children: {string.Join(",", children)}";
-        public override bool Equals(object obj)
-        {
-            if (obj is Node)
-                return this.Equals((Node)obj);
-            else
-                return false;
-        }
+        public override bool Equals(object obj) => obj is Node d && this.Equals(d);
         public bool Equals(Node other) => this.index == other.index;
         public override int GetHashCode() => this.index;
     }
