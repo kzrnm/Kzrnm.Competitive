@@ -322,7 +322,7 @@ namespace AtCoder.DataStructure
         /// <description>l = <paramref name="r"/> もしくは <paramref name="g"/>(op(a[l], a[l + 1], ..., a[<paramref name="r"/> - 1])) = true</description>
         /// </item>
         /// <item>
-        /// <description>l = 0 もしくは <paramref name="g"/>(op(a[l - 1], a[l], ..., a[<paramref name="r"/> - 1])) = false</description>
+        /// <description>l = -1 もしくは <paramref name="g"/>(op(a[l - 1], a[l], ..., a[<paramref name="r"/> - 1])) = false</description>
         /// </item>
         /// </list>
         /// <para><paramref name="g"/> が単調だとすれば、<paramref name="g"/>(op(a[l], a[l + 1], ..., a[<paramref name="r"/> - 1])) = true となる最小の l、と解釈することが可能です。</para>
@@ -370,7 +370,7 @@ namespace AtCoder.DataStructure
                 }
                 sm = op.Operate(d[r], sm);
             } while ((r & -r) != r);
-            return 0;
+            return -1;
         }
 
 
