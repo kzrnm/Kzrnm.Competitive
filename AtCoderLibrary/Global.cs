@@ -147,6 +147,17 @@ namespace AtCoder
                 zip[ox[i]] = i;
             return zip;
         }
+        public static int[] Compressed<T>(T[] orig) where T : IComparable<T>
+        {
+            static int[] Compressed(T[] orig, Dictionary<T, int> zip)
+            {
+                var res = new int[orig.Length];
+                for (int i = 0; i < res.Length; i++)
+                    res[i] = zip[orig[i]];
+                return res;
+            }
+            return Compressed(orig, Compress(orig));
+        }
 
         public static IEnumerable<T[]> NextPermutation<T>(IEnumerable<T> orig) where T : IComparable<T>
         {

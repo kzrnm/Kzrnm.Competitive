@@ -1,405 +1,163 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace AtCoder.DataStructure.String
 {
-    public static partial class StringLib
+    public class SuffixArray
     {
-        /// <summary>
-        /// 列 <paramref name="m"/> の Suffix Array として、長さ |<paramref name="m"/>| の配列を返す。
-        /// </summary>
-        /// <remarks>
-        /// <para>Suffix Array sa は (0,1,…,n−1) の順列であって、i=0,1,⋯,n−2 について s[sa[i]..n)&lt;s[sa[i+1]..n) を満たすもの。</para>
-        /// <para>制約: 0≤|<paramref name="m"/>|&lt;10^8</para>
-        /// <para>計算量: 時間O(|<paramref name="m"/>|log|<paramref name="m"/>|), 空間O(|<paramref name="m"/>|)</para>
-        /// </remarks>
-        private static int[] SuffixArray<T>(ReadOnlyMemory<T> m)
+        readonly int N;
+        readonly int[] S;
+        readonly int[] SA;
+        readonly int[] rank;
+        SparseTableRMQ rmq;
+        public static SuffixArray Create<T>(IEnumerable<T> str) where T : IComparable<T> => new SuffixArray(Global.Compressed(str.ToArray()));
+        public static SuffixArray Create<T>(T[] str) where T : IComparable<T> => new SuffixArray(Global.Compressed(str));
+        public SuffixArray(int[] S)
         {
-            var s = m.Span;
-            var n = m.Length;
-            var idx = Enumerable.Range(0, n).ToArray();
-            Array.Sort(idx, Compare);
-            var s2 = new int[n];
-            var now = 0;
+            N = S.Length;
+            SA = Sais(S, S.Max());
+            rank = new int[N + 1];
+            for (int i = 0; i <= N; i++) rank[SA[i]] = i;
+            BuildLCP();
+        }
 
-            // 座標圧縮
-            for (int i = 0; i < idx.Length; i++)
+        static void CreateBeginBucket(int[] v, int[] b)
+        {
+            for (int i = 0; i < b.Length; i++) b[i] = 0;
+            for (int i = 0; i < v.Length; i++) b[v[i]]++;
+            int sum = 0;
+            for (int i = 0; i < b.Length; i++) { b[i] += sum; var tmp = b[i]; b[i] = sum; sum = tmp; }
+        }
+        static void CreateEndBucket(int[] v, int[] b)
+        {
+            for (int i = 0; i < b.Length; i++) b[i] = 0;
+            for (int i = 0; i < v.Length; i++) b[v[i]]++;
+            for (int i = 1; i < b.Length; i++) b[i] += b[i - 1];
+        }
+        static void InducedSort(int[] v, int[] sa, int[] b, bool[] isl)
+        {
+            CreateBeginBucket(v, b);
+            for (int i = 0; i < v.Length; i++) if (sa[i] > 0 && isl[sa[i] - 1]) sa[b[v[sa[i] - 1]]++] = sa[i] - 1;
+        }
+        static void InvertInducedSort(int[] v, int[] sa, int[] b, bool[] isl)
+        {
+            CreateEndBucket(v, b);
+            for (int i = v.Length - 1; i >= 0; i--)
+                if (sa[i] > 0 && !isl[sa[i] - 1]) sa[--b[v[sa[i] - 1]]] = sa[i] - 1;
+        }
+        static int[] Sais(int[] v, int mv)
+        {
+            if (v.Length == 1) return new int[] { 0 };
+            var isl = new bool[v.Length];
+            var b = new int[mv + 1];
+            var sa = new int[v.Length];
+            for (int i = 0; i < v.Length; i++)
+                sa[i] = -1;
+            for (int i = v.Length - 2; i >= 0; i--)
+                isl[i] = v[i] > v[i + 1] || (v[i] == v[i + 1] && isl[i + 1]);
+            CreateEndBucket(v, b);
+            for (int i = 0; i < v.Length; i++) if (IsLMS(i, isl)) sa[--b[v[i]]] = i;
+            InducedSort(v, sa, b, isl);
+            InvertInducedSort(v, sa, b, isl);
+
+
+            var cur = 0;
+            var ord = new int[v.Length];
+            for (int i = 0; i < v.Length; i++) if (IsLMS(i, isl)) ord[i] = cur++;
+            var next = new int[cur];
+            cur = -1;
+            int prev = -1;
+            for (int i = 0; i < v.Length; i++)
             {
-                if (i > 0 && !EqualityComparer<T>.Default.Equals(s[idx[i - 1]], s[idx[i]]))
+                if (!IsLMS(sa[i], isl)) continue;
+                var diff = false;
+                for (int d = 0; d < v.Length; d++)
                 {
-                    now++;
-                }
-                s2[idx[i]] = now;
-            }
-
-            return SAIS(s2, now);
-
-            int Compare(int l, int r)
-            {
-                var s = m.Span;
-                return Comparer<T>.Default.Compare(s[l], s[r]);
-            }
-        }
-
-        /// <summary>
-        /// 文字列 <paramref name="s"/> の Suffix Array として、長さ |<paramref name="s"/>| の配列を返す。
-        /// </summary>
-        /// <remarks>
-        /// <para>Suffix Array sa は (0,1,…,n−1) の順列であって、i=0,1,⋯,n−2 について s[sa[i]..n)&lt;s[sa[i+1]..n) を満たすもの。</para>
-        /// <para>制約: 0≤|<paramref name="s"/>|&lt;10^8</para>
-        /// <para>計算量: O(|<paramref name="s"/>|)</para>
-        /// </remarks>
-        public static int[] SuffixArray(string s)
-        {
-            var n = s.Length;
-            int[] s2 = s.Select(c => (int)c).ToArray();
-            return SAIS(s2, char.MaxValue);
-        }
-
-
-        /// <summary>
-        /// 数列 <paramref name="s"/> の Suffix Array として、長さ |<paramref name="s"/>| の配列を返す。
-        /// </summary>
-        /// <remarks>
-        /// <para>Suffix Array sa は (0,1,…,n−1) の順列であって、i=0,1,⋯,n−2 について s[sa[i]..n)&lt;s[sa[i+1]..n) を満たすもの。</para>
-        /// <para>制約: 0≤|<paramref name="s"/>|&lt;10^8</para>
-        /// <para>計算量: 時間O(|<paramref name="s"/>|log|<paramref name="s"/>|), 空間O(|<paramref name="s"/>|)</para>
-        /// </remarks>
-        public static int[] SuffixArray<T>(T[] s) => SuffixArray<T>(s.AsMemory());
-
-        /// <summary>
-        /// 数列 <paramref name="s"/> の Suffix Array として、長さ |<paramref name="s"/>| の配列を返す。
-        /// </summary>
-        /// <remarks>
-        /// <para>Suffix Array sa は (0,1,…,n−1) の順列であって、i=0,1,⋯,n−2 について s[sa[i]..n)&lt;s[sa[i+1]..n) を満たすもの。</para>
-        /// <para>制約: 0≤|<paramref name="s"/>|&lt;10^8, <paramref name="s"/> のすべての要素 x について 0≤x≤<paramref name="upper"/></para>
-        /// <para>計算量: O(|<paramref name="s"/>|+<paramref name="upper"/>)</para>
-        /// </remarks>
-        public static int[] SuffixArray(int[] s, int upper)
-        {
-            Debug.Assert(0 <= upper);
-            foreach (var si in s)
-            {
-                Debug.Assert(unchecked((uint)si) <= upper);
-            }
-            return SAIS(s, upper);
-        }
-
-
-        /// <summary>
-        /// 数列 <paramref name="sm"/> の Suffix Array をナイーブな文字列比較により求め、長さ |<paramref name="sm"/>| の配列として返す。
-        /// </summary>
-        /// <remarks>
-        /// <para>Suffix Array sa は (0,1,…,n−1) の順列であって、i=0,1,⋯,n−2 について s[sa[i]..n)&lt;s[sa[i+1]..n) を満たすもの。</para>
-        /// <para>制約: 0≤|<paramref name="sm"/>|&lt;10^8</para>
-        /// <para>計算量: 時間O(|<paramref name="sm"/>|^2 log|<paramref name="sm"/>|), 空間O(|<paramref name="sm"/>|)</para>
-        /// </remarks>
-        private static int[] SANaive(ReadOnlyMemory<int> sm)
-        {
-            var n = sm.Length;
-            var sa = Enumerable.Range(0, n).ToArray();
-            Array.Sort(sa, Compare);
-            return sa;
-
-            int Compare(int l, int r)
-            {
-                // l == r にはなり得ない
-                var s = sm.Span;
-                while (l < s.Length && r < s.Length)
-                {
-                    if (s[l] != s[r])
+                    if (prev == -1 || v[sa[i] + d] != v[prev + d] || isl[sa[i] + d] != isl[prev + d])
                     {
-                        return s[l] - s[r];
+                        diff = true; break;
                     }
-                    l++;
-                    r++;
+                    else if (d > 0 && IsLMS(sa[i] + d, isl)) break;
                 }
-
-                return r - l;
+                if (diff) { cur++; prev = sa[i]; }
+                next[ord[sa[i]]] = cur;
             }
-        }
-
-        /// <summary>
-        /// 数列 <paramref name="sm"/> の Suffix Array をダブリングにより求め、長さ |<paramref name="sm"/>| の配列として返す。
-        /// </summary>
-        /// <remarks>
-        /// <para>Suffix Array sa は (0,1,…,n−1) の順列であって、i=0,1,⋯,n−2 について s[sa[i]..n)&lt;s[sa[i+1]..n) を満たすもの。</para>
-        /// <para>制約: 0≤|<paramref name="sm"/>|&lt;10^8</para>
-        /// <para>計算量: 時間O(|<paramref name="sm"/>|(log|<paramref name="sm"/>|)^2), 空間O(|<paramref name="sm"/>|)</para>
-        /// </remarks>
-        private static int[] SADoubling(ReadOnlyMemory<int> sm)
-        {
-            var s = sm.Span;
-            var n = s.Length;
-            var sa = Enumerable.Range(0, n).ToArray();
-            var rnk = new int[n];
-            var tmp = new int[n];
-            s.CopyTo(rnk);
-
-            for (int k = 1; k < n; k <<= 1)
-            {
-                Array.Sort(sa, Compare);
-                tmp[sa[0]] = 0;
-                for (int i = 1; i < sa.Length; i++)
-                {
-                    tmp[sa[i]] = tmp[sa[i - 1]] + (Compare(sa[i - 1], sa[i]) < 0 ? 1 : 0);
-                }
-                (tmp, rnk) = (rnk, tmp);
-
-                int Compare(int x, int y)
-                {
-                    if (rnk[x] != rnk[y])
-                    {
-                        return rnk[x] - rnk[y];
-                    }
-
-                    int rx = x + k < n ? rnk[x + k] : -1;
-                    int ry = y + k < n ? rnk[y + k] : -1;
-
-                    return rx - ry;
-                }
-            }
-
+            var reord = new int[next.Length];
+            for (int i = 0; i < v.Length; i++) if (IsLMS(i, isl)) reord[ord[i]] = i;
+            var nextsa = Sais(next, cur);
+            CreateEndBucket(v, b);
+            for (int i = 0; i < sa.Length; i++) sa[i] = -1;
+            for (int i = nextsa.Length - 1; i >= 0; i--) sa[--b[v[reord[nextsa[i]]]]] = reord[nextsa[i]];
+            InducedSort(v, sa, b, isl);
+            InvertInducedSort(v, sa, b, isl);
             return sa;
         }
+        static bool IsLMS(int x, bool[] isl) { return x > 0 && isl[x - 1] && !isl[x]; }
 
-        /// <summary>
-        /// 数列 <paramref name="sm"/> の Suffix Array を SA-IS 等により求め、長さ |<paramref name="sm"/>| の配列を返す。
-        /// </summary>
-        /// <remarks>
-        /// <para>Suffix Array sa は (0,1,…,n−1) の順列であって、i=0,1,⋯,n−2 について s[sa[i]..n)&lt;s[sa[i+1]..n) を満たすもの。</para>
-        /// <para>制約: 0≤|<paramref name="sm"/>|&lt;10^8</para>
-        /// <para>計算量: O(|<paramref name="sm"/>|)</para>
-        /// </remarks>
-        private static int[] SAIS(ReadOnlyMemory<int> sm, int upper) => SAIS(sm, upper, 10, 40);
-
-        /// <summary>
-        /// 数列 <paramref name="sm"/> の Suffix Array を SA-IS 等により求め、長さ |<paramref name="sm"/>| の配列を返す。
-        /// </summary>
-        /// <remarks>
-        /// <para>Suffix Array sa は (0,1,…,n−1) の順列であって、i=0,1,⋯,n−2 について s[sa[i]..n)&lt;s[sa[i+1]..n) を満たすもの。</para>
-        /// <para>制約: 0≤|<paramref name="sm"/>|&lt;10^8</para>
-        /// <para>計算量: O(|<paramref name="sm"/>|)</para>
-        /// </remarks>
-        private static int[] SAIS(ReadOnlyMemory<int> sm, int upper, int thresholdNaive, int thresholdDouling)
+        void BuildLCP()
         {
-            var s = sm.Span;
-            var n = s.Length;
+            var k = 0;
+            var h = new int[N];
+            for (int i = 0; i < N; i++)
+            {
+                var j = SA[rank[i] - 1];
+                if (k > 0) k--;
+                for (; j + k < N && i + k < N; k++) if (S[j + k] != S[i + k]) break;
+                h[rank[i] - 1] = k;
+            }
+            rmq = new SparseTableRMQ(h);
+        }
+        /// <summary>
+        /// s[<paramref name="i"/>:] と s[<paramref name="j"/>:] の最大共通接頭辞を O(loglogN) で計算します。
+        /// </summary>
+        public int GetLCP(int i, int j)
+        {
+            i = rank[i]; j = rank[j];
+            return rmq.Query(Math.Min(i, j), Math.Max(i, j));
+        }
+        /** <summary>rankが[<paramref name="index"/>:]のものを返す</summary> */
+        public int this[int index] => index == 0 ? N : SA[index - 1];
 
-            if (n == 0)
+        /** <summary>s[<paramref name="index"/>:]のランクを返す</summary> */
+        public int Rank(int index) => rank[index];
+
+        #region SparseTableRMQ
+        public class SparseTableRMQ
+        {
+            readonly int n;
+            readonly int[] A;
+            public SparseTableRMQ(int[] a)
             {
-                return Array.Empty<int>();
-            }
-            else if (n == 1)
-            {
-                return new int[] { 0 };
-            }
-            else if (n == 2)
-            {
-                if (s[0] < s[1])
+                var k = 1;
+                n = a.Length;
+                for (int i = 1; i < n; i <<= 1) k++;
+
+                A = new int[n * k];
+                for (int i = 0; i < n; i++)
+                    A[i] = a[i];
+                var d = 0;
+                for (int i = 1; i < n; i <<= 1, d += n)
                 {
-                    return new int[] { 0, 1 };
-                }
-                else
-                {
-                    return new int[] { 1, 0 };
-                }
-            }
-            else if (n < thresholdNaive)
-            {
-                return SANaive(sm);
-            }
-            else if (n < thresholdDouling)
-            {
-                return SADoubling(sm);
-            }
-
-            var sa = new int[n];
-            var ls = new bool[n];
-
-            for (int i = sa.Length - 2; i >= 0; i--)
-            {
-                // S-typeならtrue、L-typeならfalse
-                ls[i] = (s[i] == s[i + 1]) ? ls[i + 1] : (s[i] < s[i + 1]);
-            }
-
-            // バケットサイズの累積和（＝開始インデックス）
-            var sumL = new int[upper + 1];
-            var sumS = new int[upper + 1];
-
-            for (int i = 0; i < s.Length; i++)
-            {
-                if (!ls[i])
-                {
-                    sumS[s[i]]++;
-                }
-                else
-                {
-                    sumL[s[i] + 1]++;
+                    for (int j = 0; j < n; j++)
+                        A[d + n + j] = A[d + j];
+                    for (int j = 0; j < n - i; j++)
+                        A[d + n + j] = Math.Min(A[d + j], A[d + j + i]);
                 }
             }
-
-            for (int i = 0; i < sumL.Length; i++)
+            /** <summary>value of [<paramref name="l"/>,<paramref name="r"/>)</summary> */
+            public int Query(int l, int r)
             {
-                sumS[i] += sumL[i];
-                if (i < upper)
-                {
-                    sumL[i + 1] += sumS[i];
-                }
-            }
-
-            var lmsMap = GetFilledArray(-1, n + 1);
-            int m = 0;
-            for (int i = 1; i < ls.Length; i++)
-            {
-                if (!ls[i - 1] && ls[i])
-                {
-                    lmsMap[i] = m++;
-                }
-            }
-
-            var lms = new List<int>(m);
-            for (int i = 1; i < ls.Length; i++)
-            {
-                if (!ls[i - 1] && ls[i])
-                {
-                    lms.Add(i);
-                }
-            }
-
-            Induce(lms);
-
-            // LMSを再帰的にソート
-            if (m > 0)
-            {
-                var sortedLms = new List<int>(m);
-                foreach (var v in sa)
-                {
-                    if (lmsMap[v] != -1)
-                    {
-                        sortedLms.Add(v);
-                    }
-                }
-
-                var recS = new int[m];
-                var recUpper = 0;
-                recS[lmsMap[sortedLms[0]]] = 0;
-
-                // 同じLMS同士をまとめていく
-                for (int i = 1; i < sortedLms.Count; i++)
-                {
-                    var l = sortedLms[i - 1];
-                    var r = sortedLms[i];
-                    var endL = (lmsMap[l] + 1 < m) ? lms[lmsMap[l] + 1] : n;
-                    var endR = (lmsMap[r] + 1 < m) ? lms[lmsMap[r] + 1] : n;
-                    var same = true;
-
-                    if (endL - l != endR - r)
-                    {
-                        same = false;
-                    }
-                    else
-                    {
-                        while (l < endL)
-                        {
-                            if (s[l] != s[r])
-                            {
-                                break;
-                            }
-                            l++;
-                            r++;
-                        }
-
-                        if (l == n || s[l] != s[r])
-                        {
-                            same = false;
-                        }
-                    }
-
-                    if (!same)
-                    {
-                        recUpper++;
-                    }
-
-                    recS[lmsMap[sortedLms[i]]] = recUpper;
-                }
-
-                var recSA = SAIS(recS, recUpper, thresholdNaive, thresholdDouling);
-
-                for (int i = 0; i < sortedLms.Count; i++)
-                {
-                    sortedLms[i] = lms[recSA[i]];
-                }
-
-                Induce(sortedLms);
-            }
-
-            return sa;
-
-            void Induce(List<int> lms)
-            {
-                var s = sm.Span;
-                sa.AsSpan().Fill(-1);
-                var buf = new int[sumS.Length];
-
-                // LMS
-                sumS.AsSpan().CopyTo(buf);
-                foreach (var d in lms)
-                {
-                    if (d == n)
-                    {
-                        continue;
-                    }
-                    sa[buf[s[d]]++] = d;
-                }
-
-                // L-type
-                sumL.AsSpan().CopyTo(buf);
-                sa[buf[s[n - 1]]++] = n - 1;
-                for (int i = 0; i < sa.Length; i++)
-                {
-                    int v = sa[i];
-                    if (v >= 1 && !ls[v - 1])
-                    {
-                        sa[buf[s[v - 1]]++] = v - 1;
-                    }
-                }
-
-                // S-type
-                sumL.AsSpan().CopyTo(buf);
-                for (int i = sa.Length - 1; i >= 0; i--)
-                {
-                    int v = sa[i];
-                    if (v >= 1 && ls[v - 1])
-                    {
-                        sa[--buf[s[v - 1] + 1]] = v - 1;
-                    }
-                }
+                r--;
+                int z = r - l, k = 0, e = 1, s;
+                s = ((z & 0xffff0000) != 0 ? 1 : 0) << 4; z >>= s; e <<= s; k |= s;
+                s = ((z & 0x0000ff00) != 0 ? 1 : 0) << 3; z >>= s; e <<= s; k |= s;
+                s = ((z & 0x000000f0) != 0 ? 1 : 0) << 2; z >>= s; e <<= s; k |= s;
+                s = ((z & 0x0000000c) != 0 ? 1 : 0) << 1; z >>= s; e <<= s; k |= s;
+                s = ((z & 0x00000002) != 0 ? 1 : 0) << 0; e <<= s; k |= s;
+                return Math.Min(A[l + (n * k)], A[r + (n * k) - e + 1]);
             }
         }
-
-        /// <summary>
-        /// 各要素が <paramref name="value"/> で初期化された長さ <paramref name="length"/> の配列を取得する。
-        /// </summary>
-        private static T[] GetFilledArray<T>(T value, int length)
-        {
-            // Enumerable.Repeatより1-2割ほど高速（64bit環境、intの場合）
-            // |           Method |     Mean |   Error |  StdDev |
-            // |----------------- |---------:|--------:|--------:|
-            // | EnumerableRepeat | 212.7 ms | 2.99 ms | 2.80 ms |
-            // |         SpanFill | 178.7 ms | 1.29 ms | 1.14 ms |
-
-            // ちなみにEnumerable.Rangeとnew[] + for文とでは有意差は見られない
-            // |          Method |     Mean |   Error |  StdDev |
-            // |---------------- |---------:|--------:|--------:|
-            // | EnumerableRange | 225.6 ms | 4.35 ms | 3.85 ms |
-            // |         SpanFor | 223.0 ms | 2.88 ms | 2.69 ms |
-
-            var result = new T[length];
-            result.AsSpan().Fill(value);
-            return result;
-        }
+        #endregion
     }
 }

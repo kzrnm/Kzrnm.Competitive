@@ -19,7 +19,7 @@ namespace AtCoder
             denominator = 分母 / gcd;
         }
         public override string ToString() => $"{numerator}/{denominator}";
-        public override bool Equals(object obj) => obj is Fraction && Equals((Fraction)obj);
+        public override bool Equals(object obj) => obj is Fraction f && Equals(f);
         public bool Equals(Fraction other) => this.numerator == other.numerator && this.denominator == other.denominator;
         public override int GetHashCode() => HashCode.Combine(numerator, denominator);
 
