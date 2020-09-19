@@ -1,16 +1,12 @@
 ﻿using AtCoderProject;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Xunit;
 
 namespace AtCoderRunner
 {
-    public class AtCoder
+    public class Runner
     {
         private class ResouceSource : TheoryData<string, string>
         {
