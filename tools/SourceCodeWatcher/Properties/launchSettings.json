@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SourceCodeWatcher": {
+      "commandName": "Project",
+      "commandLineArgs": "$(projectDir)../../AtCoderProject/Program.cs"
+    }
+  }
+}

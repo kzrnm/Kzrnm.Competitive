@@ -76,17 +76,17 @@ namespace AtCoderProject.Runner
         static Task ExpandTask([CallerFilePath] string path = null)
             => Task.Run(() =>
             {
-                var inpath = path.Replace("HandMadeMain.cs", "Program.cs");
-                var outpath = path.Replace("HandMadeMain.cs", "Combined.csx");
-                Expander.Expand(inpath, outpath, checkLastWriteTime: true, expandMethod: ExpandMethod.Strict);
-                if (toClipboard)
-                {
-                    var psi = new ProcessStartInfo("cmd.exe", $"/c \"type {outpath} | clip\"")
-                    {
-                        CreateNoWindow = false,
-                    };
-                    Process.Start(psi);
-                }
+                //var inpath = path.Replace("HandMadeMain.cs", "Program.cs");
+                //var outpath = path.Replace("HandMadeMain.cs", "Combined.csx");
+                //Expander.Expand(inpath, outpath, checkLastWriteTime: true, expandMethod: ExpandMethod.Strict);
+                //if (toClipboard)
+                //{
+                //    var psi = new ProcessStartInfo("cmd.exe", $"/c \"type {outpath} | clip\"")
+                //    {
+                //        CreateNoWindow = false,
+                //    };
+                //    Process.Start(psi);
+                //}
             });
 
         static string ExpandCode([CallerFilePath] string path = null)
