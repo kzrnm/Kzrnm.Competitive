@@ -102,7 +102,7 @@ namespace AtCoder.Algebra
         public T MaxValue { get; }
     }
 
-    public interface IUnsignedNumOperator<T> :
+    public interface INumOperator<T> :
         IAddOperator<T>,
         ISubtractOperator<T>,
         IMultiplyOperator<T>,
@@ -116,7 +116,7 @@ namespace AtCoder.Algebra
     {
     }
     public interface ISignedNumOperator<T> :
-        IUnsignedNumOperator<T>,
+        INumOperator<T>,
         INegateOperator<T>
     {
     }
@@ -160,7 +160,7 @@ namespace AtCoder.Algebra
         public bool Equals(long x, long y) => x == y;
         public int GetHashCode(long obj) => obj.GetHashCode();
     }
-    public readonly struct UIntOperator : IUnsignedNumOperator<uint>
+    public readonly struct UIntOperator : INumOperator<uint>
     {
         public uint MinValue => uint.MinValue;
         public uint MaxValue => uint.MaxValue;
@@ -180,7 +180,7 @@ namespace AtCoder.Algebra
         public int GetHashCode(uint obj) => obj.GetHashCode();
     }
 
-    public readonly struct ULongOperator : IUnsignedNumOperator<ulong>
+    public readonly struct ULongOperator : INumOperator<ulong>
     {
         public ulong MinValue => ulong.MinValue;
         public ulong MaxValue => ulong.MaxValue;
