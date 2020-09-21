@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -100,7 +100,7 @@ namespace AtCoder
         /// <para>計算量: O(nloglcm(<paramref name="m"/>))</para>
         /// </remarks>
         /// <returns>答えは(存在するならば) y,z(0≤y&lt;z=lcm(<paramref name="m"/>[i])) を用いて x≡y(mod z) の形で書ける。答えがない場合は(0,0)、n=0 の時は(0,1)、それ以外の場合は(y,z)。</returns>
-        public static (long, long) CRT(long[] r, long[] m)
+        public static (long num, long mod) CRT(long[] r, long[] m)
         {
             Debug.Assert(r.Length == m.Length);
 
