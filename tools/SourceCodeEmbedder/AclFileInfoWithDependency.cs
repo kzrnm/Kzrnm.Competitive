@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -12,6 +13,7 @@ namespace SourceCodeEmbedder
         public AclFileInfoWithDependency(IEnumerable<AclFileInfoRaw> infos)
         {
             Infos = infos.ToArray();
+            Array.Sort(Infos, (info1, info2) => StringComparer.OrdinalIgnoreCase.Compare(info1.FilePath, info2.FilePath));
         }
 
         private static readonly MetadataReference[] metadataReferences = new[]
