@@ -64,10 +64,14 @@ namespace SourceCodeWatcher
                         Expander.Expand(filepath, expandMethod: ExpandMethod.Strict);
                         Console.WriteLine($"finish Expanding: {filepath}");
                     }
+                    else
+                    {
+                        Console.WriteLine("file not chenged.");
+                    }
                 }
                 catch (IOException e) when (retryCount++ < maxRetry)
                 {
-                    Console.Error.WriteLine($"Error Expanding: {e.Message}, retry: {retryCount}");
+                    Console.WriteLine($"Error Expanding: {e.Message}, retry: {retryCount}");
                     await Task.Delay(retryWait);
                     goto FileUpdate;
                 }
