@@ -17,21 +17,28 @@
     <EmbeddedResource Include="input.txt" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <RestoreAdditionalProjectSources>https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json ;$(RestoreAdditionalProjectSources)</RestoreAdditionalProjectSources>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="3.8.0-4.20480.4">
+      <!-- LangVersion < 9 -->
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="SourceExpander.Generator" Version="1.1.0-beta.6" PrivateAssets="all" />
+  </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="AtCoderAnalyzer" Version="1.0.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.0.0" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
+    <PackageReference Include="TextCopy" Version="4.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AtCoderLibrary\AtCoderLibrary.csproj" />
+    <ProjectReference Include="..\AtCoderLibrary\AtCoderLibrary.Kz.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="AtCoder.Expander">
-      <HintPath>..\AtCoder.Expander.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 
 </Project>

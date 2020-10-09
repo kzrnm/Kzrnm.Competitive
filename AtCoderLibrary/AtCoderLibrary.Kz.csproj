@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>AtCoder</RootNamespace>
+    <OutputType>Library</OutputType>
+    <LangVersion>8</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    
+    <NoWarn>1701;1702;CA1034;CA1036;CA1815;IDE0044</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="FodyWeavers.xml" Visible="false" />
+    <PackageReference Include="AtCoderAnalyzer" Version="1.0.1" />
+    <PackageReference Include="SourceExpander.Embedder" Version="1.1.0-beta.6.1" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <RestoreAdditionalProjectSources>https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json ;$(RestoreAdditionalProjectSources)</RestoreAdditionalProjectSources>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="3.8.0-4.20480.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="ModuleInit.Fody" Version="2.1.1" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ac-library-csharp\AtCoderLibrary\AtCoderLibrary.csproj" />
+  </ItemGroup>
+
+</Project>

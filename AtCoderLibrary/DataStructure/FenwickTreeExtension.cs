@@ -1,12 +1,12 @@
-﻿using AtCoder.Algebra;
 using static AtCoder.Global;
 
-namespace AtCoder.DataStructure
+namespace AtCoder
 {
     public static class FenwickTreeExtension
     {
         public static int LowerBound<TValue, TOp>(this FenwickTree<TValue, TOp> fw, TValue w)
-            where TOp : IAddOperator<TValue>, ISubtractOperator<TValue>, IComparisonOperator<TValue>
+            where TValue : struct
+            where TOp : struct, IArithmeticOperator<TValue>, ICompareOperator<TValue>
         {
             var op = default(TOp);
             if (op.LessThanOrEqual(w, default)) return 0;

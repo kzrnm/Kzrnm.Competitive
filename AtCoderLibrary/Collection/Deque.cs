@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using AtCoder.Internal;
-using AtCoder.Util.Internal;
 
-namespace AtCoder.Collection
+namespace AtCoder
 {
 
     [System.Diagnostics.DebuggerTypeProxy(typeof(CollectionDebugView<>))]

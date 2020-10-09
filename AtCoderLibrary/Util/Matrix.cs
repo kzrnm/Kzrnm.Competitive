@@ -1,4 +1,3 @@
-﻿using AtCoder.Algebra;
 using System.Diagnostics;
 using static AtCoder.Global;
 
@@ -6,11 +5,13 @@ namespace AtCoder.Util
 {
     public static class Matrix
     {
-        public static T[][] Pow<T, TOp>(T[][] mat, int y) where TOp : struct, IAddOperator<T>, IMultiplyOperator<T>, IIncrementOperator<T>
+        public static T[][] Pow<T, TOp>(T[][] mat, int y)
+            where T : struct
+            where TOp : struct, INumOperator<T>
         {
             Debug.Assert(mat.Length == mat[0].Length);
             var K = mat.Length;
-            T[][] res = NewArray<T>(K, K, default);
+            T[][] res = NewArray(K, K, default(T));
             var one = default(TOp).Increment(default);
             for (var i = 0; i < res.Length; i++)
                 res[i][i] = one;
@@ -21,11 +22,13 @@ namespace AtCoder.Util
             }
             return res;
         }
-        public static T[][] Mul<T, TOp>(T[][] l, T[][] r) where TOp : struct, IAddOperator<T>, IMultiplyOperator<T>
+        public static T[][] Mul<T, TOp>(T[][] l, T[][] r)
+            where T : struct
+            where TOp : struct, IArithmeticOperator<T>
         {
             var op = default(TOp);
             Debug.Assert(l[0].Length == r.Length);
-            T[][] res = NewArray<T>(l.Length, r[0].Length, default);
+            T[][] res = NewArray(l.Length, r[0].Length, default(T));
             for (var i = 0; i < res.Length; i++)
                 for (var j = 0; j < res[i].Length; j++)
                     for (var k = 0; k < r.Length; k++)

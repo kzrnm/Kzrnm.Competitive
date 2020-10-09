@@ -1,4 +1,4 @@
-﻿namespace AtCoder.DataStructure
+namespace AtCoder
 {
     /// <summary>
     /// 二次元累積和を求めます。

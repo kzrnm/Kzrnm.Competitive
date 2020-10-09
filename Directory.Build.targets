@@ -1,0 +1,9 @@
+<Project>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>AtCoderLibrary.Kz</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+</Project>

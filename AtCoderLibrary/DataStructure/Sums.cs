@@ -1,4 +1,4 @@
-﻿namespace AtCoder.DataStructure
+namespace AtCoder
 {
     /// <summary>
     /// 累積和を求めます。
