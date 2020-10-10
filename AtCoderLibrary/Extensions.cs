@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -20,7 +20,7 @@ namespace AtCoder
         }
         public static T[] Fill<T>(this T[] arr, T value)
         {
-            Array.Fill(arr, value);
+            arr.AsSpan().Fill(value);
             return arr;
         }
         public static T[] Sort<T>(this T[] arr) { Array.Sort(arr); return arr; }

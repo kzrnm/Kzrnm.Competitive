@@ -7,7 +7,7 @@ namespace AtCoder.Graph
         public static WNode[] Kruskal(this WNode[] graph)
         {
             var gb = new WGraphBuilder(graph.Length, false);
-            var uf = new DSU(graph.Length);
+            var uf = new UnionFind(graph.Length);
             var edges = new List<(int from, int to, int value)>();
             foreach (var node in graph)
                 foreach (var next in node.children)
