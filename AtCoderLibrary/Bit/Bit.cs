@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using Bmi1 = System.Runtime.Intrinsics.X86.Bmi1.X64;
 
 namespace AtCoder
@@ -11,8 +12,11 @@ namespace AtCoder
         public static string ToBitString(this int num, int padLeft = sizeof(int) * 8) => Convert.ToString(num, 2).PadLeft(padLeft, '0');
         public static string ToBitString(this long num, int padLeft = sizeof(long) * 8) => Convert.ToString(num, 2).PadLeft(padLeft, '0');
         public static string ToBitString(this ulong num, int padLeft = sizeof(ulong) * 8) => Convert.ToString(unchecked((long)num), 2).PadLeft(padLeft, '0');
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool On(this int num, int index) => ((num >> index) & 1) != 0;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool On(this long num, int index) => ((num >> index) & 1) != 0;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool On(this ulong num, int index) => ((num >> index) & 1) != 0;
         public static Enumerator Bits(this int num) => new Enumerator(num);
         public static Enumerator Bits(this uint num) => new Enumerator(num);

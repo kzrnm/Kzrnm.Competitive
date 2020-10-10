@@ -1,6 +1,7 @@
 using AtCoder;
 using AtCoder.IO;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 public partial class Program { static void Main() => new Program(new ConsoleReader(), new ConsoleWriter()).Run();[DebuggerBrowsable(DebuggerBrowsableState.Never)] public ConsoleReader cr;[DebuggerBrowsable(DebuggerBrowsableState.Never)] public ConsoleWriter cw; public Program(ConsoleReader r, ConsoleWriter w) { this.cr = r; this.cw = w; System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture; } }
 public partial class Program
@@ -13,6 +14,7 @@ public partial class Program
         else if (res != null) cw.WriteLine(res.ToString());
         cw.Flush();
     }
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     private object Calc()
     {
         int n = cr;

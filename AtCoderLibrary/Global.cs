@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace AtCoder
 {
@@ -118,16 +119,27 @@ namespace AtCoder
             }
             return res;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int PopCount(int x) => BitOperations.PopCount((uint)x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int PopCount(long x) => BitOperations.PopCount((ulong)x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int PopCount(ulong x) => BitOperations.PopCount(x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int MSB(int x) => BitOperations.Log2((uint)x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int MSB(uint x) => BitOperations.Log2(x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int MSB(long x) => BitOperations.Log2((ulong)x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int MSB(ulong x) => BitOperations.Log2(x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int LSB(int x) => BitOperations.TrailingZeroCount((uint)x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int LSB(uint x) => BitOperations.TrailingZeroCount(x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int LSB(long x) => BitOperations.TrailingZeroCount((ulong)x);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int LSB(ulong x) => BitOperations.TrailingZeroCount(x);
 
         /// <summary>
@@ -157,26 +169,6 @@ namespace AtCoder
                 return res;
             }
             return Compressed(orig, Compress(orig));
-        }
-
-        public static IEnumerable<T[]> NextPermutation<T>(IEnumerable<T> orig) where T : IComparable<T>
-        {
-            var arr = orig.ToArray();
-            while (true)
-            {
-                yield return arr;
-                int i;
-                for (i = arr.Length - 2; i >= 0; i--)
-                    if (arr[i].CompareTo(arr[i + 1]) < 0)
-                        break;
-                if (i < 0) break;
-                int j;
-                for (j = arr.Length - 1; j >= 0; j--)
-                    if (arr[i].CompareTo(arr[j]) < 0)
-                        break;
-                (arr[i], arr[j]) = (arr[j], arr[i]);
-                Array.Reverse(arr, i + 1, arr.Length - i - 1);
-            }
         }
     }
 }
