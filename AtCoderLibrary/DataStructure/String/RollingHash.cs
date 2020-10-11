@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 
 
-namespace AtCoder.DataStructure.String
+namespace AtCoder
 {
     public class RollingHash
     {

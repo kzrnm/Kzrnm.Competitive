@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 #region https://algoful.com/Archive/Algorithm/KMPSearch
 #endregion
 
 
-namespace AtCoder.DataStructure.String
+namespace AtCoder
 {
     public class KMP
     {

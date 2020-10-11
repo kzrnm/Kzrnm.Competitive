@@ -1,4 +1,4 @@
-﻿namespace AtCoder.DataStructure.Bit
+namespace AtCoder.DataStructure
 {
     public class BinaryIndexedTree2D
     {

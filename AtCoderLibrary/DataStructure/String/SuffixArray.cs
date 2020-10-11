@@ -1,53 +1,57 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AtCoder.DataStructure.String
+namespace AtCoder
 {
     public class SuffixArray
     {
-        readonly int N;
-        readonly int[] S;
-        readonly int[] SA;
-        readonly int[] rank;
+
+        int[] S;
+        int N;
+        int[] SA;
+        int[] rank;
         SparseTableRMQ rmq;
-        public static SuffixArray Create<T>(IEnumerable<T> str) where T : IComparable<T> => new SuffixArray(Global.Compressed(str.ToArray()));
-        public static SuffixArray Create<T>(T[] str) where T : IComparable<T> => new SuffixArray(Global.Compressed(str));
-        public SuffixArray(int[] S)
+        public static SuffixArray Create(string str) => new SuffixArray(Global.Compressed(str.AsSpan()));
+        public static SuffixArray Create<T>(IEnumerable<T> str) where T : IComparable<T> => new SuffixArray(Global.Compressed((ReadOnlySpan<T>)str.ToArray()));
+        public static SuffixArray Create<T>(T[] str) where T : IComparable<T> => new SuffixArray(Global.Compressed((ReadOnlySpan<T>)str));
+        private SuffixArray(ReadOnlySpan<int> str)
         {
-            this.S = S;
-            N = S.Length;
+            N = str.Length;
+            S = new int[N + 1];
+            for (int i = 0; i < N; i++)
+                S[i] = str[i] + 1;
             SA = Sais(S, S.Max());
             rank = new int[N + 1];
             for (int i = 0; i <= N; i++) rank[SA[i]] = i;
             BuildLCP();
         }
 
-        static void CreateBeginBucket(int[] v, int[] b)
+        void CreateBeginBucket(int[] v, int[] b)
         {
             for (int i = 0; i < b.Length; i++) b[i] = 0;
             for (int i = 0; i < v.Length; i++) b[v[i]]++;
             int sum = 0;
             for (int i = 0; i < b.Length; i++) { b[i] += sum; var tmp = b[i]; b[i] = sum; sum = tmp; }
         }
-        static void CreateEndBucket(int[] v, int[] b)
+        void CreateEndBucket(int[] v, int[] b)
         {
             for (int i = 0; i < b.Length; i++) b[i] = 0;
             for (int i = 0; i < v.Length; i++) b[v[i]]++;
             for (int i = 1; i < b.Length; i++) b[i] += b[i - 1];
         }
-        static void InducedSort(int[] v, int[] sa, int[] b, bool[] isl)
+        void InducedSort(int[] v, int[] sa, int[] b, bool[] isl)
         {
             CreateBeginBucket(v, b);
             for (int i = 0; i < v.Length; i++) if (sa[i] > 0 && isl[sa[i] - 1]) sa[b[v[sa[i] - 1]]++] = sa[i] - 1;
         }
-        static void InvertInducedSort(int[] v, int[] sa, int[] b, bool[] isl)
+        void InvertInducedSort(int[] v, int[] sa, int[] b, bool[] isl)
         {
             CreateEndBucket(v, b);
             for (int i = v.Length - 1; i >= 0; i--)
                 if (sa[i] > 0 && !isl[sa[i] - 1]) sa[--b[v[sa[i] - 1]]] = sa[i] - 1;
         }
-        static int[] Sais(int[] v, int mv)
+        int[] Sais(int[] v, int mv)
         {
             if (v.Length == 1) return new int[] { 0 };
             var isl = new bool[v.Length];
@@ -94,7 +98,7 @@ namespace AtCoder.DataStructure.String
             InvertInducedSort(v, sa, b, isl);
             return sa;
         }
-        static bool IsLMS(int x, bool[] isl) { return x > 0 && isl[x - 1] && !isl[x]; }
+        bool IsLMS(int x, bool[] isl) { return x > 0 && isl[x - 1] && !isl[x]; }
 
         void BuildLCP()
         {
@@ -114,20 +118,25 @@ namespace AtCoder.DataStructure.String
         /// </summary>
         public int GetLCP(int i, int j)
         {
+            if (i == j) return N - i;
             i = rank[i]; j = rank[j];
             return rmq.Query(Math.Min(i, j), Math.Max(i, j));
         }
-        /** <summary>rankが[<paramref name="index"/>:]のものを返す</summary> */
+        /// <summary>
+        /// rankが[<paramref name="index"/>:]のものを返す
+        /// </summary>
         public int this[int index] => index == 0 ? N : SA[index - 1];
 
-        /** <summary>s[<paramref name="index"/>:]のランクを返す</summary> */
+        /// <summary>
+        /// s[<paramref name="index"/>:]のランクを返す
+        /// </summary>
         public int Rank(int index) => rank[index];
 
         #region SparseTableRMQ
         public class SparseTableRMQ
         {
-            readonly int n;
-            readonly int[] A;
+            int n;
+            int[] A;
             public SparseTableRMQ(int[] a)
             {
                 var k = 1;
@@ -146,7 +155,9 @@ namespace AtCoder.DataStructure.String
                         A[d + n + j] = Math.Min(A[d + j], A[d + j + i]);
                 }
             }
-            /** <summary>value of [<paramref name="l"/>,<paramref name="r"/>)</summary> */
+            /// <summary>
+            /// value of [<paramref name="l"/>,<paramref name="r"/>)
+            /// </summary>
             public int Query(int l, int r)
             {
                 r--;
@@ -159,6 +170,6 @@ namespace AtCoder.DataStructure.String
                 return Math.Min(A[l + (n * k)], A[r + (n * k) - e + 1]);
             }
         }
-        #endregion
+        #endregion SparseTableRMQ
     }
 }

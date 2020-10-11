@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using static AtCoder.Global;
 
 
-namespace AtCoder.DataStructure.Bit
+namespace AtCoder.DataStructure
 {
     [System.Diagnostics.DebuggerTypeProxy(typeof(DebugView))]
-    class StarrySkyTree
+    public class StarrySkyTree
     {
         protected virtual long DefaultValue => default;
         protected virtual long OpDefault => default;

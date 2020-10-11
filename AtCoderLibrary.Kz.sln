@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30523.141
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AtCoderLibrary.Kz", "AtCoderLibrary\AtCoderLibrary.Kz.csproj", "{E82C8A09-A4D2-4DD4-AC82-2936CF4E4A73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtCoderLibrary.Kz.Test", "AtCoderLibrary.Kz.Test\AtCoderLibrary.Kz.Test.csproj", "{3A69D84F-CCF6-4A37-B047-41C6AE9CE79B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E82C8A09-A4D2-4DD4-AC82-2936CF4E4A73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E82C8A09-A4D2-4DD4-AC82-2936CF4E4A73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E82C8A09-A4D2-4DD4-AC82-2936CF4E4A73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E82C8A09-A4D2-4DD4-AC82-2936CF4E4A73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A69D84F-CCF6-4A37-B047-41C6AE9CE79B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A69D84F-CCF6-4A37-B047-41C6AE9CE79B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A69D84F-CCF6-4A37-B047-41C6AE9CE79B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A69D84F-CCF6-4A37-B047-41C6AE9CE79B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {169D5CFF-76E2-479A-9376-F692952C62BC}
+	EndGlobalSection
+EndGlobal

@@ -150,6 +150,16 @@ namespace AtCoder
         /// <summary>
         /// 座標圧縮を行う
         /// </summary>
+        public static Dictionary<T, int> Compress<T>(ReadOnlySpan<T> orig) where T : IComparable<T> => Compress(orig, Comparer<T>.Default);
+
+        /// <summary>
+        /// 座標圧縮を行う
+        /// </summary>
+        public static Dictionary<T, int> Compress<T>(T[] orig) where T : IComparable<T> => Compress(orig.AsSpan(), Comparer<T>.Default);
+
+        /// <summary>
+        /// 座標圧縮を行う
+        /// </summary>
         public static Dictionary<T, int> Compress<T>(IEnumerable<T> orig, IComparer<T> comparer)
         {
             var ox = new HashSet<T>(orig).ToArray();
@@ -159,16 +169,31 @@ namespace AtCoder
                 zip[ox[i]] = i;
             return zip;
         }
-        public static int[] Compressed<T>(T[] orig) where T : IComparable<T>
+        /// <summary>
+        /// 座標圧縮を行う
+        /// </summary>
+        public static Dictionary<T, int> Compress<T>(ReadOnlySpan<T> orig, IComparer<T> comparer)
         {
-            static int[] Compressed(T[] orig, Dictionary<T, int> zip)
+            var hs = new HashSet<T>(orig.Length);
+            foreach (var v in orig)
+                hs.Add(v);
+            var ox = hs.ToArray();
+            Array.Sort(ox, comparer);
+            var zip = new Dictionary<T, int>();
+            for (int i = 0; i < ox.Length; i++)
+                zip[ox[i]] = i;
+            return zip;
+        }
+        public static int[] Compressed<T>(ReadOnlySpan<T> orig) where T : IComparable<T>
+        {
+            static int[] Compressed(ReadOnlySpan<T> orig, Dictionary<T, int> zip)
             {
                 var res = new int[orig.Length];
                 for (int i = 0; i < res.Length; i++)
                     res[i] = zip[orig[i]];
                 return res;
             }
-            return Compressed(orig, Compress(orig));
+            return Compressed(orig, Compress(orig, Comparer<T>.Default));
         }
     }
 }

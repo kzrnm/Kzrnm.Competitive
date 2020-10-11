@@ -20,7 +20,10 @@ namespace AtCoderProject.Runner
         {
             var sb = new MyStringBuilder
             {
-
+                @"2
+1 2
+1 2
+"
             };
 
             return sb;

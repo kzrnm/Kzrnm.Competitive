@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-namespace AtCoder.DataStructure.String
+namespace AtCoder
 {
     public class Trie<TKey, TValue>
     {
