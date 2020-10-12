@@ -13,7 +13,7 @@
   <ItemGroup>
     <None Include="FodyWeavers.xml" Visible="false" />
     <PackageReference Include="AtCoderAnalyzer" Version="1.0.1" />
-    <PackageReference Include="SourceExpander.Embedder" Version="1.1.0-beta.6.1" />
+    <PackageReference Include="SourceExpander.Embedder" Version="1.1.0-beta.7" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
   </ItemGroup>
 
