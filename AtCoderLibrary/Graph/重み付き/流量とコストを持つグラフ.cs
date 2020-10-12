@@ -1,5 +1,4 @@
-﻿using AtCoder;
-using AtCoder.Collection;
+using AtCoder;
 using AtCoder.IO;
 using System;
 using System.Collections.Generic;

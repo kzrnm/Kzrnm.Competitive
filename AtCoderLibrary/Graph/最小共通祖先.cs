@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using static AtCoder.Global;
 
 namespace AtCoder.Graph
@@ -39,7 +39,7 @@ namespace AtCoder.Graph
             }
         }
 
-        public int Lca(int u, int v)
+        public int GetLca(int u, int v)
         {
             if (Depth(u) > Depth(v))
             {
@@ -67,5 +67,10 @@ namespace AtCoder.Graph
         }
 
         int Depth(int index) => tree[index].depth;
+    }
+
+    public static class LowestCommonAncestorExt
+    {
+        public static LowestCommonAncestor Lca(TreeNode[] tree) => new LowestCommonAncestor(tree);
     }
 }

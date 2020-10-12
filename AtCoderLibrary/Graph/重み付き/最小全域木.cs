@@ -4,16 +4,22 @@ namespace AtCoder.Graph
 {
     public static class 最小全域木
     {
-        public static WNode[] Kruskal(this WNode[] graph)
+        public static WNode<int>[] Kruskal(this WNode<int>[] graph)
+            => Kruskal<int, IntOperator>(graph);
+        public static WNode<long>[] Kruskal(this WNode<long>[] graph)
+            => Kruskal<long, LongOperator>(graph);
+        public static WNode<T>[] Kruskal<T, TOp>(this WNode<T>[] graph)
+            where T : struct
+            where TOp : struct, INumOperator<T>
         {
-            var gb = new WGraphBuilder(graph.Length, false);
+            var gb = new WGraphBuilder<T, TOp>(graph.Length, false);
             var uf = new UnionFind(graph.Length);
-            var edges = new List<(int from, int to, int value)>();
+            var edges = new List<(int from, int to, T value)>();
             foreach (var node in graph)
                 foreach (var next in node.children)
                     edges.Add((node.index, next.to, next.value));
-            edges.Sort(Comparer<(int from, int to, int value)>.Create((t1, t2) => t1.value.CompareTo(t2.value)));
-            foreach (var (from, to, value) in edges)
+            edges.Sort(Comparer<(int from, int to, T value)>.Create((t1, t2) => default(TOp).Compare(t1.value, t2.value)));
+            foreach (var (from, to, value) in edges.AsSpan())
             {
                 if (!uf.Same(from, to))
                 {
@@ -24,11 +30,18 @@ namespace AtCoder.Graph
             return gb.ToArray();
         }
 
-        public static WNode[] Prim(this WNode[] graph)
+
+        public static WNode<int>[] Prim(this WNode<int>[] graph)
+            => Prim<int, IntOperator>(graph);
+        public static WNode<long>[] Prim(this WNode<long>[] graph)
+            => Prim<long, LongOperator>(graph);
+        public static WNode<T>[] Prim<T, TOp>(this WNode<T>[] graph)
+            where T : struct
+            where TOp : struct, INumOperator<T>
         {
             var sumi = new bool[graph.Length];
-            var pq = new PriorityQueue<int, (int from, int to)>();
-            var gb = new WGraphBuilder(graph.Length, false);
+            var pq = new PriorityQueue<T, (int from, int to)>();
+            var gb = new WGraphBuilder<T, TOp>(graph.Length, false);
             sumi[0] = true;
             foreach (var next in graph[0].children)
                 pq.Add(next.value, (0, next.to));

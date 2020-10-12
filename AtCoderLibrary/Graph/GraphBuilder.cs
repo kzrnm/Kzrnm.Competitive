@@ -1,4 +1,4 @@
-﻿using AtCoder.IO;
+using AtCoder.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,13 +26,15 @@ namespace AtCoder.Graph
                 }
             }
         }
-        public GraphBuilder(int count, ConsoleReader cr, int edgeCount, bool isOriented) : this(count, isOriented)
+
+        public static GraphBuilder Create(int count, ConsoleReader cr, int edgeCount, bool isOriented)
         {
+            var gb = new GraphBuilder(count, isOriented);
             for (var i = 0; i < edgeCount; i++)
-                this.Add(cr.Int0, cr.Int0);
+                gb.Add(cr.Int0, cr.Int0);
+            return gb;
         }
-        public static TreeNode[] MakeTree(int count, ConsoleReader cr, int root = 0)
-            => new GraphBuilder(count, cr, count - 1, false).ToTree(root);
+
         public void Add(int from, int to)
         {
             children[from].Add(to);
