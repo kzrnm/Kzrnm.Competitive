@@ -30,7 +30,7 @@
     <PackageReference Include="SourceExpander.Core" Version="1.1.0-beta.6" />
     <PackageReference Include="SourceExpander.Generator" Version="1.1.0-beta.6" PrivateAssets="all" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="AtCoderAnalyzer" Version="1.0.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.0.0" />
@@ -39,6 +39,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ac-library-csharp\AtCoderLibrary\AtCoderLibrary.csproj" />
+    <ProjectReference Include="..\AtCoderLibrary\AtCoderLibrary.Kz.csproj" />
+  </ItemGroup>
+
+  <!--
+  <ItemGroup>
     <Reference Include="AtCoderLibrary">
       <HintPath>..\ac-library-csharp\AtCoderLibrary\bin\Debug\netcoreapp3.1\AtCoderLibrary.dll</HintPath>
     </Reference>
@@ -46,5 +52,6 @@
       <HintPath>..\AtCoderLibrary\bin\Debug\netcoreapp3.1\AtCoderLibrary.Kz.dll</HintPath>
     </Reference>
   </ItemGroup>
+  -->
 
 </Project>
