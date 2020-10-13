@@ -17,7 +17,7 @@ namespace AtCoder
         public void Deconstruct(out int v1, out int v2) { v1 = x; v2 = y; }
         public static implicit operator PointInt((int x, int y) tuple) => new PointInt(tuple.x, tuple.y);
         public double Distance(PointInt other) => Math.Sqrt(Distance2(other));
-        long Distance2(PointInt other)
+        public long Distance2(PointInt other)
         {
             var p = other - this;
             return (long)p.x * p.x + (long)p.y * p.y;
