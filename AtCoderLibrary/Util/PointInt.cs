@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace AtCoder.Util
+namespace AtCoder
 {
 
     public readonly struct PointInt : IEquatable<PointInt>, IComparable<PointInt>

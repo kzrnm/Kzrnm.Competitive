@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using static AtCoder.Global;
 
-namespace AtCoder.Util
+namespace AtCoder
 {
     public static class Matrix
     {
