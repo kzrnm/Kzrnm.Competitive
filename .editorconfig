@@ -3,4 +3,4 @@
 # You can learn more about editorconfig here: https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
 [*.cs]
 
-charset = utf-8
+charset = utf-8-bom
