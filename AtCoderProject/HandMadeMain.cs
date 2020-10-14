@@ -1,5 +1,4 @@
-using AtCoder;
-using AtCoder.IO;
+﻿using AtCoder.IO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +8,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace AtCoderProject.Runner
 {
@@ -25,17 +23,27 @@ namespace AtCoderProject.Runner
 
             return sb;
         }
-        static IReadOnlyDictionary<string, string> files;
         static bool toClipboard = true;
 
         [STAThread]
         static void Main(string[] args)
         {
-            files = (IReadOnlyDictionary<string, string>)Type.GetType("Expanded.Expanded").GetProperty("Files", BindingFlags.Public | BindingFlags.Static).GetValue(null);
-            var expandedCode = ExpandCode();
+            var files = (dynamic)Type.GetType("Expanded.Expanded")
+                .GetProperty("Files", BindingFlags.Public | BindingFlags.Static)
+                .GetValue(null);
+
+            string expandedCode = null;
+            foreach (var p in files)
+            {
+                if (p.Key.EndsWith("Program.cs"))
+                {
+                    expandedCode = p.Value.Code;
+                }
+            }
+
             if (args.Length == 1 && args[0] == "expand")
             {
-                Console.WriteLine(ExpandCode());
+                Console.WriteLine(expandedCode);
                 return;
             }
             File.WriteAllText(CurrentPath().Replace("HandMadeMain.cs", "Combined.csx"), expandedCode);
@@ -53,7 +61,7 @@ namespace AtCoderProject.Runner
             var writer = new ConsoleWriter();
             if (args.Length > 0)
                 reader = new ConsoleReader(new FileStream(args[0], FileMode.Open), new UTF8Encoding(false));
-            else if (sb.Length > 0)
+            else if (IsNotWhiteSpace(sb.sb))
             {
                 Trace.Listeners.Add(new TextWriterTraceListener(Console.Error));
                 reader = new ConsoleReader(new MemoryStream(new UTF8Encoding(false).GetBytes(sb.ToString())), Encoding.UTF8);
@@ -70,6 +78,13 @@ namespace AtCoderProject.Runner
             if (toClipboard)
                 TextCopy.ClipboardService.SetText(expandedCode);
         }
+        static bool IsNotWhiteSpace(StringBuilder sb)
+        {
+            foreach (var chunk in sb.GetChunks())
+                if (!chunk.Span.IsEmpty && !chunk.Span.IsWhiteSpace())
+                    return true;
+            return false;
+        }
         static string LoadInput()
         {
             const string path = @"AtCoderProject.input.txt";
@@ -79,9 +94,6 @@ namespace AtCoderProject.Runner
         }
 
         static string CurrentPath([CallerFilePath] string path = "") => path;
-        static string ExpandCode()
-            => files[CurrentPath().Replace("HandMadeMain.cs", "Program.cs")];
-
     }
     class MyStringBuilder : IEnumerable
     {
