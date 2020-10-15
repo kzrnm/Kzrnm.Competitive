@@ -28,16 +28,18 @@ namespace AtCoderProject.Runner
         [STAThread]
         static void Main(string[] args)
         {
-            var files = (dynamic)Type.GetType("Expanded.Expanded")
+            var files = (IDictionary)Type.GetType("Expanded.Expanded")
                 .GetProperty("Files", BindingFlags.Public | BindingFlags.Static)
                 .GetValue(null);
 
             string expandedCode = null;
-            foreach (var p in files)
+            foreach (DictionaryEntry p in files)
             {
-                if (p.Key.EndsWith("Program.cs"))
+                var key = (string)p.Key;
+                var value = p.Value;
+                if (key.EndsWith("Program.cs"))
                 {
-                    expandedCode = p.Value.Code;
+                    expandedCode = (string)value.GetType().GetField("Code").GetValue(value);
                 }
             }
 
