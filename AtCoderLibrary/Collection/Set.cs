@@ -1,4 +1,4 @@
-using AtCoder.Internal;
+﻿using AtCoder.Internal;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -153,9 +153,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         }
         public Set(IEnumerable<T> collection, IComparer<T> comparer, bool isMulti = false)
         {
+            this.IsMulti = isMulti;
             this.comparer = comparer; var arr = InitArray(collection);
             this.root = ConstructRootFromSortedArray(arr, 0, arr.Length - 1, null);
-            this.IsMulti = isMulti;
         }
         protected T[] InitArray(IEnumerable<T> collection)
         {

@@ -28,11 +28,11 @@ namespace AtCoderProject.Runner
         [STAThread]
         static void Main(string[] args)
         {
+            string expandedCode = null;
+#if DEBUG
             var files = (IDictionary)Type.GetType("Expanded.Expanded")
                 .GetProperty("Files", BindingFlags.Public | BindingFlags.Static)
                 .GetValue(null);
-
-            string expandedCode = null;
             foreach (DictionaryEntry p in files)
             {
                 var key = (string)p.Key;
@@ -42,42 +42,48 @@ namespace AtCoderProject.Runner
                     expandedCode = (string)value.GetType().GetField("Code").GetValue(value);
                 }
             }
+#endif
+
+            ConsoleReader reader;
+            var writer = new ConsoleWriter();
 
             if (args.Length == 1 && args[0] == "expand")
             {
                 Console.WriteLine(expandedCode);
                 return;
             }
-            File.WriteAllText(CurrentPath().Replace("HandMadeMain.cs", "Combined.csx"), expandedCode);
-
-            var sb = Build();
-
-            var fileInput = LoadInput();
-            if (!string.IsNullOrWhiteSpace(fileInput))
+            else if (args.Length > 0)
             {
-                sb.Clear();
-                sb.Add(fileInput);
-            }
-
-            ConsoleReader reader;
-            var writer = new ConsoleWriter();
-            if (args.Length > 0)
                 reader = new ConsoleReader(new FileStream(args[0], FileMode.Open), new UTF8Encoding(false));
-            else if (IsNotWhiteSpace(sb.sb))
-            {
-                Trace.Listeners.Add(new TextWriterTraceListener(Console.Error));
-                reader = new ConsoleReader(new MemoryStream(new UTF8Encoding(false).GetBytes(sb.ToString())), Encoding.UTF8);
             }
             else
-                reader = new ConsoleReader();
+            {
+                File.WriteAllText(CurrentPath().Replace("HandMadeMain.cs", "Combined.csx"), expandedCode);
 
+                var sb = Build();
+
+                var fileInput = LoadInput();
+                if (!string.IsNullOrWhiteSpace(fileInput))
+                {
+                    sb.Clear();
+                    sb.Add(fileInput);
+                }
+                if (IsNotWhiteSpace(sb.sb))
+                {
+                    Trace.Listeners.Add(new TextWriterTraceListener(Console.Error));
+                    reader = new ConsoleReader(new MemoryStream(new UTF8Encoding(false).GetBytes(sb.ToString())), Encoding.UTF8);
+                }
+                else
+                    reader = new ConsoleReader();
+            }
 
             Trace.WriteLine("---start---");
             var stopwatch = Stopwatch.StartNew();
             new Program(reader, writer).Run();
+            stopwatch.Stop();
             Trace.WriteLine($"---end({stopwatch.ElapsedMilliseconds}ms)---");
 
-            if (toClipboard)
+            if (toClipboard && expandedCode != null)
                 TextCopy.ClipboardService.SetText(expandedCode);
         }
         static bool IsNotWhiteSpace(StringBuilder sb)
