@@ -1,12 +1,80 @@
 ﻿using AtCoder;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using static AtCoder.Global;
 
 namespace AtCoder.Graph
 {
     public static class GraphUtil
     {
+        /// <summary>
+        /// オイラー路を求める
+        /// </summary>
+        public static Span<int> EulerianTrail(this Node[] graph, int from)
+            => EulerianTrail(graph.Select(n => new Queue<int>(n.children)).ToArray(), from, graph[from].IsDirected);
+        private static Span<int> EulerianTrail(Queue<int>[] graph, int from, bool isDirected)
+        {
+            static (int, int) ToTuple(int v1, int v2) => (v1 > v2) ? (v2, v1) : (v1, v2);
+            var cnts = new Dictionary<(int, int), int>();
+            var res = new List<int>();
+            var ixs = new Stack<int>();
+            ixs.Push(from);
+            while (ixs.Count > 0)
+            {
+                from = ixs.Pop();
+                if (graph[from].Count > 0)
+                {
+                    int to = graph[from].Dequeue();
+                    if (!isDirected)
+                    {
+                        var tup = ToTuple(from, to);
+                        var cnt = cnts.Get(tup);
+                        if (cnt > 0)
+                        {
+                            cnts[tup] = cnt - 1;
+                            continue;
+                        }
+                        cnts[tup] = 1;
+                    }
+                    ixs.Push(from);
+                    ixs.Push(to);
+                }
+                else
+                    res.Add(from);
+            }
+            res.Reverse();
+            return res.AsSpan();
+
+            /* 再帰版
+            var cnts = new Dictionary<(int, int), int>();
+            var res = new List<int>();
+            void Dfs(int from)
+            {
+                while (graph[from].Count > 0)
+                {
+                    int to = graph[from].Dequeue();
+                    if (!isDirected)
+                    {
+                        var tup = ToTuple(from, to);
+                        var cnt = cnts.Get(tup);
+                        if (cnt > 0)
+                        {
+                            cnts[tup] = cnt - 1;
+                            continue;
+                        }
+                        cnts[tup] = 1;
+                    }
+                    Dfs(to);
+                }
+                res.Add(from);
+            }
+            Dfs(from);
+            res.Reverse();
+            return res.AsSpan();
+            */
+        }
+
         public static int[] 強連結成分分解(this Node[] graph)
         {
             var sumi = new bool[graph.Length];
