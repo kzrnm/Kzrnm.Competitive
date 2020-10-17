@@ -1,6 +1,7 @@
-using AtCoder.IO;
+﻿using AtCoder.IO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace AtCoder.Graph
@@ -37,11 +38,20 @@ namespace AtCoder.Graph
             children[from].Add(new Next<T> { to = to, value = value });
             roots[to].Add(new Next<T> { to = from, value = value });
         }
-        public WNode<T>[] ToArray() =>
-            Enumerable
-            .Zip(roots, children, (root, child) => (root, child))
-            .Select((t, i) => new WNode<T>(i, t.root.ToArray(), t.child.ToArray()))
-            .ToArray();
+        public WNode<T>[] ToArray()
+        {
+            Debug.Assert(roots.Length == children.Length);
+            var res = new WNode<T>[roots.Length];
+            for (int i = 0; i < res.Length; i++)
+            {
+                if (roots[i] == children[i])
+                    res[i] = new WNode<T>(i, children[i].ToArray());
+                else
+                    res[i] = new WNode<T>(i, roots[i].ToArray(), children[i].ToArray());
+            }
+            return res;
+        }
+
         public WTreeNode<T>[] ToTree(int root = 0)
         {
             if (this.roots[0] != this.children[0]) throw new Exception("木には無向グラフをしたほうが良い");
@@ -153,6 +163,12 @@ namespace AtCoder.Graph
     }
     public class WNode<T>
     {
+        public WNode(int i, Next<T>[] children)
+        {
+            this.index = i;
+            this.roots = roots;
+            this.children = children;
+        }
         public WNode(int i, Next<T>[] roots, Next<T>[] children)
         {
             this.index = i;
@@ -162,7 +178,7 @@ namespace AtCoder.Graph
         public int index;
         public Next<T>[] roots;
         public Next<T>[] children;
-
+        public bool IsDirected => roots != children;
         public override bool Equals(object obj) => obj is WNode<T> d && this.Equals(d);
         public bool Equals(WNode<T> other) => this.index == other.index;
         public override int GetHashCode() => this.index;

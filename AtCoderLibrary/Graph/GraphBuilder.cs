@@ -1,6 +1,7 @@
-using AtCoder.IO;
+﻿using AtCoder.IO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace AtCoder.Graph
@@ -78,12 +79,19 @@ namespace AtCoder.Graph
             return res;
         }
 
-        public Node[] ToArray() =>
-            Enumerable
-            .Zip(roots, children, (root, child) => (root, child))
-            .Select((t, i) => new Node(i, t.root.ToArray(), t.child.ToArray()))
-            .ToArray();
-
+        public Node[] ToArray()
+        {
+            Debug.Assert(roots.Length == children.Length);
+            var res = new Node[roots.Length];
+            for (int i = 0; i < res.Length; i++)
+            {
+                if (roots[i] == children[i])
+                    res[i] = new Node(i, children[i].ToArray());
+                else
+                    res[i] = new Node(i, roots[i].ToArray(), children[i].ToArray());
+            }
+            return res;
+        }
         public GraphBuilder Clone()
         {
             var count = this.roots.Length;
@@ -124,6 +132,11 @@ namespace AtCoder.Graph
     }
     public class Node
     {
+        public Node(int i, int[] children)
+        {
+            this.index = i;
+            this.roots = this.children = children;
+        }
         public Node(int i, int[] roots, int[] children)
         {
             this.index = i;
@@ -134,6 +147,7 @@ namespace AtCoder.Graph
         public readonly int[] roots;
         public readonly int[] children;
 
+        public bool IsDirected => roots != children;
         public override string ToString() => $"children: {string.Join(",", children)}";
         public override bool Equals(object obj) => obj is Node d && this.Equals(d);
         public bool Equals(Node other) => this.index == other.index;

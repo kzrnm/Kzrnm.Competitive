@@ -1,7 +1,8 @@
-using AtCoder;
+﻿using AtCoder;
 using AtCoder.IO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using static AtCoder.Global;
 
@@ -41,11 +42,19 @@ namespace AtCoder.Graph
             children[from].Add(new NextD { to = to, capacity = capacity, cost = cost });
             roots[to].Add(new NextD { to = from, capacity = capacity, cost = cost });
         }
-        public WNodeD[] ToArray() =>
-            Enumerable
-            .Zip(roots, children, (root, child) => (root, child))
-            .Select((t, i) => new WNodeD(i, t.root.ToArray(), t.child.ToArray()))
-            .ToArray();
+        public WNodeD[] ToArray()
+        {
+            Debug.Assert(roots.Length == children.Length);
+            var res = new WNodeD[roots.Length];
+            for (int i = 0; i < res.Length; i++)
+            {
+                if (roots[i] == children[i])
+                    res[i] = new WNodeD(i, children[i].ToArray());
+                else
+                    res[i] = new WNodeD(i, roots[i].ToArray(), children[i].ToArray());
+            }
+            return res;
+        }
         public WTreeNodeD[] ToTree(int root = 0)
         {
             if (this.roots[0] != this.children[0]) throw new Exception("木には無向グラフをしたほうが良い");
@@ -132,111 +141,117 @@ namespace AtCoder.Graph
 
         public override string ToString() => $"children: {string.Join(",", children)}";
         public override bool Equals(object obj) => obj is WTreeNodeD d && this.Equals(d);
-    public bool Equals(WTreeNodeD other) => this.index == other.index;
-    public override int GetHashCode() => this.index;
-}
-public class WNodeD
-{
-    public WNodeD(int i, NextD[] roots, NextD[] children)
-    {
-        this.index = i;
-        this.roots = roots;
-        this.children = children;
+        public bool Equals(WTreeNodeD other) => this.index == other.index;
+        public override int GetHashCode() => this.index;
     }
-    public int index;
-    public NextD[] roots;
-    public NextD[] children;
-
-    public override bool Equals(object obj) => obj is WNodeD d && this.Equals(d);
-
-    public bool Equals(WNodeD other) => this.index == other.index;
-    public override int GetHashCode() => this.index;
-    public override string ToString() => $"children: ({string.Join("),(", children)})";
-}
-class MinCostFlow
-{
-    const long INF = long.MaxValue >> 3;
-    Node[][] graph;
-    public MinCostFlow(WNodeD[] orig)
+    public class WNodeD
     {
-        var gb = NewArray(orig.Length, () => new List<Node>());
-        for (int i = 0; i < orig.Length; i++)
+        public WNodeD(int i, NextD[] children)
         {
-            foreach (var next in orig[i].children)
-            {
-                gb[i].Add(new Node(next.to, next.capacity, next.cost, gb[next.to].Count, false));
-                gb[next.to].Add(new Node(i, 0, -next.cost, gb[i].Count - 1, true));
-            }
+            this.index = i;
+            this.roots = this.children = children;
         }
-        graph = gb.Select(l => l.ToArray()).ToArray();
-    }
-    class Node
-    {
-        public Node(NextD next, int rev, bool isReverse)
-            : this(next.to, next.capacity, next.cost, rev, isReverse) { }
-        public Node(int to, int capacity, long cost, int rev, bool isReverse)
+        public WNodeD(int i, NextD[] roots, NextD[] children)
         {
-            this.to = to;
-            this.capacity = capacity;
-            this.cost = cost;
-            this.rev = rev;
-            this.isReverse = isReverse;
+            this.index = i;
+            this.roots = roots;
+            this.children = children;
         }
+        public int index;
+        public NextD[] roots;
+        public NextD[] children;
+        public bool IsDirected => roots != children;
 
-        public int to;
-        public int capacity;
-        public long cost;
-        public int rev;
-        public bool isReverse;
-        public override string ToString() => $"to: {to} value:{capacity}/{cost}";
+        public override bool Equals(object obj) => obj is WNodeD d && this.Equals(d);
+
+        public bool Equals(WNodeD other) => this.index == other.index;
+        public override int GetHashCode() => this.index;
+        public override string ToString() => $"children: ({string.Join("),(", children)})";
     }
-    public long Calc(int from, int to, int flow)
+    class MinCostFlow
     {
-        long res = 0;
-        var pq = new PriorityQueue<long, int>(graph.Length);
-        var potential = new long[graph.Length];
-        var preve = NewArray(graph.Length, -1);
-        var prevv = NewArray(graph.Length, -1);
-        while (flow > 0)
+        const long INF = long.MaxValue >> 3;
+        Node[][] graph;
+        public MinCostFlow(WNodeD[] orig)
         {
-            // ダイクストラを繰り返す
-            var minCosts = NewArray(graph.Length, INF);
-            pq.Add(0, from);
-            minCosts[from] = 0;
-            while (pq.Count > 0)
+            var gb = NewArray(orig.Length, () => new List<Node>());
+            for (int i = 0; i < orig.Length; i++)
             {
-                var (cost, v) = pq.Dequeue();
-                if (minCosts[v] < cost) continue;
-                for (int i = 0; i < graph[v].Length; i++)
+                foreach (var next in orig[i].children)
                 {
-                    var next = graph[v][i];
-                    var nxCost = minCosts[v] + next.cost + potential[v] - potential[next.to];
-
-                    if (next.capacity > 0 && minCosts[next.to].UpdateMin(nxCost))
-                    {
-                        prevv[next.to] = v;
-                        preve[next.to] = i;
-                        pq.Add(minCosts[next.to], next.to);
-                    }
+                    gb[i].Add(new Node(next.to, next.capacity, next.cost, gb[next.to].Count, false));
+                    gb[next.to].Add(new Node(i, 0, -next.cost, gb[i].Count - 1, true));
                 }
             }
-            if (minCosts[to] == INF) return -1;
-
-            for (int v = 0; v < potential.Length; v++) potential[v] += minCosts[v];
-
-            var addflow = flow;
-            for (int v = to; v != from; v = prevv[v])
-                addflow.UpdateMin(graph[prevv[v]][preve[v]].capacity);
-            flow -= addflow;
-            res += addflow * potential[to];
-            for (int v = to; v != from; v = prevv[v])
-            {
-                var next = graph[prevv[v]][preve[v]];
-                next.capacity -= addflow;
-                graph[v][next.rev].capacity += addflow;
-            }
+            graph = gb.Select(l => l.ToArray()).ToArray();
         }
-        return res;
+        class Node
+        {
+            public Node(NextD next, int rev, bool isReverse)
+                : this(next.to, next.capacity, next.cost, rev, isReverse) { }
+            public Node(int to, int capacity, long cost, int rev, bool isReverse)
+            {
+                this.to = to;
+                this.capacity = capacity;
+                this.cost = cost;
+                this.rev = rev;
+                this.isReverse = isReverse;
+            }
+
+            public int to;
+            public int capacity;
+            public long cost;
+            public int rev;
+            public bool isReverse;
+            public override string ToString() => $"to: {to} value:{capacity}/{cost}";
+        }
+        public long Calc(int from, int to, int flow)
+        {
+            long res = 0;
+            var pq = new PriorityQueue<long, int>(graph.Length);
+            var potential = new long[graph.Length];
+            var preve = NewArray(graph.Length, -1);
+            var prevv = NewArray(graph.Length, -1);
+            while (flow > 0)
+            {
+                // ダイクストラを繰り返す
+                var minCosts = NewArray(graph.Length, INF);
+                pq.Add(0, from);
+                minCosts[from] = 0;
+                while (pq.Count > 0)
+                {
+                    var (cost, v) = pq.Dequeue();
+                    if (minCosts[v] < cost) continue;
+                    for (int i = 0; i < graph[v].Length; i++)
+                    {
+                        var next = graph[v][i];
+                        var nxCost = minCosts[v] + next.cost + potential[v] - potential[next.to];
+
+                        if (next.capacity > 0 && minCosts[next.to].UpdateMin(nxCost))
+                        {
+                            prevv[next.to] = v;
+                            preve[next.to] = i;
+                            pq.Add(minCosts[next.to], next.to);
+                        }
+                    }
+                }
+                if (minCosts[to] == INF) return -1;
+
+                for (int v = 0; v < potential.Length; v++) potential[v] += minCosts[v];
+
+                var addflow = flow;
+                for (int v = to; v != from; v = prevv[v])
+                    addflow.UpdateMin(graph[prevv[v]][preve[v]].capacity);
+                flow -= addflow;
+                res += addflow * potential[to];
+                for (int v = to; v != from; v = prevv[v])
+                {
+                    var next = graph[prevv[v]][preve[v]];
+                    next.capacity -= addflow;
+                    graph[v][next.rev].capacity += addflow;
+                }
+            }
+            return res;
+        }
     }
-}
 }
