@@ -18,43 +18,16 @@ namespace AtCoder.Graph
             static (int, int) ToTuple(int v1, int v2) => (v1 > v2) ? (v2, v1) : (v1, v2);
             var cnts = new Dictionary<(int, int), int>();
             var res = new List<int>();
-            var ixs = new Stack<int>();
-            ixs.Push(from);
-            while (ixs.Count > 0)
+            var idx = new Stack<int>();
+            idx.Push(from);
+        Dfs:
+            while (idx.Count > 0)
             {
-                from = ixs.Pop();
-                if (graph[from].Count > 0)
-                {
-                    int to = graph[from].Dequeue();
-                    if (!isDirected)
-                    {
-                        var tup = ToTuple(from, to);
-                        var cnt = cnts.Get(tup);
-                        if (cnt > 0)
-                        {
-                            cnts[tup] = cnt - 1;
-                            continue;
-                        }
-                        cnts[tup] = 1;
-                    }
-                    ixs.Push(from);
-                    ixs.Push(to);
-                }
-                else
-                    res.Add(from);
-            }
-            res.Reverse();
-            return res.AsSpan();
-
-            /* 再帰版
-            var cnts = new Dictionary<(int, int), int>();
-            var res = new List<int>();
-            void Dfs(int from)
-            {
+                from = idx.Peek();
                 while (graph[from].Count > 0)
                 {
                     int to = graph[from].Dequeue();
-                    if (!isDirected)
+                    if (!isDirected && from != to)
                     {
                         var tup = ToTuple(from, to);
                         var cnt = cnts.Get(tup);
@@ -65,14 +38,14 @@ namespace AtCoder.Graph
                         }
                         cnts[tup] = 1;
                     }
-                    Dfs(to);
+                    idx.Push(to);
+                    goto Dfs;
                 }
-                res.Add(from);
+                res.Add(idx.Pop());
             }
-            Dfs(from);
+
             res.Reverse();
             return res.AsSpan();
-            */
         }
 
         public static int[] 強連結成分分解(this Node[] graph)
