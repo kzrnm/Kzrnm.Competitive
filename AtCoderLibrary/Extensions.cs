@@ -176,5 +176,22 @@ namespace AtCoder
             dic.TryGetValue(key, out var v);
             return v;
         }
+
+        /// <summary>
+        /// <paramref name="span"/>の各要素で<paramref name="action"/>を実行する。
+        /// </summary>
+        public static void Do<T>(this ReadOnlySpan<T> span, Action<T> action)
+        {
+            foreach (var item in span)
+                action(item);
+        }
+        /// <summary>
+        /// <paramref name="span"/>の各要素で<paramref name="action"/>を実行する。
+        /// </summary>
+        public static void Do<T>(this Span<T> span, Action<T> action)
+        {
+            foreach (var item in span)
+                action(item);
+        }
     }
 }
