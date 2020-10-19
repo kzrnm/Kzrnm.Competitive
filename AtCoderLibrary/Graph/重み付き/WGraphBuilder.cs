@@ -166,8 +166,7 @@ namespace AtCoder.Graph
         public WNode(int i, Next<T>[] children)
         {
             this.index = i;
-            this.roots = roots;
-            this.children = children;
+            this.roots = this.children = children;
         }
         public WNode(int i, Next<T>[] roots, Next<T>[] children)
         {

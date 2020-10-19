@@ -160,7 +160,6 @@ namespace AtCoder
             => source.Select((v, i) => (i, v)).Where(t => predicate(t.v)).Select(t => t.i);
         public static Dictionary<TKey, int> GroupCount<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) => source.GroupBy(keySelector).ToDictionary(g => g.Key, g => g.Count());
         public static Dictionary<TKey, int> GroupCount<TKey>(this IEnumerable<TKey> source) => source.GroupCount(i => i);
-        private class ArrayVal<T> { public T[] arr; }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Span<T> AsSpan<T>(this List<T> list, int start = 0) => Unsafe.As<ArrayVal<T>>(list).arr.AsSpan(start, list.Count);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
