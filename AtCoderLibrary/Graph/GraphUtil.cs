@@ -51,40 +51,58 @@ namespace AtCoder.Graph
         public static int[] 強連結成分分解(this Node[] graph)
         {
             var sumi = new bool[graph.Length];
-            Span<int> Dfs1(int index, Span<int> jun)
+            int[] Dfs1()
             {
-                if (sumi[index])
-                    return jun;
-                sumi[index] = true;
-                foreach (var child in graph[index].children)
+                var jun = new int[graph.Length];
+                var cur = graph.Length;
+                var idx = new Stack<int>(graph.Length);
+                var idx2 = new Stack<int>(graph.Length);
+
+                for (int i = 0; i < graph.Length; i++)
                 {
-                    jun = Dfs1(child, jun);
+                    if (sumi[i])
+                        continue;
+                    idx.Push(i);
+                    while (idx.Count > 0)
+                    {
+                        int index = idx.Pop();
+                        if (sumi[index])
+                            continue;
+                        sumi[index] = true;
+                        idx2.Push(index);
+                        foreach (var child in graph[index].children)
+                            idx.Push(child);
+                    }
+                    while (idx2.Count > 0)
+                    {
+                        int index = idx2.Pop();
+                        jun[--cur] = index;
+                    }
                 }
-                jun[^1] = index;
-                jun = jun[0..^1];
                 return jun;
             }
 
-            var jun = new int[graph.Length];
-            var junsp = jun.AsSpan();
-            for (int i = 0; i < graph.Length; i++)
-                junsp = Dfs1(i, junsp);
+            var jun = Dfs1();
 
             var res = NewArray(graph.Length, -1);
-            bool Dfs2(int index, int group)
-            {
-                if (res[index] >= 0)
-                    return false;
-                res[index] = group;
-                foreach (var r in graph[index].roots)
-                    Dfs2(r, group);
-                return true;
-            }
-
+            var idx = new Stack<int>(graph.Length);
             var g = 0;
             foreach (var i in jun)
-                if (Dfs2(i, g))
-                    g++;
+            {
+                if (res[i] >= 0)
+                    continue;
+                idx.Push(i);
+                while (idx.Count > 0)
+                {
+                    int index = idx.Pop();
+                    if (res[index] >= 0)
+                        continue;
+                    res[index] = g;
+                    foreach (var r in graph[index].roots)
+                        idx.Push(r);
+                }
+                ++g;
+            }
             return res;
         }
 
