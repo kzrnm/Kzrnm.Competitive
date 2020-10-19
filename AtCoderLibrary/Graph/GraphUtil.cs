@@ -106,6 +106,44 @@ namespace AtCoder.Graph
             return res;
         }
 
+        public static (int l, int r)[] EulerianTour(this TreeNode[] tree)
+        {
+            var root = 0;
+            while (tree[root].root >= 0) root = tree[root].root;
+
+            var cnt = 0;
+            var res = new (int l, int r)[tree.Length];
+
+            var idx = new Stack<(int index, int ci)>(tree.Length);
+            idx.Push((root, 0));
+            while (idx.Count > 0)
+            {
+                var (index, ci) = idx.Pop();
+                if (ci == 0)
+                    res[index].l = cnt++;
+
+                if (ci < tree[index].children.Length)
+                {
+                    idx.Push((index, ci + 1));
+                    idx.Push((tree[index].children[ci], 0));
+                }
+                else
+                    res[index].r = cnt++;
+            }
+
+            /* 再帰版
+            void Dfs(int index)
+            {
+                res[index].l = cnt++;
+                foreach (var ch in tree[index].children)
+                    Dfs(ch);
+                res[index].r = cnt++;
+            }
+            Dfs(root);
+            */
+            return res;
+        }
+
         public static int MaxFlow(this Node[] graph, int from, int to)
         {
             var capacities = new Dictionary<(int from, int to), int>();
