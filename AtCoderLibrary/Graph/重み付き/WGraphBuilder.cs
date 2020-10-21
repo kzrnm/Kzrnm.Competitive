@@ -6,8 +6,28 @@ using System.Linq;
 
 namespace AtCoder.Graph
 {
-    public class WIntGraphBuilder : WGraphBuilder<int, IntOperator> { public WIntGraphBuilder(int count, bool isOriented) : base(count, isOriented) { } }
-    public class WLongGraphBuilder : WGraphBuilder<long, LongOperator> { public WLongGraphBuilder(int count, bool isOriented) : base(count, isOriented) { } }
+    public class WIntGraphBuilder : WGraphBuilder<int, IntOperator>
+    {
+        public WIntGraphBuilder(int count, bool isOriented) : base(count, isOriented) { }
+        public static WIntGraphBuilder Create(int count, ConsoleReader cr, int edgeCount, bool isOriented)
+        {
+            var gb = new WIntGraphBuilder(count, isOriented);
+            for (var i = 0; i < edgeCount; i++)
+                gb.Add(cr.Int0, cr.Int0, cr.Int);
+            return gb;
+        }
+    }
+    public class WLongGraphBuilder : WGraphBuilder<long, LongOperator>
+    {
+        public WLongGraphBuilder(int count, bool isOriented) : base(count, isOriented) { }
+        public static WLongGraphBuilder Create(int count, ConsoleReader cr, int edgeCount, bool isOriented)
+        {
+            var gb = new WLongGraphBuilder(count, isOriented);
+            for (var i = 0; i < edgeCount; i++)
+                gb.Add(cr.Int0, cr.Int0, cr.Long);
+            return gb;
+        }
+    }
     public class WGraphBuilder<T, TOp>
         where T : struct
         where TOp : struct, IArithmeticOperator<T>
@@ -107,24 +127,6 @@ namespace AtCoder.Graph
             return cl;
         }
     }
-    public static class WGraphBuilder
-    {
-        public static WIntGraphBuilder CreateInt(int count, ConsoleReader cr, int edgeCount, bool isOriented)
-        {
-            var gb = new WIntGraphBuilder(count, isOriented);
-            for (var i = 0; i < edgeCount; i++)
-                gb.Add(cr.Int0, cr.Int0, cr.Int);
-            return gb;
-        }
-        public static WLongGraphBuilder CreateLong(int count, ConsoleReader cr, int edgeCount, bool isOriented)
-        {
-            var gb = new WLongGraphBuilder(count, isOriented);
-            for (var i = 0; i < edgeCount; i++)
-                gb.Add(cr.Int0, cr.Int0, cr.Long);
-            return gb;
-        }
-    }
-
 
     /// <summary>
     /// (to, value)
