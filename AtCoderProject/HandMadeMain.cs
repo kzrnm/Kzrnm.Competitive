@@ -54,6 +54,7 @@ namespace AtCoderProject.Runner
             }
             else if (args.Length > 0)
             {
+                toClipboard = false;
                 reader = new ConsoleReader(new FileStream(args[0], FileMode.Open), new UTF8Encoding(false));
             }
             else
