@@ -50,33 +50,32 @@ namespace AtCoder.Graph
 
         public static int[] 強連結成分分解(this Node[] graph)
         {
-            var sumi = new bool[graph.Length];
             int[] Dfs1()
             {
+                var cix = new int[graph.Length];
                 var jun = new int[graph.Length];
                 var cur = graph.Length;
                 var idx = new Stack<int>(graph.Length);
-                var idx2 = new Stack<int>(graph.Length);
 
                 for (int i = 0; i < graph.Length; i++)
                 {
-                    if (sumi[i])
-                        continue;
+                    if (cix[i] >= graph[i].children.Length) continue;
                     idx.Push(i);
                     while (idx.Count > 0)
                     {
-                        int index = idx.Pop();
-                        if (sumi[index])
-                            continue;
-                        sumi[index] = true;
-                        idx2.Push(index);
-                        foreach (var child in graph[index].children)
-                            idx.Push(child);
-                    }
-                    while (idx2.Count > 0)
-                    {
-                        int index = idx2.Pop();
-                        jun[--cur] = index;
+                        var index = idx.Pop();
+                        ref var ci = ref cix[index];
+                        if (ci < graph[index].children.Length)
+                        {
+                            var to = graph[index].children[ci++];
+                            idx.Push(index);
+                            idx.Push(to);
+                        }
+                        else if (ci == graph[index].children.Length)
+                        {
+                            ci++;
+                            jun[--cur] = index;
+                        }
                     }
                 }
                 return jun;
