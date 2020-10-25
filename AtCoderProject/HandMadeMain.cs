@@ -60,7 +60,8 @@ namespace AtCoderProject.Runner
             }
             else
             {
-                File.WriteAllText(CurrentPath().Replace("HandMadeMain.cs", "Combined.csx"), expandedCode);
+                if (expandedCode != null)
+                    File.WriteAllText(CurrentPath().Replace("HandMadeMain.cs", "Combined.csx"), expandedCode);
 
                 var sb = Build();
 
