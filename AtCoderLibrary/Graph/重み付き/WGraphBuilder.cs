@@ -163,7 +163,7 @@ namespace AtCoder.Graph
         int ITreeNode.Depth => depth;
         IEnumerable<int> ITreeNode.Children => children.Select(nx => nx.to);
 
-        public override string ToString() => $"children: {string.Join(",", children)}";
+        public override string ToString() => $"children: ({string.Join("),(", children)})";
         public override bool Equals(object obj) => obj is WTreeNode<T> d && this.Equals(d);
         public bool Equals(WTreeNode<T> other) => this.index == other.index;
         public override int GetHashCode() => this.index;
