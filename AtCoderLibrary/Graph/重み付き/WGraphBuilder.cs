@@ -142,7 +142,7 @@ namespace AtCoder.Graph
         }
         public override string ToString() => $"to: {to} value:{value}";
     }
-    public class WTreeNode<T>
+    public class WTreeNode<T> : ITreeNode
     {
         public WTreeNode(int i, int root, int depth, T depthLength, Next<T>[] children)
         {
@@ -158,12 +158,17 @@ namespace AtCoder.Graph
         public readonly T depthLength;
         public Next<T>[] children;
 
+        int ITreeNode.Index => index;
+        int ITreeNode.Root => root;
+        int ITreeNode.Depth => depth;
+        IEnumerable<int> ITreeNode.Children => children.Select(nx => nx.to);
+
         public override string ToString() => $"children: {string.Join(",", children)}";
         public override bool Equals(object obj) => obj is WTreeNode<T> d && this.Equals(d);
         public bool Equals(WTreeNode<T> other) => this.index == other.index;
         public override int GetHashCode() => this.index;
     }
-    public class WNode<T>
+    public class WNode<T> : INode
     {
         public WNode(int i, Next<T>[] children)
         {
@@ -179,7 +184,14 @@ namespace AtCoder.Graph
         public int index;
         public Next<T>[] roots;
         public Next<T>[] children;
+
+        int INode.Index => index;
+        IEnumerable<int> INode.Roots => roots.Select(nx => nx.to);
+        IEnumerable<int> INode.Children => children.Select(nx => nx.to);
+
         public bool IsDirected => roots != children;
+
+
         public override bool Equals(object obj) => obj is WNode<T> d && this.Equals(d);
         public bool Equals(WNode<T> other) => this.index == other.index;
         public override int GetHashCode() => this.index;

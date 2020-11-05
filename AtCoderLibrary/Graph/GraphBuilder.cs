@@ -110,7 +110,7 @@ namespace AtCoder.Graph
             return cl;
         }
     }
-    public class TreeNode
+    public class TreeNode : ITreeNode
     {
         public TreeNode(int i, int root, int depth, int[] children)
         {
@@ -124,13 +124,18 @@ namespace AtCoder.Graph
         public readonly int depth;
         public int[] children;
 
+        int ITreeNode.Index => index;
+        int ITreeNode.Root => root;
+        int ITreeNode.Depth => depth;
+        IEnumerable<int> ITreeNode.Children => children;
+
         public override string ToString() => $"children: {string.Join(",", children)}";
         public override bool Equals(object obj) => obj is TreeNode node && this.Equals(node);
 
         public bool Equals(TreeNode other) => this.index == other.index;
         public override int GetHashCode() => this.index;
     }
-    public class Node
+    public class Node : INode
     {
         public Node(int i, int[] children)
         {
@@ -146,6 +151,10 @@ namespace AtCoder.Graph
         public readonly int index;
         public readonly int[] roots;
         public readonly int[] children;
+
+        int INode.Index => index;
+        IEnumerable<int> INode.Roots => roots;
+        IEnumerable<int> INode.Children => children;
 
         public bool IsDirected => roots != children;
         public override string ToString() => $"children: {string.Join(",", children)}";

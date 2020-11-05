@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using static AtCoder.Global;
 
 namespace AtCoder.Graph
@@ -6,9 +6,9 @@ namespace AtCoder.Graph
     /**
      * <summary>最小共通祖先</summary> 
      */
-    public class LowestCommonAncestor
+    public class LowestCommonAncestor<T> where T : ITreeNode
     {
-        readonly TreeNode[] tree;
+        readonly T[] tree;
 
         /** <summary>
          *  kprv[u][k] 頂点uの2^k個上の祖先頂点v, 0<=k<logN
@@ -16,7 +16,7 @@ namespace AtCoder.Graph
          */
         readonly int[][] kprv;
         readonly int logN;
-        public LowestCommonAncestor(TreeNode[] tree)
+        public LowestCommonAncestor(T[] tree)
         {
             if (tree.Length == 0) throw new ArgumentException(nameof(tree));
 
@@ -25,7 +25,7 @@ namespace AtCoder.Graph
             this.kprv = NewArray(tree.Length, logN, 0);
             for (int v = 0; v < tree.Length; v++)
             {
-                this.kprv[v][0] = tree[v].root;
+                this.kprv[v][0] = tree[v].Root;
             }
             for (int k = 0; k < logN - 1; k++)
             {
@@ -66,11 +66,12 @@ namespace AtCoder.Graph
             return kprv[u][0];
         }
 
-        int Depth(int index) => tree[index].depth;
+        int Depth(int index) => tree[index].Depth;
     }
 
     public static class LowestCommonAncestorExt
     {
-        public static LowestCommonAncestor Lca(TreeNode[] tree) => new LowestCommonAncestor(tree);
+        public static LowestCommonAncestor<T> LowestCommonAncestor<T>(this T[] tree) where T : ITreeNode
+            => new LowestCommonAncestor<T>(tree);
     }
 }
