@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace AtCoder
@@ -135,7 +135,7 @@ namespace AtCoder
         }
     }
 
-    class Trie<T> : Trie<T, bool>
+    public class Trie<T> : Trie<T, bool>
     {
         public Trie() : base() { }
         public Trie(IEqualityComparer<T> comparer) : base(comparer) { }
