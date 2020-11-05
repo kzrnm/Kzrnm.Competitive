@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using static AtCoder.Global;
@@ -122,13 +122,13 @@ namespace AtCoder.Graph
 
             while (remains.Count > 0)
             {
-                var first = remains.Dequeue();
-                if (used[first.Value]) continue;
-                used[first.Value] = true;
+                var (len, ix) = remains.Dequeue();
+                if (used[ix]) continue;
+                used[ix] = true;
                 if (++count >= graph.Length) break;
-                foreach (var next in graph[first.Value].children)
+                foreach (var next in graph[ix].children)
                 {
-                    var nextLength = op.Add(first.Key, next.value);
+                    var nextLength = op.Add(len, next.value);
                     if (op.GreaterThan(res[next.to], nextLength))
                         remains.Add(res[next.to] = nextLength, next.to);
                 }
