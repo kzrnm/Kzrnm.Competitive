@@ -140,6 +140,6 @@ namespace AtCoder
         public Trie() : base() { }
         public Trie(IEqualityComparer<T> comparer) : base(comparer) { }
         public void Add(ReadOnlySpan<T> key) => Add(key, true);
-        public bool Contains(ReadOnlySpan<T> key) => GetChild(key) != null;
+        public bool Contains(ReadOnlySpan<T> key) => GetChild(key)?.Value == true;
     }
 }
