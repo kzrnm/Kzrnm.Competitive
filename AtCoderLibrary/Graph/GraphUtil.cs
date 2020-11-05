@@ -59,7 +59,7 @@ namespace AtCoder.Graph
 
                 for (int i = 0; i < graph.Length; i++)
                 {
-                    if (cix[i] >= graph[i].children.Length) continue;
+                    if (cix[i] > graph[i].children.Length) continue;
                     idx.Push(i);
                     while (idx.Count > 0)
                     {
