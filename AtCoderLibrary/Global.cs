@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -42,7 +42,7 @@ namespace AtCoder
             return lcm;
         }
 
-        public static T[] NewArray<T>(int len0, T value) => new T[len0].Fill(value);
+        public static T[] NewArray<T>(int len0, T value) where T : struct => new T[len0].Fill(value);
         public static T[] NewArray<T>(int len0, Func<T> factory)
         {
             var arr = new T[len0];
