@@ -24,7 +24,6 @@ namespace AtCoderProject.Runner
 
             return sb;
         }
-        static bool toClipboard = true;
 
         [STAThread]
         static void Main(string[] args)
@@ -48,14 +47,38 @@ namespace AtCoderProject.Runner
             ConsoleReader reader;
             var writer = new ConsoleWriter();
 
-            if (args.Length == 1 && args[0] == "expand")
+            if (args.Length > 0 && args[0] == "expand")
             {
-                Console.WriteLine(expandedCode);
+                if (expandedCode != null)
+                {
+                    bool writeFile = false;
+                    foreach (var arg in args.AsSpan(1))
+                    {
+                        switch (arg.ToLower())
+                        {
+                            case "--toclipboard":
+                                TextCopy.ClipboardService.SetText(expandedCode);
+                                Console.WriteLine("Copy to Clipboard");
+                                break;
+                            case "--writefile":
+                                writeFile = true;
+                                break;
+                        }
+                    }
+
+                    if (writeFile)
+                    {
+                        var writePath = CurrentPath().Replace("HandMadeMain.cs", "Combined.csx");
+                        File.WriteAllText(writePath, expandedCode);
+                        Console.WriteLine($"Write {writePath}");
+                    }
+                    else
+                        Console.WriteLine(expandedCode);
+                }
                 return;
             }
             else if (args.Length > 0)
             {
-                toClipboard = false;
                 reader = new ConsoleReader(new FileStream(args[0], FileMode.Open), new UTF8Encoding(false));
             }
             else
@@ -85,9 +108,6 @@ namespace AtCoderProject.Runner
             new Program(reader, writer).Run();
             stopwatch.Stop();
             Trace.WriteLine($"---end({stopwatch.ElapsedMilliseconds}ms)---");
-
-            if (toClipboard && expandedCode != null)
-                TextCopy.ClipboardService.SetText(expandedCode);
         }
         static bool IsNotWhiteSpace(StringBuilder sb)
         {
