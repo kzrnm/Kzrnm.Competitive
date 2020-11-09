@@ -170,6 +170,9 @@ function Get-Parsed-Input {
             ForEach-Object ChildNodes |
             ForEach-Object Value)
         if (-not $line) { continue }
+        elseif ($line.Count -eq 1) {
+            $line = [string[]]($line[0] -split " *\\hspace\{[^}]*\} *" | Where-Object { $_ })
+        }
         $first = $line[0]
         if ($first -eq ':') { }
         elseif ($first -eq '.') { }
