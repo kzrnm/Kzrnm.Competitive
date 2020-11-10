@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' != 'Release'">
-    <Exec Command="dotnet $(TargetPath) expand --writefile --toclipboard" />
+    <Exec Command="dotnet $(TargetPath) expand --writefile" />
   </Target>
 
   <!--
