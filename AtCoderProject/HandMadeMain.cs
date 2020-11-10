@@ -50,31 +50,7 @@ namespace AtCoderProject.Runner
             if (args.Length > 0 && args[0] == "expand")
             {
                 if (expandedCode != null)
-                {
-                    bool writeFile = false;
-                    foreach (var arg in args.AsSpan(1))
-                    {
-                        switch (arg.ToLower())
-                        {
-                            case "--toclipboard":
-                                TextCopy.ClipboardService.SetText(expandedCode);
-                                Console.WriteLine("Copy to Clipboard");
-                                break;
-                            case "--writefile":
-                                writeFile = true;
-                                break;
-                        }
-                    }
-
-                    if (writeFile)
-                    {
-                        var writePath = CurrentPath().Replace("HandMadeMain.cs", "Combined.csx");
-                        File.WriteAllText(writePath, expandedCode);
-                        Console.WriteLine($"Write {writePath}");
-                    }
-                    else
-                        Console.WriteLine(expandedCode);
-                }
+                    Expand(args.AsSpan(1), expandedCode);
                 return;
             }
             else if (args.Length > 0)
@@ -108,6 +84,39 @@ namespace AtCoderProject.Runner
             new Program(reader, writer).Run();
             stopwatch.Stop();
             Trace.WriteLine($"---end({stopwatch.ElapsedMilliseconds}ms)---");
+        }
+        static void Expand(ReadOnlySpan<string> args, string expandedCode)
+        {
+            bool writeFile = false;
+            bool toClipboard = false;
+            for (int i = 0; i < args.Length; i++)
+            {
+                switch (args[i].ToLower())
+                {
+                    case "--toclipboard":
+                        toClipboard = true;
+                        break;
+                    case "--writefile":
+                        writeFile = true;
+                        break;
+                }
+            }
+
+            if (toClipboard)
+            {
+                TextCopy.ClipboardService.SetText(expandedCode);
+                Console.WriteLine("Copy to Clipboard");
+            }
+
+
+            if (writeFile)
+            {
+                var writePath = CurrentPath().Replace("HandMadeMain.cs", "Combined.csx");
+                File.WriteAllText(writePath, expandedCode);
+                Console.WriteLine($"Write {writePath}");
+            }
+            else
+                Console.WriteLine(expandedCode);
         }
         static bool IsNotWhiteSpace(StringBuilder sb)
         {
