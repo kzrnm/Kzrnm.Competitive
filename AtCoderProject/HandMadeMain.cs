@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -30,18 +29,8 @@ namespace AtCoderProject.Runner
         {
             string expandedCode = null;
 #if DEBUG
-            var files = (IDictionary)Type.GetType("Expanded.Expanded")
-                .GetProperty("Files", BindingFlags.Public | BindingFlags.Static)
-                .GetValue(null);
-            foreach (DictionaryEntry p in files)
-            {
-                var key = (string)p.Key;
-                var value = p.Value;
-                if (key.EndsWith("Program.cs"))
-                {
-                    expandedCode = (string)value.GetType().GetField("Code").GetValue(value);
-                }
-            }
+            var files = Expanded.Expanded.Files;
+            expandedCode = files[CurrentPath().Replace("HandMadeMain.cs", "Program.cs")].Code;
 #endif
 
             ConsoleReader reader;
