@@ -241,9 +241,13 @@ function Update-Input {
     param(
         $vars
     )
+    if (-not $vars) {
+        $vars = @()
+    }
+
     $mainPath = "$PSScriptRoot\..\AtCoderProject\Program.cs"
     $main = (Get-Content $mainPath -Raw)
-    ($main -replace 'private object Calc\(\)[\s\S]*', ("private object Calc(){")) > $mainPath
+    ($main -replace 'private object Calc\(\)[\s\S]*', ("private object Calc(){")) > $mainPath   
     $vars | ForEach-Object { $_.ToInit() } >> $mainPath
     "return null;}" >> $mainPath
     $vars | ForEach-Object { $_.ToDefine() } >> $mainPath
