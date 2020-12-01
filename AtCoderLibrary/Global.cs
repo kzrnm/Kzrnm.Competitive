@@ -97,6 +97,7 @@ namespace AtCoder
             }
             return res;
         }
+#pragma warning disable IDE0057
         public static BigInteger ParseBigInteger(ReadOnlySpan<char> s)
         {
             /* 自前実装の方が速い */
@@ -119,6 +120,7 @@ namespace AtCoder
             }
             return res;
         }
+#pragma warning restore IDE0057
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int PopCount(int x) => BitOperations.PopCount((uint)x);
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
