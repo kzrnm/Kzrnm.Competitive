@@ -29,7 +29,7 @@ namespace AtCoderProject.Runner
         {
             string expandedCode = null;
 #if DEBUG
-            var files = Expanded.Expanded.Files;
+            var files = SourceExpander.Expanded.ExpandedContainer.Files;
             expandedCode = files[CurrentPath().Replace("HandMadeMain.cs", "Program.cs")].Code;
 #endif
 
