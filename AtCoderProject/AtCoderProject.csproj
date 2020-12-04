@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ac-library-csharp\AtCoderLibrary\AtCoderLibrary.csproj" />
+    <ProjectReference Include="..\ac-library-csharp\Source\AtCoderLibrary\AtCoderLibrary.csproj" />
     <ProjectReference Include="..\AtCoderLibrary\AtCoderLibrary.Kz.csproj" />
   </ItemGroup>
 
