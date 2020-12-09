@@ -1,4 +1,4 @@
-﻿using AtCoder.IO;
+﻿using Kzrnm.Competitive.IO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,7 +33,7 @@ namespace AtCoderProject.Runner
             expandedCode = files[CurrentPath().Replace("HandMadeMain.cs", "Program.cs")].Code;
 #endif
 
-            ConsoleReader reader;
+            PropertyConsoleReader reader;
             var writer = new ConsoleWriter();
 
             if (args.Length > 0 && args[0] == "expand")
@@ -44,7 +44,7 @@ namespace AtCoderProject.Runner
             }
             else if (args.Length > 0)
             {
-                reader = new ConsoleReader(new FileStream(args[0], FileMode.Open), new UTF8Encoding(false));
+                reader = new PropertyConsoleReader(new FileStream(args[0], FileMode.Open), new UTF8Encoding(false));
             }
             else
             {
@@ -62,10 +62,10 @@ namespace AtCoderProject.Runner
                 if (IsNotWhiteSpace(sb.sb))
                 {
                     Trace.Listeners.Add(new TextWriterTraceListener(Console.Error));
-                    reader = new ConsoleReader(new MemoryStream(new UTF8Encoding(false).GetBytes(sb.ToString())), Encoding.UTF8);
+                    reader = new PropertyConsoleReader(new MemoryStream(new UTF8Encoding(false).GetBytes(sb.ToString())), Encoding.UTF8);
                 }
                 else
-                    reader = new ConsoleReader();
+                    reader = new PropertyConsoleReader();
             }
 
             Trace.WriteLine("---start---");

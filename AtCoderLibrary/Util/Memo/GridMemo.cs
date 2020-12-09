@@ -1,4 +1,4 @@
-﻿using AtCoder.IO;
+﻿using Kzrnm.Competitive.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +9,8 @@ namespace AtCoder.Util.Memo
     internal class GridMemo
     {
         // https://atcoder.jp/contests/abc088/tasks/abc088_d
-        readonly ConsoleReader cr;
-        public GridMemo(ConsoleReader cr) { this.cr = cr; }
+        readonly PropertyConsoleReader cr;
+        public GridMemo(PropertyConsoleReader cr) { this.cr = cr; }
 
         public object Calc()
         {

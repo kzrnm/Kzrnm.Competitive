@@ -1,5 +1,4 @@
-﻿using AtCoder.IO;
-using AtCoderProject;
+﻿using Kzrnm.Competitive.IO;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -35,7 +34,7 @@ namespace AtCoderRunner
             var encoding = new UTF8Encoding(false);
             using var inSteam = new MemoryStream(encoding.GetBytes(input));
             using var outStream = new MemoryStream(30 * 100000);
-            var cr = new ConsoleReader(inSteam, encoding);
+            var cr = new PropertyConsoleReader(inSteam, encoding);
             var cw = new ConsoleWriter(outStream, encoding);
             new Program(cr, cw).Run();
 

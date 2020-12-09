@@ -1,4 +1,4 @@
-﻿using AtCoder.IO;
+﻿using Kzrnm.Competitive.IO;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,7 +9,7 @@ namespace AtCoder.Graph
     public class WIntGraphBuilder : WGraphBuilder<int, IntOperator>
     {
         public WIntGraphBuilder(int count, bool isOriented) : base(count, isOriented) { }
-        public static WIntGraphBuilder Create(int count, ConsoleReader cr, int edgeCount, bool isOriented)
+        public static WIntGraphBuilder Create(int count, PropertyConsoleReader cr, int edgeCount, bool isOriented)
         {
             var gb = new WIntGraphBuilder(count, isOriented);
             for (var i = 0; i < edgeCount; i++)
@@ -20,7 +20,7 @@ namespace AtCoder.Graph
     public class WLongGraphBuilder : WGraphBuilder<long, LongOperator>
     {
         public WLongGraphBuilder(int count, bool isOriented) : base(count, isOriented) { }
-        public static WLongGraphBuilder Create(int count, ConsoleReader cr, int edgeCount, bool isOriented)
+        public static WLongGraphBuilder Create(int count, PropertyConsoleReader cr, int edgeCount, bool isOriented)
         {
             var gb = new WLongGraphBuilder(count, isOriented);
             for (var i = 0; i < edgeCount; i++)

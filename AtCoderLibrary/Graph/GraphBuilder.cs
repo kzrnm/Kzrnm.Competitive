@@ -1,4 +1,4 @@
-﻿using AtCoder.IO;
+﻿using Kzrnm.Competitive.IO;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,7 +28,7 @@ namespace AtCoder.Graph
             }
         }
 
-        public static GraphBuilder Create(int count, ConsoleReader cr, int edgeCount, bool isOriented)
+        public static GraphBuilder Create(int count, PropertyConsoleReader cr, int edgeCount, bool isOriented)
         {
             var gb = new GraphBuilder(count, isOriented);
             for (var i = 0; i < edgeCount; i++)

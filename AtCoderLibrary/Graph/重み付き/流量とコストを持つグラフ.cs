@@ -1,5 +1,4 @@
-﻿using AtCoder;
-using AtCoder.IO;
+﻿using Kzrnm.Competitive.IO;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,12 +29,12 @@ namespace AtCoder.Graph
                 }
             }
         }
-        public WGraphBuilderD(int count, ConsoleReader cr, int edgeCount, bool isOriented) : this(count, isOriented)
+        public WGraphBuilderD(int count, PropertyConsoleReader cr, int edgeCount, bool isOriented) : this(count, isOriented)
         {
             for (var i = 0; i < edgeCount; i++)
                 this.Add(cr.Int0, cr.Int0, cr.Int, cr.Int);
         }
-        public static WTreeNodeD[] MakeTree(int count, ConsoleReader cr, int root = 0)
+        public static WTreeNodeD[] MakeTree(int count, PropertyConsoleReader cr, int root = 0)
             => new WGraphBuilderD(count, cr, count - 1, false).ToTree(root);
         public void Add(int from, int to, int capacity, long cost)
         {

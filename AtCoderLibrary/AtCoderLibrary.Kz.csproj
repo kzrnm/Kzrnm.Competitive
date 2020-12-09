@@ -15,11 +15,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AtCoderAnalyzer" Version="1.0.2">
+    <PackageReference Include="AtCoderAnalyzer" Version="1.0.4-beta.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SourceExpander.Embedder" Version="2.2.0">
+    <PackageReference Include="Competitive.IO" Version="0.0.1-beta.1" />
+    <PackageReference Include="SourceExpander.Embedder" Version="2.2.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
