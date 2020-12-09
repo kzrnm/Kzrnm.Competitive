@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "Combined.cs*": "text"
+    },
+    "omnisharp.enableRoslynAnalyzers": true,
+    "omnisharp.defaultLaunchSolution": "AtCoderProject.sln"
+}
