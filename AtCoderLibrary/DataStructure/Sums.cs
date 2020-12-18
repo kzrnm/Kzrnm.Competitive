@@ -23,7 +23,7 @@
         where TValue : struct
         where TOp : struct, IArithmeticOperator<TValue>
     {
-        static readonly TOp op;
+        private static readonly TOp op = default;
         private readonly TValue[] impl;
         public int Length => impl.Length - 1;
         public Sums(TValue[] arr)

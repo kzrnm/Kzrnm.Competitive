@@ -1,4 +1,4 @@
-namespace AtCoder
+﻿namespace AtCoder
 {
     /// <summary>
     /// 二次元累積和を求めます。
@@ -19,7 +19,7 @@ namespace AtCoder
             }
         }
         public Slicer Slice(int left, int length) => new Slicer(impl, left, left + length);
-        public ref struct Slicer
+        public readonly ref struct Slicer
         {
             readonly long[][] impl;
             readonly int left;

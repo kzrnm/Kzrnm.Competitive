@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 #region https://algoful.com/Archive/Algorithm/BMSearch
 #endregion

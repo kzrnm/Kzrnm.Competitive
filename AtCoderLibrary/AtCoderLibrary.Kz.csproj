@@ -14,6 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="key.snk" Visible="false" />
     <PackageReference Include="ac-library-csharp" Version="1.0.6-beta.2" />
     <PackageReference Include="AtCoderAnalyzer" Version="1.0.5">
       <PrivateAssets>all</PrivateAssets>

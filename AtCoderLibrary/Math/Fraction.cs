@@ -12,10 +12,13 @@ namespace AtCoder
         public readonly long denominator;
         public Fraction(long 分子, long 分母)
         {
-            var sign = Math.Sign(分子) * Math.Sign(分母);
-            分子 = Math.Abs(分子); 分母 = Math.Abs(分母);
+            var negative = (分子 ^ 分母) < 0;
+            分子 = Math.Abs(分子);
+            分母 = Math.Abs(分母);
             var gcd = Global.Gcd(分母, 分子);
-            numerator = sign * 分子 / gcd;
+            numerator = 分子 / gcd;
+            if (negative)
+                numerator = -numerator;
             denominator = 分母 / gcd;
         }
         public override string ToString() => $"{numerator}/{denominator}";

@@ -1,4 +1,4 @@
-using FluentAssertions;
+﻿using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +16,13 @@ namespace AtCoder
             { 2, 845106, 1, 422553 },
             { 230895518700, 230811434700, 9995477, 9991837 },
             { 1, 2, 1, 2 },
-            { -1, 2, -1, 2 },
-            { 1, -2, -1, 2 },
-            { -1, -2, 1, 2 },
+            { -1,  2, -1, 2 },
+            {  1, -2, -1, 2 },
+            { -1, -2,  1, 2 },
+            {  2,  2,  1, 1 },
+            { -2,  2, -1, 1 },
+            {  2, -2, -1, 1 },
+            { -2, -2,  1, 1 },
         };
         [Theory]
         [MemberData(nameof(Construct_Data))]

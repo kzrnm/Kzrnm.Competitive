@@ -1,4 +1,4 @@
-namespace AtCoder.DataStructure
+﻿namespace AtCoder.DataStructure
 {
     public class BinaryIndexedTreeRange
     {
