@@ -173,7 +173,7 @@ namespace AtCoder.Graph
         Node[][] graph;
         public MinCostFlow(WNodeD[] orig)
         {
-            var gb = NewArray(orig.Length, () => new List<Node>());
+            var gb = Global.NewArray(orig.Length, () => new List<Node>());
             for (int i = 0; i < orig.Length; i++)
             {
                 foreach (var next in orig[i].children)
@@ -209,12 +209,12 @@ namespace AtCoder.Graph
             long res = 0;
             var pq = new PriorityQueue<long, int>(graph.Length);
             var potential = new long[graph.Length];
-            var preve = NewArray(graph.Length, -1);
-            var prevv = NewArray(graph.Length, -1);
+            var preve = Global.NewArray(graph.Length, -1);
+            var prevv = Global.NewArray(graph.Length, -1);
             while (flow > 0)
             {
                 // ダイクストラを繰り返す
-                var minCosts = NewArray(graph.Length, INF);
+                var minCosts = Global.NewArray(graph.Length, INF);
                 pq.Add(0, from);
                 minCosts[from] = 0;
                 while (pq.Count > 0)

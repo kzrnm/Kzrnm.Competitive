@@ -83,7 +83,7 @@ namespace AtCoder.Graph
 
             var jun = Dfs1();
 
-            var res = NewArray(graph.Length, -1);
+            var res = Global.NewArray(graph.Length, -1);
             var idx = new Stack<int>(graph.Length);
             var g = 0;
             foreach (var i in jun)
@@ -223,7 +223,7 @@ namespace AtCoder.Graph
     {
         public static int[] BFS(this Node[] graph, int from)
         {
-            var res = NewArray(graph.Length, int.MaxValue);
+            var res = Global.NewArray(graph.Length, int.MaxValue);
             var queue = new Queue<int>();
             queue.Enqueue(from);
             res[from] = 0;

@@ -80,7 +80,7 @@ namespace AtCoder.Graph
         {
             TOp op = default;
             var INF = op.Divide(op.MaxValue, op.Increment(op.Increment(default)));
-            var res = NewArray(graph.Length, graph.Length, default(T));
+            var res = Global.NewArray(graph.Length, graph.Length, default(T));
             for (var i = 0; i < graph.Length; i++)
             {
                 for (var j = 0; j < graph.Length; j++)
@@ -112,7 +112,7 @@ namespace AtCoder.Graph
         {
             TOp op = default;
             var INF = op.Divide(op.MaxValue, op.Increment(op.Increment(default)));
-            var res = NewArray(graph.Length, INF);
+            var res = Global.NewArray(graph.Length, INF);
             res[start] = default;
 
             var used = new bool[graph.Length];
@@ -146,7 +146,7 @@ namespace AtCoder.Graph
         {
             TOp op = default;
             var INF = op.Divide(op.MaxValue, op.Increment(op.Increment(default)));
-            var res = NewArray(graph.Length, INF);
+            var res = Global.NewArray(graph.Length, INF);
             res[start] = default;
 
             for (int i = 1; i <= graph.Length; i++)

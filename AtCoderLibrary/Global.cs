@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace AtCoder
 {
+    using static MethodImplOptions;
     public static class Global
     {
         public static int Gcd(params int[] nums)
@@ -42,6 +43,7 @@ namespace AtCoder
             return lcm;
         }
 
+        #region NewArray
         public static T[] NewArray<T>(int len0, T value) where T : struct => new T[len0].Fill(value);
         public static T[] NewArray<T>(int len0, Func<T> factory)
         {
@@ -85,7 +87,7 @@ namespace AtCoder
             for (int i = 0; i < arr.Length; i++) arr[i] = NewArray(len1, len2, len3, factory);
             return arr;
         }
-
+        #endregion NewArray
 
         public static long Pow(long x, int y)
         {
@@ -121,27 +123,27 @@ namespace AtCoder
             return res;
         }
 #pragma warning restore IDE0057
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static int PopCount(int x) => BitOperations.PopCount((uint)x);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static int PopCount(long x) => BitOperations.PopCount((ulong)x);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static int PopCount(ulong x) => BitOperations.PopCount(x);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static int MSB(int x) => BitOperations.Log2((uint)x);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static int MSB(uint x) => BitOperations.Log2(x);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static int MSB(long x) => BitOperations.Log2((ulong)x);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static int MSB(ulong x) => BitOperations.Log2(x);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static int LSB(int x) => BitOperations.TrailingZeroCount((uint)x);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static int LSB(uint x) => BitOperations.TrailingZeroCount(x);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static int LSB(long x) => BitOperations.TrailingZeroCount((ulong)x);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public static int LSB(ulong x) => BitOperations.TrailingZeroCount(x);
 
         /// <summary>

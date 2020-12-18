@@ -20,8 +20,8 @@ namespace AtCoder.DataStructure
         {
             this.Length = size;
             rootLength = 1 << (MSB(size - 1) + 1);
-            lazy = NewArray((rootLength << 1) - 1, DefaultValue);
-            data = NewArray((rootLength << 1) - 1, DefaultValue);
+            lazy = Global.NewArray((rootLength << 1) - 1, DefaultValue);
+            data = Global.NewArray((rootLength << 1) - 1, DefaultValue);
         }
         public void Add(int from, int toExclusive, long value)
         {

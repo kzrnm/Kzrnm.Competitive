@@ -2,10 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static AtCoder.Global;
 
 namespace AtCoder.Util.Memo
 {
+    using static AtCoder.Global;
+
     internal class GridMemo
     {
         // https://atcoder.jp/contests/abc088/tasks/abc088_d

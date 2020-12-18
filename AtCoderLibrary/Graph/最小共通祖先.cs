@@ -1,5 +1,4 @@
 ﻿using System;
-using static AtCoder.Global;
 
 namespace AtCoder.Graph
 {
@@ -21,8 +20,8 @@ namespace AtCoder.Graph
             if (tree.Length == 0) throw new ArgumentException(nameof(tree));
 
             this.tree = tree;
-            this.logN = MSB(tree.Length) + 1;
-            this.kprv = NewArray(tree.Length, logN, 0);
+            this.logN = Global.MSB(tree.Length) + 1;
+            this.kprv = Global.NewArray(tree.Length, logN, 0);
             for (int v = 0; v < tree.Length; v++)
             {
                 this.kprv[v][0] = tree[v].Root;

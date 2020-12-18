@@ -11,7 +11,7 @@ namespace AtCoder
         {
             Debug.Assert(mat.Length == mat[0].Length);
             var K = mat.Length;
-            T[][] res = NewArray(K, K, default(T));
+            T[][] res = Global.NewArray(K, K, default(T));
             var one = default(TOp).Increment(default);
             for (var i = 0; i < res.Length; i++)
                 res[i][i] = one;
@@ -28,7 +28,7 @@ namespace AtCoder
         {
             var op = default(TOp);
             Debug.Assert(l[0].Length == r.Length);
-            T[][] res = NewArray(l.Length, r[0].Length, default(T));
+            T[][] res = Global.NewArray(l.Length, r[0].Length, default(T));
             for (var i = 0; i < res.Length; i++)
                 for (var j = 0; j < res[i].Length; j++)
                     for (var k = 0; k < r.Length; k++)
