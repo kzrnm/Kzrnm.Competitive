@@ -15,14 +15,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <AdditionalFiles Include="Properties\SourceExpander.Generator.Config.json" Visible="false" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
     <PackageReference Include="TextCopy" Version="4.2.0" />
-    <PackageReference Include="AtCoderAnalyzer" Version="1.0.5">
+    <PackageReference Include="AtCoderAnalyzer" Version="1.0.6-beta.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SourceExpander.Core" Version="2.4.6" />
-    <PackageReference Include="SourceExpander.Generator" Version="2.4.6">
+    <PackageReference Include="SourceExpander.Core" Version="2.5.0" />
+    <PackageReference Include="SourceExpander.Generator" Version="2.5.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
