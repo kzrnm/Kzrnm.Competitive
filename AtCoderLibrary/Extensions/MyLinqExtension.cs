@@ -1,44 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
 
 namespace AtCoder
 {
-    public static class Extensions
+    public static class MyLinqExtension
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-
-        public static bool UpdateMax<T>(this ref T r, T val) where T : struct, IComparable<T>
-        {
-            if (r.CompareTo(val) < 0) { r = val; return true; }
-            return false;
-        }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool UpdateMin<T>(this ref T r, T val) where T : struct, IComparable<T>
-        {
-            if (r.CompareTo(val) > 0) { r = val; return true; }
-            return false;
-        }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T[] Fill<T>(this T[] arr, T value)
-        {
-            arr.AsSpan().Fill(value);
-            return arr;
-        }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T[] Sort<T>(this T[] arr) { Array.Sort(arr); return arr; }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string[] Sort(this string[] arr) => Sort(arr, StringComparer.Ordinal);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T[] Sort<T, U>(this T[] arr, Expression<Func<T, U>> selector) where U : IComparable<U> => Sort(arr, ExComparer<T>.CreateExp(selector));
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T[] Sort<T>(this T[] arr, Comparison<T> comparison) { Array.Sort(arr, comparison); return arr; }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T[] Sort<T>(this T[] arr, IComparer<T> comparer) { Array.Sort(arr, comparer); return arr; }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T[] Reverse<T>(this T[] arr) { Array.Reverse(arr); return arr; }
         public static (int index, T max) MaxBy<T>(this T[] arr) where T : IComparable<T>
         {
             T max = arr[0];
@@ -160,37 +127,6 @@ namespace AtCoder
             => source.Select((v, i) => (i, v)).Where(t => predicate(t.v)).Select(t => t.i);
         public static Dictionary<TKey, int> GroupCount<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) => source.GroupBy(keySelector).ToDictionary(g => g.Key, g => g.Count());
         public static Dictionary<TKey, int> GroupCount<TKey>(this IEnumerable<TKey> source) => source.GroupCount(i => i);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Span<T> AsSpan<T>(this List<T> list, int start = 0) => Unsafe.As<ArrayVal<T>>(list).arr.AsSpan(start, list.Count);
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ref T Get<T>(this T[] arr, int index)
-        {
-            if (index < 0)
-                return ref arr[arr.Length + index];
-            return ref arr[index];
-        }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TValue Get<TKey, TValue>(this IDictionary<TKey, TValue> dic, TKey key)
-        {
-            dic.TryGetValue(key, out var v);
-            return v;
-        }
 
-        /// <summary>
-        /// <paramref name="span"/>の各要素で<paramref name="action"/>を実行する。
-        /// </summary>
-        public static void Do<T>(this ReadOnlySpan<T> span, Action<T> action)
-        {
-            foreach (var item in span)
-                action(item);
-        }
-        /// <summary>
-        /// <paramref name="span"/>の各要素で<paramref name="action"/>を実行する。
-        /// </summary>
-        public static void Do<T>(this Span<T> span, Action<T> action)
-        {
-            foreach (var item in span)
-                action(item);
-        }
     }
 }
