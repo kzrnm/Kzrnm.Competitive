@@ -14,7 +14,7 @@
     "System.Diagnostics.DebuggerStepThroughAttribute",
     "System.Diagnostics.DebuggerTypeProxyAttribute",
     "System.Diagnostics.DebuggerVisualizerAttribute",
-    "System.ComponentModel.EditorBrowsable",
+    "System.ComponentModel.EditorBrowsableAttribute",
     "AtCoder.IsOperatorAttribute"
   ]
 }

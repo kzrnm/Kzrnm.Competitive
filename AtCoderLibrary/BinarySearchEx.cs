@@ -3,7 +3,9 @@ using System;
 
 namespace AtCoder
 {
-    public static class BinarySearchEx
+#pragma warning disable IDE1006
+    public static class __BinarySearchEx
+#pragma warning restore IDE1006
     {
         /// <summary>
         /// <paramref name="ok"/> と <paramref name="ng"/> の間で <typeparamref name="TOp"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
