@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using AtCoder;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace AtCoder
+namespace System.Linq
 {
     public static class StaticModIntExtension
     {
