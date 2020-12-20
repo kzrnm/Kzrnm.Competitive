@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using Bmi1 = System.Runtime.Intrinsics.X86.Bmi1.X64;
+using System.Runtime.Intrinsics.X86;
 
 namespace AtCoder
 {
@@ -35,10 +35,10 @@ namespace AtCoder
             public bool MoveNext()
             {
                 if (num == 0) return false;
-                if (Bmi1.IsSupported)
+                if (Bmi1.X64.IsSupported)
                 {
-                    Current = unchecked((int)Bmi1.TrailingZeroCount(num));
-                    num = Bmi1.ResetLowestSetBit(num);
+                    Current = unchecked((int)Bmi1.X64.TrailingZeroCount(num));
+                    num = Bmi1.X64.ResetLowestSetBit(num);
                 }
                 else MoveNextLogical();
                 return true;

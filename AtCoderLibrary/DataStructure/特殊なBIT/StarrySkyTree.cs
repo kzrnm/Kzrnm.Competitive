@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using static AtCoder.Global;
-
 
 namespace AtCoder.DataStructure
 {
@@ -19,7 +17,7 @@ namespace AtCoder.DataStructure
         public StarrySkyTree(int size)
         {
             this.Length = size;
-            rootLength = 1 << (MSB(size - 1) + 1);
+            rootLength = 1 << (Global.MSB(size - 1) + 1);
             lazy = Global.NewArray((rootLength << 1) - 1, DefaultValue);
             data = Global.NewArray((rootLength << 1) - 1, DefaultValue);
         }

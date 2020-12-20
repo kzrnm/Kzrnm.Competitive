@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using static AtCoder.Global;
 
 namespace AtCoder
 {
