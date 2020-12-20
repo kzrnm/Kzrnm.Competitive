@@ -1,4 +1,4 @@
-using FluentAssertions;
+﻿using FluentAssertions;
 using Xunit;
 
 namespace AtCoder
@@ -8,9 +8,15 @@ namespace AtCoder
         [Fact]
         public void DefaultReverse()
         {
-            ExComparer<int>.DefaultReverse.Compare(2, 1).Should().BeLessThan(0);
-            ExComparer<int>.DefaultReverse.Compare(1, 2).Should().BeGreaterThan(0);
-            ExComparer<int>.DefaultReverse.Compare(2, 2).Should().Be(0);
+            ReverseComparer<int>.Default.Compare(2, 1).Should().BeLessThan(0);
+            ReverseComparerClass<int>.Default.Compare(2, 1).Should().BeLessThan(0);
+            ReverseComparerStruct<int>.Default.Compare(2, 1).Should().BeLessThan(0);
+            ReverseComparer<int>.Default.Compare(1, 2).Should().BeGreaterThan(0);
+            ReverseComparerClass<int>.Default.Compare(1, 2).Should().BeGreaterThan(0);
+            ReverseComparerStruct<int>.Default.Compare(1, 2).Should().BeGreaterThan(0);
+            ReverseComparer<int>.Default.Compare(2, 2).Should().Be(0);
+            ReverseComparerClass<int>.Default.Compare(2, 2).Should().Be(0);
+            ReverseComparerStruct<int>.Default.Compare(2, 2).Should().Be(0);
         }
         [Fact]
         public void ExpressionComparer()

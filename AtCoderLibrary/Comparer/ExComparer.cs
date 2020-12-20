@@ -37,14 +37,6 @@ namespace AtCoder
             public override bool Equals(object obj) => obj is ExpressionComparer<K> c && this.func == c.func;
             public override int GetHashCode() => func.GetHashCode();
         }
-        class ReverseComparer : IComparer<T>
-        {
-            private static readonly Comparer<T> orig = Comparer<T>.Default;
-            public int Compare(T y, T x) => orig.Compare(x, y);
-            public override bool Equals(object obj) => obj is ReverseComparer;
-            public override int GetHashCode() => GetType().GetHashCode();
-        }
         public static IComparer<T> CreateExp<K>(Expression<Func<T, K>> expression) where K : IComparable<K> => new ExpressionComparer<K>(expression);
-        public static readonly IComparer<T> DefaultReverse = new ReverseComparer();
     }
 }
