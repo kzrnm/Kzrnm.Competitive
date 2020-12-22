@@ -1,19 +1,26 @@
-﻿using System.Collections.Generic;
-
+﻿#pragma warning disable CA1819 // Properties should not return arrays
 namespace AtCoder.Graph
 {
-    public interface INode
+    public interface IReversable<T>
     {
-        public int Index { get; }
-        public IEnumerable<int> Roots { get; }
-        public IEnumerable<int> Children { get; }
+        T Reversed(int from);
+    }
+    public interface IEdge
+    {
+        int To { get; }
+    }
+    public interface INode<out TEdge> where TEdge : IEdge
+    {
+        int Index { get; }
+        TEdge[] Roots { get; }
+        TEdge[] Children { get; }
         bool IsDirected { get; }
     }
-    public interface ITreeNode
+    public interface ITreeNode<out TEdge> where TEdge : IEdge
     {
-        public int Index { get; }
-        public int Root { get; }
-        public int Depth { get; }
-        public IEnumerable<int> Children { get; }
+        int Index { get; }
+        TEdge Root { get; }
+        TEdge[] Children { get; }
+        int Depth { get; }
     }
 }
