@@ -198,6 +198,9 @@ function Get-Parsed-Input {
                         if ($ml2[2] -match '^\{(\D)(\D)\}$') {
                             [ATArray2]::new($ml2[1], $Matches[1], $Matches[2])
                         }
+                        elseif ($ml2[2] -match '^\{(\D),(\D)\}$') {
+                            [ATArray2]::new($ml2[1], $Matches[1], $Matches[2])
+                        }
                     }
                 } 
                 elseif ($ml[2] -notmatch '^\d+$') {
