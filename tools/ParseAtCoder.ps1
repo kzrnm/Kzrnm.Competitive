@@ -248,12 +248,15 @@ function Update-Input {
         $vars = @()
     }
 
+    $indent = "    "
     $mainPath = "$PSScriptRoot\..\AtCoderProject\Program.cs"
     $main = (Get-Content $mainPath -Raw)
-    ($main -replace 'private object Calc\(\)[\s\S]*', ("private object Calc(){")) > $mainPath   
-    $vars | ForEach-Object { $_.ToInit() } >> $mainPath
-    "return null;}" >> $mainPath
-    $vars | ForEach-Object { $_.ToDefine() } >> $mainPath
+    ($main -replace 'private object Calc\(\)[\s\S]*', ("private object Calc()")) > $mainPath
+    "$indent{" >> $mainPath
+    $vars | ForEach-Object { $indent * 2 + $_.ToInit() } >> $mainPath
+    "$indent${indent}return null;" >> $mainPath
+    "$indent}" >> $mainPath
+    $vars | ForEach-Object { $indent + $_.ToDefine() } >> $mainPath
     "}" >> $mainPath
 }
 
@@ -262,7 +265,7 @@ function Main {
     $document = (Get-Parsed-AtCoder)
     Update-InOut (Get-InOut $document)
     Update-Input (Get-Parsed-Input $document)
-    dotnet-format.exe -f "$PSScriptRoot\..\AtCoderProject"
+    # dotnet-format.exe -f "$PSScriptRoot\..\AtCoderProject"
 }
 
 Main
