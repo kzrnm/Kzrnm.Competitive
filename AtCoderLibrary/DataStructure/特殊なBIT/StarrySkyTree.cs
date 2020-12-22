@@ -1,53 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace AtCoder.DataStructure
 {
-    [System.Diagnostics.DebuggerTypeProxy(typeof(DebugView))]
-    public class StarrySkyTree
+    [System.Diagnostics.DebuggerTypeProxy(typeof(StarrySkyTree<,>.DebugView))]
+    public class StarrySkyTree<T, TOp>
+        where T : struct
+        where TOp : struct, ILazySegtreeOperator<T, T>
     {
-        protected virtual long DefaultValue => default;
-        protected virtual long OpDefault => default;
-        protected virtual long Merge(long v1, long v2) => Math.Max(v1, v2);
+        protected static readonly TOp op = default;
 
-        readonly long[] lazy;
-        readonly long[] data;
+        readonly T[] lazy;
+        readonly T[] data;
         public readonly int rootLength;
         public int Length { get; }
         public StarrySkyTree(int size)
         {
             this.Length = size;
             rootLength = 1 << (Global.MSB(size - 1) + 1);
-            lazy = Global.NewArray((rootLength << 1) - 1, DefaultValue);
-            data = Global.NewArray((rootLength << 1) - 1, DefaultValue);
+            lazy = Global.NewArray((rootLength << 1) - 1, op.Identity);
+            data = Global.NewArray((rootLength << 1) - 1, op.Identity);
         }
-        public void Add(int from, int toExclusive, long value)
+        public void Apply(int from, int toExclusive, T value)
         {
-            void Add(int from, int toExclusive, long val, int k, int l, int r)
+            void Add(int from, int toExclusive, T val, int k, int l, int r)
             {
                 if (r <= from || toExclusive <= l) return;
                 if (from <= l && r <= toExclusive)
                 {
-                    data[k] += val;
+                    data[k] = op.Mapping(val, data[k]);
                     return;
                 }
                 int left = k * 2 + 1, right = k * 2 + 2;
                 Add(from, toExclusive, val, left, l, (l + r) / 2);
                 Add(from, toExclusive, val, right, (l + r) / 2, r);
-                lazy[k] = Merge(lazy[left] + data[left], lazy[right] + data[right]);
+                lazy[k] = op.Operate(op.Mapping(lazy[left], data[left]), op.Mapping(lazy[right], data[right]));
             }
             Add(from, toExclusive, value, 0, 0, rootLength);
         }
-        public long Slice(int from, int length) => Query(from, from + length);
-        public long Query(int from, int toExclusive)
+        public T Slice(int from, int length) => Prod(from, from + length);
+        public T Prod(int from, int toExclusive)
         {
-            long Query(int from, int toExclusive, int k, int l, int r)
+            T Prod(int from, int toExclusive, int k, int l, int r)
             {
-                if (r <= from || toExclusive <= l) return DefaultValue;
-                if (from <= l && r <= toExclusive) return lazy[k] + data[k];
-                return Merge(Query(from, toExclusive, k * 2 + 1, l, (l + r) / 2), Query(from, toExclusive, k * 2 + 2, (l + r) / 2, r)) + data[k];
+                if (r <= from || toExclusive <= l) return op.Identity;
+                if (from <= l && r <= toExclusive) return op.Mapping(lazy[k], data[k]);
+                return op.Mapping(op.Operate(Prod(from, toExclusive, k * 2 + 1, l, (l + r) / 2), Prod(from, toExclusive, k * 2 + 2, (l + r) / 2, r)), data[k]);
             }
-            return Query(from, toExclusive, 0, 0, rootLength);
+            return Prod(from, toExclusive, 0, 0, rootLength);
         }
 
 
@@ -55,9 +56,9 @@ namespace AtCoder.DataStructure
         struct KeyValuePairs
         {
             readonly string key;
-            (long data, long lazy) value;
+            (T data, T lazy) value;
 
-            public KeyValuePairs(string key, (long data, long lazy) value)
+            public KeyValuePairs(string key, (T data, T lazy) value)
             {
                 this.key = key;
                 this.value = value;
@@ -65,8 +66,8 @@ namespace AtCoder.DataStructure
         }
         class DebugView
         {
-            readonly StarrySkyTree tree;
-            public DebugView(StarrySkyTree tree)
+            readonly StarrySkyTree<T, TOp> tree;
+            public DebugView(StarrySkyTree<T, TOp> tree)
             {
                 this.tree = tree;
             }
@@ -96,5 +97,19 @@ namespace AtCoder.DataStructure
                 }
             }
         }
+    }
+    public struct StarrySkyTreeOperator : ILazySegtreeOperator<long, long>
+    {
+        public long Identity => 0;
+
+        public long FIdentity => 0;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public long Composition(long f, long g) => f + g;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public long Mapping(long f, long x) => x + f;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public long Operate(long x, long y) => Math.Max(x, y);
     }
 }
