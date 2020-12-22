@@ -14,7 +14,7 @@
             Add(tree2, from, w);
             Add(tree2, to, -w);
         }
-        long Sum(long[] tree, int toExclusive)
+        static long Sum(long[] tree, int toExclusive)
         {
             long res = 0;
             for (var i = toExclusive; i > 0; i -= (i & -i))

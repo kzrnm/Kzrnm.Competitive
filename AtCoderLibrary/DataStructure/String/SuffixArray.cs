@@ -27,25 +27,25 @@ namespace AtCoder
             BuildLCP();
         }
 
-        void CreateBeginBucket(int[] v, int[] b)
+        static void CreateBeginBucket(int[] v, int[] b)
         {
             for (int i = 0; i < b.Length; i++) b[i] = 0;
             for (int i = 0; i < v.Length; i++) b[v[i]]++;
             int sum = 0;
             for (int i = 0; i < b.Length; i++) { b[i] += sum; var tmp = b[i]; b[i] = sum; sum = tmp; }
         }
-        void CreateEndBucket(int[] v, int[] b)
+        static void CreateEndBucket(int[] v, int[] b)
         {
             for (int i = 0; i < b.Length; i++) b[i] = 0;
             for (int i = 0; i < v.Length; i++) b[v[i]]++;
             for (int i = 1; i < b.Length; i++) b[i] += b[i - 1];
         }
-        void InducedSort(int[] v, int[] sa, int[] b, bool[] isl)
+        static void InducedSort(int[] v, int[] sa, int[] b, bool[] isl)
         {
             CreateBeginBucket(v, b);
             for (int i = 0; i < v.Length; i++) if (sa[i] > 0 && isl[sa[i] - 1]) sa[b[v[sa[i] - 1]]++] = sa[i] - 1;
         }
-        void InvertInducedSort(int[] v, int[] sa, int[] b, bool[] isl)
+        static void InvertInducedSort(int[] v, int[] sa, int[] b, bool[] isl)
         {
             CreateEndBucket(v, b);
             for (int i = v.Length - 1; i >= 0; i--)
@@ -98,7 +98,7 @@ namespace AtCoder
             InvertInducedSort(v, sa, b, isl);
             return sa;
         }
-        bool IsLMS(int x, bool[] isl) { return x > 0 && isl[x - 1] && !isl[x]; }
+        static bool IsLMS(int x, bool[] isl) { return x > 0 && isl[x - 1] && !isl[x]; }
 
         void BuildLCP()
         {
