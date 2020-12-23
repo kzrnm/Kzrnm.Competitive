@@ -26,7 +26,7 @@ namespace AtCoder
         public static int BinarySearch<TOp>(int ok, int ng, TOp op) where TOp : IOk<int>
         {
             DebugUtil.Assert(op.Ok(ok));
-            DebugUtil.Assert(!op.Ok(ng));
+            DebugUtil.Assert(NgOrThrow(op, ng));
             while (Math.Abs(ok - ng) > 1)
             {
                 var m = ((ok - ng) >> 1) + ng;
@@ -55,7 +55,7 @@ namespace AtCoder
         public static long BinarySearch<TOp>(long ok, long ng, TOp op) where TOp : IOk<long>
         {
             DebugUtil.Assert(op.Ok(ok));
-            DebugUtil.Assert(!op.Ok(ng));
+            DebugUtil.Assert(NgOrThrow(op, ng));
             while (Math.Abs(ok - ng) > 1)
             {
                 var m = ((ok - ng) >> 1) + ng;
@@ -84,7 +84,7 @@ namespace AtCoder
         public static double BinarySearch<TOp>(double ok, double ng, TOp op, double eps = 1e-7) where TOp : IOk<double>
         {
             DebugUtil.Assert(op.Ok(ok));
-            DebugUtil.Assert(!op.Ok(ng));
+            DebugUtil.Assert(NgOrThrow(op, ng));
             while (Math.Abs(ok - ng) > eps)
             {
                 var m = (ok + ng) / 2;
@@ -114,7 +114,7 @@ namespace AtCoder
         public static T BinarySearch<T, TOp>(T ok, T ng, TOp op) where TOp : IBinaryOk<T>
         {
             DebugUtil.Assert(op.Ok(ok));
-            DebugUtil.Assert(!op.Ok(ng));
+            DebugUtil.Assert(NgOrThrow(op, ng));
             while (op.Continue(ok, ng))
             {
                 var m = op.Mid(ok, ng);
@@ -122,6 +122,13 @@ namespace AtCoder
                 else ng = m;
             }
             return ok;
+        }
+
+        private static bool NgOrThrow<T>(IOk<T> op, T val)
+        {
+#pragma warning disable CA1031 // Do not catch general exception types
+            try { return !op.Ok(val); } catch { return true; }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
     }
     [IsOperator]

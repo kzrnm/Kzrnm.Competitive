@@ -8,9 +8,17 @@ using System.Runtime.CompilerServices;
 
 namespace AtCoder
 {
-    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
+    public class Set<T> : Set<T, DefaultComparerStruct<T>>
+        where T : IComparable<T>
+    {
+        public Set(bool isMulti = false) : base(new DefaultComparerStruct<T>(), isMulti) { }
+        public Set(IEnumerable<T> collection, bool isMulti = false) : base(collection, new DefaultComparerStruct<T>(), isMulti) { }
+    }
+
+    [DebuggerTypeProxy(typeof(Set<,>.DebugView))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class Set<T> : ICollection<T>, IReadOnlyCollection<T>
+    public class Set<T, TOp> : ICollection<T>, IReadOnlyCollection<T>
+        where TOp : struct, IComparer<T>
     {
         /*
          * Original is SortedSet<T>
@@ -26,6 +34,20 @@ Copyright (c) .NET Foundation and Contributors
 Released under the MIT license
 https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 ";
+
+        public Set(bool isMulti = false) : this(default(TOp), isMulti) { }
+        public Set(IEnumerable<T> collection, bool isMulti = false) : this(collection, default(TOp), isMulti) { }
+        public Set(TOp comparer, bool isMulti = false)
+        {
+            this.comparer = comparer;
+            this.IsMulti = isMulti;
+        }
+        public Set(IEnumerable<T> collection, TOp comparer, bool isMulti = false)
+        {
+            this.IsMulti = isMulti;
+            this.comparer = comparer; var arr = InitArray(collection);
+            this.root = ConstructRootFromSortedArray(arr, 0, arr.Length - 1, null);
+        }
 
         public bool IsMulti { get; }
         public T Min
@@ -124,11 +146,17 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
             return (right, ri);
         }
+        [DebuggerHidden]
         public Node FindNodeLowerBound(T item) => BinarySearch(item, true).node;
+        [DebuggerHidden]
         public Node FindNodeUpperBound(T item) => BinarySearch(item, false).node;
+        [DebuggerHidden]
         public T LowerBoundItem(T item) => BinarySearch(item, true).node.Item;
+        [DebuggerHidden]
         public T UpperBoundItem(T item) => BinarySearch(item, false).node.Item;
+        [DebuggerHidden]
         public int LowerBoundIndex(T item) => BinarySearch(item, true).index;
+        [DebuggerHidden]
         public int UpperBoundIndex(T item) => BinarySearch(item, false).index;
 
         public IEnumerable<T> Reversed()
@@ -142,20 +170,6 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             if (from == null) yield break;
             var e = new Enumerator(this, reverse, from);
             while (e.MoveNext()) yield return e.Current;
-        }
-
-        public Set(bool isMulti = false) : this(Comparer<T>.Default, isMulti) { }
-        public Set(IEnumerable<T> collection, bool isMulti = false) : this(collection, Comparer<T>.Default, isMulti) { }
-        public Set(IComparer<T> comparer, bool isMulti = false)
-        {
-            this.comparer = comparer;
-            this.IsMulti = isMulti;
-        }
-        public Set(IEnumerable<T> collection, IComparer<T> comparer, bool isMulti = false)
-        {
-            this.IsMulti = isMulti;
-            this.comparer = comparer; var arr = InitArray(collection);
-            this.root = ConstructRootFromSortedArray(arr, 0, arr.Length - 1, null);
         }
         protected T[] InitArray(IEnumerable<T> collection)
         {
@@ -179,7 +193,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 
         public int Count => NodeSize(root);
         protected static int NodeSize(Node node) => node == null ? 0 : node.Size;
-        protected readonly IComparer<T> comparer;
+        protected readonly TOp comparer;
         bool ICollection<T>.IsReadOnly => false;
 
         Node root;
@@ -523,13 +537,13 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         public struct Enumerator : IEnumerator<T>
         {
 
-            readonly Set<T> tree;
+            readonly Set<T, TOp> tree;
             readonly Stack<Node> stack;
             Node current;
 
             readonly bool reverse;
-            internal Enumerator(Set<T> set) : this(set, false, null) { }
-            internal Enumerator(Set<T> set, bool reverse, Node startNode)
+            internal Enumerator(Set<T, TOp> set) : this(set, false, null) { }
+            internal Enumerator(Set<T, TOp> set, bool reverse, Node startNode)
             {
                 tree = set;
                 stack = new Stack<Node>(2 * Log2(tree.Count + 1));
@@ -707,6 +721,16 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             Right = 2,
             RightLeft = 3,
             LeftRight = 4,
+        }
+        private class DebugView
+        {
+            private readonly ICollection<T> collection;
+            public DebugView(Set<T, TOp> collection)
+            {
+                this.collection = collection;
+            }
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            public T[] Items => collection.ToArray();
         }
     }
 }

@@ -9,9 +9,17 @@ using AtCoder.Internal;
 
 namespace AtCoder
 {
-    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
+    public class SetDictionary<TKey, TValue> : SetDictionary<TKey, TValue, DefaultComparerStruct<TKey>>
+        where TKey : IComparable<TKey>
+    {
+        public SetDictionary(bool isMulti = false) : base(new DefaultComparerStruct<TKey>(), isMulti) { }
+        public SetDictionary(IDictionary<TKey, TValue> dict, bool isMulti = false) : base(dict, new DefaultComparerStruct<TKey>(), isMulti) { }
+    }
+
+    [DebuggerTypeProxy(typeof(SetDictionary<,,>.DebugView))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class SetDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
+    public class SetDictionary<TKey, TValue, TOp> : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
+        where TOp : struct, IComparer<TKey>
     {
         /*
          * Original is SortedSet<T>
@@ -28,6 +36,20 @@ Released under the MIT license
 https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 ";
 
+        public SetDictionary(bool isMulti = false) : this(default(TOp), isMulti) { }
+        public SetDictionary(IDictionary<TKey, TValue> dict, bool isMulti = false) : this(dict, default(TOp), isMulti) { }
+        public SetDictionary(TOp comparer, bool isMulti = false)
+        {
+            this.comparer = comparer;
+            IsMulti = isMulti;
+        }
+        public SetDictionary(IDictionary<TKey, TValue> dict, TOp comparer, bool isMulti = false)
+        {
+            this.comparer = comparer;
+            var arr = InitArray(dict);
+            root = ConstructRootFromSortedArray(arr, 0, arr.Length - 1, null);
+            IsMulti = isMulti;
+        }
         public bool IsMulti { get; }
         public KeyValuePair<TKey, TValue> Min
         {
@@ -125,11 +147,17 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
             return (right, ri);
         }
+        [DebuggerHidden]
         public Node FindNodeLowerBound(TKey key) => BinarySearch(key, true).node;
+        [DebuggerHidden]
         public Node FindNodeUpperBound(TKey key) => BinarySearch(key, false).node;
+        [DebuggerHidden]
         public KeyValuePair<TKey, TValue> LowerBoundItem(TKey key) => BinarySearch(key, true).node.Pair;
+        [DebuggerHidden]
         public KeyValuePair<TKey, TValue> UpperBoundItem(TKey key) => BinarySearch(key, false).node.Pair;
+        [DebuggerHidden]
         public int LowerBoundIndex(TKey key) => BinarySearch(key, true).index;
+        [DebuggerHidden]
         public int UpperBoundIndex(TKey key) => BinarySearch(key, false).index;
 
         public IEnumerable<KeyValuePair<TKey, TValue>> Reversed()
@@ -143,21 +171,6 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             if (from == null) yield break;
             var e = new Enumerator(this, reverse, from);
             while (e.MoveNext()) yield return e.Current;
-        }
-
-        public SetDictionary(bool isMulti = false) : this(Comparer<TKey>.Default, isMulti) { }
-        public SetDictionary(IDictionary<TKey, TValue> dict, bool isMulti = false) : this(dict, Comparer<TKey>.Default, isMulti) { }
-        public SetDictionary(IComparer<TKey> comparer, bool isMulti = false)
-        {
-            this.comparer = comparer;
-            IsMulti = isMulti;
-        }
-        public SetDictionary(IDictionary<TKey, TValue> dict, IComparer<TKey> comparer, bool isMulti = false)
-        {
-            this.comparer = comparer;
-            var arr = InitArray(dict);
-            root = ConstructRootFromSortedArray(arr, 0, arr.Length - 1, null);
-            IsMulti = isMulti;
         }
         protected KeyValuePair<TKey, TValue>[] InitArray(IEnumerable<KeyValuePair<TKey, TValue>> collection)
         {
@@ -182,7 +195,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 
         public int Count => NodeSize(root);
         protected static int NodeSize(Node node) => node == null ? 0 : node.Size;
-        protected readonly IComparer<TKey> comparer;
+        protected readonly TOp comparer;
         bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => false;
         ICollection<TKey> IDictionary<TKey, TValue>.Keys => throw new NotSupportedException();
         ICollection<TValue> IDictionary<TKey, TValue>.Values => throw new NotSupportedException();
@@ -628,13 +641,13 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         public struct Enumerator : IEnumerator<KeyValuePair<TKey, TValue>>
         {
 
-            readonly SetDictionary<TKey, TValue> tree;
+            readonly SetDictionary<TKey, TValue, TOp> tree;
             readonly Stack<Node> stack;
             Node current;
 
             readonly bool reverse;
-            internal Enumerator(SetDictionary<TKey, TValue> set) : this(set, false, null) { }
-            internal Enumerator(SetDictionary<TKey, TValue> set, bool reverse, Node startNode)
+            internal Enumerator(SetDictionary<TKey, TValue, TOp> set) : this(set, false, null) { }
+            internal Enumerator(SetDictionary<TKey, TValue, TOp> set, bool reverse, Node startNode)
             {
                 tree = set;
                 stack = new Stack<Node>(2 * Log2(tree.Count + 1));
@@ -822,6 +835,16 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             Right = 2,
             RightLeft = 3,
             LeftRight = 4,
+        }
+        private class DebugView
+        {
+            private readonly ICollection<KeyValuePair<TKey, TValue>> collection;
+            public DebugView(SetDictionary<TKey, TValue, TOp> collection)
+            {
+                this.collection = collection;
+            }
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            public KeyValuePair<TKey, TValue>[] Items => collection.ToArray();
         }
     }
 }
