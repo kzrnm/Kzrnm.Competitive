@@ -57,5 +57,18 @@ namespace AtCoder
 
             return list;
         }
+
+        /// <summary>
+        /// 組み合わせ <paramref name="n"/>_C_<paramref name="k"/> を返す。
+        /// </summary>
+        public static long Combination(long n, long k)
+        {
+            long res = 1;
+            for (long i = 1; i <= k; i++)
+            {
+                res = res * (n - i + 1) / i;
+            }
+            return res;
+        }
     }
 }
