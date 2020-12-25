@@ -9,25 +9,27 @@ namespace AtCoder.Graph
         /// <para><paramref name="from"/> からの最短経路長をベルマン・フォード法で求める。負の長さにも使える</para>
         /// <para>計算量: O(|V|・|E|)</para>
         /// </summary>
-        public static T[] BellmanFord<T, TEdge, TOp>(this IWNode<T, TEdge, TOp>[] graph, int from)
-            where TEdge : IWEdge<T>
+        public static T[] BellmanFord<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph, int from)
             where T : struct
             where TOp : struct, INumOperator<T>
+            where TNode : IWNode<T, TEdge, TOp>
+            where TEdge : IWEdge<T>
         {
             TOp op = default;
+            var graphArr = graph.AsArray();
             var INF = op.Divide(op.MaxValue, op.Increment(op.Increment(default)));
-            var res = Global.NewArray(graph.Length, INF);
+            var res = Global.NewArray(graphArr.Length, INF);
             res[from] = default;
 
-            for (int i = 1; i <= graph.Length; i++)
-                foreach (var node in graph)
+            for (int i = 1; i <= graphArr.Length; i++)
+                foreach (var node in graphArr)
                     foreach (var e in node.Children)
                     {
                         var x = op.Add(res[node.Index], e.Value);
                         if (op.GreaterThan(res[e.To], x))
                         {
                             res[e.To] = x;
-                            if (i == graph.Length)
+                            if (i == graphArr.Length)
                                 throw new InvalidOperationException("負の閉路");
                         }
                     }

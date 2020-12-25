@@ -8,10 +8,11 @@ namespace AtCoder.Graph
         /// <para>最小全域木をPrim法で求める。</para>
         /// <para>計算量は O(E + V log(V))</para>
         /// </summary>
-        public static WGraphBuilder<T, TOp> Prim<T, TEdge, TOp>(this IWNode<T, TEdge, TOp>[] graph)
-            where TEdge : IWEdge<T>
+        public static WGraphBuilder<T, TOp> Prim<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph)
             where T : struct
             where TOp : struct, INumOperator<T>
+            where TNode : IWNode<T, TEdge, TOp>
+            where TEdge : IWEdge<T>
         {
             var sumi = new bool[graph.Length];
             var pq = new PriorityQueueOp<T, (int from, int to), TOp>();

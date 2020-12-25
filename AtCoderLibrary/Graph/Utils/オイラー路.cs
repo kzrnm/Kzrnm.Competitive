@@ -13,7 +13,8 @@ namespace AtCoder.Graph
         /// <para>有向準オイラーグラフ: 全ての頂点で入次数と出次数が等しい</para>
         /// </summary>
         /// <returns>スタート地点とオイラー路を返す。見つからなかったら (-1, null) を返す。</returns>
-        public static (int from, TEdge[] trail) EulerianTrail<TEdge>(this INode<TEdge>[] graph)
+        public static (int from, TEdge[] trail) EulerianTrail<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
+            where TNode : INode<TEdge>
             where TEdge : struct, IEdge, IReversable<TEdge>, IEquatable<TEdge>
         {
             if (graph[0].IsDirected)
@@ -26,7 +27,8 @@ namespace AtCoder.Graph
         /// <para>無向オイラーグラフ: 次数(出ていく辺の数)が全て偶数</para>
         /// <para>無向準オイラーグラフ: 次数(出ていく辺の数)が奇数なのが2個</para>
         /// </summary>
-        private static (int from, TEdge[] trail) EulerianTrailUndirected<TEdge>(this INode<TEdge>[] graph)
+        private static (int from, TEdge[] trail) EulerianTrailUndirected<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
+            where TNode : INode<TEdge>
             where TEdge : struct, IEdge, IReversable<TEdge>, IEquatable<TEdge>
         {
             Internal.DebugUtil.Assert(!graph[0].IsDirected);
@@ -54,7 +56,8 @@ namespace AtCoder.Graph
         /// <para>有向オイラーグラフ: ある頂点で出次数が入次数より1多く、別の頂点で入次数が出次数より1多く、ほかの全ての頂点で入次数と出次数が等しい</para>
         /// <para>有向準オイラーグラフ: 全ての頂点で入次数と出次数が等しい</para>
         /// </summary>
-        private static (int from, TEdge[] trail) EulerianTrailDirected<TEdge>(this INode<TEdge>[] graph)
+        private static (int from, TEdge[] trail) EulerianTrailDirected<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
+            where TNode : INode<TEdge>
             where TEdge : struct, IEdge, IReversable<TEdge>, IEquatable<TEdge>
         {
             Internal.DebugUtil.Assert(graph[0].IsDirected);
@@ -95,7 +98,8 @@ namespace AtCoder.Graph
         /// <para>オイラー路を求める。</para>
         /// <para><paramref name="from"/> からの一筆書きのこと</para>
         /// </summary>
-        public static TEdge[] EulerianTrail<TEdge>(this INode<TEdge>[] graph, int from)
+        public static TEdge[] EulerianTrail<TNode, TEdge>(this IGraph<TNode, TEdge> graph, int from)
+            where TNode : INode<TEdge>
             where TEdge : struct, IEdge, IReversable<TEdge>, IEquatable<TEdge>
         {
             var isDirected = graph[from].IsDirected;

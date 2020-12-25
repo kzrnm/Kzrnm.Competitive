@@ -7,7 +7,8 @@ namespace AtCoder.Graph
         /// <summary>
         /// <paramref name="from"/> からの最短経路長をBFSで求める。辺が長さを持たないグラフ用
         /// </summary>
-        public static int[] ShortestPathBFS<TEdge>(this INode<TEdge>[] graph, int from)
+        public static int[] ShortestPathBFS<TNode, TEdge>(this IGraph<TNode, TEdge> graph, int from)
+            where TNode : INode<TEdge>
             where TEdge : IEdge
         {
             var res = Global.NewArray(graph.Length, int.MaxValue);

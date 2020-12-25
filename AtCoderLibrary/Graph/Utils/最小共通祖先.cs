@@ -5,9 +5,11 @@ namespace AtCoder.Graph
     /**
      * <summary>最小共通祖先</summary> 
      */
-    public class LowestCommonAncestor<TEdge> where TEdge : IEdge
+    public class LowestCommonAncestor<TNode, TEdge>
+        where TNode : ITreeNode<TEdge>
+        where TEdge : IEdge
     {
-        readonly ITreeNode<TEdge>[] tree;
+        readonly TNode[] tree;
 
         /** <summary>
          *  kprv[u][k] 頂点uの2^k個上の祖先頂点v, 0<=k<logN
@@ -15,7 +17,7 @@ namespace AtCoder.Graph
          */
         readonly int[][] kprv;
         readonly int logN;
-        public LowestCommonAncestor(ITreeNode<TEdge>[] tree)
+        public LowestCommonAncestor(TNode[] tree)
         {
             if (tree.Length == 0) throw new ArgumentException(nameof(tree));
 
@@ -71,8 +73,9 @@ namespace AtCoder.Graph
 
     public static class LowestCommonAncestorExt
     {
-        public static LowestCommonAncestor<TEdge> LowestCommonAncestor<TEdge>(this ITreeNode<TEdge>[] tree)
+        public static LowestCommonAncestor<TNode, TEdge> LowestCommonAncestor<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
+            where TNode : ITreeNode<TEdge>
             where TEdge : IEdge
-            => new LowestCommonAncestor<TEdge>(tree);
+            => new LowestCommonAncestor<TNode, TEdge>(tree.AsArray());
     }
 }

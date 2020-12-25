@@ -9,7 +9,8 @@ namespace AtCoder.Graph
         /// <summary>
         /// 閉路があれば返す。なければnull。BFSの方が良さげ
         /// </summary>
-        public static TEdge[] GetCycleDFS<TEdge>(this INode<TEdge>[] graph)
+        public static TEdge[] GetCycleDFS<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
+            where TNode : INode<TEdge>
             where TEdge : IEdge
         {
             var statuses = new Status[graph.Length];

@@ -6,10 +6,11 @@
         /// <para>各頂点間の最短経路長をワーシャルフロイド法で求める</para>
         /// <para>計算量: O(|V|^3)</para>
         /// </summary>
-        public static T[][] WarshallFloyd<T, TEdge, TOp>(this IWNode<T, TEdge, TOp>[] graph)
-            where TEdge : IWEdge<T>
-            where T : struct
-            where TOp : struct, INumOperator<T>
+        public static T[][] WarshallFloyd<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph)
+        where T : struct
+        where TOp : struct, INumOperator<T>
+        where TNode : IWNode<T, TEdge, TOp>
+        where TEdge : IWEdge<T>
         {
             TOp op = default;
             var INF = op.Divide(op.MaxValue, op.Increment(op.Increment(default)));

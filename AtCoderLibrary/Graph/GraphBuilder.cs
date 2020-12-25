@@ -42,7 +42,7 @@ namespace AtCoder.Graph
             roots[to].Add(new Edge(from));
         }
 
-        public Node[] ToArray()
+        public Graph<Node, Edge> ToGraph()
         {
             DebugUtil.Assert(roots.Length == children.Length);
             var res = new Node[roots.Length];
@@ -53,10 +53,10 @@ namespace AtCoder.Graph
                 else
                     res[i] = new Node(i, roots[i].ToArray(), children[i].ToArray());
             }
-            return res;
+            return new Graph<Node, Edge>(res);
         }
 
-        public TreeNode[] ToTree(int root = 0)
+        public TreeGraph<TreeNode, Edge> ToTree(int root = 0)
         {
             if (this.roots[0] != this.children[0])
                 throw new Exception("木には無向グラフをしたほうが良い");
@@ -92,7 +92,7 @@ namespace AtCoder.Graph
                 }
             }
 
-            return res;
+            return new TreeGraph<TreeNode, Edge>(res);
         }
 
         public GraphBuilder Clone()

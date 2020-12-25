@@ -59,7 +59,7 @@ namespace AtCoder.Graph
             roots[to].Add(new WEdge<T>(from, value));
         }
 
-        public WNode<T, TOp>[] ToArray()
+        public WGraph<T, TOp, WNode<T, TOp>, WEdge<T>> ToGraph()
         {
             DebugUtil.Assert(roots.Length == children.Length);
             var res = new WNode<T, TOp>[roots.Length];
@@ -70,10 +70,10 @@ namespace AtCoder.Graph
                 else
                     res[i] = new WNode<T, TOp>(i, roots[i].ToArray(), children[i].ToArray());
             }
-            return res;
+            return new WGraph<T, TOp, WNode<T, TOp>, WEdge<T>>(res);
         }
 
-        public WTreeNode<T, TOp>[] ToTree(int root = 0)
+        public WTreeGraph<T, TOp, WTreeNode<T, TOp>, WEdge<T>> ToTree(int root = 0)
         {
             if (this.roots[0] != this.children[0])
                 throw new Exception("木には無向グラフをしたほうが良い");
@@ -109,7 +109,7 @@ namespace AtCoder.Graph
                 }
             }
 
-            return res;
+            return new WTreeGraph<T, TOp, WTreeNode<T, TOp>, WEdge<T>>(res);
         }
 
         public WGraphBuilder<T, TOp> Clone()

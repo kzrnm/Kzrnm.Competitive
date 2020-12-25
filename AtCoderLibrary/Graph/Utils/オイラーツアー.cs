@@ -8,7 +8,8 @@ namespace AtCoder.Graph
         /// <para>オイラーツアーを求める。</para>
         /// <para>根から各ノードを深さ優先探索するとき、ノードに入る/出るをイベント化したときのインデックスを返す。</para>
         /// </summary>
-        public static (int l, int r)[] EulerianTour<TEdge>(this ITreeNode<TEdge>[] tree)
+        public static (int l, int r)[] EulerianTour<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
+            where TNode : ITreeNode<TEdge>
             where TEdge : IEdge
         {
             var root = 0;

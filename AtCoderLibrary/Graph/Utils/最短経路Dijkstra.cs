@@ -8,7 +8,8 @@ namespace AtCoder.Graph
         /// <para><paramref name="from"/> からの最短経路長をダイクストラ法で求める。</para>
         /// <para>計算量: O( (|E| + |V|) log |V| )</para>
         /// </summary>
-        public static T[] Dijkstra<T, TEdge, TOp>(this IWNode<T, TEdge, TOp>[] graph, int from)
+        public static T[] Dijkstra<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph, int from)
+            where TNode : IWNode<T, TEdge, TOp>
             where TEdge : IWEdge<T>
             where T : struct
             where TOp : struct, INumOperator<T>
