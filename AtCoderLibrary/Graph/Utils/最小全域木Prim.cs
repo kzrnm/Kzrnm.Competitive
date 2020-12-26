@@ -1,4 +1,6 @@
 ﻿using AtCoder.Internal;
+using System;
+using System.Collections.Generic;
 
 namespace AtCoder.Graph
 {
@@ -8,29 +10,39 @@ namespace AtCoder.Graph
         /// <para>最小全域木をPrim法で求める。</para>
         /// <para>計算量は O(E + V log(V))</para>
         /// </summary>
-        public static WGraphBuilder<T, TOp> Prim<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph)
+        public static (int from, TEdge edge)[] Prim<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph)
             where T : struct
             where TOp : struct, INumOperator<T>
             where TNode : IWNode<T, TEdge, TOp>
             where TEdge : IWEdge<T>
         {
             var sumi = new bool[graph.Length];
-            var pq = new PriorityQueueOp<T, (int from, int to), TOp>();
-            var gb = new WGraphBuilder<T, TOp>(graph.Length, false);
+            var pq = new PriorityQueueOp<(int from, TEdge edge), Comparer<T, TOp, TEdge>>();
+            var res = new List<(int from, TEdge edge)>(graph.Length - 1);
             sumi[0] = true;
             foreach (var e in graph[0].Children)
-                pq.Add(e.Value, (0, e.To));
+                pq.Add((0, e));
             for (int i = 1; i < graph.Length; i++)
             {
                 var t = pq.Dequeue();
-                if (sumi[t.Value.to]) { --i; continue; }
-                sumi[t.Value.to] = true;
-                gb.Add(t.Value.from, t.Value.to, t.Key);
-                foreach (var e in graph[t.Value.to].Children)
+                var edge = t.edge;
+                if (sumi[edge.To]) { --i; continue; }
+                sumi[edge.To] = true;
+                res.Add((t.from, edge));
+                foreach (var e in graph[edge.To].Children)
                     if (!sumi[e.To])
-                        pq.Add(e.Value, (t.Value.to, e.To));
+                        pq.Add((edge.To, e));
             }
-            return gb;
+            return res.ToArray();
+        }
+        private readonly struct Comparer<T, TOp, TEdge> : IComparer<(int from, TEdge edge)>
+            where T : struct
+            where TOp : struct, INumOperator<T>
+            where TEdge : IWEdge<T>
+        {
+            private readonly TOp op;
+            public int Compare((int from, TEdge edge) x, (int from, TEdge edge) y)
+                => op.Compare(x.edge.Value, y.edge.Value);
         }
     }
 }
