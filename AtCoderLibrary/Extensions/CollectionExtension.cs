@@ -1,8 +1,8 @@
-﻿using System;
+﻿using AtCoder;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace AtCoder
+namespace System
 {
     using static MethodImplOptions;
     public static class CollectionExtension

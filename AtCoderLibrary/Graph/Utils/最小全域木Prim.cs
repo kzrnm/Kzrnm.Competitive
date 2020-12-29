@@ -40,7 +40,7 @@ namespace AtCoder.Graph
             where TOp : struct, INumOperator<T>
             where TEdge : IWEdge<T>
         {
-            private readonly TOp op;
+            private static readonly TOp op = default;
             public int Compare((int from, TEdge edge) x, (int from, TEdge edge) y)
                 => op.Compare(x.edge.Value, y.edge.Value);
         }
