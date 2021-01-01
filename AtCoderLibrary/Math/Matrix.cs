@@ -4,9 +4,9 @@ namespace AtCoder
 {
     public static class Matrix
     {
-        public static T[][] Pow<T, TOp>(T[][] mat, int y)
+        public static T[][] Pow<T, TOp>(T[][] mat, long y)
             where T : struct
-            where TOp : struct, INumOperator<T>
+            where TOp : struct, IArithmeticOperator<T>
         {
             Debug.Assert(mat.Length == mat[0].Length);
             var K = mat.Length;
