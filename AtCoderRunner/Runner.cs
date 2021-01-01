@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace AtCoderRunner
@@ -27,9 +28,9 @@ namespace AtCoderRunner
         }
 
         static readonly Regex doubleRegex = new Regex(@"^\d+\.\d+$", RegexOptions.IgnoreCase);
-        [Theory(Timeout = 200)]
+        [Theory(Timeout = 2000)]
         [ClassData(typeof(ResouceSource))]
-        public void FromSource(string input, string output)
+        public Task FromSource(string input, string output) => Task.Run(() =>
         {
             var encoding = new UTF8Encoding(false);
             using var inSteam = new MemoryStream(encoding.GetBytes(input));
@@ -43,7 +44,8 @@ namespace AtCoderRunner
                 Assert.Equal(double.Parse(output), double.Parse(result), 10);
             else
                 Assert.Equal(Normalize(output), Normalize(result));
-        }
-        private string Normalize(string s) => s.Replace("\r\n", "\n").Trim();
+
+            static string Normalize(string s) => s.Replace("\r\n", "\n").Trim();
+        });
     }
 }
