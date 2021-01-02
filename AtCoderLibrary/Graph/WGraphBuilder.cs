@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AtCoder.Graph
+namespace AtCoder
 {
     public class WIntGraphBuilder : WGraphBuilder<int, IntOperator>
     {

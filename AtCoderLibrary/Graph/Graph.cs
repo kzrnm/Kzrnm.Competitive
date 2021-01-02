@@ -1,4 +1,4 @@
-﻿namespace AtCoder.Graph
+﻿namespace AtCoder
 {
     public interface IGraph<out TNode, out TEdge>
         where TNode : INode<TEdge>

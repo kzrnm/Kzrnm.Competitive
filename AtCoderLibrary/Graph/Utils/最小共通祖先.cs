@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AtCoder.Graph
+namespace AtCoder
 {
     /**
      * <summary>最小共通祖先</summary> 

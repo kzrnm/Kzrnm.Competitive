@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AtCoder.Graph
+namespace AtCoder
 {
     public static class 閉路検出BFS
     {

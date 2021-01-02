@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AtCoder.Graph
+namespace AtCoder
 {
     public static class 最短経路BFS
     {

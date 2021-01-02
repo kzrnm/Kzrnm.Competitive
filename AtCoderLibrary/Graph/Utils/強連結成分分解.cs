@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using AtCoder.Internal;
 
-namespace AtCoder.Graph
+namespace AtCoder
 {
     public static class 強連結成分分解
     {

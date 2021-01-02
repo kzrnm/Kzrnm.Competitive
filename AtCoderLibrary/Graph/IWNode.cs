@@ -1,4 +1,4 @@
-﻿namespace AtCoder.Graph
+﻿namespace AtCoder
 {
     public interface IWEdge<T> : IEdge
     {

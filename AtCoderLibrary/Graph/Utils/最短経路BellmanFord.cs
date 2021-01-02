@@ -1,7 +1,7 @@
 ﻿using AtCoder.Internal;
 using System;
 
-namespace AtCoder.Graph
+namespace AtCoder
 {
     public static class 最短経路BellmanFord
     {

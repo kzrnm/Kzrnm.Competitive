@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AtCoder.Graph
+namespace AtCoder
 {
     public static class 最大流
     {

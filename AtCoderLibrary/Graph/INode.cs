@@ -1,5 +1,5 @@
 ﻿#pragma warning disable CA1819 // Properties should not return arrays
-namespace AtCoder.Graph
+namespace AtCoder
 {
     public interface IReversable<T> where T : IEdge
     {

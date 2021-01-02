@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AtCoder.Graph
+namespace AtCoder
 {
     public static class 最小全域木Prim
     {

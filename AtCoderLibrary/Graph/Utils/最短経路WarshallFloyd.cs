@@ -1,4 +1,4 @@
-﻿namespace AtCoder.Graph
+﻿namespace AtCoder
 {
     public static class 最短経路WarshallFloyd
     {
