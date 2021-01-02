@@ -15,7 +15,7 @@ namespace AtCoder
             var negative = (分子 ^ 分母) < 0;
             分子 = Math.Abs(分子);
             分母 = Math.Abs(分母);
-            var gcd = Global.Gcd(分母, 分子);
+            var gcd = MathLibEx.Gcd(分母, 分子);
             numerator = 分子 / gcd;
             if (negative)
                 numerator = -numerator;
@@ -32,13 +32,13 @@ namespace AtCoder
         public static Fraction operator -(Fraction x) => new Fraction(-x.numerator, x.denominator);
         public static Fraction operator +(Fraction x, Fraction y)
         {
-            var gcd = Global.Gcd(x.denominator, y.denominator);
+            var gcd = MathLibEx.Gcd(x.denominator, y.denominator);
             var lcm = x.denominator / gcd * y.denominator;
             return new Fraction((x.numerator * y.denominator + y.numerator * x.denominator) / gcd, lcm);
         }
         public static Fraction operator -(Fraction x, Fraction y)
         {
-            var gcd = Global.Gcd(x.denominator, y.denominator);
+            var gcd = MathLibEx.Gcd(x.denominator, y.denominator);
             var lcm = x.denominator / gcd * y.denominator;
             return new Fraction((x.numerator * y.denominator - y.numerator * x.denominator) / gcd, lcm);
         }

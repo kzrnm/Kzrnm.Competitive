@@ -2,46 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using System.Runtime.CompilerServices;
 
 namespace AtCoder
 {
-    using static MethodImplOptions;
     public static class Global
     {
-        public static int Gcd(params int[] nums)
-        {
-            var gcd = nums[0];
-            for (var i = 1; i < nums.Length; i++)
-                gcd = Gcd(nums[i], gcd);
-            return gcd;
-        }
-        public static int Gcd(int a, int b) => b > a ? Gcd(b, a) : (b == 0 ? a : Gcd(b, a % b));
-        public static int Lcm(int a, int b) => a / Gcd(a, b) * b;
-        public static int Lcm(params int[] nums)
-        {
-            var lcm = nums[0];
-            for (var i = 1; i < nums.Length; i++)
-                lcm = Lcm(lcm, nums[i]);
-            return lcm;
-        }
-        public static long Gcd(params long[] nums)
-        {
-            var gcd = nums[0];
-            for (var i = 1; i < nums.Length; i++)
-                gcd = Gcd(nums[i], gcd);
-            return gcd;
-        }
-        public static long Gcd(long a, long b) => b > a ? Gcd(b, a) : (b == 0 ? a : Gcd(b, a % b));
-        public static long Lcm(long a, long b) => a / Gcd(a, b) * b;
-
-        public static long Lcm(params long[] nums)
-        {
-            var lcm = nums[0];
-            for (var i = 1; i < nums.Length; i++)
-                lcm = Lcm(lcm, nums[i]);
-            return lcm;
-        }
 
         #region NewArray
         public static T[] NewArray<T>(int len0, T value) where T : struct => new T[len0].Fill(value);
@@ -89,16 +54,6 @@ namespace AtCoder
         }
         #endregion NewArray
 
-        public static long Pow(long x, int y)
-        {
-            long res = 1;
-            for (; y > 0; y >>= 1)
-            {
-                if ((y & 1) == 1) res *= x;
-                x *= x;
-            }
-            return res;
-        }
 #pragma warning disable IDE0057
         public static BigInteger ParseBigInteger(ReadOnlySpan<char> s)
         {
@@ -122,29 +77,6 @@ namespace AtCoder
             }
             return res;
         }
-#pragma warning restore IDE0057
-        [MethodImpl(AggressiveInlining)]
-        public static int PopCount(int x) => BitOperations.PopCount((uint)x);
-        [MethodImpl(AggressiveInlining)]
-        public static int PopCount(long x) => BitOperations.PopCount((ulong)x);
-        [MethodImpl(AggressiveInlining)]
-        public static int PopCount(ulong x) => BitOperations.PopCount(x);
-        [MethodImpl(AggressiveInlining)]
-        public static int MSB(int x) => BitOperations.Log2((uint)x);
-        [MethodImpl(AggressiveInlining)]
-        public static int MSB(uint x) => BitOperations.Log2(x);
-        [MethodImpl(AggressiveInlining)]
-        public static int MSB(long x) => BitOperations.Log2((ulong)x);
-        [MethodImpl(AggressiveInlining)]
-        public static int MSB(ulong x) => BitOperations.Log2(x);
-        [MethodImpl(AggressiveInlining)]
-        public static int LSB(int x) => BitOperations.TrailingZeroCount((uint)x);
-        [MethodImpl(AggressiveInlining)]
-        public static int LSB(uint x) => BitOperations.TrailingZeroCount(x);
-        [MethodImpl(AggressiveInlining)]
-        public static int LSB(long x) => BitOperations.TrailingZeroCount((ulong)x);
-        [MethodImpl(AggressiveInlining)]
-        public static int LSB(ulong x) => BitOperations.TrailingZeroCount(x);
 
         /// <summary>
         /// 座標圧縮を行う

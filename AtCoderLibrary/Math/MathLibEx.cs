@@ -5,6 +5,76 @@ namespace AtCoder
 {
     public static class MathLibEx
     {
+        /// <summary>
+        /// 最大公約数
+        /// </summary>
+        public static int Gcd(params int[] nums)
+        {
+            var gcd = nums[0];
+            for (var i = 1; i < nums.Length; i++)
+                gcd = Gcd(nums[i], gcd);
+            return gcd;
+        }
+        /// <summary>
+        /// 最大公約数
+        /// </summary>
+        public static int Gcd(int a, int b) => b > a ? Gcd(b, a) : (b == 0 ? a : Gcd(b, a % b));
+        /// <summary>
+        /// 最小公倍数
+        /// </summary>
+        public static int Lcm(int a, int b) => a / Gcd(a, b) * b;
+        /// <summary>
+        /// 最小公倍数
+        /// </summary>
+        public static int Lcm(params int[] nums)
+        {
+            var lcm = nums[0];
+            for (var i = 1; i < nums.Length; i++)
+                lcm = Lcm(lcm, nums[i]);
+            return lcm;
+        }
+        /// <summary>
+        /// 最大公約数
+        /// </summary>
+        public static long Gcd(params long[] nums)
+        {
+            var gcd = nums[0];
+            for (var i = 1; i < nums.Length; i++)
+                gcd = Gcd(nums[i], gcd);
+            return gcd;
+        }
+        /// <summary>
+        /// 最大公約数
+        /// </summary>
+        public static long Gcd(long a, long b) => b > a ? Gcd(b, a) : (b == 0 ? a : Gcd(b, a % b));
+        /// <summary>
+        /// 最小公倍数
+        /// </summary>
+        public static long Lcm(long a, long b) => a / Gcd(a, b) * b;
+        /// <summary>
+        /// 最小公倍数
+        /// </summary>
+        public static long Lcm(params long[] nums)
+        {
+            var lcm = nums[0];
+            for (var i = 1; i < nums.Length; i++)
+                lcm = Lcm(lcm, nums[i]);
+            return lcm;
+        }
+
+        /// <summary>
+        /// x の y 乗
+        /// </summary>
+        public static long Pow(long x, int y)
+        {
+            long res = 1;
+            for (; y > 0; y >>= 1)
+            {
+                if ((y & 1) == 1) res *= x;
+                x *= x;
+            }
+            return res;
+        }
 
         /// <summary>
         /// <paramref name="n"/> の約数を返します。

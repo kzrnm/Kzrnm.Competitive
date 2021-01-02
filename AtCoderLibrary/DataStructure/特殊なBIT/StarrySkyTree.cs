@@ -18,7 +18,7 @@ namespace AtCoder.DataStructure
         public StarrySkyTree(int size)
         {
             this.Length = size;
-            rootLength = 1 << (Global.MSB(size - 1) + 1);
+            rootLength = 1 << (BitOperationsEx.MSB(size - 1) + 1);
             lazy = Global.NewArray((rootLength << 1) - 1, op.Identity);
             data = Global.NewArray((rootLength << 1) - 1, op.Identity);
         }

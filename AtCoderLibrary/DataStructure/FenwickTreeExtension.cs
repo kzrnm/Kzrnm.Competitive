@@ -16,7 +16,7 @@
             var op = default(TOp);
             if (op.LessThanOrEqual(v, default)) return 0;
             int x = 0;
-            for (int k = 1 << Global.MSB(fw.data.Length - 1); k > 0; k >>= 1)
+            for (int k = 1 << BitOperationsEx.MSB(fw.data.Length - 1); k > 0; k >>= 1)
             {
                 var nx = x + k;
                 if (nx < fw.data.Length && op.LessThan(fw.data[nx], v))
@@ -42,7 +42,7 @@
             var op = default(TOp);
             if (op.LessThanOrEqual(v, default)) return 0;
             int x = 0;
-            for (int k = 1 << Global.MSB(fw.data.Length - 1); k > 0; k >>= 1)
+            for (int k = 1 << BitOperationsEx.MSB(fw.data.Length - 1); k > 0; k >>= 1)
             {
                 var nx = x + k;
                 if (nx < fw.data.Length && op.LessThanOrEqual(fw.data[nx], v))
