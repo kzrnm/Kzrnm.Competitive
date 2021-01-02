@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using static System.Numerics.BitOperations;
+using static AtCoder.BitOperationsEx;
 using static AtCoder.Global;
 using static AtCoder.MathLibEx;
 using static AtCoder.__BinarySearchEx;
