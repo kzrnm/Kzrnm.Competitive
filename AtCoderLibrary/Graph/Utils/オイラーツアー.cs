@@ -1,39 +1,76 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace AtCoder.Graph
 {
-    public static class オイラーツアー
+    public class オイラーツアー<TEdge> where TEdge : IEdge
     {
+        public readonly struct Event
+        {
+            public readonly bool isReverse;
+            public readonly int root;
+            public readonly TEdge edge;
+            public Event(int root, TEdge edge, bool isReverse)
+            {
+                this.root = root;
+                this.edge = edge;
+                this.isReverse = isReverse;
+            }
+            public Event Reverse() => new Event(root, edge, !isReverse);
+            public override string ToString() => $"{root}{(isReverse ? '←' : '→')}{edge}";
+        }
+        /// <summary>
+        /// <para>根から各ノードを深さ優先探索するとき、ノードに入る/出るをイベント化したときのインデックスを返す。</para>
+        /// </summary>
+        private readonly (int left, int right)[] nodes;
+        /// <summary>
+        /// <para>根から各ノードを深さ優先探索するとき、ノードに入る/出るをイベント化したときのインデックスを返す。</para>
+        /// </summary>
+        public (int left, int right) this[int index] => nodes[index];
+
+        public Event[] Events;
+
+        public オイラーツアー((int left, int right)[] nodes, Event[] events)
+        {
+            this.nodes = nodes;
+            this.Events = events;
+        }
+
         /// <summary>
         /// <para>オイラーツアーを求める。</para>
         /// <para>根から各ノードを深さ優先探索するとき、ノードに入る/出るをイベント化したときのインデックスを返す。</para>
         /// </summary>
-        public static (int l, int r)[] EulerianTour<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
+        public static オイラーツアー<TEdge> Create<TNode>(ITreeGraph<TNode, TEdge> tree)
             where TNode : ITreeNode<TEdge>
-            where TEdge : IEdge
         {
+            var treeArr = tree.AsArray();
             var root = 0;
-            while (tree[root].Root.To >= 0) root = tree[root].Root.To;
+            while (treeArr[root].Root.To >= 0) root = treeArr[root].Root.To;
 
             var cnt = 0;
-            var res = new (int l, int r)[tree.Length];
+            var nodes = new (int l, int r)[treeArr.Length];
+            var events = new Event[2 * treeArr.Length];
 
-            var idx = new Stack<(int index, int ci)>(tree.Length);
+            var nodeEvents = new Event[treeArr.Length];
+            nodeEvents[root] = new Event(-1, default, false);
+
+            var idx = new Stack<(int index, int ci)>(treeArr.Length);
             idx.Push((root, 0));
             while (idx.Count > 0)
             {
                 var (index, ci) = idx.Pop();
-                var children = tree[index].Children;
+                var children = treeArr[index].Children;
 
                 if (ci == 0)
-                    res[index].l = cnt++;
+                    events[nodes[index].l = cnt++] = nodeEvents[index];
                 if (ci < children.Length)
                 {
+                    nodeEvents[children[ci].To] = new Event(index, children[ci], false);
                     idx.Push((index, ci + 1));
                     idx.Push((children[ci].To, 0));
                 }
                 else
-                    res[index].r = cnt++;
+                    events[nodes[index].r = cnt++] = nodeEvents[index].Reverse();
             }
 
             /* 再帰版
@@ -46,7 +83,17 @@ namespace AtCoder.Graph
             }
             Dfs(root);
             */
-            return res;
+            return new オイラーツアー<TEdge>(nodes, events);
         }
+    }
+    public static class オイラーツアーExt
+    {
+        /// <summary>
+        /// <para>オイラーツアーを求める。</para>
+        /// <para>根から各ノードを深さ優先探索するとき、ノードに入る/出るをイベント化したときのインデックスを返す。</para>
+        /// </summary>
+        public static オイラーツアー<TEdge> EulerianTour<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
+            where TNode : ITreeNode<TEdge>
+            where TEdge : IEdge => オイラーツアー<TEdge>.Create(tree);
     }
 }
