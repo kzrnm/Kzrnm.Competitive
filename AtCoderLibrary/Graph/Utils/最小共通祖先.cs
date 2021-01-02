@@ -11,10 +11,9 @@ namespace AtCoder.Graph
     {
         readonly TNode[] tree;
 
-        /** <summary>
-         *  kprv[u][k] 頂点uの2^k個上の祖先頂点v, 0<=k<logN
-         *  </summary>
-         */
+        /// <summary>
+        /// kprv[u][k] 頂点uの2^k個上の祖先頂点v, 0&lt;=k&lt;logN
+        /// </summary>
         readonly int[][] kprv;
         readonly int logN;
         public LowestCommonAncestor(TNode[] tree)

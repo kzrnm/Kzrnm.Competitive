@@ -1,7 +1,7 @@
 ﻿#pragma warning disable CA1819 // Properties should not return arrays
 namespace AtCoder.Graph
 {
-    public interface IReversable<T>
+    public interface IReversable<T> where T : IEdge
     {
         T Reversed(int from);
     }
