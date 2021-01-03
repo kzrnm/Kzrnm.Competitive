@@ -8,13 +8,12 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
     <NoWarn>1701;1702;CA1034;CA1036;CA1815;IDE0044;EMBED0004</NoWarn>
-
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="key.snk" Visible="false" />
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>AtCoderLibrary.Kz.Test</_Parameter1>
+    </AssemblyAttribute>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
     <PackageReference Include="ac-library-csharp" Version="1.0.7" />
     <PackageReference Include="Competitive.IO" Version="0.2.1" />
