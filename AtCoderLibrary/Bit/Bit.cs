@@ -45,10 +45,8 @@ namespace AtCoder
             }
             void MoveNextLogical()
             {
-                var lsb1 = BitOperations.TrailingZeroCount(num) + 1;
-                if (lsb1 == 64) num = 0;
-                Current += lsb1;
-                num >>= lsb1;
+                Current = BitOperations.TrailingZeroCount(num);
+                num &= num - 1;
             }
             object IEnumerator.Current => Current;
             void IEnumerator.Reset() => throw new NotSupportedException();
