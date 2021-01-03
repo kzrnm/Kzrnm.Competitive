@@ -32,6 +32,17 @@ namespace AtCoder
             return fac[n] * finv[k] * finv[n - k];
         }
 
+        ///<summary>重複組み合わせ関数</summary>
+        public StaticModInt<T> Homogeneous(int n, int k) => Combination(n + k - 1, k);
+
+        ///<summary>順列関数</summary>
+        public StaticModInt<T> Permutation(int n, int k)
+        {
+            if (n < k) return 0;
+            if (n < 0 || k < 0) return 0;
+            return fac[n] * finv[n - k];
+        }
+
         public StaticModInt<T> Factorial(int n) => fac[n];
         public StaticModInt<T> FactorialInvers(int n) => finv[n];
     }
