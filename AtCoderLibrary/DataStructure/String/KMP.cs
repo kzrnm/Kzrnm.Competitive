@@ -23,6 +23,9 @@ namespace AtCoder
             return table;
         }
 
+        /// <summary>
+        /// <paramref name="target"/> の中で pattern と一致するインデックスを返す
+        /// </summary>
         public IEnumerable<int> Matches(string target)
         {
             for (int i = 0, p = 0; i < target.Length;)
