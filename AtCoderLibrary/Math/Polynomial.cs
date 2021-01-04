@@ -54,6 +54,15 @@ namespace AtCoder
 
             return new Polynomial<T, TOp>(arr);
         }
+        public static Polynomial<T, TOp> operator *(T lhs, Polynomial<T, TOp> rhs)
+        {
+            var rp = rhs.Value;
+            var arr = new T[rp.Length];
+            for (int r = 0; r < rp.Length; r++)
+                arr[r] = op.Multiply(lhs, rp[r]);
+
+            return new Polynomial<T, TOp>(arr);
+        }
 
         public static Polynomial<T, TOp> operator /(Polynomial<T, TOp> lhs, Polynomial<T, TOp> rhs)
             => lhs.DivRem(rhs, out _);
@@ -124,6 +133,68 @@ namespace AtCoder
                 res = op.Add(res, op.Multiply(a, x_n));
                 x_n = op.Multiply(x_n, x);
             }
+            return res;
+        }
+
+        /// <summary>
+        /// <para>ラグランジュ補間</para>
+        /// <para>(x0, y0), ..., (xn, yn)を満たす n 次多項式を返します。</para>
+        /// <para>制約: xは全て異なる</para>
+        /// </summary>
+        public static Polynomial<T, TOp> LagrangeInterpolation((T x, T y)[] plots) => LagrangeInterpolation((ReadOnlySpan<(T, T)>)plots);
+
+        /// <summary>
+        /// <para>ラグランジュ補間</para>
+        /// <para>(x0, y0), ..., (xn, yn)を満たす n 次多項式を返します。</para>
+        /// </summary>
+        /// <remarks>
+        /// <para>制約:</para>
+        /// <para>- xは全て異なる</para>
+        /// <para>計算量: O(n^2)</para>
+        /// </remarks>
+        public static Polynomial<T, TOp> LagrangeInterpolation(ReadOnlySpan<(T x, T y)> plots)
+        {
+            // y_i / (Π_k!=i (x_i - x_k)) )
+            static T Coefficient(ReadOnlySpan<(T x, T y)> plots, int i)
+            {
+                var (xi, yi) = plots[i];
+                var d = op.Increment(default);
+                for (int k = 0; k < plots.Length; k++)
+                    if (i != k)
+                        d = op.Multiply(d, op.Subtract(xi, plots[k].x));
+                return op.Divide(yi, d);
+            }
+
+            // Π_k (x - x_k) となる n+1 次多項式の係数
+            static T[] PAll(ReadOnlySpan<(T x, T y)> plots)
+            {
+                var res = new T[plots.Length + 1];
+                res[^1] = op.Increment(default);
+                for (int k = plots.Length - 1; k >= 0; k--)
+                {
+                    var xk = op.Minus(plots[k].x);
+                    for (int j = k; j + 1 < res.Length; j++)
+                        res[j] = op.Add(res[j], op.Multiply(xk, res[j + 1]));
+                }
+                return res;
+            }
+
+            // Π_k!=i (x - x_k)
+            static Polynomial<T, TOp> Pk(ReadOnlySpan<(T x, T y)> plots, int i, T[] pall)
+            {
+                var xi = plots[i].x;
+                var res = new T[plots.Length];
+                res[^1] = op.Increment(default);
+                for (int j = plots.Length - 2; j >= 0; j--)
+                    res[j] = op.Add(op.Multiply(xi, res[j + 1]), pall[j + 1]);
+                return new Polynomial<T, TOp>(res);
+            }
+
+            // y = ∑ (y_i * (Π_k!=i (x - x_k)) / (Π_k!=i (x_i - x_k)) )
+            var res = new Polynomial<T, TOp>(new T[plots.Length]);
+            var pall = PAll(plots);
+            for (int i = 0; i < plots.Length; i++)
+                res += Coefficient(plots, i) * Pk(plots, i, pall);
             return res;
         }
     }
