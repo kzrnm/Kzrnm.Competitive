@@ -145,6 +145,8 @@ namespace AtCoder
         public WNode(int i, WEdge<T, S>[] roots, WEdge<T, S>[] children)
         {
             this.Index = i;
+            if (roots == children)
+                children = (WEdge<T, S>[])children.Clone();
             this.Roots = roots;
             this.Children = children;
         }

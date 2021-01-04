@@ -144,6 +144,8 @@ namespace AtCoder
         public Node(int i, Edge[] roots, Edge[] children)
         {
             this.Index = i;
+            if (roots == children)
+                children = (Edge[])children.Clone();
             this.Roots = roots;
             this.Children = children;
         }
