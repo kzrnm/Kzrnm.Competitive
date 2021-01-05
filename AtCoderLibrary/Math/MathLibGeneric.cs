@@ -5,6 +5,9 @@
         /// <summary>
         /// <paramref name="x"/> の <paramref name="y"/> 乗
         /// </summary>
+        /// <remarks>
+        /// <para>計算量: O(log <paramref name="y"/>)</para>
+        /// </remarks>
         public static T Pow<T, TOp>(T x, long y)
             where TOp : struct, IMultiplicationOperator<T>
         {
