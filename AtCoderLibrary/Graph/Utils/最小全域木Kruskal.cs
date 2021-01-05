@@ -10,8 +10,7 @@ namespace AtCoder
         /// <para>計算量: O(E log(E))</para>
         /// </summary>
         public static (int from, TEdge edge)[] Kruskal<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph)
-            where T : struct
-            where TOp : struct, INumOperator<T>
+            where TOp : struct, IAdditionOperator<T>, IComparer<T>
             where TNode : IWNode<T, TEdge, TOp>
             where TEdge : IWEdge<T>
         {

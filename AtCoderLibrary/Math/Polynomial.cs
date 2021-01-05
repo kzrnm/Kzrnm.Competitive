@@ -7,7 +7,7 @@ namespace AtCoder
     /// </summary>
     public class Polynomial<T, TOp>
         where T : struct
-        where TOp : struct, IArithmeticOperator<T>
+        where TOp : struct, IArithmeticOperator<T>, IUnaryNumOperator<T>
     {
         private static readonly TOp op = default;
         public readonly T[] Value;
@@ -158,7 +158,7 @@ namespace AtCoder
             static T Coefficient(ReadOnlySpan<(T x, T y)> plots, int i)
             {
                 var (xi, yi) = plots[i];
-                var d = op.Increment(default);
+                var d = op.MultiplyIdentity;
                 for (int k = 0; k < plots.Length; k++)
                     if (i != k)
                         d = op.Multiply(d, op.Subtract(xi, plots[k].x));
@@ -169,7 +169,7 @@ namespace AtCoder
             static T[] PAll(ReadOnlySpan<(T x, T y)> plots)
             {
                 var res = new T[plots.Length + 1];
-                res[^1] = op.Increment(default);
+                res[^1] = op.MultiplyIdentity;
                 for (int k = plots.Length - 1; k >= 0; k--)
                 {
                     var xk = op.Minus(plots[k].x);
@@ -184,7 +184,7 @@ namespace AtCoder
             {
                 var xi = plots[i].x;
                 var res = new T[plots.Length];
-                res[^1] = op.Increment(default);
+                res[^1] = op.MultiplyIdentity;
                 for (int j = plots.Length - 2; j >= 0; j--)
                     res[j] = op.Add(op.Multiply(xi, res[j + 1]), pall[j + 1]);
                 return new Polynomial<T, TOp>(res);

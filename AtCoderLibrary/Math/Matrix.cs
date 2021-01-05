@@ -12,7 +12,7 @@ namespace AtCoder
             DebugUtil.Assert(mat.Length == mat[0].Length);
             var K = mat.Length;
             T[][] res = Global.NewArray(K, K, default(T));
-            var one = default(TOp).Increment(default);
+            var one = default(TOp).MultiplyIdentity;
             for (var i = 0; i < res.Length; i++)
                 res[i][i] = one;
             for (; y > 0; y >>= 1)
@@ -62,7 +62,7 @@ namespace AtCoder
                     if (!SearchNonZero(mat, i))
                         continue;
                 }
-                var inv = op.Divide(op.Increment(default), mat[i][i]);
+                var inv = op.Divide(op.MultiplyIdentity, mat[i][i]);
 
                 for (int k = i; k < mat[i].Length; k++)
                     mat[i][k] = op.Multiply(mat[i][k], inv);

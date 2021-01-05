@@ -30,8 +30,7 @@ namespace AtCoder
         }
     }
     public class WGraphBuilder<T, TOp>
-        where T : struct
-        where TOp : struct, IArithmeticOperator<T>
+        where TOp : struct, IAdditionOperator<T>
     {
         protected static readonly TOp op = default;
         internal List<WEdge<T>>[] roots;
@@ -152,9 +151,8 @@ namespace AtCoder
         public WEdge<T> Reversed(int from) => new WEdge<T>(from, Value);
     }
 
-    public class WNode<T, TOp> : IWNode<T, WEdge<T>, TOp>
-        where T : struct
-        where TOp : struct, IArithmeticOperator<T>
+    public class WNode<T, TOp> : IWNode<T, WEdge<T>, TOp>, IEquatable<WNode<T, TOp>>
+        where TOp : struct, IAdditionOperator<T>
     {
         public WNode(int i, WEdge<T>[] children)
         {
@@ -179,9 +177,8 @@ namespace AtCoder
         public bool Equals(WNode<T, TOp> other) => this.Index == other.Index;
         public override int GetHashCode() => this.Index;
     }
-    public class WTreeNode<T, TOp> : ITreeNode<WEdge<T>>
-        where T : struct
-        where TOp : struct, IArithmeticOperator<T>
+    public class WTreeNode<T, TOp> : ITreeNode<WEdge<T>>, IEquatable<WTreeNode<T, TOp>>
+        where TOp : struct, IAdditionOperator<T>
     {
         public WTreeNode(int i, WEdge<T> root, int depth, T depthLength, WEdge<T>[] children)
         {

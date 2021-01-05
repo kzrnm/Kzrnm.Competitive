@@ -114,7 +114,6 @@ namespace AtCoder
         }
     }
 
-
     public readonly struct Edge : IEdge, IReversable<Edge>, IEquatable<Edge>
     {
         public static Edge None { get; } = new Edge(-1);
@@ -134,7 +133,7 @@ namespace AtCoder
         public static bool operator !=(Edge left, Edge right) => !left.Equals(right);
     }
 
-    public class Node : INode<Edge>
+    public class Node : INode<Edge>, IEquatable<Node>
     {
         public Node(int i, Edge[] children)
         {
@@ -156,10 +155,10 @@ namespace AtCoder
 
         public override string ToString() => $"children: {string.Join(",", Children)}";
         public override bool Equals(object obj) => obj is Node d && this.Equals(d);
-        public bool Equals(Node other) => this.Index == other.Index;
+        public bool Equals(Node other) => this.Index == other?.Index;
         public override int GetHashCode() => this.Index;
     }
-    public class TreeNode : ITreeNode<Edge>
+    public class TreeNode : ITreeNode<Edge>, IEquatable<TreeNode>
     {
         public TreeNode(int i, Edge root, int depth, Edge[] children)
         {
@@ -175,7 +174,7 @@ namespace AtCoder
 
         public override string ToString() => $"children: {string.Join(",", Children)}";
         public override bool Equals(object obj) => obj is TreeNode node && this.Equals(node);
-        public bool Equals(TreeNode other) => this.Index == other.Index;
+        public bool Equals(TreeNode other) => this.Index == other?.Index;
         public override int GetHashCode() => this.Index;
     }
 }

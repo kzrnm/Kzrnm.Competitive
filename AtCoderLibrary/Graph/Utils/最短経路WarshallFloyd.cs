@@ -13,7 +13,7 @@
         where TEdge : IWEdge<T>
         {
             TOp op = default;
-            var INF = op.Divide(op.MaxValue, op.Increment(op.Increment(default)));
+            var INF = op.Divide(op.MaxValue, op.Increment(op.MultiplyIdentity));
             var res = Global.NewArray(graph.Length, graph.Length, INF);
             for (var i = 0; i < graph.Length; i++)
             {

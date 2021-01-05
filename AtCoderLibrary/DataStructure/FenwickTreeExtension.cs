@@ -10,8 +10,7 @@
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
         public static int LowerBound<TValue, TOp>(this FenwickTree<TValue, TOp> fw, TValue v)
-            where TValue : struct
-            where TOp : struct, IArithmeticOperator<TValue>, ICompareOperator<TValue>
+            where TOp : struct, IAdditionOperator<TValue>, ICompareOperator<TValue>
         {
             var op = default(TOp);
             if (op.LessThanOrEqual(v, default)) return 0;
@@ -36,8 +35,7 @@
         /// <para>計算量: O(log <paramref name="n"/>)</para>
         /// </remarks>
         public static int UpperBound<TValue, TOp>(this FenwickTree<TValue, TOp> fw, TValue v)
-            where TValue : struct
-            where TOp : struct, IArithmeticOperator<TValue>, ICompareOperator<TValue>
+            where TOp : struct, IAdditionOperator<TValue>, ICompareOperator<TValue>
         {
             var op = default(TOp);
             if (op.LessThanOrEqual(v, default)) return 0;

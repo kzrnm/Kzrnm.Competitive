@@ -9,13 +9,13 @@ namespace AtCoder
         /// <para>計算量: O( (|E| + |V|) log |V| )</para>
         /// </summary>
         public static T[] Dijkstra<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph, int from)
-            where TNode : IWNode<T, TEdge, TOp>
-            where TEdge : IWEdge<T>
             where T : struct
             where TOp : struct, INumOperator<T>
+            where TNode : IWNode<T, TEdge, TOp>
+            where TEdge : IWEdge<T>
         {
             TOp op = default;
-            var INF = op.Divide(op.MaxValue, op.Increment(op.Increment(default)));
+            var INF = op.Divide(op.MaxValue, op.Increment(op.MultiplyIdentity));
             var res = Global.NewArray(graph.Length, INF);
             res[from] = default;
 

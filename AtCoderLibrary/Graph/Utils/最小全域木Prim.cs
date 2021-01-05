@@ -11,8 +11,7 @@ namespace AtCoder
         /// <para>計算量は O(E + V log(V))</para>
         /// </summary>
         public static (int from, TEdge edge)[] Prim<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph)
-            where T : struct
-            where TOp : struct, INumOperator<T>
+            where TOp : struct, IAdditionOperator<T>, IComparer<T>
             where TNode : IWNode<T, TEdge, TOp>
             where TEdge : IWEdge<T>
         {
@@ -24,11 +23,10 @@ namespace AtCoder
                 pq.Add((0, e));
             for (int i = 1; i < graph.Length; i++)
             {
-                var t = pq.Dequeue();
-                var edge = t.edge;
+                var (from, edge) = pq.Dequeue();
                 if (sumi[edge.To]) { --i; continue; }
                 sumi[edge.To] = true;
-                res.Add((t.from, edge));
+                res.Add((from, edge));
                 foreach (var e in graph[edge.To].Children)
                     if (!sumi[e.To])
                         pq.Add((edge.To, e));
@@ -36,8 +34,7 @@ namespace AtCoder
             return res.ToArray();
         }
         private readonly struct Comparer<T, TOp, TEdge> : IComparer<(int from, TEdge edge)>
-            where T : struct
-            where TOp : struct, INumOperator<T>
+            where TOp : struct, IAdditionOperator<T>, IComparer<T>
             where TEdge : IWEdge<T>
         {
             private static readonly TOp op = default;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace AtCoder
 {
@@ -15,7 +14,7 @@ namespace AtCoder
         /// <returns>スタート地点とオイラー路を返す。見つからなかったら (-1, null) を返す。</returns>
         public static (int from, TEdge[] trail) EulerianTrail<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
             where TNode : INode<TEdge>
-            where TEdge : struct, IEdge, IReversable<TEdge>, IEquatable<TEdge>
+            where TEdge : struct, IEdge, IReversable<TEdge>
         {
             if (graph[0].IsDirected)
                 return EulerianTrailDirected(graph);
@@ -29,7 +28,7 @@ namespace AtCoder
         /// </summary>
         private static (int from, TEdge[] trail) EulerianTrailUndirected<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
             where TNode : INode<TEdge>
-            where TEdge : struct, IEdge, IReversable<TEdge>, IEquatable<TEdge>
+            where TEdge : struct, IEdge, IReversable<TEdge>
         {
             Internal.DebugUtil.Assert(!graph[0].IsDirected);
             var start = 0;
@@ -58,7 +57,7 @@ namespace AtCoder
         /// </summary>
         private static (int from, TEdge[] trail) EulerianTrailDirected<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
             where TNode : INode<TEdge>
-            where TEdge : struct, IEdge, IReversable<TEdge>, IEquatable<TEdge>
+            where TEdge : struct, IEdge, IReversable<TEdge>
         {
             Internal.DebugUtil.Assert(graph[0].IsDirected);
             var start = -1;
@@ -100,7 +99,7 @@ namespace AtCoder
         /// </summary>
         public static TEdge[] EulerianTrail<TNode, TEdge>(this IGraph<TNode, TEdge> graph, int from)
             where TNode : INode<TEdge>
-            where TEdge : struct, IEdge, IReversable<TEdge>, IEquatable<TEdge>
+            where TEdge : struct, IEdge, IReversable<TEdge>
         {
             var isDirected = graph[from].IsDirected;
             var graphQueue = new Queue<EdgeInternal<TEdge>>[graph.Length];
@@ -127,7 +126,7 @@ namespace AtCoder
         }
 
         private static TEdge[] EulerianTrail<TEdge>(Queue<EdgeInternal<TEdge>>[] graph, int from)
-            where TEdge : struct, IEdge, IReversable<TEdge>, IEquatable<TEdge>
+            where TEdge : struct, IEdge, IReversable<TEdge>
         {
             var res = new List<TEdge>();
             var idx = new Stack<TEdge>();

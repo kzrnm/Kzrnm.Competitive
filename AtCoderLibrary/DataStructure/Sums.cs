@@ -6,8 +6,7 @@ namespace AtCoder
     /// 累積和を求めます。
     /// </summary>
     public class Sums<TValue, TOp>
-        where TValue : struct
-        where TOp : struct, IArithmeticOperator<TValue>
+        where TOp : struct, IAdditionOperator<TValue>
     {
         private static readonly TOp op = default;
         private readonly TValue[] impl;

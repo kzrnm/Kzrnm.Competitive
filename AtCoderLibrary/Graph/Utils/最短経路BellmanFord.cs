@@ -17,7 +17,7 @@ namespace AtCoder
         {
             TOp op = default;
             var graphArr = graph.AsArray();
-            var INF = op.Divide(op.MaxValue, op.Increment(op.Increment(default)));
+            var INF = op.Divide(op.MaxValue, op.Increment(op.MultiplyIdentity));
             var res = Global.NewArray(graphArr.Length, INF);
             res[from] = default;
 

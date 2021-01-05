@@ -8,8 +8,7 @@ using System.Linq;
 namespace AtCoder
 {
     public class WGraphBuilder<T, S, TOp>
-        where T : struct
-        where TOp : struct, IArithmeticOperator<T>
+        where TOp : struct, IAdditionOperator<T>
     {
         protected static readonly TOp op = default;
         internal List<WEdge<T, S>>[] roots;
@@ -133,9 +132,8 @@ namespace AtCoder
         public WEdge<T, S> Reversed(int from) => new WEdge<T, S>(from, Value, Data);
     }
 
-    public class WNode<T, S, TOp> : IWNode<T, WEdge<T, S>, TOp>
-        where T : struct
-        where TOp : struct, IArithmeticOperator<T>
+    public class WNode<T, S, TOp> : IWNode<T, WEdge<T, S>, TOp>, IEquatable<WNode<T, S, TOp>>
+        where TOp : struct, IAdditionOperator<T>
     {
         public WNode(int i, WEdge<T, S>[] children)
         {
@@ -157,12 +155,11 @@ namespace AtCoder
 
         public override string ToString() => $"children: {string.Join(",", Children)}";
         public override bool Equals(object obj) => obj is WNode<T, TOp> d && this.Equals(d);
-        public bool Equals(WNode<T, TOp> other) => this.Index == other.Index;
+        public bool Equals(WNode<T, S, TOp> other) => this.Index == other.Index;
         public override int GetHashCode() => this.Index;
     }
-    public class WTreeNode<T, S, TOp> : ITreeNode<WEdge<T, S>>
-        where T : struct
-        where TOp : struct, IArithmeticOperator<T>
+    public class WTreeNode<T, S, TOp> : ITreeNode<WEdge<T, S>>, IEquatable<WTreeNode<T, S, TOp>>
+        where TOp : struct, IAdditionOperator<T>
     {
         public WTreeNode(int i, WEdge<T, S> root, int depth, T depthLength, WEdge<T, S>[] children)
         {
@@ -180,7 +177,7 @@ namespace AtCoder
 
         public override string ToString() => $"children: {string.Join(",", Children)}";
         public override bool Equals(object obj) => obj is WTreeNode<T, TOp> node && this.Equals(node);
-        public bool Equals(WTreeNode<T, TOp> other) => this.Index == other.Index;
+        public bool Equals(WTreeNode<T, S, TOp> other) => this.Index == other.Index;
         public override int GetHashCode() => this.Index;
     }
 }

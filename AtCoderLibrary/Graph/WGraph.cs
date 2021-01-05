@@ -1,20 +1,17 @@
 ﻿namespace AtCoder
 {
     public interface IWGraph<T, TOp, out TNode, out TEdge> : IGraph<TNode, TEdge>
-        where T : struct
-        where TOp : struct, IArithmeticOperator<T>
+        where TOp : struct, IAdditionOperator<T>
         where TNode : IWNode<T, TEdge, TOp>
         where TEdge : IWEdge<T>
     { }
     public interface IWTreeGraph<T, TOp, out TNode, out TEdge> : ITreeGraph<TNode, TEdge>
-        where T : struct
-        where TOp : struct, IArithmeticOperator<T>
+        where TOp : struct, IAdditionOperator<T>
         where TNode : ITreeNode<TEdge>
         where TEdge : IWEdge<T>
     { }
     public class WGraph<T, TOp, TNode, TEdge> : IWGraph<T, TOp, TNode, TEdge>
-        where T : struct
-        where TOp : struct, IArithmeticOperator<T>
+        where TOp : struct, IAdditionOperator<T>
         where TNode : IWNode<T, TEdge, TOp>
         where TEdge : IWEdge<T>
     {
@@ -28,8 +25,7 @@
         }
     }
     public class WTreeGraph<T, TOp, TNode, TEdge> : IWTreeGraph<T, TOp, TNode, TEdge>
-        where T : struct
-        where TOp : struct, IArithmeticOperator<T>
+        where TOp : struct, IAdditionOperator<T>
         where TNode : ITreeNode<TEdge>
         where TEdge : IWEdge<T>
     {
