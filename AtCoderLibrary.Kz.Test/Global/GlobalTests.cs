@@ -16,7 +16,7 @@ namespace AtCoder
         [InlineData("321903178318273190741289041628089476545235432414344687124631248734241843437208340823424281043012408734421482107")]
         public void ParseBigInteger(string input)
         {
-            Global.ParseBigInteger(input).Should().Be(BigInteger.Parse(input));
+            BigIntegerEx.ParseBigInteger(input).Should().Be(BigInteger.Parse(input));
         }
     }
 }

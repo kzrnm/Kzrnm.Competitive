@@ -54,30 +54,6 @@ namespace AtCoder
         }
         #endregion NewArray
 
-#pragma warning disable IDE0057
-        public static BigInteger ParseBigInteger(ReadOnlySpan<char> s)
-        {
-            /* 自前実装の方が速い */
-            if (s[0] == '-') return -ParseBigInteger(s[1..]);
-            BigInteger res;
-            if (s.Length % 9 == 0)
-                res = 0;
-            else
-            {
-                res = new BigInteger(int.Parse(s.Slice(0, s.Length % 9)));
-                s = s.Slice(s.Length % 9);
-            }
-
-            while (s.Length > 0)
-            {
-                var sp = s.Slice(0, 9);
-                res *= 1000_000_000;
-                res += int.Parse(sp);
-                s = s.Slice(9);
-            }
-            return res;
-        }
-
         /// <summary>
         /// 座標圧縮を行う
         /// </summary>
