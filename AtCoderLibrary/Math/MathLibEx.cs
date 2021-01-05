@@ -63,7 +63,7 @@ namespace AtCoder
         }
 
         /// <summary>
-        /// x の y 乗
+        /// <paramref name="x"/> の <paramref name="y"/> 乗
         /// </summary>
         public static long Pow(long x, int y)
         {

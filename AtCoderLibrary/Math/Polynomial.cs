@@ -69,7 +69,7 @@ namespace AtCoder
 
         public Polynomial<T, TOp> DivRem(Polynomial<T, TOp> rhs, out Polynomial<T, TOp> remainder)
         {
-            Span<T> lp = (T[])this.Value.Clone();
+            var lp = (T[])this.Value.Clone();
             ReadOnlySpan<T> rp = rhs.Value;
 
             if (lp.Length < rp.Length)
@@ -82,7 +82,7 @@ namespace AtCoder
 
             for (int i = res.Length - 1; i >= 0; i--)
             {
-                var current = lp.Slice(i, rp.Length);
+                var current = lp.AsSpan(i, rp.Length);
                 res[i] = op.Divide(current[^1], rp[^1]);
                 for (int j = 0; j < current.Length; j++)
                 {
@@ -90,7 +90,7 @@ namespace AtCoder
                 }
             }
 
-            remainder = new Polynomial<T, TOp>(lp.Slice(0, rp.Length - 1).ToArray());
+            remainder = new Polynomial<T, TOp>(lp.AsSpan(0, rp.Length - 1).ToArray());
             return new Polynomial<T, TOp>(res);
         }
 
