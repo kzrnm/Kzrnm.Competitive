@@ -6,7 +6,11 @@ namespace AtCoder
 {
     public static class MyLinqExtension
     {
-        public static (int index, T max) MaxBy<T>(this T[] arr) where T : IComparable<T>
+        public static (int index, T min) MaxBy<T>(this T[] arr) where T : IComparable<T>
+             => MaxBy((ReadOnlySpan<T>)arr);
+        public static (int index, T min) MaxBy<T>(this Span<T> arr) where T : IComparable<T>
+             => MaxBy((ReadOnlySpan<T>)arr);
+        public static (int index, T max) MaxBy<T>(this ReadOnlySpan<T> arr) where T : IComparable<T>
         {
             T max = arr[0];
             int maxIndex = 0;
@@ -21,6 +25,10 @@ namespace AtCoder
             return (maxIndex, max);
         }
         public static (int index, T max) MaxBy<T, TMax>(this T[] arr, Func<T, TMax> maxBySelector) where TMax : IComparable<TMax>
+            => MaxBy((ReadOnlySpan<T>)arr, maxBySelector);
+        public static (int index, T max) MaxBy<T, TMax>(this Span<T> arr, Func<T, TMax> maxBySelector) where TMax : IComparable<TMax>
+            => MaxBy((ReadOnlySpan<T>)arr, maxBySelector);
+        public static (int index, T max) MaxBy<T, TMax>(this ReadOnlySpan<T> arr, Func<T, TMax> maxBySelector) where TMax : IComparable<TMax>
         {
             var maxItem = maxBySelector(arr[0]);
             var max = arr[0];
@@ -60,6 +68,10 @@ namespace AtCoder
             return (maxByItem, max);
         }
         public static (int index, T min) MinBy<T>(this T[] arr) where T : IComparable<T>
+             => MinBy((ReadOnlySpan<T>)arr);
+        public static (int index, T min) MinBy<T>(this Span<T> arr) where T : IComparable<T>
+             => MinBy((ReadOnlySpan<T>)arr);
+        public static (int index, T min) MinBy<T>(this ReadOnlySpan<T> arr) where T : IComparable<T>
         {
             T min = arr[0];
             int minIndex = 0;
@@ -74,6 +86,11 @@ namespace AtCoder
             return (minIndex, min);
         }
         public static (int index, T min) MinBy<T, TMin>(this T[] arr, Func<T, TMin> minBySelector) where TMin : IComparable<TMin>
+            => MinBy((ReadOnlySpan<T>)arr, minBySelector);
+        public static (int index, T min) MinBy<T, TMin>(this Span<T> arr, Func<T, TMin> minBySelector) where TMin : IComparable<TMin>
+            => MinBy((ReadOnlySpan<T>)arr, minBySelector);
+        public static (int index, T min) MinBy<T, TMin>(this ReadOnlySpan<T> arr, Func<T, TMin> minBySelector) where TMin : IComparable<TMin>
+
         {
             var minItem = minBySelector(arr[0]);
             var min = arr[0];
