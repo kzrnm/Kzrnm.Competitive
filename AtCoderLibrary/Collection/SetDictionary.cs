@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using AtCoder.Internal;
 
 namespace AtCoder
 {
