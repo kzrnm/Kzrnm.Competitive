@@ -1,7 +1,7 @@
-using FluentAssertions;
+﻿using FluentAssertions;
 using Xunit;
 
-namespace AtCoder
+namespace AtCoder.DataStructure.String
 {
     public class BMTests
     {

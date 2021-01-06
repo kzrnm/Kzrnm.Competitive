@@ -2,7 +2,7 @@
 using System.Linq;
 using Xunit;
 
-namespace AtCoder
+namespace AtCoder.GlobalNS
 {
     public class GlobalNewArrayTests
     {

@@ -1,9 +1,9 @@
-using FluentAssertions;
+﻿using FluentAssertions;
 using System.Collections.Generic;
 using System.Reflection;
 using Xunit;
 
-namespace AtCoder
+namespace AtCoder.DataStructure.String
 {
     public class TrieTests
     {

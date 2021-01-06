@@ -2,7 +2,7 @@
 using System;
 using Xunit;
 
-namespace AtCoder
+namespace AtCoder.Extension
 {
     public class UpdateExtensionTests
     {

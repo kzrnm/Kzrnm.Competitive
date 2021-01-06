@@ -1,9 +1,9 @@
-using FluentAssertions;
+﻿using FluentAssertions;
 using System;
 using Xunit;
 using System.Runtime.Intrinsics.X86;
 
-namespace AtCoder
+namespace AtCoder.Bits
 {
     public class BitTests
     {

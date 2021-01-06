@@ -1,9 +1,9 @@
-using FluentAssertions;
+﻿using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace AtCoder
+namespace AtCoder.DataStructure.String
 {
     public class SuffixArrayTests
     {

@@ -1,11 +1,12 @@
-﻿using FluentAssertions;
+﻿using AtCoder;
+using FluentAssertions;
 using SourceExpander;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace AtCoder.Embedding
+namespace Embedding
 {
     public class SourceExpanderTest
     {

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace AtCoder
+namespace AtCoder.Extension
 {
     public class MyLinqExtensionTests
     {
