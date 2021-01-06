@@ -22,7 +22,13 @@ namespace AtCoder
             var p = other - this;
             return p.x * p.x + p.y * p.y;
         }
+        /// <summary>
+        /// 内積
+        /// </summary>
         public double Inner(PointDouble other) => x * other.x + y * other.y;
+        /// <summary>
+        /// 外積
+        /// </summary>
         public double Cross(PointDouble other) => x * other.y - y * other.x;
         public static PointDouble operator +(PointDouble a, PointDouble b) => new PointDouble(a.x + b.x, a.y + b.y);
         public static PointDouble operator -(PointDouble a, PointDouble b) => new PointDouble(a.x - b.x, a.y - b.y);
@@ -56,19 +62,29 @@ namespace AtCoder
                 + new PointDouble(ac * cosB * b.x / d, ac * cosB * b.y / d)
                 + new PointDouble(ab * cosC * c.x / d, ab * cosC * c.y / d);
         }
-
+        /// <summary>
+        /// A*x+B*y+C=0 との距離
+        /// </summary>
         public double 直線との距離(double A, double B, double C)
             => Math.Abs(A * x + B * y + C) / Math.Sqrt(A * A + B * B);
 
-        // A*x+B*y+C=0
+        /// <summary>
+        /// 2点を通る直線 A*x+B*y+C=0
+        /// </summary>
         public (double A, double B, double C) 直線(PointDouble other)
             => (other.y - this.y, this.x - other.x, this.y * (other.x - this.x) - this.x * (other.y - this.y));
-        // A*x+B*y+C=0
+
+
+        /// <summary>
+        /// 2点の垂直二等分線 A*x+B*y+C=0
+        /// </summary>
         public static (double A, double B, double C) 垂直二等分線(PointDouble a, PointDouble b)
             => (a.x - b.x, a.y - b.y, (a.x * a.x - b.x * b.x + a.y * a.y - b.y * b.y) * -.5);
 
 
-        // A*x+B*y+C=0, U*x+V*y+W=0の交点
+        /// <summary>
+        /// A*x+B*y+C=0, U*x+V*y+W=0の交点
+        /// </summary>
         public static PointDouble 直線と直線の交点(double a, double b, double c, double u, double v, double w)
         {
             var dd = a * v - b * u;
@@ -76,7 +92,9 @@ namespace AtCoder
         }
 
 
-        // A*x+B*y+C=0, Pを中心とする半径rの円の交点
+        /// <summary>
+        /// A*x+B*y+C=0 と Pを中心とする半径rの円の交点
+        /// </summary>
         public static PointDouble[] 直線と円の交点(double a, double b, double c, PointDouble p, double r)
         {
             var l = a * a + b * b;
@@ -103,7 +121,9 @@ namespace AtCoder
         };
         }
 
-
+        /// <summary>
+        /// P1 を中心とする半径 r1 の円とP2 を中心とする半径 r2 の円の交点
+        /// </summary>
         public static PointDouble[] 円の交点(PointDouble p1, double r1, PointDouble p2, double r2)
         {
             var xx = p1.x - p2.x;
@@ -114,6 +134,9 @@ namespace AtCoder
                 0.5 * ((r1 - r2) * (r1 + r2) - xx * (p1.x + p2.x) - yy * (p1.y + p2.y)), p1, r1);
         }
 
+        /// <summary>
+        /// <paramref name="a1"/> から <paramref name="b1"/>までの線分と<paramref name="a2"/> から <paramref name="b2"/>までの線分が交差しているか
+        /// </summary>
         public static bool 線分が交差しているか(PointDouble a1, PointDouble b1, PointDouble a2, PointDouble b2)
         {
             var ta = (a2.x - b2.x) * (a1.y - a2.y) + (a2.y - b2.y) * (a2.x - a1.x);

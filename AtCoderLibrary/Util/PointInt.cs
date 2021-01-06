@@ -22,7 +22,13 @@ namespace AtCoder
             var p = other - this;
             return (long)p.x * p.x + (long)p.y * p.y;
         }
+        /// <summary>
+        /// 内積
+        /// </summary>
         public long Inner(PointInt other) => (long)x * other.x + (long)y * other.y;
+        /// <summary>
+        /// 外積
+        /// </summary>
         public long Cross(PointInt other) => (long)x * other.y - (long)y * other.x;
         public static PointInt operator +(PointInt a, PointInt b) => new PointInt(a.x + b.x, a.y + b.y);
         public static PointInt operator -(PointInt a, PointInt b) => new PointInt(a.x - b.x, a.y - b.y);

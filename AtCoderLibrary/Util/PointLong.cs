@@ -2,7 +2,6 @@
 
 namespace AtCoder
 {
-
     public readonly struct PointLong : IEquatable<PointLong>, IComparable<PointLong>
     {
         public readonly long x;
@@ -22,7 +21,13 @@ namespace AtCoder
             var p = other - this;
             return p.x * p.x + p.y * p.y;
         }
+        /// <summary>
+        /// 内積
+        /// </summary>
         public long Inner(PointLong other) => x * other.x + y * other.y;
+        /// <summary>
+        /// 外積
+        /// </summary>
         public long Cross(PointLong other) => x * other.y - y * other.x;
         public static PointLong operator +(PointLong a, PointLong b) => new PointLong(a.x + b.x, a.y + b.y);
         public static PointLong operator -(PointLong a, PointLong b) => new PointLong(a.x - b.x, a.y - b.y);
