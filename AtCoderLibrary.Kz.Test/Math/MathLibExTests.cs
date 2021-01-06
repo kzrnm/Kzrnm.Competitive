@@ -175,7 +175,22 @@ namespace AtCoder
                 128100283921 });
             MathLibEx.Divisor(132147483703).Should().Equal(new long[] { 1, 132147483703 });
             MathLibEx.Divisor(963761198400).Should().HaveCount(6720); //高度合成数
+        }
 
+        [Fact]
+        public void Combination()
+        {
+            for (int i = 0; i <= 10; i++)
+                for (int j = 0; j <= i; j++)
+                {
+                    long n = 1, d = 1;
+                    for (int k = 0; k < j; k++)
+                    {
+                        n *= i - k;
+                        d *= k + 1;
+                    }
+                    MathLibEx.Combination(i, j).Should().Be(n / d);
+                }
         }
     }
 }

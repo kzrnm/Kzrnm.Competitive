@@ -1,51 +1,63 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace AtCoder
 {
     using static MethodImplOptions;
-    /** <summary>有理数を既約分数で表す</summary> */
+    /// <summary>有理数を既約分数で表す</summary>
     public readonly struct Fraction : IEquatable<Fraction>, IComparable<Fraction>
     {
-        /** <summary>分子</summary> */
-        public readonly long numerator;
-        /** <summary>分母</summary> */
-        public readonly long denominator;
+        /// <summary>分子</summary>
+        private readonly long _numerator;
+        /// <summary>分子</summary>
+        public long Numerator => _numerator;
+        /// <summary>分母 - 1 (default を 0/0 ではなく 0/1 にしたい)</summary>
+        private readonly long _denominator;
+        /// <summary>分母</summary>
+        public long Denominator => _denominator + 1;
+
         public Fraction(long 分子, long 分母)
         {
             var negative = (分子 ^ 分母) < 0;
             分子 = Math.Abs(分子);
             分母 = Math.Abs(分母);
-            var gcd = MathLibEx.Gcd(分母, 分子);
-            numerator = 分子 / gcd;
-            if (negative)
-                numerator = -numerator;
-            denominator = 分母 / gcd;
+            if (分子 == 0)
+            {
+                _numerator = 0;
+                _denominator = 0;
+            }
+            else
+            {
+                var gcd = MathLibEx.Gcd(分母, 分子);
+                _numerator = 分子 / gcd;
+                if (negative)
+                    _numerator = -_numerator;
+                _denominator = 分母 / gcd - 1;
+            }
         }
-        public override string ToString() => $"{numerator}/{denominator}";
+        public override string ToString() => $"{Numerator}/{Denominator}";
         public override bool Equals(object obj) => obj is Fraction f && Equals(f);
-        public bool Equals(Fraction other) => this.numerator == other.numerator && this.denominator == other.denominator;
-        public override int GetHashCode() => HashCode.Combine(numerator, denominator);
+        public bool Equals(Fraction other) => this._numerator == other._numerator && this._denominator == other._denominator;
+        public override int GetHashCode() => HashCode.Combine(_numerator, _denominator);
 
         public static implicit operator Fraction(long x) => new Fraction(x, 1);
-        public int CompareTo(Fraction other) => (this.numerator * other.denominator).CompareTo(other.numerator * this.denominator);
+        public int CompareTo(Fraction other) => (this.Numerator * other.Denominator).CompareTo(other.Numerator * this.Denominator);
 
-        public static Fraction operator -(Fraction x) => new Fraction(-x.numerator, x.denominator);
+        public static Fraction operator -(Fraction x) => new Fraction(-x.Numerator, x.Denominator);
         public static Fraction operator +(Fraction x, Fraction y)
         {
-            var gcd = MathLibEx.Gcd(x.denominator, y.denominator);
-            var lcm = x.denominator / gcd * y.denominator;
-            return new Fraction((x.numerator * y.denominator + y.numerator * x.denominator) / gcd, lcm);
+            var gcd = MathLibEx.Gcd(x.Denominator, y.Denominator);
+            var lcm = x.Denominator / gcd * y.Denominator;
+            return new Fraction((x.Numerator * y.Denominator + y.Numerator * x.Denominator) / gcd, lcm);
         }
         public static Fraction operator -(Fraction x, Fraction y)
         {
-            var gcd = MathLibEx.Gcd(x.denominator, y.denominator);
-            var lcm = x.denominator / gcd * y.denominator;
-            return new Fraction((x.numerator * y.denominator - y.numerator * x.denominator) / gcd, lcm);
+            var gcd = MathLibEx.Gcd(x.Denominator, y.Denominator);
+            var lcm = x.Denominator / gcd * y.Denominator;
+            return new Fraction((x.Numerator * y.Denominator - y.Numerator * x.Denominator) / gcd, lcm);
         }
-        public static Fraction operator *(Fraction x, Fraction y) => new Fraction(x.numerator * y.numerator, x.denominator * y.denominator);
-        public static Fraction operator /(Fraction x, Fraction y) => new Fraction(x.numerator * y.denominator, x.denominator * y.numerator);
+        public static Fraction operator *(Fraction x, Fraction y) => new Fraction(x.Numerator * y.Numerator, x.Denominator * y.Denominator);
+        public static Fraction operator /(Fraction x, Fraction y) => new Fraction(x.Numerator * y.Denominator, x.Denominator * y.Numerator);
         public static bool operator ==(Fraction x, Fraction y) => x.Equals(y);
         public static bool operator !=(Fraction x, Fraction y) => !x.Equals(y);
         public static bool operator >=(Fraction x, Fraction y) => x.CompareTo(y) >= 0;
@@ -53,8 +65,8 @@ namespace AtCoder
         public static bool operator >(Fraction x, Fraction y) => x.CompareTo(y) > 0;
         public static bool operator <(Fraction x, Fraction y) => x.CompareTo(y) < 0;
 
-        public Fraction Inverse() => new Fraction(denominator, numerator);
-        public double ToDouble() => (double)numerator / denominator;
+        public Fraction Inverse() => new Fraction(Denominator, Numerator);
+        public double ToDouble() => (double)Numerator / Denominator;
     }
     public struct FractionOperator : INumOperator<Fraction>, ICompareOperator<Fraction>
     {

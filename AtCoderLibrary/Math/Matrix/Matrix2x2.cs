@@ -39,11 +39,38 @@ namespace AtCoder
                 (
                     op.Add(op.Multiply(x.Row1.Col0, y.Row0.Col0), op.Multiply(x.Row1.Col1, y.Row1.Col0)),
                     op.Add(op.Multiply(x.Row1.Col0, y.Row0.Col1), op.Multiply(x.Row1.Col1, y.Row1.Col1))));
+        public static Matrix2x2<T, TOp> operator *(T a, Matrix2x2<T, TOp> y)
+            => new Matrix2x2<T, TOp>(
+                (op.Multiply(a, y.Row0.Col0), op.Multiply(a, y.Row0.Col1)),
+                (op.Multiply(a, y.Row1.Col0), op.Multiply(a, y.Row1.Col1))
+            );
 
         /// <summary>
         /// <paramref name="y"/> 乗した行列を返す。
         /// </summary>
         public Matrix2x2<T, TOp> Pow(long y) => MathLibGeneric.Pow<Matrix2x2<T, TOp>, Matrix2x2Operator<T, TOp>>(this, y);
+
+
+        /// <summary>
+        /// 行列式を求める
+        /// </summary>
+        public T Determinant()
+        {
+            return op.Subtract(op.Multiply(Row0.Col0, Row1.Col1), op.Multiply(Row0.Col1, Row1.Col0));
+        }
+
+        /// <summary>
+        /// 逆行列を求める
+        /// </summary>
+        public Matrix2x2<T, TOp> Inv()
+        {
+            var det = Determinant();
+            var detinv = op.Divide(op.MultiplyIdentity, det);
+            return new Matrix2x2<T, TOp>(
+                (op.Multiply(detinv, Row1.Col1), op.Multiply(detinv, op.Minus(Row0.Col1))),
+                (op.Multiply(detinv, op.Minus(Row1.Col0)), op.Multiply(detinv, Row0.Col0))
+            );
+        }
     }
 
     public struct Matrix2x2Operator<T, TOp> : IArithmeticOperator<Matrix2x2<T, TOp>>

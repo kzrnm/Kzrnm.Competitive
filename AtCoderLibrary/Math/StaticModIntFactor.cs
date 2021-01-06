@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AtCoder
+﻿namespace AtCoder
 {
     public class StaticModIntFactor<T> where T : struct, IStaticMod
     {

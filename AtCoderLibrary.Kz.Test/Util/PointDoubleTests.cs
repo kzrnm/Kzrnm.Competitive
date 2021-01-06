@@ -140,7 +140,7 @@ namespace AtCoder.Util
 
         public static TheoryData 直線と円の交点_Data = new TheoryData<double, double, double, PointDouble, double, PointDouble[]>
         {
-            { 1, -1, 1, new PointDouble(0, 0), 0.1, new PointDouble[0]{} },
+            { 1, -1, 1, new PointDouble(0, 0), 0.1, Array.Empty<PointDouble>() },
             { 0, -1, 1, new PointDouble(0, 0), 1, new PointDouble[]{ new PointDouble(0, 1) } },
             { 1, -1, 1, new PointDouble(0, 0), 1, new PointDouble[]{ new PointDouble(-1, 0), new PointDouble(0, 1) } },
         };
@@ -153,7 +153,7 @@ namespace AtCoder.Util
 
         public static TheoryData 円の交点_Data = new TheoryData<PointDouble, double, PointDouble, double, PointDouble[]>
         {
-            { new PointDouble(-1, 0), 0.8, new PointDouble(1, 0), 1, new PointDouble[0]{} },
+            { new PointDouble(-1, 0), 0.8, new PointDouble(1, 0), 1, Array.Empty<PointDouble>() },
             { new PointDouble(-1, 0), 1, new PointDouble(1, 0), 1, new PointDouble[]{ new PointDouble(0, 0) } },
             { new PointDouble(-1, 0), 1.2, new PointDouble(1, 0), 1.2, new PointDouble[]{ new PointDouble(0, 0.6633249580710799), new PointDouble(0, -0.6633249580710799) } },
             { new PointDouble(0, 0), 1, new PointDouble(1, 1), 1, new PointDouble[]{ new PointDouble(0, 1), new PointDouble(1, 0) } },

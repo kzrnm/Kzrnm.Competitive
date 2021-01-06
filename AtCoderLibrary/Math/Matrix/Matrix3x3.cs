@@ -55,11 +55,57 @@ namespace AtCoder
                     op.Add(op.Add(op.Multiply(x.Row2.Col0, y.Row0.Col2), op.Multiply(x.Row2.Col1, y.Row1.Col2)), op.Multiply(x.Row2.Col2, y.Row2.Col2))
                 )
             );
+        public static Matrix3x3<T, TOp> operator *(T a, Matrix3x3<T, TOp> y)
+            => new Matrix3x3<T, TOp>(
+                (op.Multiply(a, y.Row0.Col0), op.Multiply(a, y.Row0.Col1), op.Multiply(a, y.Row0.Col2)),
+                (op.Multiply(a, y.Row1.Col0), op.Multiply(a, y.Row1.Col1), op.Multiply(a, y.Row1.Col2)),
+                (op.Multiply(a, y.Row2.Col0), op.Multiply(a, y.Row2.Col1), op.Multiply(a, y.Row2.Col2))
+            );
 
         /// <summary>
         /// <paramref name="y"/> 乗した行列を返す。
         /// </summary>
         public Matrix3x3<T, TOp> Pow(long y) => MathLibGeneric.Pow<Matrix3x3<T, TOp>, Matrix3x3Operator<T, TOp>>(this, y);
+
+        /// <summary>
+        /// 行列式を求める
+        /// </summary>
+        public T Determinant()
+        {
+            return op.Subtract(
+             op.Add(op.Multiply(Row0.Col0, op.Multiply(Row1.Col1, Row2.Col2)),
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row0.Col2, Row2.Col1)),
+                    op.Multiply(Row2.Col0, op.Multiply(Row0.Col1, Row1.Col2)))),
+             op.Add(op.Multiply(Row0.Col0, op.Multiply(Row1.Col2, Row2.Col1)),
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row0.Col1, Row2.Col2)),
+                    op.Multiply(Row2.Col0, op.Multiply(Row0.Col2, Row1.Col1)))));
+        }
+
+        /// <summary>
+        /// 逆行列を求める
+        /// </summary>
+        public Matrix3x3<T, TOp> Inv()
+        {
+            var r0c0 = op.Subtract(op.Multiply(Row1.Col1, Row2.Col2), op.Multiply(Row1.Col2, Row2.Col1));
+            var r1c0 = op.Subtract(op.Multiply(Row1.Col2, Row2.Col0), op.Multiply(Row1.Col0, Row2.Col2));
+            var r2c0 = op.Subtract(op.Multiply(Row1.Col0, Row2.Col1), op.Multiply(Row1.Col1, Row2.Col0));
+
+            var r0c1 = op.Subtract(op.Multiply(Row0.Col2, Row2.Col1), op.Multiply(Row0.Col1, Row2.Col2));
+            var r1c1 = op.Subtract(op.Multiply(Row0.Col0, Row2.Col2), op.Multiply(Row0.Col2, Row2.Col0));
+            var r2c1 = op.Subtract(op.Multiply(Row0.Col1, Row2.Col0), op.Multiply(Row0.Col0, Row2.Col1));
+
+            var r0c2 = op.Subtract(op.Multiply(Row0.Col1, Row1.Col2), op.Multiply(Row0.Col2, Row1.Col1));
+            var r1c2 = op.Subtract(op.Multiply(Row0.Col2, Row1.Col0), op.Multiply(Row0.Col0, Row1.Col2));
+            var r2c2 = op.Subtract(op.Multiply(Row0.Col0, Row1.Col1), op.Multiply(Row0.Col1, Row1.Col0));
+
+            var det = Determinant();
+            var detinv = op.Divide(op.MultiplyIdentity, det);
+            return new Matrix3x3<T, TOp>(
+                (op.Multiply(detinv, r0c0), op.Multiply(detinv, r0c1), op.Multiply(detinv, r0c2)),
+                (op.Multiply(detinv, r1c0), op.Multiply(detinv, r1c1), op.Multiply(detinv, r1c2)),
+                (op.Multiply(detinv, r2c0), op.Multiply(detinv, r2c1), op.Multiply(detinv, r2c2))
+            );
+        }
     }
 
     public struct Matrix3x3Operator<T, TOp> : IArithmeticOperator<Matrix3x3<T, TOp>>

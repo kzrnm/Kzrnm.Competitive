@@ -2,7 +2,7 @@
 using System.Numerics;
 using Xunit;
 
-namespace AtCoder
+namespace AtCoder.MathNS
 {
     public class BigIntegerTests
     {

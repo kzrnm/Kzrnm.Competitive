@@ -1,8 +1,8 @@
-using FluentAssertions;
+﻿using FluentAssertions;
 using System.Collections.Generic;
 using Xunit;
 
-namespace AtCoder
+namespace AtCoder.MathNS
 {
     public class PrimeNumberTests
     {

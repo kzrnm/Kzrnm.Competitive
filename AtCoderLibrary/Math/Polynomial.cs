@@ -10,18 +10,18 @@ namespace AtCoder
         where TOp : struct, IArithmeticOperator<T>, IUnaryNumOperator<T>
     {
         private static readonly TOp op = default;
-        public readonly T[] Value;
+        public readonly T[] Coefficients;
         /// <summary>
         /// 多項式を生成します。
         /// </summary>
         /// <param name="polynomial"><paramref name="polynomial"/>[i] がi次の係数となる多項式</param>
-        public Polynomial(T[] polynomial) { this.Value = polynomial; }
+        public Polynomial(T[] polynomial) { this.Coefficients = polynomial; }
 
 
         public static Polynomial<T, TOp> operator +(Polynomial<T, TOp> lhs, Polynomial<T, TOp> rhs)
         {
-            var lp = lhs.Value;
-            var rp = rhs.Value;
+            var lp = lhs.Coefficients;
+            var rp = rhs.Coefficients;
             var arr = new T[Math.Max(lp.Length, rp.Length)];
             lp.CopyTo(arr.AsSpan());
             for (int i = 0; i < rp.Length; i++)
@@ -32,8 +32,8 @@ namespace AtCoder
         }
         public static Polynomial<T, TOp> operator -(Polynomial<T, TOp> lhs, Polynomial<T, TOp> rhs)
         {
-            var lp = lhs.Value;
-            var rp = rhs.Value;
+            var lp = lhs.Coefficients;
+            var rp = rhs.Coefficients;
             var arr = new T[Math.Max(lp.Length, rp.Length)];
             lp.CopyTo(arr.AsSpan());
             for (int i = 0; i < rp.Length; i++)
@@ -44,8 +44,8 @@ namespace AtCoder
         }
         public static Polynomial<T, TOp> operator *(Polynomial<T, TOp> lhs, Polynomial<T, TOp> rhs)
         {
-            var lp = lhs.Value;
-            var rp = rhs.Value;
+            var lp = lhs.Coefficients;
+            var rp = rhs.Coefficients;
             var arr = new T[lp.Length + rp.Length - 1];
 
             for (int l = 0; l < lp.Length; l++)
@@ -56,7 +56,7 @@ namespace AtCoder
         }
         public static Polynomial<T, TOp> operator *(T lhs, Polynomial<T, TOp> rhs)
         {
-            var rp = rhs.Value;
+            var rp = rhs.Coefficients;
             var arr = new T[rp.Length];
             for (int r = 0; r < rp.Length; r++)
                 arr[r] = op.Multiply(lhs, rp[r]);
@@ -69,8 +69,8 @@ namespace AtCoder
 
         public Polynomial<T, TOp> DivRem(Polynomial<T, TOp> rhs, out Polynomial<T, TOp> remainder)
         {
-            var lp = (T[])this.Value.Clone();
-            ReadOnlySpan<T> rp = rhs.Value;
+            var lp = (T[])this.Coefficients.Clone();
+            ReadOnlySpan<T> rp = rhs.Coefficients;
 
             if (lp.Length < rp.Length)
             {
@@ -100,10 +100,10 @@ namespace AtCoder
         /// <returns></returns>
         public Polynomial<T, TOp> Derivative()
         {
-            var arr = new T[Value.Length - 1];
+            var arr = new T[Coefficients.Length - 1];
             T a = default;
             for (int i = 0; i < arr.Length; i++)
-                arr[i] = op.Multiply(a = op.Increment(a), Value[i + 1]);
+                arr[i] = op.Multiply(a = op.Increment(a), Coefficients[i + 1]);
 
             return new Polynomial<T, TOp>(arr);
         }
@@ -113,10 +113,10 @@ namespace AtCoder
         /// <returns></returns>
         public Polynomial<T, TOp> Integrate()
         {
-            var arr = new T[Value.Length + 1];
+            var arr = new T[Coefficients.Length + 1];
             T a = default;
             for (int i = 1; i < arr.Length; i++)
-                arr[i] = op.Divide(Value[i - 1], a = op.Increment(a));
+                arr[i] = op.Divide(Coefficients[i - 1], a = op.Increment(a));
 
             return new Polynomial<T, TOp>(arr);
         }
@@ -127,8 +127,8 @@ namespace AtCoder
         public T Calc(T x)
         {
             T x_n = x;
-            T res = Value[0];
-            foreach (var a in Value[1..])
+            T res = Coefficients[0];
+            foreach (var a in Coefficients[1..])
             {
                 res = op.Add(res, op.Multiply(a, x_n));
                 x_n = op.Multiply(x_n, x);
@@ -155,7 +155,7 @@ namespace AtCoder
         public static Polynomial<T, TOp> LagrangeInterpolation(ReadOnlySpan<(T x, T y)> plots)
         {
             // y_i / (Π_k!=i (x_i - x_k)) )
-            static T Coefficient(ReadOnlySpan<(T x, T y)> plots, int i)
+            static T ConstantCoefficient(ReadOnlySpan<(T x, T y)> plots, int i)
             {
                 var (xi, yi) = plots[i];
                 var d = op.MultiplyIdentity;
@@ -194,7 +194,7 @@ namespace AtCoder
             var res = new Polynomial<T, TOp>(new T[plots.Length]);
             var pall = PAll(plots);
             for (int i = 0; i < plots.Length; i++)
-                res += Coefficient(plots, i) * Pk(plots, i, pall);
+                res += ConstantCoefficient(plots, i) * Pk(plots, i, pall);
             return res;
         }
     }

@@ -33,7 +33,7 @@ namespace AtCoder
             var span = MemoryMarshal.CreateReadOnlySpan(ref value[0, 0], len0 * len1);
             for (int i = 0; i < arr.Length; i++)
             {
-                arr[i] = span.Slice(i * len0, len1).ToArray();
+                arr[i] = span.Slice(i * len1, len1).ToArray();
             }
             kind = ArrayMatrixKind.Normal;
         }
@@ -51,7 +51,7 @@ namespace AtCoder
         {
             var res = new T[arr.Length][];
             for (int i = 0; i < arr.Length; i++)
-                res[i] = (T[])arr.Clone();
+                res[i] = (T[])arr[i].Clone();
             return res;
         }
 
@@ -119,7 +119,8 @@ namespace AtCoder
         {
             var arr = CloneArray(x.Value);
             for (int i = 0; i < arr.Length; i++)
-                arr[i][i] = op.Minus(arr[i][i]);
+                for (int j = 0; j < arr[i].Length; j++)
+                    arr[i][j] = op.Minus(arr[i][j]);
             return new ArrayMatrix<T, TOp>(arr);
         }
 
@@ -154,8 +155,8 @@ namespace AtCoder
             var res = NormalZeroMatrix(Value.Length, other.Value[0].Length);
             DebugUtil.Assert(Value[0].Length == other.Value.Length);
             for (int i = 0; i < arr.Length; i++)
-                for (int j = 0; j < arr[i].Length; j++)
-                    for (var k = 0; k < otherArr.Length; k++)
+                for (var k = 0; k < arr[i].Length; k++)
+                    for (int j = 0; j < otherArr[k].Length; j++)
                         res[i][j] = op.Add(res[i][j], op.Multiply(arr[i][k], otherArr[k][j]));
             return new ArrayMatrix<T, TOp>(res);
         }
@@ -183,17 +184,66 @@ namespace AtCoder
             };
         }
 
+        private ArrayMatrix<T, TOp> MultiplyScalar(T scalar)
+        {
+            var arr = this.Value;
+            var res = NormalZeroMatrix(arr.Length, arr[0].Length);
+            for (int i = 0; i < arr.Length; i++)
+                for (int j = 0; j < arr[i].Length; j++)
+                    res[i][j] = op.Multiply(scalar, arr[i][j]);
+            return new ArrayMatrix<T, TOp>(res);
+        }
+        public static ArrayMatrix<T, TOp> operator *(T x, ArrayMatrix<T, TOp> y)
+        {
+            return y.kind switch
+            {
+                ArrayMatrixKind.Normal => y.MultiplyScalar(x),
+                _ => ThrowNotSupportResponse(),
+            };
+        }
+
         /// <summary>
         /// <paramref name="y"/> 乗した行列を返す。
         /// </summary>
         public ArrayMatrix<T, TOp> Pow(long y) => MathLibGeneric.Pow<ArrayMatrix<T, TOp>, ArrayMatrixOperator<T, TOp>>(this, y);
 
-
+        /// <summary>
+        /// 逆行列を掃き出し法で求める
+        /// </summary>
+        public ArrayMatrix<T, TOp> Inv()
+        {
+            DebugUtil.Assert(Value.Length == Value[0].Length);
+            var orig = Value;
+            var len1 = orig.Length * 2;
+            var arr = new T[orig.Length][];
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = new T[len1];
+                Array.Copy(orig[i], arr[i], orig.Length);
+                arr[i][arr.Length + i] = op.MultiplyIdentity;
+            }
+            GaussianEliminationImpl(arr);
+            var res = new T[arr.Length][];
+            for (int i = 0; i < res.Length; i++)
+                res[i] = arr[i][res.Length..];
+            return new ArrayMatrix<T, TOp>(res);
+        }
 
         /// <summary>
-        /// ガウスの消去法(掃き出し法)で一次方程式を解く。
+        /// ガウスの消去法(掃き出し法)
         /// </summary>
         public ArrayMatrix<T, TOp> GaussianElimination()
+        {
+            DebugUtil.Assert(this.kind == ArrayMatrixKind.Normal);
+            var arr = CloneArray(Value);
+            GaussianEliminationImpl(arr);
+            return new ArrayMatrix<T, TOp>(arr);
+        }
+
+        /// <summary>
+        /// ガウスの消去法(掃き出し法)
+        /// </summary>
+        private static void GaussianEliminationImpl(T[][] arr)
         {
             static bool SearchNonZero(T[][] mat, int i)
             {
@@ -205,10 +255,7 @@ namespace AtCoder
                     }
                 return false;
             }
-            var op = default(TOp);
-            var arr = CloneArray(Value);
-            DebugUtil.Assert(this.kind == ArrayMatrixKind.Normal);
-            DebugUtil.Assert(arr[0].Length == arr.Length + 1);
+            DebugUtil.Assert(arr.Length <= arr[0].Length);
             for (int i = 0; i < arr.Length; i++)
             {
                 if (EqualityComparer<T>.Default.Equals(arr[i][i], default))
@@ -221,14 +268,14 @@ namespace AtCoder
                 for (int k = i; k < arr[i].Length; k++)
                     arr[i][k] = op.Multiply(arr[i][k], inv);
 
-                for (int j = i + 1; j < arr.Length; j++)
+                for (int j = 0; j < arr.Length; j++)
                 {
+                    if (i == j) continue;
                     for (int k = i + 1; k < arr[j].Length; k++)
                         arr[j][k] = op.Subtract(arr[j][k], op.Multiply(arr[i][k], arr[j][i]));
                     arr[j][i] = default;
                 }
             }
-            return new ArrayMatrix<T, TOp>(arr);
         }
     }
     public enum ArrayMatrixKind

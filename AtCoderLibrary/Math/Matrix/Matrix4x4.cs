@@ -70,11 +70,181 @@ namespace AtCoder
                     op.Add(op.Add(op.Add(op.Multiply(x.Row3.Col0, y.Row0.Col3), op.Multiply(x.Row3.Col1, y.Row1.Col3)), op.Multiply(x.Row3.Col2, y.Row2.Col3)), op.Multiply(x.Row3.Col3, y.Row3.Col3))
                 )
             );
+        public static Matrix4x4<T, TOp> operator *(T a, Matrix4x4<T, TOp> y)
+            => new Matrix4x4<T, TOp>(
+                (op.Multiply(a, y.Row0.Col0), op.Multiply(a, y.Row0.Col1), op.Multiply(a, y.Row0.Col2), op.Multiply(a, y.Row0.Col3)),
+                (op.Multiply(a, y.Row1.Col0), op.Multiply(a, y.Row1.Col1), op.Multiply(a, y.Row1.Col2), op.Multiply(a, y.Row1.Col3)),
+                (op.Multiply(a, y.Row2.Col0), op.Multiply(a, y.Row2.Col1), op.Multiply(a, y.Row2.Col2), op.Multiply(a, y.Row2.Col3)),
+                (op.Multiply(a, y.Row3.Col0), op.Multiply(a, y.Row3.Col1), op.Multiply(a, y.Row3.Col2), op.Multiply(a, y.Row3.Col3))
+            );
 
         /// <summary>
         /// <paramref name="y"/> 乗した行列を返す。
         /// </summary>
         public Matrix4x4<T, TOp> Pow(long y) => MathLibGeneric.Pow<Matrix4x4<T, TOp>, Matrix4x4Operator<T, TOp>>(this, y);
+
+        /// <summary>
+        /// 行列式を求める
+        /// </summary>
+        public T Determinant()
+        {
+            var r0c0 = op.Subtract(
+             op.Add(op.Multiply(Row1.Col1, op.Multiply(Row2.Col2, Row3.Col3)),
+             op.Add(op.Multiply(Row2.Col1, op.Multiply(Row1.Col3, Row3.Col2)),
+                    op.Multiply(Row3.Col1, op.Multiply(Row1.Col2, Row2.Col3)))),
+             op.Add(op.Multiply(Row1.Col1, op.Multiply(Row2.Col3, Row3.Col2)),
+             op.Add(op.Multiply(Row2.Col1, op.Multiply(Row1.Col2, Row3.Col3)),
+                    op.Multiply(Row3.Col1, op.Multiply(Row1.Col3, Row2.Col2)))));
+            var r1c0 = op.Subtract(
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row2.Col3, Row3.Col2)),
+             op.Add(op.Multiply(Row2.Col0, op.Multiply(Row1.Col2, Row3.Col3)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row1.Col3, Row2.Col2)))),
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row2.Col2, Row3.Col3)),
+             op.Add(op.Multiply(Row2.Col0, op.Multiply(Row1.Col3, Row3.Col2)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row1.Col2, Row2.Col3)))));
+            var r2c0 = op.Subtract(
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row2.Col1, Row3.Col3)),
+             op.Add(op.Multiply(Row2.Col0, op.Multiply(Row1.Col3, Row3.Col1)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row1.Col1, Row2.Col3)))),
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row2.Col3, Row3.Col1)),
+             op.Add(op.Multiply(Row2.Col0, op.Multiply(Row1.Col1, Row3.Col3)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row1.Col3, Row2.Col1)))));
+            var r3c0 = op.Subtract(
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row2.Col2, Row3.Col1)),
+             op.Add(op.Multiply(Row2.Col0, op.Multiply(Row1.Col1, Row3.Col2)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row1.Col2, Row2.Col1)))),
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row2.Col1, Row3.Col2)),
+             op.Add(op.Multiply(Row2.Col0, op.Multiply(Row1.Col2, Row3.Col1)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row1.Col1, Row2.Col2)))));
+            return op.Add(op.Add(op.Multiply(Row0.Col0, r0c0), op.Multiply(Row0.Col1, r1c0)), op.Add(op.Multiply(Row0.Col2, r2c0), op.Multiply(Row0.Col3, r3c0)));
+        }
+
+        /// <summary>
+        /// 逆行列を求める
+        /// </summary>
+        public Matrix4x4<T, TOp> Inv()
+        {
+            var r0c0 = op.Subtract(
+             op.Add(op.Multiply(Row1.Col1, op.Multiply(Row2.Col2, Row3.Col3)),
+             op.Add(op.Multiply(Row2.Col1, op.Multiply(Row1.Col3, Row3.Col2)),
+                    op.Multiply(Row3.Col1, op.Multiply(Row1.Col2, Row2.Col3)))),
+             op.Add(op.Multiply(Row1.Col1, op.Multiply(Row2.Col3, Row3.Col2)),
+             op.Add(op.Multiply(Row2.Col1, op.Multiply(Row1.Col2, Row3.Col3)),
+                    op.Multiply(Row3.Col1, op.Multiply(Row1.Col3, Row2.Col2)))));
+            var r1c0 = op.Subtract(
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row2.Col3, Row3.Col2)),
+             op.Add(op.Multiply(Row2.Col0, op.Multiply(Row1.Col2, Row3.Col3)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row1.Col3, Row2.Col2)))),
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row2.Col2, Row3.Col3)),
+             op.Add(op.Multiply(Row2.Col0, op.Multiply(Row1.Col3, Row3.Col2)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row1.Col2, Row2.Col3)))));
+            var r2c0 = op.Subtract(
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row2.Col1, Row3.Col3)),
+             op.Add(op.Multiply(Row2.Col0, op.Multiply(Row1.Col3, Row3.Col1)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row1.Col1, Row2.Col3)))),
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row2.Col3, Row3.Col1)),
+             op.Add(op.Multiply(Row2.Col0, op.Multiply(Row1.Col1, Row3.Col3)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row1.Col3, Row2.Col1)))));
+            var r3c0 = op.Subtract(
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row2.Col2, Row3.Col1)),
+             op.Add(op.Multiply(Row2.Col0, op.Multiply(Row1.Col1, Row3.Col2)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row1.Col2, Row2.Col1)))),
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row2.Col1, Row3.Col2)),
+             op.Add(op.Multiply(Row2.Col0, op.Multiply(Row1.Col2, Row3.Col1)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row1.Col1, Row2.Col2)))));
+            var r0c1 = op.Subtract(
+             op.Add(op.Multiply(Row0.Col1, op.Multiply(Row2.Col3, Row3.Col2)),
+             op.Add(op.Multiply(Row2.Col1, op.Multiply(Row0.Col2, Row3.Col3)),
+                    op.Multiply(Row3.Col1, op.Multiply(Row0.Col3, Row2.Col2)))),
+             op.Add(op.Multiply(Row0.Col1, op.Multiply(Row2.Col2, Row3.Col3)),
+             op.Add(op.Multiply(Row2.Col1, op.Multiply(Row0.Col3, Row3.Col2)),
+                    op.Multiply(Row3.Col1, op.Multiply(Row0.Col2, Row2.Col3)))));
+            var r1c1 = op.Subtract(
+             op.Add(op.Multiply(Row0.Col0, op.Multiply(Row2.Col2, Row3.Col3)),
+             op.Add(op.Multiply(Row2.Col0, op.Multiply(Row0.Col3, Row3.Col2)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row0.Col2, Row2.Col3)))),
+             op.Add(op.Multiply(Row0.Col0, op.Multiply(Row2.Col3, Row3.Col2)),
+             op.Add(op.Multiply(Row2.Col0, op.Multiply(Row0.Col2, Row3.Col3)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row0.Col3, Row2.Col2)))));
+            var r2c1 = op.Subtract(
+             op.Add(op.Multiply(Row0.Col0, op.Multiply(Row2.Col3, Row3.Col1)),
+             op.Add(op.Multiply(Row2.Col0, op.Multiply(Row0.Col1, Row3.Col3)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row0.Col3, Row2.Col1)))),
+             op.Add(op.Multiply(Row0.Col0, op.Multiply(Row2.Col1, Row3.Col3)),
+             op.Add(op.Multiply(Row2.Col0, op.Multiply(Row0.Col3, Row3.Col1)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row0.Col1, Row2.Col3)))));
+            var r3c1 = op.Subtract(
+             op.Add(op.Multiply(Row0.Col0, op.Multiply(Row2.Col1, Row3.Col2)),
+             op.Add(op.Multiply(Row2.Col0, op.Multiply(Row0.Col2, Row3.Col1)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row0.Col1, Row2.Col2)))),
+             op.Add(op.Multiply(Row0.Col0, op.Multiply(Row2.Col2, Row3.Col1)),
+             op.Add(op.Multiply(Row2.Col0, op.Multiply(Row0.Col1, Row3.Col2)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row0.Col2, Row2.Col1)))));
+            var r0c2 = op.Subtract(
+             op.Add(op.Multiply(Row0.Col1, op.Multiply(Row1.Col2, Row3.Col3)),
+             op.Add(op.Multiply(Row1.Col1, op.Multiply(Row0.Col3, Row3.Col2)),
+                    op.Multiply(Row3.Col1, op.Multiply(Row0.Col2, Row1.Col3)))),
+             op.Add(op.Multiply(Row0.Col1, op.Multiply(Row1.Col3, Row3.Col2)),
+             op.Add(op.Multiply(Row1.Col1, op.Multiply(Row0.Col2, Row3.Col3)),
+                    op.Multiply(Row3.Col1, op.Multiply(Row0.Col3, Row1.Col2)))));
+            var r1c2 = op.Subtract(
+             op.Add(op.Multiply(Row0.Col0, op.Multiply(Row1.Col3, Row3.Col2)),
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row0.Col2, Row3.Col3)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row0.Col3, Row1.Col2)))),
+             op.Add(op.Multiply(Row0.Col0, op.Multiply(Row1.Col2, Row3.Col3)),
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row0.Col3, Row3.Col2)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row0.Col2, Row1.Col3)))));
+            var r2c2 = op.Subtract(
+             op.Add(op.Multiply(Row0.Col0, op.Multiply(Row1.Col1, Row3.Col3)),
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row0.Col3, Row3.Col1)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row0.Col1, Row1.Col3)))),
+             op.Add(op.Multiply(Row0.Col0, op.Multiply(Row1.Col3, Row3.Col1)),
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row0.Col1, Row3.Col3)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row0.Col3, Row1.Col1)))));
+            var r3c2 = op.Subtract(
+             op.Add(op.Multiply(Row0.Col0, op.Multiply(Row1.Col2, Row3.Col1)),
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row0.Col1, Row3.Col2)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row0.Col2, Row1.Col1)))),
+             op.Add(op.Multiply(Row0.Col0, op.Multiply(Row1.Col1, Row3.Col2)),
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row0.Col2, Row3.Col1)),
+                    op.Multiply(Row3.Col0, op.Multiply(Row0.Col1, Row1.Col2)))));
+            var r0c3 = op.Subtract(
+             op.Add(op.Multiply(Row0.Col1, op.Multiply(Row1.Col3, Row2.Col2)),
+             op.Add(op.Multiply(Row1.Col1, op.Multiply(Row0.Col2, Row2.Col3)),
+                    op.Multiply(Row2.Col1, op.Multiply(Row0.Col3, Row1.Col2)))),
+             op.Add(op.Multiply(Row0.Col1, op.Multiply(Row1.Col2, Row2.Col3)),
+             op.Add(op.Multiply(Row1.Col1, op.Multiply(Row0.Col3, Row2.Col2)),
+                    op.Multiply(Row2.Col1, op.Multiply(Row0.Col2, Row1.Col3)))));
+            var r1c3 = op.Subtract(
+             op.Add(op.Multiply(Row0.Col0, op.Multiply(Row1.Col2, Row2.Col3)),
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row0.Col3, Row2.Col2)),
+                    op.Multiply(Row2.Col0, op.Multiply(Row0.Col2, Row1.Col3)))),
+             op.Add(op.Multiply(Row0.Col0, op.Multiply(Row1.Col3, Row2.Col2)),
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row0.Col2, Row2.Col3)),
+                    op.Multiply(Row2.Col0, op.Multiply(Row0.Col3, Row1.Col2)))));
+            var r2c3 = op.Subtract(
+             op.Add(op.Multiply(Row0.Col0, op.Multiply(Row1.Col3, Row2.Col1)),
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row0.Col1, Row2.Col3)),
+                    op.Multiply(Row2.Col0, op.Multiply(Row0.Col3, Row1.Col1)))),
+             op.Add(op.Multiply(Row0.Col0, op.Multiply(Row1.Col1, Row2.Col3)),
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row0.Col3, Row2.Col1)),
+                    op.Multiply(Row2.Col0, op.Multiply(Row0.Col1, Row1.Col3)))));
+            var r3c3 = op.Subtract(
+             op.Add(op.Multiply(Row0.Col0, op.Multiply(Row1.Col1, Row2.Col2)),
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row0.Col2, Row2.Col1)),
+                    op.Multiply(Row2.Col0, op.Multiply(Row0.Col1, Row1.Col2)))),
+             op.Add(op.Multiply(Row0.Col0, op.Multiply(Row1.Col2, Row2.Col1)),
+             op.Add(op.Multiply(Row1.Col0, op.Multiply(Row0.Col1, Row2.Col2)),
+                    op.Multiply(Row2.Col0, op.Multiply(Row0.Col2, Row1.Col1)))));
+            var det = op.Add(op.Add(op.Multiply(Row0.Col0, r0c0), op.Multiply(Row0.Col1, r1c0)), op.Add(op.Multiply(Row0.Col2, r2c0), op.Multiply(Row0.Col3, r3c0)));
+            var detinv = op.Divide(op.MultiplyIdentity, det);
+            return new Matrix4x4<T, TOp>(
+                (op.Multiply(detinv, r0c0), op.Multiply(detinv, r0c1), op.Multiply(detinv, r0c2), op.Multiply(detinv, r0c3)),
+                (op.Multiply(detinv, r1c0), op.Multiply(detinv, r1c1), op.Multiply(detinv, r1c2), op.Multiply(detinv, r1c3)),
+                (op.Multiply(detinv, r2c0), op.Multiply(detinv, r2c1), op.Multiply(detinv, r2c2), op.Multiply(detinv, r2c3)),
+                (op.Multiply(detinv, r3c0), op.Multiply(detinv, r3c1), op.Multiply(detinv, r3c2), op.Multiply(detinv, r3c3))
+            );
+        }
     }
 
     public struct Matrix4x4Operator<T, TOp> : IArithmeticOperator<Matrix4x4<T, TOp>>
