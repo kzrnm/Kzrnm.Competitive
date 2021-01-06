@@ -12,6 +12,9 @@ namespace AtCoder
         public static PriorityQueueOp<T, DefaultComparerStruct<T>> Create<T>(int capacity)
             where T : IComparable<T>
             => new PriorityQueueOp<T, DefaultComparerStruct<T>>(capacity);
+        public static PriorityQueueOp<T, TOp> Create<T, TOp>()
+            where TOp : struct, IComparer<T>
+            => new PriorityQueueOp<T, TOp>(default(TOp));
         public static PriorityQueueOp<T, TOp> Create<T, TOp>(TOp comparer)
             where TOp : IComparer<T>
             => new PriorityQueueOp<T, TOp>(comparer);
@@ -24,6 +27,9 @@ namespace AtCoder
         public static PriorityQueueOp<TKey, TValue, DefaultComparerStruct<TKey>> CreateDictionary<TKey, TValue>(int capacity)
             where TKey : IComparable<TKey>
             => new PriorityQueueOp<TKey, TValue, DefaultComparerStruct<TKey>>(capacity);
+        public static PriorityQueueOp<TKey, TValue, TOp> CreateDictionary<TKey, TValue, TOp>()
+            where TOp : struct, IComparer<TKey>
+            => new PriorityQueueOp<TKey, TValue, TOp>(default(TOp));
         public static PriorityQueueOp<TKey, TValue, TOp> CreateDictionary<TKey, TValue, TOp>(TOp comparer)
             where TOp : IComparer<TKey>
             => new PriorityQueueOp<TKey, TValue, TOp>(comparer);
