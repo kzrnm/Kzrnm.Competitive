@@ -21,11 +21,13 @@ namespace AtCoder
             sumi[0] = true;
             foreach (var e in graph[0].Children)
                 pq.Add((0, e));
-            for (int i = 1; i < graph.Length; i++)
+            var sumiCnt = 1;
+            while (sumiCnt < sumi.Length && pq.Count > 0)
             {
                 var (from, edge) = pq.Dequeue();
-                if (sumi[edge.To]) { --i; continue; }
+                if (sumi[edge.To]) continue;
                 sumi[edge.To] = true;
+                ++sumiCnt;
                 res.Add((from, edge));
                 foreach (var e in graph[edge.To].Children)
                     if (!sumi[e.To])

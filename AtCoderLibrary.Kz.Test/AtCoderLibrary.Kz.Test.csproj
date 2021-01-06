@@ -30,8 +30,4 @@
     <ProjectReference Include="..\AtCoderLibrary\AtCoderLibrary.Kz.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Graph\" />
-  </ItemGroup>
-
 </Project>
