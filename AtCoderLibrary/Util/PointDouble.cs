@@ -78,8 +78,8 @@ namespace AtCoder
         /// <summary>
         /// 2点の垂直二等分線 A*x+B*y+C=0
         /// </summary>
-        public static (double A, double B, double C) 垂直二等分線(PointDouble a, PointDouble b)
-            => (a.x - b.x, a.y - b.y, (a.x * a.x - b.x * b.x + a.y * a.y - b.y * b.y) * -.5);
+        public (double A, double B, double C) 垂直二等分線(PointDouble other)
+            => (this.x - other.x, this.y - other.y, (this.x * this.x - other.x * other.x + this.y * this.y - other.y * other.y) * -.5);
 
 
         /// <summary>
@@ -116,9 +116,9 @@ namespace AtCoder
             var yd = apl * ds;
             return new[]
             {
-            new PointDouble(xc - xd, yc + yd),
-            new PointDouble(xc + xd, yc - yd),
-        };
+                new PointDouble(xc - xd, yc + yd),
+                new PointDouble(xc + xd, yc - yd),
+            };
         }
 
         /// <summary>
