@@ -9,24 +9,10 @@ namespace AtCoder
 {
     public class GraphBuilder
     {
-        internal List<Edge>[] roots;
-        internal List<Edge>[] children;
-        public GraphBuilder(int count, bool isOriented)
+        internal readonly EdgeContainer<Edge> edgeContainer;
+        public GraphBuilder(int size, bool isDirected)
         {
-            this.roots = new List<Edge>[count];
-            this.children = new List<Edge>[count];
-            for (var i = 0; i < count; i++)
-            {
-                if (isOriented)
-                {
-                    this.roots[i] = new List<Edge>();
-                    this.children[i] = new List<Edge>();
-                }
-                else
-                {
-                    this.roots[i] = this.children[i] = new List<Edge>();
-                }
-            }
+            edgeContainer = new EdgeContainer<Edge>(size, isDirected);
         }
         public static GraphBuilder Create(int count, PropertyConsoleReader cr, int edgeCount, bool isOriented)
         {
@@ -35,33 +21,47 @@ namespace AtCoder
                 gb.Add(cr.Int0, cr.Int0);
             return gb;
         }
+        public void Add(int from, int to) => edgeContainer.Add(from, new Edge(to));
 
-        public void Add(int from, int to)
-        {
-            children[from].Add(new Edge(to));
-            roots[to].Add(new Edge(from));
-        }
 
         public Graph<Node, Edge> ToGraph()
         {
-            DebugUtil.Assert(roots.Length == children.Length);
-            var res = new Node[roots.Length];
+            var res = new Node[edgeContainer.Length];
+            var csr = edgeContainer.ToCSR();
+            var counter = new int[res.Length];
+            var rootCounter = edgeContainer.IsDirected ? new int[res.Length] : counter;
+            var children = new Edge[res.Length][];
+            var roots = edgeContainer.IsDirected ? new Edge[res.Length][] : children;
             for (int i = 0; i < res.Length; i++)
             {
-                if (roots[i] == children[i])
-                    res[i] = new Node(i, children[i].ToArray());
-                else
-                    res[i] = new Node(i, roots[i].ToArray(), children[i].ToArray());
+                if (children[i] == null) children[i] = new Edge[edgeContainer.sizes[i]];
+                if (roots[i] == null) roots[i] = new Edge[edgeContainer.rootSizes[i]];
+                res[i] = new Node(i, roots[i], children[i]);
+                foreach (ref var e in csr.EList.AsSpan(csr.Start[i], csr.Start[i + 1] - csr.Start[i]))
+                {
+                    if (roots[e.To] == null)
+                        roots[e.To] = new Edge[edgeContainer.rootSizes[e.To]];
+                    children[i][counter[i]++] = e;
+                    roots[e.To][rootCounter[e.To]++] = e.Reversed(i);
+                }
             }
-            return new Graph<Node, Edge>(res);
+            return new Graph<Node, Edge>(res, csr);
         }
 
         public TreeGraph<TreeNode, Edge> ToTree(int root = 0)
         {
-            if (this.roots[0] != this.children[0])
-                throw new Exception("木には無向グラフをしたほうが良い");
-            var res = new TreeNode[this.children.Length];
-            res[root] = new TreeNode(root, Edge.None, 0, this.children[root].ToArray());
+            DebugUtil.Assert(!edgeContainer.IsDirected, "木には無向グラフをしたほうが良い");
+            var res = new TreeNode[edgeContainer.Length];
+            var children = new List<Edge>[res.Length];
+            foreach (var (from, e) in edgeContainer.edges)
+            {
+                if (children[from] == null) children[from] = new List<Edge>();
+                if (children[e.To] == null) children[e.To] = new List<Edge>();
+                children[from].Add(e);
+                children[e.To].Add(e.Reversed(from));
+            }
+
+            res[root] = new TreeNode(root, Edge.None, 0, children[root].ToArray());
 
             var queue = new Queue<(int parent, int child)>();
             foreach (var child in res[root].Children)
@@ -75,11 +75,11 @@ namespace AtCoder
 
                 IList<Edge> childrenBuilder;
                 if (parent == -1)
-                    childrenBuilder = this.children[cur];
+                    childrenBuilder = children[cur];
                 else
                 {
-                    childrenBuilder = new List<Edge>(this.children[cur].Count);
-                    foreach (var c in this.children[cur])
+                    childrenBuilder = new List<Edge>(children[cur].Count);
+                    foreach (var c in children[cur])
                         if (c != parent)
                             childrenBuilder.Add(c);
                 }
@@ -93,24 +93,6 @@ namespace AtCoder
             }
 
             return new TreeGraph<TreeNode, Edge>(res);
-        }
-
-        public GraphBuilder Clone()
-        {
-            var count = this.roots.Length;
-            var isOriented = this.roots[0] != this.children[0];
-            var cl = new GraphBuilder(count, isOriented);
-            for (int i = 0; i < count; i++)
-            {
-                if (isOriented)
-                {
-                    cl.children[i] = this.children[i].ToList();
-                    cl.roots[i] = this.roots[i].ToList();
-                }
-                else
-                    cl.children[i] = cl.roots[i] = this.roots[i].ToList();
-            }
-            return cl;
         }
     }
 
@@ -135,16 +117,9 @@ namespace AtCoder
 
     public class Node : INode<Edge>, IEquatable<Node>
     {
-        public Node(int i, Edge[] children)
-        {
-            this.Index = i;
-            this.Roots = this.Children = children;
-        }
         public Node(int i, Edge[] roots, Edge[] children)
         {
             this.Index = i;
-            if (roots == children)
-                children = (Edge[])children.Clone();
             this.Roots = roots;
             this.Children = children;
         }
@@ -174,7 +149,7 @@ namespace AtCoder
 
         public override string ToString() => $"children: {string.Join(",", Children)}";
         public override bool Equals(object obj) => obj is TreeNode node && this.Equals(node);
-        public bool Equals(TreeNode other) => this.Index == other?.Index;
+        public bool Equals(TreeNode other) => other != null && this.Index == other.Index;
         public override int GetHashCode() => this.Index;
     }
 }

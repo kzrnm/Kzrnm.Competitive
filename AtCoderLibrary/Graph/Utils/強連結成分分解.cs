@@ -18,13 +18,9 @@ namespace AtCoder
             where TNode : INode<TEdge>
             where TEdge : IEdge
         {
-            var graphArr = graph.AsArray();
-            var edges = new List<(int from, TEdge edge)>();
-            for (int i = 0; i < graphArr.Length; i++)
-                foreach (var e in graphArr[i].Children)
-                    edges.Add((i, e));
             // R. Tarjan のアルゴリズム
-            var g = new CSR<TEdge>(graphArr.Length, edges);
+            var graphArr = graph.AsArray();
+            var g = graph.Edges;
             int nowOrd = 0;
             int groupNum = 0;
             var visited = new Stack<int>(graphArr.Length);

@@ -1,4 +1,6 @@
 ﻿#pragma warning disable CA1819 // Properties should not return arrays
+using System;
+
 namespace AtCoder
 {
     public interface IReversable<T> where T : IEdge
@@ -16,7 +18,7 @@ namespace AtCoder
         TEdge[] Children { get; }
         bool IsDirected { get; }
     }
-    public interface ITreeNode<out TEdge> where TEdge : IEdge
+    public interface ITreeNode<TEdge> where TEdge : IEdge
     {
         int Index { get; }
         TEdge Root { get; }

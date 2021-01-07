@@ -33,51 +33,51 @@ namespace AtCoder
         where TOp : struct, IAdditionOperator<T>
     {
         protected static readonly TOp op = default;
-        internal List<WEdge<T>>[] roots;
-        internal List<WEdge<T>>[] children;
-        public WGraphBuilder(int count, bool isOriented)
+        internal readonly EdgeContainer<WEdge<T>> edgeContainer;
+        public WGraphBuilder(int size, bool isDirected)
         {
-            this.roots = new List<WEdge<T>>[count];
-            this.children = new List<WEdge<T>>[count];
-            for (var i = 0; i < count; i++)
-            {
-                if (isOriented)
-                {
-                    this.roots[i] = new List<WEdge<T>>();
-                    this.children[i] = new List<WEdge<T>>();
-                }
-                else
-                {
-                    this.roots[i] = this.children[i] = new List<WEdge<T>>();
-                }
-            }
+            edgeContainer = new EdgeContainer<WEdge<T>>(size, isDirected);
         }
-        public void Add(int from, int to, T value)
-        {
-            children[from].Add(new WEdge<T>(to, value));
-            roots[to].Add(new WEdge<T>(from, value));
-        }
+        public void Add(int from, int to, T value) => edgeContainer.Add(from, new WEdge<T>(to, value));
 
         public WGraph<T, TOp, WNode<T, TOp>, WEdge<T>> ToGraph()
         {
-            DebugUtil.Assert(roots.Length == children.Length);
-            var res = new WNode<T, TOp>[roots.Length];
+            var res = new WNode<T, TOp>[edgeContainer.Length];
+            var csr = edgeContainer.ToCSR();
+            var counter = new int[res.Length];
+            var rootCounter = edgeContainer.IsDirected ? new int[res.Length] : counter;
+            var children = new WEdge<T>[res.Length][];
+            var roots = edgeContainer.IsDirected ? new WEdge<T>[res.Length][] : children;
             for (int i = 0; i < res.Length; i++)
             {
-                if (roots[i] == children[i])
-                    res[i] = new WNode<T, TOp>(i, children[i].ToArray());
-                else
-                    res[i] = new WNode<T, TOp>(i, roots[i].ToArray(), children[i].ToArray());
+                if (children[i] == null) children[i] = new WEdge<T>[edgeContainer.sizes[i]];
+                if (roots[i] == null) roots[i] = new WEdge<T>[edgeContainer.rootSizes[i]];
+                res[i] = new WNode<T, TOp>(i, roots[i], children[i]);
+                foreach (ref var e in csr.EList.AsSpan(csr.Start[i], csr.Start[i + 1] - csr.Start[i]))
+                {
+                    if (roots[e.To] == null)
+                        roots[e.To] = new WEdge<T>[edgeContainer.rootSizes[e.To]];
+                    children[i][counter[i]++] = e;
+                    roots[e.To][rootCounter[e.To]++] = e.Reversed(i);
+                }
             }
-            return new WGraph<T, TOp, WNode<T, TOp>, WEdge<T>>(res);
+            return new WGraph<T, TOp, WNode<T, TOp>, WEdge<T>>(res, csr);
         }
 
         public WTreeGraph<T, TOp, WTreeNode<T, TOp>, WEdge<T>> ToTree(int root = 0)
         {
-            if (this.roots[0] != this.children[0])
-                throw new Exception("木には無向グラフをしたほうが良い");
-            var res = new WTreeNode<T, TOp>[this.children.Length];
-            res[root] = new WTreeNode<T, TOp>(root, WEdge<T>.None, 0, default, this.children[root].ToArray());
+            DebugUtil.Assert(!edgeContainer.IsDirected, "木には無向グラフをしたほうが良い");
+            var res = new WTreeNode<T, TOp>[edgeContainer.Length];
+            var children = new List<WEdge<T>>[res.Length];
+            foreach (var (from, e) in edgeContainer.edges)
+            {
+                if (children[from] == null) children[from] = new List<WEdge<T>>();
+                if (children[e.To] == null) children[e.To] = new List<WEdge<T>>();
+                children[from].Add(e);
+                children[e.To].Add(e.Reversed(from));
+            }
+
+            res[root] = new WTreeNode<T, TOp>(root, WEdge<T>.None, 0, default, children[root].ToArray());
 
             var queue = new Queue<(int parent, int child, T value)>();
             foreach (var e in res[root].Children)
@@ -91,11 +91,11 @@ namespace AtCoder
 
                 IList<WEdge<T>> childrenBuilder;
                 if (parent == -1)
-                    childrenBuilder = this.children[cur];
+                    childrenBuilder = children[cur];
                 else
                 {
-                    childrenBuilder = new List<WEdge<T>>(this.children[cur].Count);
-                    foreach (var e in this.children[cur])
+                    childrenBuilder = new List<WEdge<T>>(children[cur].Count);
+                    foreach (var e in children[cur])
                         if (e.To != parent)
                             childrenBuilder.Add(e);
                 }
@@ -109,24 +109,6 @@ namespace AtCoder
             }
 
             return new WTreeGraph<T, TOp, WTreeNode<T, TOp>, WEdge<T>>(res);
-        }
-
-        public WGraphBuilder<T, TOp> Clone()
-        {
-            var count = this.roots.Length;
-            var isOriented = this.roots[0] != this.children[0];
-            var cl = new WGraphBuilder<T, TOp>(count, isOriented);
-            for (int i = 0; i < count; i++)
-            {
-                if (isOriented)
-                {
-                    cl.children[i] = this.children[i].ToList();
-                    cl.roots[i] = this.roots[i].ToList();
-                }
-                else
-                    cl.children[i] = cl.roots[i] = this.roots[i].ToList();
-            }
-            return cl;
         }
     }
 
@@ -154,16 +136,9 @@ namespace AtCoder
     public class WNode<T, TOp> : IWNode<T, WEdge<T>, TOp>, IEquatable<WNode<T, TOp>>
         where TOp : struct, IAdditionOperator<T>
     {
-        public WNode(int i, WEdge<T>[] children)
-        {
-            this.Index = i;
-            this.Roots = this.Children = children;
-        }
         public WNode(int i, WEdge<T>[] roots, WEdge<T>[] children)
         {
             this.Index = i;
-            if (roots == children)
-                children = (WEdge<T>[])children.Clone();
             this.Roots = roots;
             this.Children = children;
         }
@@ -196,7 +171,7 @@ namespace AtCoder
 
         public override string ToString() => $"children: {string.Join(",", Children)}";
         public override bool Equals(object obj) => obj is WTreeNode<T, TOp> node && this.Equals(node);
-        public bool Equals(WTreeNode<T, TOp> other) => this.Index == other.Index;
+        public bool Equals(WTreeNode<T, TOp> other) => other != null && this.Index == other.Index;
         public override int GetHashCode() => this.Index;
     }
 }
