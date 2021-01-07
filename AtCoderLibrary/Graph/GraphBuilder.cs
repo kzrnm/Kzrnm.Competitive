@@ -24,7 +24,7 @@ namespace AtCoder
         public void Add(int from, int to) => edgeContainer.Add(from, new Edge(to));
 
 
-        public Graph<Node, Edge> ToGraph()
+        public SimpleGraph<Node, Edge> ToGraph()
         {
             var res = new Node[edgeContainer.Length];
             var csr = edgeContainer.ToCSR();
@@ -45,7 +45,7 @@ namespace AtCoder
                     roots[e.To][rootCounter[e.To]++] = e.Reversed(i);
                 }
             }
-            return new Graph<Node, Edge>(res, csr);
+            return new SimpleGraph<Node, Edge>(res, csr);
         }
 
         public TreeGraph<TreeNode, Edge> ToTree(int root = 0)

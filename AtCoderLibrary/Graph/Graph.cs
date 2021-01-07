@@ -19,7 +19,7 @@ namespace AtCoder
         TNode this[int index] { get; }
         int Length { get; }
     }
-    public class Graph<TNode, TEdge> : IGraph<TNode, TEdge>
+    public class SimpleGraph<TNode, TEdge> : IGraph<TNode, TEdge>
         where TNode : INode<TEdge>
         where TEdge : IEdge
     {
@@ -28,7 +28,7 @@ namespace AtCoder
         public TNode[] AsArray() => Nodes;
         public TNode this[int index] => Nodes[index];
         public int Length => Nodes.Length;
-        public Graph(TNode[] array, CSR<TEdge> edges)
+        public SimpleGraph(TNode[] array, CSR<TEdge> edges)
         {
             this.Nodes = array;
             this.Edges = edges;
