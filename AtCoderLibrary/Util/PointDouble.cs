@@ -47,6 +47,9 @@ namespace AtCoder
         public static bool operator ==(PointDouble left, PointDouble right) => left.Equals(right);
         public static bool operator !=(PointDouble left, PointDouble right) => !left.Equals(right);
 
+        /// <summary>
+        /// 3点の外心(外接円の中心=3点と等距離な点)を求める
+        /// </summary>
         public static PointDouble 外心(PointDouble a, PointDouble b, PointDouble c)
         {
             var ab = a.Distance(b);
