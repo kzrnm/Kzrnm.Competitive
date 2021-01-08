@@ -14,10 +14,17 @@ namespace AtCoder
         {
             edgeContainer = new EdgeContainer<Edge>(size, isDirected);
         }
-        public static GraphBuilder Create(int count, PropertyConsoleReader cr, int edgeCount, bool isOriented)
+        public static GraphBuilder Create(int count, PropertyConsoleReader cr, int edgeCount, bool isDirected)
         {
-            var gb = new GraphBuilder(count, isOriented);
+            var gb = new GraphBuilder(count, isDirected);
             for (var i = 0; i < edgeCount; i++)
+                gb.Add(cr.Int0, cr.Int0);
+            return gb;
+        }
+        public static GraphBuilder CreateTree(int count, PropertyConsoleReader cr)
+        {
+            var gb = new GraphBuilder(count, false);
+            for (var i = 1; i < count; i++)
                 gb.Add(cr.Int0, cr.Int0);
             return gb;
         }
