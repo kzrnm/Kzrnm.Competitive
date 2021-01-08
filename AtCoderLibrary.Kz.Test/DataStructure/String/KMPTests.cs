@@ -17,8 +17,8 @@ namespace AtCoder.DataStructure.String
         [MemberData(nameof(Match_Data))]
         public void Matches(string pattern, string target, IEnumerable<int> indexes)
         {
-            var kmp = new KMP(pattern);
-            kmp.Matches(target).Should().Equal(indexes);
+            var kmp = KMP.Create(pattern);
+            kmp.Matches(target).ToList().Should().Equal(indexes);
         }
     }
 }

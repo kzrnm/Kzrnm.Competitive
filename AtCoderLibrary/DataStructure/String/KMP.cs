@@ -1,23 +1,47 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 #region https://algoful.com/Archive/Algorithm/KMPSearch
 #endregion
 
 
 namespace AtCoder
 {
-    public class KMP
+    public static class KMP
     {
-        readonly string pattern;
+        /// <summary>
+        /// KMP法で検索するパターンを初期化する
+        /// </summary>
+        /// <param name="pattern">検索したいパターン</param>
+        public static KMP<T> Create<T>(ReadOnlySpan<T> pattern) => new KMP<T>(pattern);
+        /// <summary>
+        /// KMP法で検索するパターンを初期化する
+        /// </summary>
+        /// <param name="pattern">検索したいパターン</param>
+        public static KMP<T> Create<T>(Span<T> pattern) => new KMP<T>(pattern);
+        /// <summary>
+        /// KMP法で検索するパターンを初期化する
+        /// </summary>
+        /// <param name="pattern">検索したいパターン</param>
+        public static KMP<T> Create<T>(T[] pattern) => new KMP<T>(pattern);
+        /// <summary>
+        /// KMP法で検索するパターンを初期化する
+        /// </summary>
+        /// <param name="pattern">検索したいパターン</param>
+        public static KMP<char> Create(string pattern) => new KMP<char>(pattern);
+    }
+    public readonly ref struct KMP<T>
+    {
+        readonly ReadOnlySpan<T> pattern;
         readonly int[] table;
-        public KMP(string pattern) { this.pattern = pattern; table = CreateTable(pattern); }
-        static int[] CreateTable(string pattern)
+        public KMP(ReadOnlySpan<T> pattern) { this.pattern = pattern; table = CreateTable(pattern); }
+        static int[] CreateTable(ReadOnlySpan<T> pattern)
         {
             var table = new int[pattern.Length + 1];
             table[0] = -1;
             int j = -1;
             for (int i = 0; i < pattern.Length; i++)
             {
-                while (j >= 0 && pattern[i] != pattern[j]) j = table[j];
+                while (j >= 0 && !EqualityComparer<T>.Default.Equals(pattern[i], pattern[j])) j = table[j];
                 table[i + 1] = ++j;
             }
             return table;
@@ -26,22 +50,52 @@ namespace AtCoder
         /// <summary>
         /// <paramref name="target"/> の中で pattern と一致するインデックスを返す
         /// </summary>
-        public IEnumerable<int> Matches(string target)
-        {
-            for (int i = 0, p = 0; i < target.Length;)
-            {
-                if (target[i] == pattern[p])
-                { i++; p++; }
-                else if (p == 0)
-                    i++;
-                else
-                    p = table[p];
+        public Enumerator Matches(ReadOnlySpan<T> target) => new Enumerator(pattern, target, table);
 
-                if (p == pattern.Length)
+        public ref struct Enumerator
+        {
+            private readonly ReadOnlySpan<T> pattern;
+            private readonly ReadOnlySpan<T> target;
+            private readonly int[] table;
+            private int index;
+            private int p;
+            public Enumerator(ReadOnlySpan<T> pattern, ReadOnlySpan<T> target, int[] table)
+            {
+                this.pattern = pattern;
+                this.target = target;
+                this.table = table;
+                p = index = 0;
+            }
+            public int Current => index - pattern.Length;
+            public Enumerator GetEnumerator() => this;
+            public List<int> ToList()
+            {
+                var list = new List<int>();
+                foreach (var item in this)
+                    list.Add(item);
+                return list;
+            }
+            public bool MoveNext()
+            {
+                while (index < target.Length)
                 {
-                    yield return i - p;
-                    p = table[p];
+                    if (EqualityComparer<T>.Default.Equals(target[index], pattern[p]))
+                    {
+                        index++;
+                        p++;
+                    }
+                    else if (p == 0)
+                        index++;
+                    else
+                        p = table[p];
+
+                    if (p == pattern.Length)
+                    {
+                        p = table[p];
+                        return true;
+                    }
                 }
+                return false;
             }
         }
     }

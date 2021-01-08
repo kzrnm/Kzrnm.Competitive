@@ -15,7 +15,7 @@ namespace AtCoder.DataStructure.String
         [MemberData(nameof(Match_Data))]
         public void Match(string pattern, string target, int index)
         {
-            var bm = new BoyerMoore(pattern);
+            var bm = BoyerMoore.Create(pattern);
             bm.Match(target).Should().Be(index);
         }
     }
