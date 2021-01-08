@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Xunit;
 
-namespace AtCoder
+namespace AtCoder.MathNS
 {
     public class MathLibExTests
     {

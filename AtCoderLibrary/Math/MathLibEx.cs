@@ -50,7 +50,7 @@ namespace AtCoder
         /// <summary>
         /// 最小公倍数
         /// </summary>
-        public static long Lcm(long a, long b) => a / Gcd(a, b) * b;
+        public static long Lcm(long a, long b) => checked(a / Gcd(a, b) * b);
         /// <summary>
         /// 最小公倍数
         /// </summary>
