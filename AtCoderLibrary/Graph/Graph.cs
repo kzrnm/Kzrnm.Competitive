@@ -15,6 +15,7 @@ namespace AtCoder
         where TNode : ITreeNode<TEdge>
         where TEdge : IEdge
     {
+        int Root { get; }
         TNode[] AsArray();
         TNode this[int index] { get; }
         int Length { get; }
@@ -42,8 +43,10 @@ namespace AtCoder
         public TNode[] AsArray() => Nodes;
         public TNode this[int index] => Nodes[index];
         public int Length => Nodes.Length;
-        public TreeGraph(TNode[] array)
+        public int Root { get; }
+        public TreeGraph(TNode[] array, int root)
         {
+            this.Root = root;
             this.Nodes = array;
         }
     }

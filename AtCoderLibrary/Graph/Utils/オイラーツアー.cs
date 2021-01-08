@@ -44,8 +44,7 @@ namespace AtCoder
             where TNode : ITreeNode<TEdge>
         {
             var treeArr = tree.AsArray();
-            var root = 0;
-            while (treeArr[root].Root.To >= 0) root = treeArr[root].Root.To;
+            var root = tree.Root;
 
             var cnt = 0;
             var nodes = new (int l, int r)[treeArr.Length];

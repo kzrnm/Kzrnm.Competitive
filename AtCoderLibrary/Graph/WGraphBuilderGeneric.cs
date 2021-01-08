@@ -85,7 +85,7 @@ namespace AtCoder
                 }
             }
 
-            return new WTreeGraph<T, TOp, WTreeNode<T, S, TOp>, WEdge<T, S>>(res);
+            return new WTreeGraph<T, TOp, WTreeNode<T, S, TOp>, WEdge<T, S>>(res, root);
         }
     }
 

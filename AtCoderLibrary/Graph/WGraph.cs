@@ -37,8 +37,10 @@ namespace AtCoder
         public TNode[] AsArray() => Nodes;
         public TNode this[int index] => Nodes[index];
         public int Length => Nodes.Length;
-        public WTreeGraph(TNode[] array)
+        public int Root { get; }
+        public WTreeGraph(TNode[] array,int root)
         {
+            this.Root = root;
             this.Nodes = array;
         }
     }

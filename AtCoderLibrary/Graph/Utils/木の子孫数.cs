@@ -1,0 +1,38 @@
+﻿using System.Collections.Generic;
+
+namespace AtCoder
+{
+    public static class 木の子孫数
+    {
+        /// <summary>
+        /// 自身を含む子孫ノードの数を返す
+        /// </summary>
+        public static int[] DescendantsCounts<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
+            where TNode : ITreeNode<TEdge>
+            where TEdge : IEdge
+        {
+            var treeArr = tree.AsArray();
+            var res = new int[treeArr.Length];
+            var stack = new Stack<(int v, int ci)>(treeArr.Length);
+            stack.Push((tree.Root, 0));
+
+            while (stack.TryPop(out var tup))
+            {
+                var (v, ci) = tup;
+                var children = treeArr[v].Children;
+
+                if (ci == 0)
+                    res[v] = 1;
+                else
+                    res[v] += res[children[ci - 1].To];
+
+                if (ci < children.Length)
+                {
+                    stack.Push((v, ci + 1));
+                    stack.Push((children[ci].To, 0));
+                }
+            }
+            return res;
+        }
+    }
+}

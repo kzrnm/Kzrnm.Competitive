@@ -92,7 +92,7 @@ namespace AtCoder
                 }
             }
 
-            return new TreeGraph<TreeNode, Edge>(res);
+            return new TreeGraph<TreeNode, Edge>(res, root);
         }
     }
 
