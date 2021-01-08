@@ -38,17 +38,18 @@ namespace AtCoder
             if (xd != 0) return xd;
             return this.y.CompareTo(other.y);
         }
+        public bool IsNaN => double.IsNaN(x) || double.IsNaN(y);
 
         public bool Equals(PointDouble other) => this.x == other.x && this.y == other.y;
         public override bool Equals(object obj) => obj is PointDouble p && this.Equals(p);
         public override int GetHashCode() => HashCode.Combine(x, y);
-        public override string ToString() => $"({x}, {y})";
+        public override string ToString() => $"{x} {y}";
 
         public static bool operator ==(PointDouble left, PointDouble right) => left.Equals(right);
         public static bool operator !=(PointDouble left, PointDouble right) => !left.Equals(right);
 
         /// <summary>
-        /// 3点の外心(外接円の中心=3点と等距離な点)を求める
+        /// 3点の外心(外接円の中心=3点と等距離な点)を求める。3点が直線上にあるときはNaNとなる
         /// </summary>
         public static PointDouble 外心(PointDouble a, PointDouble b, PointDouble c)
         {

@@ -41,7 +41,7 @@ namespace AtCoder
         public bool Equals(PointLong other) => this.x == other.x && this.y == other.y;
         public override bool Equals(object obj) => obj is PointLong p && this.Equals(p);
         public override int GetHashCode() => HashCode.Combine(x, y);
-        public override string ToString() => $"({x}, {y})";
+        public override string ToString() => $"{x} {y}";
 
         public static bool operator ==(PointLong left, PointLong right) => left.Equals(right);
         public static bool operator !=(PointLong left, PointLong right) => !left.Equals(right);

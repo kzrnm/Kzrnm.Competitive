@@ -42,7 +42,7 @@ namespace AtCoder
         public bool Equals(PointInt other) => this.x == other.x && this.y == other.y;
         public override bool Equals(object obj) => obj is PointInt p && this.Equals(p);
         public override int GetHashCode() => HashCode.Combine(x, y);
-        public override string ToString() => $"({x}, {y})";
+        public override string ToString() => $"{x} {y}";
 
         public static bool operator ==(PointInt left, PointInt right) => left.Equals(right);
         public static bool operator !=(PointInt left, PointInt right) => !left.Equals(right);
