@@ -6,6 +6,42 @@ namespace AtCoder.Graph
     public class 最小全域木KruskalTests
     {
         [Fact]
+        public void 重みなしグラフ()
+        {
+            var gb = new GraphBuilder(5, false);
+            gb.Add(0, 1);
+            gb.Add(0, 2);
+            gb.Add(0, 3);
+            gb.Add(0, 4);
+            gb.Add(1, 2);
+            gb.Add(2, 3);
+            gb.Add(2, 4);
+            gb.Add(4, 3);
+            gb.Add(4, 0);
+            var graph = gb.ToGraph();
+            graph.Kruskal().Should().Equal(
+                (0, new Edge(1)),
+                (0, new Edge(2)),
+                (0, new Edge(3)),
+                (0, new Edge(4)));
+        }
+
+        [Fact]
+        public void 連結ではない()
+        {
+            var gb = new GraphBuilder(5, false);
+            gb.Add(0, 1);
+            gb.Add(0, 2);
+            gb.Add(1, 2);
+            gb.Add(4, 3);
+            var graph = gb.ToGraph();
+            graph.Kruskal().Should().Equal(
+                (0, new Edge(1)),
+                (0, new Edge(2)),
+                (3, new Edge(4)));
+        }
+
+        [Fact]
         public void Int()
         {
             var gb = new WIntGraphBuilder(5, false);

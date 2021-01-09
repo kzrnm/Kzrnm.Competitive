@@ -27,5 +27,26 @@ namespace AtCoder
                     res.Add((from, e));
             return res.ToArray();
         }
+
+        /// <summary>
+        /// <para>最小全域木をKruskal法で求める。</para>
+        /// <para>計算量: O(E log(E))</para>
+        /// </summary>
+        public static (int from, TEdge edge)[] Kruskal<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
+            where TNode : INode<TEdge>
+            where TEdge : IEdge
+        {
+            var graphArr = graph.AsArray();
+            var res = new List<(int from, TEdge edge)>(graph.Length - 1);
+            var uf = new UnionFind(graphArr.Length);
+            var edges = new List<(int from, TEdge edge)>();
+            foreach (var node in graphArr)
+                foreach (var e in node.Children)
+                    edges.Add((node.Index, e));
+            foreach (var (from, e) in edges.AsSpan())
+                if (uf.Merge(from, e.To))
+                    res.Add((from, e));
+            return res.ToArray();
+        }
     }
 }
