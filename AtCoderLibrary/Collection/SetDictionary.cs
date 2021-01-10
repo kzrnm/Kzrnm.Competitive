@@ -146,17 +146,11 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
             return (right, ri);
         }
-        [DebuggerHidden]
         public Node FindNodeLowerBound(TKey key) => BinarySearch(key, true).node;
-        [DebuggerHidden]
         public Node FindNodeUpperBound(TKey key) => BinarySearch(key, false).node;
-        [DebuggerHidden]
         public KeyValuePair<TKey, TValue> LowerBoundItem(TKey key) => BinarySearch(key, true).node.Pair;
-        [DebuggerHidden]
         public KeyValuePair<TKey, TValue> UpperBoundItem(TKey key) => BinarySearch(key, false).node.Pair;
-        [DebuggerHidden]
         public int LowerBoundIndex(TKey key) => BinarySearch(key, true).index;
-        [DebuggerHidden]
         public int UpperBoundIndex(TKey key) => BinarySearch(key, false).index;
 
         public IEnumerable<KeyValuePair<TKey, TValue>> Reversed()
