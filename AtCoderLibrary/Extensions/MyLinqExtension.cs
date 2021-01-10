@@ -6,9 +6,9 @@ namespace AtCoder
 {
     public static class MyLinqExtension
     {
-        public static (int index, T min) MaxBy<T>(this T[] arr) where T : IComparable<T>
+        public static (int index, T max) MaxBy<T>(this T[] arr) where T : IComparable<T>
              => MaxBy((ReadOnlySpan<T>)arr);
-        public static (int index, T min) MaxBy<T>(this Span<T> arr) where T : IComparable<T>
+        public static (int index, T max) MaxBy<T>(this Span<T> arr) where T : IComparable<T>
              => MaxBy((ReadOnlySpan<T>)arr);
         public static (int index, T max) MaxBy<T>(this ReadOnlySpan<T> arr) where T : IComparable<T>
         {
