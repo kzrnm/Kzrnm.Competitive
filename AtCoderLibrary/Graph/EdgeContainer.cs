@@ -1,5 +1,4 @@
 ﻿using AtCoder.Internal;
-using System.Collections.Generic;
 
 namespace AtCoder
 {
@@ -7,7 +6,7 @@ namespace AtCoder
     {
         public int Length { get; }
         public bool IsDirected { get; }
-        public readonly List<(int from, TEdge edge)> edges = new List<(int from, TEdge edge)>();
+        public readonly SimpleList<(int from, TEdge edge)> edges = new SimpleList<(int from, TEdge edge)>();
         public readonly int[] sizes;
         public readonly int[] rootSizes;
         public EdgeContainer(int size, bool isDirected)

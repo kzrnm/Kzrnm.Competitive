@@ -59,11 +59,11 @@ namespace AtCoder
         {
             DebugUtil.Assert(!edgeContainer.IsDirected, "木には無向グラフをしたほうが良い");
             var res = new TreeNode[edgeContainer.Length];
-            var children = new List<Edge>[res.Length];
+            var children = new SimpleList<Edge>[res.Length];
             foreach (var (from, e) in edgeContainer.edges)
             {
-                if (children[from] == null) children[from] = new List<Edge>();
-                if (children[e.To] == null) children[e.To] = new List<Edge>();
+                if (children[from] == null) children[from] = new SimpleList<Edge>();
+                if (children[e.To] == null) children[e.To] = new SimpleList<Edge>();
                 children[from].Add(e);
                 children[e.To].Add(e.Reversed(from));
             }

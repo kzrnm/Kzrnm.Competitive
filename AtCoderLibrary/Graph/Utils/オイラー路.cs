@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using AtCoder.Internal;
+using System;
+using System.Collections.Generic;
 
 namespace AtCoder
 {
@@ -128,7 +130,7 @@ namespace AtCoder
         private static TEdge[] EulerianTrail<TEdge>(Queue<EdgeInternal<TEdge>>[] graph, int from)
             where TEdge : struct, IEdge, IReversable<TEdge>
         {
-            var res = new List<TEdge>();
+            var res = new SimpleList<TEdge>();
             var idx = new Stack<TEdge>();
             while (graph[from].Count > 0)
             {
@@ -156,8 +158,9 @@ namespace AtCoder
                 }
             }
 
-            res.Reverse();
-            return res.ToArray();
+            var resArr = res.AsSpan().ToArray();
+            Array.Reverse(resArr);
+            return resArr;
         }
         private class EdgeInternal<TEdge> where TEdge : IEdge, IReversable<TEdge>
         {

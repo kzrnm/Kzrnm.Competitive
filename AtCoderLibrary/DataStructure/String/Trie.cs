@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AtCoder.Internal;
+using System;
 using System.Collections.Generic;
 
 namespace AtCoder
@@ -76,20 +77,20 @@ namespace AtCoder
             value = child.Value;
             return true;
         }
-        IEnumerable<KeyValuePair<TKey[], TValue>> All(List<TKey> list)
+        IEnumerable<KeyValuePair<TKey[], TValue>> All(SimpleList<TKey> list)
         {
             if (this.HasValue)
-                yield return KeyValuePair.Create(list.ToArray(), this.Value);
+                yield return KeyValuePair.Create(list.AsSpan().ToArray(), this.Value);
 
             foreach (var (k, trie) in children)
             {
                 list.Add(k);
                 foreach (var p in trie.All(list))
                     yield return p;
-                list.RemoveAt(list.Count - 1);
+                list.RemoveLast();
             }
         }
-        public IEnumerable<KeyValuePair<TKey[], TValue>> All() => All(new List<TKey>());
+        public IEnumerable<KeyValuePair<TKey[], TValue>> All() => All(new SimpleList<TKey>());
         public MatchEnumerator MatchGreedy(ReadOnlySpan<TKey> key)
             => new MatchEnumerator(this, key);
         public ref struct MatchEnumerator
