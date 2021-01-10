@@ -15,7 +15,7 @@
       <_Parameter1>AtCoderLibrary.Kz.Test</_Parameter1>
     </AssemblyAttribute>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
-    <PackageReference Include="ac-library-csharp" Version="1.0.8" />
+    <PackageReference Include="ac-library-csharp" Version="1.1.0" />
     <PackageReference Include="Competitive.IO" Version="0.3.0" />
     <PackageReference Include="SourceExpander.Embedder" Version="2.5.0">
       <PrivateAssets>all</PrivateAssets>
@@ -26,7 +26,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="AtCoderAnalyzer" Version="1.0.8">
+    <PackageReference Include="AtCoderAnalyzer" Version="1.1.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
