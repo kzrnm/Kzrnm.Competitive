@@ -27,8 +27,65 @@ public partial class Program
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     private object Calc()
     {
-        int N = cr;
+        CalcImpl();
+        return null;
+    }
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+    private void CalcImpl()
+    {
+        const long BIG = (long)1e17;
+        int n = cr;
+        int m = cr;
+        var mcf = new McfGraphLong(n + 2);
+        long[] bs = cr.Repeat(n);
+        (int s, int t, long l, long u, long c)[] inputEdges = cr.Repeat(m).Select<(int s, int t, long l, long u, long c)>(cr => (cr, cr, cr, cr, cr));
 
-        return N;
+        foreach (var (s, t, l, u, c) in inputEdges)
+        {
+            mcf.AddEdge(s, t, l, c);
+        }
+        long bsum = 0;
+        for (int i = 0; i < bs.Length; i++)
+        {
+            var b = bs[i];
+            if (b > 0)
+            {
+                bsum += b;
+                mcf.AddEdge(n, i, b, 0);
+            }
+            else if (b < 0)
+            {
+                mcf.AddEdge(i, n + 1, -b, 0);
+            }
+        }
+        var (cap, cost) = mcf.Flow(n, n + 1);
+        for (int i = 0; i < inputEdges.Length; i++)
+        {
+            mcf.GetEdge(i).Cap = inputEdges[i].u;
+        }
+        (cap, cost) = mcf.Flow(n, n + 1);
+        if (cap < bsum)
+        {
+            cw.WriteLine("infeasible");
+            return;
+        }
+        var edges = mcf.Edges().ToArray();
+        foreach (var e in edges.AsSpan(m))
+        {
+            if (e.Flow < e.Cap)
+            {
+                cw.WriteLine("infeasible");
+                return;
+            }
+        }
+        for (int i = 0; i < m; i++)
+        {
+
+            if (edges[i].Flow < inputEdges[i].l)
+            {
+                cw.WriteLine("infeasible");
+                return;
+            }
+        }
     }
 }
