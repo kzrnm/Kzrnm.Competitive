@@ -87,6 +87,21 @@ namespace AtCoder
 
 
         /// <summary>
+        /// P をとおる A*x+B*y=Any の垂線
+        /// </summary>
+        public static (double A, double B, double C) 直線の垂線(double a, double b, PointDouble p) => (b, -a, b * p.x - a * p.y);
+
+        /// <summary>
+        /// <paramref name="x"/> での A*x+B*y+C=0 の垂線
+        /// </summary>
+        public static (double A, double B, double C) 直線の垂線をXから求める(double a, double b, double c, double x) => (b, -a, b * x - a * (c - a * x));
+
+        /// <summary>
+        /// <paramref name="y"/> での A*x+B*y+C=0 の垂線
+        /// </summary>
+        public static (double A, double B, double C) 直線の垂線をYから求める(double a, double b, double c, double y) => (b, -a, b * (c - a * y) - a * y);
+
+        /// <summary>
         /// A*x+B*y+C=0, U*x+V*y+W=0の交点
         /// </summary>
         public static PointDouble 直線と直線の交点(double a, double b, double c, double u, double v, double w)
