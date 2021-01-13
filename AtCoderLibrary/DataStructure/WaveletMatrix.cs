@@ -10,8 +10,24 @@ namespace AtCoder
     /// <summary>
     /// 2 次元平面上にある点が事前に与えられているとき、オンラインでいろいろなクエリを処理するデータ構造
     /// </summary>
-    public class WaveletMatrix<T> where T : struct, IComparable<T>
+    public class WaveletMatrix<T> : WaveletMatrix<T, DefaultComparerStruct<T>> where T : struct, IComparable<T>
     {
+        /// <summary>
+        /// <para>各要素の高さ <paramref name="v"/> を初期値として構築する。</para>
+        /// <para>計算量: O(N log(V))</para>
+        /// <para>  N は要素数。 V は最大値。</para>
+        /// </summary>
+        public WaveletMatrix(ReadOnlySpan<T> v) : base(v, new DefaultComparerStruct<T>()) { }
+    }
+
+    /// <summary>
+    /// 2 次元平面上にある点が事前に与えられているとき、オンラインでいろいろなクエリを処理するデータ構造
+    /// </summary>
+    public class WaveletMatrix<T, TOp>
+        where T : struct
+        where TOp : IComparer<T>
+    {
+        private TOp comparer;
         private readonly WaveletMatrixCompressed mat;
         private readonly Dictionary<T, int> pos;
         private readonly T[] ys;
@@ -21,12 +37,13 @@ namespace AtCoder
         /// <para>計算量: O(N log(V))</para>
         /// <para>  N は要素数。 V は最大値。</para>
         /// </summary>
-        public WaveletMatrix(ReadOnlySpan<T> v)
+        public WaveletMatrix(ReadOnlySpan<T> v, TOp comparer)
         {
             var zahyoCompress = new ZahyoCompress<T>(v).Compress();
             pos = zahyoCompress.NewTable;
             ys = zahyoCompress.Original;
             mat = new WaveletMatrixCompressed(zahyoCompress.Replace(v), zahyoCompress.Original.Length);
+            this.comparer = comparer;
         }
 
         /// <summary>
@@ -73,7 +90,7 @@ namespace AtCoder
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int RangeFreq(int l, int r, T lower, T upper)
-            => mat.RangeFreq(l, r, ys.LowerBound(lower), ys.LowerBound(upper));
+            => mat.RangeFreq(l, r, ys.LowerBound(lower, comparer), ys.LowerBound(upper, comparer));
 
         /// <summary>
         /// <para>区間 [<paramref name="l"/>, <paramref name="r"/>) に含まれる要素のうち [0, <paramref name="upper"/>) である要素数を返す</para>
@@ -82,7 +99,7 @@ namespace AtCoder
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int RangeFreq(int l, int r, T upper)
-            => mat.RangeFreq(l, r, ys.LowerBound(upper));
+            => mat.RangeFreq(l, r, ys.LowerBound(upper, comparer));
 
         /// <summary>
         /// <para>区間 [<paramref name="l"/>, <paramref name="r"/>) に含まれる要素のうち <paramref name="upper"/> の次に小さいものを返す</para>
@@ -93,7 +110,7 @@ namespace AtCoder
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T? PrevValue(int l, int r, T upper)
         {
-            var res = mat.PrevValue(l, r, ys.LowerBound(upper));
+            var res = mat.PrevValue(l, r, ys.LowerBound(upper, comparer));
             if (res >= 0)
                 return ys[res];
             return null;
@@ -108,7 +125,7 @@ namespace AtCoder
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T? NextValue(int l, int r, T lower)
         {
-            var res = mat.NextValue(l, r, ys.LowerBound(lower));
+            var res = mat.NextValue(l, r, ys.LowerBound(lower, comparer));
             if (res >= 0)
                 return ys[res];
             return null;
