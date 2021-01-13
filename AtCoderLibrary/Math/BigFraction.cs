@@ -8,6 +8,9 @@ namespace AtCoder
     /// <summary>有理数を既約分数で表す</summary>
     public readonly struct BigFraction : IEquatable<BigFraction>, IComparable<BigFraction>
     {
+        public static readonly BigFraction NaN = new BigFraction(0, 0);
+        public bool IsNaN => _denominator < 0;
+
         /// <summary>分子</summary>
         private readonly BigInteger _numerator;
         /// <summary>分子</summary>
@@ -19,6 +22,12 @@ namespace AtCoder
 
         public BigFraction(BigInteger 分子, BigInteger 分母)
         {
+            if (分母 == 0)
+            {
+                _numerator = long.MinValue;
+                _denominator = long.MinValue;
+                return;
+            }
             var negative = (分子 ^ 分母) < 0;
             分子 = BigInteger.Abs(分子);
             分母 = BigInteger.Abs(分母);

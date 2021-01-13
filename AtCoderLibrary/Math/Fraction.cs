@@ -7,6 +7,9 @@ namespace AtCoder
     /// <summary>有理数を既約分数で表す</summary>
     public readonly struct Fraction : IEquatable<Fraction>, IComparable<Fraction>
     {
+        public static readonly Fraction NaN = new Fraction(0, 0);
+        public bool IsNaN => _denominator < 0;
+
         /// <summary>分子</summary>
         private readonly long _numerator;
         /// <summary>分子</summary>
@@ -18,6 +21,12 @@ namespace AtCoder
 
         public Fraction(long 分子, long 分母)
         {
+            if (分母 == 0)
+            {
+                _numerator = long.MinValue;
+                _denominator = long.MinValue;
+                return;
+            }
             var negative = (分子 ^ 分母) < 0;
             分子 = Math.Abs(分子);
             分母 = Math.Abs(分母);
