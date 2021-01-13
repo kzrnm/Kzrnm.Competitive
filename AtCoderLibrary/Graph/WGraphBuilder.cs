@@ -44,7 +44,7 @@ namespace AtCoder
 
         public WTreeGraph<T, TOp, WTreeNode<T, TOp>, WEdge<T>> ToTree(int root = 0)
         {
-            DebugUtil.Assert(!edgeContainer.IsDirected, "木には無向グラフをしたほうが良い");
+            Contract.Assert(!edgeContainer.IsDirected, "木には無向グラフをしたほうが良い");
             var res = new WTreeNode<T, TOp>[edgeContainer.Length];
             var children = new List<WEdge<T>>[res.Length];
             foreach (var (from, e) in edgeContainer.edges)

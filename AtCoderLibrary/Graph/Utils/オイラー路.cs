@@ -32,7 +32,7 @@ namespace AtCoder
             where TNode : INode<TEdge>
             where TEdge : struct, IEdge, IReversable<TEdge>
         {
-            Internal.DebugUtil.Assert(!graph[0].IsDirected);
+            Internal.Contract.Assert(!graph[0].IsDirected);
             var start = 0;
             var oddCount = 0;
 
@@ -61,7 +61,7 @@ namespace AtCoder
             where TNode : INode<TEdge>
             where TEdge : struct, IEdge, IReversable<TEdge>
         {
-            Internal.DebugUtil.Assert(graph[0].IsDirected);
+            Internal.Contract.Assert(graph[0].IsDirected);
             var start = -1;
             var goal = -1;
 

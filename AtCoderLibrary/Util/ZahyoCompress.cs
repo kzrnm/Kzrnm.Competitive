@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AtCoder.Internal;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -26,6 +27,7 @@ namespace AtCoder
     public class ZahyoCompress<T>
     {
         public ZahyoCompress() { data = new HashSet<T>(); }
+        public ZahyoCompress(T[] collection) { data = new HashSet<T>(collection); }
         public ZahyoCompress(IEnumerable<T> collection) { data = new HashSet<T>(collection); }
         public ZahyoCompress(ReadOnlySpan<T> span)
         {
