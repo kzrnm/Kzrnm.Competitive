@@ -1,6 +1,6 @@
 ﻿using Kzrnm.Competitive.IO;
 
-namespace AtCoder.Solvers.Graph
+namespace AtCoder.Solvers.DataStructure
 {
     public class SumsSolver : ISolver
     {
