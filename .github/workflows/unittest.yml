@@ -16,6 +16,48 @@ env:
   WORKFLOW_BUILD_SLN: AtCoderLibrary/AtCoderLibrary.Kz.sln
 
 jobs:
+  library-checker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v2
+      - name: Clone library-checker-problems
+        uses: actions/checkout@v2
+        with:
+          repository: yosupo06/library-checker-problems
+          path: LibraryChecker/library-checker-problems
+      - name: Setup .NET Core SDK 3.1
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.x
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+      - uses: actions/cache@v2
+        with:
+          path: ${{ github.workspace }}/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      - name: Install python dependencies
+        working-directory: LibraryChecker/library-checker-problems
+        run: |
+          python -m pip install --upgrade pip
+          pip install --user -r requirements.txt
+      - name: Install dependencies
+        run: dotnet restore ${{ env.WORKFLOW_BUILD_SLN }}
+      - name: Build
+        run: dotnet build ${{ env.WORKFLOW_BUILD_SLN }} --no-restore
+      - name: Run
+        working-directory: LibraryChecker
+        run: |
+          ulimit -s unlimited
+          dotnet run --project LibraryChecker.csproj
   test:
     runs-on: ubuntu-latest
     steps:

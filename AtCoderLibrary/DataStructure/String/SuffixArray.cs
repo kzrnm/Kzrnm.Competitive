@@ -12,9 +12,9 @@ namespace AtCoder
         int[] SA;
         int[] rank;
         SparseTableRMQ rmq;
-        public static SuffixArray Create(string str) => new SuffixArray(Global.Compressed(str.AsSpan()));
-        public static SuffixArray Create<T>(IEnumerable<T> str) where T : IComparable<T> => new SuffixArray(Global.Compressed((ReadOnlySpan<T>)str.ToArray()));
-        public static SuffixArray Create<T>(T[] str) where T : IComparable<T> => new SuffixArray(Global.Compressed((ReadOnlySpan<T>)str));
+        public static SuffixArray Create(string str) => new SuffixArray(ZahyoCompress<char>.CompressedArray(str.AsSpan()));
+        public static SuffixArray Create<T>(IEnumerable<T> str) => new SuffixArray(ZahyoCompress<T>.CompressedArray(str.ToArray()));
+        public static SuffixArray Create<T>(T[] str) => new SuffixArray(ZahyoCompress<T>.CompressedArray(str));
         private SuffixArray(ReadOnlySpan<int> str)
         {
             N = str.Length;

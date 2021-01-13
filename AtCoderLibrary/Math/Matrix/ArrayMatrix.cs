@@ -64,8 +64,8 @@ namespace AtCoder
         }
         private ArrayMatrix<T, TOp> Add(ArrayMatrix<T, TOp> other)
         {
-            DebugUtil.Assert(Value.Length == other.Value.Length);
-            DebugUtil.Assert(Value[0].Length == other.Value[0].Length);
+            Contract.Assert(Value.Length == other.Value.Length);
+            Contract.Assert(Value[0].Length == other.Value[0].Length);
             var otherArr = other.Value;
             var arr = CloneArray(Value);
             for (int i = 0; i < arr.Length; i++)
@@ -106,8 +106,8 @@ namespace AtCoder
         }
         private ArrayMatrix<T, TOp> Subtract(ArrayMatrix<T, TOp> other)
         {
-            DebugUtil.Assert(Value.Length == other.Value.Length);
-            DebugUtil.Assert(Value[0].Length == other.Value[0].Length);
+            Contract.Assert(Value.Length == other.Value.Length);
+            Contract.Assert(Value[0].Length == other.Value[0].Length);
             var otherArr = other.Value;
             var arr = CloneArray(Value);
             for (int i = 0; i < arr.Length; i++)
@@ -153,7 +153,7 @@ namespace AtCoder
             var arr = this.Value;
             var otherArr = other.Value;
             var res = NormalZeroMatrix(Value.Length, other.Value[0].Length);
-            DebugUtil.Assert(Value[0].Length == other.Value.Length);
+            Contract.Assert(Value[0].Length == other.Value.Length);
             for (int i = 0; i < arr.Length; i++)
                 for (var k = 0; k < arr[i].Length; k++)
                     for (int j = 0; j < otherArr[k].Length; j++)
@@ -212,7 +212,7 @@ namespace AtCoder
         /// </summary>
         public ArrayMatrix<T, TOp> Inv()
         {
-            DebugUtil.Assert(Value.Length == Value[0].Length);
+            Contract.Assert(Value.Length == Value[0].Length);
             var orig = Value;
             var len1 = orig.Length * 2;
             var arr = new T[orig.Length][];
@@ -234,7 +234,7 @@ namespace AtCoder
         /// </summary>
         public ArrayMatrix<T, TOp> GaussianElimination()
         {
-            DebugUtil.Assert(this.kind == ArrayMatrixKind.Normal);
+            Contract.Assert(this.kind == ArrayMatrixKind.Normal);
             var arr = CloneArray(Value);
             GaussianEliminationImpl(arr);
             return new ArrayMatrix<T, TOp>(arr);
@@ -255,7 +255,7 @@ namespace AtCoder
                     }
                 return false;
             }
-            DebugUtil.Assert(arr.Length <= arr[0].Length);
+            Contract.Assert(arr.Length <= arr[0].Length);
             for (int i = 0; i < arr.Length; i++)
             {
                 if (EqualityComparer<T>.Default.Equals(arr[i][i], default))

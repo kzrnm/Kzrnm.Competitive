@@ -6,9 +6,9 @@ namespace AtCoder
 {
     public static class MyLinqExtension
     {
-        public static (int index, T min) MaxBy<T>(this T[] arr) where T : IComparable<T>
+        public static (int index, T max) MaxBy<T>(this T[] arr) where T : IComparable<T>
              => MaxBy((ReadOnlySpan<T>)arr);
-        public static (int index, T min) MaxBy<T>(this Span<T> arr) where T : IComparable<T>
+        public static (int index, T max) MaxBy<T>(this Span<T> arr) where T : IComparable<T>
              => MaxBy((ReadOnlySpan<T>)arr);
         public static (int index, T max) MaxBy<T>(this ReadOnlySpan<T> arr) where T : IComparable<T>
         {
@@ -145,5 +145,6 @@ namespace AtCoder
         public static Dictionary<TKey, int> GroupCount<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) => source.GroupBy(keySelector).ToDictionary(g => g.Key, g => g.Count());
         public static Dictionary<TKey, int> GroupCount<TKey>(this IEnumerable<TKey> source) => source.GroupCount(i => i);
 
+        public static IEnumerable<T> SelectMany<T>(this IEnumerable<IEnumerable<T>> source) => source.SelectMany(a => a);
     }
 }
