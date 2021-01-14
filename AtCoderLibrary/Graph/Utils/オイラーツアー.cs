@@ -7,17 +7,17 @@ namespace AtCoder
     {
         public readonly struct Event
         {
-            public readonly bool isReverse;
+            public readonly bool isStart;
             public readonly int root;
             public readonly TEdge edge;
-            public Event(int root, TEdge edge, bool isReverse)
+            public Event(int root, TEdge edge, bool isStart)
             {
                 this.root = root;
                 this.edge = edge;
-                this.isReverse = isReverse;
+                this.isStart = isStart;
             }
-            public Event Reverse() => new Event(root, edge, !isReverse);
-            public override string ToString() => $"{root}{(isReverse ? '←' : '→')}{edge}";
+            public Event Reverse() => new Event(root, edge, !isStart);
+            public override string ToString() => $"{root}{(isStart ? '→' : '←')}{edge}";
         }
         /// <summary>
         /// <para>根から各ノードを深さ優先探索するとき、ノードに入る/出るをイベント化したときのインデックスを返す。</para>
@@ -51,7 +51,7 @@ namespace AtCoder
             var events = new Event[2 * treeArr.Length];
 
             var nodeEvents = new Event[treeArr.Length];
-            nodeEvents[root] = new Event(-1, default, false);
+            nodeEvents[root] = new Event(-1, default, true);
 
             var idx = new Stack<(int index, int ci)>(treeArr.Length);
             idx.Push((root, 0));
@@ -64,7 +64,7 @@ namespace AtCoder
                     events[nodes[index].l = cnt++] = nodeEvents[index];
                 if (ci < children.Length)
                 {
-                    nodeEvents[children[ci].To] = new Event(index, children[ci], false);
+                    nodeEvents[children[ci].To] = new Event(index, children[ci], true);
                     idx.Push((index, ci + 1));
                     idx.Push((children[ci].To, 0));
                 }
