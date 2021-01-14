@@ -49,6 +49,16 @@ namespace AtCoder
                 num &= num - 1;
             }
             object IEnumerator.Current => Current;
+            public int[] ToArray()
+            {
+                var res = new int[BitOperations.PopCount(num)];
+                for (int i = 0; i < res.Length; i++)
+                {
+                    MoveNext();
+                    res[i] = Current;
+                }
+                return res;
+            }
             void IEnumerator.Reset() => throw new NotSupportedException();
             void IDisposable.Dispose() { }
             IEnumerator<int> IEnumerable<int>.GetEnumerator() => this;
