@@ -68,6 +68,12 @@ namespace AtCoder
                 children[e.To].Add(e.Reversed(from));
             }
 
+            if (edgeContainer.Length == 1)
+            {
+                return new TreeGraph<TreeNode, Edge>(
+                    new TreeNode[1] { new TreeNode(root, Edge.None, 0, Array.Empty<Edge>()) }, root);
+            }
+
             res[root] = new TreeNode(root, Edge.None, 0, children[root].ToArray());
 
             var queue = new Queue<(int parent, int child)>();

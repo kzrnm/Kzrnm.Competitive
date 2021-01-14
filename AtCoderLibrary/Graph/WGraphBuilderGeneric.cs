@@ -54,6 +54,13 @@ namespace AtCoder
                 children[e.To].Add(e.Reversed(from));
             }
 
+            if (edgeContainer.Length == 1)
+            {
+                return new WTreeGraph<T, TOp, WTreeNode<T, S, TOp>, WEdge<T, S>>(
+                    new WTreeNode<T, S, TOp>[1] {
+                        new WTreeNode<T, S, TOp>(root, WEdge<T, S>.None, 0, default, Array.Empty<WEdge<T, S>>()) }, root);
+            }
+
             res[root] = new WTreeNode<T, S, TOp>(root, WEdge<T, S>.None, 0, default, children[root].ToArray());
 
             var queue = new Queue<(int parent, int child, T value, S data)>();
