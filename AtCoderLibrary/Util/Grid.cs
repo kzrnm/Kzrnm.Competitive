@@ -36,7 +36,7 @@ namespace AtCoder
         public int Index(int h, int w) => h * W + w;
 
         private T defaultReference;
-        public ref T DefaultValueReference()
+        private ref T DefaultValueReference()
         {
             defaultReference = defaultValue;
             return ref defaultReference;
