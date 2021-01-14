@@ -134,8 +134,8 @@ namespace AtCoder
         /// <summary>
         /// インデックスをつける
         /// </summary>
-        public static IEnumerable<(int index, TSource val)> Indexed<TSource>(this IEnumerable<TSource> source)
-            => source.Select((v, i) => (i, v));
+        public static IEnumerable<(TSource val, int index)> Indexed<TSource>(this IEnumerable<TSource> source)
+            => source.Select((v, i) => (v, i));
 
         /// <summary>
         /// 条件に合致するインデックスを返す
