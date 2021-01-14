@@ -38,7 +38,6 @@ namespace AtCoder
         }
         IEnumerable<long> EnumerateFactor(long num)
         {
-            if ((long)primes[^1] * primes[^1] < num) throw new ArgumentOutOfRangeException(nameof(num));
             foreach (var p in primes)
             {
                 if (num < 2) break;
