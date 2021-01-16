@@ -256,7 +256,7 @@ function Update-Input {
     $vars | ForEach-Object { $indent * 2 + $_.ToInit() } >> $mainPath
     "$indent${indent}return null;" >> $mainPath
     "$indent}" >> $mainPath
-    $vars | ForEach-Object { $indent + $_.ToDefine() } >> $mainPath
+    $vars | ForEach-Object { $indent + "public static " + $_.ToDefine() } >> $mainPath
     "}" >> $mainPath
 }
 
