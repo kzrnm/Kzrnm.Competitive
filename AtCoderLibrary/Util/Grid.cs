@@ -25,6 +25,7 @@ namespace AtCoder
         public readonly int W;
         private readonly T[] data;
         private readonly T defaultValue;
+        public Grid(int H, int W, T defaultValue = default(T)) : this(new T[H * W].Fill(defaultValue), H, W, defaultValue) { }
         internal Grid(T[] data, int H, int W, T defaultValue = default(T))
         {
             this.H = H;
