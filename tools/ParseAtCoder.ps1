@@ -184,23 +184,20 @@ function Get-Parsed-Input {
                 $ml2 = $Matches
                 if ($ml[1] -eq $ml2[1]) {
                     # 1行すべて同じ文字
-                    if (-not $ml[2].Contains('{')) {
-                        # 1次元
-                        if ($ml2[2] -match '\{(.+)\}') {
-                            [ATArray]::new($ml2[1], $Matches[1])
-                        }
-                        else {
-                            [ATArray]::new($ml2[1], $ml2[2])
-                        }                    
+
+                    # 2次元
+                    if ($ml2[2] -match '^\{(\D)(\D)\}$') {
+                        [ATArray2]::new($ml2[1], $Matches[1], $Matches[2])
+                    }
+                    elseif ($ml2[2] -match '^\{(\D),(\D)\}$') {
+                        [ATArray2]::new($ml2[1], $Matches[1], $Matches[2])
+                    }
+                    # 1次元
+                    elseif ($ml2[2] -match '\{(.+)\}') {
+                        [ATArray]::new($ml2[1], $Matches[1])
                     }
                     else {
-                        # 2次元
-                        if ($ml2[2] -match '^\{(\D)(\D)\}$') {
-                            [ATArray2]::new($ml2[1], $Matches[1], $Matches[2])
-                        }
-                        elseif ($ml2[2] -match '^\{(\D),(\D)\}$') {
-                            [ATArray2]::new($ml2[1], $Matches[1], $Matches[2])
-                        }
+                        [ATArray]::new($ml2[1], $ml2[2])
                     }
                 } 
                 elseif ($ml[2] -notmatch '^\d+$') {
