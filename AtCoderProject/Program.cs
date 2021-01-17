@@ -14,10 +14,9 @@ using static AtCoder.MathLibEx;
 using static AtCoder.__BinarySearchEx;
 using static Program;
 
-public partial class Program { static void Main() => new Program(new PropertyConsoleReader(), new ConsoleWriter()).Run();[DebuggerBrowsable(DebuggerBrowsableState.Never)] public PropertyConsoleReader cr;[DebuggerBrowsable(DebuggerBrowsableState.Never)] public ConsoleWriter cw; public Program(PropertyConsoleReader r, ConsoleWriter w) { this.cr = r; this.cw = w; System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture; } }
-public partial class Program
+partial class Program
 {
-    public void Run()
+    partial void Run()
     {
         var res = Calc();
         if (res is double) cw.WriteLine(((double)res).ToString("0.####################", System.Globalization.CultureInfo.InvariantCulture));
@@ -29,8 +28,8 @@ public partial class Program
     private object Calc()
     {
         N = cr;
-        
-        return null;
+
+        return N;
     }
     public static int N;
 }
