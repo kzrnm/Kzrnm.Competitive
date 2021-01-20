@@ -1,4 +1,5 @@
 ﻿using AtCoder.Internal;
+using System.Diagnostics;
 
 namespace AtCoder
 {
@@ -18,6 +19,7 @@ namespace AtCoder
         where TEdge : IWEdge<T>
     {
         public CSR<TEdge> Edges { get; }
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         internal TNode[] Nodes { get; }
         public TNode[] AsArray() => Nodes;
         public TNode this[int index] => Nodes[index];
@@ -33,6 +35,7 @@ namespace AtCoder
         where TNode : ITreeNode<TEdge>
         where TEdge : IWEdge<T>
     {
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         internal TNode[] Nodes { get; }
         public TNode[] AsArray() => Nodes;
         public TNode this[int index] => Nodes[index];
