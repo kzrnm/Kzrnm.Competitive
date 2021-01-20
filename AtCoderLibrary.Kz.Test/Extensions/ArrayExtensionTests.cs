@@ -131,5 +131,43 @@ namespace AtCoder.Extension
                 "zzz14144",
             });
         }
+
+        [Fact]
+        public void Get()
+        {
+            var arr = new long[] {
+                43,24,8373,4,98,7,43,28,9470,71,431,45,23014,345,23614,1503,7,3401434,120,42314,3123
+            };
+            arr.Get(1).Should().Be(24);
+            arr.Get(1) = 25;
+            arr[1].Should().Be(25);
+
+            arr.Get(-1).Should().Be(3123);
+            arr.Get(-1) = -2;
+            arr[^1].Should().Be(-2);
+        }
+
+
+        [Fact]
+        public void GetOrDummy()
+        {
+            var arr = new long[] {
+                43,24,8373,
+            };
+            arr.GetOrDummy(0).Should().Be(43);
+            arr.GetOrDummy(1).Should().Be(24);
+            arr.GetOrDummy(2).Should().Be(8373);
+            arr.Should().Equal(43, 24, 8373);
+
+            arr.GetOrDummy(2) = 33;
+            arr.GetOrDummy(3) = 55;
+            arr.GetOrDummy(-1) = 66;
+
+            arr.GetOrDummy(0).Should().Be(43);
+            arr.GetOrDummy(1).Should().Be(24);
+            arr.GetOrDummy(2).Should().Be(33);
+            arr.Should().Equal(43, 24, 33);
+        }
+
     }
 }

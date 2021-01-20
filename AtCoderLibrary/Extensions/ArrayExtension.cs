@@ -26,5 +26,21 @@ namespace AtCoder
         public static T[] Sort<T>(this T[] arr, IComparer<T> comparer) { Array.Sort(arr, comparer); return arr; }
         [MethodImpl(AggressiveInlining)]
         public static T[] Reverse<T>(this T[] arr) { Array.Reverse(arr); return arr; }
+        [MethodImpl(AggressiveInlining)]
+        public static ref T Get<T>(this T[] arr, int index)
+        {
+            if (index < 0)
+                return ref arr[arr.Length + index];
+            return ref arr[index];
+        }
+        [MethodImpl(AggressiveInlining)]
+        public static ref T GetOrDummy<T>(this T[] arr, int index)
+        {
+            if ((uint)index < (uint)arr.Length)
+                return ref arr[index];
+            return ref Dummy<T>.dummy;
+        }
+
+        private static class Dummy<T> { public static T dummy; }
     }
 }
