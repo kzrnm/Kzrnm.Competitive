@@ -50,6 +50,7 @@ namespace AtCoder
         public bool Equals(BigFraction other) => this._numerator == other._numerator && this._denominator == other._denominator;
         public override int GetHashCode() => HashCode.Combine(_numerator, _denominator);
 
+        public static implicit operator BigFraction(long x) => new BigFraction(x, 1);
         public static implicit operator BigFraction(BigInteger x) => new BigFraction(x, 1);
         public int CompareTo(BigFraction other) => (this.Numerator * other.Denominator).CompareTo(other.Numerator * this.Denominator);
 

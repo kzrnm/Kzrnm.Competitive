@@ -212,6 +212,38 @@ namespace AtCoder.MathNS.Matrix
             (a * mat).Should().Be(expected);
         }
 
+        public static TheoryData MultiplyVector_Data = new TheoryData<Matrix3x3<long, LongOperator>, (long, long, long), (long, long, long)>
+        {
+            {
+                new Matrix3x3<long, LongOperator>(
+                    (3, 0, 0),
+                    (0, 3, 0),
+                    (0, 0, 3)
+                ),
+                (1,2,3),
+                (3,6,9)
+            },
+            {
+                new Matrix3x3<long, LongOperator>(
+                    (1, 2, 3),
+                    (4, 5, 6),
+                    (7, 8, 9)
+                ),
+                (1,2,3),
+                (14, 32, 50)
+            },
+        };
+
+        [Theory]
+        [Trait("Category", "Operator")]
+        [MemberData(nameof(MultiplyVector_Data))]
+        public void MultiplyVector(Matrix3x3<long, LongOperator> mat, (long v0, long v1, long v2) vector, (long, long, long) expected)
+        {
+            (mat * vector).Should().Be(expected);
+            mat.Multiply(vector).Should().Be(expected);
+            mat.Multiply(vector.v0, vector.v1, vector.v2).Should().Be(expected);
+        }
+
         [Fact]
         [Trait("Category", "Normal")]
         public void Pow()

@@ -79,6 +79,27 @@ namespace AtCoder
             );
 
         /// <summary>
+        /// 4次元ベクトルにかける
+        /// </summary>
+        public static (T v0, T v1, T v2, T v3) operator *(Matrix4x4<T, TOp> mat, (T v0, T v1, T v2, T v3) vector) => mat.Multiply(vector);
+
+        /// <summary>
+        /// 4次元ベクトルにかける
+        /// </summary>
+        public (T v0, T v1, T v2, T v3) Multiply((T v0, T v1, T v2, T v3) vector) => Multiply(vector.v0, vector.v1, vector.v2, vector.v3);
+
+        /// <summary>
+        /// 4次元ベクトルにかける
+        /// </summary>
+        public (T v0, T v1, T v2, T v3) Multiply(T v0, T v1, T v2, T v3)
+            => (
+                    op.Add(op.Add(op.Add(op.Multiply(Row0.Col0, v0), op.Multiply(Row0.Col1, v1)), op.Multiply(Row0.Col2, v2)), op.Multiply(Row0.Col3, v3)),
+                    op.Add(op.Add(op.Add(op.Multiply(Row1.Col0, v0), op.Multiply(Row1.Col1, v1)), op.Multiply(Row1.Col2, v2)), op.Multiply(Row1.Col3, v3)),
+                    op.Add(op.Add(op.Add(op.Multiply(Row2.Col0, v0), op.Multiply(Row2.Col1, v1)), op.Multiply(Row2.Col2, v2)), op.Multiply(Row2.Col3, v3)),
+                    op.Add(op.Add(op.Add(op.Multiply(Row3.Col0, v0), op.Multiply(Row3.Col1, v1)), op.Multiply(Row3.Col2, v2)), op.Multiply(Row3.Col3, v3))
+               );
+
+        /// <summary>
         /// <paramref name="y"/> 乗した行列を返す。
         /// </summary>
         public Matrix4x4<T, TOp> Pow(long y) => MathLibGeneric.Pow<Matrix4x4<T, TOp>, Matrix4x4Operator<T, TOp>>(this, y);

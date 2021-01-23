@@ -268,6 +268,39 @@ namespace AtCoder.MathNS.Matrix
             (a * mat).Value.Should().BeEquivalentTo(expected.Value);
         }
 
+        public static TheoryData MultiplyVector_Data = new TheoryData<ArrayMatrix<long, LongOperator>, long[], long[]>
+        {
+            {
+                new ArrayMatrix<long, LongOperator>(new long[,]{
+                    {3, 0, 0, 0},
+                    {0, 3, 0, 0},
+                    {0, 0, 3, 0},
+                    {0, 0, 0, 3}
+                }),
+                new long[]{1,2,3,4},
+                new long[]{3,6,9,12}
+            },
+            {
+                new ArrayMatrix<long, LongOperator>(new long[,]{
+                    {1, 2, 3, 4},
+                    {5, 6, 7, 8},
+                    {9, 10, 11, 12},
+                    {13, 14, 15, 16}
+                }),
+                new long[]{1,2,3,4},
+                new long[]{30, 70, 110, 150}
+            },
+        };
+
+        [Theory]
+        [Trait("Category", "Operator")]
+        [MemberData(nameof(MultiplyVector_Data))]
+        public void MultiplyVector(ArrayMatrix<long, LongOperator> mat, long[] vector, long[] expected)
+        {
+            (mat * vector).Should().Equal(expected);
+            mat.Multiply(vector).Should().Equal(expected);
+        }
+
         [Fact]
         [Trait("Category", "Normal")]
         public void Pow()

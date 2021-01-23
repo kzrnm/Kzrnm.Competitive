@@ -234,6 +234,40 @@ namespace AtCoder.MathNS.Matrix
             (a * mat).Should().Be(expected);
         }
 
+        public static TheoryData MultiplyVector_Data = new TheoryData<Matrix4x4<long, LongOperator>, (long, long, long, long), (long, long, long, long)>
+        {
+            {
+                new Matrix4x4<long, LongOperator>(
+                    (3, 0, 0, 0),
+                    (0, 3, 0, 0),
+                    (0, 0, 3, 0),
+                    (0, 0, 0, 3)
+                ),
+                (1,2,3,4),
+                (3,6,9,12)
+            },
+            {
+                new Matrix4x4<long, LongOperator>(
+                    (1, 2, 3, 4),
+                    (5, 6, 7, 8),
+                    (9, 10, 11, 12),
+                    (13, 14, 15, 16)
+                ),
+                (1,2,3,4),
+                (30, 70, 110, 150)
+            },
+        };
+
+        [Theory]
+        [Trait("Category", "Operator")]
+        [MemberData(nameof(MultiplyVector_Data))]
+        public void MultiplyVector(Matrix4x4<long, LongOperator> mat, (long v0, long v1, long v2, long v3) vector, (long, long, long, long) expected)
+        {
+            (mat * vector).Should().Be(expected);
+            mat.Multiply(vector).Should().Be(expected);
+            mat.Multiply(vector.v0, vector.v1, vector.v2, vector.v3).Should().Be(expected);
+        }
+
         [Fact]
         [Trait("Category", "Normal")]
         public void Pow()

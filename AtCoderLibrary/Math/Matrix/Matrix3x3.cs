@@ -63,6 +63,26 @@ namespace AtCoder
             );
 
         /// <summary>
+        /// 3次元ベクトルにかける
+        /// </summary>
+        public static (T v0, T v1, T v2) operator *(Matrix3x3<T, TOp> mat, (T v0, T v1, T v2) vector) => mat.Multiply(vector);
+
+        /// <summary>
+        /// 3次元ベクトルにかける
+        /// </summary>
+        public (T v0, T v1, T v2) Multiply((T v0, T v1, T v2) vector) => Multiply(vector.v0, vector.v1, vector.v2);
+
+        /// <summary>
+        /// 3次元ベクトルにかける
+        /// </summary>
+        public (T v0, T v1, T v2) Multiply(T v0, T v1, T v2)
+            => (
+                    op.Add(op.Add(op.Multiply(Row0.Col0, v0), op.Multiply(Row0.Col1, v1)), op.Multiply(Row0.Col2, v2)),
+                    op.Add(op.Add(op.Multiply(Row1.Col0, v0), op.Multiply(Row1.Col1, v1)), op.Multiply(Row1.Col2, v2)),
+                    op.Add(op.Add(op.Multiply(Row2.Col0, v0), op.Multiply(Row2.Col1, v1)), op.Multiply(Row2.Col2, v2))
+               );
+
+        /// <summary>
         /// <paramref name="y"/> 乗した行列を返す。
         /// </summary>
         public Matrix3x3<T, TOp> Pow(long y) => MathLibGeneric.Pow<Matrix3x3<T, TOp>, Matrix3x3Operator<T, TOp>>(this, y);

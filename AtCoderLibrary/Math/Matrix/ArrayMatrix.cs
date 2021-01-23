@@ -203,6 +203,27 @@ namespace AtCoder
         }
 
         /// <summary>
+        /// ベクトルにかける
+        /// </summary>
+        public static T[] operator *(ArrayMatrix<T, TOp> mat, T[] vector) => mat.Multiply(vector);
+
+        /// <summary>
+        /// ベクトルにかける
+        /// </summary>
+        public T[] Multiply(T[] vector)
+        {
+            var arr = new T[vector.Length, 1];
+            vector.CopyTo(MemoryMarshal.CreateSpan(ref arr[0, 0], vector.Length));
+            var resMat = (this * new ArrayMatrix<T, TOp>(arr)).Value;
+            var res = new T[resMat.Length];
+            for (int i = 0; i < res.Length; i++)
+            {
+                res[i] = resMat[i][0];
+            }
+            return res;
+        }
+
+        /// <summary>
         /// <paramref name="y"/> 乗した行列を返す。
         /// </summary>
         public ArrayMatrix<T, TOp> Pow(long y) => MathLibGeneric.Pow<ArrayMatrix<T, TOp>, ArrayMatrixOperator<T, TOp>>(this, y);

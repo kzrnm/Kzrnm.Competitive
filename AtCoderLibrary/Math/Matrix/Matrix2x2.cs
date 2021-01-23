@@ -46,6 +46,25 @@ namespace AtCoder
             );
 
         /// <summary>
+        /// 2次元ベクトルにかける
+        /// </summary>
+        public static (T v0, T v1) operator *(Matrix2x2<T, TOp> mat, (T v0, T v1) vector) => mat.Multiply(vector);
+
+        /// <summary>
+        /// 2次元ベクトルにかける
+        /// </summary>
+        public (T v0, T v1) Multiply((T v0, T v1) vector) => Multiply(vector.v0, vector.v1);
+
+        /// <summary>
+        /// 2次元ベクトルにかける
+        /// </summary>
+        public (T v0, T v1) Multiply(T v0, T v1)
+            => (
+                    op.Add(op.Multiply(Row0.Col0, v0), op.Multiply(Row0.Col1, v1)),
+                    op.Add(op.Multiply(Row1.Col0, v0), op.Multiply(Row1.Col1, v1))
+               );
+
+        /// <summary>
         /// <paramref name="y"/> 乗した行列を返す。
         /// </summary>
         public Matrix2x2<T, TOp> Pow(long y) => MathLibGeneric.Pow<Matrix2x2<T, TOp>, Matrix2x2Operator<T, TOp>>(this, y);
