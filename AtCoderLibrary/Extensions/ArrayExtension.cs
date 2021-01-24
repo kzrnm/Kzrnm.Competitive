@@ -34,10 +34,11 @@ namespace AtCoder
             return ref arr[index];
         }
         [MethodImpl(AggressiveInlining)]
-        public static ref T GetOrDummy<T>(this T[] arr, int index)
+        public static ref T GetOrDummy<T>(this T[] arr, int index, T dummy = default)
         {
             if ((uint)index < (uint)arr.Length)
                 return ref arr[index];
+            Dummy<T>.dummy = dummy;
             return ref Dummy<T>.dummy;
         }
 
