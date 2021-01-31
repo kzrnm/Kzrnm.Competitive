@@ -1,4 +1,5 @@
 ﻿using Kzrnm.Competitive.IO;
+using System.Diagnostics;
 using System.Globalization;
 
 internal partial class Program
@@ -12,5 +13,21 @@ internal partial class Program
         this.cw = w;
         CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
     }
-    partial void Run();
+    public void Run()
+    {
+        int Q = 1;
+        if (__ManyTestCases()) Q = cr;
+        for (; Q > 0; Q--)
+        {
+            var res = Calc();
+            if (res is double d) cw.WriteLine(d.ToString("0.####################", CultureInfo.InvariantCulture));
+            else if (res is bool b) WriteBool(b);
+            else if (res != null) cw.WriteLine(res.ToString());
+        }
+        cw.Flush();
+    }
+    partial void WriteBool(bool b);
+#pragma warning disable IDE1006
+    object Calc(int dum = 0) => dum;
+    bool __ManyTestCases(bool dum = false) => dum;
 }

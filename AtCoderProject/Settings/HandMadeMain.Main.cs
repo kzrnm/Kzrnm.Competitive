@@ -58,7 +58,7 @@ namespace AtCoderProject.Runner
 
             Trace.WriteLine("---start---");
             var stopwatch = Stopwatch.StartNew();
-            new Program(reader, writer).RunPublic();
+            new Program(reader, writer).Run();
             stopwatch.Stop();
             Trace.WriteLine($"---end({stopwatch.ElapsedMilliseconds}ms)---");
         }
