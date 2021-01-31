@@ -15,6 +15,14 @@
     <AppDesignerFolder>Settings</AppDesignerFolder>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <ExpandArgs>--writefile</ExpandArgs>
+    <ExpandArgs2>--writefile --toclipboard</ExpandArgs2>
+  </PropertyGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' != 'Release'">
+    <Exec Command="dotnet $(TargetPath) expand $(ExpandArgs)" />
+  </Target>
+
   <ItemGroup>
     <AdditionalFiles Include="Settings\SourceExpander.Generator.Config.json" Visible="false" />
   </ItemGroup>
@@ -36,20 +44,5 @@
   <ItemGroup>
     <ProjectReference Include="..\AtCoderLibrary\AtCoderLibrary.Kz.csproj" />
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' != 'Release'">
-    <Exec Command="dotnet $(TargetPath) expand --writefile" />
-  </Target>
-
-  <!--
-  <ItemGroup>
-    <Reference Include="AtCoderLibrary">
-      <HintPath>..\ac-library-csharp\AtCoderLibrary\bin\Debug\netcoreapp3.1\AtCoderLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="AtCoderLibrary.Kz">
-      <HintPath>..\AtCoderLibrary\bin\Debug\netcoreapp3.1\AtCoderLibrary.Kz.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  -->
 
 </Project>
