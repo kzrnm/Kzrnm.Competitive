@@ -3,7 +3,7 @@ using System;
 using Xunit;
 
 
-namespace AtCoder.Graph
+namespace AtCoder.DataStructure
 {
     public class UnionFindTests
     {
