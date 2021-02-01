@@ -28,6 +28,6 @@ internal partial class Program
     }
     partial void WriteBool(bool b);
 #pragma warning disable IDE1006
-    object Calc(int dum = 0) => dum;
-    bool __ManyTestCases(bool dum = false) => dum;
+    object Calc(Program dum = null) => dum;
+    bool __ManyTestCases(Program dum = null) => false;
 }
