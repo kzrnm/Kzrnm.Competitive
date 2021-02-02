@@ -37,7 +37,7 @@ namespace AtCoderRunner
             using var outStream = new MemoryStream(30 * 100000);
             var cr = new PropertyConsoleReader(inSteam, encoding);
             var cw = new ConsoleWriter(outStream, encoding);
-            new Program(cr, cw).RunPublic();
+            new Program(cr, cw).Run();
 
             var result = encoding.GetString(outStream.ToArray());
             if (doubleRegex.IsMatch(output))
