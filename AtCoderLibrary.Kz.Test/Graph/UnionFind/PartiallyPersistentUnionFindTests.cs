@@ -3,7 +3,7 @@ using System;
 using Xunit;
 
 
-namespace AtCoder.DataStructure
+namespace AtCoder.Graph
 {
     public class PartiallyPersistentUnionFindTests
     {
