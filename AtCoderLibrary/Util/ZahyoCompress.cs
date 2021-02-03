@@ -14,12 +14,12 @@ namespace AtCoder
         /// <summary>
         /// 座標圧縮を行う
         /// </summary>
-        public static ZahyoCompress<T> Create<T>(IEnumerable<T> orig) => new ZahyoCompress<T>(orig);
+        public static ZahyoCompress<T> Create<T>(IEnumerable<T> orig) => new ZahyoCompress<T>(orig).Compress();
 
         /// <summary>
         /// 座標圧縮を行う
         /// </summary>
-        public static ZahyoCompress<T> Create<T>(ReadOnlySpan<T> orig) => new ZahyoCompress<T>(orig);
+        public static ZahyoCompress<T> Create<T>(ReadOnlySpan<T> orig) => new ZahyoCompress<T>(orig).Compress();
     }
     /// <summary>
     /// 座標圧縮を行う
