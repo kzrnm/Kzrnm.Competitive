@@ -24,18 +24,18 @@
   </Target>
 
   <ItemGroup>
-    <AdditionalFiles Include="Settings\SourceExpander.Generator.Config.json" Visible="false" />
+    <AdditionalFiles Include="Settings\SourceExpander.Generator.Config.json" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
     <PackageReference Include="TextCopy" Version="4.2.1" />
-    <PackageReference Include="AtCoderAnalyzer" Version="1.2.0">
+    <PackageReference Include="AtCoderAnalyzer" Version="1.2.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SourceExpander.Core" Version="2.5.0" />
-    <PackageReference Include="SourceExpander.Generator" Version="2.5.0">
+    <PackageReference Include="SourceExpander.Core" Version="2.6.0" />
+    <PackageReference Include="SourceExpander.Generator" Version="2.6.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
