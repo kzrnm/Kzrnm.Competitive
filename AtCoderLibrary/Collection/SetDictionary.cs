@@ -907,7 +907,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 Size = size;
                 return oldsize != size;
             }
-            public override string ToString() => $"Size = {Size}, Item = {Key}";
+            public override string ToString() => $"Key = {Key}, Value = {Value}, Size = {Size}";
         }
         enum TreeRotation : byte
         {
