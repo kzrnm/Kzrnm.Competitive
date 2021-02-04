@@ -1,15 +1,14 @@
-using FluentAssertions;
-using System.Linq;
+﻿using FluentAssertions;
 using Xunit;
 
 namespace AtCoder.DataStructure
 {
-    public class BinaryIndexedTreeRangeTests
+    public class FenwickTreeRangeTests
     {
         [Fact]
         public void AddAndSum()
         {
-            var bit = new BinaryIndexedTreeRange(10);
+            var bit = new FenwickTreeRange(10);
             bit.Sum(10).Should().Be(0);
             bit.Sum(0, 10).Should().Be(0);
             bit[0..10].Should().Be(0);
