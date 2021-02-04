@@ -309,6 +309,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             root.IsRed = false;
             return true;
         }
+        /// <summary>
+        /// 該当ノードを削除する。動作怪しいかも
+        /// </summary>
         public void Remove(Node node)
         {
             Node match = node;
