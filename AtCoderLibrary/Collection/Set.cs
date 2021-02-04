@@ -597,7 +597,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 
         public struct ValueEnumerator : IEnumerator<T>
         {
-            private readonly Enumerator inner;
+            private Enumerator inner;
             internal ValueEnumerator(Set<T, TOp> set)
             {
                 inner = new Enumerator(set);

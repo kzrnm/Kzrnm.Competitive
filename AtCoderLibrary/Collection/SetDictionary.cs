@@ -701,7 +701,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 
         public struct ValueEnumerator : IEnumerator<KeyValuePair<TKey, TValue>>
         {
-            private readonly Enumerator inner;
+            private Enumerator inner;
             internal ValueEnumerator(SetDictionary<TKey, TValue, TOp> set)
             {
                 inner = new Enumerator(set);
@@ -711,7 +711,11 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 inner = new Enumerator(set, reverse, startNode);
             }
 
-            public KeyValuePair<TKey, TValue> Current => inner.Current.Pair;
+            public KeyValuePair<TKey, TValue> Current => inner.Current switch
+            {
+                { } cur => cur.Pair,
+                _ => default,
+            };
             object IEnumerator.Current => Current;
             public void Dispose() { }
             public bool MoveNext() => inner.MoveNext();
