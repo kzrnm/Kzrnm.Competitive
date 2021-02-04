@@ -293,6 +293,69 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             root.IsRed = false;
             return true;
         }
+        public void Remove(Node node)
+        {
+            Node match = node;
+            Node parentOfMatch = node.Parent;
+            Node current = node;
+            Node parent = parentOfMatch;
+            Node grandParent = parentOfMatch?.Parent;
+            while (current != null)
+            {
+                if (Is2Node(current))
+                {
+                    if (parent == null)
+                    {
+                        current.IsRed = true;
+                    }
+                    else
+                    {
+                        Node sibling = GetSibling(current, parent);
+                        if (sibling.IsRed)
+                        {
+                            if (parent.Right == sibling) RotateLeft(parent);
+                            else RotateRight(parent);
+
+                            parent.IsRed = true;
+                            sibling.IsRed = false;
+                            ReplaceChildOrRoot(grandParent, parent, sibling);
+                            grandParent = sibling;
+                            if (parent == match) parentOfMatch = sibling;
+                            sibling = (parent.Left == current) ? parent.Right : parent.Left;
+                        }
+                        if (Is2Node(sibling))
+                        {
+                            Merge2Nodes(parent);
+                        }
+                        else
+                        {
+                            TreeRotation rotation = GetRotation(parent, current, sibling);
+                            Node newGrandParent = Rotate(parent, rotation);
+                            newGrandParent.IsRed = parent.IsRed;
+                            parent.IsRed = false;
+                            current.IsRed = true;
+                            ReplaceChildOrRoot(grandParent, parent, newGrandParent);
+                            if (parent == match)
+                            {
+                                parentOfMatch = newGrandParent;
+                            }
+                        }
+                    }
+                }
+                grandParent = parent;
+                parent = current;
+                current = current == match ? current.Right : current.Left;
+            }
+            if (match != null)
+            {
+                ReplaceNode(match, parentOfMatch, parent, grandParent);
+            }
+            if (root != null)
+            {
+                root.IsRed = false;
+            }
+        }
+
         public bool Remove(TKey key)
         {
             if (root == null) return false;

@@ -40,6 +40,15 @@ namespace AtCoder.Collection
 
             set.FindNodeLowerBound(10).Should().BeNull();
             set.FindNodeUpperBound(10).Should().BeNull();
+
+            set.Remove(set.FindNodeLowerBound(5));
+            set.Should().Equal(1, 2, 3, 4, 7, 8, 9);
+
+            set.Remove(set.FindNodeLowerBound(0));
+            set.Should().Equal(2, 3, 4, 7, 8, 9);
+
+            set.Remove(set.FindNodeLowerBound(9));
+            set.Should().Equal(2, 3, 4, 7, 8);
         }
         [Fact]
         public void MultiSet()

@@ -58,6 +58,39 @@ namespace AtCoder.Collection
 
             set.FindNodeLowerBound(10).Should().BeNull();
             set.FindNodeUpperBound(10).Should().BeNull();
+
+            set.Remove(set.FindNodeLowerBound(5));
+            set.ToArray().Should().Equal(new Dictionary<int, int>
+            {
+                {1,5},
+                {2,6},
+                {3,7},
+                {4,8},
+                {7,2},
+                {8,3},
+                {9,4},
+            });
+
+            set.Remove(set.FindNodeLowerBound(0));
+            set.ToArray().Should().Equal(new Dictionary<int, int>
+            {
+                {2,6},
+                {3,7},
+                {4,8},
+                {7,2},
+                {8,3},
+                {9,4},
+            });
+
+            set.Remove(set.FindNodeLowerBound(9));
+            set.ToArray().Should().Equal(new Dictionary<int, int>
+            {
+                {2,6},
+                {3,7},
+                {4,8},
+                {7,2},
+                {8,3},
+            });
         }
         [Fact]
         public void MultiSetDictionary()
