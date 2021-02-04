@@ -155,11 +155,16 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 
         public IEnumerable<KeyValuePair<TKey, TValue>> Reversed()
         {
-            var e = new Enumerator(this, true, null);
+            var e = new ValueEnumerator(this, true, null);
             while (e.MoveNext()) yield return e.Current;
         }
-        public IEnumerable<KeyValuePair<TKey, TValue>> Enumerate(Node from) => Enumerate(from, false);
-        public IEnumerable<KeyValuePair<TKey, TValue>> Enumerate(Node from, bool reverse)
+
+        /// <summary>
+        /// <paramref name="from"/> 以上のノードを列挙する。<paramref name="from"/> がnullならばすべて列挙する。
+        /// </summary>
+        /// <param name="reverse">以上ではなく以下を列挙する</param>
+        /// <returns></returns>
+        public IEnumerable<Node> Enumerate(Node from, bool reverse = false)
         {
             if (from == null) yield break;
             var e = new Enumerator(this, reverse, from);
@@ -532,9 +537,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             value = node.Value;
             return true;
         }
-        public Enumerator GetEnumerator() => new Enumerator(this);
-        IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator() => new Enumerator(this);
-        IEnumerator IEnumerable.GetEnumerator() => new Enumerator(this);
+        public ValueEnumerator GetEnumerator() => new ValueEnumerator(this);
+        IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator() => new ValueEnumerator(this);
+        IEnumerator IEnumerable.GetEnumerator() => new ValueEnumerator(this);
 
         #region private
         static bool Is2Node(Node node) => IsNonNullBlack(node) && IsNullOrBlack(node.Left) && IsNullOrBlack(node.Right); static bool Is4Node(Node node) => IsNonNullRed(node.Left) && IsNonNullRed(node.Right);
@@ -694,7 +699,25 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         }
         #endregion private
 
-        public struct Enumerator : IEnumerator<KeyValuePair<TKey, TValue>>
+        public struct ValueEnumerator : IEnumerator<KeyValuePair<TKey, TValue>>
+        {
+            private readonly Enumerator inner;
+            internal ValueEnumerator(SetDictionary<TKey, TValue, TOp> set)
+            {
+                inner = new Enumerator(set);
+            }
+            internal ValueEnumerator(SetDictionary<TKey, TValue, TOp> set, bool reverse, Node startNode)
+            {
+                inner = new Enumerator(set, reverse, startNode);
+            }
+
+            public KeyValuePair<TKey, TValue> Current => inner.Current.Pair;
+            object IEnumerator.Current => Current;
+            public void Dispose() { }
+            public bool MoveNext() => inner.MoveNext();
+            public void Reset() => throw new NotSupportedException();
+        }
+        public struct Enumerator : IEnumerator<Node>
         {
 
             readonly SetDictionary<TKey, TValue, TOp> tree;
@@ -781,13 +804,14 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             static int Log2(int num) => BitOperations.Log2((uint)num) + 1;
-            public KeyValuePair<TKey, TValue> Current => current == null ? default : current.Pair;
+            public Node Current => current;
 
             public bool MoveNext()
             {
                 if (stack.Count == 0)
                 {
-                    current = null; return false;
+                    current = null;
+                    return false;
                 }
                 current = stack.Pop();
                 var node = reverse ? current.Left : current.Right;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -154,11 +155,16 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 
         public IEnumerable<T> Reversed()
         {
-            var e = new Enumerator(this, true, null);
+            var e = new ValueEnumerator(this, true, null);
             while (e.MoveNext()) yield return e.Current;
         }
-        public IEnumerable<T> Enumerate(Node from) => Enumerate(from, false);
-        public IEnumerable<T> Enumerate(Node from, bool reverse)
+
+        /// <summary>
+        /// <paramref name="from"/> 以上のノードを列挙する。<paramref name="from"/> がnullならばすべて列挙する。
+        /// </summary>
+        /// <param name="reverse">以上ではなく以下を列挙する</param>
+        /// <returns></returns>
+        public IEnumerable<Node> Enumerate(Node from, bool reverse = false)
         {
             if (from == null) yield break;
             var e = new Enumerator(this, reverse, from);
@@ -427,9 +433,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             foreach (var item in this) array[arrayIndex++] = item;
         }
 
-        public Enumerator GetEnumerator() => new Enumerator(this);
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() => new Enumerator(this);
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => new Enumerator(this);
+        public ValueEnumerator GetEnumerator() => new ValueEnumerator(this);
+        IEnumerator<T> IEnumerable<T>.GetEnumerator() => new ValueEnumerator(this);
+        IEnumerator IEnumerable.GetEnumerator() => new ValueEnumerator(this);
 
         #region private
         static bool Is2Node(Node node) => IsNonNullBlack(node) && IsNullOrBlack(node.Left) && IsNullOrBlack(node.Right); static bool Is4Node(Node node) => IsNonNullRed(node.Left) && IsNonNullRed(node.Right);
@@ -589,7 +595,26 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         }
         #endregion private
 
-        public struct Enumerator : IEnumerator<T>
+        public struct ValueEnumerator : IEnumerator<T>
+        {
+            private readonly Enumerator inner;
+            internal ValueEnumerator(Set<T, TOp> set)
+            {
+                inner = new Enumerator(set);
+            }
+            internal ValueEnumerator(Set<T, TOp> set, bool reverse, Node startNode)
+            {
+                inner = new Enumerator(set, reverse, startNode);
+            }
+
+            public T Current => inner.Current.Item;
+            object IEnumerator.Current => Current;
+
+            public void Dispose() { }
+            public bool MoveNext() => inner.MoveNext();
+            public void Reset() => throw new NotSupportedException();
+        }
+        public struct Enumerator : IEnumerator<Node>
         {
 
             readonly Set<T, TOp> tree;
@@ -676,7 +701,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             static int Log2(int num) => BitOperations.Log2((uint)num) + 1;
-            public T Current => current == null ? default : current.Item;
+            public Node Current => current;
 
             public bool MoveNext()
             {
