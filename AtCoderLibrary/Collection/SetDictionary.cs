@@ -164,9 +164,8 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// </summary>
         /// <param name="reverse">以上ではなく以下を列挙する</param>
         /// <returns></returns>
-        public IEnumerable<KeyValuePair<TKey, TValue>> EnumerateItem(Node from, bool reverse = false)
+        public IEnumerable<KeyValuePair<TKey, TValue>> EnumerateItem(Node from = null, bool reverse = false)
         {
-            if (from == null) yield break;
             var e = new ValueEnumerator(this, reverse, from);
             while (e.MoveNext()) yield return e.Current;
         }
@@ -175,9 +174,8 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// </summary>
         /// <param name="reverse">以上ではなく以下を列挙する</param>
         /// <returns></returns>
-        public IEnumerable<Node> EnumerateNode(Node from, bool reverse = false)
+        public IEnumerable<Node> EnumerateNode(Node from = null, bool reverse = false)
         {
-            if (from == null) yield break;
             var e = new Enumerator(this, reverse, from);
             while (e.MoveNext()) yield return e.Current;
         }
