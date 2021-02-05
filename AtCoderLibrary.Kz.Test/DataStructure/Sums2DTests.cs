@@ -18,7 +18,7 @@ namespace AtCoder.DataStructure
                     arr[i][j] = i * j;
                 }
             }
-            var sums = new Sums2D(arr);
+            var sums = new IntSums2D(arr);
             sums[0..10][0..20].Should().Be(8550);
             sums[1..10][1..20].Should().Be(8550);
             sums[3..10][1..20].Should().Be(7980);
@@ -29,16 +29,16 @@ namespace AtCoder.DataStructure
         public void Random()
         {
             var rnd = new Random();
-            var arr = new int[10][];
+            var arr = new long[10][];
             for (int i = 0; i < arr.Length; i++)
             {
-                arr[i] = new int[20];
+                arr[i] = new long[20];
                 for (int j = 0; j < arr[i].Length; j++)
                 {
                     arr[i][j] = rnd.Next(-100000, 100000);
                 }
             }
-            var sums = new Sums2D(arr);
+            var sums = new LongSums2D(arr);
             for (int l = 0; l <= 10; l++)
                 for (int r = l; r <= 10; r++)
                     for (int u = 0; u <= 20; u++)
@@ -46,7 +46,7 @@ namespace AtCoder.DataStructure
                             sums[l..r][u..d].Should().Be(SumDirect(arr, l, r, u, d));
         }
 
-        static long SumDirect(int[][] arr, int left, int rightEx, int upper, int bottomEx)
+        static long SumDirect(long[][] arr, int left, int rightEx, int upper, int bottomEx)
         {
             long sum = 0;
             for (int i = left; i < rightEx; i++)
