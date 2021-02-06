@@ -29,9 +29,9 @@ namespace AtCoder.Util
         {
             { new PointDouble(0,0), new PointDouble(0,0), 0 },
             { new PointDouble(1,1), new PointDouble(1,1), 0 },
-            { new PointDouble(0,1), new PointDouble(1,1), -1 },
+            { new PointDouble(0,1), new PointDouble(1,1), 1 },
             { new PointDouble(1,-1), new PointDouble(1,1), -1 },
-            { new PointDouble(2,1), new PointDouble(1,1), 1 },
+            { new PointDouble(2,1), new PointDouble(1,1), -1 },
             { new PointDouble(1,2), new PointDouble(1,1), 1 },
         };
         [Theory]

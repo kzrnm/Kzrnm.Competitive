@@ -28,9 +28,9 @@ namespace AtCoder.Util
         {
             { new PointLong(0,0), new PointLong(0,0), 0 },
             { new PointLong(1,1), new PointLong(1,1), 0 },
-            { new PointLong(0,1), new PointLong(1,1), -1 },
+            { new PointLong(0,1), new PointLong(1,1), 1 },
             { new PointLong(1,-1), new PointLong(1,1), -1 },
-            { new PointLong(2,1), new PointLong(1,1), 1 },
+            { new PointLong(2,1), new PointLong(1,1), -1 },
             { new PointLong(1,2), new PointLong(1,1), 1 },
         };
         [Theory]
