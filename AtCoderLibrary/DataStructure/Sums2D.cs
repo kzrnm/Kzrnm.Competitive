@@ -9,13 +9,14 @@
         private static readonly TOp op = default;
         private readonly TValue[][] impl;
         public int Length => impl.Length - 1;
-        public Sums2D(TValue[][] arr)
+        public Sums2D(TValue[][] arr, TValue defaultValue = default)
         {
             impl = new TValue[arr.Length + 1][];
-            impl[0] = new TValue[arr[0].Length + 1];
+            impl[0] = new TValue[arr[0].Length + 1].Fill(defaultValue);
             for (var i = 0; i < arr.Length; i++)
             {
                 impl[i + 1] = new TValue[arr[i].Length + 1];
+                impl[i + 1][0] = defaultValue;
                 for (var j = 0; j < arr[i].Length; j++)
                     impl[i + 1][j + 1]
                         = op.Add(
