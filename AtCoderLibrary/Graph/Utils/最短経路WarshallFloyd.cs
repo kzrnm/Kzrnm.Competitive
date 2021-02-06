@@ -13,17 +13,18 @@
         where TEdge : IWEdge<T>
         {
             TOp op = default;
+            var graphArr = graph.AsArray();
             var INF = op.Divide(op.MaxValue, op.Increment(op.MultiplyIdentity));
-            var res = Global.NewArray(graph.Length, graph.Length, INF);
-            for (var i = 0; i < graph.Length; i++)
+            var res = Global.NewArray(graphArr.Length, graphArr.Length, INF);
+            for (var i = 0; i < graphArr.Length; i++)
             {
                 res[i][i] = default;
-                foreach (var e in graph[i].Children)
+                foreach (var e in graphArr[i].Children)
                     res[i][e.To] = e.Value;
             }
-            for (var k = 0; k < graph.Length; k++)
-                for (var i = 0; i < graph.Length; i++)
-                    for (var j = 0; j < graph.Length; j++)
+            for (var k = 0; k < graphArr.Length; k++)
+                for (var i = 0; i < graphArr.Length; i++)
+                    for (var j = 0; j < graphArr.Length; j++)
                     {
                         var x = op.Add(res[i][k], res[k][j]);
                         if (op.GreaterThan(res[i][j], x))

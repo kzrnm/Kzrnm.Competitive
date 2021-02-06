@@ -11,14 +11,15 @@ namespace AtCoder
             where TNode : INode<TEdge>
             where TEdge : IEdge
         {
-            var res = Global.NewArray(graph.Length, int.MaxValue);
+            var graphArr = graph.AsArray();
+            var res = Global.NewArray(graphArr.Length, int.MaxValue);
             var queue = new Queue<int>();
             queue.Enqueue(from);
             res[from] = 0;
             while (queue.Count > 0)
             {
                 var cur = queue.Dequeue();
-                foreach (var e in graph[cur].Children)
+                foreach (var e in graphArr[cur].Children)
                 {
                     var child = e.To;
                     if (res[child].UpdateMin(res[cur] + 1))
@@ -34,14 +35,15 @@ namespace AtCoder
             where TNode : INode<TEdge>
             where TEdge : IEdge
         {
-            var res = Global.NewArray(graph.Length, int.MaxValue);
+            var graphArr = graph.AsArray();
+            var res = Global.NewArray(graphArr.Length, int.MaxValue);
             var queue = new Queue<int>();
             queue.Enqueue(from);
             res[from] = 0;
             while (queue.Count > 0)
             {
                 var cur = queue.Dequeue();
-                foreach (var e in graph[cur].Roots)
+                foreach (var e in graphArr[cur].Roots)
                 {
                     var child = e.To;
                     if (res[child].UpdateMin(res[cur] + 1))

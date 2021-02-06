@@ -15,11 +15,12 @@ namespace AtCoder
             where TEdge : IWEdge<T>
         {
             TOp op = default;
+            var graphArr = graph.AsArray();
             var INF = op.Divide(op.MaxValue, op.Increment(op.MultiplyIdentity));
-            var res = Global.NewArray(graph.Length, INF);
+            var res = Global.NewArray(graphArr.Length, INF);
             res[from] = default;
 
-            var used = new bool[graph.Length];
+            var used = new bool[graphArr.Length];
             int count = 0;
             var remains = new PriorityQueueOp<T, int, TOp>();
             remains.Add(default, from);
@@ -29,8 +30,8 @@ namespace AtCoder
                 var (len, ix) = remains.Dequeue();
                 if (used[ix]) continue;
                 used[ix] = true;
-                if (++count >= graph.Length) break;
-                foreach (var e in graph[ix].Children)
+                if (++count >= graphArr.Length) break;
+                foreach (var e in graphArr[ix].Children)
                 {
                     var nextLength = op.Add(len, e.Value);
                     if (op.GreaterThan(res[e.To], nextLength))
