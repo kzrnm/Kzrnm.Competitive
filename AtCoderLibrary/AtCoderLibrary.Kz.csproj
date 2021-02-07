@@ -16,12 +16,13 @@
     </AssemblyAttribute>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
     <PackageReference Include="ac-library-csharp" Version="1.2.5" />
-    <PackageReference Include="Competitive.IO" Version="0.3.0" />
+    <PackageReference Include="Competitive.IO" Version="0.4.0" />
+
+
     <PackageReference Include="SourceExpander.Embedder" Version="2.6.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-
     <PackageReference Include="SourceExpander.Embedder.Analyzer" Version="2.6.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
