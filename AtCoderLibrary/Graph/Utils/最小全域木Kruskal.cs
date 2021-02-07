@@ -11,7 +11,7 @@ namespace AtCoder
         /// </summary>
         public static (int from, TEdge edge)[] Kruskal<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph)
             where TOp : struct, IAdditionOperator<T>, IComparer<T>
-            where TNode : IWNode<T, TEdge, TOp>
+            where TNode : IWGraphNode<T, TEdge, TOp>
             where TEdge : IWEdge<T>
         {
             var graphArr = graph.AsArray();
@@ -33,7 +33,7 @@ namespace AtCoder
         /// <para>計算量: O(E log(E))</para>
         /// </summary>
         public static (int from, TEdge edge)[] Kruskal<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
-            where TNode : INode<TEdge>
+            where TNode : IGraphNode<TEdge>
             where TEdge : IEdge
         {
             var graphArr = graph.AsArray();

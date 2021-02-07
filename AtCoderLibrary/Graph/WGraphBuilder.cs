@@ -118,7 +118,7 @@ namespace AtCoder
         public WEdge<T> Reversed(int from) => new WEdge<T>(from, Value);
     }
 
-    public class WNode<T, TOp> : IWNode<T, WEdge<T>, TOp>, IEquatable<WNode<T, TOp>>
+    public class WNode<T, TOp> : IWGraphNode<T, WEdge<T>, TOp>, IEquatable<WNode<T, TOp>>
         where TOp : struct, IAdditionOperator<T>
     {
         public WNode(int i, WEdge<T>[] roots, WEdge<T>[] children)

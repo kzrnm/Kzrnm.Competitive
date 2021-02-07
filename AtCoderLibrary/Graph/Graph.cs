@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace AtCoder
 {
     public interface IGraph<TNode, TEdge>
-        where TNode : INode<TEdge>
+        where TNode : IGraphNode<TEdge>
         where TEdge : IEdge
     {
         CSR<TEdge> Edges { get; }
@@ -22,7 +22,7 @@ namespace AtCoder
         int Length { get; }
     }
     public class SimpleGraph<TNode, TEdge> : IGraph<TNode, TEdge>
-        where TNode : INode<TEdge>
+        where TNode : IGraphNode<TEdge>
         where TEdge : IEdge
     {
         public CSR<TEdge> Edges { get; }

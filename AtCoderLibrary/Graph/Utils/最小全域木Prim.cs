@@ -12,7 +12,7 @@ namespace AtCoder
         /// </summary>
         public static (int from, TEdge edge)[] Prim<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph)
             where TOp : struct, IAdditionOperator<T>, IComparer<T>
-            where TNode : IWNode<T, TEdge, TOp>
+            where TNode : IWGraphNode<T, TEdge, TOp>
             where TEdge : IWEdge<T>
         {
             var sumi = new bool[graph.Length];

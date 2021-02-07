@@ -11,7 +11,7 @@ namespace AtCoder
     {
         int To { get; }
     }
-    public interface INode<out TEdge> where TEdge : IEdge
+    public interface IGraphNode<out TEdge> where TEdge : IEdge
     {
         int Index { get; }
         TEdge[] Roots { get; }

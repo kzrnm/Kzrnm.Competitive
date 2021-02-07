@@ -9,7 +9,7 @@
         public static T[][] WarshallFloyd<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph)
         where T : struct
         where TOp : struct, INumOperator<T>
-        where TNode : IWNode<T, TEdge, TOp>
+        where TNode : IWGraphNode<T, TEdge, TOp>
         where TEdge : IWEdge<T>
         {
             TOp op = default;

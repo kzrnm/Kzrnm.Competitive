@@ -11,7 +11,7 @@ namespace AtCoder
         /// 閉路があれば返す。なければ(-1, null)
         /// </summary>
         public static (int from, TEdge[] edges) GetCycleDFS<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
-            where TNode : INode<TEdge>
+            where TNode : IGraphNode<TEdge>
             where TEdge : IEdge
         {
             var statuses = new Status[graph.Length];

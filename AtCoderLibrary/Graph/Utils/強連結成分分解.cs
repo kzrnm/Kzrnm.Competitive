@@ -15,7 +15,7 @@ namespace AtCoder
         /// <para>計算量: 追加された辺の本数を m として O(n+m)</para>
         /// </remarks>
         public static (int groupNum, int[] ids) SCCIDs<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
-            where TNode : INode<TEdge>
+            where TNode : IGraphNode<TEdge>
             where TEdge : IEdge
         {
             // R. Tarjan のアルゴリズム
@@ -115,7 +115,7 @@ namespace AtCoder
         /// <para>計算量: 追加された辺の本数を m として O(n+m)</para>
         /// </remarks>
         public static List<List<int>> Scc<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
-            where TNode : INode<TEdge>
+            where TNode : IGraphNode<TEdge>
             where TEdge : IEdge
         {
             var (groupNum, ids) = SCCIDs(graph);

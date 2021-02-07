@@ -15,7 +15,7 @@ namespace AtCoder
         /// </summary>
         /// <returns>スタート地点とオイラー路を返す。見つからなかったら (-1, null) を返す。</returns>
         public static (int from, TEdge[] trail) EulerianTrail<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
-            where TNode : INode<TEdge>
+            where TNode : IGraphNode<TEdge>
             where TEdge : struct, IEdge, IReversable<TEdge>
         {
             if (graph[0].IsDirected)
@@ -29,7 +29,7 @@ namespace AtCoder
         /// <para>無向準オイラーグラフ: 次数(出ていく辺の数)が奇数なのが2個</para>
         /// </summary>
         private static (int from, TEdge[] trail) EulerianTrailUndirected<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
-            where TNode : INode<TEdge>
+            where TNode : IGraphNode<TEdge>
             where TEdge : struct, IEdge, IReversable<TEdge>
         {
             Internal.Contract.Assert(!graph[0].IsDirected);
@@ -58,7 +58,7 @@ namespace AtCoder
         /// <para>有向準オイラーグラフ: 全ての頂点で入次数と出次数が等しい</para>
         /// </summary>
         private static (int from, TEdge[] trail) EulerianTrailDirected<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
-            where TNode : INode<TEdge>
+            where TNode : IGraphNode<TEdge>
             where TEdge : struct, IEdge, IReversable<TEdge>
         {
             Internal.Contract.Assert(graph[0].IsDirected);
@@ -100,7 +100,7 @@ namespace AtCoder
         /// <para><paramref name="from"/> からの一筆書きのこと</para>
         /// </summary>
         public static TEdge[] EulerianTrail<TNode, TEdge>(this IGraph<TNode, TEdge> graph, int from)
-            where TNode : INode<TEdge>
+            where TNode : IGraphNode<TEdge>
             where TEdge : struct, IEdge, IReversable<TEdge>
         {
             var isDirected = graph[from].IsDirected;

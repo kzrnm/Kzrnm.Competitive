@@ -31,9 +31,9 @@ namespace AtCoder
         public void Add(int from, int to) => edgeContainer.Add(from, new Edge(to));
 
 
-        public SimpleGraph<Node, Edge> ToGraph()
+        public SimpleGraph<GraphNode, Edge> ToGraph()
         {
-            var res = new Node[edgeContainer.Length];
+            var res = new GraphNode[edgeContainer.Length];
             var csr = edgeContainer.ToCSR();
             var counter = new int[res.Length];
             var rootCounter = edgeContainer.IsDirected ? new int[res.Length] : counter;
@@ -43,7 +43,7 @@ namespace AtCoder
             {
                 if (children[i] == null) children[i] = new Edge[edgeContainer.sizes[i]];
                 if (roots[i] == null) roots[i] = new Edge[edgeContainer.rootSizes[i]];
-                res[i] = new Node(i, roots[i], children[i]);
+                res[i] = new GraphNode(i, roots[i], children[i]);
                 foreach (ref var e in csr.EList.AsSpan(csr.Start[i], csr.Start[i + 1] - csr.Start[i]))
                 {
                     if (roots[e.To] == null)
@@ -52,7 +52,7 @@ namespace AtCoder
                     roots[e.To][rootCounter[e.To]++] = e.Reversed(i);
                 }
             }
-            return new SimpleGraph<Node, Edge>(res, csr);
+            return new SimpleGraph<GraphNode, Edge>(res, csr);
         }
 
         public TreeGraph<TreeNode, Edge> ToTree(int root = 0)
@@ -128,9 +128,9 @@ namespace AtCoder
         public static bool operator !=(Edge left, Edge right) => !left.Equals(right);
     }
 
-    public class Node : INode<Edge>, IEquatable<Node>
+    public class GraphNode : IGraphNode<Edge>, IEquatable<GraphNode>
     {
-        public Node(int i, Edge[] roots, Edge[] children)
+        public GraphNode(int i, Edge[] roots, Edge[] children)
         {
             this.Index = i;
             this.Roots = roots;
@@ -142,8 +142,8 @@ namespace AtCoder
         public bool IsDirected => Roots != Children;
 
         public override string ToString() => $"children: {string.Join(",", Children)}";
-        public override bool Equals(object obj) => obj is Node d && this.Equals(d);
-        public bool Equals(Node other) => this.Index == other?.Index;
+        public override bool Equals(object obj) => obj is GraphNode d && this.Equals(d);
+        public bool Equals(GraphNode other) => this.Index == other?.Index;
         public override int GetHashCode() => this.Index;
     }
     public class TreeNode : ITreeNode<Edge>, IEquatable<TreeNode>

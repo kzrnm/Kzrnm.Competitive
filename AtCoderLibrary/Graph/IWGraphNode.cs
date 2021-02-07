@@ -4,7 +4,7 @@
     {
         T Value { get; }
     }
-    public interface IWNode<T, out TEdge, TOp> : INode<TEdge>
+    public interface IWGraphNode<T, out TEdge, TOp> : IGraphNode<TEdge>
         where TEdge : IWEdge<T>
         where TOp : struct, IAdditionOperator<T>
     {

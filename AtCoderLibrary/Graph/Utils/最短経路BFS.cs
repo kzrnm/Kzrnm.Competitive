@@ -8,7 +8,7 @@ namespace AtCoder
         /// <paramref name="from"/> からの最短経路長をBFSで求める。到達判定にも有用
         /// </summary>
         public static int[] ShortestPathBFS<TNode, TEdge>(this IGraph<TNode, TEdge> graph, int from)
-            where TNode : INode<TEdge>
+            where TNode : IGraphNode<TEdge>
             where TEdge : IEdge
         {
             var graphArr = graph.AsArray();
@@ -32,7 +32,7 @@ namespace AtCoder
         /// <paramref name="from"/> から逆方向の最短経路長をBFSで求める。到達判定にも有用
         /// </summary>
         public static int[] ShortestPathBFSReverse<TNode, TEdge>(this IGraph<TNode, TEdge> graph, int from)
-            where TNode : INode<TEdge>
+            where TNode : IGraphNode<TEdge>
             where TEdge : IEdge
         {
             var graphArr = graph.AsArray();

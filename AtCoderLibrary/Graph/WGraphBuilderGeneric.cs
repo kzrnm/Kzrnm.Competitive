@@ -17,9 +17,9 @@ namespace AtCoder
         }
         public void Add(int from, int to, T value, S data) => edgeContainer.Add(from, new WEdge<T, S>(to, value, data));
 
-        public WGraph<T, TOp, WNode<T, S, TOp>, WEdge<T, S>> ToGraph()
+        public WGraph<T, TOp, WGraphNode<T, S, TOp>, WEdge<T, S>> ToGraph()
         {
-            var res = new WNode<T, S, TOp>[edgeContainer.Length];
+            var res = new WGraphNode<T, S, TOp>[edgeContainer.Length];
             var csr = edgeContainer.ToCSR();
             var counter = new int[res.Length];
             var rootCounter = edgeContainer.IsDirected ? new int[res.Length] : counter;
@@ -29,7 +29,7 @@ namespace AtCoder
             {
                 if (children[i] == null) children[i] = new WEdge<T, S>[edgeContainer.sizes[i]];
                 if (roots[i] == null) roots[i] = new WEdge<T, S>[edgeContainer.rootSizes[i]];
-                res[i] = new WNode<T, S, TOp>(i, roots[i], children[i]);
+                res[i] = new WGraphNode<T, S, TOp>(i, roots[i], children[i]);
                 foreach (ref var e in csr.EList.AsSpan(csr.Start[i], csr.Start[i + 1] - csr.Start[i]))
                 {
                     if (roots[e.To] == null)
@@ -38,7 +38,7 @@ namespace AtCoder
                     roots[e.To][rootCounter[e.To]++] = e.Reversed(i);
                 }
             }
-            return new WGraph<T, TOp, WNode<T, S, TOp>, WEdge<T, S>>(res, csr);
+            return new WGraph<T, TOp, WGraphNode<T, S, TOp>, WEdge<T, S>>(res, csr);
         }
 
         public WTreeGraph<T, TOp, WTreeNode<T, S, TOp>, WEdge<T, S>> ToTree(int root = 0)
@@ -120,10 +120,10 @@ namespace AtCoder
         public WEdge<T, S> Reversed(int from) => new WEdge<T, S>(from, Value, Data);
     }
 
-    public class WNode<T, S, TOp> : IWNode<T, WEdge<T, S>, TOp>, IEquatable<WNode<T, S, TOp>>
+    public class WGraphNode<T, S, TOp> : IWGraphNode<T, WEdge<T, S>, TOp>, IEquatable<WGraphNode<T, S, TOp>>
         where TOp : struct, IAdditionOperator<T>
     {
-        public WNode(int i, WEdge<T, S>[] roots, WEdge<T, S>[] children)
+        public WGraphNode(int i, WEdge<T, S>[] roots, WEdge<T, S>[] children)
         {
             this.Index = i;
             this.Roots = roots;
@@ -136,7 +136,7 @@ namespace AtCoder
 
         public override string ToString() => $"children: {string.Join(",", Children)}";
         public override bool Equals(object obj) => obj is WNode<T, TOp> d && this.Equals(d);
-        public bool Equals(WNode<T, S, TOp> other) => this.Index == other.Index;
+        public bool Equals(WGraphNode<T, S, TOp> other) => this.Index == other.Index;
         public override int GetHashCode() => this.Index;
     }
     public class WTreeNode<T, S, TOp> : ITreeNode<WEdge<T, S>>, IEquatable<WTreeNode<T, S, TOp>>
