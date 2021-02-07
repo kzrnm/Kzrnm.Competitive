@@ -22,7 +22,7 @@ namespace AtCoder.Graph
             graph.Dijkstra(0).Should().Equal(new int[] { 0, 1, 6, 18, 12 });
             graph.Dijkstra(1).Should().Equal(new int[] { 12, 0, 5, 17, 11 });
             graph.Dijkstra(2).Should().Equal(new int[] { 7, 8, 0, 12, 6 });
-            graph.Dijkstra(3).Should().Equal(new int[] { 1073741823, 1073741823, 1073741823, 0, 1073741823 });
+            graph.Dijkstra(3).Should().Equal(new int[] { int.MaxValue, int.MaxValue, int.MaxValue, 0, int.MaxValue });
             graph.Dijkstra(4).Should().Equal(new int[] { 1, 2, 7, 6, 0 });
         }
 
@@ -43,7 +43,7 @@ namespace AtCoder.Graph
             graph.Dijkstra(0).Should().Equal(new long[] { 0, 1, 6, 18, 12 });
             graph.Dijkstra(1).Should().Equal(new long[] { 12, 0, 5, 17, 11 });
             graph.Dijkstra(2).Should().Equal(new long[] { 7, 8, 0, 12, 6 });
-            graph.Dijkstra(3).Should().Equal(new long[] { 4611686018427387903, 4611686018427387903, 4611686018427387903, 0, 4611686018427387903 });
+            graph.Dijkstra(3).Should().Equal(new long[] { long.MaxValue, long.MaxValue, long.MaxValue, 0, long.MaxValue });
             graph.Dijkstra(4).Should().Equal(new long[] { 1, 2, 7, 6, 0 });
         }
     }
