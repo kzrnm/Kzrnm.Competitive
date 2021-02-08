@@ -18,12 +18,22 @@ namespace AtCoder
         public static Grid<T> Create<T>(Span<T[]> data, T defaultValue) => new Grid<T>(CollectionUtil.Flatten(data), data.Length, data[0].Length, defaultValue);
         public static Grid<T> Create<T>(ReadOnlySpan<T[]> data) => new Grid<T>(CollectionUtil.Flatten(data), data.Length, data[0].Length);
         public static Grid<T> Create<T>(ReadOnlySpan<T[]> data, T defaultValue) => new Grid<T>(CollectionUtil.Flatten(data), data.Length, data[0].Length, defaultValue);
+        public static void WriteGrid(this Grid<char> grid, ConsoleWriter cw)
+        {
+            for (int i = 0; i < grid.H; i++)
+                cw.StreamWriter.WriteLine(grid.data.AsSpan(i * grid.W, grid.W));
+        }
+        public static void WriteGrid<T>(this Grid<T> grid, ConsoleWriter cw)
+        {
+            for (int i = 0; i < grid.H; i++)
+                cw.WriteLineJoin(grid.data.AsSpan(i * grid.W, grid.W));
+        }
     }
     public class Grid<T>
     {
         public readonly int H;
         public readonly int W;
-        private readonly T[] data;
+        internal readonly T[] data;
         private readonly T defaultValue;
         public Grid(int H, int W, T defaultValue = default(T)) : this(new T[H * W].Fill(defaultValue), H, W, defaultValue) { }
         internal Grid(T[] data, int H, int W, T defaultValue = default(T))
