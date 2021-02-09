@@ -28,9 +28,8 @@ namespace Kzrnm.Competitive
                 { default, from }
             };
 
-            while (remains.Count > 0)
+            while (remains.TryDequeue(out var len, out var ix))
             {
-                var (len, ix) = remains.Dequeue();
                 if (used[ix]) continue;
                 used[ix] = true;
                 if (++count >= graphArr.Length) break;

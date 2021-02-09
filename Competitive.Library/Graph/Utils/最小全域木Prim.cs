@@ -16,32 +16,30 @@ namespace Kzrnm.Competitive
             where TEdge : IWEdge<T>
         {
             var sumi = new bool[graph.Length];
-            var pq = new PriorityQueueOp<(int from, TEdge edge), Comparer<T, TOp, TEdge>>();
+            var pq = new PriorityQueueOp<TEdge, int, Comparer<T, TOp, TEdge>>();
             var res = new List<(int from, TEdge edge)>(graph.Length - 1);
             sumi[0] = true;
             foreach (var e in graph[0].Children)
-                pq.Add((0, e));
+                pq.Add(e, 0);
             var sumiCnt = 1;
-            while (sumiCnt < sumi.Length && pq.Count > 0)
+            while (sumiCnt < sumi.Length && pq.TryDequeue(out var edge, out var from))
             {
-                var (from, edge) = pq.Dequeue();
                 if (sumi[edge.To]) continue;
                 sumi[edge.To] = true;
                 ++sumiCnt;
                 res.Add((from, edge));
                 foreach (var e in graph[edge.To].Children)
                     if (!sumi[e.To])
-                        pq.Add((edge.To, e));
+                        pq.Add(e, edge.To);
             }
             return res.ToArray();
         }
-        private readonly struct Comparer<T, TOp, TEdge> : IComparer<(int from, TEdge edge)>
+        private readonly struct Comparer<T, TOp, TEdge> : IComparer<TEdge>
             where TOp : struct, IAdditionOperator<T>, IComparer<T>
             where TEdge : IWEdge<T>
         {
             private static readonly TOp op = default;
-            public int Compare((int from, TEdge edge) x, (int from, TEdge edge) y)
-                => op.Compare(x.edge.Value, y.edge.Value);
+            public int Compare(TEdge x, TEdge y) => op.Compare(x.Value, y.Value);
         }
     }
 }
