@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
 {
+    using static MethodImplOptions;
     /// <summary>
     /// 2 次元平面上にある点が事前に与えられているとき、オンラインでいろいろなクエリを処理するデータ構造
     /// </summary>
@@ -54,7 +55,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public T this[int k]
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(AggressiveInlining)]
             get => ys[mat[k]];
         }
 
@@ -71,7 +72,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public T KthSmallest(int l, int r, int k)
             => ys[mat.KthSmallest(l, r, k)];
 
@@ -80,7 +81,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public T KthLargest(int l, int r, int k)
             => ys[mat.KthLargest(l, r, k)];
 
@@ -89,7 +90,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public int RangeFreq(int l, int r, T lower, T upper)
             => mat.RangeFreq(l, r, ys.LowerBound(lower, comparer), ys.LowerBound(upper, comparer));
 
@@ -98,7 +99,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public int RangeFreq(int l, int r, T upper)
             => mat.RangeFreq(l, r, ys.LowerBound(upper, comparer));
 
@@ -108,7 +109,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public T? PrevValue(int l, int r, T upper)
         {
             var res = mat.PrevValue(l, r, ys.LowerBound(upper, comparer));
@@ -123,7 +124,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public T? NextValue(int l, int r, T lower)
         {
             var res = mat.NextValue(l, r, ys.LowerBound(lower, comparer));
@@ -252,7 +253,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public int KthLargest(int l, int r, int k) => KthSmallest(l, r, r - l - k - 1);
 
         /// <summary>
@@ -260,7 +261,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public int RangeFreq(int l, int r, int lower, int upper)
             => RangeFreq(l, r, upper) - RangeFreq(l, r, lower);
 
@@ -287,7 +288,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public int PrevValue(int l, int r, int upper)
         {
             int cnt = RangeFreq(l, r, upper);
@@ -300,7 +301,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public int NextValue(int l, int r, int lower)
         {
             int cnt = RangeFreq(l, r, lower);
@@ -317,7 +318,7 @@ namespace Kzrnm.Competitive
                 sum = new uint[block];
             }
 
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(AggressiveInlining)]
             public void Set(int k)
             {
                 bit[k >> 5] |= 1U << (k & 0x1F);
@@ -333,14 +334,14 @@ namespace Kzrnm.Competitive
 
             public bool this[int k]
             {
-                [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                [MethodImpl(AggressiveInlining)]
                 get => ((bit[k >> 5] >> (k & 0x1F)) & 1) != 0;
             }
 
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(AggressiveInlining)]
             public int Rank(int k) => (int)(sum[k >> 5] + (uint)BitOperations.PopCount(bit[k >> 5] & ((1U << (k & 0x1F)) - 1)));
 
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(AggressiveInlining)]
             public int Rank(bool val, int k) => val ? Rank(k) : k - Rank(k);
         }
     }

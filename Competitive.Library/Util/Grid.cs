@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
 {
+    using static MethodImplOptions;
     public static class Grid
     {
         public static Grid<char> GridString(this PropertyConsoleReader cr, int H) => Create(cr.Repeat(H).Ascii);
@@ -43,7 +44,7 @@ namespace Kzrnm.Competitive
             this.data = data;
             this.defaultValue = defaultValue;
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public int Index(int h, int w) => h * W + w;
 
         private T defaultReference;
@@ -54,7 +55,7 @@ namespace Kzrnm.Competitive
         }
         public ref T this[int h, int w]
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(AggressiveInlining)]
             get
             {
                 if ((uint)h < (uint)H && (uint)w < (uint)W)

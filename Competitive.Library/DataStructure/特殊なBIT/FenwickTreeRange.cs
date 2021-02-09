@@ -5,6 +5,7 @@ using AtCoder.Internal;
 
 namespace Kzrnm.Competitive
 {
+    using static MethodImplOptions;
 
     /// <summary>
     /// 長さ N の配列に対し、
@@ -45,7 +46,7 @@ namespace Kzrnm.Competitive
         }
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         private static void Add(long[] data, int p, long w)
         {
             for (++p; p < data.Length; p += InternalBit.ExtractLowestSetBit(p))
@@ -59,7 +60,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: 0≤<paramref name="l"/>&lt;n</para>
         /// <para>計算量: O(log n)</para>
         /// </remarks>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public void Add(int l, int r, long x)
         {
             Add(data1, l, -x * l);
@@ -83,20 +84,20 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(log n)</para>
         /// </remarks>
         /// <returns>a[<paramref name="l"/>] + a[<paramref name="l"/> - 1] + ... + a[<paramref name="r"/> - 1]</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public long Sum(int l, int r)
         {
             Contract.Assert(0U <= (uint)l && (uint)l <= (uint)r && (uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= {nameof(r)} && {nameof(r)} <= Length");
             return Sum(r) - Sum(l);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public long Sum(int r) => Sum(data1, r) + Sum(data2, r) * r;
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public long Slice(int l, int len) => Sum(l, l + len);
 
         [DebuggerDisplay("Value = {" + nameof(value) + "}, Sum = {" + nameof(sum) + "}")]

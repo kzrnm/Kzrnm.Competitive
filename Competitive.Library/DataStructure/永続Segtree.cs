@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
 {
+    using static MethodImplOptions;
     [DebuggerTypeProxy(typeof(PersistentSegtree<,>.DebugView))]
     public class PersistentSegtree<TValue, TOp> where TOp : struct, ISegtreeOperator<TValue>
     {
@@ -68,14 +69,14 @@ namespace Kzrnm.Competitive
             return Merge(Build(l, (l + r) >> 1, v), Build((l + r) >> 1, r, v));
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         private static Node Merge(Node left, Node right) => new Node(op.Operate(left.data, right.data), left, right);
 
 
         /// <summary>
         /// a[<paramref name="p"/>] に <paramref name="v"/> を代入した <see cref="PersistentSegtree{TValue, TOp}"/> を返します。
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public PersistentSegtree<TValue, TOp> SetItem(int p, TValue v)
         {
             Contract.Assert((uint)p < (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(p)} && {nameof(p)} < Length");
@@ -103,7 +104,7 @@ namespace Kzrnm.Competitive
         /// <returns></returns>
         public TValue this[int p]
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(AggressiveInlining)]
             get
             {
                 Contract.Assert((uint)p < (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(p)} && {nameof(p)} < Length");
@@ -111,7 +112,7 @@ namespace Kzrnm.Competitive
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public TValue Slice(int l, int len) => Prod(l, l + len);
 
         /// <summary>
@@ -122,14 +123,14 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(log n)</para>
         /// </remarks>
         /// <returns><see cref="TOp.Operate"/>(a[<paramref name="l"/>], ..., a[<paramref name="r"/> - 1])</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public TValue Prod(int l, int r)
         {
             Contract.Assert(0U <= (uint)l && (uint)l <= (uint)r && (uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= {nameof(r)} && {nameof(r)} <= Length");
             return Query(l, r, Root, 0, Length);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         private static TValue Query(int a, int b, Node k, int l, int r)
         {
             if (r <= a || b <= l)

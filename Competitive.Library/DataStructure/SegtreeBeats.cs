@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
 {
+    using static MethodImplOptions;
     /// <summary>
     /// モノイドを定義するインターフェイスです。
     /// </summary>
@@ -105,12 +106,12 @@ namespace Kzrnm.Competitive
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void Update(int k) => d[k] = op.Operate(d[2 * k], d[2 * k + 1]);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void AllApply(int k, F f)
@@ -127,7 +128,7 @@ namespace Kzrnm.Competitive
                 }
             }
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void Push(int k)
@@ -147,7 +148,7 @@ namespace Kzrnm.Competitive
         /// <returns></returns>
         public TValue this[int p]
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(AggressiveInlining)]
             set
             {
                 Contract.Assert((uint)p < (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(p)} && {nameof(p)} < Length");
@@ -156,7 +157,7 @@ namespace Kzrnm.Competitive
                 d[p] = value;
                 for (int i = 1; i <= log; i++) Update(p >> i);
             }
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(AggressiveInlining)]
             get
             {
                 Contract.Assert((uint)p < (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(p)} && {nameof(p)} < Length");
@@ -166,7 +167,7 @@ namespace Kzrnm.Competitive
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public TValue Slice(int l, int len) => Prod(l, l + len);
 
         /// <summary>
@@ -177,7 +178,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(log n)</para>
         /// </remarks>
         /// <returns><see cref="TOp.Operate"/>(a[<paramref name="l"/>], ..., a[<paramref name="r"/> - 1])</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public TValue Prod(int l, int r)
         {
             Contract.Assert(0U <= (uint)l && (uint)l <= (uint)r && (uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= {nameof(r)} && {nameof(r)} <= Length");

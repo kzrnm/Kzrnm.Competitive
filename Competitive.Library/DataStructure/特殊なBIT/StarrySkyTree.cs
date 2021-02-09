@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive.DataStructure
 {
+    using static MethodImplOptions;
     [System.Diagnostics.DebuggerTypeProxy(typeof(StarrySkyTree<,>.DebugView))]
     public class StarrySkyTree<T, TOp>
         where T : struct
@@ -105,12 +106,12 @@ namespace Kzrnm.Competitive.DataStructure
 
         public long FIdentity => 0;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public long Composition(long f, long g) => f + g;
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public long Mapping(long f, long x) => x + f;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AggressiveInlining)]
         public long Operate(long x, long y) => Math.Max(x, y);
     }
 }
