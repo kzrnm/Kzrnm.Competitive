@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AtCoderProject\AtCoderProject.csproj" />
+    <ProjectReference Include="..\Competitive\Competitive.csproj" />
   </ItemGroup>
 
   <ItemGroup>

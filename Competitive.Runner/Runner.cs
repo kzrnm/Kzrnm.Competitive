@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace AtCoderRunner
+namespace Competitive.Runner
 {
     public class Runner
     {

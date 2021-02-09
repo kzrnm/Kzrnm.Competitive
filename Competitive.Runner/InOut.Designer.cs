@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AtCoderRunner {
+namespace Competitive.Runner {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace AtCoderRunner {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("AtCoderRunner.InOut", typeof(InOut).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Competitive.Runner.InOut", typeof(InOut).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,23 @@ namespace AtCoderRunner {
         }
         
         /// <summary>
-        ///    に類似しているローカライズされた文字列を検索します。
+        ///   9
+        ///TE 10 5
+        ///BM 0 0
+        ///CLE 5 0
+        ///HOR 6 5
+        ///BN 11 0
+        ///CMA 15 5
+        ///GA 14 5
+        ///BO 12 10
+        ///CN 7 10
+        ///6
+        ///BM
+        ///CLE
+        ///BN
+        ///CMA
+        ///BO
+        ///CN に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string A_IN {
             get {
@@ -70,7 +86,9 @@ namespace AtCoderRunner {
         }
         
         /// <summary>
-        ///    に類似しているローカライズされた文字列を検索します。
+        ///   HOR
+        ///TE
+        ///GA に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string A_OUT {
             get {
@@ -79,7 +97,26 @@ namespace AtCoderRunner {
         }
         
         /// <summary>
-        ///    に類似しているローカライズされた文字列を検索します。
+        ///   12
+        ///: 0 20
+        ///! 10 20
+        ///&quot; 20 20
+        ///# 30 20
+        ///$ 1 10
+        ///% 11 10
+        ///&amp; 21 10
+        ///&apos; 31 10
+        ///( 2 0
+        ///) 12 0
+        ///* 22 0
+        ///+ 32 0
+        ///6
+        ///$
+        ///!
+        ///&quot;
+        ///&apos;
+        ///*
+        ///) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string B_IN {
             get {
@@ -88,7 +125,8 @@ namespace AtCoderRunner {
         }
         
         /// <summary>
-        ///    に類似しているローカライズされた文字列を検索します。
+        ///   %
+        ///&amp; に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string B_OUT {
             get {

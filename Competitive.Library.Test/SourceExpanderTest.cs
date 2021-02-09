@@ -28,7 +28,7 @@ namespace Embedding
                 .Should()
                 .HaveCountGreaterThan(2)
                 .And
-                .OnlyContain(name => name.StartsWith("AtCoderLibrary.Kz>"));
+                .OnlyContain(name => name.StartsWith("Competitive.Library>"));
             embedded.SourceFiles.SelectMany(s => s.TypeNames)
                 .Should()
                 .Contain(

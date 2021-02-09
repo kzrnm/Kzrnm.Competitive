@@ -8,7 +8,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace AtCoderProject.Runner
+namespace Competitive.Runner
 {
     static partial class HandMadeMain
     {

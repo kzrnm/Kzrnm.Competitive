@@ -13,7 +13,7 @@ env:
   DOTNET_NOLOGO: true
   NUGET_XMLDOC_MODE: skip
   NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
-  WORKFLOW_BUILD_SLN: AtCoderLibrary/AtCoderLibrary.Kz.sln
+  WORKFLOW_BUILD_SLN: Competitive.Library/Competitive.Library.sln
 
 jobs:
   library-checker:

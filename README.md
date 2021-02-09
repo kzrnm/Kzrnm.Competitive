@@ -1,2 +1,2 @@
 
-![build](https://github.com/naminodarie/AtCoderProject/workflows/test/badge.svg?branch=master)
+![build](https://github.com/naminodarie/Competitive/workflows/test/badge.svg?branch=master)

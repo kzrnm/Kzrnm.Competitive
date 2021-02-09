@@ -25,14 +25,14 @@ if ($Release) {
     $Build = $true
 }
 if ($Build) {
-    dotnet build -c $target ../AtCoderProject
+    dotnet build -c $target ../Competitive
 }
 
 $files = (Get-ChildItem $Directory | Where-Object { $_.Name.Contains("-in") -or $_.Name.Contains(".in") })
 
 foreach ($file in $files) {
     $mc = Measure-Command { 
-        $commandRes = (& ../AtCoderProject/bin/$target/netcoreapp3.1/AtCoderProject.exe $file).Trim([char]65279)
+        $commandRes = (& ../Competitive/bin/$target/netcoreapp3.1/Competitive.exe $file).Trim([char]65279)
     }
 
     if ($Diff) {

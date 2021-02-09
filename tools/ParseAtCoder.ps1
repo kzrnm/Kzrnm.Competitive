@@ -56,7 +56,7 @@ function Update-InOut {
         $inouts
     )
 
-    $inoutXmlPath = "$PSScriptRoot\..\AtCoderRunner\InOut.resx"
+    $inoutXmlPath = "$PSScriptRoot\..\Competitive.Runner\InOut.resx"
     $writer = [System.Resources.ResXResourceWriter]::new($inoutXmlPath)
     try {
         for ($i = 0; $i -lt 6; $i++) {
@@ -246,7 +246,7 @@ function Update-Input {
     }
 
     $indent = "    "
-    $mainPath = "$PSScriptRoot\..\AtCoderProject\Program.cs"
+    $mainPath = "$PSScriptRoot\..\Competitive\Program.cs"
     $main = (Get-Content $mainPath -Raw)
     ($main -replace 'private object Calc\(\)[\s\S]*', ("private object Calc()")) > $mainPath
     "$indent{" >> $mainPath
@@ -262,7 +262,7 @@ function Main {
     $document = (Get-Parsed-AtCoder)
     Update-InOut (Get-InOut $document)
     Update-Input (Get-Parsed-Input $document)
-    # dotnet-format.exe -f "$PSScriptRoot\..\AtCoderProject"
+    # dotnet-format.exe -f "$PSScriptRoot\..\Competitive"
 }
 
 Main

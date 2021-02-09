@@ -3,5 +3,5 @@
         "Combined.cs*": "text"
     },
     "omnisharp.enableRoslynAnalyzers": true,
-    "omnisharp.defaultLaunchSolution": "AtCoderProject.sln"
+    "omnisharp.defaultLaunchSolution": "Competitive.sln"
 }

@@ -118,16 +118,54 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="A_IN" xml:space="preserve">
-    <value />
+    <value>9
+TE 10 5
+BM 0 0
+CLE 5 0
+HOR 6 5
+BN 11 0
+CMA 15 5
+GA 14 5
+BO 12 10
+CN 7 10
+6
+BM
+CLE
+BN
+CMA
+BO
+CN</value>
   </data>
   <data name="A_OUT" xml:space="preserve">
-    <value />
+    <value>HOR
+TE
+GA</value>
   </data>
   <data name="B_IN" xml:space="preserve">
-    <value />
+    <value>12
+: 0 20
+! 10 20
+" 20 20
+# 30 20
+$ 1 10
+% 11 10
+&amp; 21 10
+' 31 10
+( 2 0
+) 12 0
+* 22 0
++ 32 0
+6
+$
+!
+"
+'
+*
+)</value>
   </data>
   <data name="B_OUT" xml:space="preserve">
-    <value />
+    <value>%
+&amp;</value>
   </data>
   <data name="C_IN" xml:space="preserve">
     <value />
