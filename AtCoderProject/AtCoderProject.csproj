@@ -29,8 +29,8 @@
 
   <ItemGroup>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.0" />
-    <PackageReference Include="TextCopy" Version="4.2.1" />
-    <PackageReference Include="AtCoderAnalyzer" Version="1.2.5">
+    <PackageReference Include="TextCopy" Version="4.3.0" />
+    <PackageReference Include="AtCoderAnalyzer" Version="1.2.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
