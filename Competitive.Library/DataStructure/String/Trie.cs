@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     [DebuggerTypeProxy(typeof(Trie<,>.DebugView))]
     public class Trie<TKey, TValue>

@@ -1,8 +1,9 @@
-﻿using System;
+﻿using AtCoder;
+using System;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     using static MethodImplOptions;
 #pragma warning disable IDE0057

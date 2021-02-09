@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.CompilerServices;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public static class Grid
     {

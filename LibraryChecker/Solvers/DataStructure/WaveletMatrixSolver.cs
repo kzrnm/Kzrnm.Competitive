@@ -1,6 +1,6 @@
 ﻿using Kzrnm.Competitive.IO;
 
-namespace AtCoder.Solvers.DataStructure
+namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class WaveletMatrixSolver : ISolver
     {

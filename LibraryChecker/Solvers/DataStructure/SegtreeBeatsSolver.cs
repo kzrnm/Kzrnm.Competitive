@@ -2,7 +2,7 @@
 using System.Linq;
 using static System.Math;
 
-namespace AtCoder.Solvers.DataStructure
+namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class SegtreeBeatsSolver : ISolver
     {

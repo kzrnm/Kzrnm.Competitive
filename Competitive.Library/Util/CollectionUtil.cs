@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public static class CollectionUtil
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public static class ExComparer<T>
     {

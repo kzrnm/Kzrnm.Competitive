@@ -1,4 +1,5 @@
 ﻿#define ATCODER_CONTRACT
+using AtCoder;
 using AtCoder.Internal;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,7 +8,7 @@ using System.Runtime.CompilerServices;
 // Original:
 // https://github.com/ei1333/library
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     [DebuggerTypeProxy(typeof(PersistentSegtree<,>.DebugView))]
     public class PersistentSegtree<TValue, TOp> where TOp : struct, ISegtreeOperator<TValue>

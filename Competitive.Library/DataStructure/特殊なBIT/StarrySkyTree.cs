@@ -1,8 +1,9 @@
-﻿using System;
+﻿using AtCoder;
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace AtCoder.DataStructure
+namespace Kzrnm.Competitive.DataStructure
 {
     [System.Diagnostics.DebuggerTypeProxy(typeof(StarrySkyTree<,>.DebugView))]
     public class StarrySkyTree<T, TOp>

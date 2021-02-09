@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Xunit;
 
-namespace AtCoder.Graph
+namespace Kzrnm.Competitive.Graph
 {
     public class 最短経路DijkstraTests
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public class RollingHash
     {

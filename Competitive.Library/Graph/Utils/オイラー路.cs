@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public static class オイラー路
     {
@@ -32,7 +32,7 @@ namespace AtCoder
             where TNode : IGraphNode<TEdge>
             where TEdge : struct, IEdge, IReversable<TEdge>
         {
-            Internal.Contract.Assert(!graph[0].IsDirected);
+            Contract.Assert(!graph[0].IsDirected);
             var start = 0;
             var oddCount = 0;
 
@@ -61,7 +61,7 @@ namespace AtCoder
             where TNode : IGraphNode<TEdge>
             where TEdge : struct, IEdge, IReversable<TEdge>
         {
-            Internal.Contract.Assert(graph[0].IsDirected);
+            Contract.Assert(graph[0].IsDirected);
             var start = -1;
             var goal = -1;
 

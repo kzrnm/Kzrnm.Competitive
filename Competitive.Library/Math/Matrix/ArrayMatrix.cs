@@ -1,10 +1,11 @@
-﻿using AtCoder.Internal;
+﻿using AtCoder;
+using AtCoder.Internal;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     using static MethodImplOptions;
     public readonly struct ArrayMatrix<T, TOp>

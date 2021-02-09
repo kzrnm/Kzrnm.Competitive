@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public static class 最小全域木BFS
     {

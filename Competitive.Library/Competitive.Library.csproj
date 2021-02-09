@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>AtCoder</RootNamespace>
+    <RootNamespace>Kzrnm.Competitive</RootNamespace>
     <OutputType>Library</OutputType>
     <LangVersion>8</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

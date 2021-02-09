@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Xunit;
 
-namespace AtCoder.Util
+namespace Kzrnm.Competitive.Util
 {
     public class CollectionUtilTests
     {

@@ -1,6 +1,7 @@
-﻿using System;
+﻿using AtCoder;
+using System;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     /// <summary>
     /// 多項式

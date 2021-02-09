@@ -1,9 +1,10 @@
-﻿using System;
+﻿using AtCoder;
 using AtCoder.Internal;
 using FluentAssertions;
+using System;
 using Xunit;
 
-namespace AtCoder.DataStructure
+namespace Kzrnm.Competitive.DataStructure
 {
     public class 永続SegtreeTests
     {

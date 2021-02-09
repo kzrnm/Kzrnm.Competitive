@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Xunit;
 
-namespace AtCoder.GlobalNS
+namespace Kzrnm.Competitive.GlobalNS
 {
     public class BitOperationsExTests
     {

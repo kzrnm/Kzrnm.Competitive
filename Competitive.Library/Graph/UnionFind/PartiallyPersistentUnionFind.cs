@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using AtCoder.Internal;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     /// <summary>
     /// 部分永続UnionFind。t 回目の <see cref="Merge"/> を行った時点での情報を取得できる。

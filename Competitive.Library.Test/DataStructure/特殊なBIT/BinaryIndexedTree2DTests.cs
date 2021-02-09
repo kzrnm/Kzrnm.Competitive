@@ -1,7 +1,7 @@
 using FluentAssertions;
 using Xunit;
 
-namespace AtCoder.DataStructure
+namespace Kzrnm.Competitive.DataStructure
 {
     public class BinaryIndexedTree2DTests
     {

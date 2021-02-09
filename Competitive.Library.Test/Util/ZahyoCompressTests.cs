@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Xunit;
 
-namespace AtCoder.Util
+namespace Kzrnm.Competitive.Util
 {
     public class ZahyoCompressTests
     {

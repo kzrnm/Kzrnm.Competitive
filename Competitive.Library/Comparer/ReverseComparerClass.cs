@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public class ReverseComparerClass<T> : IComparer<T> where T : IComparable<T>
     {

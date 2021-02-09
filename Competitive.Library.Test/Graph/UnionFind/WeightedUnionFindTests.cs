@@ -3,7 +3,7 @@ using System;
 using Xunit;
 
 
-namespace AtCoder.Graph
+namespace Kzrnm.Competitive.Graph
 {
     public class WeightedUnionFindTests
     {

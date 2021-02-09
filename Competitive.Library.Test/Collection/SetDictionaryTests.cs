@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace AtCoder.Collection
+namespace Kzrnm.Competitive.Collection
 {
     public class SetDictionaryTests
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     using static MethodImplOptions;
     public static class UpdateExtension

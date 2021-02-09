@@ -1,7 +1,8 @@
-﻿using AtCoder.Internal;
+﻿using AtCoder;
+using AtCoder.Internal;
 using System.Collections.Generic;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public class IntWeightedUnionFind : WeightedUnionFind<int, IntOperator> { public IntWeightedUnionFind(int n) : base(n) { } }
     public class LongWeightedUnionFind : WeightedUnionFind<long, LongOperator> { public LongWeightedUnionFind(int n) : base(n) { } }

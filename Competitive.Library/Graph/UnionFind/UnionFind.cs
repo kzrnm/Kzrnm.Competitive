@@ -1,7 +1,7 @@
 ﻿using AtCoder.Internal;
 using System.Collections.Generic;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public class UnionFind
     {

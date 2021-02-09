@@ -1,6 +1,7 @@
-﻿using Kzrnm.Competitive.IO;
+﻿using AtCoder;
+using Kzrnm.Competitive.IO;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public class WIntGraphBuilder : WGraphBuilder<int, IntOperator>
     {

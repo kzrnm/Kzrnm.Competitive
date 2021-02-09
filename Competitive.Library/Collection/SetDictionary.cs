@@ -6,7 +6,7 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public class SetDictionary<TKey, TValue> : SetDictionary<TKey, TValue, DefaultComparerStruct<TKey>>
         where TKey : IComparable<TKey>

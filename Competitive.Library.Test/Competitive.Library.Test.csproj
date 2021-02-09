@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
-    <RootNamespace>AtCoder</RootNamespace>
+    <RootNamespace>Kzrnm.Competitive</RootNamespace>
   </PropertyGroup>
   
   <PropertyGroup>

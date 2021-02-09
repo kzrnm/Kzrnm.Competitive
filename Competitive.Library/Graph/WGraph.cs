@@ -1,7 +1,8 @@
-﻿using AtCoder.Internal;
+﻿using AtCoder;
+using AtCoder.Internal;
 using System.Diagnostics;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public interface IWGraph<T, TOp, TNode, TEdge> : IGraph<TNode, TEdge>
         where TOp : struct, IAdditionOperator<T>

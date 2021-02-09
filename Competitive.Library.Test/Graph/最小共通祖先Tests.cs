@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using Xunit;
 
-namespace AtCoder.Graph
+namespace Kzrnm.Competitive.Graph
 {
     public class 最小共通祖先Tests
     {

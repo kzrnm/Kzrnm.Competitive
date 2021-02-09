@@ -1,7 +1,8 @@
-﻿using System;
+﻿using AtCoder;
+using System;
 using System.Runtime.CompilerServices;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     using static MethodImplOptions;
     public readonly struct Matrix4x4<T, TOp>

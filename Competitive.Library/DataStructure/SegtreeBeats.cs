@@ -1,12 +1,13 @@
 ﻿// https://rsm9.hatenablog.com/entry/2021/02/01/220408
+using AtCoder;
+using AtCoder.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using AtCoder.Internal;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     /// <summary>
     /// モノイドを定義するインターフェイスです。

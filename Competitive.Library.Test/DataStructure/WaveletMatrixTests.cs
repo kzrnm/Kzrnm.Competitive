@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using Xunit;
 
-namespace AtCoder.DataStructure
+namespace Kzrnm.Competitive.DataStructure
 {
     public class WaveletMatrixTests
     {

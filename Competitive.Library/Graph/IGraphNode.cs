@@ -1,7 +1,7 @@
 ﻿#pragma warning disable CA1819 // Properties should not return arrays
 using System;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public interface IReversable<T> where T : IEdge
     {

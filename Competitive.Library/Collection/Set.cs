@@ -6,7 +6,7 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public class Set<T> : Set<T, DefaultComparerStruct<T>>
         where T : IComparable<T>

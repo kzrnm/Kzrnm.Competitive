@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
 
     /// <summary>

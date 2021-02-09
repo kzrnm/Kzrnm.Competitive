@@ -2,7 +2,7 @@
 using System;
 using Xunit;
 
-namespace AtCoder.DataStructure
+namespace Kzrnm.Competitive.DataStructure
 {
     public class Sums2DTests
     {

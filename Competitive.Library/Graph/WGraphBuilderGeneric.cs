@@ -1,10 +1,11 @@
 ﻿#pragma warning disable CA1819 // Properties should not return arrays
+using AtCoder;
 using AtCoder.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public class WGraphBuilder<T, S, TOp>
         where TOp : struct, IAdditionOperator<T>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public class SuffixArray
     {

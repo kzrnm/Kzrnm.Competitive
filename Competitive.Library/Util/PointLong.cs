@@ -1,7 +1,7 @@
 ﻿using AtCoder.Internal;
 using System;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public readonly struct PointLong : IEquatable<PointLong>, IComparable<PointLong>
     {

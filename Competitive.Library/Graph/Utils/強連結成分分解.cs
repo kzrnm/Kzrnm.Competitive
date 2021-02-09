@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AtCoder.Internal;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public static class 強連結成分分解
     {

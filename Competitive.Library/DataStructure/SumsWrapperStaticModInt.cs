@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using AtCoder;
+using System.Collections.Generic;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     /// <summary>
     /// <see cref="StaticModInt{T}"/> の累積和を求めます。

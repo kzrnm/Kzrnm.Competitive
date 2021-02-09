@@ -1,4 +1,5 @@
-﻿namespace AtCoder
+﻿using AtCoder;
+namespace Kzrnm.Competitive
 {
     public class StaticModIntFactor<T> where T : struct, IStaticMod
     {

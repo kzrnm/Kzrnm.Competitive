@@ -1,7 +1,8 @@
-﻿using FluentAssertions;
+﻿using AtCoder;
+using FluentAssertions;
 using Xunit;
 
-namespace AtCoder.MathNS.Matrix
+namespace Kzrnm.Competitive.MathNS.Matrix
 {
     public class ArrayMatrixTests
     {

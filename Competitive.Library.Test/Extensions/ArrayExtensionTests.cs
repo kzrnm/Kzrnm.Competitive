@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Xunit;
 
-namespace AtCoder.Extension
+namespace Kzrnm.Competitive.Extension
 {
     public class ArrayExtensionTests
     {

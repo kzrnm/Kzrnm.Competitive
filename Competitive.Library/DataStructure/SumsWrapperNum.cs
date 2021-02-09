@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using AtCoder;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
 
     /// <summary>

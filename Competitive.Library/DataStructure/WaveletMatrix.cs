@@ -1,11 +1,12 @@
 ﻿// Original: https://ei1333.github.io/library/structure/wavelet/wavelet-matrix.cpp.html
+using AtCoder;
 using AtCoder.Internal;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     /// <summary>
     /// 2 次元平面上にある点が事前に与えられているとき、オンラインでいろいろなクエリを処理するデータ構造

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public static class 閉路検出DFS
     {

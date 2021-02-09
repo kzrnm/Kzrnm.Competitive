@@ -1,7 +1,7 @@
 ﻿using AtCoder.Internal;
 using System.Diagnostics;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public interface IGraph<TNode, TEdge>
         where TNode : IGraphNode<TEdge>

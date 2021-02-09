@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace AtCoder.Extension
+namespace Kzrnm.Competitive.Extension
 {
     public class CollectionExtensionTests
     {

@@ -1,6 +1,6 @@
 ﻿using AtCoder.Internal;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public class EdgeContainer<TEdge> where TEdge : IEdge
     {

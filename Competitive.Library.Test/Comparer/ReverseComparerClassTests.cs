@@ -2,7 +2,7 @@
 using System;
 using Xunit;
 
-namespace AtCoder.Comparer
+namespace Kzrnm.Competitive.Comparer
 {
     public class ReverseComparerClassTests
     {

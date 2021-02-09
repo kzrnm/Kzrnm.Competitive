@@ -1,9 +1,10 @@
-﻿using FluentAssertions;
+﻿using AtCoder;
+using FluentAssertions;
 using System;
 using System.Linq;
 using Xunit;
 
-namespace AtCoder.DataStructure
+namespace Kzrnm.Competitive.DataStructure
 {
     public class SumsTests
     {

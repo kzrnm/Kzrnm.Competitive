@@ -1,9 +1,8 @@
-﻿using FluentAssertions;
-using System;
-using System.Linq;
+﻿using AtCoder;
+using FluentAssertions;
 using Xunit;
 
-namespace AtCoder.MathNS.Matrix
+namespace Kzrnm.Competitive.MathNS.Matrix
 {
     public class Matrix2x2Tests
     {

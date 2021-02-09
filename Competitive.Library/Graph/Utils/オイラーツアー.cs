@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public class オイラーツアー<TEdge> where TEdge : IEdge
     {

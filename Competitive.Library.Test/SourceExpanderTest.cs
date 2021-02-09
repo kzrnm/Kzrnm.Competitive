@@ -1,7 +1,6 @@
-﻿using AtCoder;
-using FluentAssertions;
+﻿using FluentAssertions;
+using Kzrnm.Competitive;
 using SourceExpander;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -32,8 +31,8 @@ namespace Embedding
             embedded.SourceFiles.SelectMany(s => s.TypeNames)
                 .Should()
                 .Contain(
-                    "AtCoder.Global",
-                    "AtCoder.FenwickTreeExtension");
+                    "Kzrnm.Competitive.Global",
+                    "Kzrnm.Competitive.FenwickTreeExtension");
         }
     }
 }

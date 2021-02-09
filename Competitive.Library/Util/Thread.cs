@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AtCoder.Threading
+namespace Kzrnm.Competitive.Threading
 {
     public static class Thread
     {

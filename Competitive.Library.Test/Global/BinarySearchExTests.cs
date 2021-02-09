@@ -2,7 +2,7 @@
 using System;
 using Xunit;
 
-namespace AtCoder.GlobalNS
+namespace Kzrnm.Competitive.GlobalNS
 {
     public class BinarySearchExTests
     {

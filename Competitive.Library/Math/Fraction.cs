@@ -1,7 +1,8 @@
-﻿using System;
+﻿using AtCoder;
+using System;
 using System.Runtime.CompilerServices;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     using static MethodImplOptions;
     /// <summary>有理数を既約分数で表す</summary>

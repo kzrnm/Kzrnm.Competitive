@@ -1,8 +1,9 @@
-﻿using FluentAssertions;
+﻿using AtCoder;
+using FluentAssertions;
 using System;
 using Xunit;
 
-namespace AtCoder.MathNS
+namespace Kzrnm.Competitive.MathNS
 {
     public class StaticModIntFactorTests
     {

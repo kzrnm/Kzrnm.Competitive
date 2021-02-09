@@ -1,4 +1,4 @@
-﻿namespace AtCoder.DataStructure
+﻿namespace Kzrnm.Competitive.DataStructure
 {
     public class BinaryIndexedTree2D
     {

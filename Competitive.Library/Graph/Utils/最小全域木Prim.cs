@@ -1,8 +1,8 @@
-﻿using AtCoder.Internal;
-using System;
+﻿using AtCoder;
+using AtCoder.Internal;
 using System.Collections.Generic;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public static class 最小全域木Prim
     {

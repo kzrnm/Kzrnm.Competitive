@@ -1,6 +1,7 @@
-﻿using AtCoder.Internal;
+﻿using AtCoder;
+using AtCoder.Internal;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public static class 最短経路Dijkstra
     {
@@ -22,8 +23,10 @@ namespace AtCoder
 
             var used = new bool[graphArr.Length];
             int count = 0;
-            var remains = new PriorityQueueOp<T, int, TOp>();
-            remains.Add(default, from);
+            var remains = new PriorityQueueOp<T, int, TOp>
+            {
+                { default, from }
+            };
 
             while (remains.Count > 0)
             {

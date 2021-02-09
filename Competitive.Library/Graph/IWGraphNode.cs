@@ -1,4 +1,5 @@
-﻿namespace AtCoder
+﻿using AtCoder;
+namespace Kzrnm.Competitive
 {
     public interface IWEdge<T> : IEdge
     {

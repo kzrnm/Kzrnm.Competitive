@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Xunit;
 
-namespace AtCoder.DataStructure.String
+namespace Kzrnm.Competitive.DataStructure.String
 {
     public class BMTests
     {

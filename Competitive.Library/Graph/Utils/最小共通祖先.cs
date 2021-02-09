@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     /**
      * <summary>最小共通祖先</summary> 

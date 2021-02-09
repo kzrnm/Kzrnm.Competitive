@@ -4,7 +4,7 @@ using System.Collections.Generic;
 #endregion
 
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public static class KMP
     {

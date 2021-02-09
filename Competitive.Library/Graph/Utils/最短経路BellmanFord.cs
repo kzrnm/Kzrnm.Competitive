@@ -1,7 +1,7 @@
-﻿using AtCoder.Internal;
+﻿using AtCoder;
 using System;
 
-namespace AtCoder
+namespace Kzrnm.Competitive
 {
     public static class 最短経路BellmanFord
     {

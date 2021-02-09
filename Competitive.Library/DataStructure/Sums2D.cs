@@ -1,4 +1,5 @@
-﻿namespace AtCoder
+﻿using AtCoder;
+namespace Kzrnm.Competitive
 {
     /// <summary>
     /// 二次元累積和を求めます。
