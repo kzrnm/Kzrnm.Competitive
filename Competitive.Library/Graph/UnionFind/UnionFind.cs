@@ -1,4 +1,5 @@
 ﻿using AtCoder.Internal;
+using System;
 using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
@@ -19,7 +20,7 @@ namespace Kzrnm.Competitive
         {
             _n = n;
             _parentOrSize = new int[n];
-            for (int i = 0; i < _parentOrSize.Length; i++) _parentOrSize[i] = -1;
+            _parentOrSize.AsSpan().Fill(-1);
         }
 
         /// <summary>
