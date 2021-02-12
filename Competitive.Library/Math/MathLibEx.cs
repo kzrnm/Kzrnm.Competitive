@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
@@ -79,13 +78,15 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="n"/> の約数を返します。
         /// </summary>
-        public static IEnumerable<int> Divisor(int n)
+        public static int[] Divisor(int n)
         {
-            var list = new LinkedList<int>();
-            var left = list.AddFirst(1);
             if (n == 1)
-                return list;
-            var right = list.AddLast(n);
+                return new int[] { 1 };
+
+            var left = new AtCoder.Internal.SimpleList<int>();
+            var right = new AtCoder.Internal.SimpleList<int>();
+            left.Add(1);
+            right.Add(n);
 
             for (int i = 2, d = Math.DivRem(n, i, out int amari);
                 i <= d;
@@ -93,25 +94,30 @@ namespace Kzrnm.Competitive
             {
                 if (amari == 0)
                 {
-                    left = list.AddAfter(left, i);
+                    left.Add(i);
                     if (i != d)
-                        right = list.AddBefore(right, d);
+                        right.Add(d);
                 }
             }
-
-            return list;
+            right.Reverse();
+            var res = new int[left.Count + right.Count];
+            left.CopyTo(res, 0);
+            right.CopyTo(res, left.Count);
+            return res;
         }
 
         /// <summary>
         /// <paramref name="n"/> の約数を返します。
         /// </summary>
-        public static IEnumerable<long> Divisor(long n)
+        public static long[] Divisor(long n)
         {
-            var list = new LinkedList<long>();
-            var left = list.AddFirst(1);
             if (n == 1)
-                return list;
-            var right = list.AddLast(n);
+                return new long[] { 1 };
+
+            var left = new AtCoder.Internal.SimpleList<long>();
+            var right = new AtCoder.Internal.SimpleList<long>();
+            left.Add(1);
+            right.Add(n);
 
             for (long i = 2, d = Math.DivRem(n, i, out long amari);
                 i <= d;
@@ -119,13 +125,16 @@ namespace Kzrnm.Competitive
             {
                 if (amari == 0)
                 {
-                    left = list.AddAfter(left, i);
+                    left.Add(i);
                     if (i != d)
-                        right = list.AddBefore(right, d);
+                        right.Add(d);
                 }
             }
-
-            return list;
+            right.Reverse();
+            var res = new long[left.Count + right.Count];
+            left.CopyTo(res, 0);
+            right.CopyTo(res, left.Count);
+            return res;
         }
 
         /// <summary>
