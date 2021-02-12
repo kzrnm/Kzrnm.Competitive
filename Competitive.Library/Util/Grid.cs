@@ -1,5 +1,6 @@
 ﻿using Kzrnm.Competitive.IO;
 using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
@@ -30,6 +31,7 @@ namespace Kzrnm.Competitive
                 cw.WriteLineJoin(grid.data.AsSpan(i * grid.W, grid.W));
         }
     }
+    [DebuggerTypeProxy(typeof(Grid<>.DebugView))]
     public class Grid<T>
     {
         public int Size => data.Length;
@@ -62,6 +64,46 @@ namespace Kzrnm.Competitive
                 if ((uint)h < (uint)H && (uint)w < (uint)W)
                     return ref data[Index(h, w)];
                 return ref DefaultValueReference();
+            }
+        }
+
+        private class DebugLine
+        {
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            private T[] line;
+            public DebugLine(T[] line)
+            {
+                this.line = line;
+            }
+            public override string ToString()
+            {
+                if (typeof(T) == typeof(char))
+                    return new string((char[])(object)line);
+                return string.Join(", ", line);
+            }
+        }
+        private class DebugView
+        {
+            private readonly Grid<T> grid;
+            public DebugView(Grid<T> grid)
+            {
+                this.grid = grid;
+            }
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            public DebugLine[] Items
+            {
+                get
+                {
+                    var items = new DebugLine[grid.H];
+                    for (int h = 0; h < grid.H; h++)
+                    {
+                        var line = new T[grid.W];
+                        for (int w = 0; w < grid.W; w++)
+                            line[w] = grid[h, w];
+                        items[h] = new DebugLine(line);
+                    }
+                    return items;
+                }
             }
         }
     }
