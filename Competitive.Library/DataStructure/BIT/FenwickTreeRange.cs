@@ -1,7 +1,8 @@
-﻿using System.ComponentModel;
+﻿using AtCoder;
+using AtCoder.Internal;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using AtCoder.Internal;
 
 namespace Kzrnm.Competitive
 {
@@ -19,19 +20,20 @@ namespace Kzrnm.Competitive
     /// </list>
     /// <para>を O(log⁡N) で求めることが出来るデータ構造です。</para>
     /// </summary>
-    [DebuggerTypeProxy(typeof(FenwickTreeRange.DebugView))]
-    public class FenwickTreeRange
+    [DebuggerTypeProxy(typeof(FenwickTreeRange<,,>.DebugView))]
+    public class FenwickTreeRange<T, TOp, TCast>
+        where TOp : struct, IAdditionOperator<T>, IMultiplicationOperator<T>, IUnaryNumOperator<T>
+        where TCast : struct, ICastOperator<int, T>
     {
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public readonly long[] data1;
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public readonly long[] data2;
+        private static readonly TCast cast = default;
+        private static readonly TOp op = default;
+        private readonly T[] data1;
+        private readonly T[] data2;
 
         public int Length { get; }
 
         /// <summary>
-        /// 長さ <paramref name="n"/> の配列aを持つ <see cref="FenwickTreeRange"/> クラスの新しいインスタンスを作ります。
+        /// 長さ <paramref name="n"/> の配列aを持つ <see cref="FenwickTreeRange{T, TOp, TCast}"/> クラスの新しいインスタンスを作ります。
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
@@ -41,16 +43,16 @@ namespace Kzrnm.Competitive
         public FenwickTreeRange(int n)
         {
             Length = n;
-            data1 = new long[n + 1];
-            data2 = new long[n + 1];
+            data1 = new T[n + 1];
+            data2 = new T[n + 1];
         }
 
 
         [MethodImpl(AggressiveInlining)]
-        private static void Add(long[] data, int p, long w)
+        private static void Add(T[] data, int p, T w)
         {
             for (++p; p < data.Length; p += InternalBit.ExtractLowestSetBit(p))
-                data[p] += w;
+                data[p] = op.Add(data[p], w);
         }
 
         /// <summary>
@@ -61,19 +63,19 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(log n)</para>
         /// </remarks>
         [MethodImpl(AggressiveInlining)]
-        public void Add(int l, int r, long x)
+        public void Add(int l, int r, T x)
         {
-            Add(data1, l, -x * l);
-            Add(data1, r, x * r);
+            Add(data1, l, op.Multiply(op.Minus(x), cast.Cast(l)));
+            Add(data1, r, op.Multiply(x, cast.Cast(r)));
             Add(data2, l, x);
-            Add(data2, r, -x);
+            Add(data2, r, op.Minus(x));
         }
 
-        private static long Sum(long[] data, int r)
+        private static T Sum(T[] data, int r)
         {
-            long res = 0;
+            T res = default;
             for (; r > 0; r -= InternalBit.ExtractLowestSetBit(r))
-                res += data[r];
+                res = op.Add(res, data[r]);
             return res;
         }
         /// <summary>
@@ -85,38 +87,38 @@ namespace Kzrnm.Competitive
         /// </remarks>
         /// <returns>a[<paramref name="l"/>] + a[<paramref name="l"/> - 1] + ... + a[<paramref name="r"/> - 1]</returns>
         [MethodImpl(AggressiveInlining)]
-        public long Sum(int l, int r)
+        public T Sum(int l, int r)
         {
             Contract.Assert(0U <= (uint)l && (uint)l <= (uint)r && (uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= {nameof(r)} && {nameof(r)} <= Length");
-            return Sum(r) - Sum(l);
+            return op.Subtract(Sum(r), Sum(l));
         }
 
         [MethodImpl(AggressiveInlining)]
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public long Sum(int r) => Sum(data1, r) + Sum(data2, r) * r;
+        public T Sum(int r) => op.Add(Sum(data1, r), op.Multiply(Sum(data2, r), cast.Cast(r)));
 
 
         [MethodImpl(AggressiveInlining)]
-        public long Slice(int l, int len) => Sum(l, l + len);
+        public T Slice(int l, int len) => Sum(l, l + len);
 
         [DebuggerDisplay("Value = {" + nameof(value) + "}, Sum = {" + nameof(sum) + "}")]
-        internal struct DebugItem
+        internal readonly struct DebugItem
         {
-            public DebugItem(long value, long sum)
+            public DebugItem(T value, T sum)
             {
                 this.sum = sum;
                 this.value = value;
             }
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            public readonly long value;
+            public readonly T value;
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            public readonly long sum;
+            public readonly T sum;
         }
         internal class DebugView
         {
-            private readonly FenwickTreeRange fenwickTree;
-            public DebugView(FenwickTreeRange fenwickTree)
+            private readonly FenwickTreeRange<T, TOp, TCast> fenwickTree;
+            public DebugView(FenwickTreeRange<T, TOp, TCast> fenwickTree)
             {
                 this.fenwickTree = fenwickTree;
             }
@@ -126,11 +128,11 @@ namespace Kzrnm.Competitive
                 get
                 {
                     var items = new DebugItem[fenwickTree.Length];
-                    long prev = 0;
+                    T prev = default;
                     for (int i = 0; i < items.Length; i++)
                     {
                         var sum = fenwickTree.Sum(i + 1);
-                        items[i] = new DebugItem(sum - prev, sum);
+                        items[i] = new DebugItem(op.Subtract(sum, prev), sum);
                         prev = sum;
                     }
                     return items;

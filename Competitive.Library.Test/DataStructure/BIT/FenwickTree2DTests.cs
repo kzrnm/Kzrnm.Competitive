@@ -1,14 +1,14 @@
-using FluentAssertions;
+﻿using FluentAssertions;
 using Xunit;
 
 namespace Kzrnm.Competitive.DataStructure
 {
-    public class BinaryIndexedTree2DTests
+    public class FenwickTree2DTests
     {
         [Fact]
         public void AddAndQuery()
         {
-            var bit = new BinaryIndexedTree2D(2, 3);
+            var bit = new IntFenwickTree2D(2, 3);
             bit[0..2][0..3].Should().Be(0);
             bit.Add(0, 0, 1);
             bit.Add(0, 1, 2);

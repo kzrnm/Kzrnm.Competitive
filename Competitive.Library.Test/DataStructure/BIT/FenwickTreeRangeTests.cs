@@ -8,7 +8,7 @@ namespace Kzrnm.Competitive.DataStructure
         [Fact]
         public void AddAndSum()
         {
-            var bit = new FenwickTreeRange(10);
+            var bit = new IntFenwickTreeRange(10);
             bit.Sum(10).Should().Be(0);
             bit.Sum(0, 10).Should().Be(0);
             bit[0..10].Should().Be(0);
