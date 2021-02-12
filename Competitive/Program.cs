@@ -24,7 +24,7 @@ partial class Program
     {
         N = cr;
 
-        return N;
+        return null;
     }
     public static long N;
 }
