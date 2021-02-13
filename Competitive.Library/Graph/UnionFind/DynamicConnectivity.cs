@@ -1,5 +1,5 @@
-﻿// https://qiita.com/hotman78/items/78cd3aa50b05a57738d4
-using AtCoder;
+﻿#define DynamicConnectivity_TUPLEDIC
+// https://qiita.com/hotman78/items/78cd3aa50b05a57738d4
 using AtCoder.Internal;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,13 +80,24 @@ namespace Kzrnm.Competitive
         }
         class EulerianTourTree
         {
+#if DynamicConnectivity_TUPLEDIC
             private Dictionary<(int, int), Node> ptr;
+#else
+            private Dictionary<int, Node>[] ptr;
+#endif
             [MethodImpl(AggressiveInlining)]
             private Node GetNode(int l, int r)
             {
+#if DynamicConnectivity_TUPLEDIC
                 if (ptr.TryGetValue((l, r), out var node))
                     return node;
                 return ptr[(l, r)] = new Node(l, r);
+#else
+                var p = ptr[l];
+                if (p.TryGetValue(r, out var node))
+                    return node;
+                return p[r] = new Node(l, r);
+#endif
             }
             private Node Root(Node t)
             {
@@ -237,9 +248,15 @@ namespace Kzrnm.Competitive
 
             public EulerianTourTree(int size)
             {
+#if DynamicConnectivity_TUPLEDIC
                 ptr = new Dictionary<(int, int), Node>();
                 for (int i = 0; i < size; i++)
                     ptr[(i, i)] = new Node(i, i);
+#else
+                ptr = new Dictionary<int, Node>[size];
+                for (int i = 0; i < size; i++)
+                    ptr[i] = new Dictionary<int, Node> { [i] = new Node(i, i) };
+#endif
             }
 
             [MethodImpl(AggressiveInlining)]
@@ -332,11 +349,19 @@ namespace Kzrnm.Competitive
             [MethodImpl(AggressiveInlining)]
             public bool Cut(int l, int r)
             {
+#if DynamicConnectivity_TUPLEDIC
                 if (!ptr.ContainsKey((l, r))) return false;
                 var (s, _, u) = Split(GetNode(l, r), GetNode(r, l));
                 Merge(s, u);
                 ptr.Remove((l, r));
                 ptr.Remove((r, l));
+#else
+                if (!ptr[l].ContainsKey(r)) return false;
+                var (s, _, u) = Split(GetNode(l, r), GetNode(r, l));
+                Merge(s, u);
+                ptr[l].Remove(r);
+                ptr[r].Remove(l);
+#endif
                 return true;
             }
         }
