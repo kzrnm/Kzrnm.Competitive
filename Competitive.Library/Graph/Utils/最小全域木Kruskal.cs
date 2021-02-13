@@ -7,7 +7,7 @@ namespace Kzrnm.Competitive
     public static class 最小全域木Kruskal
     {
         /// <summary>
-        /// <para>最小全域木をKruskal法で求める。</para>
+        /// <para>最小全域森をKruskal法で求める。グラフが連結なら最小全域木となる。</para>
         /// <para>計算量: O(E log(E))</para>
         /// </summary>
         public static (int from, TEdge edge)[] Kruskal<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph)
@@ -30,7 +30,7 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// <para>最小全域木をKruskal法で求める。</para>
+        /// <para>最小全域森をKruskal法で求める。グラフが連結なら最小全域木となる。</para>
         /// <para>計算量: O(E log(E))</para>
         /// </summary>
         public static (int from, TEdge edge)[] Kruskal<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
