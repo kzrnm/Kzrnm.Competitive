@@ -1,9 +1,28 @@
 ﻿using System;
+using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
 {
+    using static MethodImplOptions;
     public static class MathLibEx
     {
+        /// <summary>
+        /// 最大公約数
+        /// </summary>
+        [MethodImpl(AggressiveInlining)]
+        public static int Gcd(int a, int b) => b > a ? Gcd(b, a) : (b == 0 ? a : Gcd(b, a % b));
+        /// <summary>
+        /// 最大公約数
+        /// </summary>
+        [MethodImpl(AggressiveInlining)]
+        public static long Gcd(long a, long b) => b > a ? Gcd(b, a) : (b == 0 ? a : Gcd(b, a % b));
+        /// <summary>
+        /// 最大公約数
+        /// </summary>
+        [MethodImpl(AggressiveInlining)]
+        public static BigInteger Gcd(BigInteger a, BigInteger b) => BigInteger.GreatestCommonDivisor(a, b);
+
         /// <summary>
         /// 最大公約数
         /// </summary>
@@ -13,24 +32,6 @@ namespace Kzrnm.Competitive
             for (var i = 1; i < nums.Length; i++)
                 gcd = Gcd(nums[i], gcd);
             return gcd;
-        }
-        /// <summary>
-        /// 最大公約数
-        /// </summary>
-        public static int Gcd(int a, int b) => b > a ? Gcd(b, a) : (b == 0 ? a : Gcd(b, a % b));
-        /// <summary>
-        /// 最小公倍数
-        /// </summary>
-        public static int Lcm(int a, int b) => a / Gcd(a, b) * b;
-        /// <summary>
-        /// 最小公倍数
-        /// </summary>
-        public static int Lcm(params int[] nums)
-        {
-            var lcm = nums[0];
-            for (var i = 1; i < nums.Length; i++)
-                lcm = Lcm(lcm, nums[i]);
-            return lcm;
         }
         /// <summary>
         /// 最大公約数
@@ -45,15 +46,54 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 最大公約数
         /// </summary>
-        public static long Gcd(long a, long b) => b > a ? Gcd(b, a) : (b == 0 ? a : Gcd(b, a % b));
+        public static BigInteger Gcd(params BigInteger[] nums)
+        {
+            var gcd = nums[0];
+            for (var i = 1; i < nums.Length; i++)
+                gcd = Gcd(nums[i], gcd);
+            return gcd;
+        }
+
         /// <summary>
         /// 最小公倍数
         /// </summary>
+        [MethodImpl(AggressiveInlining)]
+        public static int Lcm(int a, int b) => a / Gcd(a, b) * b;
+        /// <summary>
+        /// 最小公倍数
+        /// </summary>
+        [MethodImpl(AggressiveInlining)]
         public static long Lcm(long a, long b) => checked(a / Gcd(a, b) * b);
         /// <summary>
         /// 最小公倍数
         /// </summary>
+        [MethodImpl(AggressiveInlining)]
+        public static BigInteger Lcm(BigInteger a, BigInteger b) => a / Gcd(a, b) * b;
+
+        /// <summary>
+        /// 最小公倍数
+        /// </summary>
+        public static int Lcm(params int[] nums)
+        {
+            var lcm = nums[0];
+            for (var i = 1; i < nums.Length; i++)
+                lcm = Lcm(lcm, nums[i]);
+            return lcm;
+        }
+        /// <summary>
+        /// 最小公倍数
+        /// </summary>
         public static long Lcm(params long[] nums)
+        {
+            var lcm = nums[0];
+            for (var i = 1; i < nums.Length; i++)
+                lcm = Lcm(lcm, nums[i]);
+            return lcm;
+        }
+        /// <summary>
+        /// 最小公倍数
+        /// </summary>
+        public static BigInteger Lcm(params BigInteger[] nums)
         {
             var lcm = nums[0];
             for (var i = 1; i < nums.Length; i++)

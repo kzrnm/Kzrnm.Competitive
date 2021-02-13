@@ -49,8 +49,15 @@ namespace Kzrnm.Competitive
         }
         [MethodImpl(AggressiveInlining)]
         public int Index(int h, int w) => h * W + w;
+        [MethodImpl(AggressiveInlining)]
+        public (int h, int w) FromIndex(int ix)
+        {
+            var h = ix / W;
+            return (h, ix - h * W);
+        }
 
         private T defaultReference;
+        [MethodImpl(AggressiveInlining)]
         private ref T DefaultValueReference()
         {
             defaultReference = defaultValue;
@@ -77,8 +84,8 @@ namespace Kzrnm.Competitive
             }
             public override string ToString()
             {
-                if (typeof(T) == typeof(char))
-                    return new string((char[])(object)line);
+                if (line is char[] chrs)
+                    return new string(chrs);
                 return string.Join(", ", line);
             }
         }
