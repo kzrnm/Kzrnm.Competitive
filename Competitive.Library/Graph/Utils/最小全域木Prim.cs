@@ -12,7 +12,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public static (int from, TEdge edge)[] Prim<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph)
             where TOp : struct, IAdditionOperator<T>, IComparer<T>
-            where TNode : IWGraphNode<T, TEdge, TOp>
+            where TNode : IGraphNode<TEdge>
             where TEdge : IWEdge<T>
         {
             var sumi = new bool[graph.Length];

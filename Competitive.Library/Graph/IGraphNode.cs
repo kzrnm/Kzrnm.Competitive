@@ -11,6 +11,10 @@ namespace Kzrnm.Competitive
     {
         int To { get; }
     }
+    public interface IWEdge<T> : IEdge
+    {
+        T Value { get; }
+    }
     public interface IGraphNode<out TEdge> where TEdge : IEdge
     {
         int Index { get; }

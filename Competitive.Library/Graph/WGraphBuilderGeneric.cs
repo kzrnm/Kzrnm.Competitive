@@ -18,9 +18,9 @@ namespace Kzrnm.Competitive
         }
         public void Add(int from, int to, T value, S data) => edgeContainer.Add(from, new WEdge<T, S>(to, value, data));
 
-        public WGraph<T, TOp, WGraphNode<T, S, TOp>, WEdge<T, S>> ToGraph()
+        public WGraph<T, TOp, WGraphNode<T, S>, WEdge<T, S>> ToGraph()
         {
-            var res = new WGraphNode<T, S, TOp>[edgeContainer.Length];
+            var res = new WGraphNode<T, S>[edgeContainer.Length];
             var csr = edgeContainer.ToCSR();
             var counter = new int[res.Length];
             var rootCounter = edgeContainer.IsDirected ? new int[res.Length] : counter;
@@ -30,7 +30,7 @@ namespace Kzrnm.Competitive
             {
                 if (children[i] == null) children[i] = new WEdge<T, S>[edgeContainer.sizes[i]];
                 if (roots[i] == null) roots[i] = new WEdge<T, S>[edgeContainer.rootSizes[i]];
-                res[i] = new WGraphNode<T, S, TOp>(i, roots[i], children[i]);
+                res[i] = new WGraphNode<T, S>(i, roots[i], children[i]);
                 foreach (ref var e in csr.EList.AsSpan(csr.Start[i], csr.Start[i + 1] - csr.Start[i]))
                 {
                     if (roots[e.To] == null)
@@ -39,13 +39,13 @@ namespace Kzrnm.Competitive
                     roots[e.To][rootCounter[e.To]++] = e.Reversed(i);
                 }
             }
-            return new WGraph<T, TOp, WGraphNode<T, S, TOp>, WEdge<T, S>>(res, csr);
+            return new WGraph<T, TOp, WGraphNode<T, S>, WEdge<T, S>>(res, csr);
         }
 
-        public WTreeGraph<T, TOp, WTreeNode<T, S, TOp>, WEdge<T, S>> ToTree(int root = 0)
+        public WTreeGraph<T, TOp, WTreeNode<T, S>, WEdge<T, S>> ToTree(int root = 0)
         {
             Contract.Assert(!edgeContainer.IsDirected, "木には無向グラフをしたほうが良い");
-            var res = new WTreeNode<T, S, TOp>[edgeContainer.Length];
+            var res = new WTreeNode<T, S>[edgeContainer.Length];
             var children = new List<WEdge<T, S>>[res.Length];
             foreach (var (from, e) in edgeContainer.edges)
             {
@@ -57,12 +57,12 @@ namespace Kzrnm.Competitive
 
             if (edgeContainer.Length == 1)
             {
-                return new WTreeGraph<T, TOp, WTreeNode<T, S, TOp>, WEdge<T, S>>(
-                    new WTreeNode<T, S, TOp>[1] {
-                        new WTreeNode<T, S, TOp>(root, WEdge<T, S>.None, 0, default, Array.Empty<WEdge<T, S>>()) }, root);
+                return new WTreeGraph<T, TOp, WTreeNode<T, S>, WEdge<T, S>>(
+                    new WTreeNode<T, S>[1] {
+                        new WTreeNode<T, S>(root, WEdge<T, S>.None, 0, default, Array.Empty<WEdge<T, S>>()) }, root);
             }
 
-            res[root] = new WTreeNode<T, S, TOp>(root, WEdge<T, S>.None, 0, default, children[root].ToArray());
+            res[root] = new WTreeNode<T, S>(root, WEdge<T, S>.None, 0, default, children[root].ToArray());
 
             var queue = new Queue<(int parent, int child, T value, S data)>();
             foreach (var e in res[root].Children)
@@ -86,14 +86,14 @@ namespace Kzrnm.Competitive
                 }
 
                 var childrenArr = childrenBuilder.ToArray();
-                res[cur] = new WTreeNode<T, S, TOp>(cur, new WEdge<T, S>(parent, value, data), res[parent].Depth + 1, op.Add(res[parent].DepthLength, value), childrenArr);
+                res[cur] = new WTreeNode<T, S>(cur, new WEdge<T, S>(parent, value, data), res[parent].Depth + 1, op.Add(res[parent].DepthLength, value), childrenArr);
                 foreach (var e in childrenArr)
                 {
                     queue.Enqueue((cur, e.To, e.Value, e.Data));
                 }
             }
 
-            return new WTreeGraph<T, TOp, WTreeNode<T, S, TOp>, WEdge<T, S>>(res, root);
+            return new WTreeGraph<T, TOp, WTreeNode<T, S>, WEdge<T, S>>(res, root);
         }
     }
 
@@ -121,8 +121,7 @@ namespace Kzrnm.Competitive
         public WEdge<T, S> Reversed(int from) => new WEdge<T, S>(from, Value, Data);
     }
 
-    public class WGraphNode<T, S, TOp> : IWGraphNode<T, WEdge<T, S>, TOp>, IEquatable<WGraphNode<T, S, TOp>>
-        where TOp : struct, IAdditionOperator<T>
+    public class WGraphNode<T, S> : IGraphNode<WEdge<T, S>>, IEquatable<WGraphNode<T, S>>
     {
         public WGraphNode(int i, WEdge<T, S>[] roots, WEdge<T, S>[] children)
         {
@@ -136,12 +135,11 @@ namespace Kzrnm.Competitive
         public bool IsDirected => Roots != Children;
 
         public override string ToString() => $"children: {string.Join(",", Children)}";
-        public override bool Equals(object obj) => obj is WNode<T, TOp> d && this.Equals(d);
-        public bool Equals(WGraphNode<T, S, TOp> other) => this.Index == other.Index;
+        public override bool Equals(object obj) => obj is WGraphNode<T> d && this.Equals(d);
+        public bool Equals(WGraphNode<T, S> other) => this.Index == other.Index;
         public override int GetHashCode() => this.Index;
     }
-    public class WTreeNode<T, S, TOp> : ITreeNode<WEdge<T, S>>, IEquatable<WTreeNode<T, S, TOp>>
-        where TOp : struct, IAdditionOperator<T>
+    public class WTreeNode<T, S> : ITreeNode<WEdge<T, S>>, IEquatable<WTreeNode<T, S>>
     {
         public WTreeNode(int i, WEdge<T, S> root, int depth, T depthLength, WEdge<T, S>[] children)
         {
@@ -158,8 +156,8 @@ namespace Kzrnm.Competitive
         public T DepthLength { get; }
 
         public override string ToString() => $"children: {string.Join(",", Children)}";
-        public override bool Equals(object obj) => obj is WTreeNode<T, TOp> node && this.Equals(node);
-        public bool Equals(WTreeNode<T, S, TOp> other) => other != null && this.Index == other.Index;
+        public override bool Equals(object obj) => obj is WTreeNode<T, S> node && this.Equals(node);
+        public bool Equals(WTreeNode<T, S> other) => other != null && this.Index == other.Index;
         public override int GetHashCode() => this.Index;
     }
 }

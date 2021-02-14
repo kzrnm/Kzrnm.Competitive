@@ -6,7 +6,7 @@ namespace Kzrnm.Competitive
 {
     public interface IWGraph<T, TOp, TNode, TEdge> : IGraph<TNode, TEdge>
         where TOp : struct, IAdditionOperator<T>
-        where TNode : IWGraphNode<T, TEdge, TOp>
+        where TNode : IGraphNode<TEdge>
         where TEdge : IWEdge<T>
     { }
     public interface IWTreeGraph<T, TOp, TNode, TEdge> : ITreeGraph<TNode, TEdge>
@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive
     { }
     public class WGraph<T, TOp, TNode, TEdge> : IWGraph<T, TOp, TNode, TEdge>
         where TOp : struct, IAdditionOperator<T>
-        where TNode : IWGraphNode<T, TEdge, TOp>
+        where TNode : IGraphNode<TEdge>
         where TEdge : IWEdge<T>
     {
         public CSR<TEdge> Edges { get; }
