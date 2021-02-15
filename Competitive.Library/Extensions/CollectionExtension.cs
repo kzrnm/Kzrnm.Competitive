@@ -1,11 +1,12 @@
-﻿using AtCoder;
+﻿using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace System
 {
+#pragma warning disable IDE1006
     using static MethodImplOptions;
-    public static class CollectionExtension
+    public static class __CollectionExtension
     {
 #pragma warning disable CS0649
         private class ArrayVal<T> { public T[] arr; }
