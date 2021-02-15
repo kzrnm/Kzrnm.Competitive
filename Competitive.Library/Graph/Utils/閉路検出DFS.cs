@@ -1,4 +1,5 @@
 ﻿
+using AtCoder.Internal;
 using System;
 using System.Collections.Generic;
 
@@ -15,9 +16,9 @@ namespace Kzrnm.Competitive
             where TEdge : IEdge
         {
             var statuses = new Status[graph.Length];
-            (int from, List<TEdge> edges) DFS(Stack<(int v, int childIdx)> stack)
+            (int from, SimpleList<TEdge> edges) DFS(Stack<(int v, int childIdx)> stack)
             {
-                List<TEdge> list = null;
+                SimpleList<TEdge> list = null;
                 while (stack.Count > 0)
                 {
                     var (v, ci) = stack.Pop();
@@ -43,7 +44,7 @@ namespace Kzrnm.Competitive
                                 stack.Push((child, 0));
                                 break;
                             case Status.Active:
-                                list = new List<TEdge> { e };
+                                list = new SimpleList<TEdge> { e };
                                 break;
                         }
                     }

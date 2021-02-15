@@ -1,6 +1,6 @@
 ﻿using AtCoder;
+using AtCoder.Internal;
 using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive.DataStructure
@@ -79,7 +79,7 @@ namespace Kzrnm.Competitive.DataStructure
             {
                 get
                 {
-                    var keys = new List<KeyValuePairs>(tree.lazy.Length);
+                    var keys = new SimpleList<KeyValuePairs>(tree.lazy.Length);
                     for (var len = tree.rootLength; len > 0; len >>= 1)
                     {
                         var unit = tree.rootLength / len;

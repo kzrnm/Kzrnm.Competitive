@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AtCoder.Internal;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -767,7 +768,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                     throw new InvalidOperationException(nameof(startNode) + "is null");
                 current = null;
                 var node = startNode;
-                var list = new List<Node>(Log2(tree.Count + 1));
+                var list = new SimpleList<Node>(Log2(tree.Count + 1));
                 var comparer = tree.comparer;
 
                 if (reverse)

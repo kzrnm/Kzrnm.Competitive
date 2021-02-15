@@ -237,8 +237,8 @@ namespace Kzrnm.Competitive
                 }
             }
 
-            public List<(int f, int t)> Debug(Node n) => Debug(n, new List<(int f, int t)>());
-            private List<(int f, int t)> Debug(Node n, List<(int f, int t)> list)
+            public SimpleList<(int f, int t)> Debug(Node n) => Debug(n, new SimpleList<(int f, int t)>());
+            private SimpleList<(int f, int t)> Debug(Node n, SimpleList<(int f, int t)> list)
             {
                 Debug(n.ch0, list);
                 list.Add((n.l, n.r));

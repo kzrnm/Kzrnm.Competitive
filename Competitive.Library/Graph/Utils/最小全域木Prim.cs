@@ -17,7 +17,7 @@ namespace Kzrnm.Competitive
         {
             var sumi = new bool[graph.Length];
             var pq = new PriorityQueueOp<TEdge, int, Comparer<T, TOp, TEdge>>();
-            var res = new List<(int from, TEdge edge)>(graph.Length - 1);
+            var res = new SimpleList<(int from, TEdge edge)>(graph.Length - 1);
             sumi[0] = true;
             foreach (var e in graph[0].Children)
                 pq.Add(e, 0);

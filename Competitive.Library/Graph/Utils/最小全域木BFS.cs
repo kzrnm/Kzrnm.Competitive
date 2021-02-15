@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AtCoder.Internal;
+using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
@@ -12,7 +13,7 @@ namespace Kzrnm.Competitive
             where TEdge : IEdge
         {
             var sumi = new bool[graph.Length];
-            var res = new List<(int from, TEdge edge)>(graph.Length);
+            var res = new SimpleList<(int from, TEdge edge)>(graph.Length);
             var queue = new Queue<int>(graph.Length);
             queue.Enqueue(0);
             sumi[0] = true;

@@ -1,4 +1,5 @@
 ﻿using AtCoder;
+using AtCoder.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -192,12 +193,12 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         }
         protected (T From, T ToExclusive)[] InitArray(IEnumerable<(T From, T ToExclusive)> collection)
         {
-            var list = new List<(T From, T ToExclusive)>(
+            var list = new SimpleList<(T From, T ToExclusive)>(
                 collection.Where(t => comparer.Compare(t.From, t.ToExclusive) < 0));
             if (list.Count == 0) return Array.Empty<(T From, T ToExclusive)>();
 
-            list.Sort((t1, t2) => comparer.Compare(t1.From, t2.From));
-            var resList = new AtCoder.Internal.SimpleList<(T From, T ToExclusive)>(list.Count)
+            list.Sort();
+            var resList = new SimpleList<(T From, T ToExclusive)>(list.Count)
             {
                 list[0]
             };
@@ -759,7 +760,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                     throw new InvalidOperationException(nameof(startNode) + "is null");
                 current = null;
                 var node = startNode;
-                var list = new List<Node>(Log2(tree.Count + 1));
+                var list = new SimpleList<Node>(Log2(tree.Count + 1));
                 var comparer = tree.comparer;
 
                 if (reverse)

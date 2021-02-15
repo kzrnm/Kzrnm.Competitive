@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AtCoder.Internal;
+using System;
 using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
@@ -25,9 +26,9 @@ namespace Kzrnm.Competitive
             list.Reverse();
             return list.ToArray();
 
-            static List<T> LCSSearch(int[][] dp, ReadOnlySpan<T> s, int i, int j)
+            static SimpleList<T> LCSSearch(int[][] dp, ReadOnlySpan<T> s, int i, int j)
             {
-                var list = new List<T>();
+                var list = new SimpleList<T>();
                 while (i > 0 && j > 0)
                 {
                     while (dp[i][j] == dp[i - 1][j])

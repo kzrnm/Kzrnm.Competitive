@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AtCoder.Internal;
+using System;
 using System.Collections.Generic;
 #region https://algoful.com/Archive/Algorithm/KMPSearch
 #endregion
@@ -68,9 +69,9 @@ namespace Kzrnm.Competitive
             }
             public int Current => index - pattern.Length;
             public Enumerator GetEnumerator() => this;
-            public List<int> ToList()
+            public SimpleList<int> ToList()
             {
-                var list = new List<int>();
+                var list = new SimpleList<int>();
                 foreach (var item in this)
                     list.Add(item);
                 return list;

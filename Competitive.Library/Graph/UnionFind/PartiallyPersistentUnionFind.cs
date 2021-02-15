@@ -19,7 +19,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// (更新バージョン, 頂点数)
         /// </summary>
-        internal readonly List<(int ver, int size)>[] _num;
+        internal readonly SimpleList<(int ver, int size)>[] _num;
 
         /// <summary>
         /// <see cref="PartiallyPersistentUnionFind"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺のグラフとして初期化します。
@@ -29,11 +29,11 @@ namespace Kzrnm.Competitive
             _n = n;
             _parentOrRank = new int[n];
             _updatedVersion = new int[n];
-            _num = new List<(int ver, int size)>[n];
+            _num = new SimpleList<(int ver, int size)>[n];
             for (int i = 0; i < n; ++i)
             {
                 _parentOrRank[i] = -1;
-                _num[i] = new List<(int ver, int size)> { (0, 1) };
+                _num[i] = new SimpleList<(int ver, int size)> { (0, 1) };
             }
             _updatedVersion.AsSpan().Fill(int.MaxValue);
         }

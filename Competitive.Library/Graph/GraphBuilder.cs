@@ -91,7 +91,7 @@ namespace Kzrnm.Competitive
                     childrenBuilder = children[cur];
                 else
                 {
-                    childrenBuilder = new List<Edge>(children[cur].Count);
+                    childrenBuilder = new SimpleList<Edge>(children[cur].Count);
                     foreach (var c in children[cur])
                         if (c != parent)
                             childrenBuilder.Add(c);

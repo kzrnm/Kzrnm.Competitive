@@ -114,29 +114,23 @@ namespace Kzrnm.Competitive
         /// <para>- リストはトポロジカルソートされています。異なる強連結成分の頂点 u, v について、u から v に到達できる時、u の属するリストは v の属するリストよりも前です。</para>
         /// <para>計算量: 追加された辺の本数を m として O(n+m)</para>
         /// </remarks>
-        public static List<List<int>> Scc<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
+        public static int[][] Scc<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
             where TNode : IGraphNode<TEdge>
             where TEdge : IEdge
         {
             var (groupNum, ids) = SCCIDs(graph);
+            var groups = new int[groupNum][];
             var counts = new int[groupNum];
+            var seen = new int[groupNum];
 
             foreach (var x in ids)
-            {
                 counts[x]++;
-            }
-
-            var groups = new List<List<int>>(groupNum);
 
             for (int i = 0; i < groupNum; i++)
-            {
-                groups.Add(new List<int>(counts[i]));
-            }
+                groups[i] = new int[counts[i]];
 
             for (int i = 0; i < ids.Length; i++)
-            {
-                groups[ids[i]].Add(i);
-            }
+                groups[ids[i]][seen[ids[i]]++] = i;
 
             return groups;
         }

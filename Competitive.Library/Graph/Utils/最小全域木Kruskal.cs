@@ -1,5 +1,5 @@
 ﻿using AtCoder;
-using System;
+using AtCoder.Internal;
 using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
@@ -16,9 +16,9 @@ namespace Kzrnm.Competitive
             where TEdge : IWEdge<T>
         {
             var graphArr = graph.AsArray();
-            var res = new List<(int from, TEdge edge)>(graph.Length - 1);
+            var res = new SimpleList<(int from, TEdge edge)>(graph.Length - 1);
             var uf = new UnionFind(graphArr.Length);
-            var edges = new List<(int from, TEdge edge)>();
+            var edges = new SimpleList<(int from, TEdge edge)>();
             foreach (var node in graphArr)
                 foreach (var e in node.Children)
                     edges.Add((node.Index, e));
@@ -38,9 +38,9 @@ namespace Kzrnm.Competitive
             where TEdge : IEdge
         {
             var graphArr = graph.AsArray();
-            var res = new List<(int from, TEdge edge)>(graph.Length - 1);
+            var res = new SimpleList<(int from, TEdge edge)>(graph.Length - 1);
             var uf = new UnionFind(graphArr.Length);
-            var edges = new List<(int from, TEdge edge)>();
+            var edges = new SimpleList<(int from, TEdge edge)>();
             foreach (var node in graphArr)
                 foreach (var e in node.Children)
                     edges.Add((node.Index, e));
