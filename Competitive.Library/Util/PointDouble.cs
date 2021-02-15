@@ -45,13 +45,13 @@ namespace Kzrnm.Competitive
         public static bool operator ==(PointDouble left, PointDouble right) => left.Equals(right);
         public static bool operator !=(PointDouble left, PointDouble right) => !left.Equals(right);
 
+        static int CrossSign(double x1, double y1, double x2, double y2) => Math.Sign(x1 * y2 - y1 * x2);
+
         /// <summary>
         /// 凸包(一番外側の多角形)を求める
         /// </summary>
         public static int[] ConvexHull(PointDouble[] points)
         {
-            static int Cross(double x1, double y1, double x2, double y2) => Math.Sign(x1 * y2 - y1 * x2);
-
             Contract.Assert(points.Length >= 3);
             var pts = new (double x, double y, int ix)[points.Length];
             for (int i = 0; i < points.Length; i++)
@@ -63,13 +63,13 @@ namespace Kzrnm.Competitive
             for (int i = 2; i < pts.Length; i++)
             {
                 while (upper.Count > 1
-                    && Cross(upper[^1].x - upper[^2].x, upper[^1].y - upper[^2].y, pts[i].x - upper[^2].x, pts[i].y - upper[^2].y) > 0)
+                    && CrossSign(upper[^1].x - upper[^2].x, upper[^1].y - upper[^2].y, pts[i].x - upper[^2].x, pts[i].y - upper[^2].y) > 0)
                 {
                     upper.RemoveLast();
                 }
                 upper.Add(pts[i]);
                 while (lower.Count > 1
-                    && Cross(lower[^1].x - lower[^2].x, lower[^1].y - lower[^2].y, pts[i].x - lower[^2].x, pts[i].y - lower[^2].y) < 0)
+                    && CrossSign(lower[^1].x - lower[^2].x, lower[^1].y - lower[^2].y, pts[i].x - lower[^2].x, pts[i].y - lower[^2].y) < 0)
                 {
                     lower.RemoveLast();
                 }

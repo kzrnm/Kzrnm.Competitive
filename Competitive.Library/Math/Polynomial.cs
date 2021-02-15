@@ -129,7 +129,7 @@ namespace Kzrnm.Competitive
         {
             T x_n = x;
             T res = Coefficients[0];
-            foreach (var a in Coefficients[1..])
+            foreach (var a in Coefficients.AsSpan(1))
             {
                 res = op.Add(res, op.Multiply(a, x_n));
                 x_n = op.Multiply(x_n, x);
@@ -155,48 +155,47 @@ namespace Kzrnm.Competitive
         /// </remarks>
         public static Polynomial<T, TOp> LagrangeInterpolation(ReadOnlySpan<(T x, T y)> plots)
         {
-            // y_i / (Π_k!=i (x_i - x_k)) )
-            static T ConstantCoefficient(ReadOnlySpan<(T x, T y)> plots, int i)
-            {
-                var (xi, yi) = plots[i];
-                var d = op.MultiplyIdentity;
-                for (int k = 0; k < plots.Length; k++)
-                    if (i != k)
-                        d = op.Multiply(d, op.Subtract(xi, plots[k].x));
-                return op.Divide(yi, d);
-            }
-
-            // Π_k (x - x_k) となる n+1 次多項式の係数
-            static T[] PAll(ReadOnlySpan<(T x, T y)> plots)
-            {
-                var res = new T[plots.Length + 1];
-                res[^1] = op.MultiplyIdentity;
-                for (int k = plots.Length - 1; k >= 0; k--)
-                {
-                    var xk = op.Minus(plots[k].x);
-                    for (int j = k; j + 1 < res.Length; j++)
-                        res[j] = op.Add(res[j], op.Multiply(xk, res[j + 1]));
-                }
-                return res;
-            }
-
-            // Π_k!=i (x - x_k)
-            static Polynomial<T, TOp> Pk(ReadOnlySpan<(T x, T y)> plots, int i, T[] pall)
-            {
-                var xi = plots[i].x;
-                var res = new T[plots.Length];
-                res[^1] = op.MultiplyIdentity;
-                for (int j = plots.Length - 2; j >= 0; j--)
-                    res[j] = op.Add(op.Multiply(xi, res[j + 1]), pall[j + 1]);
-                return new Polynomial<T, TOp>(res);
-            }
-
             // y = ∑ (y_i * (Π_k!=i (x - x_k)) / (Π_k!=i (x_i - x_k)) )
             var res = new Polynomial<T, TOp>(new T[plots.Length]);
             var pall = PAll(plots);
             for (int i = 0; i < plots.Length; i++)
                 res += ConstantCoefficient(plots, i) * Pk(plots, i, pall);
             return res;
+        }
+        // y_i / (Π_k!=i (x_i - x_k)) )
+        static T ConstantCoefficient(ReadOnlySpan<(T x, T y)> plots, int i)
+        {
+            var (xi, yi) = plots[i];
+            var d = op.MultiplyIdentity;
+            for (int k = 0; k < plots.Length; k++)
+                if (i != k)
+                    d = op.Multiply(d, op.Subtract(xi, plots[k].x));
+            return op.Divide(yi, d);
+        }
+
+        // Π_k (x - x_k) となる n+1 次多項式の係数
+        static T[] PAll(ReadOnlySpan<(T x, T y)> plots)
+        {
+            var res = new T[plots.Length + 1];
+            res[^1] = op.MultiplyIdentity;
+            for (int k = plots.Length - 1; k >= 0; k--)
+            {
+                var xk = op.Minus(plots[k].x);
+                for (int j = k; j + 1 < res.Length; j++)
+                    res[j] = op.Add(res[j], op.Multiply(xk, res[j + 1]));
+            }
+            return res;
+        }
+
+        // Π_k!=i (x - x_k)
+        static Polynomial<T, TOp> Pk(ReadOnlySpan<(T x, T y)> plots, int i, T[] pall)
+        {
+            var xi = plots[i].x;
+            var res = new T[plots.Length];
+            res[^1] = op.MultiplyIdentity;
+            for (int j = plots.Length - 2; j >= 0; j--)
+                res[j] = op.Add(op.Multiply(xi, res[j + 1]), pall[j + 1]);
+            return new Polynomial<T, TOp>(res);
         }
     }
 }

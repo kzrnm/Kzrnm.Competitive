@@ -45,17 +45,16 @@ namespace Kzrnm.Competitive
                     yield return p;
             }
             if (num > 1) yield return num;
-
-            static bool DivIfMulti(ref long num, long p)
+        }
+        static bool DivIfMulti(ref long num, long p)
+        {
+            Math.DivRem(num, p, out var d);
+            if (d == 0)
             {
-                Math.DivRem(num, p, out var d);
-                if (d == 0)
-                {
-                    num /= p;
-                    return true;
-                }
-                return false;
+                num /= p;
+                return true;
             }
+            return false;
         }
         Dictionary<int, int> PrimeFactoringFast(int num)
         {
