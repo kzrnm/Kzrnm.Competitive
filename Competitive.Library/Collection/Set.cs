@@ -121,7 +121,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         {
             Node right = null;
             Node current = root;
-            if (current == null) return (null, -1);
+            if (current == null) return (null, 0);
             int ri = Count;
             int ci = NodeSize(current.Left);
             while (true)
