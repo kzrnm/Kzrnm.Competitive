@@ -11,7 +11,10 @@ namespace Kzrnm.Competitive
 {
     using static MethodImplOptions;
     using static SetNodeBase;
-    public class SetBase<T, TCmp, Node, TOp> : ICollection, ICollection<T>, IReadOnlyCollection<T>
+
+    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
+    [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
+    public abstract class SetBase<T, TCmp, Node, TOp> : ICollection, ICollection<T>, IReadOnlyCollection<T>
         where Node : SetNodeBase
         where TOp : struct, INodeOperator<T, TCmp, Node>
     {
@@ -20,12 +23,12 @@ namespace Kzrnm.Competitive
         public bool IsMulti { get; }
         protected Node root;
         #region Constructor
-        public SetBase(bool isMulti, TOp op)
+        protected SetBase(bool isMulti, TOp op)
         {
             this.IsMulti = isMulti;
             this.op = op;
         }
-        public SetBase(bool isMulti, TOp op, IEnumerable<T> collection) : this(isMulti, op)
+        protected SetBase(bool isMulti, TOp op, IEnumerable<T> collection) : this(isMulti, op)
         {
             var (arr, count) = InitArray(collection);
             this.root = ConstructRootFromSortedArray(arr, 0, count - 1, null);
@@ -57,7 +60,6 @@ namespace Kzrnm.Competitive
             }
             return (arr, count);
         }
-
         protected virtual Node ConstructRootFromSortedArray(T[] arr, int startIndex, int endIndex, Node redNode)
         {
             int size = endIndex - startIndex + 1;
@@ -238,7 +240,6 @@ namespace Kzrnm.Competitive
             while (e.MoveNext()) yield return e.Current;
         }
         #endregion Enumerate
-
 
         #region ICollection<T> members
         void ICollection<T>.Add(T item) => DoAdd(item);
@@ -439,7 +440,6 @@ namespace Kzrnm.Competitive
 
         #endregion ICollection<T> members
 
-
         #region private
         protected void InsertionBalance(Node current, ref Node parent, Node grandParent, Node greatGrandParent)
         {
@@ -546,37 +546,16 @@ namespace Kzrnm.Competitive
                 if (startNode == null)
                     throw new InvalidOperationException(nameof(startNode) + "is null");
                 current = null;
-                SetNodeBase node = startNode;
-                var list = new SimpleList<SetNodeBase>(Log2(tree.Count + 1));
-                var comparer = tree.op;
+                var list = reverse ? InitializeReverse(startNode) : InitializeNormal(startNode);
 
-                if (reverse)
-                {
-                    while (node != null)
-                    {
-                        list.Add(node);
-                        var parent = node.Parent;
-                        if (parent == null || parent.Left == node)
-                        {
-                            node = parent;
-                            break;
-                        }
-                        node = parent;
-                    }
-                    while (node != null)
-                    {
-                        var parent = node.Parent;
-                        if (parent == null || parent.Right == node) { node = parent; break; }
-                        node = parent;
-                    }
-                    while (node != null)
-                    {
-                        if (comparer.Compare(startNode, (Node)node) >= 0)
-                            list.Add(node);
-                        node = node.Parent;
-                    }
-                }
-                else
+                list.Reverse();
+                foreach (var n in list) stack.Push(n);
+            }
+            SimpleList<SetNodeBase> InitializeNormal(SetNodeBase node)
+            {
+                var list = new SimpleList<SetNodeBase>(2 * Log2(tree.Count + 1));
+
+                while (node != null)
                 {
                     while (node != null)
                     {
@@ -591,17 +570,32 @@ namespace Kzrnm.Competitive
                         if (parent == null || parent.Left == node) { node = parent; break; }
                         node = parent;
                     }
+                }
+                return list;
+            }
+            SimpleList<SetNodeBase> InitializeReverse(SetNodeBase node)
+            {
+                var list = new SimpleList<SetNodeBase>(2 * Log2(tree.Count + 1));
+
+                while (node != null)
+                {
                     while (node != null)
                     {
-                        if (comparer.Compare(startNode, (Node)node) <= 0)
-                            list.Add(node);
-                        node = node.Parent;
+                        list.Add(node);
+                        var parent = node.Parent;
+                        if (parent == null || parent.Left == node) { node = parent; break; }
+                        node = parent;
+                    }
+                    while (node != null)
+                    {
+                        var parent = node.Parent;
+                        if (parent == null || parent.Right == node) { node = parent; break; }
+                        node = parent;
                     }
                 }
-
-                list.Reverse();
-                foreach (var n in list) stack.Push(n);
+                return list;
             }
+
             [MethodImpl(AggressiveInlining)]
             static int Log2(int num) => BitOperations.Log2((uint)num) + 1;
             public Node Current => current;

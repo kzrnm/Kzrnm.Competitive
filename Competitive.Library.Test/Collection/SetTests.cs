@@ -1,4 +1,6 @@
 ﻿using FluentAssertions;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace Kzrnm.Competitive.Collection
@@ -44,6 +46,11 @@ namespace Kzrnm.Competitive.Collection
             set.Remove(set.FindNodeLowerBound(5));
             set.Should().Equal(1, 2, 3, 4, 7, 8, 9);
 
+            set.Reversed().Should().Equal(9, 8, 7, 4, 3, 2, 1);
+            set.EnumerateItem().Should().Equal(1, 2, 3, 4, 7, 8, 9);
+            set.EnumerateItem(set.FindNodeLowerBound(5)).Should().Equal(7, 8, 9);
+            set.EnumerateItem(set.FindNodeLowerBound(5), true).Should().Equal(7, 4, 3, 2, 1);
+
             set.Remove(set.FindNodeLowerBound(0));
             set.Should().Equal(2, 3, 4, 7, 8, 9);
 
@@ -67,6 +74,11 @@ namespace Kzrnm.Competitive.Collection
             set.FindByIndex(12).Should().BeNull();
             set.FindByIndex(11).Item.Should().Be(9);
             set.FindNode(5).Should().NotBeNull();
+
+            set.Reversed().Should().Equal(9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1);
+            set.EnumerateItem().Should().Equal(1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9);
+            set.EnumerateItem(set.FindNodeLowerBound(6)).Should().Equal(6, 7, 8, 9);
+            set.EnumerateItem(set.FindNodeLowerBound(6), true).Should().Equal(6, 5, 4, 3, 3, 2, 2, 1, 1);
 
             set.FindNodeLowerBound(3).Item.Should().Be(3);
             set.FindNodeUpperBound(3).Item.Should().Be(4);
@@ -115,6 +127,57 @@ namespace Kzrnm.Competitive.Collection
 
             set.FindNodeLowerBound(0).Should().BeNull();
             set.FindNodeUpperBound(0).Should().BeNull();
+        }
+
+        [Fact]
+        public void FindByIndex()
+        {
+            for (int count = 0; count < 64; count++)
+            {
+                IList<int> arr = Enumerable.Range(0, count).ToArray();
+                var set = new Set<int>(arr);
+                for (int i = 0; i < count; i++)
+                {
+                    set.FindByIndex(i).Item.Should().Be(i, "Index: {0}", i);
+                }
+            }
+        }
+
+        [Fact]
+        public void Enumerate()
+        {
+            for (int count = 0; count < 64; count++)
+            {
+                IList<int> arr = Enumerable.Range(0, count).ToArray();
+                var set = new Set<int>(arr);
+                set.Reversed().Should().Equal(arr.Reverse());
+                set.EnumerateItem().Should().Equal(arr);
+                set.EnumerateItem(reverse: true).Should().Equal(arr.Reverse());
+
+                for (int i = 0; i < count; i++)
+                {
+                   set.EnumerateItem(set.FindByIndex(i)).Should().Equal(arr.Skip(i), "Index: {0}", i);
+                    set.EnumerateItem(set.FindByIndex(i), true).Should()
+                        .Equal(arr.Take(i + 1).Reverse(), "Index: {0} Reverse", i);
+                }
+            }
+        }
+
+        [Fact]
+        public void EnumerateMulti()
+        {
+            var arr = new[] { 1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9 };
+            var set = new Set<int>(arr, true);
+            set.Reversed().Should().Equal(9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1);
+            set.EnumerateItem().Should().Equal(1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9);
+            set.EnumerateItem(reverse: true).Should().Equal(9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1);
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                set.EnumerateItem(set.FindByIndex(i)).Should().Equal(arr.Skip(i), "Index: {0}", i);
+                set.EnumerateItem(set.FindByIndex(i), true).Should()
+                    .Equal(arr.Take(i + 1).Reverse(), "Index: {0} Reverse", i);
+            }
         }
     }
 }

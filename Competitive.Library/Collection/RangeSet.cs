@@ -10,11 +10,15 @@ namespace Kzrnm.Competitive
 {
     using static MethodImplOptions;
     using static SetNodeBase;
+    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
+    [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class RangeSetLong : RangeSet<long, LongOperator>
     {
         public RangeSetLong() : base() { }
         public RangeSetLong(IEnumerable<(long From, long ToExclusive)> collection) : base(collection) { }
     }
+    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
+    [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class RangeSetInt : RangeSet<int, IntOperator>
     {
         public RangeSetInt() : base() { }

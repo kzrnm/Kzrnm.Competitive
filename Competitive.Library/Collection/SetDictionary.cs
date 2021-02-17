@@ -7,6 +7,8 @@ using System.Runtime.CompilerServices;
 namespace Kzrnm.Competitive
 {
     using static MethodImplOptions;
+    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
+    [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class SetDictionary<TKey, TValue> : SetDictionary<TKey, TValue, DefaultComparerStruct<TKey>>
         where TKey : IComparable<TKey>
     {

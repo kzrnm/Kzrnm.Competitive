@@ -7,6 +7,8 @@ using System.Runtime.CompilerServices;
 namespace Kzrnm.Competitive
 {
     using static MethodImplOptions;
+    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
+    [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class Set<T> : Set<T, DefaultComparerStruct<T>>
         where T : IComparable<T>
     {
