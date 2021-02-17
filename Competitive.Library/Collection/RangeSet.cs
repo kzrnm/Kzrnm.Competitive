@@ -28,7 +28,7 @@ namespace Kzrnm.Competitive
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class RangeSet<T, TOp>
-        : SetBase<(T From, T ToExclusive), T, RangeSet<T, TOp>.Node, RangeSet<T, TOp>.NodeOperator>
+        : SetBase<(T From, T ToExclusive), T, RangeSet<T, TOp>.Node, RangeSet<T, TOp>.NodeOperator>, ICollection<(T From, T ToExclusive)>
         where TOp : struct, IComparer<T>, IUnaryNumOperator<T>
     {
         /*
@@ -83,7 +83,58 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 
         protected readonly TOp comparer;
 
-        protected new bool Add((T From, T ToExclusive) item) => Add(item.From, item.ToExclusive);
+        #region Search
+        public Node FindNode(T item)
+        {
+            Node current = root;
+            while (current != null)
+            {
+                int order = Compare(item, current.From, current.ToExclusive);
+                if (order == 0) return current;
+                current = (Node)(order < 0 ? current.Left : current.Right);
+            }
+            return null;
+        }
+        public (Node node, int index) BinarySearch(T item, bool isLowerBound)
+        {
+            Node right = null;
+            Node current = root;
+            if (current == null) return (null, 0);
+            int ri = Count;
+            int ci = NodeSize(current.Left);
+            while (true)
+            {
+                var order = Compare(item, current.From, current.ToExclusive);
+                if (order < 0 || (isLowerBound && order == 0))
+                {
+                    right = current;
+                    ri = ci;
+                    current = (Node)current.Left;
+                    if (current != null)
+                        ci -= NodeSize(current.Right) + 1;
+                    else break;
+                }
+                else
+                {
+                    current = (Node)current.Right;
+                    if (current != null)
+                        ci += NodeSize(current.Left) + 1;
+                    else break;
+                }
+            }
+            return (right, ri);
+        }
+        public Node FindNodeLowerBound(T item) => BinarySearch(item, true).node;
+        public Node FindNodeUpperBound(T item) => BinarySearch(item, false).node;
+        public int LowerBoundIndex(T item) => BinarySearch(item, true).index;
+        public int UpperBoundIndex(T item) => BinarySearch(item, false).index;
+        public (T From, T ToExclusive) LowerBoundItem(T item) => BinarySearch(item, true).node.Pair;
+        public (T From, T ToExclusive) UpperBoundItem(T item) => BinarySearch(item, false).node.Pair;
+        #endregion Search
+
+
+        #region ICollection<T> members
+        void ICollection<(T From, T ToExclusive)>.Add((T From, T ToExclusive) item) => Add(item.From, item.ToExclusive);
         public bool Add(T from, T toExclusive)
         {
             Node left = null, right = null;
@@ -157,7 +208,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             root.ColorBlack();
             return;
         }
-
+        bool ICollection<(T From, T ToExclusive)>.Remove((T From, T ToExclusive) item) => Remove(item.From, item.ToExclusive);
         public bool Remove(T from, T toExclusive)
         {
             if (root == null) return false;
@@ -267,13 +318,27 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             root?.ColorBlack();
             return resultMatch;
         }
-        protected new bool Contains((T From, T ToExclusive) item) => Contains(item.From, item.ToExclusive);
+
+        bool ICollection<(T From, T ToExclusive)>.Contains((T From, T ToExclusive) item) => Contains(item.From, item.ToExclusive);
         public bool Contains(T from, T toExclusive)
         {
             var node = FindNode(from);
             return node != null && comparer.Compare(toExclusive, node.ToExclusive) <= 0;
         }
+        public bool Contains(T item) => FindNode(item) != null;
+        #endregion ICollection<T> members
 
+        [MethodImpl(AggressiveInlining)]
+        int Compare(T value, T from, T toExclusive)
+        {
+            int forder = comparer.Compare(from, value);
+            if (forder > 0) return -1;
+            int torder = comparer.Compare(toExclusive, value);
+            if (torder > 0)
+                return 0;
+            return 1;
+        }
+        bool ICollection<(T From, T ToExclusive)>.IsReadOnly => false;
         public class Node : SetNodeBase
         {
             public T From;
@@ -286,10 +351,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
             public override string ToString() => $"Range = [{From}, {ToExclusive}), Size = {Size}";
         }
-        public struct NodeOperator : INodeOperator<(T From, T ToExclusive), T, Node>
+        public struct NodeOperator : INodeOperator<(T From, T ToExclusive), Node>
         {
             private readonly TOp comparer;
-            public IComparer<T> Comparer => comparer;
             public NodeOperator(TOp comparer)
             {
                 this.comparer = comparer;
@@ -298,30 +362,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             public Node Create((T From, T ToExclusive) item, NodeColor color) => new Node(item.From, item.ToExclusive, color);
             [MethodImpl(AggressiveInlining)]
             public (T From, T ToExclusive) GetValue(Node node) => node.Pair;
-            [MethodImpl(AggressiveInlining)]
-            public void SetValue(ref Node node, (T From, T ToExclusive) value)
-            {
-                node.From = value.From;
-                node.ToExclusive = value.ToExclusive;
-            }
-            [MethodImpl(AggressiveInlining)]
-            public T GetCompareKey((T From, T ToExclusive) item) => item.From;
-            [MethodImpl(AggressiveInlining)]
-            public int Compare(T x, T y) => comparer.Compare(x, y);
-            [MethodImpl(AggressiveInlining)]
             public int Compare((T From, T ToExclusive) node1, (T From, T ToExclusive) node2) => comparer.Compare(node1.From, node2.From);
-            [MethodImpl(AggressiveInlining)]
-            public int Compare(Node node1, Node node2) => comparer.Compare(node1.From, node2.From);
-            [MethodImpl(AggressiveInlining)]
-            public int Compare(T value, Node node)
-            {
-                int forder = comparer.Compare(node.From, value);
-                if (forder > 0) return -1;
-                int torder = comparer.Compare(node.ToExclusive, value);
-                if (torder > 0)
-                    return 0;
-                return 1;
-            }
         }
     }
 }

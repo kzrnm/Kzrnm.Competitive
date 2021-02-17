@@ -14,14 +14,14 @@ namespace Kzrnm.Competitive
 
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public abstract class SetBase<T, TCmp, Node, TOp> : ICollection, ICollection<T>, IReadOnlyCollection<T>
+    public abstract class SetBase<T, TCmp, Node, TOp> : ICollection, IReadOnlyCollection<T>
         where Node : SetNodeBase
-        where TOp : struct, INodeOperator<T, TCmp, Node>
+        where TOp : struct, INodeOperator<T, Node>
     {
         private readonly TOp op;
-
         public bool IsMulti { get; }
         protected Node root;
+
         #region Constructor
         protected SetBase(bool isMulti, TOp op)
         {
@@ -105,6 +105,7 @@ namespace Kzrnm.Competitive
             return root;
         }
         #endregion Constructor
+
         internal Node MinNode()
         {
             if (root == null) return null;
@@ -122,19 +123,7 @@ namespace Kzrnm.Competitive
         public T Min => MinNode() switch { { } n => op.GetValue(n), _ => default(T) };
         public T Max => MaxNode() switch { { } n => op.GetValue(n), _ => default(T) };
 
-        #region Search
-        public Node FindNode(TCmp item)
-        {
-            Node current = root;
-            while (current != null)
-            {
-                int order = op.Compare(item, current);
-                if (order == 0) return current;
-                current = (Node)(order < 0 ? current.Left : current.Right);
-            }
-            return null;
-        }
-
+        #region Index
         public int Index(Node node)
         {
             SetNodeBase _node = node;
@@ -174,43 +163,7 @@ namespace Kzrnm.Competitive
             }
             return (Node)current;
         }
-
-        public (Node node, int index) BinarySearch(TCmp item, bool isLowerBound)
-        {
-            Node right = null;
-            Node current = root;
-            if (current == null) return (null, 0);
-            int ri = Count;
-            int ci = NodeSize(current.Left);
-            while (true)
-            {
-                var order = op.Compare(item, current);
-                if (order < 0 || (isLowerBound && order == 0))
-                {
-                    right = current;
-                    ri = ci;
-                    current = (Node)current.Left;
-                    if (current != null)
-                        ci -= NodeSize(current.Right) + 1;
-                    else break;
-                }
-                else
-                {
-                    current = (Node)current.Right;
-                    if (current != null)
-                        ci += NodeSize(current.Left) + 1;
-                    else break;
-                }
-            }
-            return (right, ri);
-        }
-        public Node FindNodeLowerBound(TCmp item) => BinarySearch(item, true).node;
-        public Node FindNodeUpperBound(TCmp item) => BinarySearch(item, false).node;
-        public int LowerBoundIndex(TCmp item) => BinarySearch(item, true).index;
-        public int UpperBoundIndex(TCmp item) => BinarySearch(item, false).index;
-        public T LowerBoundItem(TCmp item) => op.GetValue(BinarySearch(item, true).node);
-        public T UpperBoundItem(TCmp item) => op.GetValue(BinarySearch(item, false).node);
-        #endregion Search
+        #endregion Index
 
         #region Enumerate
         public IEnumerable<T> Reversed()
@@ -241,52 +194,18 @@ namespace Kzrnm.Competitive
         }
         #endregion Enumerate
 
-        #region ICollection<T> members
-        void ICollection<T>.Add(T item) => DoAdd(item);
-
-        public bool Add(T item) => DoAdd(item);
-        protected bool DoAdd(T item)
+        #region ICollection
+        public void Clear()
         {
-            var key = op.GetCompareKey(item);
-            if (root == null)
-            {
-                root = op.Create(item, NodeColor.Black);
-                return true;
-            }
-            Node current = root;
-            Node parent = null;
-            Node grandParent = null;
-            Node greatGrandParent = null;
-            int order = 0;
-            while (current != null)
-            {
-                order = op.Compare(key, current);
-                if (order == 0 && !this.IsMulti)
-                {
-                    //op.SetValue(ref current, item);
-                    root.ColorBlack();
-                    return false;
-                }
-                if (current.Is4Node)
-                {
-                    current.Split4Node();
-                    if (IsNonNullRed(parent))
-                    {
-                        InsertionBalance(current, ref parent, grandParent, greatGrandParent);
-                    }
-                }
-                greatGrandParent = grandParent;
-                grandParent = parent;
-                parent = current;
-                current = (Node)(order < 0 ? current.Left : current.Right);
-            }
-            Node node = op.Create(item, NodeColor.Red);
-            if (order >= 0) parent.Right = node;
-            else parent.Left = node;
-            if (parent.IsRed) InsertionBalance(node, ref parent, grandParent, greatGrandParent);
-            root.ColorBlack();
-            return true;
+            root = null;
         }
+        void ICollection.CopyTo(Array array, int index) => CopyTo((T[])array, index);
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            foreach (var item in this) array[arrayIndex++] = item;
+        }
+        #endregion ICollection
+
 
         /// <summary>
         /// 該当ノードを削除する。動作怪しいかも
@@ -354,91 +273,6 @@ namespace Kzrnm.Competitive
             }
             root?.ColorBlack();
         }
-        bool ICollection<T>.Remove(T item) => Remove(op.GetCompareKey(item));
-        public bool Remove(TCmp item) => DoRemove(item);
-        protected bool DoRemove(TCmp item)
-        {
-            if (root == null) return false;
-            Node current = root;
-            Node parent = null;
-            Node grandParent = null;
-            Node match = null;
-            Node parentOfMatch = null;
-            bool foundMatch = false;
-            while (current != null)
-            {
-                if (current.Is2Node)
-                {
-                    if (parent == null)
-                    {
-                        current.ColorRed();
-                    }
-                    else
-                    {
-                        Node sibling = (Node)parent.GetSibling(current);
-                        if (sibling.IsRed)
-                        {
-                            Debug.Assert(parent.IsBlack);
-                            if (parent.Right == sibling) parent.RotateLeft();
-                            else parent.RotateRight();
-
-                            parent.ColorRed();
-                            sibling.ColorBlack();
-                            ReplaceChildOrRoot(grandParent, parent, sibling);
-                            grandParent = sibling;
-                            if (parent == match) parentOfMatch = sibling;
-                            sibling = (Node)parent.GetSibling(current);
-                        }
-                        Debug.Assert(IsNonNullBlack(sibling));
-                        if (sibling.Is2Node)
-                        {
-                            parent.Merge2Nodes();
-                        }
-                        else
-                        {
-                            Node newGrandParent = (Node)parent.Rotate(parent.GetRotation(current, sibling));
-                            newGrandParent.Color = parent.Color;
-                            parent.ColorBlack();
-                            current.ColorRed();
-                            ReplaceChildOrRoot(grandParent, parent, newGrandParent);
-                            if (parent == match)
-                            {
-                                parentOfMatch = newGrandParent;
-                            }
-                        }
-                    }
-                }
-                int order = foundMatch ? -1 : op.Compare(item, current);
-                if (order == 0)
-                {
-                    foundMatch = true;
-                    match = current;
-                    parentOfMatch = parent;
-                }
-                grandParent = parent;
-                parent = current;
-                current = (Node)(order < 0 ? current.Left : current.Right);
-            }
-            if (match != null)
-            {
-                ReplaceNode(match, parentOfMatch, parent, grandParent);
-            }
-            root?.ColorBlack();
-            return foundMatch;
-        }
-        public void Clear()
-        {
-            root = null;
-        }
-        public bool Contains(T item) => Contains(op.GetCompareKey(item));
-        public bool Contains(TCmp item) => FindNode(item) != null;
-        void ICollection.CopyTo(Array array, int index) => CopyTo((T[])array, index);
-        public void CopyTo(T[] array, int arrayIndex)
-        {
-            foreach (var item in this) array[arrayIndex++] = item;
-        }
-
-        #endregion ICollection<T> members
 
         #region private
         protected void InsertionBalance(Node current, ref Node parent, Node grandParent, Node greatGrandParent)
@@ -499,7 +333,6 @@ namespace Kzrnm.Competitive
             ReplaceChildOrRoot(parentOfMatch, match, successor);
         }
         #endregion private
-        bool ICollection<T>.IsReadOnly => false;
         bool ICollection.IsSynchronized => false;
         object ICollection.SyncRoot => this;
         public int Count => NodeSize(root);
@@ -644,16 +477,10 @@ namespace Kzrnm.Competitive
             public void Reset() => throw new NotSupportedException();
         }
     }
-    public interface INodeOperator<T, TCmp, Node> : IComparer<TCmp>
+    public interface INodeOperator<T, Node> : IComparer<T>
     {
-        IComparer<TCmp> Comparer { get; }
         Node Create(T item, NodeColor color);
         T GetValue(Node node);
-        void SetValue(ref Node node, T value);
-        TCmp GetCompareKey(T item);
-        int Compare(T x, T y);
-        int Compare(Node x, Node y);
-        int Compare(TCmp value, Node node);
     }
     public class SetNodeBase
     {
@@ -764,6 +591,7 @@ namespace Kzrnm.Competitive
             Left.ColorBlack();
             Right.ColorBlack();
         }
+        static void ThrowInvalidOperationException() => throw new InvalidOperationException();
         [MethodImpl(AggressiveInlining)]
         internal SetNodeBase Rotate(TreeRotation rotation)
         {
@@ -787,7 +615,8 @@ namespace Kzrnm.Competitive
                     Debug.Assert(Left.Right.IsRed);
                     return RotateLeftRight();
                 default:
-                    throw new InvalidOperationException();
+                    ThrowInvalidOperationException();
+                    return this;
             }
         }
         [MethodImpl(AggressiveInlining)]

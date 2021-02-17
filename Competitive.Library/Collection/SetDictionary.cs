@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
 {
+    using static SetNodeBase;
     using static MethodImplOptions;
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
@@ -13,7 +14,7 @@ namespace Kzrnm.Competitive
         where TKey : IComparable<TKey>
     {
         public SetDictionary(bool isMulti = false) : base(new DefaultComparerStruct<TKey>(), isMulti) { }
-        public SetDictionary(IDictionary<TKey, TValue> dict, bool isMulti = false) : base(dict, new DefaultComparerStruct<TKey>(), isMulti) { }
+        public SetDictionary(IEnumerable<KeyValuePair<TKey, TValue>> dict, bool isMulti = false) : base(dict, new DefaultComparerStruct<TKey>(), isMulti) { }
     }
 
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
@@ -39,12 +40,12 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 ";
 
         public SetDictionary(bool isMulti = false) : this(default(TOp), isMulti) { }
-        public SetDictionary(IDictionary<TKey, TValue> dict, bool isMulti = false) : this(dict, default(TOp), isMulti) { }
+        public SetDictionary(IEnumerable<KeyValuePair<TKey, TValue>> dict, bool isMulti = false) : this(dict, default(TOp), isMulti) { }
         public SetDictionary(TOp comparer, bool isMulti = false) : base(isMulti, new NodeOperator(comparer))
         {
             this.comparer = comparer;
         }
-        public SetDictionary(IDictionary<TKey, TValue> dict, TOp comparer, bool isMulti = false)
+        public SetDictionary(IEnumerable<KeyValuePair<TKey, TValue>> dict, TOp comparer, bool isMulti = false)
             : base(isMulti, new NodeOperator(comparer), dict) { }
 
         protected readonly TOp comparer;
@@ -84,12 +85,176 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             set => FindNode(key).Value = value;
         }
 
+        #region Search
+        public Node FindNode(TKey key)
+        {
+            Node current = root;
+            while (current != null)
+            {
+                int order = comparer.Compare(key, current.Key);
+                if (order == 0) return current;
+                current = (Node)(order < 0 ? current.Left : current.Right);
+            }
+            return null;
+        }
+        public (Node node, int index) BinarySearch(TKey key, bool isLowerBound)
+        {
+            Node right = null;
+            Node current = root;
+            if (current == null) return (null, 0);
+            int ri = Count;
+            int ci = NodeSize(current.Left);
+            while (true)
+            {
+                var order = comparer.Compare(key, current.Key);
+                if (order < 0 || (isLowerBound && order == 0))
+                {
+                    right = current;
+                    ri = ci;
+                    current = (Node)current.Left;
+                    if (current != null)
+                        ci -= NodeSize(current.Right) + 1;
+                    else break;
+                }
+                else
+                {
+                    current = (Node)current.Right;
+                    if (current != null)
+                        ci += NodeSize(current.Left) + 1;
+                    else break;
+                }
+            }
+            return (right, ri);
+        }
+        public Node FindNodeLowerBound(TKey key) => BinarySearch(key, true).node;
+        public Node FindNodeUpperBound(TKey key) => BinarySearch(key, false).node;
+        public int LowerBoundIndex(TKey key) => BinarySearch(key, true).index;
+        public int UpperBoundIndex(TKey key) => BinarySearch(key, false).index;
+        public KeyValuePair<TKey, TValue> LowerBoundItem(TKey key) => BinarySearch(key, true).node.Pair;
+        public KeyValuePair<TKey, TValue> UpperBoundItem(TKey key) => BinarySearch(key, false).node.Pair;
+        #endregion Search
 
+        #region ICollection<T> members
         void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> pair) => Add(pair.Key, pair.Value);
-        void IDictionary<TKey, TValue>.Add(TKey key, TValue value)=> DoAdd(KeyValuePair.Create(key, value));
-        public bool Add(TKey key, TValue value) => DoAdd(KeyValuePair.Create(key, value));
-  
+        void IDictionary<TKey, TValue>.Add(TKey key, TValue value) => Add(key, value);
+        public bool Add(TKey key, TValue value)
+        {
+            if (root == null)
+            {
+                root = new Node(key, value, NodeColor.Black);
+                return true;
+            }
+            Node current = root;
+            Node parent = null;
+            Node grandParent = null;
+            Node greatGrandParent = null;
+            int order = 0;
+            while (current != null)
+            {
+                order = comparer.Compare(key, current.Key);
+                if (order == 0 && !this.IsMulti)
+                {
+                    //op.SetValue(ref current, item);
+                    root.ColorBlack();
+                    return false;
+                }
+                if (current.Is4Node)
+                {
+                    current.Split4Node();
+                    if (IsNonNullRed(parent))
+                    {
+                        InsertionBalance(current, ref parent, grandParent, greatGrandParent);
+                    }
+                }
+                greatGrandParent = grandParent;
+                grandParent = parent;
+                parent = current;
+                current = (Node)(order < 0 ? current.Left : current.Right);
+            }
+            Node node = new Node(key, value, NodeColor.Red);
+            if (order >= 0) parent.Right = node;
+            else parent.Left = node;
+            if (parent.IsRed) InsertionBalance(node, ref parent, grandParent, greatGrandParent);
+            root.ColorBlack();
+            return true;
+        }
 
+        bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item) => Remove(item.Key);
+        public bool Remove(TKey key)
+        {
+            if (root == null) return false;
+            Node current = root;
+            Node parent = null;
+            Node grandParent = null;
+            Node match = null;
+            Node parentOfMatch = null;
+            bool foundMatch = false;
+            while (current != null)
+            {
+                if (current.Is2Node)
+                {
+                    if (parent == null)
+                    {
+                        current.ColorRed();
+                    }
+                    else
+                    {
+                        Node sibling = (Node)parent.GetSibling(current);
+                        if (sibling.IsRed)
+                        {
+                            Debug.Assert(parent.IsBlack);
+                            if (parent.Right == sibling) parent.RotateLeft();
+                            else parent.RotateRight();
+
+                            parent.ColorRed();
+                            sibling.ColorBlack();
+                            ReplaceChildOrRoot(grandParent, parent, sibling);
+                            grandParent = sibling;
+                            if (parent == match) parentOfMatch = sibling;
+                            sibling = (Node)parent.GetSibling(current);
+                        }
+                        Debug.Assert(IsNonNullBlack(sibling));
+                        if (sibling.Is2Node)
+                        {
+                            parent.Merge2Nodes();
+                        }
+                        else
+                        {
+                            Node newGrandParent = (Node)parent.Rotate(parent.GetRotation(current, sibling));
+                            newGrandParent.Color = parent.Color;
+                            parent.ColorBlack();
+                            current.ColorRed();
+                            ReplaceChildOrRoot(grandParent, parent, newGrandParent);
+                            if (parent == match)
+                            {
+                                parentOfMatch = newGrandParent;
+                            }
+                        }
+                    }
+                }
+                int order = foundMatch ? -1 : comparer.Compare(key, current.Key);
+                if (order == 0)
+                {
+                    foundMatch = true;
+                    match = current;
+                    parentOfMatch = parent;
+                }
+                grandParent = parent;
+                parent = current;
+                current = (Node)(order < 0 ? current.Left : current.Right);
+            }
+            if (match != null)
+            {
+                ReplaceNode(match, parentOfMatch, parent, grandParent);
+            }
+            root?.ColorBlack();
+            return foundMatch;
+        }
+        public bool Contains(TKey key) => FindNode(key) != null;
+        #endregion ICollection<T> members
+
+
+        bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => false;
         public bool ContainsKey(TKey key) => FindNode(key) != null;
         bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> pair)
         {
@@ -114,6 +279,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             value = node.Value;
             return true;
         }
+
         public class Node : SetNodeBase
         {
             public TKey Key;
@@ -126,10 +292,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
             public override string ToString() => $"Key = {Key}, Value = {Value}, Size = {Size}";
         }
-        public struct NodeOperator : INodeOperator<KeyValuePair<TKey, TValue>, TKey, Node>
+        public struct NodeOperator : INodeOperator<KeyValuePair<TKey, TValue>, Node>
         {
             private readonly TOp comparer;
-            public IComparer<TKey> Comparer => comparer;
             public NodeOperator(TOp comparer)
             {
                 this.comparer = comparer;
@@ -139,21 +304,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             [MethodImpl(AggressiveInlining)]
             public KeyValuePair<TKey, TValue> GetValue(Node node) => node.Pair;
             [MethodImpl(AggressiveInlining)]
-            public void SetValue(ref Node node, KeyValuePair<TKey, TValue> value)
-            {
-                node.Key = value.Key;
-                node.Value = value.Value;
-            }
-            [MethodImpl(AggressiveInlining)]
-            public TKey GetCompareKey(KeyValuePair<TKey, TValue> item) => item.Key;
-            [MethodImpl(AggressiveInlining)]
-            public int Compare(TKey x, TKey y) => comparer.Compare(x, y);
-            [MethodImpl(AggressiveInlining)]
             public int Compare(KeyValuePair<TKey, TValue> node1, KeyValuePair<TKey, TValue> node2) => comparer.Compare(node1.Key, node2.Key);
-            [MethodImpl(AggressiveInlining)]
-            public int Compare(Node node1, Node node2) => comparer.Compare(node1.Key, node2.Key);
-            [MethodImpl(AggressiveInlining)]
-            public int Compare(TKey value, Node node) => comparer.Compare(value, node.Key);
         }
     }
 }
