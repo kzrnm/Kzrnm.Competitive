@@ -1,5 +1,4 @@
 ﻿using Kzrnm.Competitive.IO;
-using System.Diagnostics;
 using System.Globalization;
 
 internal partial class Program
