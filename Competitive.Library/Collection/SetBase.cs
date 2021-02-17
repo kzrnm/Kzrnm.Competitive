@@ -110,14 +110,14 @@ namespace Kzrnm.Competitive
             if (root == null) return null;
             SetNodeBase cur = root;
             while (cur.Left != null) { cur = cur.Left; }
-            return (Node)cur;
+            return Unsafe.As<Node>(cur);
         }
         internal Node MaxNode()
         {
             if (root == null) return null;
             SetNodeBase cur = root;
             while (cur.Right != null) { cur = cur.Right; }
-            return (Node)cur;
+            return Unsafe.As<Node>(cur);
         }
         public T Min => MinNode() switch { { } n => op.GetValue(n), _ => default(T) };
         public T Max => MaxNode() switch { { } n => op.GetValue(n), _ => default(T) };
@@ -130,7 +130,7 @@ namespace Kzrnm.Competitive
             {
                 int order = op.Compare(item, current);
                 if (order == 0) return current;
-                current = (Node)(order < 0 ? current.Left : current.Right);
+                current = Unsafe.As<Node>(order < 0 ? current.Left : current.Right);
             }
             return null;
         }
@@ -172,7 +172,7 @@ namespace Kzrnm.Competitive
                     currentIndex += NodeSize(current.Left) + 1;
                 }
             }
-            return (Node)current;
+            return Unsafe.As<Node>(current);
         }
 
         public (Node node, int index) BinarySearch(TCmp item, bool isLowerBound)
@@ -189,14 +189,14 @@ namespace Kzrnm.Competitive
                 {
                     right = current;
                     ri = ci;
-                    current = (Node)current.Left;
+                    current = Unsafe.As<Node>(current.Left);
                     if (current != null)
                         ci -= NodeSize(current.Right) + 1;
                     else break;
                 }
                 else
                 {
-                    current = (Node)current.Right;
+                    current = Unsafe.As<Node>(current.Right);
                     if (current != null)
                         ci += NodeSize(current.Left) + 1;
                     else break;
@@ -278,7 +278,7 @@ namespace Kzrnm.Competitive
                 greatGrandParent = grandParent;
                 grandParent = parent;
                 parent = current;
-                current = (Node)(order < 0 ? current.Left : current.Right);
+                current = Unsafe.As<Node>(order < 0 ? current.Left : current.Right);
             }
             Node node = op.Create(item, NodeColor.Red);
             if (order >= 0) parent.Right = node;
@@ -294,10 +294,10 @@ namespace Kzrnm.Competitive
         public void Remove(Node node)
             => RemoveMatch(
                 match: node,
-                parentOfMatch: (Node)node.Parent,
+                parentOfMatch: Unsafe.As<Node>(node.Parent),
                 current: node,
-                parent: (Node)node.Parent,
-                grandParent: (Node)node.Parent?.Parent);
+                parent: Unsafe.As<Node>(node.Parent),
+                grandParent: Unsafe.As<Node>(node.Parent?.Parent));
 
         private void RemoveMatch(Node match, Node parentOfMatch, Node current, Node parent, Node grandParent)
         {
@@ -311,7 +311,7 @@ namespace Kzrnm.Competitive
                     }
                     else
                     {
-                        Node sibling = (Node)parent.GetSibling(current);
+                        Node sibling = Unsafe.As<Node>(parent.GetSibling(current));
                         if (sibling.IsRed)
                         {
                             Debug.Assert(parent.IsBlack);
@@ -323,7 +323,7 @@ namespace Kzrnm.Competitive
                             ReplaceChildOrRoot(grandParent, parent, sibling);
                             grandParent = sibling;
                             if (parent == match) parentOfMatch = sibling;
-                            sibling = (Node)parent.GetSibling(current);
+                            sibling = Unsafe.As<Node>(parent.GetSibling(current));
                         }
                         Debug.Assert(IsNonNullBlack(sibling));
                         if (sibling.Is2Node)
@@ -332,7 +332,7 @@ namespace Kzrnm.Competitive
                         }
                         else
                         {
-                            Node newGrandParent = (Node)parent.Rotate(parent.GetRotation(current, sibling));
+                            Node newGrandParent = Unsafe.As<Node>(parent.Rotate(parent.GetRotation(current, sibling)));
                             newGrandParent.Color = parent.Color;
                             parent.ColorBlack();
                             current.ColorRed();
@@ -346,7 +346,7 @@ namespace Kzrnm.Competitive
                 }
                 grandParent = parent;
                 parent = current;
-                current = (Node)(current != match ? current.Left : current.Right);
+                current = Unsafe.As<Node>(current != match ? current.Left : current.Right);
             }
             if (match != null)
             {
@@ -375,7 +375,7 @@ namespace Kzrnm.Competitive
                     }
                     else
                     {
-                        Node sibling = (Node)parent.GetSibling(current);
+                        Node sibling = Unsafe.As<Node>(parent.GetSibling(current));
                         if (sibling.IsRed)
                         {
                             Debug.Assert(parent.IsBlack);
@@ -387,7 +387,7 @@ namespace Kzrnm.Competitive
                             ReplaceChildOrRoot(grandParent, parent, sibling);
                             grandParent = sibling;
                             if (parent == match) parentOfMatch = sibling;
-                            sibling = (Node)parent.GetSibling(current);
+                            sibling = Unsafe.As<Node>(parent.GetSibling(current));
                         }
                         Debug.Assert(IsNonNullBlack(sibling));
                         if (sibling.Is2Node)
@@ -396,7 +396,7 @@ namespace Kzrnm.Competitive
                         }
                         else
                         {
-                            Node newGrandParent = (Node)parent.Rotate(parent.GetRotation(current, sibling));
+                            Node newGrandParent = Unsafe.As<Node>(parent.Rotate(parent.GetRotation(current, sibling)));
                             newGrandParent.Color = parent.Color;
                             parent.ColorBlack();
                             current.ColorRed();
@@ -417,7 +417,7 @@ namespace Kzrnm.Competitive
                 }
                 grandParent = parent;
                 parent = current;
-                current = (Node)(order < 0 ? current.Left : current.Right);
+                current = Unsafe.As<Node>(order < 0 ? current.Left : current.Right);
             }
             if (match != null)
             {
@@ -459,7 +459,7 @@ namespace Kzrnm.Competitive
             }
             grandParent.ColorRed();
             newChildOfGreatGrandParent.ColorBlack();
-            ReplaceChildOrRoot(greatGrandParent, grandParent, (Node)newChildOfGreatGrandParent);
+            ReplaceChildOrRoot(greatGrandParent, grandParent, Unsafe.As<Node>(newChildOfGreatGrandParent));
 
         }
         protected void ReplaceChildOrRoot(Node parent, Node child, Node newChild)
@@ -475,7 +475,7 @@ namespace Kzrnm.Competitive
             if (successor == match)
             {
                 Debug.Assert(match.Right == null);
-                successor = (Node)match.Left;
+                successor = Unsafe.As<Node>(match.Left);
             }
             else
             {
@@ -609,7 +609,7 @@ namespace Kzrnm.Competitive
                     current = null;
                     return false;
                 }
-                current = (Node)stack.Pop();
+                current = Unsafe.As<Node>(stack.Pop());
                 var node = reverse ? current.Left : current.Right;
                 while (node != null)
                 {
