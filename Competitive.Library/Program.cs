@@ -26,7 +26,7 @@ internal partial class Program
         cw.Flush();
     }
     partial void WriteBool(bool b);
-#pragma warning disable IDE1006
+#pragma warning disable IDE1006,IDE0060
     object Calc(Program dum = null) => dum;
     bool __ManyTestCases(Program dum = null) => false;
 }
