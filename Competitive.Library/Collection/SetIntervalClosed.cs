@@ -47,7 +47,7 @@ namespace Kzrnm.Competitive
         protected override ((T From, T ToInclusive)[] array, int arrayCount) InitArray(IEnumerable<(T From, T ToInclusive)> collection)
         {
             var list = new SimpleList<(T From, T ToInclusive)>(
-                collection.Where(t => comparer.Compare(t.From, t.ToInclusive) < 0));
+                collection.Where(t => comparer.Compare(t.From, t.ToInclusive) <= 0));
             if (list.Count == 0) return (Array.Empty<(T From, T ToInclusive)>(), 0);
 
             list.Sort();
@@ -228,6 +228,22 @@ namespace Kzrnm.Competitive
         {
             var node = FindNode(from);
             return node != null && comparer.Compare(toInclusive, node.ToInclusive) <= 0;
+        }
+
+        /// <summary>
+        /// [<paramref name="from"/>, <paramref name="toInclusive"/>]の範囲を列挙する
+        /// </summary>
+        public IEnumerable<(T From, T ToInclusive)> Range(T from, T toInclusive)
+        {
+            if (comparer.Compare(from, Max.ToInclusive) > 0) yield break;
+            foreach (var tup in EnumerateItem(FindNodeLowerBound(from)))
+            {
+                var (f, t) = tup;
+                if (comparer.Compare(f, from) < 0) f = from;
+                if (comparer.Compare(f, toInclusive) > 0) yield break;
+                if (comparer.Compare(t, toInclusive) > 0) t = toInclusive;
+                yield return (f, t);
+            }
         }
 
         public class Node : SetNodeBase

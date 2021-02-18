@@ -15,6 +15,7 @@ namespace Kzrnm.Competitive.Collection
             },
             {
                 new (int from, int to)[]{
+                    (101,101),
                     (15, 100),
                     (-20, -2),
                     (0, 10),
@@ -23,6 +24,7 @@ namespace Kzrnm.Competitive.Collection
                     (-20, -2),
                     (0, 10),
                     (15, 100),
+                    (101,101),
                 }
             },
             {
@@ -346,6 +348,29 @@ namespace Kzrnm.Competitive.Collection
                 (30, 40),
                 (50, 60)});
             ((ICollection<(int, int)>)set).Contains((from, to)).Should().Be(isContains);
+        }
+
+        public static TheoryData Range_Data = new TheoryData<int, int, (int From, int ToInclusive)[]>
+        {
+            {  0, 9, Array.Empty<(int, int)>() },
+            { 21, 29, Array.Empty<(int, int)>() },
+            { 61, 70, Array.Empty<(int, int)>() },
+            {  0, 10, new[]{ (10, 10) } },
+            { 60, 70, new[]{ (60, 60) } },
+            { 10, 20, new[]{ (10, 20) } },
+            { 10, 30, new[]{ (10, 20), (30, 30) } },
+            { 10, 35, new[]{ (10, 20), (30, 35) } },
+            { 15, 60, new[]{ (15, 20), (30, 40), (50, 60) } },
+        };
+        [Theory]
+        [MemberData(nameof(Range_Data))]
+        public void Range(int from, int to, (int From, int ToInclusive)[] expected)
+        {
+            var set = new SetIntervalClosedInt(new[] {
+                (10, 20),
+                (30, 40),
+                (50, 60)});
+            set.Range(from, to).Should().Equal(expected);
         }
     }
 }

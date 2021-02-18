@@ -227,6 +227,22 @@ namespace Kzrnm.Competitive
             return node != null && comparer.Compare(toExclusive, node.ToExclusive) <= 0;
         }
 
+        /// <summary>
+        /// [<paramref name="from"/>, <paramref name="toExclusive"/>)の範囲を列挙する
+        /// </summary>
+        public IEnumerable<(T From, T ToExclusive)> Range(T from, T toExclusive)
+        {
+            if (comparer.Compare(from, Max.ToExclusive) >= 0) yield break;
+            foreach (var tup in EnumerateItem(FindNodeLowerBound(from)))
+            {
+                var (f, t) = tup;
+                if (comparer.Compare(f, from) < 0) f = from;
+                if (comparer.Compare(f, toExclusive) >= 0) yield break;
+                if (comparer.Compare(t, toExclusive) > 0) t = toExclusive;
+                yield return (f, t);
+            }
+        }
+
         public class Node : SetNodeBase
         {
             public T From;
