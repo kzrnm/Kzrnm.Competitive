@@ -447,7 +447,10 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             if (parent != null)
                 parent.ReplaceChild(child, newChild);
             else
+            {
                 root = newChild;
+                if (root != null) root.Parent = null;
+            }
         }
         protected void ReplaceNode(Node match, Node parentOfMatch, Node successor, Node parentOfSuccessor)
         {
@@ -641,7 +644,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         {
             this.Color = color;
         }
-        public SetNodeBase Parent { get; private set; }
+        public SetNodeBase Parent { get; internal set; }
         SetNodeBase _left;
         public SetNodeBase Left
         {
