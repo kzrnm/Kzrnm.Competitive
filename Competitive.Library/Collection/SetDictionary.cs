@@ -2,13 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
 {
     using static MethodImplOptions;
-    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
-    [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class SetDictionary<TKey, TValue> : SetDictionary<TKey, TValue, DefaultComparerStruct<TKey>>
         where TKey : IComparable<TKey>
     {
@@ -16,7 +15,7 @@ namespace Kzrnm.Competitive
         public SetDictionary(IDictionary<TKey, TValue> dict, bool isMulti = false) : base(dict, new DefaultComparerStruct<TKey>(), isMulti) { }
     }
 
-    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
+    [DebuggerTypeProxy(typeof(SetDictionary<,,>.DebugView))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class SetDictionary<TKey, TValue, TOp>
         : SetBase<KeyValuePair<TKey, TValue>, TKey, SetDictionary<TKey, TValue, TOp>.Node, SetDictionary<TKey, TValue, TOp>.NodeOperator>,
@@ -146,6 +145,16 @@ namespace Kzrnm.Competitive
             public int Compare(Node node1, Node node2) => comparer.Compare(node1.Key, node2.Key);
             [MethodImpl(AggressiveInlining)]
             public int Compare(TKey value, Node node) => comparer.Compare(value, node.Key);
+        }
+        private class DebugView
+        {
+            private readonly IEnumerable<KeyValuePair<TKey, TValue>> collection;
+            public DebugView(IEnumerable<KeyValuePair<TKey, TValue>> collection)
+            {
+                this.collection = collection ?? throw new ArgumentNullException(nameof(collection));
+            }
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            public KeyValuePair<TKey, TValue>[] Items => collection.ToArray();
         }
     }
 }

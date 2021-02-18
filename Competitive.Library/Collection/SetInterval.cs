@@ -13,40 +13,36 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 半開区間をSetで保持する
     /// </summary>
-    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
-    [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class RangeSetLong : RangeSet<long, LongOperator>
+    public class SetIntervalLong : SetInterval<long, LongOperator>
     {
-        public RangeSetLong() : base() { }
-        public RangeSetLong(IEnumerable<(long From, long ToExclusive)> collection) : base(collection) { }
+        public SetIntervalLong() : base() { }
+        public SetIntervalLong(IEnumerable<(long From, long ToExclusive)> collection) : base(collection) { }
     }
     /// <summary>
     /// 半開区間をSetで保持する
     /// </summary>
-    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
-    [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class RangeSetInt : RangeSet<int, IntOperator>
+    public class SetIntervalInt : SetInterval<int, IntOperator>
     {
-        public RangeSetInt() : base() { }
-        public RangeSetInt(IEnumerable<(int From, int ToExclusive)> collection) : base(collection) { }
+        public SetIntervalInt() : base() { }
+        public SetIntervalInt(IEnumerable<(int From, int ToExclusive)> collection) : base(collection) { }
     }
 
     /// <summary>
     /// 半開区間をSetで保持する
     /// </summary>
-    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
+    [DebuggerTypeProxy(typeof(SetInterval<,>.DebugView))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class RangeSet<T, TOp>
-        : SetBase<(T From, T ToExclusive), T, RangeSet<T, TOp>.Node, RangeSet<T, TOp>.NodeOperator>
+    public class SetInterval<T, TOp>
+        : SetBase<(T From, T ToExclusive), T, SetInterval<T, TOp>.Node, SetInterval<T, TOp>.NodeOperator>
         where TOp : struct, IComparer<T>, IUnaryNumOperator<T>
     {
-        public RangeSet() : this(default(TOp)) { }
-        public RangeSet(IEnumerable<(T From, T ToExclusive)> collection) : this(collection, default(TOp)) { }
-        public RangeSet(TOp comparer) : base(false, new NodeOperator(comparer))
+        public SetInterval() : this(default(TOp)) { }
+        public SetInterval(IEnumerable<(T From, T ToExclusive)> collection) : this(collection, default(TOp)) { }
+        public SetInterval(TOp comparer) : base(false, new NodeOperator(comparer))
         {
             this.comparer = comparer;
         }
-        public RangeSet(IEnumerable<(T From, T ToExclusive)> collection, TOp comparer)
+        public SetInterval(IEnumerable<(T From, T ToExclusive)> collection, TOp comparer)
             : base(false, new NodeOperator(comparer), collection) { }
         protected override ((T From, T ToExclusive)[] array, int arrayCount) InitArray(IEnumerable<(T From, T ToExclusive)> collection)
         {
@@ -279,6 +275,27 @@ namespace Kzrnm.Competitive
                     return 0;
                 return 1;
             }
+        }
+        private class DebugView
+        {
+            [DebuggerDisplay("[{" + nameof(From) + "}, {" + nameof(ToExclusive) + "})")]
+            public class DebugItem
+            {
+                T From;
+                T ToExclusive;
+                public DebugItem(T From, T ToExclusive)
+                {
+                    this.From = From;
+                    this.ToExclusive = ToExclusive;
+                }
+            }
+            private readonly IEnumerable<(T From, T ToExclusive)> collection;
+            public DebugView(IEnumerable<(T From, T ToExclusive)> collection)
+            {
+                this.collection = collection ?? throw new ArgumentNullException(nameof(collection));
+            }
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            public DebugItem[] Items => collection.Select(t => new DebugItem(t.From, t.ToExclusive)).ToArray();
         }
     }
 }

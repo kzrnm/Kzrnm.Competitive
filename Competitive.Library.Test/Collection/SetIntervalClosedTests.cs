@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Collection
 {
-    public class RangeSetTests
+    public class SetIntervalClosedTests
     {
         public static TheoryData Add_Data = new TheoryData<(int from, int to)[], (int from, int to)[]>
         {
@@ -163,14 +163,14 @@ namespace Kzrnm.Competitive.Collection
         [MemberData(nameof(Add_Data))]
         public void Contructor((int from, int to)[] arg, (int from, int to)[] result)
         {
-            new RangeSetInt(arg).Should().Equal(result);
+            new SetIntervalClosedInt(arg).Should().Equal(result);
         }
 
         [Theory]
         [MemberData(nameof(Add_Data))]
         public void AddTheory((int from, int to)[] arg, (int from, int to)[] result)
         {
-            var set = new RangeSetInt();
+            var set = new SetIntervalClosedInt();
             foreach (var (f, t) in arg)
                 set.Add(f, t);
             set.Should().Equal(result);
@@ -178,7 +178,7 @@ namespace Kzrnm.Competitive.Collection
         [Fact]
         public void Add()
         {
-            var set = new RangeSetInt();
+            var set = new SetIntervalClosedInt();
             set.Should().Equal(Array.Empty<(int From, int ToExclusive)>());
 
             set.Add(50, 60);
@@ -206,7 +206,7 @@ namespace Kzrnm.Competitive.Collection
                 (50, 60),
             });
 
-            set.Add(25, 35);
+            set.Add(25, 30);
             set.Should().Equal(new (int, int)[] {
                 (10, 40),
                 (50, 60),
@@ -224,6 +224,13 @@ namespace Kzrnm.Competitive.Collection
                 (49, 60),
             });
 
+            set.Add(42, 48);
+            set.Should().Equal(new (int, int)[] {
+                (10, 41),
+                (42, 48),
+                (49, 60),
+            });
+
             set.Add(9, 61);
             set.Should().Equal(new (int, int)[] {
                 (9, 61),
@@ -233,7 +240,7 @@ namespace Kzrnm.Competitive.Collection
         [Fact]
         public void MinMax()
         {
-            var set = new RangeSetInt();
+            var set = new SetIntervalClosedInt();
             set.Should().Equal(Array.Empty<(int From, int ToExclusive)>());
             set.Min.Should().Be(default);
             set.Max.Should().Be(default);
@@ -266,18 +273,12 @@ namespace Kzrnm.Competitive.Collection
 
         public static TheoryData Remove_Data = new TheoryData<int, int, bool, (int from, int to)[]>
         {
-            { 1,10,false,new (int,int)[]{(10, 20),(25, 30),(35, 40),(50, 60) } },
-            { 20,25,false,new (int,int)[]{(10, 20),(25, 30),(35, 40),(50, 60) } },
-            { 1,12,true,new (int,int)[]{(12, 20),(25, 30),(35, 40),(50, 60) } },
-            { 1,19,true,new (int,int)[]{(19, 20),(25, 30),(35, 40),(50, 60) } },
+            { 1,9,false,new (int,int)[]{(10, 20),(25, 30),(35, 40),(50, 60) } },
+            { 21,24,false,new (int,int)[]{(10, 20),(25, 30),(35, 40),(50, 60) } },
+            { 1,10,true,new (int,int)[]{(11, 20),(25, 30),(35, 40),(50, 60) } },
             { 1,20,true,new (int,int)[]{(25, 30),(35, 40),(50, 60) } },
-            { 1,26,true,new (int,int)[]{(26, 30),(35, 40),(50, 60) } },
-            { 18,22,true,new (int,int)[]{(10, 18),(25, 30),(35, 40),(50, 60) } },
-            { 18,27,true,new (int,int)[]{(10, 18),(27, 30),(35, 40),(50, 60) } },
-            { 21,49,true,new (int,int)[]{(10, 20),(50, 60) } },
-            { 20,50,true,new (int,int)[]{(10, 20),(50, 60) } },
-            { 19,51,true,new (int,int)[]{(10, 19),(51, 60) } },
-            { 18,55,true,new (int,int)[]{(10, 18),(55, 60) } },
+            { 20,25,true,new (int,int)[]{(10, 19),(26, 30),(35, 40),(50, 60) } },
+            { 20,39,true,new (int,int)[]{(10, 19),(40, 40),(50, 60) } },
             { 10,60,true,Array.Empty<(int, int)>()},
             { 1,61,true,Array.Empty<(int, int)>()},
         };
@@ -285,7 +286,7 @@ namespace Kzrnm.Competitive.Collection
         [MemberData(nameof(Remove_Data))]
         public void Remove(int from, int to, bool success, (int from, int to)[] result)
         {
-            var set = new RangeSetInt(new[] {
+            var set = new SetIntervalClosedInt(new[] {
                 (10, 20),
                 (25, 30),
                 (35, 40),
@@ -301,24 +302,24 @@ namespace Kzrnm.Competitive.Collection
         [InlineData(10, true)]
         [InlineData(18, true)]
         [InlineData(19, true)]
-        [InlineData(20, false)]
+        [InlineData(20, true)]
         [InlineData(28, false)]
         [InlineData(29, false)]
         [InlineData(30, true)]
         [InlineData(38, true)]
         [InlineData(39, true)]
-        [InlineData(40, false)]
+        [InlineData(40, true)]
         [InlineData(48, false)]
         [InlineData(49, false)]
         [InlineData(50, true)]
         [InlineData(58, true)]
         [InlineData(59, true)]
-        [InlineData(60, false)]
+        [InlineData(60, true)]
         [InlineData(68, false)]
         [InlineData(69, false)]
         public void Contains(int value, bool isContains)
         {
-            var set = new RangeSetInt(new[] {
+            var set = new SetIntervalClosedInt(new[] {
                 (10, 20),
                 (30, 40),
                 (50, 60)});
@@ -340,7 +341,7 @@ namespace Kzrnm.Competitive.Collection
         [InlineData(11, 19, true)]
         public void ContainsRange(int from, int to, bool isContains)
         {
-            var set = new RangeSetInt(new[] {
+            var set = new SetIntervalClosedInt(new[] {
                 (10, 20),
                 (30, 40),
                 (50, 60)});
