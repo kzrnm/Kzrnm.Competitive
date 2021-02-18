@@ -76,13 +76,11 @@ namespace Kzrnm.Competitive
         protected new bool Add((T From, T ToInclusive) item) => Add(item.From, item.ToInclusive);
         public bool Add(T from, T toInclusive)
         {
-            var left = FindNodeLowerBound(comparer.Decrement(from));
+            var left = FindNode(from);
             var right = FindNodeLowerBound(toInclusive);
             if (left != null)
             {
-                if (comparer.Compare(from, left.From) < 0 || comparer.Compare(from, left.ToInclusive) > 0)
-                    left = null;
-                else if (comparer.Compare(toInclusive, left.ToInclusive) <= 0)
+                if (comparer.Compare(toInclusive, left.ToInclusive) <= 0)
                     return false;
             }
             if (right != null && comparer.Compare(toInclusive, right.From) < 0)
