@@ -1,9 +1,11 @@
 ﻿using AtCoder.Internal;
 using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Kzrnm.Competitive
 {
+    [DebuggerTypeProxy(typeof(DebugView))]
+    [DebuggerDisplay("Count = {" + nameof(_n) + "}")]
     public class UnionFind
     {
         internal readonly int _n;
@@ -115,6 +117,16 @@ namespace Kzrnm.Competitive
                 ind[leaderID]++;
             }
             return result;
+        }
+        private class DebugView
+        {
+            private readonly UnionFind uf;
+            public DebugView(UnionFind uf)
+            {
+                this.uf = uf ?? throw new ArgumentNullException(nameof(uf));
+            }
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            public int[][] Groups => uf.Groups();
         }
     }
 }

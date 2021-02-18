@@ -281,7 +281,7 @@ namespace Kzrnm.Competitive
         }
         private class DebugView
         {
-            [DebuggerDisplay("[{" + nameof(From) + "}, {" + nameof(ToInclusive) + "})")]
+            [DebuggerDisplay("[{" + nameof(From) + "}, {" + nameof(ToInclusive) + "}]")]
             public class DebugItem
             {
                 T From;
