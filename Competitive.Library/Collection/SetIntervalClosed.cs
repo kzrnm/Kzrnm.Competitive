@@ -231,9 +231,9 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// [<paramref name="from"/>, <paramref name="toInclusive"/>]の範囲を列挙する
+        /// [<paramref name="from"/>, <paramref name="toInclusive"/>]の範囲を列挙する。はみ出た範囲は切り捨てる。
         /// </summary>
-        public IEnumerable<(T From, T ToInclusive)> Range(T from, T toInclusive)
+        public IEnumerable<(T From, T ToInclusive)> RangeTruncate(T from, T toInclusive)
         {
             if (comparer.Compare(from, Max.ToInclusive) > 0) yield break;
             foreach (var tup in EnumerateItem(FindNodeLowerBound(from)))
@@ -242,6 +242,19 @@ namespace Kzrnm.Competitive
                 if (comparer.Compare(f, from) < 0) f = from;
                 if (comparer.Compare(f, toInclusive) > 0) yield break;
                 if (comparer.Compare(t, toInclusive) > 0) t = toInclusive;
+                yield return (f, t);
+            }
+        }
+
+        /// <summary>
+        /// [<paramref name="from"/>, <paramref name="toExclusive"/>)の範囲を列挙する。はみ出た範囲も含める。
+        /// </summary>
+        public IEnumerable<(T From, T ToInclusive)> RangeAll(T from, T toInclusive)
+        {
+            if (comparer.Compare(from, Max.ToInclusive) > 0) yield break;
+            foreach (var (f, t) in EnumerateItem(FindNodeLowerBound(from)))
+            {
+                if (comparer.Compare(f, toInclusive) > 0) yield break;
                 yield return (f, t);
             }
         }

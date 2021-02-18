@@ -347,7 +347,7 @@ namespace Kzrnm.Competitive.Collection
             ((ICollection<(int, int)>)set).Contains((from, to)).Should().Be(isContains);
         }
 
-        public static TheoryData Range_Data = new TheoryData<int, int, (int From, int ToExclusive)[]>
+        public static TheoryData RangeTruncate_Data = new TheoryData<int, int, (int From, int ToExclusive)[]>
         {
             {  0, 10, Array.Empty<(int, int)>() },
             { 20, 30, Array.Empty<(int, int)>() },
@@ -360,14 +360,37 @@ namespace Kzrnm.Competitive.Collection
             { 15, 60, new[]{ (15, 20), (30, 40), (50, 60) } },
         };
         [Theory]
-        [MemberData(nameof(Range_Data))]
-        public void Range(int from, int to, (int From, int ToExclusive)[] expected)
+        [MemberData(nameof(RangeTruncate_Data))]
+        public void RangeTruncate(int from, int to, (int From, int ToExclusive)[] expected)
         {
             var set = new SetIntervalInt(new[] {
                 (10, 20),
                 (30, 40),
                 (50, 60)});
-            set.Range(from, to).Should().Equal(expected);
+            set.RangeTruncate(from, to).Should().Equal(expected);
+        }
+
+        public static TheoryData RangeAll_Data = new TheoryData<int, int, (int From, int ToExclusive)[]>
+        {
+            {  0, 10, Array.Empty<(int, int)>() },
+            { 20, 30, Array.Empty<(int, int)>() },
+            { 60, 70, Array.Empty<(int, int)>() },
+            {  0, 11, new[]{ (10, 20) } },
+            { 59, 70, new[]{ (50, 60) } },
+            { 10, 20, new[]{ (10, 20) } },
+            { 10, 30, new[]{ (10, 20) } },
+            { 10, 35, new[]{ (10, 20), (30, 40) } },
+            { 15, 60, new[]{ (10, 20), (30, 40), (50, 60) } },
+        };
+        [Theory]
+        [MemberData(nameof(RangeAll_Data))]
+        public void RangeAll(int from, int to, (int From, int ToExclusive)[] expected)
+        {
+            var set = new SetIntervalInt(new[] {
+                (10, 20),
+                (30, 40),
+                (50, 60)});
+            set.RangeAll(from, to).Should().Equal(expected);
         }
     }
 }
