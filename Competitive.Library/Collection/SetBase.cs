@@ -18,6 +18,21 @@ namespace Kzrnm.Competitive
         where Node : SetNodeBase
         where TOp : struct, INodeOperator<T, TCmp, Node>
     {
+        /*
+         * Original is SortedSet<T>
+         *
+         * Copyright (c) .NET Foundation and Contributors
+         * Released under the MIT license
+         * https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
+         */
+        internal const string LISENCE = @"
+Original is SortedSet<T>
+
+Copyright (c) .NET Foundation and Contributors
+Released under the MIT license
+https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
+";
+
         private readonly TOp op;
 
         public bool IsMulti { get; }
@@ -288,6 +303,49 @@ namespace Kzrnm.Competitive
             return true;
         }
 
+        protected void Fix2Node(Node match, ref Node parentOfMatch, Node current, Node parent, Node grandParent)
+        {
+            Debug.Assert(current.Is2Node);
+            if (parent == null)
+            {
+                current.ColorRed();
+            }
+            else
+            {
+                Node sibling = Unsafe.As<Node>(parent.GetSibling(current));
+                if (sibling.IsRed)
+                {
+                    Debug.Assert(parent.IsBlack);
+                    if (parent.Right == sibling) parent.RotateLeft();
+                    else parent.RotateRight();
+
+                    parent.ColorRed();
+                    sibling.ColorBlack();
+                    ReplaceChildOrRoot(grandParent, parent, sibling);
+                    grandParent = sibling;
+                    if (parent == match) parentOfMatch = sibling;
+                    sibling = Unsafe.As<Node>(parent.GetSibling(current));
+                }
+                Debug.Assert(IsNonNullBlack(sibling));
+                if (sibling.Is2Node)
+                {
+                    parent.Merge2Nodes();
+                }
+                else
+                {
+                    Node newGrandParent = Unsafe.As<Node>(parent.Rotate(parent.GetRotation(current, sibling)));
+                    newGrandParent.Color = parent.Color;
+                    parent.ColorBlack();
+                    current.ColorRed();
+                    ReplaceChildOrRoot(grandParent, parent, newGrandParent);
+                    if (parent == match)
+                    {
+                        parentOfMatch = newGrandParent;
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// 該当ノードを削除する。動作怪しいかも
         /// </summary>
@@ -304,46 +362,7 @@ namespace Kzrnm.Competitive
             while (current != null)
             {
                 if (current.Is2Node)
-                {
-                    if (parent == null)
-                    {
-                        current.ColorRed();
-                    }
-                    else
-                    {
-                        Node sibling = Unsafe.As<Node>(parent.GetSibling(current));
-                        if (sibling.IsRed)
-                        {
-                            Debug.Assert(parent.IsBlack);
-                            if (parent.Right == sibling) parent.RotateLeft();
-                            else parent.RotateRight();
-
-                            parent.ColorRed();
-                            sibling.ColorBlack();
-                            ReplaceChildOrRoot(grandParent, parent, sibling);
-                            grandParent = sibling;
-                            if (parent == match) parentOfMatch = sibling;
-                            sibling = Unsafe.As<Node>(parent.GetSibling(current));
-                        }
-                        Debug.Assert(IsNonNullBlack(sibling));
-                        if (sibling.Is2Node)
-                        {
-                            parent.Merge2Nodes();
-                        }
-                        else
-                        {
-                            Node newGrandParent = Unsafe.As<Node>(parent.Rotate(parent.GetRotation(current, sibling)));
-                            newGrandParent.Color = parent.Color;
-                            parent.ColorBlack();
-                            current.ColorRed();
-                            ReplaceChildOrRoot(grandParent, parent, newGrandParent);
-                            if (parent == match)
-                            {
-                                parentOfMatch = newGrandParent;
-                            }
-                        }
-                    }
-                }
+                    Fix2Node(match, ref parentOfMatch, current, parent, grandParent);
                 grandParent = parent;
                 parent = current;
                 current = Unsafe.As<Node>(current != match ? current.Left : current.Right);
@@ -368,46 +387,7 @@ namespace Kzrnm.Competitive
             while (current != null)
             {
                 if (current.Is2Node)
-                {
-                    if (parent == null)
-                    {
-                        current.ColorRed();
-                    }
-                    else
-                    {
-                        Node sibling = Unsafe.As<Node>(parent.GetSibling(current));
-                        if (sibling.IsRed)
-                        {
-                            Debug.Assert(parent.IsBlack);
-                            if (parent.Right == sibling) parent.RotateLeft();
-                            else parent.RotateRight();
-
-                            parent.ColorRed();
-                            sibling.ColorBlack();
-                            ReplaceChildOrRoot(grandParent, parent, sibling);
-                            grandParent = sibling;
-                            if (parent == match) parentOfMatch = sibling;
-                            sibling = Unsafe.As<Node>(parent.GetSibling(current));
-                        }
-                        Debug.Assert(IsNonNullBlack(sibling));
-                        if (sibling.Is2Node)
-                        {
-                            parent.Merge2Nodes();
-                        }
-                        else
-                        {
-                            Node newGrandParent = Unsafe.As<Node>(parent.Rotate(parent.GetRotation(current, sibling)));
-                            newGrandParent.Color = parent.Color;
-                            parent.ColorBlack();
-                            current.ColorRed();
-                            ReplaceChildOrRoot(grandParent, parent, newGrandParent);
-                            if (parent == match)
-                            {
-                                parentOfMatch = newGrandParent;
-                            }
-                        }
-                    }
-                }
+                    Fix2Node(match, ref parentOfMatch, current, parent, grandParent);
                 int order = foundMatch ? -1 : op.Compare(item, current);
                 if (order == 0)
                 {

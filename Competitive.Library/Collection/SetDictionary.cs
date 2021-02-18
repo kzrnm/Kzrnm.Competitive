@@ -23,21 +23,6 @@ namespace Kzrnm.Competitive
         IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
         where TOp : struct, IComparer<TKey>
     {
-        /*
-         * Original is SortedSet<T>
-         *
-         * Copyright (c) .NET Foundation and Contributors
-         * Released under the MIT license
-         * https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
-         */
-        internal const string LISENCE = @"
-Original is SortedSet<T>
-
-Copyright (c) .NET Foundation and Contributors
-Released under the MIT license
-https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
-";
-
         public SetDictionary(bool isMulti = false) : this(default(TOp), isMulti) { }
         public SetDictionary(IDictionary<TKey, TValue> dict, bool isMulti = false) : this(dict, default(TOp), isMulti) { }
         public SetDictionary(TOp comparer, bool isMulti = false) : base(isMulti, new NodeOperator(comparer))
@@ -80,15 +65,22 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values => ((IDictionary<TKey, TValue>)this).Values;
         public TValue this[TKey key]
         {
+            [MethodImpl(AggressiveInlining)]
             get => FindNode(key).Value;
-            set => FindNode(key).Value = value;
+            [MethodImpl(AggressiveInlining)]
+            set
+            {
+                if (!Add(key, value))
+                    if (!IsMulti)
+                        ThrowInvalidOperationException(key.ToString());
+            }
         }
-
+        static void ThrowInvalidOperationException(string key) => throw new InvalidOperationException($"{key} already exists.");
 
         void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> pair) => Add(pair.Key, pair.Value);
-        void IDictionary<TKey, TValue>.Add(TKey key, TValue value)=> DoAdd(KeyValuePair.Create(key, value));
+        void IDictionary<TKey, TValue>.Add(TKey key, TValue value) => DoAdd(KeyValuePair.Create(key, value));
         public bool Add(TKey key, TValue value) => DoAdd(KeyValuePair.Create(key, value));
-  
+
 
         public bool ContainsKey(TKey key) => FindNode(key) != null;
         bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> pair)

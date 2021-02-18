@@ -21,21 +21,6 @@ namespace Kzrnm.Competitive
     public class Set<T, TOp> : SetBase<T, T, Set<T, TOp>.Node, Set<T, TOp>.NodeOperator>
         where TOp : struct, IComparer<T>
     {
-        /*
-         * Original is SortedSet<T>
-         *
-         * Copyright (c) .NET Foundation and Contributors
-         * Released under the MIT license
-         * https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
-         */
-        internal const string LISENCE = @"
-Original is SortedSet<T>
-
-Copyright (c) .NET Foundation and Contributors
-Released under the MIT license
-https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
-";
-
         public Set(bool isMulti = false) : this(default(TOp), isMulti) { }
         public Set(IEnumerable<T> collection, bool isMulti = false) : this(collection, default(TOp), isMulti) { }
         public Set(TOp comparer, bool isMulti = false) : base(isMulti, new NodeOperator(comparer))

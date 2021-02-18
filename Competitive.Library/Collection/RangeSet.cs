@@ -10,6 +10,9 @@ namespace Kzrnm.Competitive
 {
     using static MethodImplOptions;
     using static SetNodeBase;
+    /// <summary>
+    /// 半開区間をSetで保持する
+    /// </summary>
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class RangeSetLong : RangeSet<long, LongOperator>
@@ -17,6 +20,9 @@ namespace Kzrnm.Competitive
         public RangeSetLong() : base() { }
         public RangeSetLong(IEnumerable<(long From, long ToExclusive)> collection) : base(collection) { }
     }
+    /// <summary>
+    /// 半開区間をSetで保持する
+    /// </summary>
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class RangeSetInt : RangeSet<int, IntOperator>
@@ -25,27 +31,15 @@ namespace Kzrnm.Competitive
         public RangeSetInt(IEnumerable<(int From, int ToExclusive)> collection) : base(collection) { }
     }
 
+    /// <summary>
+    /// 半開区間をSetで保持する
+    /// </summary>
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class RangeSet<T, TOp>
         : SetBase<(T From, T ToExclusive), T, RangeSet<T, TOp>.Node, RangeSet<T, TOp>.NodeOperator>
         where TOp : struct, IComparer<T>, IUnaryNumOperator<T>
     {
-        /*
-         * Original is SortedSet<T>
-         *
-         * Copyright (c) .NET Foundation and Contributors
-         * Released under the MIT license
-         * https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
-         */
-        internal const string LISENCE = @"
-Original is SortedSet<T>
-
-Copyright (c) .NET Foundation and Contributors
-Released under the MIT license
-https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
-";
-
         public RangeSet() : this(default(TOp)) { }
         public RangeSet(IEnumerable<(T From, T ToExclusive)> collection) : this(collection, default(TOp)) { }
         public RangeSet(TOp comparer) : base(false, new NodeOperator(comparer))
@@ -174,44 +168,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 while (current != null)
                 {
                     if (current.Is2Node)
-                    {
-                        if (parent == null)
-                        {
-                            current.ColorRed();
-                        }
-                        else
-                        {
-                            Node sibling = (Node)parent.GetSibling(current);
-                            if (sibling.IsRed)
-                            {
-                                if (parent.Right == sibling) parent.RotateLeft();
-                                else parent.RotateRight();
-
-                                parent.ColorRed();
-                                sibling.ColorBlack();
-                                ReplaceChildOrRoot(grandParent, parent, sibling);
-                                grandParent = sibling;
-                                if (parent == match) parentOfMatch = sibling;
-                                sibling = (Node)parent.GetSibling(current);
-                            }
-                            if (sibling.Is2Node)
-                            {
-                                parent.Merge2Nodes();
-                            }
-                            else
-                            {
-                                Node newGrandParent = (Node)parent.Rotate(parent.GetRotation(current, sibling));
-                                newGrandParent.Color = parent.Color;
-                                parent.ColorBlack();
-                                current.ColorRed();
-                                ReplaceChildOrRoot(grandParent, parent, newGrandParent);
-                                if (parent == match)
-                                {
-                                    parentOfMatch = newGrandParent;
-                                }
-                            }
-                        }
-                    }
+                        Fix2Node(match, ref parentOfMatch, current, parent, grandParent);
                     int order = foundMatch ? -1 : comparer.Compare(from, current.From);
                     if (!foundMatch && order <= 0 && comparer.Compare(toExclusive, current.ToExclusive) >= 0)
                     {
