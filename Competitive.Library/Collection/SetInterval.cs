@@ -76,23 +76,18 @@ namespace Kzrnm.Competitive
         protected new bool Add((T From, T ToExclusive) item) => Add(item.From, item.ToExclusive);
         public bool Add(T from, T toExclusive)
         {
-            Node left = null, right = null;
-            if (FindNodeLowerBound(comparer.Decrement(from)) is { } n)
+            var left = FindNodeLowerBound(comparer.Decrement(from));
+            var right = FindNodeLowerBound(comparer.Decrement(toExclusive));
+            if (left != null)
             {
-                if (comparer.Compare(from, n.From) >= 0)
-                {
-                    if (comparer.Compare(toExclusive, n.ToExclusive) <= 0)
-                        return false;
-                    left = n;
-                    right = FindNodeLowerBound(toExclusive);
-                    if (right != null && comparer.Compare(toExclusive, right.From) < 0)
-                        right = null;
-                }
-                else if (comparer.Compare(toExclusive, n.ToExclusive) <= 0 && comparer.Compare(toExclusive, n.From) >= 0)
-                {
-                    right = n;
-                }
+                if (comparer.Compare(from, left.From) < 0 || comparer.Compare(from, left.ToExclusive) > 0)
+                    left = null;
+                else if (comparer.Compare(toExclusive, left.ToExclusive) <= 0)
+                    return false;
             }
+            if (right != null && comparer.Compare(toExclusive, right.From) < 0)
+                right = null;
+
             if (left != null && right != null)
             {
                 var pt = right.ToExclusive;

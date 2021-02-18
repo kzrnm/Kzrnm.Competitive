@@ -157,6 +157,41 @@ namespace Kzrnm.Competitive.Collection
                 new (int from, int to)[]{
                     (-30, 1000),
                 }
+            },
+            {
+                new (int from, int to)[]{
+                    (-10, 0),
+                    (10, 20),
+                    (30, 40),
+                    (0, 30),
+                },
+                new (int from, int to)[]{
+                    (-10, 40),
+                }
+            },
+            {
+                new (int from, int to)[]{
+                    (-10, 0),
+                    (10, 20),
+                    (30, 40),
+                    (-1, 31),
+                },
+                new (int from, int to)[]{
+                    (-10, 40),
+                }
+            },
+            {
+                new (int from, int to)[]{
+                    (-10, 0),
+                    (10, 20),
+                    (30, 40),
+                    (1, 29),
+                },
+                new (int from, int to)[]{
+                    (-10, 0),
+                    (1, 29),
+                    (30, 40),
+                }
             }
         };
         [Theory]
@@ -227,6 +262,17 @@ namespace Kzrnm.Competitive.Collection
             set.Add(9, 61);
             set.Should().Equal(new (int, int)[] {
                 (9, 61),
+            });
+
+            set.Add(70, 80);
+            set.Should().Equal(new (int, int)[] {
+                (9, 61),
+                (70,80),
+            });
+
+            set.Add(5, 70);
+            set.Should().Equal(new (int, int)[] {
+                (5,80),
             });
         }
 
