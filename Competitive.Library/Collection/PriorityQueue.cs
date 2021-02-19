@@ -18,6 +18,9 @@ namespace Kzrnm.Competitive
         public static PriorityQueueOp<T, TOp> Create<T, TOp>(TOp comparer)
             where TOp : IComparer<T>
             => new PriorityQueueOp<T, TOp>(comparer);
+        public static PriorityQueueOp<T, TOp> Create<T, TOp>(int capacity)
+            where TOp : IComparer<T>
+            => new PriorityQueueOp<T, TOp>(capacity, default(TOp));
         public static PriorityQueueOp<T, TOp> Create<T, TOp>(int capacity, TOp comparer)
             where TOp : IComparer<T>
             => new PriorityQueueOp<T, TOp>(capacity, comparer);
@@ -33,6 +36,9 @@ namespace Kzrnm.Competitive
         public static PriorityQueueOp<TKey, TValue, TOp> CreateDictionary<TKey, TValue, TOp>(TOp comparer)
             where TOp : IComparer<TKey>
             => new PriorityQueueOp<TKey, TValue, TOp>(comparer);
+        public static PriorityQueueOp<TKey, TValue, TOp> CreateDictionary<TKey, TValue, TOp>(int capacity)
+            where TOp : IComparer<TKey>
+            => new PriorityQueueOp<TKey, TValue, TOp>(capacity, default(TOp));
         public static PriorityQueueOp<TKey, TValue, TOp> CreateDictionary<TKey, TValue, TOp>(int capacity, TOp comparer)
             where TOp : IComparer<TKey>
             => new PriorityQueueOp<TKey, TValue, TOp>(capacity, comparer);
