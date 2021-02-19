@@ -20,6 +20,28 @@ namespace Kzrnm.Competitive
         /// 座標圧縮を行う
         /// </summary>
         public static ZahyoCompress<T> Create<T>(ReadOnlySpan<T> orig) => new ZahyoCompress<T>(orig).Compress();
+        /// <summary>
+        /// 座標圧縮を行う
+        /// </summary>
+        public static ZahyoCompress<T> Create<T>(Span<T> orig) => new ZahyoCompress<T>(orig).Compress();
+        /// <summary>
+        /// 座標圧縮を行う
+        /// </summary>
+        public static ZahyoCompress<T> Create<T>(T[] orig) => new ZahyoCompress<T>((ReadOnlySpan<T>)orig).Compress();
+
+        /// <summary>
+        /// 座標圧縮後の値に置換した配列を取得する
+        /// </summary>
+        public static int[] CompressedArray<T>(ReadOnlySpan<T> orig) => new ZahyoCompress<T>(orig).Replace(orig);
+
+        /// <summary>
+        /// 座標圧縮後の値に置換した配列を取得する
+        /// </summary>
+        public static int[] CompressedArray<T>(Span<T> orig) => CompressedArray((ReadOnlySpan<T>)orig);
+        /// <summary>
+        /// 座標圧縮後の値に置換した配列を取得する
+        /// </summary>
+        public static int[] CompressedArray<T>(T[] orig) => CompressedArray((ReadOnlySpan<T>)orig);
     }
     /// <summary>
     /// 座標圧縮を行う
@@ -110,10 +132,5 @@ namespace Kzrnm.Competitive
                 res[i] = zip[orig[i]];
             return res;
         }
-
-        /// <summary>
-        /// 座標圧縮後の値に置換した配列を取得する
-        /// </summary>
-        public static int[] CompressedArray(ReadOnlySpan<T> orig) => new ZahyoCompress<T>(orig).Replace(orig);
     }
 }

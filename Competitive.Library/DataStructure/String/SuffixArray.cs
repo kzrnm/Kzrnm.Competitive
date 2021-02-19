@@ -12,9 +12,9 @@ namespace Kzrnm.Competitive
         int[] SA;
         int[] rank;
         SparseTableRMQ rmq;
-        public static SuffixArray Create(string str) => new SuffixArray(ZahyoCompress<char>.CompressedArray(str.AsSpan()));
-        public static SuffixArray Create<T>(IEnumerable<T> str) => new SuffixArray(ZahyoCompress<T>.CompressedArray(str.ToArray()));
-        public static SuffixArray Create<T>(T[] str) => new SuffixArray(ZahyoCompress<T>.CompressedArray(str));
+        public static SuffixArray Create(string str) => new SuffixArray(ZahyoCompress.CompressedArray(str.AsSpan()));
+        public static SuffixArray Create<T>(IEnumerable<T> str) => new SuffixArray(ZahyoCompress.CompressedArray(str.ToArray()));
+        public static SuffixArray Create<T>(T[] str) => new SuffixArray(ZahyoCompress.CompressedArray(str));
         private SuffixArray(ReadOnlySpan<int> str)
         {
             N = str.Length;

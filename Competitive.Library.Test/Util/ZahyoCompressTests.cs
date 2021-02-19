@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -58,6 +59,13 @@ namespace Kzrnm.Competitive.Util
                 { 'k',3 },
             });
             c.Original.Should().Equal('c', 'e', 'i', 'k', 'm', 'o', 'p', 'r', 's');
+        }
+
+        [Fact]
+        public void CompressedArray()
+        {
+            ZahyoCompress.CompressedArray("compress".AsSpan()).Should().Equal(0, 3, 2, 4, 5, 1, 6, 6);
+            ZahyoCompress.CompressedArray(new[] { 3, 5, 6, 41, 6 }).Should().Equal(0, 1, 2, 3, 2);
         }
     }
 }
