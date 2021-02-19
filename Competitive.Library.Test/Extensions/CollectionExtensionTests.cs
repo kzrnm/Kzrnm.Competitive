@@ -29,5 +29,23 @@ namespace Kzrnm.Competitive.Extension
             dic.Get("でぃ").Should().Be(0);
             dic.Get("invalid").Should().Be(0);
         }
+
+        [Fact]
+        public void Flatten()
+        {
+            new[] { "abc", "def", "012", "345", "678" }.Flatten()
+                .Should().Equal(
+                new char[] { 'a', 'b', 'c', 'd', 'e', 'f', '0', '1', '2', '3', '4', '5', '6', '7', '8' });
+
+            new[] {
+                new[] { 1, 2, 3 },
+                new[] { -1, -2, -3 },
+                new[] { 4, 5, 6 },
+                new[] { -6, -5, -4 },
+                new[] { 7, 8, 9 },
+            }.Flatten()
+                .Should().Equal(
+                new[] { 1, 2, 3, -1, -2, -3, 4, 5, 6, -6, -5, -4, 7, 8, 9 });
+        }
     }
 }
