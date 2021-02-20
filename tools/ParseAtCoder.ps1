@@ -12,10 +12,14 @@ Add-Type -AssemblyName System.Windows.Forms
 function Get-Parsed-AtCoder {
     $CookieFile = "$PSScriptRoot\cookie.txt"
     $Cookie = Get-Content $CookieFile
-
-    [string]$html = (Invoke-WebRequest -Uri $Url -Headers @{"Cookie" = $Cookie; }).Content
-
-    return [AngleSharp.Html.Parser.HtmlParser]::new().ParseDocument($html)
+    try {
+        [string]$html = (Invoke-WebRequest -Uri $Url -Headers @{"Cookie" = $Cookie; }).Content
+        return [AngleSharp.Html.Parser.HtmlParser]::new().ParseDocument($html)
+    }
+    catch {
+        Write-Error $_.Exception.Message
+        throw
+    }
 }
 
 function Get-InOut {
