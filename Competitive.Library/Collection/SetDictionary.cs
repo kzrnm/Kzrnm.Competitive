@@ -69,12 +69,11 @@ namespace Kzrnm.Competitive
             [MethodImpl(AggressiveInlining)]
             set
             {
-                if (!Add(key, value))
-                    if (!IsMulti)
-                        ThrowInvalidOperationException(key.ToString());
+                var node = FindNode(key);
+                if (node == null) Add(key, value);
+                else node.Value = value;
             }
         }
-        static void ThrowInvalidOperationException(string key) => throw new InvalidOperationException($"{key} already exists.");
 
         void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> pair) => Add(pair.Key, pair.Value);
         void IDictionary<TKey, TValue>.Add(TKey key, TValue value) => DoAdd(KeyValuePair.Create(key, value));
