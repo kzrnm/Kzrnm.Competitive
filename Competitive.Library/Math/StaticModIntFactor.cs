@@ -40,7 +40,14 @@ namespace Kzrnm.Competitive
             return fac[n] * finv[n - k];
         }
 
+        /// <summary>
+        /// <paramref name="n"/> の階乗
+        /// </summary>
         public StaticModInt<T> Factorial(int n) => fac[n];
+
+        /// <summary>
+        /// <paramref name="n"/> の階乗の逆数
+        /// </summary>
         public StaticModInt<T> FactorialInvers(int n) => finv[n];
     }
 }
