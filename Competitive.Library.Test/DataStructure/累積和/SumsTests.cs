@@ -66,16 +66,16 @@ namespace Kzrnm.Competitive.DataStructure
             sums[3..4].Should().Be((8, 17));
             sums[4..4].Should().Be((0, 0));
         }
-    }
-    struct Mod100 : IStaticMod
-    {
-        public uint Mod => 100;
-        public bool IsPrime => false;
-    }
+        struct Mod100 : IStaticMod
+        {
+            public uint Mod => 100;
+            public bool IsPrime => false;
+        }
 
-    struct Op : IAdditionOperator<(int x, int y)>
-    {
-        public (int x, int y) Add((int x, int y) x, (int x, int y) y) => (x.x + y.x, x.y + y.y);
-        public (int x, int y) Subtract((int x, int y) x, (int x, int y) y) => (x.x - y.x, x.y - y.y);
+        struct Op : IAdditionOperator<(int x, int y)>
+        {
+            public (int x, int y) Add((int x, int y) x, (int x, int y) y) => (x.x + y.x, x.y + y.y);
+            public (int x, int y) Subtract((int x, int y) x, (int x, int y) y) => (x.x - y.x, x.y - y.y);
+        }
     }
 }

@@ -19,6 +19,7 @@
     <ExpandArgs>--writefile</ExpandArgs>
     <ExpandArgs2>--writefile --toclipboard</ExpandArgs2>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' != 'Release'">
     <Exec Command="dotnet $(TargetPath) expand $(ExpandArgs)" />
