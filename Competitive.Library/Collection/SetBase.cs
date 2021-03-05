@@ -190,6 +190,11 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             return Unsafe.As<Node>(current);
         }
 
+        /// <summary>
+        /// <paramref name="item"/> 以上/超えるの要素のノードとインデックスを返します。
+        /// </summary>
+        /// <param name="item">検索する要素</param>
+        /// <param name="isLowerBound"><paramref name="item"/> を含めるかどうか</param>
         public (Node node, int index) BinarySearch(TCmp item, bool isLowerBound)
         {
             Node right = null;
@@ -219,12 +224,78 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
             return (right, ri);
         }
+        /// <summary>
+        /// <paramref name="item"/> 以上の最初のノードを返します。
+        /// </summary>
         public Node FindNodeLowerBound(TCmp item) => BinarySearch(item, true).node;
-        public Node FindNodeUpperBound(TCmp item) => BinarySearch(item, false).node;
+        /// <summary>
+        /// <paramref name="item"/> 以上の最初のインデックスを返します。
+        /// </summary>
         public int LowerBoundIndex(TCmp item) => BinarySearch(item, true).index;
-        public int UpperBoundIndex(TCmp item) => BinarySearch(item, false).index;
+        /// <summary>
+        /// <paramref name="item"/> 以上の最初の要素を返します。
+        /// </summary>
         public T LowerBoundItem(TCmp item) => op.GetValue(BinarySearch(item, true).node);
+        /// <summary>
+        /// <paramref name="item"/> を超える最初のノードを返します。
+        /// </summary>
+        public Node FindNodeUpperBound(TCmp item) => BinarySearch(item, false).node;
+        /// <summary>
+        /// <paramref name="item"/> を超える最初のインデックスを返します。
+        /// </summary>
+        public int UpperBoundIndex(TCmp item) => BinarySearch(item, false).index;
+        /// <summary>
+        /// <paramref name="item"/> を超える最初の要素を返します。
+        /// </summary>
         public T UpperBoundItem(TCmp item) => op.GetValue(BinarySearch(item, false).node);
+
+
+
+        /// <summary>
+        /// <paramref name="item"/> 未満の要素のノードとインデックスを返します。
+        /// </summary>
+        /// <param name="item">検索する要素</param>
+        public (Node node, int index) BinarySearchRev(TCmp item)
+        {
+            Node left = null;
+            Node current = root;
+            if (current == null) return (null, 0);
+            int li = -1;
+            int ci = NodeSize(current.Left);
+            while (true)
+            {
+                var order = op.Compare(item, current);
+                if (order <= 0)
+                {
+                    current = Unsafe.As<Node>(current.Left);
+                    if (current != null)
+                        ci -= NodeSize(current.Right) + 1;
+                    else break;
+                }
+                else
+                {
+                    left = current;
+                    li = ci;
+                    current = Unsafe.As<Node>(current.Right);
+                    if (current != null)
+                        ci += NodeSize(current.Left) + 1;
+                    else break;
+                }
+            }
+            return (left, li);
+        }
+        /// <summary>
+        /// <paramref name="item"/> 未満の最後のノードを返します。
+        /// </summary>
+        public Node FindNodeReverseBound(TCmp item) => BinarySearchRev(item).node;
+        /// <summary>
+        /// <paramref name="item"/> 未満の最後のインデックスを返します。
+        /// </summary>
+        public int ReverseBoundIndex(TCmp item) => BinarySearchRev(item).index;
+        /// <summary>
+        /// <paramref name="item"/> 未満の最後の要素を返します。
+        /// </summary>
+        public T ReverseBoundItem(TCmp item) => op.GetValue(BinarySearchRev(item).node);
         #endregion Search
 
         #region Enumerate

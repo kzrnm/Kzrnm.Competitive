@@ -27,21 +27,28 @@ namespace Kzrnm.Competitive.Collection
 
             set.FindNodeLowerBound(4).Item.Should().Be(4);
             set.FindNodeUpperBound(4).Item.Should().Be(6);
+            set.FindNodeReverseBound(4).Item.Should().Be(3);
             set.FindNodeLowerBound(5).Item.Should().Be(6);
             set.FindNodeUpperBound(5).Item.Should().Be(6);
+            set.FindNodeReverseBound(5).Item.Should().Be(4);
 
             set.LowerBoundItem(4).Should().Be(4);
             set.UpperBoundItem(4).Should().Be(6);
+            set.ReverseBoundItem(4).Should().Be(3);
             set.LowerBoundItem(5).Should().Be(6);
             set.UpperBoundItem(5).Should().Be(6);
+            set.ReverseBoundItem(5).Should().Be(4);
 
             set.LowerBoundIndex(4).Should().Be(3);
             set.UpperBoundIndex(4).Should().Be(4);
+            set.ReverseBoundIndex(4).Should().Be(2);
             set.LowerBoundIndex(5).Should().Be(4);
             set.UpperBoundIndex(5).Should().Be(4);
+            set.ReverseBoundIndex(5).Should().Be(3);
 
             set.FindNodeLowerBound(10).Should().BeNull();
             set.FindNodeUpperBound(10).Should().BeNull();
+            set.FindNodeReverseBound(1).Should().BeNull();
 
             set.Remove(set.FindNodeLowerBound(5));
             set.Should().Equal(1, 2, 3, 4, 7, 8, 9);
@@ -82,15 +89,19 @@ namespace Kzrnm.Competitive.Collection
 
             set.FindNodeLowerBound(3).Item.Should().Be(3);
             set.FindNodeUpperBound(3).Item.Should().Be(4);
+            set.FindNodeReverseBound(3).Item.Should().Be(2);
 
             set.LowerBoundItem(3).Should().Be(3);
             set.UpperBoundItem(3).Should().Be(4);
+            set.ReverseBoundItem(3).Should().Be(2);
 
             set.LowerBoundIndex(3).Should().Be(4);
             set.UpperBoundIndex(3).Should().Be(6);
+            set.ReverseBoundIndex(3).Should().Be(3);
 
             set.FindNodeLowerBound(10).Should().BeNull();
             set.FindNodeUpperBound(10).Should().BeNull();
+            set.FindNodeReverseBound(1).Should().BeNull();
         }
         [Fact]
         public void ReverseComparer()
