@@ -44,8 +44,18 @@ namespace System
             return list.ToArray();
         }
 
+
+        /// <summary>
+        /// 2次元のコレクションを1次元に平滑化
+        /// </summary>
         public static T[] Flatten<T>(this T[][] array) => Flatten((ReadOnlySpan<T[]>)array);
+        /// <summary>
+        /// 2次元のコレクションを1次元に平滑化
+        /// </summary>
         public static T[] Flatten<T>(this Span<T[]> span) => Flatten((ReadOnlySpan<T[]>)span);
+        /// <summary>
+        /// 2次元のコレクションを1次元に平滑化
+        /// </summary>
         public static T[] Flatten<T>(this ReadOnlySpan<T[]> span)
         {
             var res = new T[span.Length * span[0].Length];
@@ -54,6 +64,9 @@ namespace System
                     res[i * span[i].Length + j] = span[i][j];
             return res;
         }
+        /// <summary>
+        /// 2次元のコレクションを1次元に平滑化
+        /// </summary>
         public static T[] Flatten<T>(this IList<IList<T>> collection)
         {
             var res = new T[collection.Count * collection[0].Count];
@@ -62,6 +75,9 @@ namespace System
                     res[i * collection[i].Count + j] = collection[i][j];
             return res;
         }
+        /// <summary>
+        /// 2次元のコレクションを1次元に平滑化
+        /// </summary>
         public static char[] Flatten(this string[] strs)
         {
             var res = new char[strs.Length * strs[0].Length];
