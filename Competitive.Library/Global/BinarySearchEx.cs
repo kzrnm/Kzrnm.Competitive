@@ -89,7 +89,33 @@ namespace Kzrnm.Competitive
             return ok;
         }
 
-
+        /// <summary>
+        /// <paramref name="ok"/> 以上で <typeparamref name="TOp"/>.Ok(i) == true を満たす最も大きい値を取得します。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: <typeparamref name="TOp"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<typeparamref name="TOp"/>.Ok(<paramref name="ng"/>)</para>
+        /// <para>計算量: O(log |result|)</para>
+        /// </remarks>
+        public static long BinarySearchBig<TOp>(long ok) where TOp : IOk<long>
+            => BinarySearchBig(ok, default(TOp));
+        /// <summary>
+        /// <paramref name="ok"/> 以上で <typeparamref name="TOp"/>.Ok(i) == true を満たす最も大きい値を取得します。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: <typeparamref name="TOp"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<typeparamref name="TOp"/>.Ok(<paramref name="ng"/>)</para>
+        /// <para>計算量: O(log |result|)</para>
+        /// </remarks>
+        public static long BinarySearchBig<TOp>(long ok, TOp op) where TOp : IOk<long>
+        {
+            long plus = 1;
+            var ng = ok + plus;
+            while (op.Ok(ng))
+            {
+                plus <<= 1;
+                ng += plus;
+            }
+            return BinarySearch(ok, ng, op);
+        }
 
         /// <summary>
         /// <paramref name="ok"/> 以上で <typeparamref name="TOp"/>.Ok(i) == true を満たす最も大きい値を取得します。
