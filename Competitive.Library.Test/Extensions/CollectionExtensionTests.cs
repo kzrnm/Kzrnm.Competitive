@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Xunit;
 
@@ -74,6 +75,19 @@ namespace Kzrnm.Competitive.Extension
 
             Array.Empty<int>().MaxMin().Should().Be((0, 0));
             Array.Empty<int>().AsSpan().MaxMin().Should().Be((0, 0));
+        }
+
+        [Fact]
+        public void SpanSelect()
+        {
+            var span = Enumerable.Range(0, 10).ToArray().AsSpan();
+            static int Func(int n) => 2 * n;
+            span.Select(Func).ToArray().Should().Equal(Enumerable.Range(0, 10).Select(Func));
+            ((ReadOnlySpan<int>)span).Select(Func).ToArray().Should().Equal(Enumerable.Range(0, 10).Select(Func));
+
+            static int FuncIndex(int n, int i) => i * n;
+            span.Select(FuncIndex).ToArray().Should().Equal(Enumerable.Range(0, 10).Select(FuncIndex));
+            ((ReadOnlySpan<int>)span).Select(FuncIndex).ToArray().Should().Equal(Enumerable.Range(0, 10).Select(FuncIndex));
         }
     }
 }
