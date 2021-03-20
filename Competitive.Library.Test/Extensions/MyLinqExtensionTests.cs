@@ -158,5 +158,43 @@ namespace Kzrnm.Competitive.Extension
             span.Select(FuncIndex).ToArray().Should().Equal(Enumerable.Range(0, 10).Select(FuncIndex));
             ((ReadOnlySpan<int>)span).Select(FuncIndex).ToArray().Should().Equal(Enumerable.Range(0, 10).Select(FuncIndex));
         }
+
+        public static TheoryData Buffered_Data = new TheoryData<IEnumerable<int>, int, int[][]>
+        {
+            {
+                Enumerable.Range(0, 12),
+                4,
+                new int[][]
+                {
+                    new int[]{ 0, 1, 2, 3, },
+                    new int[]{ 4, 5, 6, 7, },
+                    new int[]{ 8, 9, 10, 11, },
+                }
+            },
+            {
+                Enumerable.Range(0, 12),
+                5,
+                new int[][]
+                {
+                    new int[]{ 0, 1, 2, 3, 4, },
+                    new int[]{ 5, 6, 7, 8, 9, },
+                    new int[]{ 10, 11, },
+                }
+            },
+            {
+                Enumerable.Empty<int>(),
+                5,
+                Array.Empty<int[]>()
+            },
+        };
+        [Theory]
+        [MemberData(nameof(Buffered_Data))]
+        public void Buffered(IEnumerable<int> input, int bufferSize, int[][] expected)
+        {
+            var result = input.Buffered(bufferSize).ToArray();
+            result.Should().HaveSameCount(expected);
+            for (int i = 0; i < expected.Length; i++)
+                result[i].Should().Equal(expected[i]);
+        }
     }
 }
