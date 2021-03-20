@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Runtime.Intrinsics;
 using static System.Math;
 using static System.Numerics.BitOperations;
 using static Kzrnm.Competitive.BitOperationsEx;
