@@ -1,12 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using AtCoder.Internal;
 
-namespace System.Linq
+namespace Kzrnm.Competitive
 {
 #pragma warning disable IDE1006
-    using static MethodImplOptions;
     public static class __CollectionExtension_MaxMin
     {
         /// <summary>
