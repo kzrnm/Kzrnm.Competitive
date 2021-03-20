@@ -1,5 +1,6 @@
 ﻿using Kzrnm.Competitive.IO;
 using System;
+using System.Linq;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
