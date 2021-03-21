@@ -1,4 +1,5 @@
-﻿using AtCoder;
+﻿#region usings
+using AtCoder;
 using Kzrnm.Competitive;
 using Kzrnm.Competitive.IO;
 using System;
@@ -14,8 +15,9 @@ using static Kzrnm.Competitive.BitOperationsEx;
 using static Kzrnm.Competitive.Global;
 using static Kzrnm.Competitive.MathLibEx;
 using static Kzrnm.Competitive.__BinarySearchEx;
-using ModInt = AtCoder.StaticModInt<AtCoder.Mod998244353>;
 using static Program;
+#endregion
+using ModInt = AtCoder.StaticModInt<AtCoder.Mod998244353>;
 
 partial class Program
 {
