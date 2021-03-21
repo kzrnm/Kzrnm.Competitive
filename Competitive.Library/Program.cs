@@ -15,18 +15,22 @@ internal partial class Program
     public void Run()
     {
         int Q = 1;
-        if (__ManyTestCases()) Q = cr;
+        if (__ManyTestCases) Q = cr;
         for (; Q > 0; Q--)
         {
             var res = Calc();
             if (res is double d) cw.WriteLine(d.ToString("0.####################", CultureInfo.InvariantCulture));
-            else if (res is bool b) WriteBool(b);
+            else if (res is bool b) cw.WriteLine(YesNo(b));
             else if (res != null) cw.WriteLine(res.ToString());
         }
         cw.Flush();
     }
-    partial void WriteBool(bool b);
+}
+[SourceExpander.NotEmbeddingSource]
+partial class Program
+{
 #pragma warning disable IDE1006,IDE0060
     object Calc(Program dum = null) => dum;
-    bool __ManyTestCases(Program dum = null) => false;
+    bool __ManyTestCases = false;
+    string YesNo(bool b) => b ? "Yes" : "No";
 }

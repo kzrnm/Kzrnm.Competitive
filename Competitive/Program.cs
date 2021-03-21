@@ -20,8 +20,8 @@ using static Program;
 
 partial class Program
 {
-    partial void WriteBool(bool b) => cw.WriteLine(b ? "Yes" : "No");
-    bool __ManyTestCases() => false;
+    string YesNo(bool b) => b ? "Yes" : "No";
+    const bool __ManyTestCases = false;
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     private object Calc()
     {
