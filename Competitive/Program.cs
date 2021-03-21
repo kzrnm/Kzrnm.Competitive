@@ -1,4 +1,4 @@
-using AtCoder;
+﻿using AtCoder;
 using Kzrnm.Competitive;
 using Kzrnm.Competitive.IO;
 using System;
@@ -10,7 +10,6 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics;
 using static System.Math;
-using static System.Numerics.BitOperations;
 using static Kzrnm.Competitive.BitOperationsEx;
 using static Kzrnm.Competitive.Global;
 using static Kzrnm.Competitive.MathLibEx;
