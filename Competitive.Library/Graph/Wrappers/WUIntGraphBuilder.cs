@@ -13,6 +13,13 @@ namespace Kzrnm.Competitive
                 gb.Add(cr.Int0, cr.Int0, (uint)cr.ULong);
             return gb;
         }
+        public static WGraphBuilder<uint, int, UIntOperator> CreateWithEdgeIndex(int count, PropertyConsoleReader cr, int edgeCount, bool isDirected)
+        {
+            var gb = new WGraphBuilder<uint, int, UIntOperator>(count, isDirected);
+            for (var i = 0; i < edgeCount; i++)
+                gb.Add(cr.Int0, cr.Int0, (uint)cr.ULong, i);
+            return gb;
+        }
         public static WUIntGraphBuilder CreateTree(int count, PropertyConsoleReader cr)
         {
             var gb = new WUIntGraphBuilder(count, false);
