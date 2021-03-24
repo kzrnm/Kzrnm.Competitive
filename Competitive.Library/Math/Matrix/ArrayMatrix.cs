@@ -15,13 +15,19 @@ namespace Kzrnm.Competitive
         public T this[int row, int col] => this.Value[row][col];
 
         private static TOp op = default;
-        private readonly ArrayMatrixKind kind;
         public readonly T[][] Value;
-        public ArrayMatrix(ArrayMatrixKind kind)
+
+
+        public static readonly ArrayMatrix<T, TOp> Zero = new ArrayMatrix<T, TOp>(ArrayMatrixKind.Zero);
+        public static readonly ArrayMatrix<T, TOp> Identity = new ArrayMatrix<T, TOp>(ArrayMatrixKind.Identity);
+        private readonly ArrayMatrixKind kind;
+        private ArrayMatrix(ArrayMatrixKind kind)
         {
             this.kind = kind;
             this.Value = null;
         }
+
+
         public ArrayMatrix(T[][] value)
         {
             this.Value = value;
@@ -81,13 +87,13 @@ namespace Kzrnm.Competitive
             {
                 ArrayMatrixKind.Zero => y.kind switch
                 {
-                    ArrayMatrixKind.Zero => new ArrayMatrix<T, TOp>(ArrayMatrixKind.Zero),
-                    ArrayMatrixKind.Identity => new ArrayMatrix<T, TOp>(ArrayMatrixKind.Identity),
+                    ArrayMatrixKind.Zero => ArrayMatrix<T, TOp>.Zero,
+                    ArrayMatrixKind.Identity => ArrayMatrix<T, TOp>.Identity,
                     _ => new ArrayMatrix<T, TOp>(CloneArray(y.Value)),
                 },
                 ArrayMatrixKind.Identity => y.kind switch
                 {
-                    ArrayMatrixKind.Zero => new ArrayMatrix<T, TOp>(ArrayMatrixKind.Identity),
+                    ArrayMatrixKind.Zero => ArrayMatrix<T, TOp>.Identity,
                     ArrayMatrixKind.Identity => ThrowNotSupportResponse(),
                     _ => y.AddIdentity(),
                 },
@@ -132,13 +138,13 @@ namespace Kzrnm.Competitive
             {
                 ArrayMatrixKind.Zero => y.kind switch
                 {
-                    ArrayMatrixKind.Zero => new ArrayMatrix<T, TOp>(ArrayMatrixKind.Zero),
-                    ArrayMatrixKind.Identity => new ArrayMatrix<T, TOp>(ArrayMatrixKind.Identity),
+                    ArrayMatrixKind.Zero => ArrayMatrix<T, TOp>.Zero,
+                    ArrayMatrixKind.Identity => ArrayMatrix<T, TOp>.Identity,
                     _ => new ArrayMatrix<T, TOp>(CloneArray(y.Value)),
                 },
                 ArrayMatrixKind.Identity => y.kind switch
                 {
-                    ArrayMatrixKind.Zero => new ArrayMatrix<T, TOp>(ArrayMatrixKind.Identity),
+                    ArrayMatrixKind.Zero => ArrayMatrix<T, TOp>.Identity,
                     ArrayMatrixKind.Identity => ThrowNotSupportResponse(),
                     _ => (-y).AddIdentity(),
                 },
@@ -169,12 +175,12 @@ namespace Kzrnm.Competitive
                 ArrayMatrixKind.Zero => y.kind switch
                 {
                     ArrayMatrixKind.Normal => new ArrayMatrix<T, TOp>(NormalZeroMatrix(y.Value.Length, y.Value[0].Length)),
-                    _ => new ArrayMatrix<T, TOp>(ArrayMatrixKind.Zero),
+                    _ => ArrayMatrix<T, TOp>.Zero,
                 },
                 ArrayMatrixKind.Identity => y.kind switch
                 {
-                    ArrayMatrixKind.Zero => new ArrayMatrix<T, TOp>(ArrayMatrixKind.Zero),
-                    ArrayMatrixKind.Identity => new ArrayMatrix<T, TOp>(ArrayMatrixKind.Identity),
+                    ArrayMatrixKind.Zero => ArrayMatrix<T, TOp>.Zero,
+                    ArrayMatrixKind.Identity => ArrayMatrix<T, TOp>.Identity,
                     _ => y,
                 },
                 _ => y.kind switch
@@ -264,7 +270,7 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// ガウスの消去法(掃き出し法)
+        /// <para>ガウスの消去法(掃き出し法)</para>
         /// </summary>
         private static void GaussianEliminationImpl(T[][] arr)
         {
@@ -300,17 +306,17 @@ namespace Kzrnm.Competitive
                 }
             }
         }
-    }
-    public enum ArrayMatrixKind
-    {
-        Zero,
-        Identity,
-        Normal,
+        private enum ArrayMatrixKind
+        {
+            Zero,
+            Identity,
+            Normal,
+        }
     }
     public struct ArrayMatrixOperator<T, TOp> : IArithmeticOperator<ArrayMatrix<T, TOp>>
         where TOp : struct, IArithmeticOperator<T>
     {
-        public ArrayMatrix<T, TOp> MultiplyIdentity => new ArrayMatrix<T, TOp>(ArrayMatrixKind.Identity);
+        public ArrayMatrix<T, TOp> MultiplyIdentity => ArrayMatrix<T, TOp>.Identity;
 
         [MethodImpl(AggressiveInlining)]
         public ArrayMatrix<T, TOp> Add(ArrayMatrix<T, TOp> x, ArrayMatrix<T, TOp> y) => x + y;

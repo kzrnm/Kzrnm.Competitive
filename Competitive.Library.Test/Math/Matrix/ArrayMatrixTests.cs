@@ -48,9 +48,9 @@ namespace Kzrnm.Competitive.MathNS.Matrix
         public static TheoryData Add_Data = new TheoryData<ArrayMatrix<int, IntOperator>, ArrayMatrix<int, IntOperator>, ArrayMatrix<int, IntOperator>>
         {
             {
-                new ArrayMatrix<int, IntOperator>(ArrayMatrixKind.Zero),
-                new ArrayMatrix<int, IntOperator>(ArrayMatrixKind.Identity),
-                new ArrayMatrix<int, IntOperator>(ArrayMatrixKind.Identity)
+                ArrayMatrix<int, IntOperator>.Zero,
+                ArrayMatrix<int, IntOperator>.Identity,
+                ArrayMatrix<int, IntOperator>.Identity
             },
             {
                 new ArrayMatrix<int, IntOperator>(new int[,]
@@ -75,7 +75,7 @@ namespace Kzrnm.Competitive.MathNS.Matrix
                     { 1, 2 },
                     { 3, 4 },
                 }),
-                new ArrayMatrix<int, IntOperator>(ArrayMatrixKind.Zero),
+                ArrayMatrix<int, IntOperator>.Zero,
                 new ArrayMatrix<int, IntOperator>(new int[,]
                 {
                     { 1, 2 },
@@ -88,7 +88,7 @@ namespace Kzrnm.Competitive.MathNS.Matrix
                     { 1, 2 },
                     { 3, 4 },
                 }),
-                new ArrayMatrix<int, IntOperator>(ArrayMatrixKind.Identity),
+                ArrayMatrix<int, IntOperator>.Identity,
                 new ArrayMatrix<int, IntOperator>(new int[,]
                 {
                     { 2, 2 },
@@ -111,9 +111,9 @@ namespace Kzrnm.Competitive.MathNS.Matrix
         public static TheoryData Subtract_Data = new TheoryData<ArrayMatrix<int, IntOperator>, ArrayMatrix<int, IntOperator>, ArrayMatrix<int, IntOperator>>
         {
             {
-                new ArrayMatrix<int, IntOperator>(ArrayMatrixKind.Identity),
-                new ArrayMatrix<int, IntOperator>(ArrayMatrixKind.Zero),
-                new ArrayMatrix<int, IntOperator>(ArrayMatrixKind.Identity)
+                ArrayMatrix<int, IntOperator>.Identity,
+                ArrayMatrix<int, IntOperator>.Zero,
+                ArrayMatrix<int, IntOperator>.Identity
             },
             {
                 new ArrayMatrix<int, IntOperator>(new int[,]
@@ -138,7 +138,7 @@ namespace Kzrnm.Competitive.MathNS.Matrix
                     { 1, 2 },
                     { 3, 4 },
                 }),
-                new ArrayMatrix<int, IntOperator>(ArrayMatrixKind.Zero),
+                ArrayMatrix<int, IntOperator>.Zero,
                 new ArrayMatrix<int, IntOperator>(new int[,]
                 {
                     { 1, 2 },
@@ -151,7 +151,7 @@ namespace Kzrnm.Competitive.MathNS.Matrix
                     { 1, 2 },
                     { 3, 4 },
                 }),
-                new ArrayMatrix<int, IntOperator>(ArrayMatrixKind.Identity),
+                ArrayMatrix<int, IntOperator>.Identity,
                 new ArrayMatrix<int, IntOperator>(new int[,]
                 {
                     { 0, 2 },
@@ -171,9 +171,9 @@ namespace Kzrnm.Competitive.MathNS.Matrix
         public static TheoryData Multiply_Data = new TheoryData<ArrayMatrix<int, IntOperator>, ArrayMatrix<int, IntOperator>, ArrayMatrix<int, IntOperator>>
         {
             {
-                new ArrayMatrix<int, IntOperator>(ArrayMatrixKind.Identity),
-                new ArrayMatrix<int, IntOperator>(ArrayMatrixKind.Zero),
-                new ArrayMatrix<int, IntOperator>(ArrayMatrixKind.Zero)
+                ArrayMatrix<int, IntOperator>.Identity,
+                ArrayMatrix<int, IntOperator>.Zero,
+                ArrayMatrix<int, IntOperator>.Zero
             },
             {
                 new ArrayMatrix<int, IntOperator>(new int[,]
@@ -199,7 +199,7 @@ namespace Kzrnm.Competitive.MathNS.Matrix
                     { 1, 2 },
                     { 3, 4 },
                 }),
-                new ArrayMatrix<int, IntOperator>(ArrayMatrixKind.Zero),
+                ArrayMatrix<int, IntOperator>.Zero,
                 new ArrayMatrix<int, IntOperator>(new int[,]
                 {
                     { 0, 0 },
@@ -212,7 +212,7 @@ namespace Kzrnm.Competitive.MathNS.Matrix
                     { 1, 2 },
                     { 3, 4 },
                 }),
-                new ArrayMatrix<int, IntOperator>(ArrayMatrixKind.Identity),
+                ArrayMatrix<int, IntOperator>.Identity,
                 new ArrayMatrix<int, IntOperator>(new int[,]
                 {
                     { 1, 2 },
