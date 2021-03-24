@@ -83,9 +83,9 @@ namespace Kzrnm.Competitive
                         op.Subtract(
                             op.Subtract(
                                 fw.Sum(hToExclusive, wToExclusive)
-                                ,fw.Sum(hToExclusive, wFrom))
+                                , fw.Sum(hToExclusive, wFrom))
                             , fw.Sum(hFrom, wToExclusive))
-                        ,fw.Sum(hFrom, wFrom));
+                        , fw.Sum(hFrom, wFrom));
             }
         }
     }

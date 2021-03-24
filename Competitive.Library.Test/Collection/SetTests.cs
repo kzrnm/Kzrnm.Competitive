@@ -167,7 +167,7 @@ namespace Kzrnm.Competitive.Collection
 
                 for (int i = 0; i < count; i++)
                 {
-                   set.EnumerateItem(set.FindByIndex(i)).Should().Equal(arr.Skip(i), "Index: {0}", i);
+                    set.EnumerateItem(set.FindByIndex(i)).Should().Equal(arr.Skip(i), "Index: {0}", i);
                     set.EnumerateItem(set.FindByIndex(i), true).Should()
                         .Equal(arr.Take(i + 1).Reverse(), "Index: {0} Reverse", i);
                 }

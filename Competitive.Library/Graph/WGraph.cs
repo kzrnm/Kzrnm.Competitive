@@ -42,7 +42,7 @@ namespace Kzrnm.Competitive
         public TNode this[int index] => Nodes[index];
         public int Length => Nodes.Length;
         public int Root { get; }
-        public WTreeGraph(TNode[] array,int root)
+        public WTreeGraph(TNode[] array, int root)
         {
             this.Root = root;
             this.Nodes = array;

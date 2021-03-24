@@ -84,7 +84,7 @@ namespace Kzrnm.Competitive
             lz = new F[size];
             Array.Fill(d, op.Identity);
             Array.Fill(lz, op.FIdentity);
-            
+
             valSize = new int[2 * size];
             Array.Fill(valSize, 1, size, n);
             for (int i = size - 1; i >= 1; i--)
