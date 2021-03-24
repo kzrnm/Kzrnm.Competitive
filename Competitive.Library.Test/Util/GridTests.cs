@@ -274,5 +274,31 @@ namespace Kzrnm.Competitive.Util
             grid[-1, -1].Should().Be(-1);
             grid[4, 3].Should().Be(-1);
         }
+
+        [Fact]
+        public void Index()
+        {
+            var grid = Grid.Create((ReadOnlySpan<int[]>)new[]
+            {
+                new[]{ 1,2,3 },
+                new[]{ 4,5,6 },
+                new[]{ 7,8,9 },
+                new[]{ 10,11,12 },
+            }, -1);
+            for (int h = 0; h < 4; h++)
+                for (int w = 0; w < 3; w++)
+                    grid.Index(h, w).Should().Be(3 * h + w);
+
+            for (int h = 0; h < 4; h++)
+            {
+                grid.Index(h, -1).Should().Be(-1);
+                grid.Index(h, 3).Should().Be(-1);
+            }
+            for (int w = 0; w < 3; w++)
+            {
+                grid.Index(-1, w).Should().Be(-1);
+                grid.Index(4, w).Should().Be(-1);
+            }
+        }
     }
 }

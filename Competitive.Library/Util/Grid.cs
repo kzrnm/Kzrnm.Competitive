@@ -49,7 +49,10 @@ namespace Kzrnm.Competitive
             this.defaultValue = defaultValue;
         }
         [MethodImpl(AggressiveInlining)]
-        public int Index(int h, int w) => h * W + w;
+        public int Index(int h, int w) =>
+            (uint)h < (uint)H && (uint)w < (uint)W
+            ? h * W + w
+            : -1;
         [MethodImpl(AggressiveInlining)]
         public (int h, int w) FromIndex(int ix)
         {
@@ -67,10 +70,15 @@ namespace Kzrnm.Competitive
         public ref T this[int h, int w]
         {
             [MethodImpl(AggressiveInlining)]
+            get => ref this[Index(h, w)];
+        }
+        public ref T this[int index]
+        {
+            [MethodImpl(AggressiveInlining)]
             get
             {
-                if ((uint)h < (uint)H && (uint)w < (uint)W)
-                    return ref data[Index(h, w)];
+                if ((uint)index < (uint)data.Length)
+                    return ref data[index];
                 return ref DefaultValueReference();
             }
         }
