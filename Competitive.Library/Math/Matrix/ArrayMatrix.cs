@@ -284,8 +284,8 @@ namespace Kzrnm.Competitive
                     }
                 return false;
             }
-            Contract.Assert(arr.Length <= arr[0].Length);
-            for (int i = 0; i < arr.Length; i++)
+            var len = Math.Min(arr.Length, arr[0].Length);
+            for (int i = 0; i < len; i++)
             {
                 if (EqualityComparer<T>.Default.Equals(arr[i][i], default))
                 {

@@ -5,6 +5,7 @@
 
     <IsPackable>false</IsPackable>
     <RootNamespace>Kzrnm.Competitive</RootNamespace>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
   
   <PropertyGroup>

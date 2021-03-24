@@ -350,5 +350,93 @@ namespace Kzrnm.Competitive.MathNS.Matrix
             (orig * inv).Value.Should().BeEquivalentTo(id);
             (inv * orig).Value.Should().BeEquivalentTo(id);
         }
+
+        public static TheoryData GaussianElimination_Data = new TheoryData<ArrayMatrix<Fraction, FractionOperator>, ArrayMatrix<Fraction, FractionOperator>>
+        {
+            {
+                new(new Fraction[2,3]{
+                    { 1,-4,3 },
+                    { 3,2,2 },
+                }),
+                new(new Fraction[2,3]{
+                    { 1,0,new(1,1) },
+                    { 0,1,new(-1,2) },
+                })
+            },
+            {
+                new(new Fraction[5,3]{
+                    { 1,-4,3 },
+                    { 3,2,2 },
+                    { 1,2,0 },
+                    { 1,0,1 },
+                    { 0,-1,new(1,2) },
+                }),
+                new(new Fraction[5,3]{
+                    { 1,0,new(1,1) },
+                    { 0,1,new(-1,2) },
+                    { 0,0,0 },
+                    { 0,0,0 },
+                    { 0,0,0 },
+                })
+            },
+            {
+                new(new Fraction[3,3]{
+                    { 1,-4,3 },
+                    { 3,2,2 },
+                    { 1,0,0 },
+                }),
+                new(new Fraction[3,3]{
+                    { 1,0,0 },
+                    { 0,1,0 },
+                    { 0,0,1 },
+                })
+            },
+            {
+                new(new Fraction[3,4]{
+                    { 1,-1,2,0 },
+                    { 4,2,-3,2 },
+                    { 1,0,1,1 },
+                }),
+                new(new Fraction[3,4]{
+                    { 1,0,0,new(1,5) },
+                    { 0,1,0,new(9,5) },
+                    { 0,0,1,new(4,5) },
+                })
+            },
+            {
+                new(new Fraction[3,4]{
+                    { 1,2,3,4 },
+                    { 1,2,3,4 },
+                    { 1,2,3,4 },
+                }),
+                new(new Fraction[3,4]{
+                    { 1,2,3,4 },
+                    { 0,0,0,0 },
+                    { 0,0,0,0 },
+                })
+            },
+            {
+                new(new Fraction[3,4]{
+                    { 1,2,3,4 },
+                    { 1,2,3,5 },
+                    { 1,2,3,4 },
+                }),
+                new(new Fraction[3,4]{
+                    { 1,2,3,4 },
+                    { 0,0,0,1 },
+                    { 0,0,0,0 },
+                })
+            },
+        };
+
+        [Theory]
+        [MemberData(nameof(GaussianElimination_Data))]
+        public void GaussianElimination(ArrayMatrix<Fraction, FractionOperator> orig, ArrayMatrix<Fraction, FractionOperator> expected)
+        {
+            var got = orig.GaussianElimination();
+            got.Value.Should().HaveSameCount(expected.Value);
+            for (int i = 0; i < got.Value.Length; i++)
+                got.Value[i].Should().Equal(expected.Value[i], because: "row {0}", i);
+        }
     }
 }
