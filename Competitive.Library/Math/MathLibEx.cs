@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AtCoder;
+using System;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
@@ -99,20 +100,6 @@ namespace Kzrnm.Competitive
             for (var i = 1; i < nums.Length; i++)
                 lcm = Lcm(lcm, nums[i]);
             return lcm;
-        }
-
-        /// <summary>
-        /// <paramref name="x"/> の <paramref name="y"/> 乗
-        /// </summary>
-        public static long Pow(long x, int y)
-        {
-            long res = 1;
-            for (; y > 0; y >>= 1)
-            {
-                if ((y & 1) == 1) res *= x;
-                x *= x;
-            }
-            return res;
         }
 
         /// <summary>

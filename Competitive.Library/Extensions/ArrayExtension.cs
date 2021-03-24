@@ -6,7 +6,8 @@ using System.Runtime.CompilerServices;
 namespace Kzrnm.Competitive
 {
     using static MethodImplOptions;
-    public static class ArrayExtension
+#pragma warning disable IDE1006
+    public static class __ArrayExtension
     {
         [MethodImpl(AggressiveInlining)]
         public static T[] Fill<T>(this T[] arr, T value)
