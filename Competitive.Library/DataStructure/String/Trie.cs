@@ -64,12 +64,12 @@ namespace Kzrnm.Competitive
             return trie;
         }
 
-
         /// <summary>
         /// <para>現在のTrieの<paramref name="key"/>子要素を追加する。</para>
         /// <para>計算量: O(|<paramref name="key"/>|)</para>
         /// </summary>
-        public void Add(ReadOnlySpan<TKey> key, TValue value)
+        /// <returns>追加された子要素</returns>
+        public Trie<TKey, TValue> Add(ReadOnlySpan<TKey> key, TValue value)
         {
             var trie = this;
             ++trie.Count;
@@ -81,6 +81,7 @@ namespace Kzrnm.Competitive
                 ++trie.Count;
             }
             trie.Value = value;
+            return trie;
         }
 
         /// <summary>
