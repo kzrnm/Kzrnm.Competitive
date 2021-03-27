@@ -30,8 +30,7 @@ namespace Kzrnm.Competitive
         [MethodImpl(AggressiveInlining)]
         public static ref T Get<T>(this T[] arr, int index)
         {
-            if (index < 0)
-                return ref arr[arr.Length + index];
+            if (index < 0) index += arr.Length;
             return ref arr[index];
         }
         [MethodImpl(AggressiveInlining)]
