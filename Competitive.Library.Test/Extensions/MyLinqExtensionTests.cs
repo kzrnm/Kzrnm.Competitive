@@ -107,15 +107,18 @@ namespace Kzrnm.Competitive.Extension
                 .Should().Equal(
                 new char[] { 'a', 'b', 'c', 'd', 'e', 'f', '0', '1', '2', '3', '4', '5', '6', '7', '8' });
 
-            new[] {
+            var arr = new[] {
                 new[] { 1, 2, 3 },
                 new[] { -1, -2, -3 },
                 new[] { 4, 5, 6 },
                 new[] { -6, -5, -4 },
                 new[] { 7, 8, 9 },
-            }.Flatten()
-                .Should().Equal(
-                new[] { 1, 2, 3, -1, -2, -3, 4, 5, 6, -6, -5, -4, 7, 8, 9 });
+            };
+            var expected = new[] { 1, 2, 3, -1, -2, -3, 4, 5, 6, -6, -5, -4, 7, 8, 9 };
+
+            arr.Flatten().Should().Equal(expected);
+            arr.AsSpan().Flatten().Should().Equal(expected);
+            arr.ToList().Flatten().Should().Equal(expected);
         }
 
         [Fact]
