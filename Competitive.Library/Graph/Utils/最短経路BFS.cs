@@ -7,12 +7,12 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="from"/> からの最短経路長をBFSで求める。到達判定にも有用
         /// </summary>
-        public static int[] ShortestPathBFS<TNode, TEdge>(this IGraph<TNode, TEdge> graph, int from)
+        public static uint[] ShortestPathBFS<TNode, TEdge>(this IGraph<TNode, TEdge> graph, int from)
             where TNode : IGraphNode<TEdge>
             where TEdge : IEdge
         {
             var graphArr = graph.AsArray();
-            var res = Global.NewArray(graphArr.Length, int.MaxValue);
+            var res = Global.NewArray(graphArr.Length, uint.MaxValue);
             var queue = new Queue<int>();
             queue.Enqueue(from);
             res[from] = 0;
@@ -31,12 +31,12 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="from"/> から逆方向の最短経路長をBFSで求める。到達判定にも有用
         /// </summary>
-        public static int[] ShortestPathBFSReverse<TNode, TEdge>(this IGraph<TNode, TEdge> graph, int from)
+        public static uint[] ShortestPathBFSReverse<TNode, TEdge>(this IGraph<TNode, TEdge> graph, int from)
             where TNode : IGraphNode<TEdge>
             where TEdge : IEdge
         {
             var graphArr = graph.AsArray();
-            var res = Global.NewArray(graphArr.Length, int.MaxValue);
+            var res = Global.NewArray(graphArr.Length, uint.MaxValue);
             var queue = new Queue<int>();
             queue.Enqueue(from);
             res[from] = 0;

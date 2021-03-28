@@ -19,17 +19,17 @@ namespace Kzrnm.Competitive.Graph
             gb.Add(4, 3);
             gb.Add(4, 0);
             var graph = gb.ToGraph();
-            graph.ShortestPathBFS(0).Should().Equal(new[] { 0, 1, 1, 1, 1 });
-            graph.ShortestPathBFS(1).Should().Equal(new[] { 3, 0, 1, 2, 2 });
-            graph.ShortestPathBFS(2).Should().Equal(new[] { 2, 3, 0, 1, 1 });
-            graph.ShortestPathBFS(3).Should().Equal(new[] { 2147483647, 2147483647, 2147483647, 0, 2147483647 });
-            graph.ShortestPathBFS(4).Should().Equal(new[] { 1, 2, 2, 1, 0 });
+            graph.ShortestPathBFS(0).Should().Equal(0u, 1u, 1u, 1u, 1u);
+            graph.ShortestPathBFS(1).Should().Equal(3u, 0u, 1u, 2u, 2u);
+            graph.ShortestPathBFS(2).Should().Equal(2u, 3u, 0u, 1u, 1u);
+            graph.ShortestPathBFS(3).Should().Equal(4294967295u, 4294967295u, 4294967295u, 0u, 4294967295u);
+            graph.ShortestPathBFS(4).Should().Equal(1u, 2u, 2u, 1u, 0u);
 
-            graph.ShortestPathBFSReverse(0).Should().Equal(new[] { 0, 3, 2, 2147483647, 1 });
-            graph.ShortestPathBFSReverse(1).Should().Equal(new[] { 1, 0, 3, 2147483647, 2 });
-            graph.ShortestPathBFSReverse(2).Should().Equal(new[] { 1, 1, 0, 2147483647, 2 });
-            graph.ShortestPathBFSReverse(3).Should().Equal(new[] { 1, 2, 1, 0, 1 });
-            graph.ShortestPathBFSReverse(4).Should().Equal(new[] { 1, 2, 1, 2147483647, 0 });
+            graph.ShortestPathBFSReverse(0).Should().Equal(0u, 3u, 2u, 4294967295u, 1u);
+            graph.ShortestPathBFSReverse(1).Should().Equal(1u, 0u, 3u, 4294967295u, 2u);
+            graph.ShortestPathBFSReverse(2).Should().Equal(1u, 1u, 0u, 4294967295u, 2u);
+            graph.ShortestPathBFSReverse(3).Should().Equal(1u, 2u, 1u, 0u, 1u);
+            graph.ShortestPathBFSReverse(4).Should().Equal(1u, 2u, 1u, 4294967295u, 0u);
         }
         [Fact]
         public void 重み付きグラフ()
@@ -45,17 +45,17 @@ namespace Kzrnm.Competitive.Graph
             gb.Add(4, 3, 6);
             gb.Add(4, 0, 1);
             var graph = gb.ToGraph();
-            graph.ShortestPathBFS(0).Should().Equal(new[] { 0, 1, 1, 1, 1 });
-            graph.ShortestPathBFS(1).Should().Equal(new[] { 3, 0, 1, 2, 2 });
-            graph.ShortestPathBFS(2).Should().Equal(new[] { 2, 3, 0, 1, 1 });
-            graph.ShortestPathBFS(3).Should().Equal(new[] { 2147483647, 2147483647, 2147483647, 0, 2147483647 });
-            graph.ShortestPathBFS(4).Should().Equal(new[] { 1, 2, 2, 1, 0 });
+            graph.ShortestPathBFS(0).Should().Equal(0u, 1u, 1u, 1u, 1u);
+            graph.ShortestPathBFS(1).Should().Equal(3u, 0u, 1u, 2u, 2u);
+            graph.ShortestPathBFS(2).Should().Equal(2u, 3u, 0u, 1u, 1u);
+            graph.ShortestPathBFS(3).Should().Equal(4294967295u, 4294967295u, 4294967295u, 0u, 4294967295u);
+            graph.ShortestPathBFS(4).Should().Equal(1u, 2u, 2u, 1u, 0u);
 
-            graph.ShortestPathBFSReverse(0).Should().Equal(new[] { 0, 3, 2, 2147483647, 1 });
-            graph.ShortestPathBFSReverse(1).Should().Equal(new[] { 1, 0, 3, 2147483647, 2 });
-            graph.ShortestPathBFSReverse(2).Should().Equal(new[] { 1, 1, 0, 2147483647, 2 });
-            graph.ShortestPathBFSReverse(3).Should().Equal(new[] { 1, 2, 1, 0, 1 });
-            graph.ShortestPathBFSReverse(4).Should().Equal(new[] { 1, 2, 1, 2147483647, 0 });
+            graph.ShortestPathBFSReverse(0).Should().Equal(0u, 3u, 2u, 4294967295u, 1u);
+            graph.ShortestPathBFSReverse(1).Should().Equal(1u, 0u, 3u, 4294967295u, 2u);
+            graph.ShortestPathBFSReverse(2).Should().Equal(1u, 1u, 0u, 4294967295u, 2u);
+            graph.ShortestPathBFSReverse(3).Should().Equal(1u, 2u, 1u, 0u, 1u);
+            graph.ShortestPathBFSReverse(4).Should().Equal(1u, 2u, 1u, 4294967295u, 0u);
         }
     }
 }
