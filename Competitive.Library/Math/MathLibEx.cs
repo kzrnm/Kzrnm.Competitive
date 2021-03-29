@@ -165,7 +165,7 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// 組み合わせ <paramref name="n"/>_C_<paramref name="k"/> を返す。
+        /// 二項係数 <paramref name="n"/>_C_<paramref name="k"/> を返す。
         /// </summary>
         public static long Combination(long n, long k)
         {
@@ -175,6 +175,27 @@ namespace Kzrnm.Competitive
                 res = res * (n - i + 1) / i;
             }
             return res;
+        }
+
+        /// <summary>
+        /// C[n][k] = 二項係数 n_C_k となる配列 C を返す。
+        /// </summary>
+        /// <param name="maxSize">n の最大値</param>
+        public static T[][] CombinationTable<T, TOp>(int maxSize)
+            where TOp : IAdditionOperator<T>, IMultiplicationOperator<T>
+        {
+            var op = default(TOp);
+            var c = new T[++maxSize][];
+            for (int i = 0; i < c.Length; i++)
+            {
+                c[i] = new T[i + 1];
+                c[i][0] = c[i][^1] = op.MultiplyIdentity;
+                for (int j = 1; j + 1 < c[i].Length; ++j)
+                {
+                    c[i][j] = op.Add(c[i - 1][j - 1], c[i - 1][j]);
+                }
+            }
+            return c;
         }
     }
 }

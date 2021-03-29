@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using AtCoder;
+using FluentAssertions;
 using Xunit;
 
 namespace Kzrnm.Competitive.MathNS
@@ -176,6 +177,23 @@ namespace Kzrnm.Competitive.MathNS
                         d *= k + 1;
                     }
                     MathLibEx.Combination(i, j).Should().Be(n / d);
+                }
+        }
+
+        [Fact]
+        public void CombinationTable()
+        {
+            var c = MathLibEx.CombinationTable<long, LongOperator>(10);
+            for (int i = 0; i <= 10; i++)
+                for (int j = 0; j <= i; j++)
+                {
+                    long n = 1, d = 1;
+                    for (int k = 0; k < j; k++)
+                    {
+                        n *= i - k;
+                        d *= k + 1;
+                    }
+                    c[i][j].Should().Be(n / d);
                 }
         }
     }
