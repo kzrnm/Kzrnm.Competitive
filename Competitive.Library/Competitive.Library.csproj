@@ -12,11 +12,11 @@
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
       <_Parameter1>Competitive.Library.Test</_Parameter1>
     </AssemblyAttribute>
-    <PackageReference Include="ac-library-csharp" Version="1.4.4" />
+    <PackageReference Include="ac-library-csharp" Version="1.5.1" />
     <PackageReference Include="Competitive.IO" Version="0.5.1" />
 
 
-    <PackageReference Include="SourceExpander.Embedder" Version="3.0.2">
+    <PackageReference Include="SourceExpander.Embedder" Version="3.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

@@ -51,7 +51,7 @@ namespace Kzrnm.Competitive
         [MethodImpl(AggressiveInlining)]
         private static void Add(T[] data, int p, T w)
         {
-            for (++p; p < data.Length; p += InternalBit.ExtractLowestSetBit(p))
+            for (++p; p < data.Length; p += (int)InternalBit.ExtractLowestSetBit(p))
                 data[p] = op.Add(data[p], w);
         }
 
@@ -74,7 +74,7 @@ namespace Kzrnm.Competitive
         private static T Sum(T[] data, int r)
         {
             T res = default;
-            for (; r > 0; r -= InternalBit.ExtractLowestSetBit(r))
+            for (; r > 0; r &= r - 1)
                 res = op.Add(res, data[r]);
             return res;
         }

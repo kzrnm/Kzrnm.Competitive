@@ -28,8 +28,8 @@ namespace Kzrnm.Competitive
         [MethodImpl(AggressiveInlining)]
         public void Add(int h, int w, T v)
         {
-            for (var hh = h + 1; hh < tree.Length; hh += InternalBit.ExtractLowestSetBit(hh))
-                for (var ww = w + 1; ww < tree[hh].Length; ww += InternalBit.ExtractLowestSetBit(ww))
+            for (var hh = h + 1; hh < tree.Length; hh += (int)InternalBit.ExtractLowestSetBit(hh))
+                for (var ww = w + 1; ww < tree[hh].Length; ww += (int)InternalBit.ExtractLowestSetBit(ww))
                     tree[hh][ww] = op.Add(tree[hh][ww], v);
         }
 
@@ -37,8 +37,8 @@ namespace Kzrnm.Competitive
         public T Sum(int hExclusive, int wExclusive)
         {
             T res = default;
-            for (var h = hExclusive; h > 0; h -= InternalBit.ExtractLowestSetBit(h))
-                for (var w = wExclusive; w > 0; w -= InternalBit.ExtractLowestSetBit(w))
+            for (var h = hExclusive; h > 0; h &= h - 1)
+                for (var w = wExclusive; w > 0; w &= w - 1)
                     res = op.Add(res, tree[h][w]);
             return res;
         }
