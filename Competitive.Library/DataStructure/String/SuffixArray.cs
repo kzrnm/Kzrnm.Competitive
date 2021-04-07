@@ -1,175 +1,93 @@
-﻿using System;
+﻿using AtCoder;
+using AtCoder.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
 {
     public class SuffixArray
     {
-
-        int[] S;
-        int N;
-        int[] SA;
-        int[] rank;
-        SparseTableRMQ rmq;
-        public static SuffixArray Create(string str) => new SuffixArray(ZahyoCompress.CompressedArray(str.AsSpan()));
-        public static SuffixArray Create<T>(IEnumerable<T> str) => new SuffixArray(ZahyoCompress.CompressedArray(str.ToArray()));
-        public static SuffixArray Create<T>(T[] str) => new SuffixArray(ZahyoCompress.CompressedArray(str));
-        private SuffixArray(ReadOnlySpan<int> str)
+        public static SuffixArray Create(string str)
         {
-            N = str.Length;
-            S = new int[N + 1];
-            for (int i = 0; i < N; i++)
-                S[i] = str[i] + 1;
-            SA = Sais(S, S.Max());
-            rank = new int[N + 1];
-            for (int i = 0; i <= N; i++) rank[SA[i]] = i;
-            BuildLCP();
+            var sa = StringLib.SuffixArray(str);
+            var lcp = StringLib.LCPArray(str, sa);
+            return new SuffixArray(sa, lcp);
         }
-
-        static void CreateBeginBucket(int[] v, int[] b)
+        public static SuffixArray Create<T>(ReadOnlySpan<T> str)
         {
-            for (int i = 0; i < b.Length; i++) b[i] = 0;
-            for (int i = 0; i < v.Length; i++) b[v[i]]++;
-            int sum = 0;
-            for (int i = 0; i < b.Length; i++) { b[i] += sum; var tmp = b[i]; b[i] = sum; sum = tmp; }
+            var sa = StringLib.SuffixArray(str);
+            var lcp = StringLib.LCPArray(str, sa);
+            return new SuffixArray(sa, lcp);
         }
-        static void CreateEndBucket(int[] v, int[] b)
+        public static SuffixArray Create<T>(Span<T> str)
         {
-            for (int i = 0; i < b.Length; i++) b[i] = 0;
-            for (int i = 0; i < v.Length; i++) b[v[i]]++;
-            for (int i = 1; i < b.Length; i++) b[i] += b[i - 1];
+            var sa = StringLib.SuffixArray(str);
+            var lcp = StringLib.LCPArray(str, sa);
+            return new SuffixArray(sa, lcp);
         }
-        static void InducedSort(int[] v, int[] sa, int[] b, bool[] isl)
+        public static SuffixArray Create<T>(T[] str)
         {
-            CreateBeginBucket(v, b);
-            for (int i = 0; i < v.Length; i++) if (sa[i] > 0 && isl[sa[i] - 1]) sa[b[v[sa[i] - 1]]++] = sa[i] - 1;
+            var sa = StringLib.SuffixArray(str);
+            var lcp = StringLib.LCPArray(str, sa);
+            return new SuffixArray(sa, lcp);
         }
-        static void InvertInducedSort(int[] v, int[] sa, int[] b, bool[] isl)
-        {
-            CreateEndBucket(v, b);
-            for (int i = v.Length - 1; i >= 0; i--)
-                if (sa[i] > 0 && !isl[sa[i] - 1]) sa[--b[v[sa[i] - 1]]] = sa[i] - 1;
-        }
-        int[] Sais(int[] v, int mv)
-        {
-            if (v.Length == 1) return new int[] { 0 };
-            var isl = new bool[v.Length];
-            var b = new int[mv + 1];
-            var sa = new int[v.Length];
-            for (int i = 0; i < v.Length; i++)
-                sa[i] = -1;
-            for (int i = v.Length - 2; i >= 0; i--)
-                isl[i] = v[i] > v[i + 1] || (v[i] == v[i + 1] && isl[i + 1]);
-            CreateEndBucket(v, b);
-            for (int i = 0; i < v.Length; i++) if (IsLMS(i, isl)) sa[--b[v[i]]] = i;
-            InducedSort(v, sa, b, isl);
-            InvertInducedSort(v, sa, b, isl);
-
-
-            var cur = 0;
-            var ord = new int[v.Length];
-            for (int i = 0; i < v.Length; i++) if (IsLMS(i, isl)) ord[i] = cur++;
-            var next = new int[cur];
-            cur = -1;
-            int prev = -1;
-            for (int i = 0; i < v.Length; i++)
-            {
-                if (!IsLMS(sa[i], isl)) continue;
-                var diff = false;
-                for (int d = 0; d < v.Length; d++)
-                {
-                    if (prev == -1 || v[sa[i] + d] != v[prev + d] || isl[sa[i] + d] != isl[prev + d])
-                    {
-                        diff = true; break;
-                    }
-                    else if (d > 0 && IsLMS(sa[i] + d, isl)) break;
-                }
-                if (diff) { cur++; prev = sa[i]; }
-                next[ord[sa[i]]] = cur;
-            }
-            var reord = new int[next.Length];
-            for (int i = 0; i < v.Length; i++) if (IsLMS(i, isl)) reord[ord[i]] = i;
-            var nextsa = Sais(next, cur);
-            CreateEndBucket(v, b);
-            for (int i = 0; i < sa.Length; i++) sa[i] = -1;
-            for (int i = nextsa.Length - 1; i >= 0; i--) sa[--b[v[reord[nextsa[i]]]]] = reord[nextsa[i]];
-            InducedSort(v, sa, b, isl);
-            InvertInducedSort(v, sa, b, isl);
-            return sa;
-        }
-        static bool IsLMS(int x, bool[] isl) { return x > 0 && isl[x - 1] && !isl[x]; }
-
-        void BuildLCP()
-        {
-            var k = 0;
-            var h = new int[N];
-            for (int i = 0; i < N; i++)
-            {
-                var j = SA[rank[i] - 1];
-                if (k > 0) k--;
-                for (; j + k < N && i + k < N; k++) if (S[j + k] != S[i + k]) break;
-                h[rank[i] - 1] = k;
-            }
-            rmq = new SparseTableRMQ(h);
-        }
-        /// <summary>
-        /// s[<paramref name="i"/>:] と s[<paramref name="j"/>:] の最大共通接頭辞を O(loglogN) で計算します。
-        /// </summary>
-        public int GetLCP(int i, int j)
-        {
-            if (i == j) return N - i;
-            i = rank[i]; j = rank[j];
-            return rmq.Query(Math.Min(i, j), Math.Max(i, j));
-        }
-        /// <summary>
-        /// rankが[<paramref name="index"/>:]のものを返す
-        /// </summary>
-        public int this[int index] => index == 0 ? N : SA[index - 1];
 
         /// <summary>
-        /// s[<paramref name="index"/>:]のランクを返す
+        /// <para>Suffix Array: [0...n-1] の順列で s[SA[i]..n) &lt; s[SA[i+1]..n) を満たすもの</para>
+        /// <para>言い換えると、s[i...] の辞書順に i が入っている</para>
         /// </summary>
-        public int Rank(int index) => rank[index];
+        public int[] SA { get; }
+        /// <summary>
+        /// <para>Rank: Suffix Array の逆引き。</para>
+        /// <para>言い換えると、s[i...] が辞書順で何番目かを格納している。</para>
+        /// </summary>
+        public int[] Rank { get; }
+        /// <summary>
+        /// <para>LCP Array: s[SA[i]..n), s[SA[i+1]..n) の LCP(Longest Common Prefix) の長さ。</para>
+        /// <para>言い換えると、辞書順で次に来るものとの LCP の長さ。</para>
+        /// </summary>
+        public int[] LcpArray { get; }
+        /// <summary>
+        /// Suffix Array の長さ = LCP Array の長さ + 1
+        /// </summary>
+        private int Length { get; }
 
-        #region SparseTableRMQ
-        public class SparseTableRMQ
+        /// <summary>
+        /// s[<paramref name="i"/>:] と s[<paramref name="j"/>:] の LCP(Longest Common Prefix) の長さ。
+        /// </summary>
+        public int LongestCommonPrefix(int i, int j)
         {
-            int n;
-            int[] A;
-            public SparseTableRMQ(int[] a)
-            {
-                var k = 1;
-                n = a.Length;
-                for (int i = 1; i < n; i <<= 1) k++;
-
-                A = new int[n * k];
-                for (int i = 0; i < n; i++)
-                    A[i] = a[i];
-                var d = 0;
-                for (int i = 1; i < n; i <<= 1, d += n)
-                {
-                    for (int j = 0; j < n; j++)
-                        A[d + n + j] = A[d + j];
-                    for (int j = 0; j < n - i; j++)
-                        A[d + n + j] = Math.Min(A[d + j], A[d + j + i]);
-                }
-            }
-            /// <summary>
-            /// value of [<paramref name="l"/>,<paramref name="r"/>)
-            /// </summary>
-            public int Query(int l, int r)
-            {
-                r--;
-                int z = r - l, k = 0, e = 1, s;
-                s = ((z & 0xffff0000) != 0 ? 1 : 0) << 4; z >>= s; e <<= s; k |= s;
-                s = ((z & 0x0000ff00) != 0 ? 1 : 0) << 3; z >>= s; e <<= s; k |= s;
-                s = ((z & 0x000000f0) != 0 ? 1 : 0) << 2; z >>= s; e <<= s; k |= s;
-                s = ((z & 0x0000000c) != 0 ? 1 : 0) << 1; z >>= s; e <<= s; k |= s;
-                s = ((z & 0x00000002) != 0 ? 1 : 0) << 0; e <<= s; k |= s;
-                return Math.Min(A[l + (n * k)], A[r + (n * k) - e + 1]);
-            }
+            if (i == j) return Length - i;
+            i = Rank[i]; j = Rank[j];
+            if (i > j) (i, j) = (j, i);
+            return rmq.Prod(i, j);
         }
-        #endregion SparseTableRMQ
+
+        /// <summary>
+        /// LCP Array の最小値を取得する RMQ
+        /// </summary>
+        private readonly SparseTable<int, MinOp> rmq;
+        private SuffixArray(int[] suffixArray, int[] lcpArray)
+        {
+            Contract.Assert(suffixArray.Length == lcpArray.Length + 1);
+            Length = suffixArray.Length;
+            SA = suffixArray;
+            LcpArray = lcpArray;
+            Rank = new int[suffixArray.Length];
+            for (int i = 0; i < suffixArray.Length; i++)
+                Rank[suffixArray[i]] = i;
+
+            var h = LcpArray;
+            if (h.Length == 0)
+                h = new int[1];
+            rmq = new SparseTable<int, MinOp>(h);
+        }
+        private struct MinOp : ISparseTableOperator<int>
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public int Operate(int x, int y) => Math.Min(x, y);
+        }
     }
 }
