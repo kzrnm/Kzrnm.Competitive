@@ -5,7 +5,6 @@ using AtCoder.Internal;
 
 namespace System
 {
-#pragma warning disable IDE1006
     using static MethodImplOptions;
     public static class __CollectionExtension
     {

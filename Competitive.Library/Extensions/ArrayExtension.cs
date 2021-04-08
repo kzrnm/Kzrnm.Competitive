@@ -6,7 +6,6 @@ using System.Runtime.CompilerServices;
 namespace Kzrnm.Competitive
 {
     using static MethodImplOptions;
-#pragma warning disable IDE1006
     public static class __ArrayExtension
     {
         [MethodImpl(AggressiveInlining)]

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
-#pragma warning disable IDE1006
     public static class __CollectionExtension_MaxBy
     {
         public static (int index, T max) MaxBy<T>(this T[] arr) where T : IComparable<T>

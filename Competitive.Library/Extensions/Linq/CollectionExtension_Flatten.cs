@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
 {
-#pragma warning disable IDE1006
     public static class __CollectionExtension_Flatten
     {
         /// <summary>

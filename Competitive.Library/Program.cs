@@ -14,8 +14,7 @@ internal partial class Program
     }
     public void Run()
     {
-        int Q = 1;
-        if (__ManyTestCases) Q = cr;
+        int Q = __ManyTestCases ? cr.Int : 1;
         for (; Q > 0; Q--)
         {
             var res = Calc();
@@ -29,8 +28,7 @@ internal partial class Program
 [SourceExpander.NotEmbeddingSource]
 partial class Program
 {
-#pragma warning disable IDE1006,IDE0060
-    object Calc(Program dum = null) => dum;
+    object Calc() => null;
     bool __ManyTestCases = false;
     string YesNo(bool b) => b ? "Yes" : "No";
 }

@@ -3,7 +3,6 @@ using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
 {
-#pragma warning disable IDE1006
     public static class __CollectionExtension_SpanSelect
     {
         public static TResult[] Select<TSource, TResult>(this Span<TSource> source, Func<TSource, TResult> selector)
