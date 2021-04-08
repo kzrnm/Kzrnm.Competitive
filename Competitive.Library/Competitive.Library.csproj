@@ -6,6 +6,7 @@
     <OutputType>Library</OutputType>
     <LangVersion>8</LangVersion>
     <NoWarn>1701;1702;CA1034;CA1036;CA1815;IDE0034;IDE0044;EMBED0004</NoWarn>
+    <DefineConstants>$(DefineConstants);ATCODER_CONTRACT</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

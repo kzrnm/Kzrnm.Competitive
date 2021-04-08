@@ -1,5 +1,4 @@
-﻿#define ATCODER_CONTRACT
-using AtCoder;
+﻿using AtCoder;
 using AtCoder.Internal;
 using System.Diagnostics;
 using System.Numerics;
