@@ -44,8 +44,29 @@ namespace Kzrnm.Competitive.MathNS
         public void EmptyInt(int[] a, int[] b, int[] expected)
         {
             for (int i = 2; i < 10; i++)
-                Convolution.ConvolutionAnyMod(a, b, i).Should().Equal(expected);
+                ConvolutionAnyMod.Convolution(a, b, i).Should().Equal(expected);
         }
+
+        [Fact]
+        public void Mid()
+        {
+            var rnd = new Random(42);
+            int n = 1234, m = 2345;
+            var a = new uint[n];
+            var b = new uint[m];
+            for (int i = 0; i < n; i++)
+            {
+                a[i] = rnd.NextUInt();
+            }
+            for (int i = 0; i < m; i++)
+            {
+                b[i] = rnd.NextUInt();
+            }
+            ConvolutionAnyMod.Convolution<Mod998244353>(a, b).Should().Equal(ConvNative(a, b, 998244353));
+            ConvolutionAnyMod.Convolution<Mod1000000000>(a, b).Should().Equal(ConvNative(a, b, 1000000000));
+            ConvolutionAnyMod.Convolution<Mod1000000007>(a, b).Should().Equal(ConvNative(a, b, 1000000007));
+        }
+
 
         [Fact]
         public void Small()
@@ -63,7 +84,7 @@ namespace Kzrnm.Competitive.MathNS
                 b[i] = rnd.NextUInt();
             }
             for (int i = 0; i < 50; i++)
-                Convolution.ConvolutionAnyMod(a, b, 5 + i).Should().Equal(ConvNative(a, b, 5 + i));
+                ConvolutionAnyMod.Convolution(a, b, 5 + i).Should().Equal(ConvNative(a, b, 5 + i));
         }
 
         [Fact]
@@ -82,7 +103,7 @@ namespace Kzrnm.Competitive.MathNS
                 b[i] = rnd.NextUInt();
             }
             for (int i = 0; i < 50; i++)
-                Convolution.ConvolutionAnyMod(a, b, 1000000005 + i).Should().Equal(ConvNative(a, b, 1000000005 + i));
+                ConvolutionAnyMod.Convolution(a, b, 1000000005 + i).Should().Equal(ConvNative(a, b, 1000000005 + i));
         }
 
         [Fact]
@@ -105,9 +126,38 @@ namespace Kzrnm.Competitive.MathNS
                         {
                             b[i] = rnd.NextUInt();
                         }
-                        Convolution.ConvolutionAnyMod(a, b, 1000000000 + c).Should().Equal(ConvNative(a, b, 1000000000 + c));
+                        ConvolutionAnyMod.Convolution(a, b, 1000000000 + c).Should().Equal(ConvNative(a, b, 1000000000 + c));
                     }
                 }
+        }
+
+        private readonly struct Mod113 : IStaticMod
+        {
+            public uint Mod => 113;
+            public bool IsPrime => true;
+        }
+        [Fact]
+        public void Simpl113()
+        {
+            var rnd = new Random(42);
+            for (int n = 1; n < 20; n++)
+            {
+                for (int m = 1; m < 20; m++)
+                {
+                    var a = new uint[n];
+                    var b = new uint[m];
+
+                    for (int i = 0; i < n; i++)
+                    {
+                        a[i] = rnd.NextUInt();
+                    }
+                    for (int i = 0; i < m; i++)
+                    {
+                        b[i] = rnd.NextUInt();
+                    }
+                    ConvolutionAnyMod.Convolution<Mod113>(a, b).Should().Equal(ConvNative(a, b, 113));
+                }
+            }
         }
     }
 }
