@@ -13,12 +13,12 @@ namespace Kzrnm.Competitive
             where TOp : struct, IMultiplicationOperator<T>
         {
             var op = default(TOp);
-            T res = op.MultiplyIdentity;
-            for (; y > 0; y >>= 1)
+            T res = ((y & 1) != 0) ? x : op.MultiplyIdentity;
+            for (y >>= 1; y > 0; y >>= 1)
             {
-                if ((y & 1) == 1)
-                    res = op.Multiply(res, x);
                 x = op.Multiply(x, x);
+                if ((y & 1) != 0)
+                    res = op.Multiply(res, x);
             }
             return res;
         }
