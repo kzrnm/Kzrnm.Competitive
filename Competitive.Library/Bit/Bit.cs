@@ -11,6 +11,7 @@ namespace Kzrnm.Competitive
     public static class Bit
     {
         public static string ToBitString(this int num, int padLeft = sizeof(int) * 8) => Convert.ToString(num, 2).PadLeft(padLeft, '0');
+        public static string ToBitString(this uint num, int padLeft = sizeof(uint) * 8) => Convert.ToString((int)num, 2).PadLeft(padLeft, '0');
         public static string ToBitString(this long num, int padLeft = sizeof(long) * 8) => Convert.ToString(num, 2).PadLeft(padLeft, '0');
         public static string ToBitString(this ulong num, int padLeft = sizeof(ulong) * 8) => Convert.ToString(unchecked((long)num), 2).PadLeft(padLeft, '0');
         [MethodImpl(AggressiveInlining)]
