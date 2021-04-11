@@ -6,7 +6,7 @@ namespace Kzrnm.Competitive.DataStructure
     public class StarrySkyTreeTests
     {
         const int N = 1000;
-        readonly StarrySkyTree<long, StarrySkyTreeOperator> segMax = new StarrySkyTree<long, StarrySkyTreeOperator>(N);
+        readonly StarrySkyTree<long, StarrySkyTreeOperator> segMax = new(N);
         public StarrySkyTreeTests()
         {
             for (int i = 0; i < N; i++)

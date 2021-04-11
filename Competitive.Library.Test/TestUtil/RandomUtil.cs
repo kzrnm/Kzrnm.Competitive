@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Kzrnm.Competitive
 {
@@ -24,6 +25,12 @@ namespace Kzrnm.Competitive
             for (int i = 0; i < arr.Length; i++)
                 arr[i] = rnd.Next(minValue, maxValue);
             return arr;
+        }
+        public static uint NextUInt(this Random rnd)
+        {
+            Span<byte> bytes = stackalloc byte[4];
+            rnd.NextBytes(bytes);
+            return MemoryMarshal.AsRef<uint>(bytes);
         }
     }
 }

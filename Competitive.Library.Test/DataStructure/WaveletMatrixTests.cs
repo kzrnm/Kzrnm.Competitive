@@ -10,7 +10,7 @@ namespace Kzrnm.Competitive.DataStructure
         public static long[] orig = new long[] {
             1,-1,2,-2,3,3,-3,-2,4,5,6
         };
-        public WaveletMatrix<long> matrix = new WaveletMatrix<long>(orig);
+        public WaveletMatrix<long> matrix = new(orig);
 
         [Theory]
         [InlineData(0, 1)]

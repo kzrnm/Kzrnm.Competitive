@@ -35,7 +35,7 @@ namespace Kzrnm.Competitive
             if (collection.IsEmpty) return default((T, T));
             var max = collection[0];
             var min = max;
-            foreach (var v in collection.Slice(1))
+            foreach (var v in collection[1..])
             {
                 if (v.CompareTo(max) > 0) max = v;
                 else if (v.CompareTo(min) < 0) min = v;

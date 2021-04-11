@@ -101,7 +101,7 @@ namespace Kzrnm.Competitive.DataStructure.String
             }
         }
 
-        static SuffixArrayNative<T> GetNative<T>(ReadOnlySpan<T> str) => new SuffixArrayNative<T>(str);
+        static SuffixArrayNative<T> GetNative<T>(ReadOnlySpan<T> str) => new(str);
         private ref struct SuffixArrayNative<T>
         {
             private readonly ReadOnlySpan<T> str;

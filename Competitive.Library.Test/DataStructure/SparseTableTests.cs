@@ -9,7 +9,7 @@ namespace Kzrnm.Competitive.DataStructure
 {
     public class SparseTableTests
     {
-        Random rnd = new Random(42);
+        Random rnd = new(42);
 
         [Fact]
         public void Invalid()

@@ -49,7 +49,7 @@ namespace Kzrnm.Competitive.DataStructure
 
         struct Op : ISegtreeBeatsOperator<S, long>
         {
-            public S Identity => new S
+            public S Identity => new()
             {
                 max = long.MinValue >> 2,
                 max2 = long.MinValue >> 2,
@@ -57,7 +57,7 @@ namespace Kzrnm.Competitive.DataStructure
 
             public long FIdentity => long.MinValue >> 2;
 
-            public S Operate(S x, S y) => new S
+            public S Operate(S x, S y) => new()
             {
                 max = Max(x.max, y.max),
                 max2 = Max2(x.max, x.max2, y.max, y.max2),
