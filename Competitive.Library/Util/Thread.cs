@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Kzrnm.Competitive.Threading
+namespace Kzrnm.Competitive
 {
-    public static class Thread
+    public static class LargeThread
     {
         /// <summary>
         /// スタックサイズを指定して関数を実行する。Stack overflow を回避できるかも。
