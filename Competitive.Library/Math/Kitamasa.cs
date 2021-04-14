@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Kzrnm.Competitive
@@ -33,6 +34,12 @@ namespace Kzrnm.Competitive
         }
 
 
+        /// <summary>
+        /// <para><paramref name="a"/>[n+k] = <paramref name="c"/>[0]*<paramref name="a"/>[n+k-1]+...+<paramref name="c"/>[k-1]*<paramref name="a"/>[n] である漸化式 <paramref name="a"/>(0-based) の <paramref name="n"/> を求めます。</para>
+        /// <para>計算量: O(k logk logn)</para>
+        /// </summary>
+        public static uint FastKitamasa<TMod>(StaticModInt<TMod>[] a, StaticModInt<TMod>[] c, long n) where TMod : struct, IStaticMod
+            => FastKitamasa<TMod>(MemoryMarshal.Cast<StaticModInt<TMod>, uint>(a), MemoryMarshal.Cast<StaticModInt<TMod>, uint>(c), n);
         /// <summary>
         /// <para><paramref name="a"/>[n+k] = <paramref name="c"/>[0]*<paramref name="a"/>[n+k-1]+...+<paramref name="c"/>[k-1]*<paramref name="a"/>[n] である漸化式 <paramref name="a"/>(0-based) の <paramref name="n"/> を求めます。</para>
         /// <para>計算量: O(k logk logn)</para>
