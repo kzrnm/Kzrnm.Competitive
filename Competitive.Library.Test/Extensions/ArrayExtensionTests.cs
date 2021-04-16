@@ -45,7 +45,7 @@ namespace Kzrnm.Competitive.Extension
         }
 
         [Fact]
-        public void SortExpression()
+        public void SortSelect()
         {
             new string[] {
                 "zzz14144",

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
@@ -19,7 +19,11 @@ namespace Kzrnm.Competitive
         [MethodImpl(AggressiveInlining)]
         public static string[] Sort(this string[] arr) => Sort(arr, StringComparer.Ordinal);
         [MethodImpl(AggressiveInlining)]
-        public static T[] Sort<T, U>(this T[] arr, Expression<Func<T, U>> selector) where U : IComparable<U> => Sort(arr, ExComparer<T>.CreateExp(selector));
+        public static T[] Sort<T, U>(this T[] arr, Func<T, U> selector) where U : IComparable<U>
+        {
+            Array.Sort(arr.Select(selector).ToArray(), arr);
+            return arr;
+        }
         [MethodImpl(AggressiveInlining)]
         public static T[] Sort<T>(this T[] arr, Comparison<T> comparison) { Array.Sort(arr, comparison); return arr; }
         [MethodImpl(AggressiveInlining)]
