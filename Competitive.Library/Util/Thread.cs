@@ -10,7 +10,7 @@ namespace Kzrnm.Competitive
         /// <typeparam name="T">計算結果</typeparam>
         /// <param name="func">実行する関数</param>
         /// <param name="stackMegaByte">スタックサイズをMBで指定</param>
-        public static T LargeStack<T>(Func<T> func, int stackMegaByte)
+        public static T LargeStack<T>(Func<T> func, int stackMegaByte = 128)
         {
             T res = default;
             var t = new System.Threading.Thread(() => res = func(), stackMegaByte << 20);
@@ -24,7 +24,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <param name="func">実行する関数</param>
         /// <param name="stackMegaByte">スタックサイズをMBで指定</param>
-        public static void LargeStack(System.Threading.ThreadStart func, int stackMegaByte)
+        public static void LargeStack(System.Threading.ThreadStart func, int stackMegaByte = 128)
         {
             var t = new System.Threading.Thread(func, stackMegaByte << 20);
             t.Start();
