@@ -240,18 +240,42 @@ function Get-Parsed-Input {
         }
     }
 }
-
+function Get-ModInt {
+    param(
+        [Parameter(Mandatory = $true)]
+        [AngleSharp.Html.Dom.IHtmlDocument]
+        $document
+    )
+    $text = $document.Body.TextContent
+    if ($text -match '998,?244,?353') {
+        return '998244353'
+    }
+    elseif ($text -match '1,?000,?000,?007') {
+        return "1000000007"
+    }
+    elseif ($text -match '10\^9 ?\+ ?7') {
+        return "1000000007"
+    }
+    return ""
+}
 function Update-Input {
     param(
-        $vars
+        [Parameter(Mandatory = $true)]
+        [AngleSharp.Html.Dom.IHtmlDocument]
+        $document
     )
+    $vars = (Get-Parsed-Input $document)
     if (-not $vars) {
         $vars = @()
     }
+    $modInt = (Get-ModInt $document)
 
     $indent = "    "
     $mainPath = "$PSScriptRoot\..\Competitive\Program.cs"
     $main = (Get-Content $mainPath -Raw)
+    if ($modInt) {
+        $main = ($main -replace 'using ModInt = [^;]+;', "using ModInt = AtCoder.StaticModInt<AtCoder.Mod$modInt>;")
+    }
     ($main -replace 'private object Calc\(\)[\s\S]*', ("private object Calc()")) > $mainPath
     "$indent{" >> $mainPath
     $vars | ForEach-Object { $indent * 2 + $_.ToInit() } >> $mainPath
@@ -265,7 +289,7 @@ function Main {
     Set-Variable -Name "lastAtCoderUrl" -Value $Url -Scope Global
     $document = (Get-Parsed-AtCoder)
     Update-InOut (Get-InOut $document)
-    Update-Input (Get-Parsed-Input $document)
+    Update-Input $document
     # dotnet-format.exe -f "$PSScriptRoot\..\Competitive"
 }
 
