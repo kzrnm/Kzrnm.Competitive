@@ -21,17 +21,17 @@ namespace Kzrnm.Competitive.Graph
             gb.Add(7, 0);
             var (from, edges) = gb.ToGraph().EulerianTrail();
             from.Should().Be(0);
-            edges.Should().Equal(new Edge[] {
-                new Edge(1),
-                new Edge(2),
-                new Edge(3),
-                new Edge(4),
-                new Edge(5),
-                new Edge(6),
-                new Edge(2),
-                new Edge(4),
-                new Edge(7),
-                new Edge(0),
+            edges.Should().Equal(new GraphEdge[] {
+                new GraphEdge(1),
+                new GraphEdge(2),
+                new GraphEdge(3),
+                new GraphEdge(4),
+                new GraphEdge(5),
+                new GraphEdge(6),
+                new GraphEdge(2),
+                new GraphEdge(4),
+                new GraphEdge(7),
+                new GraphEdge(0),
             });
         }
 
@@ -51,17 +51,17 @@ namespace Kzrnm.Competitive.Graph
             gb.Add(7, 0);
             var (from, edges) = gb.ToGraph().EulerianTrail();
             from.Should().Be(0);
-            edges.Should().Equal(new Edge[] {
-                new Edge(1),
-                new Edge(2),
-                new Edge(3),
-                new Edge(4),
-                new Edge(2),
-                new Edge(6),
-                new Edge(5),
-                new Edge(4),
-                new Edge(7),
-                new Edge(0),
+            edges.Should().Equal(new GraphEdge[] {
+                new GraphEdge(1),
+                new GraphEdge(2),
+                new GraphEdge(3),
+                new GraphEdge(4),
+                new GraphEdge(2),
+                new GraphEdge(6),
+                new GraphEdge(5),
+                new GraphEdge(4),
+                new GraphEdge(7),
+                new GraphEdge(0),
             });
         }
 

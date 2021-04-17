@@ -22,10 +22,10 @@ namespace Kzrnm.Competitive.Graph
             var res = graph.Kruskal();
             res.Should().HaveCount(1);
             res[0].Should().Equal(
-                (0, new Edge(1)),
-                (0, new Edge(2)),
-                (0, new Edge(3)),
-                (0, new Edge(4)));
+                (0, new GraphEdge(1)),
+                (0, new GraphEdge(2)),
+                (0, new GraphEdge(3)),
+                (0, new GraphEdge(4)));
         }
 
         [Fact]
@@ -42,13 +42,13 @@ namespace Kzrnm.Competitive.Graph
             var res = graph.Kruskal();
             res.Should().HaveCount(3);
             res[0].Should().Equal(
-                (0, new Edge(1)),
-                (0, new Edge(2)));
+                (0, new GraphEdge(1)),
+                (0, new GraphEdge(2)));
             res[1].Should().Equal(
-                (3, new Edge(4)),
-                (4, new Edge(7)));
+                (3, new GraphEdge(4)),
+                (4, new GraphEdge(7)));
             res[2].Should().Equal(
-                (5, new Edge(6)));
+                (5, new GraphEdge(6)));
         }
 
         [Fact]
@@ -62,9 +62,9 @@ namespace Kzrnm.Competitive.Graph
             var res = graph.Kruskal();
             res.Should().HaveCount(1);
             res[0].Should().Equal(
-                (0, new Edge(2)),
-                (1, new Edge(3)),
-                (2, new Edge(3)));
+                (0, new GraphEdge(2)),
+                (1, new GraphEdge(3)),
+                (2, new GraphEdge(3)));
         }
 
         [Fact]

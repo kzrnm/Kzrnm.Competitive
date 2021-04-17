@@ -19,10 +19,10 @@ namespace Kzrnm.Competitive.Graph
             gb.Add(7, 3);
             var (from, edges) = gb.ToGraph().GetCycleDFS();
             from.Should().Be(3);
-            edges.Should().Equal(new Edge[] {
-                new Edge(4),
-                new Edge(7),
-                new Edge(3),
+            edges.Should().Equal(new GraphEdge[] {
+                new GraphEdge(4),
+                new GraphEdge(7),
+                new GraphEdge(3),
             });
         }
         [Fact]

@@ -9,10 +9,10 @@ namespace Kzrnm.Competitive
 {
     public class GraphBuilder
     {
-        internal readonly EdgeContainer<Edge> edgeContainer;
+        internal readonly EdgeContainer<GraphEdge> edgeContainer;
         public GraphBuilder(int size, bool isDirected)
         {
-            edgeContainer = new EdgeContainer<Edge>(size, isDirected);
+            edgeContainer = new EdgeContainer<GraphEdge>(size, isDirected);
         }
         public static GraphBuilder Create(int count, PropertyConsoleReader cr, int edgeCount, bool isDirected)
         {
@@ -28,53 +28,53 @@ namespace Kzrnm.Competitive
                 gb.Add(cr.Int0, cr.Int0);
             return gb;
         }
-        public void Add(int from, int to) => edgeContainer.Add(from, new Edge(to));
+        public void Add(int from, int to) => edgeContainer.Add(from, new GraphEdge(to));
 
 
-        public SimpleGraph<GraphNode, Edge> ToGraph()
+        public SimpleGraph<GraphNode, GraphEdge> ToGraph()
         {
             var res = new GraphNode[edgeContainer.Length];
             var csr = edgeContainer.ToCSR();
             var counter = new int[res.Length];
             var rootCounter = edgeContainer.IsDirected ? new int[res.Length] : counter;
-            var children = new Edge[res.Length][];
-            var roots = edgeContainer.IsDirected ? new Edge[res.Length][] : children;
+            var children = new GraphEdge[res.Length][];
+            var roots = edgeContainer.IsDirected ? new GraphEdge[res.Length][] : children;
             for (int i = 0; i < res.Length; i++)
             {
-                if (children[i] == null) children[i] = new Edge[edgeContainer.sizes[i]];
-                if (roots[i] == null) roots[i] = new Edge[edgeContainer.rootSizes[i]];
+                if (children[i] == null) children[i] = new GraphEdge[edgeContainer.sizes[i]];
+                if (roots[i] == null) roots[i] = new GraphEdge[edgeContainer.rootSizes[i]];
                 res[i] = new GraphNode(i, roots[i], children[i]);
                 foreach (ref var e in csr.EList.AsSpan(csr.Start[i], csr.Start[i + 1] - csr.Start[i]))
                 {
                     if (roots[e.To] == null)
-                        roots[e.To] = new Edge[edgeContainer.rootSizes[e.To]];
+                        roots[e.To] = new GraphEdge[edgeContainer.rootSizes[e.To]];
                     children[i][counter[i]++] = e;
                     roots[e.To][rootCounter[e.To]++] = e.Reversed(i);
                 }
             }
-            return new SimpleGraph<GraphNode, Edge>(res, csr);
+            return new SimpleGraph<GraphNode, GraphEdge>(res, csr);
         }
 
-        public TreeGraph<TreeNode, Edge> ToTree(int root = 0)
+        public TreeGraph<TreeNode, GraphEdge> ToTree(int root = 0)
         {
             Contract.Assert(!edgeContainer.IsDirected, "木には無向グラフをしたほうが良い");
             var res = new TreeNode[edgeContainer.Length];
-            var children = new SimpleList<Edge>[res.Length];
+            var children = new SimpleList<GraphEdge>[res.Length];
             foreach (var (from, e) in edgeContainer.edges)
             {
-                if (children[from] == null) children[from] = new SimpleList<Edge>();
-                if (children[e.To] == null) children[e.To] = new SimpleList<Edge>();
+                if (children[from] == null) children[from] = new SimpleList<GraphEdge>();
+                if (children[e.To] == null) children[e.To] = new SimpleList<GraphEdge>();
                 children[from].Add(e);
                 children[e.To].Add(e.Reversed(from));
             }
 
             if (edgeContainer.Length == 1)
             {
-                return new TreeGraph<TreeNode, Edge>(
-                    new TreeNode[1] { new TreeNode(root, Edge.None, 0, Array.Empty<Edge>()) }, root);
+                return new TreeGraph<TreeNode, GraphEdge>(
+                    new TreeNode[1] { new TreeNode(root, GraphEdge.None, 0, Array.Empty<GraphEdge>()) }, root);
             }
 
-            res[root] = new TreeNode(root, Edge.None, 0, children[root].ToArray());
+            res[root] = new TreeNode(root, GraphEdge.None, 0, children[root].ToArray());
 
             var queue = new Queue<(int parent, int child)>();
             foreach (var child in res[root].Children)
@@ -86,59 +86,59 @@ namespace Kzrnm.Competitive
             {
                 var (parent, cur) = queue.Dequeue();
 
-                IList<Edge> childrenBuilder;
+                IList<GraphEdge> childrenBuilder;
                 if (parent == -1)
                     childrenBuilder = children[cur];
                 else
                 {
-                    childrenBuilder = new SimpleList<Edge>(children[cur].Count);
+                    childrenBuilder = new SimpleList<GraphEdge>(children[cur].Count);
                     foreach (var c in children[cur])
                         if (c != parent)
                             childrenBuilder.Add(c);
                 }
 
                 var childrenArr = childrenBuilder.ToArray();
-                res[cur] = new TreeNode(cur, new Edge(parent), res[parent].Depth + 1, childrenArr);
+                res[cur] = new TreeNode(cur, new GraphEdge(parent), res[parent].Depth + 1, childrenArr);
                 foreach (var child in childrenArr)
                 {
                     queue.Enqueue((cur, child));
                 }
             }
 
-            return new TreeGraph<TreeNode, Edge>(res, root);
+            return new TreeGraph<TreeNode, GraphEdge>(res, root);
         }
     }
 
-    public readonly struct Edge : IEdge, IReversable<Edge>, IEquatable<Edge>
+    public readonly struct GraphEdge : IEdge, IReversable<GraphEdge>, IEquatable<GraphEdge>
     {
-        public static Edge None { get; } = new Edge(-1);
-        public Edge(int to)
+        public static GraphEdge None { get; } = new GraphEdge(-1);
+        public GraphEdge(int to)
         {
             To = to;
         }
         public int To { get; }
-        public static implicit operator int(Edge e) => e.To;
+        public static implicit operator int(GraphEdge e) => e.To;
         public override string ToString() => To.ToString();
-        public Edge Reversed(int from) => new Edge(from);
+        public GraphEdge Reversed(int from) => new GraphEdge(from);
 
         public override int GetHashCode() => this.To;
-        public override bool Equals(object obj) => obj is Edge edge && this.Equals(edge);
-        public bool Equals(Edge other) => this.To == other.To;
-        public static bool operator ==(Edge left, Edge right) => left.Equals(right);
-        public static bool operator !=(Edge left, Edge right) => !left.Equals(right);
+        public override bool Equals(object obj) => obj is GraphEdge edge && this.Equals(edge);
+        public bool Equals(GraphEdge other) => this.To == other.To;
+        public static bool operator ==(GraphEdge left, GraphEdge right) => left.Equals(right);
+        public static bool operator !=(GraphEdge left, GraphEdge right) => !left.Equals(right);
     }
 
-    public class GraphNode : IGraphNode<Edge>, IEquatable<GraphNode>
+    public class GraphNode : IGraphNode<GraphEdge>, IEquatable<GraphNode>
     {
-        public GraphNode(int i, Edge[] roots, Edge[] children)
+        public GraphNode(int i, GraphEdge[] roots, GraphEdge[] children)
         {
             this.Index = i;
             this.Roots = roots;
             this.Children = children;
         }
         public int Index { get; }
-        public Edge[] Roots { get; }
-        public Edge[] Children { get; }
+        public GraphEdge[] Roots { get; }
+        public GraphEdge[] Children { get; }
         public bool IsDirected => Roots != Children;
 
         public override string ToString() => $"children: {string.Join(",", Children)}";
@@ -146,9 +146,9 @@ namespace Kzrnm.Competitive
         public bool Equals(GraphNode other) => this.Index == other?.Index;
         public override int GetHashCode() => this.Index;
     }
-    public class TreeNode : ITreeNode<Edge>, IEquatable<TreeNode>
+    public class TreeNode : ITreeNode<GraphEdge>, IEquatable<TreeNode>
     {
-        public TreeNode(int i, Edge root, int depth, Edge[] children)
+        public TreeNode(int i, GraphEdge root, int depth, GraphEdge[] children)
         {
             this.Index = i;
             this.Root = root;
@@ -156,8 +156,8 @@ namespace Kzrnm.Competitive
             this.Depth = depth;
         }
         public int Index { get; }
-        public Edge Root { get; }
-        public Edge[] Children { get; }
+        public GraphEdge Root { get; }
+        public GraphEdge[] Children { get; }
         public int Depth { get; }
 
         public override string ToString() => $"children: {string.Join(",", Children)}";

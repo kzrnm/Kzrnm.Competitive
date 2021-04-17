@@ -20,10 +20,10 @@ namespace Kzrnm.Competitive.Graph
             gb.Add(4, 0);
             var graph = gb.ToGraph();
             graph.MinimumSpanningTreeBFS().Should().Equal(
-                (0, new Edge(1)),
-                (0, new Edge(2)),
-                (0, new Edge(3)),
-                (0, new Edge(4)));
+                (0, new GraphEdge(1)),
+                (0, new GraphEdge(2)),
+                (0, new GraphEdge(3)),
+                (0, new GraphEdge(4)));
         }
         [Fact]
         public void 重み付きグラフ()
