@@ -324,6 +324,84 @@ namespace Kzrnm.Competitive.MathNS.Matrix
             }
         }
 
+        public static TheoryData Determinant_Data = new TheoryData<Fraction[,], Fraction>
+        {
+            {
+                new Fraction[,]
+                {
+                    {10, -9},
+                    { 7, -12}
+                },
+                -57
+            },
+            {
+new Fraction[,]
+{
+                    {10, -9, -12},
+                    {7, -12, 11},
+                    {-10, 10, 3}
+                },
+                319
+            },
+            {
+                new Fraction[,]
+                {
+                    {10, -9, -12, 6 },
+                    {7, -12, 11, 15},
+                    {1, 0, 2, 9},
+                    {-10, 10, 3, 13}
+                },
+                -10683
+            },
+            {
+                new Fraction[,]
+                {
+                    { 4, 6, 5,-2,2},
+                    { 1,-2,-1, 2,4},
+                    { 0, 3, 1, 4,3},
+                    {-7, 5,-1, 3,5},
+                    {-1, 3, 2,-2,2}
+                },
+                -881
+            }
+        };
+
+        [Theory]
+        [MemberData(nameof(Determinant_Data))]
+        [Trait("Category", "Normal")]
+        public void Determinant(Fraction[,] array, Fraction expected)
+        {
+            new ArrayMatrix<Fraction, FractionOperator>(array).Determinant().Should().Be(expected);
+        }
+
+        [Fact]
+        [Trait("Category", "Normal")]
+        public void Determinant2()
+        {
+            for (int n = 3; n < 20; n++)
+            {
+                var array = new Fraction[n, n];
+                for (int i = 0; i < n; i++)
+                {
+                    array[i, 0] = array[0, i] = array[i, i] = 1;
+                }
+                new ArrayMatrix<Fraction, FractionOperator>(array).Determinant().Should().Be(-(n - 2));
+            }
+        }
+
+        [Fact]
+        [Trait("Category", "Normal")]
+        public void Determinant3()
+        {
+            int n = 300;
+            var array = new Fraction[n, n];
+            for (int i = 0; i < n; i++)
+            {
+                array[i, 0] = array[0, i] = array[i, i] = 1;
+            }
+            new ArrayMatrix<Fraction, FractionOperator>(array).Determinant().Should().Be(-(n - 2));
+        }
+
         [Fact]
         [Trait("Category", "Normal")]
         public void Inv()

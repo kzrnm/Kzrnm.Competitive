@@ -231,6 +231,41 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
+        /// 行列式を求める
+        /// </summary>
+        public T Determinant()
+        {
+            var arr = CloneArray(Value);
+            Contract.Assert(arr.Length == arr[0].Length);
+
+            bool swap = false;
+            //上三角行列
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (EqualityComparer<T>.Default.Equals(arr[i][i], default))
+                {
+                    if (!SearchNonZero(arr, i))
+                        return default;
+                    swap = !swap;
+                }
+                var t = arr[i][i];
+                for (int j = i + 1; j < arr.Length; j++)
+                {
+                    var c = op.Divide(arr[j][i], t);
+                    for (int k = 0; k < arr[i].Length; k++)
+                        arr[j][k] = op.Subtract(arr[j][k], op.Multiply(c, arr[i][k]));
+                }
+            }
+
+            T det = op.MultiplyIdentity;
+            if (swap)
+                det = op.Minus(det);
+            for (int i = 0; i < arr.Length; i++)
+                det = op.Multiply(det, arr[i][i]);
+            return det;
+        }
+
+        /// <summary>
         /// <paramref name="y"/> 乗した行列を返す。
         /// </summary>
         public ArrayMatrix<T, TOp> Pow(long y) => MathLibGeneric.Pow<ArrayMatrix<T, TOp>, ArrayMatrixOperator<T, TOp>>(this, y);
@@ -273,16 +308,6 @@ namespace Kzrnm.Competitive
         /// </summary>
         private static void GaussianEliminationImpl(T[][] arr)
         {
-            static bool SearchNonZero(T[][] mat, int i)
-            {
-                for (int j = i + 1; j < mat.Length; j++)
-                    if (!EqualityComparer<T>.Default.Equals(mat[j][i], default))
-                    {
-                        (mat[i], mat[j]) = (mat[j], mat[i]);
-                        return true;
-                    }
-                return false;
-            }
             var len = Math.Min(arr.Length, arr[0].Length);
             for (int i = 0; i < len; i++)
             {
@@ -304,6 +329,16 @@ namespace Kzrnm.Competitive
                     arr[j][i] = default;
                 }
             }
+        }
+        private static bool SearchNonZero(T[][] mat, int i)
+        {
+            for (int j = i + 1; j < mat.Length; j++)
+                if (!EqualityComparer<T>.Default.Equals(mat[j][i], default))
+                {
+                    (mat[i], mat[j]) = (mat[j], mat[i]);
+                    return true;
+                }
+            return false;
         }
         private enum ArrayMatrixKind
         {
