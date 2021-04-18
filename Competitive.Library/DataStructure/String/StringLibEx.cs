@@ -6,9 +6,21 @@ namespace Kzrnm.Competitive
 {
     public static class StringLibEx
     {
+        /// <summary>
+        /// <paramref name="s"/> と <paramref name="t"/> の LCS(最長共通部分列)を求めます。
+        /// </summary>
         public static char[] LCS(string s, string t) => LCS(s.AsSpan(), t);
+        /// <summary>
+        /// <paramref name="s"/> と <paramref name="t"/> の LCS(最長共通部分列)を求めます。
+        /// </summary>
         public static T[] LCS<T>(T[] s, T[] t) => LCS((ReadOnlySpan<T>)s, t);
+        /// <summary>
+        /// <paramref name="s"/> と <paramref name="t"/> の LCS(最長共通部分列)を求めます。
+        /// </summary>
         public static T[] LCS<T>(Span<T> s, Span<T> t) => LCS((ReadOnlySpan<T>)s, t);
+        /// <summary>
+        /// <paramref name="s"/> と <paramref name="t"/> の LCS(最長共通部分列)を求めます。
+        /// </summary>
         public static T[] LCS<T>(ReadOnlySpan<T> s, ReadOnlySpan<T> t)
         {
             var dp = Global.NewArray(s.Length + 1, t.Length + 1, 0);
