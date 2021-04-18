@@ -6,6 +6,7 @@
     <IsPackable>false</IsPackable>
     <RootNamespace>Kzrnm.Competitive</RootNamespace>
     <LangVersion>9</LangVersion>
+    <Configurations>Debug;Release;Library</Configurations>
   </PropertyGroup>
   
   <PropertyGroup>
