@@ -31,7 +31,7 @@
 
   <ItemGroup>
     <PackageReference Include="TextCopy" Version="4.3.0" />
-    <PackageReference Include="AtCoderAnalyzer" Version="1.5.2">
+    <PackageReference Include="AtCoderAnalyzer" Version="1.5.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
