@@ -256,6 +256,9 @@ function Get-ModInt {
     elseif ($text -match '10\^9 ?\+ ?7') {
         return "1000000007"
     }
+    elseif ($text -match '10\^\{9\} ?\+ ?7') {
+        return "1000000007"
+    }
     return ""
 }
 function Update-Input {
