@@ -418,9 +418,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         }
 
         /// <summary>
-        /// 該当ノードを削除する。動作怪しいかも
+        /// 該当ノードを削除する。動作怪しい
         /// </summary>
-        public void Remove(Node node)
+        internal void Remove(Node node)
             => RemoveMatch(
                 match: node,
                 parentOfMatch: Unsafe.As<Node>(node.Parent),
