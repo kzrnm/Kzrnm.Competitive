@@ -4,7 +4,7 @@ using System;
 using Xunit;
 
 
-namespace Kzrnm.Competitive.DataStructure.Segtree
+namespace Kzrnm.Competitive.DataStructure
 {
     public class SLazySegtreeTest
     {

@@ -1,50 +1,61 @@
 ﻿//https://tjkendev.github.io/procon-library/cpp/convex_hull_trick/li_chao_tree.html
+using AtCoder;
 using AtCoder.Internal;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
 {
+    using static MethodImplOptions;
+    [IsOperator]
+    public interface IConvexHullTrickOperator<T> { bool UseLeft(T left, T right); }
+
     /// <summary>
     /// <para>Convex Hull Trick(Li-Chao (Segment) Tree)</para>
     /// <para>直線 Ax+B 追加をいくつか追加して、区間[l,r]の最小値・最大値を求める</para>
     /// </summary>
-    public class ConvexHullTrick
+    public class ConvexHullTrick<T, TOp, TCmp>
+        where TOp : struct, IArithmeticOperator<T>
+        where TCmp : struct, IConvexHullTrickOperator<T>
     {
-        private readonly long XINF;
-        private readonly long YINF;
+        private static TOp op = default;
+        private static TCmp cmp = default;
+        public readonly T XINF;
+        public readonly T YINF;
         private bool[] u;
-        private long[] xs;
-        private long[] p;
-        private long[] q;
+        private T[] xs;
+        private T[] p;
+        private T[] q;
         private readonly int size;
         public int Length { get; }
 
-        public ConvexHullTrick(long[] xs) : this(xs, 1000000000, 1000000000000000000) { }
-        public ConvexHullTrick(long[] xs, long xinf, long yinf)
+        /// <summary>
+        /// 使用する <paramref name="xs"/> の値を初期化します。<paramref name="xs"/> はソート済みであること。
+        /// </summary>
+        public ConvexHullTrick(T[] xs, T xinf, T yinf)
         {
             Length = xs.Length;
             XINF = xinf;
             YINF = yinf;
 
-            size = InternalBit.CeilPow2(Length);
+            size = 1 << InternalBit.CeilPow2(Length);
             int n2 = size << 1;
             u = new bool[n2];
-            this.xs = new long[n2];
+            this.xs = new T[n2];
             xs.AsSpan().CopyTo(this.xs);
             this.xs.AsSpan(Length).Fill(XINF);
-            p = new long[n2];
-            q = new long[n2];
+            p = new T[n2];
+            q = new T[n2];
         }
         /// <summary>
         /// 直線 <paramref name="a"/>x + <paramref name="b"/> を追加します
         /// </summary>
-        public void AddLine(long a, long b) => AddLine(a, b, 1, 0, size);
+        public void AddLine(T a, T b) => AddLine(a, b, 1, 0, size);
         /// <summary>
         /// 線分 <paramref name="a"/>x + <paramref name="b"/> (<see cref="xs"/>[l]≦x&lt;<see cref="xs"/>[r]) を追加します
         /// </summary>
-        public void AddSegmentLine(long a, long b, int l, int r)
+        public void AddSegmentLine(T a, T b, int l, int r)
         {
             int l0 = l + size, r0 = r + size;
             int s0 = l, t0 = r, sz = 1;
@@ -65,7 +76,7 @@ namespace Kzrnm.Competitive
             }
         }
 
-        private void AddLine(long a, long b, int k, int l, int r)
+        private void AddLine(T a, T b, int k, int l, int r)
         {
             while (r - l > 0)
             {
@@ -77,11 +88,11 @@ namespace Kzrnm.Competitive
                     return;
                 }
 
-                long lx = xs[l], mx = xs[m], rx = xs[r - 1];
-                long pk = p[k], qk = q[k];
-                bool left = (a * lx + b < pk * lx + qk);
-                bool mid = (a * mx + b < pk * mx + qk);
-                bool right = (a * rx + b < pk * rx + qk);
+                T lx = xs[l], mx = xs[m], rx = xs[r - 1];
+                T pk = p[k], qk = q[k];
+                bool left = cmp.UseLeft(op.Add(op.Multiply(a, lx), b), op.Add(op.Multiply(pk, lx), qk));
+                bool mid = cmp.UseLeft(op.Add(op.Multiply(a, mx), b), op.Add(op.Multiply(pk, mx), qk));
+                bool right = cmp.UseLeft(op.Add(op.Multiply(a, rx), b), op.Add(op.Multiply(pk, rx), qk));
                 if (left && right)
                 {
                     p[k] = a; q[k] = b;
@@ -108,5 +119,70 @@ namespace Kzrnm.Competitive
                 }
             }
         }
+
+        /// <summary>
+        /// <see cref="xs"/>[<paramref name="i"/>]での最小値・最大値を取得します。
+        /// </summary>
+        public T Query(int i) => Query(i, xs[i]);
+        private T Query(int k, T x)
+        {
+            k += size;
+            T s = u[k] ? op.Add(op.Multiply(p[k], x), q[k]) : YINF;
+            while (k > 1)
+            {
+                k >>= 1;
+                if (u[k])
+                {
+                    T r = op.Add(op.Multiply(p[k], x), q[k]);
+                    if (cmp.UseLeft(r, s))
+                        s = r;
+                }
+            }
+            return s;
+        }
+    }
+    /// <summary>
+    /// <para>Convex Hull Trick(Li-Chao (Segment) Tree)</para>
+    /// <para>直線 Ax+B 追加をいくつか追加して、区間[l,r]の最小値を求める</para>
+    /// </summary>
+    public class LongMinConvexHullTrick : ConvexHullTrick<long, LongOperator, MinConvexHullTrickOperator<long, LongOperator>>
+    {
+        /// <summary>
+        /// 使用する <paramref name="xs"/> の値を初期化します。<paramref name="xs"/> はソート済みであること。
+        /// </summary>
+        public LongMinConvexHullTrick(long[] xs) : this(xs, 1000000000, 1000000000000000000) { }
+        /// <summary>
+        /// 使用する <paramref name="xs"/> の値を初期化します。<paramref name="xs"/> はソート済みであること。
+        /// </summary>
+        public LongMinConvexHullTrick(long[] xs, long xinf, long yinf) : base(xs, xinf, yinf) { }
+    }
+    /// <summary>
+    /// <para>Convex Hull Trick(Li-Chao (Segment) Tree)</para>
+    /// <para>直線 Ax+B 追加をいくつか追加して、区間[l,r]の最大値を求める</para>
+    /// </summary>
+    public class LongMaxConvexHullTrick : ConvexHullTrick<long, LongOperator, MaxConvexHullTrickOperator<long, LongOperator>>
+    {
+        /// <summary>
+        /// 使用する <paramref name="xs"/> の値を初期化します。<paramref name="xs"/> はソート済みであること。
+        /// </summary>
+        public LongMaxConvexHullTrick(long[] xs) : this(xs, 1000000000, -1000000000000000000) { }
+        /// <summary>
+        /// 使用する <paramref name="xs"/> の値を初期化します。<paramref name="xs"/> はソート済みであること。
+        /// </summary>
+        public LongMaxConvexHullTrick(long[] xs, long xinf, long yinf) : base(xs, xinf, yinf) { }
+    }
+    public struct MinConvexHullTrickOperator<T, TOp> : IConvexHullTrickOperator<T>
+        where TOp : struct, ICompareOperator<T>
+    {
+        private static TOp op = default;
+        [MethodImpl(AggressiveInlining)]
+        public bool UseLeft(T left, T right) => op.LessThan(left, right);
+    }
+    public struct MaxConvexHullTrickOperator<T, TOp> : IConvexHullTrickOperator<T>
+        where TOp : struct, ICompareOperator<T>
+    {
+        private static TOp op = default;
+        [MethodImpl(AggressiveInlining)]
+        public bool UseLeft(T left, T right) => op.GreaterThan(left, right);
     }
 }
