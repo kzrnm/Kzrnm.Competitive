@@ -18,7 +18,7 @@ namespace Competitive.Runner
             string expandedCode = null;
 #if DEBUG
             var files = SourceExpander.Expanded.ExpandedContainer.Files;
-            expandedCode = files[BasePath.Replace("HandMadeMain.cs", "Program.cs")].Code;
+            expandedCode = files[BasePath.Replace("HandMadeMain.cs", "Program.cs")].Code.Replace("\r\n", "\n");
 #endif
 
             PropertyConsoleReader reader;
