@@ -109,7 +109,18 @@ namespace Kzrnm.Competitive
 
             return (primes.ToArray(), searches);
         }
-
+        /// <summary>
+        /// <paramref name="num"/> が <see cref="this"/> の最大の2乗より大きい場合は誤って <see langword="true"/> を返す可能性があります。
+        /// </summary>
+        public bool IsPrime(long num)
+        {
+            if (num <= this.primes[^1])
+                return Contains((int)num);
+            foreach (var p in this)
+                if (num % p == 0)
+                    return false;
+            return true;
+        }
         public void Add(int item) => throw new NotSupportedException();
         public void Clear() => throw new NotSupportedException();
         public bool Contains(int item) => Array.BinarySearch(primes, item) >= 0;
