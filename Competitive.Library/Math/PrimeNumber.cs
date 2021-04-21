@@ -1,4 +1,5 @@
-﻿using AtCoder.Internal;
+﻿using AtCoder;
+using AtCoder.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -111,7 +112,7 @@ namespace Kzrnm.Competitive
 
         public void Add(int item) => throw new NotSupportedException();
         public void Clear() => throw new NotSupportedException();
-        public bool Contains(int item) => primes.Contains(item);
+        public bool Contains(int item) => Array.BinarySearch(primes, item) >= 0;
         public void CopyTo(int[] array, int arrayIndex) => primes.CopyTo(array, arrayIndex);
         public bool Remove(int item) => throw new NotSupportedException();
         public ReadOnlySpan<int>.Enumerator GetEnumerator() => new ReadOnlySpan<int>(primes).GetEnumerator();
