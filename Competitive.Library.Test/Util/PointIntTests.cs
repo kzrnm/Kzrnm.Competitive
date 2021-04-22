@@ -24,20 +24,40 @@ namespace Kzrnm.Competitive.Util
             p2.Distance(p1).Should().Be(distance);
         }
 
-        public static TheoryData CompareTo_Data = new TheoryData<PointInt, PointInt, int>
+        public static PointInt[] SortedPoints = new PointInt[]
         {
-            { new PointInt(0,0), new PointInt(0,0), 0 },
-            { new PointInt(1,1), new PointInt(1,1), 0 },
-            { new PointInt(0,1), new PointInt(1,1), 1 },
-            { new PointInt(1,-1), new PointInt(1,1), -1 },
-            { new PointInt(2,1), new PointInt(1,1), -1 },
-            { new PointInt(1,2), new PointInt(1,1), 1 },
+            new (0, 0),
+            new (-500, -1),
+            new (-1, -1),
+            new (-2, -2),
+            new (-1, -50000),
+            new (0, -1),
+            new (0, -2000),
+            new (1, -10),
+            new (100000, -1),
+            new (1, 0),
+            new (5, 0),
+            new (100000, 1),
+            new (1, 1),
+            new (1, 10000),
+            new (0, 1),
+            new (0, 55),
+            new (-1, 10000),
+            new (-1, 1),
+            new (-1500, 1),
+            new (-10000000, 1),
+            new (-1, 0),
+            new (-2, 0),
+            new (-500, 0),
         };
-        [Theory]
-        [MemberData(nameof(CompareTo_Data))]
-        public void CompareTo(PointInt p1, PointInt p2, int expected)
+        [Fact]
+        public void CompareTo()
         {
-            p1.CompareTo(p2).Should().Be(expected);
+            for (int i = 0; i < SortedPoints.Length; i++)
+                for (int j = 0; j < SortedPoints.Length; j++)
+                    SortedPoints[i].CompareTo(SortedPoints[j]).Should()
+                        .Be(i.CompareTo(j), "({0}).CompareTo(({1})) == {2}.CompareTo({3})",
+                        SortedPoints[i], SortedPoints[j], i, j);
         }
 
         public static TheoryData Inner_Data = new TheoryData<PointInt, PointInt, long>

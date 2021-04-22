@@ -1,5 +1,6 @@
 ﻿using AtCoder.Internal;
 using System;
+using System.Net.Http.Headers;
 
 namespace Kzrnm.Competitive
 {
@@ -34,7 +35,44 @@ namespace Kzrnm.Competitive
         public static PointDouble operator +(PointDouble a, PointDouble b) => new PointDouble(a.x + b.x, a.y + b.y);
         public static PointDouble operator -(PointDouble a, PointDouble b) => new PointDouble(a.x - b.x, a.y - b.y);
         public int CompareTo(PointDouble other)
-            => Math.Atan2(this.y, this.x).CompareTo(Math.Atan2(other.y, other.x));
+        {
+            var sy = Math.Sign(y);
+            var syo = Math.Sign(other.y);
+
+            if (sy == 0)
+            {
+                var sx = Math.Sign(x);
+                var sxo = Math.Sign(other.x);
+                if (syo == 0)
+                {
+                    if (sx == sxo)
+                        return Math.Abs(x).CompareTo(Math.Abs(other.x));
+                    if (sx == 0) return -1;
+                    if (sxo == 0) return 1;
+                    return sxo.CompareTo(sx);
+                }
+                if (sx == 0) return -1;
+                if (sx < 0) return 1;
+                return 0.CompareTo(syo);
+            }
+            if (syo == 0)
+            {
+                var sxo = Math.Sign(other.x);
+                if (sxo == 0) return 1;
+                if (sxo < 0) return -1;
+                return sy.CompareTo(0);
+            }
+
+            var ycmp = sy.CompareTo(syo);
+            if (ycmp == 0)
+            {
+                var cr = CrossSign(other.x, other.y, x, y);
+                if (cr == 0)
+                    return this.Distance2(default).CompareTo(other.Distance2(default));
+                return cr;
+            }
+            return ycmp;
+        }
         public bool IsNaN => double.IsNaN(x) || double.IsNaN(y);
 
         public bool Equals(PointDouble other) => this.x == other.x && this.y == other.y;
