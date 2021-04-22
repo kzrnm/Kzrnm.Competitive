@@ -20,9 +20,9 @@ namespace Competitive.Runner
             var files = SourceExpander.Expanded.ExpandedContainer.Files;
             expandedCode = files[BasePath.Replace("HandMadeMain.cs", "Program.cs")].Code.Replace("\r\n", "\n");
 #endif
-
+            var utf8 = new UTF8Encoding(false);
             PropertyConsoleReader reader;
-            var writer = new ConsoleWriter();
+            var writer = new ConsoleWriter(Console.OpenStandardOutput(), utf8);
 
             if (args.Length > 0 && args[0] == "expand")
             {
@@ -32,7 +32,7 @@ namespace Competitive.Runner
             }
             else if (args.Length > 0)
             {
-                reader = new PropertyConsoleReader(new FileStream(args[0], FileMode.Open), new UTF8Encoding(false));
+                reader = new PropertyConsoleReader(new FileStream(args[0], FileMode.Open), utf8);
             }
             else
             {
@@ -50,7 +50,7 @@ namespace Competitive.Runner
                 if (IsNotWhiteSpace(sb.sb))
                 {
                     Trace.Listeners.Add(new TextWriterTraceListener(Console.Error));
-                    reader = new PropertyConsoleReader(new MemoryStream(new UTF8Encoding(false).GetBytes(sb.ToString())), Encoding.UTF8);
+                    reader = new PropertyConsoleReader(new MemoryStream(utf8.GetBytes(sb.ToString())), Encoding.UTF8);
                 }
                 else
                     reader = new PropertyConsoleReader();
