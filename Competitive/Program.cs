@@ -1,4 +1,4 @@
-﻿#region usings
+#region usings
 using AtCoder;
 using Kzrnm.Competitive;
 using Kzrnm.Competitive.IO;
@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics;
 using static System.Math;
 using static Kzrnm.Competitive.BitOperationsEx;
