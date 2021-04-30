@@ -9,7 +9,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// インデックスをつける
         /// </summary>
-        public static IEnumerable<(TSource val, int index)> Indexed<TSource>(this IEnumerable<TSource> source)
+        public static IEnumerable<(TSource Value, int Index)> Indexed<TSource>(this IEnumerable<TSource> source)
             => source.Select((v, i) => (v, i));
 
         /// <summary>

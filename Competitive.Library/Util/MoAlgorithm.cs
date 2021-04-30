@@ -28,7 +28,7 @@ namespace Kzrnm.Competitive
         {
             this.op = op;
             this.Length = n;
-            Queries = queries.Indexed().Select(t => (t.val.From, t.val.ToExclusive, t.index))
+            Queries = queries.Indexed().Select(t => (t.Value.From, t.Value.ToExclusive, t.Index))
                 .ToArray();
             int sq = (int)Math.Sqrt(n);
             Array.Sort(Queries.Select(t => (t.From / sq, t.ToExclusive)).ToArray(), Queries);
