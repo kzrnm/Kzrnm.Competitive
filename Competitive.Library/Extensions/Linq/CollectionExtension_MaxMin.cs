@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
-    public static class __CollectionExtension_MaxMin
+    public static class __CollectionExtension_MinMax
     {
         /// <summary>
         /// 最大値と最小値を取得する。空ならデフォルト
         /// </summary>
-        public static (T Max, T Min) MaxMin<T>(this IEnumerable<T> collection) where T : IComparable<T>
+        public static (T Min, T Max) MinMax<T>(this IEnumerable<T> collection) where T : IComparable<T>
         {
             using var e = collection.GetEnumerator();
             if (!e.MoveNext()) return default((T, T));
@@ -20,17 +20,17 @@ namespace Kzrnm.Competitive
                 if (v.CompareTo(max) > 0) max = v;
                 else if (v.CompareTo(min) < 0) min = v;
             }
-            return (max, min);
+            return (min, max);
         }
         /// <summary>
         /// 最大値と最小値を取得する。空ならデフォルト
         /// </summary>
-        public static (T Max, T Min) MaxMin<T>(this Span<T> collection) where T : IComparable<T>
-            => MaxMin((ReadOnlySpan<T>)collection);
+        public static (T Min, T Max) MinMax<T>(this Span<T> collection) where T : IComparable<T>
+            => MinMax((ReadOnlySpan<T>)collection);
         /// <summary>
         /// 最大値と最小値を取得する。空ならデフォルト
         /// </summary>
-        public static (T Max, T Min) MaxMin<T>(this ReadOnlySpan<T> collection) where T : IComparable<T>
+        public static (T Min, T Max) MinMax<T>(this ReadOnlySpan<T> collection) where T : IComparable<T>
         {
             if (collection.IsEmpty) return default((T, T));
             var max = collection[0];
@@ -40,7 +40,7 @@ namespace Kzrnm.Competitive
                 if (v.CompareTo(max) > 0) max = v;
                 else if (v.CompareTo(min) < 0) min = v;
             }
-            return (max, min);
+            return (min, max);
         }
     }
 }
