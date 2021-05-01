@@ -30,7 +30,7 @@ public partial class Program
             var res = Calc();
             if (res is double d) cw.WriteLine(d.ToString("0.####################", CultureInfo.InvariantCulture));
             else if (res is bool b) cw.WriteLine(YesNo(b));
-            else if (res != null) cw.WriteLine(res.ToString());
+            else if (res != null && res != cw) cw.WriteLine(res.ToString());
         }
         cw.Flush();
     }
