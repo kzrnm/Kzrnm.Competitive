@@ -17,7 +17,7 @@
     <PackageReference Include="ac-library-csharp" Version="1.5.4" />
     <PackageReference Include="Competitive.IO" Version="0.5.1" />
 
-    <PackageReference Include="SourceExpander.Embedder" Version="3.1.1" Condition="'$(Configuration)' != 'Library'">
+    <PackageReference Include="SourceExpander.Embedder" Version="3.1.2" Condition="'$(Configuration)' != 'Library'">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
