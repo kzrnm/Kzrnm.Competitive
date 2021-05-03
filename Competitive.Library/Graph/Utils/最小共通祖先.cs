@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
 {
@@ -42,7 +43,17 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 2つの頂点の共通祖先を取得する
         /// </summary>
-        public int GetLca(int u, int v)
+        public int this[int u, int v]
+        {
+            [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+            get => Lca(u, v);
+        }
+
+
+        /// <summary>
+        /// 2つの頂点の共通祖先を取得する
+        /// </summary>
+        public int Lca(int u, int v)
         {
             if (tree[u].Depth > tree[v].Depth)
             {

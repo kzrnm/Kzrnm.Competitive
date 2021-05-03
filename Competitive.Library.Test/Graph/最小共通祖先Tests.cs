@@ -19,9 +19,9 @@ namespace Kzrnm.Competitive.Graph
             gb.Add(2, 6);
             gb.Add(3, 7);
             var lca0 = gb.ToTree().LowestCommonAncestor();
-            lca0.GetLca(0, 1).Should().Be(0);
-            lca0.GetLca(3, 6).Should().Be(0);
-            lca0.GetLca(4, 7).Should().Be(1);
+            lca0.Lca(0, 1).Should().Be(0);
+            lca0.Lca(3, 6).Should().Be(0);
+            lca0.Lca(4, 7).Should().Be(1);
         }
         [Fact]
         public void 重み付きグラフ()
@@ -35,9 +35,9 @@ namespace Kzrnm.Competitive.Graph
             gb.Add(2, 6, 6);
             gb.Add(3, 7, 7);
             var lca0 = gb.ToTree().LowestCommonAncestor();
-            lca0.GetLca(0, 1).Should().Be(0);
-            lca0.GetLca(3, 6).Should().Be(0);
-            lca0.GetLca(4, 7).Should().Be(1);
+            lca0.Lca(0, 1).Should().Be(0);
+            lca0.Lca(3, 6).Should().Be(0);
+            lca0.Lca(4, 7).Should().Be(1);
         }
 
         [Fact]
@@ -62,8 +62,8 @@ namespace Kzrnm.Competitive.Graph
                     for (int j = 0; j < N; j++)
                     {
                         var expected = LcaDirect(tree.AsArray(), i, j);
-                        lca.GetLca(i, j).Should().Be(expected);
-                        wlca.GetLca(i, j).Should().Be(expected);
+                        lca.Lca(i, j).Should().Be(expected);
+                        wlca.Lca(i, j).Should().Be(expected);
                     }
             }
         }
