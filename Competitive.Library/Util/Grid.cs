@@ -1,7 +1,9 @@
 ﻿using Kzrnm.Competitive.IO;
 using System;
-using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
@@ -82,7 +84,99 @@ namespace Kzrnm.Competitive
                 return ref DefaultValueReference();
             }
         }
+        [MethodImpl(AggressiveInlining)]
+        public MoveEnumerator Moves(int h, int w) => new MoveEnumerator(this, h, w);
+        public struct MoveEnumerator : IEnumerator<(int h, int w)>, IEnumerable<(int h, int w)>
+        {
+            private enum Status
+            {
+                None,
+                Left,
+                Up,
+                Right,
+                Down,
+            }
+            private readonly Grid<T> grid;
+            private readonly int origH, origW;
+            private Status status;
+            [MethodImpl(AggressiveInlining)]
+            public MoveEnumerator(Grid<T> grid, int h, int w)
+            {
+                this.grid = grid;
+                this.origH = h;
+                this.origW = w;
+                this.status = Status.None;
+            }
+            public (int h, int w) Current
+            {
+                [MethodImpl(AggressiveInlining)]
+                get
+                {
+                    int dh = 0;
+                    int dw = 0;
+                    switch (status)
+                    {
+                        case Status.Up:
+                            dh = -1;
+                            break;
+                        case Status.Right:
+                            dw = 1;
+                            break;
+                        case Status.Left:
+                            dw = -1;
+                            break;
+                        case Status.Down:
+                            dh = 1;
+                            break;
+                    }
+                    return (origH + dh, origW + dw);
+                }
+            }
 
+            object IEnumerator.Current => this.Current;
+
+            [MethodImpl(AggressiveInlining)]
+            public bool MoveNext()
+            {
+                switch (status)
+                {
+                    case Status.None:
+                        if (origW > 0)
+                            status = Status.Left;
+                        else
+                            goto case Status.Left;
+                        return true;
+                    case Status.Left:
+                        if (origH > 0)
+                            status = Status.Up;
+                        else
+                            goto case Status.Up;
+                        return true;
+                    case Status.Up:
+                        if (origW + 1 < grid.W)
+                            status = Status.Right;
+                        else
+                            goto case Status.Right;
+                        return true;
+                    case Status.Right:
+                        if (origH + 1 < grid.H)
+                            status = Status.Down;
+                        else
+                            goto default;
+                        return true;
+                    default:
+                        status = Status.None;
+                        return false;
+                }
+            }
+
+            [MethodImpl(AggressiveInlining)]
+            public MoveEnumerator GetEnumerator() => this;
+            IEnumerator<(int h, int w)> IEnumerable<(int h, int w)>.GetEnumerator() => this;
+            IEnumerator IEnumerable.GetEnumerator() => this;
+            public void Reset() => status = Status.None;
+            public void Dispose() { }
+        }
         private class DebugLine
         {
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]

@@ -300,5 +300,29 @@ namespace Kzrnm.Competitive.Util
                 grid.Index(4, w).Should().Be(-1);
             }
         }
+
+        [Fact]
+        public void Moves()
+        {
+            var grid = Grid.Create((ReadOnlySpan<int[]>)new[]
+            {
+                new[]{ 1,2,3 },
+                new[]{ 4,5,6 },
+                new[]{ 7,8,9 },
+                new[]{ 10,11,12 },
+            }, -1);
+            grid.Moves(0, 0).Should().Equal((0, 1), (1, 0));
+            grid.Moves(0, 1).Should().Equal((0, 0), (0, 2), (1, 1));
+            grid.Moves(0, 2).Should().Equal((0, 1), (1, 2));
+            grid.Moves(1, 0).Should().Equal((0, 0), (1, 1), (2, 0));
+            grid.Moves(1, 1).Should().Equal((1, 0), (0, 1), (1, 2), (2, 1));
+            grid.Moves(1, 2).Should().Equal((1, 1), (0, 2), (2, 2));
+            grid.Moves(2, 0).Should().Equal((1, 0), (2, 1), (3, 0));
+            grid.Moves(2, 1).Should().Equal((2, 0), (1, 1), (2, 2), (3, 1));
+            grid.Moves(2, 2).Should().Equal((2, 1), (1, 2), (3, 2));
+            grid.Moves(3, 0).Should().Equal((2, 0), (3, 1));
+            grid.Moves(3, 1).Should().Equal((3, 0), (2, 1), (3, 2));
+            grid.Moves(3, 2).Should().Equal((3, 1), (2, 2));
+        }
     }
 }
