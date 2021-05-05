@@ -27,9 +27,8 @@ partial class Program
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     private object Calc()
     {
-        N = cr;
+        int N = cr;
 
         return null;
     }
-    public static long N;
 }
