@@ -183,46 +183,50 @@ function Get-Parsed-Input {
         elseif ($first -eq '\vdots') { }
         elseif ( $first -match '^(.+?)_(.+)$' ) {
             $ml = $Matches
+            $m2 = $ml[2]
             if ($line.Length -gt 1) {
                 $line[$line.Length - 1] -match '^(.+?)_(.+)$' | Out-Null
                 $ml2 = $Matches
+                $mm2 = $ml2[2]
                 if ($ml[1] -eq $ml2[1]) {
                     # 1行すべて同じ文字
 
                     # 2次元
-                    if ($ml2[2] -match '^\{(\D)(\D)\}$') {
+                    if ($mm2 -match '^\{(\D)(\D)\}$') {
                         [ATArray2]::new($ml2[1], $Matches[1], $Matches[2])
                     }
-                    elseif ($ml2[2] -match '^\{(\D),(\D)\}$') {
+                    elseif ($mm2 -match '^\{(\D),\s*(\D)\}$') {
                         [ATArray2]::new($ml2[1], $Matches[1], $Matches[2])
+                    }
+                    elseif ($mm2 -match '^\{.+,\s*.+\}$') {
                     }
                     # 1次元
-                    elseif ($ml2[2] -match '\{(.+)\}') {
+                    elseif ($mm2 -match '\{(.+)\}') {
                         [ATArray]::new($ml2[1], $Matches[1])
                     }
                     else {
-                        [ATArray]::new($ml2[1], $ml2[2])
+                        [ATArray]::new($ml2[1], $mm2)
                     }
                 } 
-                elseif ($ml[2] -notmatch '^\d+$') {
+                elseif ($m2 -notmatch '^\d+$') {
                     # 非数値の添字が来るまで回す
                     $ms = ($line | ForEach-Object { $_ -match '^(.+?)_(.+)$' | Out-Null; $Matches })
                     if ($ms.Length -eq [HashSet[string]]::new([string[]]($ms | ForEach-Object { $_[1] })).Count -and [HashSet[string]]::new([string[]]($ms | ForEach-Object { $_[2] })).Count -eq 1) {
                         # 1次元タプル配列っぽい
-                        if ($ml[2] -match '\{(\D.*)\}') {
+                        if ($m2 -match '\{(\D.*)\}') {
                             $l = $Matches[1]
                             [ATTuples]::new(($ms | Foreach-Object { $_[1] }) , $l)
                         }
-                        elseif (-not $ml[2].Contains('_')) {
-                            [ATTuples]::new(($ms | Foreach-Object { $_[1] }) , $ml[2])
+                        elseif (-not $m2.Contains('_')) {
+                            [ATTuples]::new(($ms | Foreach-Object { $_[1] }) , $m2)
                         }
                     }
                 }
             }
-            elseif ($ml[2] -notmatch '^\d+$') {
-                if ($ml[2].Contains('{')) {
+            elseif ($m2 -notmatch '^\d+$') {
+                if ($m2.Contains('{')) {
                     # 要素が1つなのに2次元っぽいならたぶんグリッド
-                    $sp = ($ml[2] -split ' ')
+                    $sp = ($m2 -split ' ')
                     $spl = $sp[$sp.Length - 1]
                     if ($spl -match '^.+_\{(\D)\D\}$') {
                         [ATGrid]::new($Matches[1])
@@ -230,7 +234,7 @@ function Get-Parsed-Input {
                 }
                 else {
                     # 添字ありだが1行に1つなら、たぶん配列ということにする
-                    [ATArray]::new($ml[1], $ml[2]) 
+                    [ATArray]::new($ml[1], $m2) 
                 }
             }
         }
