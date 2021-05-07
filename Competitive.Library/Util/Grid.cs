@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace Kzrnm.Competitive
 {
@@ -83,6 +84,23 @@ namespace Kzrnm.Competitive
                     return ref data[index];
                 return ref DefaultValueReference();
             }
+        }
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            if (W == 0) return "";
+            for (int h = 0; h < H; h++)
+            {
+                sb.Append(this[h, 0]);
+                for (int w = 1; w < W; w++)
+                {
+                    sb.Append(' ');
+                    sb.Append(this[h, w]);
+                }
+                if (h + 1 < H)
+                    sb.AppendLine();
+            }
+            return sb.ToString();
         }
         [MethodImpl(AggressiveInlining)]
         public MoveEnumerator Moves(int h, int w) => new MoveEnumerator(this, h, w);
