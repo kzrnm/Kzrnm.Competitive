@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Kzrnm.Competitive.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using Kzrnm.Competitive.Linq;
 
 namespace Kzrnm.Competitive
 {

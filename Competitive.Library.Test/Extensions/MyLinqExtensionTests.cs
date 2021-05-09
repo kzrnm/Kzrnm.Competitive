@@ -199,5 +199,26 @@ namespace Kzrnm.Competitive.Extension
             for (int i = 0; i < expected.Length; i++)
                 result[i].Should().Equal(expected[i]);
         }
+
+        public static TheoryData Tupled2_Data = new TheoryData<int[], (int, int)[]>
+        {
+            {
+                new int[]{ 1,2,3,4,5,6 },
+                new (int,int)[]{ (1,2),(2,3),(3,4),(4,5),(5,6) }
+            },
+            {
+                new int[]{ 1 },
+                Array.Empty<(int, int)>()
+            },
+        };
+
+        [Theory]
+        [MemberData(nameof(Tupled2_Data))]
+        public void Tupled2(int[] array, (int, int)[] expected)
+        {
+            array.Tupled2().Should().Equal(expected);
+            new Span<int>(array).Tupled2().Should().Equal(expected);
+            new ReadOnlySpan<int>(array).Tupled2().Should().Equal(expected);
+        }
     }
 }
