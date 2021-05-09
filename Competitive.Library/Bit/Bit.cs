@@ -17,6 +17,8 @@ namespace Kzrnm.Competitive
         [MethodImpl(AggressiveInlining)]
         public static bool On(this int num, int index) => ((num >> index) & 1) != 0;
         [MethodImpl(AggressiveInlining)]
+        public static bool On(this uint num, int index) => ((num >> index) & 1) != 0;
+        [MethodImpl(AggressiveInlining)]
         public static bool On(this long num, int index) => ((num >> index) & 1) != 0;
         [MethodImpl(AggressiveInlining)]
         public static bool On(this ulong num, int index) => ((num >> index) & 1) != 0;
