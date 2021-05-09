@@ -10,7 +10,7 @@ namespace Kzrnm.Competitive
         where TNode : ITreeNode<TEdge>
         where TEdge : IEdge
     {
-        readonly TNode[] tree;
+        internal readonly TNode[] tree;
 
         /// <summary>
         /// kprv[u][k] 頂点uの2^k個上の祖先頂点v, 0&lt;=k&lt;logN
@@ -78,6 +78,15 @@ namespace Kzrnm.Competitive
                 }
             }
             return kprv[u][0];
+        }
+
+        /// <summary>
+        /// 2つの頂点の距離を取得する
+        /// </summary>
+        public int Distance(int u, int v)
+        {
+            var lca = this[u, v];
+            return tree[u].Depth + tree[v].Depth - 2 * tree[lca].Depth;
         }
     }
 

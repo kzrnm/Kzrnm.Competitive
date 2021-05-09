@@ -61,22 +61,34 @@ namespace Kzrnm.Competitive.Graph
                 for (int i = 0; i < N; i++)
                     for (int j = 0; j < N; j++)
                     {
-                        var expected = LcaDirect(tree.AsArray(), i, j);
-                        lca.Lca(i, j).Should().Be(expected);
-                        wlca.Lca(i, j).Should().Be(expected);
+                        var (expectedLca, expectedDist) = LcaDirect(tree.AsArray(), i, j);
+                        lca.Lca(i, j).Should().Be(expectedLca);
+                        wlca.Lca(i, j).Should().Be(expectedLca);
+                        lca.Distance(i, j).Should().Be(expectedDist);
+                        wlca.Distance(i, j).Should().Be(expectedDist);
                     }
             }
         }
-        static int LcaDirect(TreeNode[] tree, int i, int j)
+        static (int lca, int distance) LcaDirect(TreeNode[] tree, int i, int j)
         {
-            while (tree[i].Depth > tree[j].Depth) i = tree[i].Root;
-            while (tree[i].Depth < tree[j].Depth) j = tree[j].Root;
+            int distance = 0;
+            while (tree[i].Depth > tree[j].Depth)
+            {
+                i = tree[i].Root;
+                ++distance;
+            }
+            while (tree[i].Depth < tree[j].Depth)
+            {
+                j = tree[j].Root;
+                ++distance;
+            }
             while (i != j)
             {
                 i = tree[i].Root;
                 j = tree[j].Root;
+                distance += 2;
             }
-            return i;
+            return (i, distance);
         }
     }
 }
