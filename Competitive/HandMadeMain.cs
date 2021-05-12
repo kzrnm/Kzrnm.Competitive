@@ -13,7 +13,7 @@ namespace Competitive.Runner
     static partial class HandMadeMain
     {
         static string BasePath = CurrentPath();
-        internal static Random rnd = new Random();
+        internal static Random rnd = new Random(227);
         private static int[] RandomArray(int length, int min, int maxExclusive) { var arr = new int[length]; for (int i = 0; i < arr.Length; i++) arr[i] = rnd.Next(min, maxExclusive); return arr; }
         static MyStringBuilder Build()
         {
