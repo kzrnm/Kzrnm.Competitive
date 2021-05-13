@@ -14,13 +14,15 @@ internal partial class Program
     }
     public void Run()
     {
+        var sw = cw.StreamWriter;
         int Q = __ManyTestCases ? cr.Int : 1;
         for (; Q > 0; Q--)
         {
             var res = Calc();
-            if (res is double d) cw.WriteLine(d.ToString("0.####################", CultureInfo.InvariantCulture));
-            else if (res is bool b) cw.WriteLine(YesNo(b));
-            else if (res != null && res != cw) cw.WriteLine(res.ToString());
+            if (res is double d) sw.WriteLine(d.ToString("0.####################", CultureInfo.InvariantCulture));
+            else if (res is bool b) sw.WriteLine(YesNo(b));
+            else if (res is char[] chrs) sw.WriteLine(chrs);
+            else if (res != null && res != cw) sw.WriteLine(res.ToString());
         }
         cw.Flush();
     }
