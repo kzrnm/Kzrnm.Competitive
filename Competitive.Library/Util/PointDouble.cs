@@ -241,5 +241,26 @@ namespace Kzrnm.Competitive
 
             return tc * td < 0 && ta * tb < 0;
         }
+
+        /// <summary>
+        /// 多角形の面積を求める
+        /// </summary>
+        public static double Area(PointDouble[] points) => Area2(points) / 2.0;
+
+        /// <summary>
+        /// 多角形の面積×2を求める
+        /// </summary>
+        public static double Area2(PointDouble[] points)
+        {
+            Contract.Assert(points.Length >= 3);
+            double res = (points[^1].x - points[0].x) * (points[^1].y + points[0].y);
+            for (int i = 1; i < points.Length; i++)
+            {
+                var p1 = points[i - 1];
+                var p2 = points[i];
+                res += (p1.x - p2.x) * (p1.y + p2.y);
+            }
+            return Math.Abs(res);
+        }
     }
 }

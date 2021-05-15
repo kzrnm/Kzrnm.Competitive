@@ -89,5 +89,47 @@ namespace Kzrnm.Competitive.Util
         {
             p1.Cross(p2).Should().Be(expected);
         }
+
+        public static TheoryData Area_Data = new TheoryData<PointInt[], long>
+        {
+            {
+                new PointInt[]
+                {
+                    new(1,1),
+                    new(2,2),
+                    new(1,3),
+                    new(-1,1),
+                },
+                6
+            },
+            {
+                new PointInt[]
+                {
+                    new(-1,1),
+                    new(1,3),
+                    new(2,2),
+                    new(1,1),
+                },
+                6
+            },
+            {
+                new PointInt[]
+                {
+                    new(1000000000-1,1000000000+1),
+                    new(1000000000+1,1000000000+3),
+                    new(1000000000+2,1000000000+2),
+                    new(1000000000+1,1000000000+1),
+                },
+                6
+            },
+        };
+
+        [Theory]
+        [MemberData(nameof(Area_Data))]
+        public void Area(PointInt[] points, long expected)
+        {
+            PointInt.Area2(points).Should().Be(expected);
+            PointInt.Area(points).Should().Be(expected / 2.0);
+        }
     }
 }

@@ -196,5 +196,47 @@ namespace Kzrnm.Competitive.Util
         {
             PointDouble.線分が交差しているか(a1, b1, a2, b2).Should().Be(expected);
         }
+
+        public static TheoryData Area_Data = new TheoryData<PointDouble[], double>
+        {
+            {
+                new PointDouble[]
+                {
+                    new(1,1),
+                    new(2,2),
+                    new(1,3),
+                    new(-1,1),
+                },
+                6
+            },
+            {
+                new PointDouble[]
+                {
+                    new(-1,1),
+                    new(1,3),
+                    new(2,2),
+                    new(1,1),
+                },
+                6
+            },
+            {
+                new PointDouble[]
+                {
+                    new(1.1,0.51),
+                    new(1.95,6.4423),
+                    new(4.341,1.2265),
+                    new(4.5,4),
+                },
+                9.7425693
+            },
+        };
+
+        [Theory]
+        [MemberData(nameof(Area_Data))]
+        public void Area(PointDouble[] points, double expected)
+        {
+            PointDouble.Area2(points).Should().Be(expected);
+            PointDouble.Area(points).Should().Be(expected / 2.0);
+        }
     }
 }
