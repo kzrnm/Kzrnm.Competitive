@@ -21,8 +21,11 @@ namespace Competitive.Runner
             expandedCode = files[BasePath.Replace("HandMadeMain.cs", "Program.cs")].Code.Replace("\r\n", "\n");
 #endif
             var utf8 = new UTF8Encoding(false);
+            var outEnc = Console.OutputEncoding;
+            if (outEnc.CodePage == 65001)
+                outEnc = utf8;
             PropertyConsoleReader reader;
-            var writer = new ConsoleWriter(Console.OpenStandardOutput(), utf8);
+            var writer = new ConsoleWriter(Console.OpenStandardOutput(), outEnc);
 
             if (args.Length > 0 && args[0] == "expand")
             {
