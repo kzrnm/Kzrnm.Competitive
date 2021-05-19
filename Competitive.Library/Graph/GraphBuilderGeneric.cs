@@ -17,9 +17,9 @@ namespace Kzrnm.Competitive
         public void Add(int from, int to, T data) => edgeContainer.Add(from, new GraphEdge<T>(to, data));
 
 
-        public SimpleGraph<GraphNode<T>, GraphEdge<T>> ToGraph()
+        public SimpleGraph<GraphNode<GraphEdge<T>>, GraphEdge<T>> ToGraph()
         {
-            var res = new GraphNode<T>[edgeContainer.Length];
+            var res = new GraphNode<GraphEdge<T>>[edgeContainer.Length];
             var csr = edgeContainer.ToCSR();
             var counter = new int[res.Length];
             var rootCounter = edgeContainer.IsDirected ? new int[res.Length] : counter;
@@ -29,7 +29,7 @@ namespace Kzrnm.Competitive
             {
                 if (children[i] == null) children[i] = new GraphEdge<T>[edgeContainer.sizes[i]];
                 if (roots[i] == null) roots[i] = new GraphEdge<T>[edgeContainer.rootSizes[i]];
-                res[i] = new GraphNode<T>(i, roots[i], children[i]);
+                res[i] = new GraphNode<GraphEdge<T>>(i, roots[i], children[i]);
                 foreach (ref var e in csr.EList.AsSpan(csr.Start[i], csr.Start[i + 1] - csr.Start[i]))
                 {
                     if (roots[e.To] == null)
@@ -38,7 +38,7 @@ namespace Kzrnm.Competitive
                     roots[e.To][rootCounter[e.To]++] = e.Reversed(i);
                 }
             }
-            return new SimpleGraph<GraphNode<T>, GraphEdge<T>>(res, csr);
+            return new SimpleGraph<GraphNode<GraphEdge<T>>, GraphEdge<T>>(res, csr);
         }
 
         public TreeGraph<TreeNode<T>, GraphEdge<T>> ToTree(int root = 0)
@@ -114,43 +114,5 @@ namespace Kzrnm.Competitive
         public bool Equals(GraphEdge<T> other) => this.To == other.To;
         public static bool operator ==(GraphEdge<T> left, GraphEdge<T> right) => left.Equals(right);
         public static bool operator !=(GraphEdge<T> left, GraphEdge<T> right) => !left.Equals(right);
-    }
-
-    public class GraphNode<T> : IGraphNode<GraphEdge<T>>, IEquatable<GraphNode<T>>
-    {
-        public GraphNode(int i, GraphEdge<T>[] roots, GraphEdge<T>[] children)
-        {
-            this.Index = i;
-            this.Roots = roots;
-            this.Children = children;
-        }
-        public int Index { get; }
-        public GraphEdge<T>[] Roots { get; }
-        public GraphEdge<T>[] Children { get; }
-        public bool IsDirected => Roots != Children;
-
-        public override string ToString() => $"children: {string.Join(",", Children)}";
-        public override bool Equals(object obj) => obj is GraphNode<T> d && this.Equals(d);
-        public bool Equals(GraphNode<T> other) => this.Index == other?.Index;
-        public override int GetHashCode() => this.Index;
-    }
-    public class TreeNode<T> : ITreeNode<GraphEdge<T>>, IEquatable<TreeNode<T>>
-    {
-        public TreeNode(int i, GraphEdge<T> root, int depth, GraphEdge<T>[] children)
-        {
-            this.Index = i;
-            this.Root = root;
-            this.Children = children;
-            this.Depth = depth;
-        }
-        public int Index { get; }
-        public GraphEdge<T> Root { get; }
-        public GraphEdge<T>[] Children { get; }
-        public int Depth { get; }
-
-        public override string ToString() => $"children: {string.Join(",", Children)}";
-        public override bool Equals(object obj) => obj is TreeNode<T> node && this.Equals(node);
-        public bool Equals(TreeNode<T> other) => other != null && this.Index == other.Index;
-        public override int GetHashCode() => this.Index;
     }
 }
