@@ -27,6 +27,33 @@ namespace Kzrnm.Competitive.Graph
         }
 
         [Fact]
+        public void Root()
+        {
+            var gb = new WIntGraphBuilder(4, false);
+            gb.Add(0, 1, 1);
+            gb.Add(0, 2, 1);
+            gb.Add(1, 2, 1);
+            gb.Add(0, 3, 5);
+            var graph = gb.ToGraph();
+            graph.Prim().Should().Equal(
+                (0, new WEdge<int>(1, 1)),
+                (0, new WEdge<int>(2, 1)),
+                (0, new WEdge<int>(3, 5)));
+            graph.Prim(1).Should().Equal(
+                (1, new WEdge<int>(0, 1)),
+                (1, new WEdge<int>(2, 1)),
+                (0, new WEdge<int>(3, 5)));
+            graph.Prim(2).Should().Equal(
+                (2, new WEdge<int>(0, 1)),
+                (2, new WEdge<int>(1, 1)),
+                (0, new WEdge<int>(3, 5)));
+            graph.Prim(3).Should().Equal(
+                (3, new WEdge<int>(0, 5)),
+                (0, new WEdge<int>(1, 1)),
+                (0, new WEdge<int>(2, 1)));
+        }
+
+        [Fact]
         public void Long()
         {
             var gb = new WLongGraphBuilder(5, false);

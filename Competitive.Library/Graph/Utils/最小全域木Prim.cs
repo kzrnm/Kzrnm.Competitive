@@ -8,9 +8,10 @@ namespace Kzrnm.Competitive
     {
         /// <summary>
         /// <para>最小全域木をPrim法で求める。</para>
+        /// <para><paramref name="root"/>を根とする木を構築する。</para>
         /// <para>計算量は O(E + V log(V))</para>
         /// </summary>
-        public static (int from, TEdge edge)[] Prim<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph)
+        public static (int from, TEdge edge)[] Prim<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph, int root = 0)
             where TOp : struct, IAdditionOperator<T>, IComparer<T>
             where TNode : IGraphNode<TEdge>
             where TEdge : IWGraphEdge<T>
@@ -18,9 +19,9 @@ namespace Kzrnm.Competitive
             var sumi = new bool[graph.Length];
             var pq = new PriorityQueueOp<TEdge, int, Comparer<T, TOp, TEdge>>();
             var res = new SimpleList<(int from, TEdge edge)>(graph.Length - 1);
-            sumi[0] = true;
-            foreach (var e in graph[0].Children)
-                pq.Add(e, 0);
+            sumi[root] = true;
+            foreach (var e in graph[root].Children)
+                pq.Add(e, root);
             var sumiCnt = 1;
             while (sumiCnt < sumi.Length && pq.TryDequeue(out var edge, out var from))
             {
