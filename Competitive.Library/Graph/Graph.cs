@@ -5,7 +5,7 @@ namespace Kzrnm.Competitive
 {
     public interface IGraph<TNode, TEdge>
         where TNode : IGraphNode<TEdge>
-        where TEdge : IEdge
+        where TEdge : IGraphEdge
     {
         CSR<TEdge> Edges { get; }
         TNode[] AsArray();
@@ -14,7 +14,7 @@ namespace Kzrnm.Competitive
     }
     public interface ITreeGraph<TNode, TEdge>
         where TNode : ITreeNode<TEdge>
-        where TEdge : IEdge
+        where TEdge : IGraphEdge
     {
         int Root { get; }
         TNode[] AsArray();
@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive
     }
     public class SimpleGraph<TNode, TEdge> : IGraph<TNode, TEdge>
         where TNode : IGraphNode<TEdge>
-        where TEdge : IEdge
+        where TEdge : IGraphEdge
     {
         public CSR<TEdge> Edges { get; }
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
@@ -39,7 +39,7 @@ namespace Kzrnm.Competitive
     }
     public class TreeGraph<TNode, TEdge> : ITreeGraph<TNode, TEdge>
         where TNode : ITreeNode<TEdge>
-        where TEdge : IEdge
+        where TEdge : IGraphEdge
     {
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         internal TNode[] Nodes { get; }

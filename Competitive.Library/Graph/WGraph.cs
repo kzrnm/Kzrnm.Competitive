@@ -7,17 +7,17 @@ namespace Kzrnm.Competitive
     public interface IWGraph<T, TOp, TNode, TEdge> : IGraph<TNode, TEdge>
         where TOp : struct, IAdditionOperator<T>
         where TNode : IGraphNode<TEdge>
-        where TEdge : IWEdge<T>
+        where TEdge : IWGraphEdge<T>
     { }
     public interface IWTreeGraph<T, TOp, TNode, TEdge> : ITreeGraph<TNode, TEdge>
         where TOp : struct, IAdditionOperator<T>
         where TNode : ITreeNode<TEdge>
-        where TEdge : IWEdge<T>
+        where TEdge : IWGraphEdge<T>
     { }
     public class WGraph<T, TOp, TNode, TEdge> : IWGraph<T, TOp, TNode, TEdge>
         where TOp : struct, IAdditionOperator<T>
         where TNode : IGraphNode<TEdge>
-        where TEdge : IWEdge<T>
+        where TEdge : IWGraphEdge<T>
     {
         public CSR<TEdge> Edges { get; }
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
@@ -34,7 +34,7 @@ namespace Kzrnm.Competitive
     public class WTreeGraph<T, TOp, TNode, TEdge> : IWTreeGraph<T, TOp, TNode, TEdge>
         where TOp : struct, IAdditionOperator<T>
         where TNode : ITreeNode<TEdge>
-        where TEdge : IWEdge<T>
+        where TEdge : IWGraphEdge<T>
     {
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         internal TNode[] Nodes { get; }

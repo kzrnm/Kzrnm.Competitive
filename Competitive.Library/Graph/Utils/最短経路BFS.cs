@@ -9,7 +9,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public static uint[] ShortestPathBFS<TNode, TEdge>(this IGraph<TNode, TEdge> graph, int from)
             where TNode : IGraphNode<TEdge>
-            where TEdge : IEdge
+            where TEdge : IGraphEdge
         {
             var graphArr = graph.AsArray();
             var res = Global.NewArray(graphArr.Length, uint.MaxValue);
@@ -33,7 +33,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public static uint[] ShortestPathBFSReverse<TNode, TEdge>(this IGraph<TNode, TEdge> graph, int from)
             where TNode : IGraphNode<TEdge>
-            where TEdge : IEdge
+            where TEdge : IGraphEdge
         {
             var graphArr = graph.AsArray();
             var res = Global.NewArray(graphArr.Length, uint.MaxValue);

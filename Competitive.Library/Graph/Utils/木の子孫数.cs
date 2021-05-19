@@ -9,7 +9,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public static int[] DescendantsCounts<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
             where TNode : ITreeNode<TEdge>
-            where TEdge : IEdge
+            where TEdge : IGraphEdge
         {
             var treeArr = tree.AsArray();
             var res = new int[treeArr.Length];

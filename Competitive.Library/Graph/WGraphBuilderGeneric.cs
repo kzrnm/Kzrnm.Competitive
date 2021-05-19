@@ -97,7 +97,7 @@ namespace Kzrnm.Competitive
         }
     }
 
-    public readonly struct WEdge<T, S> : IWEdge<T>, IReversable<WEdge<T, S>>, IEquatable<WEdge<T, S>>
+    public readonly struct WEdge<T, S> : IWGraphEdge<T>, IReversable<WEdge<T, S>>, IEquatable<WEdge<T, S>>
     {
         public static WEdge<T, S> None { get; } = new WEdge<T, S>(-1, default, default);
         public WEdge(int to, T value, S data)

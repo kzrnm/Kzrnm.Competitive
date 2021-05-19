@@ -13,7 +13,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public static (int from, TEdge[] edges) GetCycleDFS<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
             where TNode : IGraphNode<TEdge>
-            where TEdge : IEdge
+            where TEdge : IGraphEdge
         {
             var statuses = new Status[graph.Length];
             (int from, SimpleList<TEdge> edges) DFS(Stack<(int v, int childIdx)> stack)

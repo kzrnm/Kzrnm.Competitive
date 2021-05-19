@@ -2,7 +2,7 @@
 
 namespace Kzrnm.Competitive
 {
-    public class EdgeContainer<TEdge> where TEdge : IEdge
+    public class EdgeContainer<TEdge> where TEdge : IGraphEdge
     {
         public int Length { get; }
         public bool IsDirected { get; }

@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive
         /// <returns>スタート地点とオイラー路を返す。見つからなかったら (-1, null) を返す。</returns>
         public static (int from, TEdge[] trail) EulerianTrail<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
             where TNode : IGraphNode<TEdge>
-            where TEdge : struct, IEdge, IReversable<TEdge>
+            where TEdge : struct, IGraphEdge, IReversable<TEdge>
         {
             if (graph[0].IsDirected)
                 return EulerianTrailDirected(graph);
@@ -30,7 +30,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         private static (int from, TEdge[] trail) EulerianTrailUndirected<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
             where TNode : IGraphNode<TEdge>
-            where TEdge : struct, IEdge, IReversable<TEdge>
+            where TEdge : struct, IGraphEdge, IReversable<TEdge>
         {
             Contract.Assert(!graph[0].IsDirected);
             var start = 0;
@@ -59,7 +59,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         private static (int from, TEdge[] trail) EulerianTrailDirected<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
             where TNode : IGraphNode<TEdge>
-            where TEdge : struct, IEdge, IReversable<TEdge>
+            where TEdge : struct, IGraphEdge, IReversable<TEdge>
         {
             Contract.Assert(graph[0].IsDirected);
             var start = -1;
@@ -101,7 +101,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public static TEdge[] EulerianTrail<TNode, TEdge>(this IGraph<TNode, TEdge> graph, int from)
             where TNode : IGraphNode<TEdge>
-            where TEdge : struct, IEdge, IReversable<TEdge>
+            where TEdge : struct, IGraphEdge, IReversable<TEdge>
         {
             var isDirected = graph[from].IsDirected;
             var graphQueue = new Queue<EdgeInternal<TEdge>>[graph.Length];
@@ -128,7 +128,7 @@ namespace Kzrnm.Competitive
         }
 
         private static TEdge[] EulerianTrail<TEdge>(Queue<EdgeInternal<TEdge>>[] graph, int from)
-            where TEdge : struct, IEdge, IReversable<TEdge>
+            where TEdge : struct, IGraphEdge, IReversable<TEdge>
         {
             var res = new SimpleList<TEdge>();
             var idx = new Stack<TEdge>();
@@ -162,7 +162,7 @@ namespace Kzrnm.Competitive
             Array.Reverse(resArr);
             return resArr;
         }
-        private class EdgeInternal<TEdge> where TEdge : IEdge, IReversable<TEdge>
+        private class EdgeInternal<TEdge> where TEdge : IGraphEdge, IReversable<TEdge>
         {
             public readonly int From;
             public readonly TEdge ToEdge;

@@ -10,7 +10,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public static (int from, TEdge edge)[] MinimumSpanningTreeBFS<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
             where TNode : IGraphNode<TEdge>
-            where TEdge : IEdge
+            where TEdge : IGraphEdge
         {
             var sumi = new bool[graph.Length];
             var res = new SimpleList<(int from, TEdge edge)>(graph.Length);

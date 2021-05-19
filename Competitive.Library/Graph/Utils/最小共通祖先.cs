@@ -8,7 +8,7 @@ namespace Kzrnm.Competitive
      */
     public class LowestCommonAncestor<TNode, TEdge>
         where TNode : ITreeNode<TEdge>
-        where TEdge : IEdge
+        where TEdge : IGraphEdge
     {
         internal readonly TNode[] tree;
 
@@ -94,7 +94,7 @@ namespace Kzrnm.Competitive
     {
         public static LowestCommonAncestor<TNode, TEdge> LowestCommonAncestor<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
             where TNode : ITreeNode<TEdge>
-            where TEdge : IEdge
+            where TEdge : IGraphEdge
             => new LowestCommonAncestor<TNode, TEdge>(tree.AsArray());
     }
 }

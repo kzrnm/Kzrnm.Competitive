@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         public static (int groupNum, int[] ids) SCCIDs<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
             where TNode : IGraphNode<TEdge>
-            where TEdge : IEdge
+            where TEdge : IGraphEdge
         {
             // R. Tarjan のアルゴリズム
             var graphArr = graph.AsArray();
@@ -116,7 +116,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         public static int[][] Scc<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
             where TNode : IGraphNode<TEdge>
-            where TEdge : IEdge
+            where TEdge : IGraphEdge
         {
             var (groupNum, ids) = SCCIDs(graph);
             var groups = new int[groupNum][];

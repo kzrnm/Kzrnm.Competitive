@@ -13,7 +13,7 @@ namespace Kzrnm.Competitive
             where T : struct
             where TOp : struct, INumOperator<T>
             where TNode : IGraphNode<TEdge>
-            where TEdge : IWEdge<T>
+            where TEdge : IWGraphEdge<T>
         {
             TOp op = default;
             var graphArr = graph.AsArray();

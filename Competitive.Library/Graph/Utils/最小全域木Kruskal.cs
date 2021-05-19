@@ -14,7 +14,7 @@ namespace Kzrnm.Competitive
         public static (int from, TEdge edge)[][] Kruskal<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph)
             where TOp : struct, IAdditionOperator<T>, IComparer<T>
             where TNode : IGraphNode<TEdge>
-            where TEdge : IWEdge<T>
+            where TEdge : IWGraphEdge<T>
         {
             var graphArr = graph.AsArray();
             var uf = new DSU(graphArr.Length);
@@ -63,7 +63,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public static (int from, TEdge edge)[][] Kruskal<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
             where TNode : IGraphNode<TEdge>
-            where TEdge : IEdge
+            where TEdge : IGraphEdge
         {
             var graphArr = graph.AsArray();
             var uf = new DSU(graphArr.Length);

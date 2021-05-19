@@ -9,7 +9,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public static int[] BfsDescendant<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree, bool skipFirst = false)
             where TNode : ITreeNode<TEdge>
-            where TEdge : IEdge
+            where TEdge : IGraphEdge
         {
             var arr = tree.AsArray();
             var res = new int[arr.Length - (skipFirst ? 1 : 0)];
@@ -36,7 +36,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public static int[] DfsDescendant<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree, bool skipFirst = false)
             where TNode : ITreeNode<TEdge>
-            where TEdge : IEdge
+            where TEdge : IGraphEdge
         {
             var arr = tree.AsArray();
             var res = new int[arr.Length - (skipFirst ? 1 : 0)];

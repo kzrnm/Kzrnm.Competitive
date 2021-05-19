@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace Kzrnm.Competitive
 {
-    public class オイラーツアー<TEdge> where TEdge : IEdge
+    public class オイラーツアー<TEdge> where TEdge : IGraphEdge
     {
         public readonly struct Event
         {
@@ -93,6 +93,6 @@ namespace Kzrnm.Competitive
         /// </summary>
         public static オイラーツアー<TEdge> EulerianTour<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
             where TNode : ITreeNode<TEdge>
-            where TEdge : IEdge => オイラーツアー<TEdge>.Create(tree);
+            where TEdge : IGraphEdge => オイラーツアー<TEdge>.Create(tree);
     }
 }

@@ -13,7 +13,7 @@ namespace Kzrnm.Competitive
         public static (int from, TEdge edge)[] Prim<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph)
             where TOp : struct, IAdditionOperator<T>, IComparer<T>
             where TNode : IGraphNode<TEdge>
-            where TEdge : IWEdge<T>
+            where TEdge : IWGraphEdge<T>
         {
             var sumi = new bool[graph.Length];
             var pq = new PriorityQueueOp<TEdge, int, Comparer<T, TOp, TEdge>>();
@@ -36,7 +36,7 @@ namespace Kzrnm.Competitive
         }
         private readonly struct Comparer<T, TOp, TEdge> : IComparer<TEdge>
             where TOp : struct, IAdditionOperator<T>, IComparer<T>
-            where TEdge : IWEdge<T>
+            where TEdge : IWGraphEdge<T>
         {
             private static readonly TOp op = default;
             public int Compare(TEdge x, TEdge y) => op.Compare(x.Value, y.Value);

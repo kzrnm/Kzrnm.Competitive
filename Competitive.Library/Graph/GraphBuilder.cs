@@ -116,7 +116,7 @@ namespace Kzrnm.Competitive
         }
     }
 
-    public readonly struct GraphEdge : IEdge, IReversable<GraphEdge>, IEquatable<GraphEdge>
+    public readonly struct GraphEdge : IGraphEdge, IReversable<GraphEdge>, IEquatable<GraphEdge>
     {
         public static GraphEdge None { get; } = new GraphEdge(-1);
         public GraphEdge(int to)
