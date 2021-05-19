@@ -61,7 +61,8 @@ namespace Kzrnm.Competitive
                         new TreeNode<T>(root, GraphEdge<T>.None, 0,  Array.Empty<GraphEdge<T>>()) }, root);
             }
 
-            res[root] = new TreeNode<T>(root, GraphEdge<T>.None, 0, children[root].ToArray());
+            res[root] = new TreeNode<T>(root, GraphEdge<T>.None, 0,
+                children[root]?.ToArray() ?? Array.Empty<GraphEdge<T>>());
 
             var queue = new Queue<(int parent, int child, T data)>();
             foreach (var e in res[root].Children)

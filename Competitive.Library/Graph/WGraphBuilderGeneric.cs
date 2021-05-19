@@ -62,7 +62,8 @@ namespace Kzrnm.Competitive
                         new WTreeNode<T, WEdge<T, S>>(root, WEdge<T, S>.None, 0, default, Array.Empty<WEdge<T, S>>()) }, root);
             }
 
-            res[root] = new WTreeNode<T, WEdge<T, S>>(root, WEdge<T, S>.None, 0, default, children[root].ToArray());
+            res[root] = new WTreeNode<T, WEdge<T, S>>(root, WEdge<T, S>.None, 0, default,
+                children[root]?.ToArray() ?? Array.Empty<WEdge<T, S>>());
 
             var queue = new Queue<(int parent, int child, T value, S data)>();
             foreach (var e in res[root].Children)
