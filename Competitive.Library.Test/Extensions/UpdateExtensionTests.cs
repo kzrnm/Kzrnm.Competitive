@@ -15,7 +15,7 @@ namespace Kzrnm.Competitive.Extension
             a.UpdateMax(0).Should().BeFalse();
             a.Should().Be(10);
 
-            var  d = new DateTime(2000, 1, 1);
+            var d = new DateTime(2000, 1, 1);
             d.UpdateMax(new DateTime(2001, 1, 1)).Should().BeTrue();
             d.Should().Be(new DateTime(2001, 1, 1));
             d.UpdateMax(new DateTime(2000, 12, 1)).Should().BeFalse();

@@ -135,7 +135,7 @@ namespace Kzrnm.Competitive
                 const long Mod2 = 469762049;
                 const long Mod3 = 754974721;
 
-                const long M1i2  = 104391568;
+                const long M1i2 = 104391568;
                 const long M12i3 = 190329765;
                 long M12i = (long)(ulong)(Mod1 * Mod2) % mod;
 
