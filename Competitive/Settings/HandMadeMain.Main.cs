@@ -39,9 +39,6 @@ namespace Competitive.Runner
             }
             else
             {
-                if (expandedCode != null)
-                    File.WriteAllText(BasePath.Replace("HandMadeMain.cs", "Combined.csx"), expandedCode);
-
                 var sb = Build();
 
                 var fileInput = LoadInput();
