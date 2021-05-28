@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
 {
-    public class オイラーツアー<TEdge> where TEdge : IGraphEdge
+    public class オイラーツアー<TEdge> where TEdge : IGraphEdge, IReversable<TEdge>
     {
         public readonly struct Event
         {
@@ -51,7 +52,7 @@ namespace Kzrnm.Competitive
             var events = new Event[2 * treeArr.Length];
 
             var nodeEvents = new Event[treeArr.Length];
-            nodeEvents[root] = new Event(-1, default, true);
+            nodeEvents[root] = new Event(-1, default(TEdge).Reversed(root), true);
 
             var idx = new Stack<(int index, int ci)>(treeArr.Length);
             idx.Push((root, 0));
@@ -84,6 +85,40 @@ namespace Kzrnm.Competitive
             */
             return new オイラーツアー<TEdge>(nodes, events);
         }
+
+        /// <summary>
+        /// <paramref name="u"/>と<paramref name="v"/>の最小共通祖先を返します。
+        /// </summary>
+        public int LowestCommonAncestor(int u, int v)
+        {
+            if (u == v) return u;
+            var f = nodes[u].left;
+            var t = nodes[v].left;
+            if (t < f) (f, t) = (t, f);
+            return LowestCommonAncestorTable[f..t].Node;
+        }
+
+        private SparseTable<(int Node, int Depth), NodeMinOp> _LowestCommonAncestorTable;
+        private SparseTable<(int Node, int Depth), NodeMinOp> LowestCommonAncestorTable
+            => _LowestCommonAncestorTable ??= BuildLowestCommonAncestorTable();
+        private SparseTable<(int Node, int Depth), NodeMinOp> BuildLowestCommonAncestorTable()
+        {
+            var arr = new (int Node, int Depth)[Events.Length];
+            int dep = -1;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (Events[i].isStart)
+                    arr[i] = (Events[i].edge.To, ++dep);
+                else
+                    arr[i] = (Events[i].root, --dep);
+            }
+            return new SparseTable<(int Node, int Depth), NodeMinOp>(arr);
+        }
+        private struct NodeMinOp : ISparseTableOperator<(int Node, int Depth)>
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public (int Node, int Depth) Operate((int Node, int Depth) x, (int Node, int Depth) y) => x.Depth <= y.Depth ? x : y;
+        }
     }
     public static class オイラーツアーExt
     {
@@ -93,6 +128,6 @@ namespace Kzrnm.Competitive
         /// </summary>
         public static オイラーツアー<TEdge> EulerianTour<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
             where TNode : ITreeNode<TEdge>
-            where TEdge : IGraphEdge => オイラーツアー<TEdge>.Create(tree);
+            where TEdge : IGraphEdge, IReversable<TEdge> => オイラーツアー<TEdge>.Create(tree);
     }
 }

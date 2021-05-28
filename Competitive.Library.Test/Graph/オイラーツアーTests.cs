@@ -17,7 +17,8 @@ namespace Kzrnm.Competitive.Graph
             gb.Add(2, 5);
             gb.Add(2, 6);
             gb.Add(3, 7);
-            var tour = gb.ToTree().EulerianTour();
+            var tree = gb.ToTree();
+            var tour = tree.EulerianTour();
             tour.Events.Should().Equal(
                 new オイラーツアー<GraphEdge>.Event(-1, new GraphEdge(0), true),
                 new オイラーツアー<GraphEdge>.Event(0, new GraphEdge(1), true),
@@ -37,6 +38,14 @@ namespace Kzrnm.Competitive.Graph
                 new オイラーツアー<GraphEdge>.Event(-1, new GraphEdge(0), false));
             Enumerable.Range(0, 8).Select(i => tour[i]).Should().Equal(
                 (0, 15), (1, 8), (9, 14), (2, 5), (6, 7), (10, 11), (12, 13), (3, 4));
+
+            var lca = tree.LowestCommonAncestor();
+            for (int i = 0; i < 8; i++)
+                for (int j = 0; j < 8; j++)
+                {
+                    var expectedLca = lca.Lca(i, j);
+                    tour.LowestCommonAncestor(i, j).Should().Be(expectedLca, "Lca {0} and {1} → {2}", i, j, expectedLca);
+                }
         }
         [Fact]
         public void 重み付きグラフ()
@@ -49,7 +58,8 @@ namespace Kzrnm.Competitive.Graph
             gb.Add(2, 5, 5);
             gb.Add(2, 6, 6);
             gb.Add(3, 7, 7);
-            var tour = gb.ToTree().EulerianTour();
+            var tree = gb.ToTree();
+            var tour = tree.EulerianTour();
             tour.Events.Should().Equal(
                 new オイラーツアー<WEdge<int>>.Event(-1, new WEdge<int>(0, 0), true),
                 new オイラーツアー<WEdge<int>>.Event(0, new WEdge<int>(1, 1), true),
@@ -70,6 +80,11 @@ namespace Kzrnm.Competitive.Graph
             Enumerable.Range(0, 8).Select(i => tour[i]).Should().Equal(
                 (0, 15),
                 (1, 8), (9, 14), (2, 5), (6, 7), (10, 11), (12, 13), (3, 4));
+
+            var lca = tree.LowestCommonAncestor();
+            for (int i = 0; i < 8; i++)
+                for (int j = 0; j < 8; j++)
+                    tour.LowestCommonAncestor(i, j).Should().Be(lca.Lca(i, j));
         }
     }
 }
