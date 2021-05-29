@@ -109,7 +109,15 @@ namespace Competitive.Runner
             using var sr = new StreamReader(stream);
             return sr.ReadToEnd().Trim();
         }
-
+        static T[] Shuffle<T>(T[] arr)
+        {
+            for (int n = arr.Length - 1; n >= 0; n--)
+            {
+                int k = rnd.Next(n + 1);
+                (arr[k], arr[n]) = (arr[n], arr[k]);
+            }
+            return arr;
+        }
         static string CurrentPath([CallerFilePath] string path = "") => path;
     }
 }
