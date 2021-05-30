@@ -5,20 +5,20 @@ using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
-    public static class __CollectionExtension_Buffer
+    public static class __CollectionExtension_Chunk
     {
         /// <summary>
         /// コレクションの要素をいくつかの要素ごとに分割したバッファーにする。最後の要素は数が足りない可能性あり
         /// </summary>
-        public static Buffer<T> Buffered<T>(this IEnumerable<T> collection, int bufferSize) => new Buffer<T>(collection, bufferSize);
+        public static ChunkBuffer<T> Chunk<T>(this IEnumerable<T> collection, int bufferSize) => new ChunkBuffer<T>(collection, bufferSize);
     }
     namespace Linq
     {
-        public class Buffer<T> : IEnumerable<T[]>
+        public class ChunkBuffer<T> : IEnumerable<T[]>
         {
             private readonly IEnumerable<T> orig;
             private readonly int bufferSize;
-            public Buffer(IEnumerable<T> orig, int bufferSize)
+            public ChunkBuffer(IEnumerable<T> orig, int bufferSize)
             {
                 this.orig = orig;
                 this.bufferSize = bufferSize;
