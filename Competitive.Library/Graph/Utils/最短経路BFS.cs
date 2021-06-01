@@ -16,9 +16,8 @@ namespace Kzrnm.Competitive
             var queue = new Queue<int>();
             queue.Enqueue(from);
             res[from] = 0;
-            while (queue.Count > 0)
+            while (queue.TryDequeue(out var cur))
             {
-                var cur = queue.Dequeue();
                 foreach (var e in graphArr[cur].Children)
                 {
                     var child = e.To;
