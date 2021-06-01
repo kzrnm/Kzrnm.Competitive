@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -17,8 +18,7 @@ namespace Competitive.Runner
         {
             string expandedCode = null;
 #if DEBUG
-            var files = SourceExpander.Expanded.ExpandedContainer.Files;
-            expandedCode = files[BasePath.Replace("HandMadeMain.cs", "Program.cs")].Code.Replace("\r\n", "\n");
+            expandedCode = GetSourceCode(BasePath.Replace("HandMadeMain.cs", "Program.cs"))?.Code?.Replace("\r\n", "\n");
 #endif
             var utf8 = new UTF8Encoding(false);
             var outEnc = Console.OutputEncoding;
@@ -31,6 +31,8 @@ namespace Competitive.Runner
             {
                 if (expandedCode != null)
                     Expand(args.AsSpan(1), expandedCode);
+                else
+                    Console.WriteLine("expandedCode is null.");
                 return;
             }
             else if (args.Length > 0)
@@ -94,6 +96,15 @@ namespace Competitive.Runner
             }
             else
                 Console.WriteLine(expandedCode);
+        }
+        static SourceExpander.Expanded.SourceCode GetSourceCode(string filePath)
+        {
+            var expandedContainerType = typeof(Program).Assembly.GetType("SourceExpander.Expanded.ExpandedContainer");
+            if (expandedContainerType is null) return null;
+            if (expandedContainerType.GetProperty("Files").GetValue(null)
+                is IReadOnlyDictionary<string, SourceExpander.Expanded.SourceCode> dic)
+                return dic.GetValueOrDefault(filePath);
+            return null;
         }
         static bool IsNotWhiteSpace(StringBuilder sb)
         {
