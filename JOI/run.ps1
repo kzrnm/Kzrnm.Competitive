@@ -40,7 +40,7 @@ foreach ($file in $files) {
         $dir = $file.DirectoryName
         $outName = $file.Name.Replace("-in", "-out").Replace(".in", ".out")
         $outPath = Join-Path $dir $outName
-        $d = ($commandRes | C:\Software\vim\diff.exe $outPath -)
+        $d = ($commandRes | C:\Software\vim\diff.exe -u $outPath -)
         if ($d) {
             Write-Host ""
             Write-Output $d
