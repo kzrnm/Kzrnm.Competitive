@@ -157,6 +157,8 @@ namespace Kzrnm.Competitive.Extension
             arr.GetOrDummy(0).Should().Be(43);
             arr.GetOrDummy(1).Should().Be(24);
             arr.GetOrDummy(2).Should().Be(8373);
+            arr.GetOrDummy(-1, int.MaxValue).Should().Be(int.MaxValue);
+            arr.GetOrDummy(3, int.MinValue).Should().Be(int.MinValue);
             arr.Should().Equal(43, 24, 8373);
 
             arr.GetOrDummy(2) = 33;
@@ -166,7 +168,45 @@ namespace Kzrnm.Competitive.Extension
             arr.GetOrDummy(0).Should().Be(43);
             arr.GetOrDummy(1).Should().Be(24);
             arr.GetOrDummy(2).Should().Be(33);
+            arr.GetOrDummy(-1, int.MaxValue).Should().Be(int.MaxValue);
+            arr.GetOrDummy(3, int.MinValue).Should().Be(int.MinValue);
             arr.Should().Equal(43, 24, 33);
+        }
+        [Fact]
+        public void GetOrDummySpan()
+        {
+            Span<long> arr = stackalloc long[] {
+                43,24,8373,
+            };
+            arr.GetOrDummy(0).Should().Be(43);
+            arr.GetOrDummy(1).Should().Be(24);
+            arr.GetOrDummy(2).Should().Be(8373);
+            arr.GetOrDummy(-1, int.MaxValue).Should().Be(int.MaxValue);
+            arr.GetOrDummy(3, int.MinValue).Should().Be(int.MinValue);
+            arr.ToArray().Should().Equal(43, 24, 8373);
+
+            arr.GetOrDummy(2) = 33;
+            arr.GetOrDummy(3) = 55;
+            arr.GetOrDummy(-1) = 66;
+
+            arr.GetOrDummy(0).Should().Be(43);
+            arr.GetOrDummy(1).Should().Be(24);
+            arr.GetOrDummy(2).Should().Be(33);
+            arr.GetOrDummy(-1, int.MaxValue).Should().Be(int.MaxValue);
+            arr.GetOrDummy(3, int.MinValue).Should().Be(int.MinValue);
+            arr.ToArray().Should().Equal(43, 24, 33);
+        }
+        [Fact]
+        public void GetOrDummyReadOnlySpan()
+        {
+            ReadOnlySpan<long> arr = stackalloc long[] {
+                43,24,8373,
+            };
+            arr.GetOrDummy(0).Should().Be(43);
+            arr.GetOrDummy(1).Should().Be(24);
+            arr.GetOrDummy(2).Should().Be(8373);
+            arr.GetOrDummy(-1, int.MaxValue).Should().Be(int.MaxValue);
+            arr.GetOrDummy(3, int.MinValue).Should().Be(int.MinValue);
         }
 
         [Fact]
@@ -179,6 +219,12 @@ namespace Kzrnm.Competitive.Extension
             arr.GetOrDummy(0, 0).Should().Be(43);
             arr.GetOrDummy(0, 1).Should().Be(24);
             arr.GetOrDummy(0, 2).Should().Be(8373);
+            arr.GetOrDummy(-1, 0, int.MaxValue).Should().Be(int.MaxValue);
+            arr.GetOrDummy(2, 0, int.MinValue).Should().Be(int.MinValue);
+            arr.GetOrDummy(1, -1, int.MaxValue).Should().Be(int.MaxValue);
+            arr.GetOrDummy(1, 3, int.MinValue).Should().Be(int.MinValue);
+            arr.GetOrDummy(-1, -1, int.MaxValue).Should().Be(int.MaxValue);
+            arr.GetOrDummy(2, 3, int.MinValue).Should().Be(int.MinValue);
             arr[0].Should().Equal(43, 24, 8373);
             arr[1].Should().Equal(-13, -4, 54);
 
@@ -230,6 +276,18 @@ namespace Kzrnm.Competitive.Extension
             arr.GetOrDummy(1, 0, 1).Should().Be(6);
             arr.GetOrDummy(1, 1, 0).Should().Be(7);
             arr.GetOrDummy(1, 1, 1).Should().Be(8);
+            arr.GetOrDummy(-1, 0, 0, int.MaxValue).Should().Be(int.MaxValue);
+            arr.GetOrDummy(2, 0, 0, int.MinValue).Should().Be(int.MinValue);
+            arr.GetOrDummy(1, -1, 0, int.MaxValue).Should().Be(int.MaxValue);
+            arr.GetOrDummy(1, 2, 0, int.MinValue).Should().Be(int.MinValue);
+            arr.GetOrDummy(-1, -1, 0, int.MaxValue).Should().Be(int.MaxValue);
+            arr.GetOrDummy(2, 2, -1, int.MinValue).Should().Be(int.MinValue);
+            arr.GetOrDummy(0, 0, 2, int.MaxValue).Should().Be(int.MaxValue);
+            arr.GetOrDummy(0, 0, -1, int.MinValue).Should().Be(int.MinValue);
+            arr.GetOrDummy(1, 1, 2, int.MaxValue).Should().Be(int.MaxValue);
+            arr.GetOrDummy(1, 1, -1, int.MinValue).Should().Be(int.MinValue);
+            arr.GetOrDummy(1, 1, 2, int.MaxValue).Should().Be(int.MaxValue);
+            arr.GetOrDummy(1, 1, -1, int.MinValue).Should().Be(int.MinValue);
             arr[0][0].Should().Equal(1, 2);
             arr[0][1].Should().Equal(3, 4);
             arr[1][0].Should().Equal(5, 6);
