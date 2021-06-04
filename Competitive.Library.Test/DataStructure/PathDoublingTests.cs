@@ -14,6 +14,10 @@ namespace Kzrnm.Competitive.DataStructure
                 arr[i] = (i + 1) % arr.Length;
             var rnd = new Random();
             var db = new PathDoubling(arr);
+
+            for (int i = 0; i < 500; i++)
+                for (int k = 0; k < 20; k++)
+                    db.Move(i, k).Should().Be((i + k) % arr.Length);
             Span<ulong> ks = stackalloc ulong[1];
             for (int t = 0; t < 128; t++)
             {

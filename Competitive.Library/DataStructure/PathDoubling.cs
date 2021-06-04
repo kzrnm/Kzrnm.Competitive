@@ -41,7 +41,12 @@ namespace Kzrnm.Competitive
                         t[i] = -1;
             }
         }
-        private readonly int[][] paths;
+        internal readonly int[][] paths;
+
+        /// <summary>
+        /// log(最大何番目まで見れるか) を返します。
+        /// </summary>
+        public int PathSize => paths.Length;
 
         /// <summary>
         /// <para><paramref name="start"/>: スタートするインデックス</para>

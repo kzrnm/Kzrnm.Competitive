@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
@@ -15,29 +16,16 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// kprv[u][k] 頂点uの2^k個上の祖先頂点v, 0&lt;=k&lt;logN
         /// </summary>
-        readonly int[][] kprv;
-        readonly int logN;
+        private readonly PathDoubling doubling;
         public LowestCommonAncestor(TNode[] tree)
         {
             if (tree.Length == 0) throw new ArgumentException(nameof(tree));
 
             this.tree = tree;
-            this.logN = BitOperationsEx.MSB(tree.Length) + 1;
-            this.kprv = Global.NewArray(tree.Length, logN, 0);
+            var roots = new int[tree.Length];
             for (int v = 0; v < tree.Length; v++)
-            {
-                this.kprv[v][0] = tree[v].Root.To;
-            }
-            for (int k = 0; k < logN - 1; k++)
-            {
-                for (int v = 0; v < tree.Length; v++)
-                {
-                    if (this.kprv[v][k] < 0)
-                        this.kprv[v][k + 1] = -1;
-                    else
-                        this.kprv[v][k + 1] = this.kprv[this.kprv[v][k]][k];
-                }
-            }
+                roots[v] = tree[v].Root.To;
+            doubling = new PathDoubling(roots, tree.Length);
         }
 
         /// <summary>
@@ -49,35 +37,65 @@ namespace Kzrnm.Competitive
             get => Lca(u, v);
         }
 
-
         /// <summary>
         /// 2つの頂点の共通祖先を取得する
         /// </summary>
         public int Lca(int u, int v)
         {
-            if (tree[u].Depth > tree[v].Depth)
-            {
-                (u, v) = (v, u);
-            }
-            for (int k = 0; k <= logN; k++)
-            {
-                if ((((tree[v].Depth - tree[u].Depth) >> k) & 1) == 1)
-                {
-                    v = kprv[v][k];
-                }
-            }
+            int dd = tree[u].Depth - tree[v].Depth;
+            if (dd > 0) u = doubling.Move(u, dd);
+            else if (dd < 0) v = doubling.Move(v, -dd);
             if (u == v)
                 return u;
 
-            for (int k = logN - 1; k >= 0; k--)
+            var paths = doubling.paths;
+            for (int i = paths.Length - 1; i >= 0; i--)
             {
-                if (kprv[u][k] != kprv[v][k] && kprv[u][k] != -1 && kprv[v][k] != -1)
+                var path = paths[i];
+                if (path[u] != path[v])
                 {
-                    u = kprv[u][k];
-                    v = kprv[v][k];
+                    u = path[u];
+                    v = path[v];
                 }
             }
-            return kprv[u][0];
+            return paths[0][u];
+        }
+
+        /// <summary>
+        /// <para>2つの頂点の共通祖先のそれぞれの子(最小非共通祖先)を返します。</para>
+        /// <para>一方がもう一方の祖先の場合は祖先の方は自身を返します。</para>
+        /// </summary>
+        public (int uAncestor, int vAncestor) ChildOfLca(int u, int v)
+        {
+            int dd = tree[u].Depth - tree[v].Depth;
+            if (dd > 0)
+            {
+                var u2 = doubling.Move(u, dd);
+                if (u2 == v)
+                    return (doubling.Move(u, dd - 1), v);
+                u = u2;
+            }
+            else if (dd < 0)
+            {
+                var v2 = doubling.Move(v, -dd);
+                if (v2 == u)
+                    return (u, doubling.Move(v, -dd - 1));
+                v = v2;
+            }
+            else if (u == v)
+                return (u, u);
+
+            var paths = doubling.paths;
+            for (int i = paths.Length - 1; i >= 0; i--)
+            {
+                var path = paths[i];
+                if (path[u] != path[v])
+                {
+                    u = path[u];
+                    v = path[v];
+                }
+            }
+            return (u, v);
         }
 
         /// <summary>
