@@ -7,7 +7,6 @@ namespace Kzrnm.Competitive
 {
     public static class Global
     {
-
         #region NewArray
         public static T[] NewArray<T>(int len0, T value) where T : struct => new T[len0].Fill(value);
         public static T[] NewArray<T>(int len0, Func<T> factory)
