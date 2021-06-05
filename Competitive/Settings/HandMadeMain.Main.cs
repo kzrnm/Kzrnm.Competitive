@@ -42,13 +42,10 @@ namespace Competitive.Runner
             else
             {
                 var sb = Build();
-
-                var fileInput = LoadInput();
-                if (!string.IsNullOrWhiteSpace(fileInput))
-                {
-                    sb.Clear();
+                if (sb is { Length: 0 } &&
+                    LoadInput() is { } fileInput &&
+                    !string.IsNullOrWhiteSpace(fileInput))
                     sb.Add(fileInput);
-                }
                 if (IsNotWhiteSpace(sb.sb))
                 {
                     Trace.Listeners.Add(new TextWriterTraceListener(Console.Error));
