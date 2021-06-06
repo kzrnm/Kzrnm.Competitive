@@ -7,12 +7,12 @@ using System.Text;
 namespace Kzrnm.Competitive
 {
     /// <summary>
-    /// ダブリング: mod Nで循環しているなどのときに K 個先の遷移を logK で求められるデータ構造
+    /// ダブリング: mod Nで循環しているなどのときに 前計算 O(logK) で K 個先の遷移を O(logK) で求められるデータ構造
     /// </summary>
     public class PathDoubling
     {
         /// <summary>
-        /// <para><paramref name="to"/>: インデックス i で数値 i からの遷移先。負数は遷移先なしとする。</para>
+        /// <para><paramref name="to"/>: 頂点 i からの遷移先。負数は遷移先なしとする。</para>
         /// <para><paramref name="max"/>: 最大何番目までの遷移を見たいか</para>
         /// <para>制約: <paramref name="to"/>[i] &lt; |<paramref name="to"/>|, 0 ≦ <paramref name="max"/></para>
         /// </summary>
@@ -20,7 +20,7 @@ namespace Kzrnm.Competitive
         /// <param name="max">最大何番目までの遷移を見たいか</param>
         public PathDoubling(int[] to, long max) : this(to, (ulong)max) { }
         /// <summary>
-        /// <para><paramref name="to"/>: インデックス i で数値 i からの遷移先。負数は遷移先なしとする。</para>
+        /// <para><paramref name="to"/>: 頂点 i からの遷移先。負数は遷移先なしとする。</para>
         /// <para><paramref name="max"/>: 最大何番目までの遷移を見たいか</para>
         /// <para>制約: <paramref name="to"/>[i] &lt; |<paramref name="to"/>|</para>
         /// </summary>

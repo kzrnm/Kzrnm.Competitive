@@ -2,7 +2,7 @@
 using System;
 using Xunit;
 
-namespace Kzrnm.Competitive.DataStructure
+namespace Kzrnm.Competitive.Graph
 {
     public class PathDoublingTests
     {
