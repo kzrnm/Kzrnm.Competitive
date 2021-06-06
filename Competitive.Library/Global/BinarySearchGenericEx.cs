@@ -13,8 +13,8 @@ namespace Kzrnm.Competitive
         /// <para>制約: <typeparamref name="TOp"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<typeparamref name="TOp"/>.Ok(<paramref name="ng"/>)</para>
         /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
         /// </remarks>
-        public static T BinarySearch<T, TOp>(T ok, T ng) where TOp : IBinaryOk<T>
-            => BinarySearch(ok, ng, default(TOp));
+        public static T BinarySearch<T, TOp>(T ok, T ng) where TOp : struct, IBinaryOk<T>
+            => BinarySearch(default(TOp), ok, ng);
         /// <summary>
         /// <paramref name="ok"/> と <paramref name="ng"/> の間で <paramref name="op"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
         /// </summary>
@@ -22,7 +22,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: <paramref name="op"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<paramref name="op"/>.Ok(<paramref name="ng"/>)</para>
         /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
         /// </remarks>
-        public static T BinarySearch<T, TOp>(T ok, T ng, TOp op) where TOp : IBinaryOk<T>
+        public static T BinarySearch<T, TOp>(this TOp op, T ok, T ng) where TOp : struct, IBinaryOk<T>
         {
             while (op.Continue(ok, ng))
             {

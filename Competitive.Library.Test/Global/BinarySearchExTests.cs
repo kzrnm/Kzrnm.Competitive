@@ -30,10 +30,10 @@ namespace Kzrnm.Competitive.GlobalNS
         [Fact]
         public void IntArg()
         {
-            __BinarySearchEx.BinarySearch(-1000000000, 10, new DelegateOk<int>(num => num < 9)).Should().Be(8);
-            __BinarySearchEx.BinarySearch(0, int.MaxValue, new DelegateOk<int>(num => num < 9)).Should().Be(8);
-            __BinarySearchEx.BinarySearch(-1000000000, 10, new DelegateOk<int>(num => num < -19)).Should().Be(-20);
-            __BinarySearchEx.BinarySearch(1000, -1000000000, new DelegateOk<int>(num => num > -19)).Should().Be(-18);
+            new DelegateOk<int>(num => num < 9).BinarySearch(-1000000000, 10).Should().Be(8);
+            new DelegateOk<int>(num => num < 9).BinarySearch(0, int.MaxValue).Should().Be(8);
+            new DelegateOk<int>(num => num < -19).BinarySearch(-1000000000, 10).Should().Be(-20);
+            new DelegateOk<int>(num => num > -19).BinarySearch(1000, -1000000000).Should().Be(-18);
         }
 
         private struct LongLower : IOk<long>
@@ -50,10 +50,10 @@ namespace Kzrnm.Competitive.GlobalNS
         [Fact]
         public void LongArg()
         {
-            __BinarySearchEx.BinarySearch(-1000000000, 10, new DelegateOk<long>(num => num < 9)).Should().Be(8);
-            __BinarySearchEx.BinarySearch(0, long.MaxValue, new DelegateOk<long>(num => num < 9)).Should().Be(8);
-            __BinarySearchEx.BinarySearch(-1000000000, 10, new DelegateOk<long>(num => num < -19)).Should().Be(-20);
-            __BinarySearchEx.BinarySearch(1000, -1000000000, new DelegateOk<long>(num => num > -19)).Should().Be(-18);
+            new DelegateOk<long>(num => num < 9).BinarySearch(-1000000000, 10).Should().Be(8);
+            new DelegateOk<long>(num => num < 9).BinarySearch(0, long.MaxValue).Should().Be(8);
+            new DelegateOk<long>(num => num < -19).BinarySearch(-1000000000, 10).Should().Be(-20);
+            new DelegateOk<long>(num => num > -19).BinarySearch(1000, -1000000000).Should().Be(-18);
         }
 
         private struct ULongLower : IOk<ulong>
@@ -68,10 +68,10 @@ namespace Kzrnm.Competitive.GlobalNS
         [Fact]
         public void ULongArg()
         {
-            __BinarySearchEx.BinarySearch(0, 10, new DelegateOk<ulong>(num => num < 9)).Should().Be(8);
-            __BinarySearchEx.BinarySearch(0, ulong.MaxValue, new DelegateOk<ulong>(num => num < 9)).Should().Be(8);
-            __BinarySearchEx.BinarySearch(0, ulong.MaxValue, new DelegateOk<ulong>(num => num < ulong.MaxValue)).Should().Be(ulong.MaxValue - 1);
-            __BinarySearchEx.BinarySearch(ulong.MaxValue, 0, new DelegateOk<ulong>(num => num == ulong.MaxValue)).Should().Be(ulong.MaxValue);
+            new DelegateOk<ulong>(num => num < 9).BinarySearch(0, 10).Should().Be(8);
+            new DelegateOk<ulong>(num => num < 9).BinarySearch(0, ulong.MaxValue).Should().Be(8);
+            new DelegateOk<ulong>(num => num < ulong.MaxValue).BinarySearch(0, ulong.MaxValue).Should().Be(ulong.MaxValue - 1);
+            new DelegateOk<ulong>(num => num == ulong.MaxValue).BinarySearch(ulong.MaxValue, 0).Should().Be(ulong.MaxValue);
         }
 
         private struct BigLower : IOk<BigInteger>
@@ -87,10 +87,10 @@ namespace Kzrnm.Competitive.GlobalNS
         [Fact]
         public void BigArg()
         {
-            __BinarySearchEx.BinarySearch(0, 10, new DelegateOk<BigInteger>(num => num < 9)).Should().Be(8);
-            __BinarySearchEx.BinarySearch(0, ulong.MaxValue, new DelegateOk<BigInteger>(num => num < 9)).Should().Be(8);
-            __BinarySearchEx.BinarySearch(0, ulong.MaxValue, new DelegateOk<BigInteger>(num => num < ulong.MaxValue)).Should().Be(ulong.MaxValue - 1);
-            __BinarySearchEx.BinarySearch(ulong.MaxValue, 0, new DelegateOk<BigInteger>(num => num == ulong.MaxValue)).Should().Be(ulong.MaxValue);
+            new DelegateOk<BigInteger>(num => num < 9).BinarySearch(0, 10).Should().Be(8);
+            new DelegateOk<BigInteger>(num => num < 9).BinarySearch(0, ulong.MaxValue).Should().Be(8);
+            new DelegateOk<BigInteger>(num => num < ulong.MaxValue).BinarySearch(0, ulong.MaxValue).Should().Be(ulong.MaxValue - 1);
+            new DelegateOk<BigInteger>(num => num == ulong.MaxValue).BinarySearch(ulong.MaxValue, 0).Should().Be(ulong.MaxValue);
         }
 
 
@@ -118,10 +118,10 @@ namespace Kzrnm.Competitive.GlobalNS
         [Fact]
         public void DoubleArg()
         {
-            __BinarySearchEx.BinarySearch(-1000000000, 1, new DelegateOk<double>(num => num < .5)).Should().Be(0.49999995812981446);
-            __BinarySearchEx.BinarySearch(-1000000000, 10, new DelegateOk<double>(num => num < .5)).Should().Be(0.49999995163374444);
-            __BinarySearchEx.BinarySearch(-1000000000, 1, new DelegateOk<double>(num => num < .5), 1).Should().Be(0.06867742445319891);
-            __BinarySearchEx.BinarySearch(-1000000000, 10, new DelegateOk<double>(num => num < .5), 1).Should().Be(-0.24454842321574688);
+            new DelegateOk<double>(num => num < .5).BinarySearch(-1000000000, 1).Should().Be(0.49999995812981446);
+            new DelegateOk<double>(num => num < .5).BinarySearch(-1000000000, 10).Should().Be(0.49999995163374444);
+            new DelegateOk<double>(num => num < .5).BinarySearch(-1000000000, 1, 1).Should().Be(0.06867742445319891);
+            new DelegateOk<double>(num => num < .5).BinarySearch(-1000000000, 10, 1).Should().Be(-0.24454842321574688);
         }
     }
 }

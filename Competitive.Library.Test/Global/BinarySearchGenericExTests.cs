@@ -24,8 +24,8 @@ namespace Kzrnm.Competitive.GlobalNS
         [Fact]
         public void BinaryOkArg()
         {
-            __BinarySearchGenericEx.BinarySearch(-1000000000F, 1F, new FloatFull { th = 0.5F }).Should().Be(-28.802324F);
-            __BinarySearchGenericEx.BinarySearch(-1000000000F, 10F, new FloatFull { th = 0.5F }).Should().Be(-19.802324F);
+            new FloatFull { th = 0.5F }.BinarySearch(-1000000000F, 1F).Should().Be(-28.802324F);
+            new FloatFull { th = 0.5F }.BinarySearch(-1000000000F, 10F).Should().Be(-19.802324F);
         }
     }
 }

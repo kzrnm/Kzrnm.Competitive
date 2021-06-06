@@ -12,7 +12,7 @@ namespace Kzrnm.Competitive
         public static ulong NthRoot(ulong num, long n)
         {
             if (num <= 1 || n == 1) return num;
-            return __BinarySearchEx.BinarySearch(0, num, new Op(num, n));
+            return new Op(num, n).BinarySearch(0, num);
         }
 
         private readonly struct Op : IOk<ulong>
