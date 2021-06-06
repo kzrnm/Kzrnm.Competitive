@@ -31,19 +31,17 @@ namespace Kzrnm.Competitive
                 cur = to[cur];
                 if ((uint)cur >= (uint)to.Length)
                 {
-                    _straight = list.ToArray();
-                    _loop = null;
+                    Straight = list.ToArray();
+                    Loop = null;
                     return;
                 }
             }
             var ix = used[cur] - 1;
-            _straight = list.AsSpan()[..ix].ToArray();
-            _loop = list.AsSpan()[ix..].ToArray();
+            Straight = list.AsSpan()[..ix].ToArray();
+            Loop = list.AsSpan()[ix..].ToArray();
         }
-        internal readonly int[] _straight;
-        internal readonly int[] _loop;
-        public int StraightSize => _straight.Length;
-        public int LoopSize => _loop.Length;
+        public readonly int[] Straight;
+        public readonly int[] Loop;
 
         /// <summary>
         /// <para><paramref name="moveNum"/>: 移動回数</para>
@@ -60,11 +58,11 @@ namespace Kzrnm.Competitive
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Move(ulong moveNum)
         {
-            if (moveNum < (ulong)_straight.Length)
-                return _straight[(int)moveNum];
-            if (_loop == null) return -1;
-            moveNum -= (ulong)_straight.Length;
-            return _loop[(int)(moveNum % (ulong)_loop.Length)];
+            if (moveNum < (ulong)Straight.Length)
+                return Straight[(int)moveNum];
+            if (Loop == null) return -1;
+            moveNum -= (ulong)Straight.Length;
+            return Loop[(int)(moveNum % (ulong)Loop.Length)];
         }
         /// <summary>
         /// <para><paramref name="moveNum"/>: 移動回数</para>
@@ -74,11 +72,11 @@ namespace Kzrnm.Competitive
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int Move(BigInteger moveNum)
         {
-            if (moveNum < _straight.Length)
-                return _straight[(int)moveNum];
-            if (_loop == null) return -1;
-            moveNum -= _straight.Length;
-            return _loop[(int)(moveNum % _loop.Length)];
+            if (moveNum < Straight.Length)
+                return Straight[(int)moveNum];
+            if (Loop == null) return -1;
+            moveNum -= Straight.Length;
+            return Loop[(int)(moveNum % Loop.Length)];
         }
     }
 }
