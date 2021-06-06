@@ -32,7 +32,7 @@ namespace Kzrnm.Competitive
                 if ((uint)cur >= (uint)to.Length)
                 {
                     Straight = list.ToArray();
-                    Loop = null;
+                    Loop = Array.Empty<int>();
                     return;
                 }
             }
@@ -60,7 +60,7 @@ namespace Kzrnm.Competitive
         {
             if (moveNum < (ulong)Straight.Length)
                 return Straight[(int)moveNum];
-            if (Loop == null) return -1;
+            if (Loop.Length == 0) return -1;
             moveNum -= (ulong)Straight.Length;
             return Loop[(int)(moveNum % (ulong)Loop.Length)];
         }
@@ -74,7 +74,7 @@ namespace Kzrnm.Competitive
         {
             if (moveNum < Straight.Length)
                 return Straight[(int)moveNum];
-            if (Loop == null) return -1;
+            if (Loop.Length == 0) return -1;
             moveNum -= Straight.Length;
             return Loop[(int)(moveNum % Loop.Length)];
         }
