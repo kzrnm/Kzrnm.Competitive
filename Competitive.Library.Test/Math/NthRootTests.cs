@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Kzrnm.Competitive.MathNS
 {
-    public class ULongNthRootTests
+    public class NthRootTests
     {
         [Theory]
         [InlineData(1, 1, 1)]
@@ -20,7 +20,7 @@ namespace Kzrnm.Competitive.MathNS
         [InlineData(18446744073709551615, 63, 2)]
         [InlineData(18446744073709551615, 64, 1)]
         [InlineData(1796495231553, 3, 12156)]
-        public void NthRoot(ulong num, long n, ulong expected)
-            => IntegerRoots.NthRoot(num, n).Should().Be(expected);
+        public void IntegerRoot(ulong num, long n, ulong expected)
+            => NthRoots.IntegerRoot(num, n).Should().Be(expected);
     }
 }

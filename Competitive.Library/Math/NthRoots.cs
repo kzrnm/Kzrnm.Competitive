@@ -4,12 +4,12 @@ using System.Text;
 
 namespace Kzrnm.Competitive
 {
-    public class IntegerRoots
+    public static class NthRoots
     {
         /// <summary>
         /// <paramref name="num"/> の <paramref name="n"/> 乗根を整数に切り捨てた値
         /// </summary>
-        public static ulong NthRoot(ulong num, long n)
+        public static ulong IntegerRoot(ulong num, long n)
         {
             if (num <= 1 || n == 1) return num;
             return new Op(num, n).BinarySearch(0, num);

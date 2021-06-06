@@ -13,7 +13,7 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
             {
                 ulong a = cr;
                 int k = cr;
-                cw.WriteLine(IntegerRoots.NthRoot(a, k));
+                cw.WriteLine(NthRoots.IntegerRoot(a, k));
             }
         }
     }
