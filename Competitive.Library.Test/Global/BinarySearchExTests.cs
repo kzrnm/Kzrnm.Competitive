@@ -123,26 +123,5 @@ namespace Kzrnm.Competitive.GlobalNS
             __BinarySearchEx.BinarySearch(-1000000000, 1, new DelegateOk<double>(num => num < .5), 1).Should().Be(0.06867742445319891);
             __BinarySearchEx.BinarySearch(-1000000000, 10, new DelegateOk<double>(num => num < .5), 1).Should().Be(-0.24454842321574688);
         }
-
-        private struct FloatFull : IBinaryOk<float>
-        {
-            public float th;
-            public bool Continue(float ok, float ng) => Math.Abs(ok - ng) > 50;
-            public float Mid(float ok, float ng) => (ok + ng) / 2;
-
-            public bool Ok(float value) => value < th;
-        }
-        [Fact]
-        public void BinaryOkDefault()
-        {
-            __BinarySearchEx.BinarySearch<float, FloatFull>(-1000000000F, 0F).Should().Be(-29.802322F);
-            __BinarySearchEx.BinarySearch<float, FloatFull>(-1000000000F, 10F).Should().Be(-19.802324F);
-        }
-        [Fact]
-        public void BinaryOkArg()
-        {
-            __BinarySearchEx.BinarySearch(-1000000000F, 1F, new FloatFull { th = 0.5F }).Should().Be(-28.802324F);
-            __BinarySearchEx.BinarySearch(-1000000000F, 10F, new FloatFull { th = 0.5F }).Should().Be(-19.802324F);
-        }
     }
 }

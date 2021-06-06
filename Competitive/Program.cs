@@ -15,6 +15,7 @@ using static System.Math;
 using static Kzrnm.Competitive.BitOperationsEx;
 using static Kzrnm.Competitive.Global;
 using static Kzrnm.Competitive.MathLibEx;
+using static Kzrnm.Competitive.__BinarySearchGenericEx;
 using static Kzrnm.Competitive.__BinarySearchEx;
 using static Program;
 #endregion

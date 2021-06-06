@@ -263,33 +263,6 @@ namespace Kzrnm.Competitive
             return ok;
         }
 
-        /// <summary>
-        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <typeparamref name="TOp"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約: <typeparamref name="TOp"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<typeparamref name="TOp"/>.Ok(<paramref name="ng"/>)</para>
-        /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
-        /// </remarks>
-        public static T BinarySearch<T, TOp>(T ok, T ng) where TOp : IBinaryOk<T>
-            => BinarySearch(ok, ng, default(TOp));
-        /// <summary>
-        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <paramref name="op"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約: <paramref name="op"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<paramref name="op"/>.Ok(<paramref name="ng"/>)</para>
-        /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
-        /// </remarks>
-        public static T BinarySearch<T, TOp>(T ok, T ng, TOp op) where TOp : IBinaryOk<T>
-        {
-            while (op.Continue(ok, ng))
-            {
-                var m = op.Mid(ok, ng);
-                if (op.Ok(m)) ok = m;
-                else ng = m;
-            }
-            return ok;
-        }
-
         //#pragma warning disable CA1031
         //        private static bool NgOrThrow<T>(IOk<T> op, T val) { try { return !op.Ok(val); } catch { return true; } }
         //#pragma warning restore CA1031
@@ -303,31 +276,10 @@ namespace Kzrnm.Competitive
             }
             public bool Ok(T value) => ok(value);
         }
-        private readonly struct FuncBinaryOk<T> : IBinaryOk<T>
-        {
-            readonly Func<T, bool> ok;
-            readonly Func<T, T, T> mid;
-            readonly Func<T, T, bool> continueFunc;
-            public FuncBinaryOk(Func<T, bool> ok, Func<T, T, T> mid, Func<T, T, bool> continueFunc)
-            {
-                this.ok = ok;
-                this.mid = mid;
-                this.continueFunc = continueFunc;
-            }
-            public bool Ok(T value) => ok(value);
-            public T Mid(T ok, T ng) => mid(ok, ng);
-            public bool Continue(T ok, T ng) => continueFunc(ok, ng);
-        }
     }
     [IsOperator]
     public interface IOk<in T>
     {
         bool Ok(T value);
-    }
-    [IsOperator]
-    public interface IBinaryOk<T> : IOk<T>
-    {
-        T Mid(T ok, T ng);
-        bool Continue(T ok, T ng);
     }
 }
