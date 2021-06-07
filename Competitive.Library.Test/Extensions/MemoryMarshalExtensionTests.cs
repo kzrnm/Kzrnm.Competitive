@@ -1,9 +1,8 @@
-﻿using FluentAssertions;
+﻿using AtCoder;
+using FluentAssertions;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using Xunit;
-using AtCoder;
 
 namespace Kzrnm.Competitive.Extension
 {
