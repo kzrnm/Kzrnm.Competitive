@@ -13,6 +13,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <AppDesignerFolder>Settings</AppDesignerFolder>
+    <OutputPath>$(SolutionDir)bin\$(Configuration)</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -21,6 +22,7 @@
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
     <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
   </PropertyGroup>
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' != 'Release'">
     <Exec Command="dotnet $(TargetPath) expand $(ExpandArgs)" />
   </Target>
