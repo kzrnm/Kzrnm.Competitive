@@ -35,6 +35,8 @@ namespace Kzrnm.Competitive
                 cw.WriteLineJoin(grid.data.AsSpan(i * grid.W, grid.W));
         }
     }
+
+    [DebuggerDisplay("{ToStringSplit()})")]
     [DebuggerTypeProxy(typeof(Grid<>.DebugView))]
     public class Grid<T>
     {
@@ -85,10 +87,23 @@ namespace Kzrnm.Competitive
                 return ref DefaultValueReference();
             }
         }
-        public override string ToString()
+        private static string ToStringNoSplit(Grid<char> grid)
+        {
+            var H = grid.H;
+            var W = grid.W;
+            var data = grid.data;
+            var sb = new StringBuilder();
+            for (int h = 0; h + 1 < H; h++)
+            {
+                sb.Append(data.AsSpan(h * W, W));
+                sb.AppendLine();
+            }
+            sb.Append(data.AsSpan((H - 1) * W, W));
+            return sb.ToString();
+        }
+        private string ToStringSplit()
         {
             var sb = new StringBuilder();
-            if (W == 0) return "";
             for (int h = 0; h < H; h++)
             {
                 sb.Append(this[h, 0]);
@@ -101,6 +116,13 @@ namespace Kzrnm.Competitive
                     sb.AppendLine();
             }
             return sb.ToString();
+        }
+        public override string ToString()
+        {
+            if (W == 0) return "";
+            if (typeof(T) == typeof(char))
+                return ToStringNoSplit((Grid<char>)(object)this);
+            return ToStringSplit();
         }
         [MethodImpl(AggressiveInlining)]
         public MoveEnumerator Moves(int h, int w) => new MoveEnumerator(this, h, w);
