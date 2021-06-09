@@ -22,7 +22,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: <paramref name="op"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<paramref name="op"/>.Ok(<paramref name="ng"/>)</para>
         /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
         /// </remarks>
-        public static T BinarySearch<T, TOp>(this TOp op, T ok, T ng) where TOp : struct, IBinaryOk<T>
+        public static T BinarySearch<T, TOp>(TOp op, T ok, T ng) where TOp : struct, IBinaryOk<T>
         {
             while (op.Continue(ok, ng))
             {

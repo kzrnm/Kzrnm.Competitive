@@ -21,11 +21,11 @@ namespace Kzrnm.Competitive.GlobalNS
             __BinarySearchGenericEx.BinarySearch<float, FloatFull>(-1000000000F, 0F).Should().Be(-29.802322F);
             __BinarySearchGenericEx.BinarySearch<float, FloatFull>(-1000000000F, 10F).Should().Be(-19.802324F);
         }
-        [Fact]
-        public void BinaryOkArg()
-        {
-            new FloatFull { th = 0.5F }.BinarySearch(-1000000000F, 1F).Should().Be(-28.802324F);
-            new FloatFull { th = 0.5F }.BinarySearch(-1000000000F, 10F).Should().Be(-19.802324F);
-        }
+        // [Fact]
+        // public void BinaryOkArg()
+        // {
+        //     new FloatFull { th = 0.5F }.BinarySearch(-1000000000F, 1F).Should().Be(-28.802324F);
+        //     new FloatFull { th = 0.5F }.BinarySearch(-1000000000F, 10F).Should().Be(-19.802324F);
+        // }
     }
 }
