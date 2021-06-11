@@ -7,6 +7,7 @@ namespace Kzrnm.Competitive.GlobalNS
 {
     public class BinarySearchGenericExTests
     {
+#pragma warning disable CS0649
         private struct FloatFull : IBinaryOk<float>
         {
             public float th;
