@@ -13,7 +13,7 @@ namespace System
         private class ArrayVal<T> { public T[] arr; }
 #pragma warning restore CS0649
         [MethodImpl(AggressiveInlining)]
-        public static Span<T> AsSpan<T>(this List<T> list, int start = 0) => Unsafe.As<ArrayVal<T>>(list).arr.AsSpan(start, list.Count);
+        public static Span<T> AsSpan<T>(this List<T> list, int start = 0) => Unsafe.As<ArrayVal<T>>(list).arr.AsSpan(start, list.Count - start);
         [MethodImpl(AggressiveInlining)]
         public static Span<TTo> Cast<TFrom, TTo>(this Span<TFrom> span)
             where TFrom : struct
