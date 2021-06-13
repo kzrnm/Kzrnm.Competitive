@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Xunit;
 
-namespace Kzrnm.Competitive.DataStructure.String
+namespace Kzrnm.Competitive.DataStructure
 {
     public class TrieTests
     {
