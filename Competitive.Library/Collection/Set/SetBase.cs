@@ -1,4 +1,5 @@
 ﻿using AtCoder.Internal;
+using Kzrnm.Competitive.SetInternals;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -698,17 +699,6 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             public void Reset() => throw new NotSupportedException();
         }
     }
-    public interface INodeOperator<T, TCmp, Node> : IComparer<TCmp>
-    {
-        IComparer<TCmp> Comparer { get; }
-        Node Create(T item, NodeColor color);
-        T GetValue(Node node);
-        void SetValue(ref Node node, T value);
-        TCmp GetCompareKey(T item);
-        int Compare(T x, T y);
-        int Compare(Node x, Node y);
-        int Compare(TCmp value, Node node);
-    }
     public class SetNodeBase
     {
         internal SetNodeBase(NodeColor color)
@@ -909,17 +899,5 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
         }
         public override string ToString() => $"Size = {Size}";
-    }
-    public enum NodeColor : byte
-    {
-        Black,
-        Red
-    }
-    enum TreeRotation : byte
-    {
-        Left = 1,
-        Right = 2,
-        RightLeft = 3,
-        LeftRight = 4,
     }
 }

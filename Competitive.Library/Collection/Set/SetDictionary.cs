@@ -1,4 +1,4 @@
-﻿using AtCoder.Internal;
+﻿using Kzrnm.Competitive.SetInternals;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
