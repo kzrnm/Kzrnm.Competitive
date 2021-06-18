@@ -21,7 +21,7 @@ namespace Kzrnm.Competitive
             var res = new SimpleList<(int from, TEdge edge)>(graph.Length - 1);
             sumi[root] = true;
             foreach (var e in graph[root].Children)
-                pq.Add(e, root);
+                pq.Enqueue(e, root);
             var sumiCnt = 1;
             while (sumiCnt < sumi.Length && pq.TryDequeue(out var edge, out var from))
             {
@@ -31,7 +31,7 @@ namespace Kzrnm.Competitive
                 res.Add((from, edge));
                 foreach (var e in graph[edge.To].Children)
                     if (!sumi[e.To])
-                        pq.Add(e, edge.To);
+                        pq.Enqueue(e, edge.To);
             }
             return res.ToArray();
         }

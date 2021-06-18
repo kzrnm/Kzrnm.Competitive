@@ -23,10 +23,8 @@ namespace Kzrnm.Competitive
 
             var used = new bool[graphArr.Length];
             int count = 0;
-            var remains = new PriorityQueueOp<T, int, TOp>
-            {
-                { default, from }
-            };
+            var remains = new PriorityQueueOp<T, int, TOp>();
+            remains.Enqueue(default, from);
 
             while (remains.TryDequeue(out var len, out var ix))
             {
@@ -37,7 +35,7 @@ namespace Kzrnm.Competitive
                 {
                     var nextLength = op.Add(len, e.Value);
                     if (op.GreaterThan(res[e.To], nextLength))
-                        remains.Add(res[e.To] = nextLength, e.To);
+                        remains.Enqueue(res[e.To] = nextLength, e.To);
                 }
             }
             return res;
