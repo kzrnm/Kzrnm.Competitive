@@ -1,5 +1,6 @@
-#region usings
+﻿#region usings
 using AtCoder;
+using AtCoder.Stl;
 using Kzrnm.Competitive;
 using Kzrnm.Competitive.IO;
 using System;
