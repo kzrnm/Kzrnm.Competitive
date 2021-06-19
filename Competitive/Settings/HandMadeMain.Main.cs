@@ -126,6 +126,15 @@ namespace Competitive.Runner
             }
             return arr;
         }
+        static (int, int) Next2(int min, int max, bool sameOk = false, bool sorted = false)
+        {
+            var a = rnd.Next(min, max);
+            var b = rnd.Next(min, max);
+            while (sameOk || a == b) b = rnd.Next(min, max);
+            if (sorted && a > b)
+                (a, b) = (b, a);
+            return (a, b);
+        }
         static string CurrentPath([CallerFilePath] string path = "") => path;
     }
 }
