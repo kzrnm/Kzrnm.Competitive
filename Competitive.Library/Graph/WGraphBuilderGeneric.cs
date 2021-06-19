@@ -118,7 +118,7 @@ namespace Kzrnm.Competitive
         public override int GetHashCode() => HashCode.Combine(this.To, this.Value);
         public static bool operator ==(WEdge<T, S> left, WEdge<T, S> right) => left.Equals(right);
         public static bool operator !=(WEdge<T, S> left, WEdge<T, S> right) => !(left == right);
-        public override string ToString() => (To, Value).ToString();
+        public override string ToString() => $"to:{To}, Value:{Value}, Data:{Data}";
         public WEdge<T, S> Reversed(int from) => new WEdge<T, S>(from, Value, Data);
     }
 }
