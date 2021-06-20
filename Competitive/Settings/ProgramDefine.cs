@@ -24,7 +24,13 @@ public partial class Program
         var sw = cw.StreamWriter;
         int Q = 1;
 #pragma warning disable CS0162 // 到達できないコードが検出されました
-        if (__ManyTestCases) Q = cr;
+        if (__ManyTestCases)
+        {
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.Error.WriteLine("many test cases mode");
+            Console.ResetColor();
+            Q = cr;
+        }
 #pragma warning restore CS0162 // 到達できないコードが検出されました
         for (; Q > 0; Q--)
         {
