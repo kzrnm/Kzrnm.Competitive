@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive
 
             var used = new bool[graphArr.Length];
             int count = 0;
-            var remains = new PriorityQueueOp<T, int, TOp>();
+            var remains = new PriorityQueueDijkstra<T, TOp>(graphArr.Length);
             remains.Enqueue(default, from);
 
             while (remains.TryDequeue(out var len, out var ix))

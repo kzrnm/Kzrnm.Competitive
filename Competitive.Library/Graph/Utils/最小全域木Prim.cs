@@ -16,11 +16,12 @@ namespace Kzrnm.Competitive
             where TNode : IGraphNode<TEdge>
             where TEdge : IWGraphEdge<T>
         {
-            var sumi = new bool[graph.Length];
-            var pq = new PriorityQueueOp<TEdge, int, Comparer<T, TOp, TEdge>>();
-            var res = new SimpleList<(int from, TEdge edge)>(graph.Length - 1);
+            var graphArr = graph.AsArray();
+            var sumi = new bool[graphArr.Length];
+            var pq = new PriorityQueueOp<TEdge, int, Comparer<T, TOp, TEdge>>(graphArr.Length);
+            var res = new SimpleList<(int from, TEdge edge)>(graphArr.Length - 1);
             sumi[root] = true;
-            foreach (var e in graph[root].Children)
+            foreach (var e in graphArr[root].Children)
                 pq.Enqueue(e, root);
             var sumiCnt = 1;
             while (sumiCnt < sumi.Length && pq.TryDequeue(out var edge, out var from))
@@ -29,7 +30,7 @@ namespace Kzrnm.Competitive
                 sumi[edge.To] = true;
                 ++sumiCnt;
                 res.Add((from, edge));
-                foreach (var e in graph[edge.To].Children)
+                foreach (var e in graphArr[edge.To].Children)
                     if (!sumi[e.To])
                         pq.Enqueue(e, edge.To);
             }
