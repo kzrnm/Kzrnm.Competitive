@@ -35,7 +35,7 @@ namespace Kzrnm.Competitive
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class SetInterval<T, TOp>
         : SetBase<(T From, T ToExclusive), T, SetInterval<T, TOp>.Node, SetInterval<T, TOp>.NodeOperator>
-        where TOp : struct, IComparer<T>, IUnaryNumOperator<T>
+        where TOp : struct, IComparer<T>, IUnaryNumOperator<T>, IMinMaxValue<T>
     {
         public SetInterval() : this(default(TOp)) { }
         public SetInterval(IEnumerable<(T From, T ToExclusive)> collection) : this(collection, default(TOp)) { }
@@ -250,6 +250,48 @@ namespace Kzrnm.Competitive
                 if (comparer.Compare(f, toExclusive) >= 0) yield break;
                 yield return (f, t);
             }
+        }
+
+        /// <summary>
+        /// <paramref name="other"/> との和集合に更新します。
+        /// </summary>
+        public void UnionWith(IEnumerable<(T From, T ToExclusive)> other)
+        {
+            foreach (var (f, t) in other)
+                this.Add(f, t);
+        }
+
+        /// <summary>
+        /// <paramref name="other"/> との差集合に更新します。
+        /// </summary>
+        public void ExceptWith(IEnumerable<(T From, T ToExclusive)> other)
+        {
+            foreach (var (f, t) in other)
+                this.Remove(f, t);
+        }
+
+        /// <summary>
+        /// <paramref name="other"/> との積集合に更新します。
+        /// </summary>
+        public void IntersectWith(IEnumerable<(T From, T ToExclusive)> other)
+        {
+            bool isCalled = false;
+            (T From, T ToExclusive) last = default;
+            foreach (var tup in other)
+            {
+                if (isCalled)
+                {
+                    this.Remove(last.ToExclusive, tup.From);
+                }
+                else
+                {
+                    isCalled = true;
+                    this.Remove(comparer.MinValue, tup.From);
+                }
+                last = tup;
+            }
+            if (isCalled)
+                this.Remove(last.ToExclusive, comparer.MaxValue);
         }
 
         public class Node : SetNodeBase

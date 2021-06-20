@@ -492,5 +492,70 @@ namespace Kzrnm.Competitive.Collection
                 (50, 60)});
             set.RangeAll(from, to).Should().Equal(expected);
         }
+
+        [Fact]
+        public void UnionWith()
+        {
+            var set = new SetIntervalInt(new[] {
+                (10, 20),
+                (30, 40),
+                (50, 60),
+                (100, 115)});
+            set.UnionWith(new[] {
+                (7, 12),
+                (22, 25),
+                (40, 75),
+            });
+            set.Should().Equal(
+                (7, 20),
+                (22, 25),
+                (30, 75),
+                (100, 115));
+        }
+
+        [Fact]
+        public void ExceptWith()
+        {
+            var set = new SetIntervalInt(new[] {
+                (-10,-4),
+                (10, 20),
+                (30, 40),
+                (50, 60),
+                (100, 115)});
+            set.ExceptWith(new[] {
+                (-10,-4),
+                (7, 12),
+                (22, 25),
+                (26, 44),
+                (49, 105),
+            });
+            set.Should().Equal(
+                (12, 20),
+                (105, 115));
+        }
+
+        [Fact]
+        public void IntersectWith()
+        {
+            var set = new SetIntervalInt(new[] {
+                (-10,-4),
+                (10, 20),
+                (30, 40),
+                (50, 60),
+                (100, 115)});
+            set.IntersectWith(new[] {
+                (-10,-4),
+                (7, 12),
+                (22, 25),
+                (26, 44),
+                (49, 105),
+            });
+            set.Should().Equal(
+                (-10, -4),
+                (10, 12),
+                (30, 40),
+                (50, 60),
+                (100, 105));
+        }
     }
 }
