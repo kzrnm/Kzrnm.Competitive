@@ -32,7 +32,7 @@ $files = (Get-ChildItem $Directory | Where-Object { $_.Name.Contains("-in") -or 
 
 foreach ($file in $files) {
     $mc = Measure-Command { 
-        $commandRes = (& ../Competitive/bin/$target/netcoreapp3.1/Competitive.exe $file).Trim([char]65279)
+        $commandRes = (& ../bin/$target/netcoreapp3.1/Competitive.exe $file).Trim([char]65279)
     }
 
     if ($Diff) {
