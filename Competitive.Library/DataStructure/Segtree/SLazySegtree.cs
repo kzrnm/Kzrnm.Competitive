@@ -379,6 +379,17 @@ namespace Kzrnm.Competitive
             return 0;
         }
 
+        /// <summary>
+        /// 現在のセグ木の中身を配列にコピーして返します。
+        /// </summary>
+        public TValue[] ToArray()
+        {
+            var data = d;
+            var p = data.Length / 2;
+            for (int i = 0; i < p; i++)
+                Push(i);
+            return data.AsSpan(p, Length).ToArray();
+        }
 
         [DebuggerDisplay("Value = {" + nameof(value) + "}, Lazy = {" + nameof(lazy) + "}", Name = "{" + nameof(key) + ",nq}")]
         private struct DebugItem

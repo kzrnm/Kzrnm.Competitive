@@ -95,5 +95,27 @@ namespace Kzrnm.Competitive.DataStructure
             seg.Prod(2, 3).Should().Be(seg[2..3]).And.Be(-5);
             seg.Prod(2, 4).Should().Be(seg[2..4]).And.Be(0);
         }
+
+
+        [Fact]
+        public void ToArray()
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                var seg = new SLazySegtree<int, int, Starry>(new int[i]);
+                for (int j = 0; j < seg.Length - j; j++)
+                    seg.Apply(j, seg.Length - j, 1);
+                seg.ToArray().Should().Equal(CreateExpected(i));
+            }
+            int[] CreateExpected(int length)
+            {
+                var result = new int[length];
+                for (int i = 0; i < result.Length; i++)
+                {
+                    result[i] = Math.Min(i + 1, length - i);
+                }
+                return result;
+            }
+        }
     }
 }
