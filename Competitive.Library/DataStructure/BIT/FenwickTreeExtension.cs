@@ -1,5 +1,6 @@
-﻿using AtCoder;
-namespace Kzrnm.Competitive
+﻿using Kzrnm.Competitive;
+
+namespace AtCoder.Extension
 {
     public static class FenwickTreeExtension
     {

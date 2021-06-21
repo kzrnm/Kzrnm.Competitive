@@ -1,7 +1,7 @@
 ﻿// Original: https://ei1333.github.io/library/structure/wavelet/wavelet-matrix.cpp.html
 using AtCoder;
 using AtCoder.Internal;
-using AtCoder.Stl;
+using AtCoder.Extension;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
