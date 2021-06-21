@@ -25,7 +25,7 @@ if ($Release) {
     $Build = $true
 }
 if ($Build) {
-    dotnet build -c $target ../Competitive --nologo -v q
+    dotnet build -c $target ../ --nologo -v q
 }
 
 $files = (Get-ChildItem $Directory | Where-Object { $_.Name.Contains("-in") -or $_.Name.Contains(".in") })
