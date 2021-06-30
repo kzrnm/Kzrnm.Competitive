@@ -31,8 +31,13 @@ if ($Build) {
 $files = (Get-ChildItem $Directory | Where-Object { $_.Name.Contains("-in") -or $_.Name.Contains(".in") })
 
 foreach ($file in $files) {
-    $mc = Measure-Command { 
-        $commandRes = (& ../bin/$target/netcoreapp3.1/Competitive.exe $file).Trim([char]65279)
+    try {
+        $mc = Measure-Command { 
+            $commandRes = (& ../bin/$target/netcoreapp3.1/Competitive.exe $file).Trim([char]65279)
+        }
+    }
+    catch {
+        continue
     }
 
     if ($Diff) {
