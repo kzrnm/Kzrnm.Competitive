@@ -34,22 +34,23 @@ namespace Kzrnm.Competitive
                 var len = res[ix];
                 foreach (var e in graphArr[ix].Children)
                 {
+                    var to = e.To;
                     var nextLength = len;
                     if (EqualityComparer<T>.Default.Equals(e.Value, default))
                     {
-                        if (op.GreaterThan(res[e.To], nextLength))
+                        if (op.GreaterThan(res[to], nextLength))
                         {
-                            res[e.To] = nextLength;
-                            remains.AddFirst(e.To);
+                            res[to] = nextLength;
+                            remains.AddFirst(to);
                         }
                     }
                     else
                     {
                         nextLength = op.Increment(nextLength);
-                        if (op.GreaterThan(res[e.To], nextLength))
+                        if (op.GreaterThan(res[to], nextLength))
                         {
-                            res[e.To] = nextLength;
-                            remains.AddLast(e.To);
+                            res[to] = nextLength;
+                            remains.AddLast(to);
                         }
                     }
                 }

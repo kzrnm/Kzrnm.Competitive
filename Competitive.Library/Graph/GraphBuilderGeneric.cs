@@ -32,10 +32,11 @@ namespace Kzrnm.Competitive
                 res[i] = new GraphNode<GraphEdge<T>>(i, roots[i], children[i]);
                 foreach (ref var e in csr.EList.AsSpan(csr.Start[i], csr.Start[i + 1] - csr.Start[i]))
                 {
-                    if (roots[e.To] == null)
-                        roots[e.To] = new GraphEdge<T>[edgeContainer.rootSizes[e.To]];
+                    var to = e.To;
+                    if (roots[to] == null)
+                        roots[to] = new GraphEdge<T>[edgeContainer.rootSizes[to]];
                     children[i][counter[i]++] = e;
-                    roots[e.To][rootCounter[e.To]++] = e.Reversed(i);
+                    roots[to][rootCounter[to]++] = e.Reversed(i);
                 }
             }
             return new SimpleGraph<GraphNode<GraphEdge<T>>, GraphEdge<T>>(res, csr);
@@ -48,10 +49,11 @@ namespace Kzrnm.Competitive
             var children = new SimpleList<GraphEdge<T>>[res.Length];
             foreach (var (from, e) in edgeContainer.edges)
             {
+                var to = e.To;
                 if (children[from] == null) children[from] = new SimpleList<GraphEdge<T>>();
-                if (children[e.To] == null) children[e.To] = new SimpleList<GraphEdge<T>>();
+                if (children[to] == null) children[to] = new SimpleList<GraphEdge<T>>();
                 children[from].Add(e);
-                children[e.To].Add(e.Reversed(from));
+                children[to].Add(e.Reversed(from));
             }
 
             if (edgeContainer.Length == 1)

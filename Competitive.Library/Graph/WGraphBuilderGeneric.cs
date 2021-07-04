@@ -33,10 +33,11 @@ namespace Kzrnm.Competitive
                 res[i] = new WGraphNode<T, WEdge<T, S>>(i, roots[i], children[i]);
                 foreach (ref var e in csr.EList.AsSpan(csr.Start[i], csr.Start[i + 1] - csr.Start[i]))
                 {
-                    if (roots[e.To] == null)
-                        roots[e.To] = new WEdge<T, S>[edgeContainer.rootSizes[e.To]];
+                    var to = e.To;
+                    if (roots[to] == null)
+                        roots[to] = new WEdge<T, S>[edgeContainer.rootSizes[to]];
                     children[i][counter[i]++] = e;
-                    roots[e.To][rootCounter[e.To]++] = e.Reversed(i);
+                    roots[to][rootCounter[to]++] = e.Reversed(i);
                 }
             }
             return new WGraph<T, TOp, WGraphNode<T, WEdge<T, S>>, WEdge<T, S>>(res, csr);
@@ -49,10 +50,11 @@ namespace Kzrnm.Competitive
             var children = new SimpleList<WEdge<T, S>>[res.Length];
             foreach (var (from, e) in edgeContainer.edges)
             {
+                var to = e.To;
                 if (children[from] == null) children[from] = new SimpleList<WEdge<T, S>>();
-                if (children[e.To] == null) children[e.To] = new SimpleList<WEdge<T, S>>();
+                if (children[to] == null) children[to] = new SimpleList<WEdge<T, S>>();
                 children[from].Add(e);
-                children[e.To].Add(e.Reversed(from));
+                children[to].Add(e.Reversed(from));
             }
 
             if (edgeContainer.Length == 1)

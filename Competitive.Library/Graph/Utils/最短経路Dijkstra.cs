@@ -33,9 +33,10 @@ namespace Kzrnm.Competitive
                 if (++count >= graphArr.Length) break;
                 foreach (var e in graphArr[ix].Children)
                 {
+                    var to = e.To;
                     var nextLength = op.Add(len, e.Value);
-                    if (op.GreaterThan(res[e.To], nextLength))
-                        remains.Enqueue(res[e.To] = nextLength, e.To);
+                    if (op.GreaterThan(res[to], nextLength))
+                        remains.Enqueue(res[to] = nextLength, to);
                 }
             }
             return res;

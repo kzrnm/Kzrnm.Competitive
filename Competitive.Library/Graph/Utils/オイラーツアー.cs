@@ -65,9 +65,10 @@ namespace Kzrnm.Competitive
                     events[nodes[index].l = cnt++] = nodeEvents[index];
                 if (ci < children.Length)
                 {
-                    nodeEvents[children[ci].To] = new Event(index, children[ci], true);
+                    var to = children[ci].To;
+                    nodeEvents[to] = new Event(index, children[ci], true);
                     idx.Push((index, ci + 1));
-                    idx.Push((children[ci].To, 0));
+                    idx.Push((to, 0));
                 }
                 else
                     events[nodes[index].r = cnt++] = nodeEvents[index].Reverse();

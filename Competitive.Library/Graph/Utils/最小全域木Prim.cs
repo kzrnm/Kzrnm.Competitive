@@ -26,13 +26,14 @@ namespace Kzrnm.Competitive
             var sumiCnt = 1;
             while (sumiCnt < sumi.Length && pq.TryDequeue(out var edge, out var from))
             {
-                if (sumi[edge.To]) continue;
-                sumi[edge.To] = true;
+                var to = edge.To;
+                if (sumi[to]) continue;
+                sumi[to] = true;
                 ++sumiCnt;
                 res.Add((from, edge));
-                foreach (var e in graphArr[edge.To].Children)
+                foreach (var e in graphArr[to].Children)
                     if (!sumi[e.To])
-                        pq.Enqueue(e, edge.To);
+                        pq.Enqueue(e, to);
             }
             return res.ToArray();
         }

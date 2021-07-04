@@ -25,10 +25,11 @@ namespace Kzrnm.Competitive
                 foreach (var node in graphArr)
                     foreach (var e in node.Children)
                     {
+                        var to = e.To;
                         var x = op.Add(res[node.Index], e.Value);
-                        if (op.GreaterThan(res[e.To], x))
+                        if (op.GreaterThan(res[to], x))
                         {
-                            res[e.To] = x;
+                            res[to] = x;
                             if (i == graphArr.Length)
                                 throw new InvalidOperationException("負の閉路");
                         }
