@@ -7,8 +7,19 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+
+if (-not (Test-Path "$PSScriptRoot\DLL\AngleSharp.dll")) {
+    $guid = [guid]::NewGuid().Guid
+    $angleSharpNupkg = "$env:TMP/AngleSharp.$guid.nupkg"
+    Invoke-WebRequest "https://www.nuget.org/api/v2/package/AngleSharp/0.16.0" -OutFile $angleSharpNupkg
+    $angleSharpDir = "$env:TMP/AngleSharp.$guid"
+    mkdir $angleSharpDir, "$PSScriptRoot\DLL\" -Force
+    Expand-Archive $angleSharpNupkg -DestinationPath $angleSharpDir
+    Copy-Item "$angleSharpDir/lib/netstandard2.0/*.dll" -Destination "$PSScriptRoot\DLL\"
+    return
+}
+
 Add-Type -Path "$PSScriptRoot\DLL\AngleSharp.dll"
-Add-Type -AssemblyName System.Windows.Forms
 function Get-Parsed-AtCoder {
     $CookieFile = "$PSScriptRoot\cookie.txt"
     $Cookie = Get-Content $CookieFile
