@@ -1,0 +1,33 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "description": "設定ファイル",
+    "type": "object",
+    "required": [
+        "Project",
+        "CookieFile"
+    ],
+    "properties": {
+        "CookieFile": {
+            "type": "string",
+            "description": "Cookieファイル"
+        },
+        "Project": {
+            "type": "object",
+            "description": "C# プロジェクトに関する設定",
+            "required": [
+                "ProgramPath",
+                "InOutPath"
+            ],
+            "properties": {
+                "ProgramPath": {
+                    "type": "string",
+                    "description": "Program.csのパス"
+                },
+                "InOutPath": {
+                    "type": "string",
+                    "description": "テスト用のInOut.resxのパス"
+                }
+            }
+        }
+    }
+}

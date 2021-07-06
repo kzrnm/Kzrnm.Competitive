@@ -8,21 +8,31 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-if (-not (Test-Path "$PSScriptRoot\DLL\AngleSharp.dll")) {
-    $guid = [guid]::NewGuid().Guid
-    $angleSharpNupkg = "$env:TMP/AngleSharp.$guid.nupkg"
-    Invoke-WebRequest "https://www.nuget.org/api/v2/package/AngleSharp/0.16.0" -OutFile $angleSharpNupkg
-    $angleSharpDir = "$env:TMP/AngleSharp.$guid"
-    mkdir $angleSharpDir, "$PSScriptRoot\DLL\" -Force
-    Expand-Archive $angleSharpNupkg -DestinationPath $angleSharpDir
-    Copy-Item "$angleSharpDir/lib/netstandard2.0/*.dll" -Destination "$PSScriptRoot\DLL\"
-    return
+if (-not (Test-Path "$PSScriptRoot/config.json")) {
+    throw "Requied: $PSScriptRoot/config.json"
 }
 
-Add-Type -Path "$PSScriptRoot\DLL\AngleSharp.dll"
+$config = (Get-Content "$PSScriptRoot/config.json" | ConvertFrom-Json)
+
+function loadingDll {
+    $dllPath = "$PSScriptRoot\DLL"
+    if (-not (Test-Path "$dllPath\AngleSharp.dll")) {
+        $guid = [guid]::NewGuid().Guid
+        $angleSharpNupkg = "$env:TMP/AngleSharp.$guid.nupkg"
+        Invoke-WebRequest "https://www.nuget.org/api/v2/package/AngleSharp/0.16.0" -OutFile $angleSharpNupkg
+        $angleSharpDir = "$env:TMP/AngleSharp.$guid"
+        mkdir $angleSharpDir, "$dllPath\" -Force
+        Expand-Archive $angleSharpNupkg -DestinationPath $angleSharpDir
+        Copy-Item "$angleSharpDir/lib/netstandard2.0/*.dll" -Destination "$dllPath\"
+    }
+    
+    Add-Type -Path "$dllPath\AngleSharp.dll"
+    Add-Type -AssemblyName System.Windows.Forms
+}
+loadingDll
+
 function Get-Parsed-AtCoder {
-    $CookieFile = "$PSScriptRoot\cookie.txt"
-    $Cookie = Get-Content $CookieFile
+    $Cookie = (Get-Content $config.CookieFile)
     try {
         [string]$html = (Invoke-WebRequest -Uri $Url -Headers @{"Cookie" = $Cookie; }).Content
         return [AngleSharp.Html.Parser.HtmlParser]::new().ParseDocument($html)
@@ -71,7 +81,7 @@ function Update-InOut {
         $inouts
     )
 
-    $inoutXmlPath = "$PSScriptRoot\..\Competitive.Runner\InOut.resx"
+    $inoutXmlPath = $config.Project.InOutPath
     $writer = [System.Resources.ResXResourceWriter]::new($inoutXmlPath)
     try {
         for ($i = 0; $i -lt 6; $i++) {
@@ -289,7 +299,7 @@ function Update-Input {
     $modInt = (Get-ModInt $document)
 
     $indent = "    "
-    $mainPath = "$PSScriptRoot\..\Competitive\Program.cs"
+    $mainPath = $config.Project.ProgramPath
     $main = (Get-Content $mainPath -Raw)
     if ($modInt) {
         $main = ($main -replace 'using ModInt = [^;]+;', "using ModInt = AtCoder.StaticModInt<AtCoder.Mod$modInt>;")
@@ -308,7 +318,6 @@ function Main {
     $document = (Get-Parsed-AtCoder)
     Update-InOut (Get-InOut $document)
     Update-Input $document
-    # dotnet-format.exe -f "$PSScriptRoot\..\Competitive"
 }
 
 Main
