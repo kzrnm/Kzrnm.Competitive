@@ -1,19 +1,9 @@
 using namespace System.Collections.Generic;
-
-param(
-    [Parameter(Mandatory = $true)]
-    [string]
-    $Url
-)
-
-$ErrorActionPreference = "Stop"
-
 if (-not (Test-Path "$PSScriptRoot/config.json")) {
     throw "Requied: $PSScriptRoot/config.json"
 }
-
 $config = (Get-Content "$PSScriptRoot/config.json" | ConvertFrom-Json)
-
+$AtCoderStreakPath = $config.AtCoderStreakPath
 function loadingDll {
     $dllPath = "$PSScriptRoot\DLL"
     if (-not (Test-Path "$dllPath\AngleSharp.dll")) {
@@ -25,12 +15,13 @@ function loadingDll {
         Expand-Archive $angleSharpNupkg -DestinationPath $angleSharpDir
         Copy-Item "$angleSharpDir/lib/netstandard2.0/*.dll" -Destination "$dllPath\"
     }
-    
+
     Add-Type -Path "$dllPath\AngleSharp.dll"
     Add-Type -AssemblyName System.Windows.Forms
 }
 loadingDll
 
+#region Parse AtCoder
 function Get-Parsed-AtCoder {
     $Cookie = (Get-Content $config.CookieFile)
     try {
@@ -49,7 +40,7 @@ function Get-InOut {
         [AngleSharp.Html.Dom.IHtmlDocument]
         $document
     )
-    
+
     $parts = $document.GetElementById("task-statement").
     GetElementsByClassName("part");
     $inputList = [List[string]]::new()
@@ -58,7 +49,7 @@ function Get-InOut {
     foreach ($part in $parts) {
         $h3 = $part.GetElementsByTagName("h3")[0];
         $list = $null
-    
+
         if ($h3.TextContent -match "入力例 *(\d+)") {
             $list = $inputList;
         }
@@ -185,14 +176,14 @@ function Get-Parsed-Input {
         [AngleSharp.Html.Dom.IHtmlDocument]
         $document
     )
-    
+
     $lines = $document.GetElementById("task-statement").
     GetElementsByClassName("part") |
     Where-Object { $_.GetElementsByTagName("h3")[0].TextContent -like "入*力" } |
-    ForEach-Object { $_.GetElementsByTagName('pre')[0].InnerHtml -split "`n" } 
+    ForEach-Object { $_.GetElementsByTagName('pre')[0].InnerHtml -split "`n" }
     for ($i = 0; $i -lt $lines.Length; $i++) {
-        $line = [string[]](([Xml]"<root>$($lines[$i])</root>").GetElementsByTagName('var') | 
-            ForEach-Object ChildNodes |
+        $line = [string[]](([Xml]"<root>$($lines[$i])</root>").GetElementsByTagName('var') |
+        ForEach-Object ChildNodes |
             ForEach-Object Value)
         if (-not $line) { continue }
         elseif ($line.Count -eq 1) {
@@ -228,7 +219,7 @@ function Get-Parsed-Input {
                     else {
                         [ATArray]::new($ml2[1], $mm2)
                     }
-                } 
+                }
                 elseif ($m2 -notmatch '^\d+$') {
                     # 非数値の添字が来るまで回す
                     $ms = ($line | ForEach-Object { $_ -match '^(.+?)_(.+)$' | Out-Null; $Matches })
@@ -255,13 +246,13 @@ function Get-Parsed-Input {
                 }
                 else {
                     # 添字ありだが1行に1つなら、たぶん配列ということにする
-                    [ATArray]::new($ml[1], $m2) 
+                    [ATArray]::new($ml[1], $m2)
                 }
             }
         }
         else {
             # 添字なし
-            $line | ForEach-Object { [ATVariable]::new($_) } 
+            $line | ForEach-Object { [ATVariable]::new($_) }
         }
     }
 }
@@ -313,11 +304,112 @@ function Update-Input {
     "}" >> $mainPath
 }
 
-function Main {
-    Set-Variable -Name "lastAtCoderUrl" -Value $Url -Scope Global
+function ParseAtCoder {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]
+        $Url
+    )
+
+    Set-Variable -Name "lastAtCoderUrl" -Value $Url -Scope Script
     $document = (Get-Parsed-AtCoder)
     Update-InOut (Get-InOut $document)
     Update-Input $document
 }
+Set-Alias at "ParseAtCoder"
+#endregion Parse AtCoder
 
-Main
+function streak {
+    param (
+        [string]$Url,
+        [Parameter(Mandatory = $false)][System.IO.FileInfo]$File,
+        [Parameter(Mandatory = $false)][int]$langId = 4010,
+        [Parameter(Mandatory = $false)][int]$priority = 0
+    )
+    if (-not $File.Exists) {
+        $file = (Get-ChildItem $config.Project.CombinedPath)
+    }
+    if ($file.Exists) {
+        $filePath = $file.FullName
+        if (-not $Url) {
+            $Url = $lastAtCoderUrl
+        }
+        if (-not $Url) {
+            throw "url is Empty"
+        }
+        & "$AtCoderStreakPath\AtCoderStreak.exe" add -u $Url -l "$langId" -f $filePath -p "$priority"
+    }
+    else {
+        throw "$filePath doesn't Exist"
+    }
+}
+
+function Get-Source {
+    . "$($config.SqliteCommand)" -separator ' ' "$AtCoderStreakPath\data.sqlite" 'SELECT substr(\"    \" || id, -4, 4),taskUrl,priority FROM program ORDER BY priority, id DESC;'
+}
+function Remove-Source {
+    param (
+        [Parameter(Mandatory = $true, Position = 0)][int]$id
+    )
+    . "$($config.SqliteCommand)" "$AtCoderStreakPath\data.sqlite" ('DELETE from program where id = ' + $id + ';')
+}
+function Restore-Source {
+    param (
+        [Parameter(Mandatory = $false, Position = 0)][int]$id = -1,
+        [Parameter(Mandatory = $false)][string]$filePath = $null,
+        [Parameter(Mandatory = $false)][string]$url = $null
+    )
+    if (-not $filePath) {
+        $filePath = $config.Project.ProgramPath
+    }
+
+    if ($id -ge 0) {
+        & "$AtCoderStreakPath\AtCoderStreak.exe" restore $id -f $filePath
+    }
+    else {
+        if (-not $url) {
+            $url = $lastAtCoderUrl
+        }
+        if (-not $url) {
+            throw "url and id is Empty"
+        }
+        & "$AtCoderStreakPath\AtCoderStreak.exe" restore -u $url -f $filePath
+    }
+}
+
+function submit-streak {
+    # 6並列
+    & "$AtCoderStreakPath\AtCoderStreak.exe" submit -f -p 6 -c "$($config.CookieFile)"
+}
+
+function submit {
+    param (
+        [string]$url,
+        [string]$filePath,
+        [int]$langId = 4010,
+        [switch]$SilentResult
+    )
+    if (-not $filePath) {
+        $filePath = $config.Project.CombinedPath
+    }
+    if (-not $url) {
+        $url = $lastAtCoderUrl
+    }
+    if (-not $url) {
+        throw "url is Empty"
+    }
+    & "$AtCoderStreakPath\AtCoderStreak.exe" submitfile -l "$langId" -u "$url" -f $filePath -c "$($config.CookieFile)"
+    if (-not $SilentResult) {
+        Start-Process ($url -replace 'tasks/.*', 'submissions/me')
+    }
+}
+
+Export-ModuleMember  -Function @(
+    "streak",
+    "ParseAtCoder",
+    "Get-Source",
+    "Remove-Source",
+    "Restore-Source",
+    "submit-streak",
+    "submit"
+) -Alias "at"

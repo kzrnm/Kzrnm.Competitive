@@ -1,0 +1,1 @@
+Import-Module "$PSScriptRoot\tools\AtCoder.psm1" -Force

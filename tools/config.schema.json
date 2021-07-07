@@ -4,24 +4,35 @@
     "type": "object",
     "required": [
         "Project",
-        "CookieFile"
+        "CookieFile",
+        "SqliteCommand",
+        "AtCoderStreakPath"
     ],
     "properties": {
         "CookieFile": {
             "type": "string",
             "description": "Cookieファイル"
         },
+        "SqliteCommand": {
+            "type": "string",
+            "description": "sqlite3 コマンド"
+        },
         "Project": {
             "type": "object",
             "description": "C# プロジェクトに関する設定",
             "required": [
                 "ProgramPath",
+                "CombinedPath",
                 "InOutPath"
             ],
             "properties": {
                 "ProgramPath": {
                     "type": "string",
                     "description": "Program.csのパス"
+                },
+                "CombinedPath": {
+                    "type": "string",
+                    "description": "提出ファイルのパス"
                 },
                 "InOutPath": {
                     "type": "string",
