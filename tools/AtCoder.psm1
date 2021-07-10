@@ -183,8 +183,9 @@ function Get-Parsed-Input {
     ForEach-Object { $_.GetElementsByTagName('pre')[0].InnerHtml -split "`n" }
     for ($i = 0; $i -lt $lines.Length; $i++) {
         $line = [string[]](([Xml]"<root>$($lines[$i])</root>").GetElementsByTagName('var') |
-        ForEach-Object ChildNodes |
-            ForEach-Object Value)
+            ForEach-Object ChildNodes |
+            ForEach-Object Value |
+            ForEach-Object { $_.Trim() })
         if (-not $line) { continue }
         elseif ($line.Count -eq 1) {
             $line = [string[]]($line[0] -split " *\\hspace\{[^}]*\} *" | Where-Object { $_ })
