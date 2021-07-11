@@ -8,9 +8,9 @@ namespace System.Linq
     {
         public static StaticModInt<T> Sum<T>(this IEnumerable<StaticModInt<T>> source) where T : struct, IStaticMod
         {
-            StaticModInt<T> sum = 0;
-            foreach (var v in source) sum += v;
-            return sum;
+            ulong sum = 0;
+            foreach (var v in source) sum += (ulong)v.Value;
+            return new StaticModInt<T>(sum);
         }
     }
 }
