@@ -107,7 +107,8 @@ namespace Kzrnm.Competitive.DataStructure
                     seg.Apply(j, seg.Length - j, 1);
                 seg.ToArray().Should().Equal(CreateExpected(i));
             }
-            int[] CreateExpected(int length)
+
+            static int[] CreateExpected(int length)
             {
                 var result = new int[length];
                 for (int i = 0; i < result.Length; i++)
