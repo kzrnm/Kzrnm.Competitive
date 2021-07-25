@@ -125,6 +125,12 @@ namespace Kzrnm.Competitive
             return ToStringSplit();
         }
         [MethodImpl(AggressiveInlining)]
+        public MoveEnumerator Moves(int index)
+        {
+            var (h, w) = FromIndex(index);
+            return new MoveEnumerator(this, h, w);
+        }
+        [MethodImpl(AggressiveInlining)]
         public MoveEnumerator Moves(int h, int w) => new MoveEnumerator(this, h, w);
         public struct MoveEnumerator : IEnumerator<(int h, int w)>, IEnumerable<(int h, int w)>
         {
