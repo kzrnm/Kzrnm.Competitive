@@ -1,5 +1,6 @@
 ﻿using AtCoder;
 using AtCoder.Internal;
+using AtCoder.Operators;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -22,7 +23,7 @@ namespace Kzrnm.Competitive
     /// </summary>
     [DebuggerTypeProxy(typeof(FenwickTreeRange<,,>.DebugView))]
     public class FenwickTreeRange<T, TOp, TCast>
-        where TOp : struct, IAdditionOperator<T>, IMultiplicationOperator<T>, IUnaryNumOperator<T>
+        where TOp : struct, IAdditionOperator<T>, ISubtractOperator<T>, IMultiplicationOperator<T>, IUnaryNumOperator<T>
         where TCast : struct, ICastOperator<int, T>
     {
         private static readonly TCast cast = default;

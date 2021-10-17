@@ -1,11 +1,13 @@
 ﻿using AtCoder;
+using AtCoder.Operators;
+
 namespace Kzrnm.Competitive
 {
     /// <summary>
     /// 二次元累積和を求めます。
     /// </summary>
     public class Sums2D<TValue, TOp>
-        where TOp : struct, IAdditionOperator<TValue>
+        where TOp : struct, IAdditionOperator<TValue>, ISubtractOperator<TValue>
     {
         private static readonly TOp op = default;
         private readonly TValue[][] impl;

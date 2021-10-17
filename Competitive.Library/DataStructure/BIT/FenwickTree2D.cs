@@ -1,5 +1,6 @@
 ﻿using AtCoder;
 using AtCoder.Internal;
+using AtCoder.Operators;
 using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
@@ -21,7 +22,7 @@ namespace Kzrnm.Competitive
     /// <typeparam name="T">配列要素の型</typeparam>
     /// <typeparam name="TOp">配列要素の操作を表す型</typeparam>
     public class FenwickTree2D<T, TOp>
-        where TOp : struct, IAdditionOperator<T>
+        where TOp : struct, IAdditionOperator<T>, ISubtractOperator<T>
     {
         private static readonly TOp op = default;
 

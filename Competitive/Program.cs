@@ -29,8 +29,10 @@ partial class Program
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     private object Calc()
     {
-        int N = cr;
-
+        N = cr;
+        AB = cr.Repeat(N).Select<(int A, int B)>(cr => (cr, cr));
         return null;
     }
+    public static int N;
+    public static (int A, int B)[] AB;
 }

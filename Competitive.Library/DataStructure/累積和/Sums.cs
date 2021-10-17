@@ -1,4 +1,5 @@
 ﻿using AtCoder;
+using AtCoder.Operators;
 using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
@@ -7,7 +8,7 @@ namespace Kzrnm.Competitive
     /// 累積和を求めます。
     /// </summary>
     public class Sums<TValue, TOp>
-        where TOp : struct, IAdditionOperator<TValue>
+        where TOp : struct, IAdditionOperator<TValue>, ISubtractOperator<TValue>
     {
         private static readonly TOp op = default;
         private readonly TValue[] impl;

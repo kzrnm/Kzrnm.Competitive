@@ -16,7 +16,7 @@ namespace Embedding
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Global));
             embedded.AssemblyMetadatas
                 .Should().ContainKey("SourceExpander.EmbeddedLanguageVersion")
-                .WhichValue.Should().Be("8.0");
+                .WhoseValue.Should().Be("8.0");
         }
 
         [Fact]

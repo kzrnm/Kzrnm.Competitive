@@ -1,4 +1,5 @@
 ﻿using AtCoder;
+using AtCoder.Operators;
 using System;
 
 namespace Kzrnm.Competitive

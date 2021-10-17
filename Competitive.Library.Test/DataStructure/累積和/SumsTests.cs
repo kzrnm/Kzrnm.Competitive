@@ -1,4 +1,5 @@
 ﻿using AtCoder;
+using AtCoder.Operators;
 using FluentAssertions;
 using System;
 using System.Linq;
@@ -72,7 +73,7 @@ namespace Kzrnm.Competitive.DataStructure
             public bool IsPrime => false;
         }
 
-        struct Op : IAdditionOperator<(int x, int y)>
+        struct Op : IAdditionOperator<(int x, int y)>, ISubtractOperator<(int x, int y)>
         {
             public (int x, int y) Add((int x, int y) x, (int x, int y) y) => (x.x + y.x, x.y + y.y);
             public (int x, int y) Subtract((int x, int y) x, (int x, int y) y) => (x.x - y.x, x.y - y.y);

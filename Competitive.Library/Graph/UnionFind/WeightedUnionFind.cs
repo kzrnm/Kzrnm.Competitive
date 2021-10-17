@@ -1,12 +1,13 @@
 ﻿using AtCoder;
 using AtCoder.Internal;
+using AtCoder.Operators;
 using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
     public class IntWeightedUnionFind : WeightedUnionFind<int, IntOperator> { public IntWeightedUnionFind(int n) : base(n) { } }
     public class LongWeightedUnionFind : WeightedUnionFind<long, LongOperator> { public LongWeightedUnionFind(int n) : base(n) { } }
-    public class WeightedUnionFind<T, TOp> where TOp : struct, IAdditionOperator<T>, IUnaryNumOperator<T>
+    public class WeightedUnionFind<T, TOp> where TOp : struct, IAdditionOperator<T>, ISubtractOperator<T>, IUnaryNumOperator<T>
     {
         private static TOp op = default;
         internal readonly int _n;

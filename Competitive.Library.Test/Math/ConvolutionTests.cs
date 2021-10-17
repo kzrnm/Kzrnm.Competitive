@@ -30,18 +30,18 @@ namespace Kzrnm.Competitive.MathNS
             return c.Select(n => (uint)n).ToArray();
         }
 
-        public static TheoryData EmptyIntTestData = new TheoryData<int[], int[], int[]>
+        public static TheoryData EmptyIntTestData = new TheoryData<int[], int[], uint[]>
         {
-            { Array.Empty<int>(), Array.Empty<int>(), Array.Empty<int>() },
-            { Array.Empty<int>(), new int[]{ 1, 2 }, Array.Empty<int>() },
-            { new int[]{ 1, 2 }, Array.Empty<int>(), Array.Empty<int>() },
-            { new int[]{ 1 }, Array.Empty<int>(), Array.Empty<int>() },
+            { Array.Empty<int>(), Array.Empty<int>(), Array.Empty<uint>() },
+            { Array.Empty<int>(), new int[]{ 1, 2 }, Array.Empty<uint>() },
+            { new int[]{ 1, 2 }, Array.Empty<int>(), Array.Empty<uint>() },
+            { new int[]{ 1 }, Array.Empty<int>(), Array.Empty<uint>() },
         };
 
         [Theory]
         [Trait("Category", "Empty")]
         [MemberData(nameof(EmptyIntTestData))]
-        public void EmptyInt(int[] a, int[] b, int[] expected)
+        public void EmptyInt(int[] a, int[] b, uint[] expected)
         {
             for (int i = 2; i < 10; i++)
                 ConvolutionAnyMod.Convolution(a, b, i).Should().Equal(expected);

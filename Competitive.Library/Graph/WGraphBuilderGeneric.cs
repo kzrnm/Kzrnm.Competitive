@@ -1,6 +1,7 @@
 ﻿#pragma warning disable CA1819 // Properties should not return arrays
 using AtCoder;
 using AtCoder.Internal;
+using AtCoder.Operators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
