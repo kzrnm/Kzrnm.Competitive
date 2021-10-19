@@ -118,6 +118,11 @@ namespace Kzrnm.Competitive
         public static bool operator ==(WEdge<T> left, WEdge<T> right) => left.Equals(right);
         public static bool operator !=(WEdge<T> left, WEdge<T> right) => !(left == right);
         public override string ToString() => (To, Value).ToString();
+        public void Deconstruct(out int to, out T value)
+        {
+            to = To;
+            value = Value;
+        }
         public WEdge<T> Reversed(int from) => new WEdge<T>(from, Value);
     }
 }

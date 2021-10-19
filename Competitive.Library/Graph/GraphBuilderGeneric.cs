@@ -110,6 +110,11 @@ namespace Kzrnm.Competitive
         public T Data { get; }
         public int To { get; }
         public override string ToString() => $"to:{To}, Data:{Data}";
+        public void Deconstruct(out int to, out T data)
+        {
+            to = To;
+            data = Data;
+        }
         public GraphEdge<T> Reversed(int from) => new GraphEdge<T>(from, Data);
 
         public override int GetHashCode() => this.To;
