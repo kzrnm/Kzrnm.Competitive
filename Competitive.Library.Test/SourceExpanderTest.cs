@@ -1,5 +1,4 @@
-﻿#if !LIBRARY
-using FluentAssertions;
+﻿using FluentAssertions;
 using Kzrnm.Competitive;
 using SourceExpander;
 using System.Linq;
@@ -37,4 +36,3 @@ namespace Embedding
         }
     }
 }
-#endif
