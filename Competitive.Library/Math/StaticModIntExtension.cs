@@ -12,5 +12,17 @@ namespace System.Linq
             foreach (var v in source) sum += (ulong)v.Value;
             return new StaticModInt<T>(sum);
         }
+        public static StaticModInt<T> Sum<T>(this ReadOnlySpan<StaticModInt<T>> source) where T : struct, IStaticMod
+        {
+            ulong sum = 0;
+            foreach (var v in source) sum += (ulong)v.Value;
+            return new StaticModInt<T>(sum);
+        }
+        public static StaticModInt<T> Sum<T>(this Span<StaticModInt<T>> source) where T : struct, IStaticMod
+        {
+            ulong sum = 0;
+            foreach (var v in source) sum += (ulong)v.Value;
+            return new StaticModInt<T>(sum);
+        }
     }
 }
