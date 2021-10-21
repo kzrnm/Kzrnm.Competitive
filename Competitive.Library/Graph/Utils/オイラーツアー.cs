@@ -18,6 +18,7 @@ namespace Kzrnm.Competitive
                 this.isStart = isStart;
             }
             public Event Reverse() => new Event(root, edge, !isStart);
+            public (int From, int To) Route() => isStart ? (root, edge.To) : (edge.To, root);
             public override string ToString() => $"{root}{(isStart ? '→' : '←')}{edge}";
         }
         /// <summary>
