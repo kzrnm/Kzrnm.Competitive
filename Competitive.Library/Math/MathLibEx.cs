@@ -198,5 +198,13 @@ namespace Kzrnm.Competitive
             }
             return c;
         }
+
+        /// <summary>
+        /// 等差数列の和
+        /// </summary>
+        /// <param name="from">初項</param>
+        /// <param name="to">末項</param>
+        /// <param name="count">項数</param>
+        public static long ArithmeticSeries(long from, long to, long count) => (count * (from + to)) / 2;
     }
 }
