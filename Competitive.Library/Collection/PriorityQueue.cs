@@ -42,5 +42,12 @@ namespace Kzrnm.Competitive
         public static PriorityQueueOp<TKey, TValue, TOp> CreateDictionary<TKey, TValue, TOp>(int capacity, TOp comparer)
             where TOp : IComparer<TKey>
             => new PriorityQueueOp<TKey, TValue, TOp>(capacity, comparer);
+
+        public static bool TryDequeue<TKey, T, TKOp>(this PriorityQueueOp<TKey, (T, T), TKOp> pq, out TKey key, out T Item1, out T Item2) where TKOp : IComparer<TKey>
+        {
+            var result = pq.TryDequeue(out key, out var tuple);
+            (Item1, Item2) = tuple;
+            return result;
+        }
     }
 }
