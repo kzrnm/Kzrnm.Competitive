@@ -9,7 +9,7 @@ namespace Kzrnm.Competitive
     [DebuggerTypeProxy(typeof(Trie<,>.DebugView))]
     public class Trie<TKey, TValue>
     {
-        public Trie() : this(Comparer<TKey>.Default) { }
+        public Trie() : this(null) { }
         public Trie(IComparer<TKey> comparer) { children = new SortedDictionary<TKey, Trie<TKey, TValue>>(comparer); }
 
 
@@ -72,13 +72,36 @@ namespace Kzrnm.Competitive
         public Trie<TKey, TValue> Add(ReadOnlySpan<TKey> key, TValue value)
         {
             var trie = this;
+            if (key.Length == 0)
+            {
+                if (!this.HasValue)
+                {
+                    ++this.Count;
+                }
+                this.Value = value;
+                return this;
+            }
+
+            var updatedTries = new SimpleList<Trie<TKey, TValue>>(key.Length);
             ++trie.Count;
             foreach (var k in key)
             {
                 if (!trie.children.TryGetValue(k, out var child))
+                {
                     child = trie.children[k] = new Trie<TKey, TValue>(trie.children.Comparer);
+                    updatedTries.Clear();
+                }
                 trie = child;
+                updatedTries.Add(trie);
                 ++trie.Count;
+            }
+            if (updatedTries.Count == key.Length && trie.HasValue)
+            {
+                --this.Count;
+                foreach (var trie2 in updatedTries)
+                {
+                    --trie2.Count;
+                }
             }
             trie.Value = value;
             return trie;
@@ -159,13 +182,17 @@ namespace Kzrnm.Competitive
                 list.RemoveLast();
             }
         }
+
+        public IEnumerable<KeyValuePair<TKey[], TValue>> All() => All(new SimpleList<TKey>());
         public void Clear()
         {
             HasValue = false;
             children.Clear();
         }
 
-        public IEnumerable<KeyValuePair<TKey[], TValue>> All() => All(new SimpleList<TKey>());
+        /// <summary>
+        /// <paramref name="key"/> の prefix となる Trie の値を返します。
+        /// </summary>
         public MatchEnumerator MatchGreedy(ReadOnlySpan<TKey> key)
             => new MatchEnumerator(this, key);
         public ref struct MatchEnumerator
@@ -210,8 +237,6 @@ namespace Kzrnm.Competitive
             }
         }
 
-
-
         [DebuggerDisplay("{" + nameof(value) + "}", Name = "{" + nameof(key) + ",nq}")]
         private struct DebugItem
         {
@@ -240,7 +265,7 @@ namespace Kzrnm.Competitive
     public class Trie<T> : Trie<T, bool>
     {
         public Trie() : base() { }
-        public Trie(Comparer<T> comparer) : base(comparer) { }
+        public Trie(IComparer<T> comparer) : base(comparer) { }
         public void Add(ReadOnlySpan<T> key) => Add(key, true);
         public bool Contains(ReadOnlySpan<T> key) => GetChild(key)?.Value == true;
     }
