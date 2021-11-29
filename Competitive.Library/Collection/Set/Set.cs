@@ -33,7 +33,7 @@ namespace Kzrnm.Competitive
 
 
         protected readonly TOp comparer;
-        public class Node : SetNodeBase
+        public class Node : SetNodeBase<Node>
         {
             public T Item;
             internal Node(T item, NodeColor color) : base(color)

@@ -104,7 +104,7 @@ namespace Kzrnm.Competitive
             value = node.Value;
             return true;
         }
-        public class Node : SetNodeBase
+        public class Node : SetNodeBase<Node>
         {
             public TKey Key;
             public TValue Value;

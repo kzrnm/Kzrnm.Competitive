@@ -11,7 +11,6 @@ using System.Runtime.CompilerServices;
 namespace Kzrnm.Competitive
 {
     using static MethodImplOptions;
-    using static SetNodeBase;
     /// <summary>
     /// 半開区間をSetで保持する
     /// </summary>
@@ -127,7 +126,7 @@ namespace Kzrnm.Competitive
                 if (current.Is4Node)
                 {
                     current.Split4Node();
-                    if (IsNonNullRed(parent))
+                    if (parent.IsNonNullRed())
                     {
                         InsertionBalance(current, ref parent, grandParent, greatGrandParent);
                     }
@@ -295,7 +294,7 @@ namespace Kzrnm.Competitive
                 this.Remove(last.ToExclusive, comparer.MaxValue);
         }
 
-        public class Node : SetNodeBase
+        public class Node : SetNodeBase<Node>
         {
             public T From;
             public T ToExclusive;

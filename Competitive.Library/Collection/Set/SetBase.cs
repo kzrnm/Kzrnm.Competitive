@@ -8,15 +8,36 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
-namespace Kzrnm.Competitive
+namespace Kzrnm.Competitive.SetInternals
 {
     using static MethodImplOptions;
-    using static SetNodeBase;
+    public interface INodeOperator<T, TCmp, Node> : IComparer<TCmp>
+    {
+        Node Create(T item, NodeColor color);
+        T GetValue(Node node);
+        void SetValue(ref Node node, T value);
+        TCmp GetCompareKey(T item);
+        int Compare(T x, T y);
+        int Compare(Node x, Node y);
+        int Compare(TCmp value, Node node);
+    }
+    public enum NodeColor : byte
+    {
+        Black,
+        Red
+    }
+    enum TreeRotation : byte
+    {
+        Left = 1,
+        Right = 2,
+        RightLeft = 3,
+        LeftRight = 4,
+    }
 
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public abstract class SetBase<T, TCmp, Node, TOp> : ICollection, ICollection<T>, IReadOnlyCollection<T>
-        where Node : SetNodeBase
+        where Node : SetNodeBase<Node>
         where TOp : struct, INodeOperator<T, TCmp, Node>
     {
         /*
@@ -124,16 +145,16 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         internal Node MinNode()
         {
             if (root == null) return null;
-            SetNodeBase cur = root;
+            var cur = root;
             while (cur.Left != null) { cur = cur.Left; }
-            return Unsafe.As<Node>(cur);
+            return cur;
         }
         internal Node MaxNode()
         {
             if (root == null) return null;
-            SetNodeBase cur = root;
+            var cur = root;
             while (cur.Right != null) { cur = cur.Right; }
-            return Unsafe.As<Node>(cur);
+            return cur;
         }
         public T Min => MinNode() switch { { } n => op.GetValue(n), _ => default(T) };
         public T Max => MaxNode() switch { { } n => op.GetValue(n), _ => default(T) };
@@ -146,16 +167,16 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             {
                 int order = op.Compare(item, current);
                 if (order == 0) return current;
-                current = Unsafe.As<Node>(order < 0 ? current.Left : current.Right);
+                current = order < 0 ? current.Left : current.Right;
             }
             return null;
         }
 
         public int Index(Node node)
         {
-            SetNodeBase _node = node;
+            var _node = node;
             var ret = NodeSize(_node.Left);
-            SetNodeBase prev = _node;
+            var prev = _node;
             _node = _node.Parent;
             while (prev != root)
             {
@@ -171,7 +192,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 
         public Node FindByIndex(int index)
         {
-            SetNodeBase current = root;
+            var current = root;
             var currentIndex = current.Size - NodeSize(current.Right) - 1;
             while (currentIndex != index)
             {
@@ -188,7 +209,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                     currentIndex += NodeSize(current.Left) + 1;
                 }
             }
-            return Unsafe.As<Node>(current);
+            return current;
         }
 
         /// <summary>
@@ -210,14 +231,14 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 {
                     right = current;
                     ri = ci;
-                    current = Unsafe.As<Node>(current.Left);
+                    current = current.Left;
                     if (current != null)
                         ci -= NodeSize(current.Right) + 1;
                     else break;
                 }
                 else
                 {
-                    current = Unsafe.As<Node>(current.Right);
+                    current = current.Right;
                     if (current != null)
                         ci += NodeSize(current.Left) + 1;
                     else break;
@@ -268,7 +289,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 var order = op.Compare(item, current);
                 if (order <= 0)
                 {
-                    current = Unsafe.As<Node>(current.Left);
+                    current = current.Left;
                     if (current != null)
                         ci -= NodeSize(current.Right) + 1;
                     else break;
@@ -277,7 +298,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 {
                     left = current;
                     li = ci;
-                    current = Unsafe.As<Node>(current.Right);
+                    current = current.Right;
                     if (current != null)
                         ci += NodeSize(current.Left) + 1;
                     else break;
@@ -357,7 +378,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 if (current.Is4Node)
                 {
                     current.Split4Node();
-                    if (IsNonNullRed(parent))
+                    if (parent.IsNonNullRed())
                     {
                         InsertionBalance(current, ref parent, grandParent, greatGrandParent);
                     }
@@ -365,7 +386,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 greatGrandParent = grandParent;
                 grandParent = parent;
                 parent = current;
-                current = Unsafe.As<Node>(order < 0 ? current.Left : current.Right);
+                current = order < 0 ? current.Left : current.Right;
             }
             Node node = op.Create(item, NodeColor.Red);
             if (order >= 0) parent.Right = node;
@@ -384,7 +405,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
             else
             {
-                Node sibling = Unsafe.As<Node>(parent.GetSibling(current));
+                var sibling = parent.GetSibling(current);
                 if (sibling.IsRed)
                 {
                     Debug.Assert(parent.IsBlack);
@@ -396,16 +417,16 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                     ReplaceChildOrRoot(grandParent, parent, sibling);
                     grandParent = sibling;
                     if (parent == match) parentOfMatch = sibling;
-                    sibling = Unsafe.As<Node>(parent.GetSibling(current));
+                    sibling = parent.GetSibling(current);
                 }
-                Debug.Assert(IsNonNullBlack(sibling));
+                Debug.Assert(sibling.IsNonNullBlack());
                 if (sibling.Is2Node)
                 {
                     parent.Merge2Nodes();
                 }
                 else
                 {
-                    Node newGrandParent = Unsafe.As<Node>(parent.Rotate(parent.GetRotation(current, sibling)));
+                    Node newGrandParent = parent.Rotate(parent.GetRotation(current, sibling));
                     newGrandParent.Color = parent.Color;
                     parent.ColorBlack();
                     current.ColorRed();
@@ -424,10 +445,10 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         internal void Remove(Node node)
             => RemoveMatch(
                 match: node,
-                parentOfMatch: Unsafe.As<Node>(node.Parent),
+                parentOfMatch: node.Parent,
                 current: node,
-                parent: Unsafe.As<Node>(node.Parent),
-                grandParent: Unsafe.As<Node>(node.Parent?.Parent));
+                parent: node.Parent,
+                grandParent: node.Parent?.Parent);
 
         private void RemoveMatch(Node match, Node parentOfMatch, Node current, Node parent, Node grandParent)
         {
@@ -437,7 +458,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                     Fix2Node(match, ref parentOfMatch, current, parent, grandParent);
                 grandParent = parent;
                 parent = current;
-                current = Unsafe.As<Node>(current != match ? current.Left : current.Right);
+                current = current != match ? current.Left : current.Right;
             }
             if (match != null)
             {
@@ -469,7 +490,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 }
                 grandParent = parent;
                 parent = current;
-                current = Unsafe.As<Node>(order < 0 ? current.Left : current.Right);
+                current = order < 0 ? current.Left : current.Right;
             }
             if (match != null)
             {
@@ -499,7 +520,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             Debug.Assert(grandParent != null);
             bool parentIsOnRight = grandParent.Right == parent;
             bool currentIsOnRight = parent.Right == current;
-            SetNodeBase newChildOfGreatGrandParent;
+            Node newChildOfGreatGrandParent;
             if (parentIsOnRight == currentIsOnRight)
             {
                 newChildOfGreatGrandParent = currentIsOnRight ? grandParent.RotateLeft() : grandParent.RotateRight();
@@ -511,7 +532,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
             grandParent.ColorRed();
             newChildOfGreatGrandParent.ColorBlack();
-            ReplaceChildOrRoot(greatGrandParent, grandParent, Unsafe.As<Node>(newChildOfGreatGrandParent));
+            ReplaceChildOrRoot(greatGrandParent, grandParent, newChildOfGreatGrandParent);
 
         }
         protected void ReplaceChildOrRoot(Node parent, Node child, Node newChild)
@@ -530,7 +551,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             if (successor == match)
             {
                 Debug.Assert(match.Right == null);
-                successor = Unsafe.As<Node>(match.Left);
+                successor = match.Left;
             }
             else
             {
@@ -560,7 +581,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         public int Count => NodeSize(root);
 
         [MethodImpl(AggressiveInlining)]
-        internal static int NodeSize(SetNodeBase node) => node == null ? 0 : node.Size;
+        internal static int NodeSize(Node node) => node == null ? 0 : node.Size;
 
 
         public ValueEnumerator GetEnumerator() => new ValueEnumerator(this);
@@ -571,7 +592,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         public struct Enumerator : IEnumerator<Node>
         {
             internal readonly SetBase<T, TCmp, Node, TOp> tree;
-            readonly Stack<SetNodeBase> stack;
+            readonly Stack<Node> stack;
             Node current;
 
             readonly bool reverse;
@@ -579,7 +600,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             internal Enumerator(SetBase<T, TCmp, Node, TOp> set, bool reverse, Node startNode)
             {
                 tree = set;
-                stack = new Stack<SetNodeBase>(2 * Log2(tree.Count + 1));
+                stack = new Stack<Node>(2 * Log2(tree.Count + 1));
                 current = null;
                 this.reverse = reverse;
                 if (startNode == null) IntializeAll();
@@ -588,7 +609,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
             void IntializeAll()
             {
-                SetNodeBase node = tree.root;
+                var node = tree.root;
                 while (node != null)
                 {
                     var next = reverse ? node.Right : node.Left;
@@ -606,9 +627,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 list.Reverse();
                 foreach (var n in list) stack.Push(n);
             }
-            SimpleList<SetNodeBase> InitializeNormal(SetNodeBase node)
+            SimpleList<Node> InitializeNormal(Node node)
             {
-                var list = new SimpleList<SetNodeBase>(2 * Log2(tree.Count + 1));
+                var list = new SimpleList<Node>(2 * Log2(tree.Count + 1));
 
                 while (node != null)
                 {
@@ -628,9 +649,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 }
                 return list;
             }
-            SimpleList<SetNodeBase> InitializeReverse(SetNodeBase node)
+            SimpleList<Node> InitializeReverse(Node node)
             {
-                var list = new SimpleList<SetNodeBase>(2 * Log2(tree.Count + 1));
+                var list = new SimpleList<Node>(2 * Log2(tree.Count + 1));
 
                 while (node != null)
                 {
@@ -664,7 +685,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                     current = null;
                     return false;
                 }
-                current = Unsafe.As<Node>(stack.Pop());
+                current = stack.Pop();
                 var node = reverse ? current.Left : current.Right;
                 while (node != null)
                 {
@@ -699,15 +720,28 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             public void Reset() => throw new NotSupportedException();
         }
     }
-    public class SetNodeBase
+    public static class SetNodeBaseExt
+    {
+        [MethodImpl(AggressiveInlining)]
+        public static bool IsNonNullBlack<TNode>(this TNode node) where TNode : SetNodeBase<TNode> => node != null && node.IsBlack;
+
+        [MethodImpl(AggressiveInlining)]
+        public static bool IsNonNullRed<TNode>(this TNode node) where TNode : SetNodeBase<TNode> => node != null && node.IsRed;
+
+        [MethodImpl(AggressiveInlining)]
+        public static bool IsNullOrBlack<TNode>(this TNode node) where TNode : SetNodeBase<TNode> => node == null || node.IsBlack;
+    }
+    public class SetNodeBase<TNode> where TNode : SetNodeBase<TNode>
     {
         internal SetNodeBase(NodeColor color)
         {
+            Contract.Assert(this.GetType() == typeof(TNode));
             this.Color = color;
         }
-        public SetNodeBase Parent { get; internal set; }
-        SetNodeBase _left;
-        public SetNodeBase Left
+        private TNode AsGeneric => Unsafe.As<TNode>(this);
+        public TNode Parent { get; internal set; }
+        TNode _left;
+        public TNode Left
         {
             get
             {
@@ -715,7 +749,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
             set
             {
-                _left = value; if (value != null) value.Parent = this;
+                _left = value; if (value != null) value.Parent = this.AsGeneric;
                 for (var cur = this; cur != null; cur = cur.Parent)
                 {
                     if (!cur.UpdateSize()) break;
@@ -727,8 +761,8 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 }
             }
         }
-        SetNodeBase _right;
-        public SetNodeBase Right
+        TNode _right;
+        public TNode Right
         {
             get
             {
@@ -737,7 +771,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             set
             {
                 _right = value;
-                if (value != null) value.Parent = this;
+                if (value != null) value.Parent = this.AsGeneric;
                 for (var cur = this; cur != null; cur = cur.Parent)
                 {
                     if (!cur.UpdateSize()) break;
@@ -762,36 +796,28 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             this.Size = size;
             return oldsize != size;
         }
-        [MethodImpl(AggressiveInlining)]
-        internal static bool IsNonNullBlack(SetNodeBase node) => node != null && node.IsBlack;
-
-        [MethodImpl(AggressiveInlining)]
-        internal static bool IsNonNullRed(SetNodeBase node) => node != null && node.IsRed;
-
-        [MethodImpl(AggressiveInlining)]
-        internal static bool IsNullOrBlack(SetNodeBase node) => node == null || node.IsBlack;
         internal NodeColor Color { get; set; }
         internal bool IsBlack => Color == NodeColor.Black;
         internal bool IsRed => Color == NodeColor.Red;
-        internal bool Is2Node => IsBlack && IsNullOrBlack(Left) && IsNullOrBlack(Right);
-        internal bool Is4Node => IsNonNullRed(Left) && IsNonNullRed(Right);
+        internal bool Is2Node => IsBlack && Left.IsNullOrBlack() && Right.IsNullOrBlack();
+        internal bool Is4Node => Left.IsNonNullRed() && Right.IsNonNullRed();
         [MethodImpl(AggressiveInlining)]
         internal void ColorBlack() => Color = NodeColor.Black;
         [MethodImpl(AggressiveInlining)]
         internal void ColorRed() => Color = NodeColor.Red;
 
         [MethodImpl(AggressiveInlining)]
-        internal TreeRotation GetRotation(SetNodeBase current, SetNodeBase sibling)
+        internal TreeRotation GetRotation(TNode current, TNode sibling)
         {
-            Debug.Assert(IsNonNullRed(sibling.Left) || IsNonNullRed(sibling.Right));
+            Debug.Assert(sibling.Left.IsNonNullRed() || sibling.Right.IsNonNullRed());
             bool currentIsLeftChild = Left == current;
-            return IsNonNullRed(sibling.Left) ?
+            return sibling.Left.IsNonNullRed() ?
                 (currentIsLeftChild ? TreeRotation.RightLeft : TreeRotation.Right) :
                 (currentIsLeftChild ? TreeRotation.Left : TreeRotation.LeftRight);
         }
 
         [MethodImpl(AggressiveInlining)]
-        internal SetNodeBase GetSibling(SetNodeBase node)
+        internal TNode GetSibling(TNode node)
         {
             Debug.Assert(node != null);
             Debug.Assert(node == Left ^ node == Right);
@@ -809,9 +835,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             Right.ColorBlack();
         }
         [MethodImpl(AggressiveInlining)]
-        internal SetNodeBase Rotate(TreeRotation rotation)
+        internal TNode Rotate(TreeRotation rotation)
         {
-            SetNodeBase removeRed;
+            TNode removeRed;
             switch (rotation)
             {
                 case TreeRotation.Right:
@@ -835,41 +861,41 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
         }
         [MethodImpl(AggressiveInlining)]
-        internal SetNodeBase RotateLeft()
+        internal TNode RotateLeft()
         {
-            SetNodeBase child = Right;
+            TNode child = Right;
             Right = child.Left;
-            child.Left = this;
+            child.Left = this.AsGeneric;
             return child;
         }
         [MethodImpl(AggressiveInlining)]
-        internal SetNodeBase RotateLeftRight()
+        internal TNode RotateLeftRight()
         {
-            SetNodeBase child = Left;
-            SetNodeBase grandChild = child.Right;
+            TNode child = Left;
+            TNode grandChild = child.Right;
 
             Left = grandChild.Right;
-            grandChild.Right = this;
+            grandChild.Right = this.AsGeneric;
             child.Right = grandChild.Left;
             grandChild.Left = child;
             return grandChild;
         }
         [MethodImpl(AggressiveInlining)]
-        internal SetNodeBase RotateRight()
+        internal TNode RotateRight()
         {
-            SetNodeBase child = Left;
+            TNode child = Left;
             Left = child.Right;
-            child.Right = this;
+            child.Right = this.AsGeneric;
             return child;
         }
         [MethodImpl(AggressiveInlining)]
-        internal SetNodeBase RotateRightLeft()
+        internal TNode RotateRightLeft()
         {
-            SetNodeBase child = Right;
-            SetNodeBase grandChild = child.Left;
+            TNode child = Right;
+            TNode grandChild = child.Left;
 
             Right = grandChild.Left;
-            grandChild.Left = this;
+            grandChild.Left = this.AsGeneric;
             child.Left = grandChild.Right;
             grandChild.Right = child;
             return grandChild;
@@ -887,7 +913,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             Right.ColorRed();
         }
         [MethodImpl(AggressiveInlining)]
-        internal void ReplaceChild(SetNodeBase child, SetNodeBase newChild)
+        internal void ReplaceChild(TNode child, TNode newChild)
         {
             if (Left == child)
             {
