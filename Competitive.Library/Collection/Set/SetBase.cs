@@ -743,10 +743,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         TNode _left;
         public TNode Left
         {
-            get
-            {
-                return _left;
-            }
+            get => _left;
             set
             {
                 _left = value; if (value != null) value.Parent = this.AsGeneric;
@@ -764,10 +761,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         TNode _right;
         public TNode Right
         {
-            get
-            {
-                return _right;
-            }
+            get => _right;
             set
             {
                 _right = value;
