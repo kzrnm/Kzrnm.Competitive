@@ -308,7 +308,7 @@ namespace Kzrnm.Competitive
             }
             public override string ToString() => $"Range = [{From}, {ToInclusive}], Size = {Size}";
         }
-        public struct NodeOperator : INodeOperator<(T From, T ToInclusive), T, Node>
+        public struct NodeOperator : ISetOperator<(T From, T ToInclusive), T, Node>
         {
             private readonly TOp comparer;
             public IComparer<T> Comparer => comparer;

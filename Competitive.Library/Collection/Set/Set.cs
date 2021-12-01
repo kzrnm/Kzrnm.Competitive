@@ -42,7 +42,7 @@ namespace Kzrnm.Competitive
             }
             public override string ToString() => $"Item = {Item}, Size = {Size}";
         }
-        public readonly struct NodeOperator : INodeOperator<T, T, Node>
+        public readonly struct NodeOperator : ISetOperator<T, T, Node>
         {
             private readonly TOp comparer;
             public IComparer<T> Comparer => comparer;

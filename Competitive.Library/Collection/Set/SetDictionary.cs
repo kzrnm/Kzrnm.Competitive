@@ -116,7 +116,7 @@ namespace Kzrnm.Competitive
             }
             public override string ToString() => $"Key = {Key}, Value = {Value}, Size = {Size}";
         }
-        public struct NodeOperator : INodeOperator<KeyValuePair<TKey, TValue>, TKey, Node>
+        public struct NodeOperator : ISetOperator<KeyValuePair<TKey, TValue>, TKey, Node>
         {
             private readonly TOp comparer;
             public IComparer<TKey> Comparer => comparer;

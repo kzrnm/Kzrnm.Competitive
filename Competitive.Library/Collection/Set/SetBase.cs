@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 namespace Kzrnm.Competitive.SetInternals
 {
     using static MethodImplOptions;
-    public interface INodeOperator<T, TCmp, Node> : IComparer<TCmp>
+    public interface ISetOperator<T, TCmp, Node> : IComparer<TCmp>
     {
         Node Create(T item, NodeColor color);
         T GetValue(Node node);
@@ -38,7 +38,7 @@ namespace Kzrnm.Competitive.SetInternals
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public abstract class SetBase<T, TCmp, Node, TOp> : ICollection, ICollection<T>, IReadOnlyCollection<T>
         where Node : SetNodeBase<Node>
-        where TOp : struct, INodeOperator<T, TCmp, Node>
+        where TOp : struct, ISetOperator<T, TCmp, Node>
     {
         /*
          * Original is SortedSet<T>
