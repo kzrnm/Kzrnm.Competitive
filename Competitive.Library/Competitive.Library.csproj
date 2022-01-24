@@ -7,7 +7,7 @@
     <LangVersion>8</LangVersion>
     <NoWarn>1701;1702;CA1034;CA1036;CA1815;IDE0034;IDE0044;EMBED0004</NoWarn>
     <DefineConstants>$(DefineConstants);ATCODER_CONTRACT</DefineConstants>
-    <Configurations>Debug;Release</Configurations>
+    <Configurations>Debug;Release;Library</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +17,7 @@
     <PackageReference Include="ac-library-csharp" Version="1.9.0" />
     <PackageReference Include="Competitive.IO" Version="0.5.2" />
 
-    <PackageReference Include="SourceExpander.Embedder" Version="4.0.1">
+    <PackageReference Include="SourceExpander.Embedder" Version="4.0.1" Condition="'$(Configuration)' != 'Library'">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
