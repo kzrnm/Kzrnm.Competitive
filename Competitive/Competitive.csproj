@@ -32,13 +32,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="TextCopy" Version="5.0.2" />
-    <PackageReference Include="AtCoderAnalyzer" Version="1.9.0">
+    <PackageReference Include="TextCopy" Version="6.0.0" />
+    <PackageReference Include="AtCoderAnalyzer" Version="1.9.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SourceExpander.Core" Version="4.0.1" />
-    <PackageReference Include="SourceExpander.Generator" Version="4.0.1">
+    <PackageReference Include="SourceExpander.Core" Version="4.0.2" />
+    <PackageReference Include="SourceExpander.Generator" Version="4.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
