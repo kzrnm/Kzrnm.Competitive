@@ -1,63 +1,73 @@
-﻿using System;
+﻿using AtCoder;
+using System;
 using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
 {
     /**
-     * <summary>最小共通祖先</summary> 
+     * <summary>データ付き最小共通祖先</summary> 
      */
-    public class LowestCommonAncestor<TNode, TEdge>
+    public class LowestCommonAncestorWithData<TNode, TEdge, T, TOp>
         where TNode : ITreeNode<TEdge>
         where TEdge : IGraphEdge
+        where TOp : ISegtreeOperator<T>
     {
         internal readonly TNode[] tree;
 
         /// <summary>
         /// kprv[u][k] 頂点uの2^k個上の祖先頂点v, 0&lt;=k&lt;logN
         /// </summary>
-        private readonly PathDoubling doubling;
-        public LowestCommonAncestor(TNode[] tree)
+        private readonly PathDoubling<T, TOp> doubling;
+        public LowestCommonAncestorWithData(TNode[] tree, T[] data, TOp op = default)
         {
             if (tree.Length == 0) throw new ArgumentException(nameof(tree));
+            if (tree.Length != data.Length)
+                throw new ArgumentException("データと木の長さが異なります", nameof(data));
 
             this.tree = tree;
             var roots = new int[tree.Length];
             for (int v = 0; v < tree.Length; v++)
                 roots[v] = tree[v].Root.To;
-            doubling = new PathDoubling(roots, tree.Length);
+            doubling = new PathDoubling<T, TOp>(roots, data, tree.Length, op);
         }
 
         /// <summary>
-        /// 2つの頂点の共通祖先を取得する
+        /// 2つの頂点の共通祖先とその経路のデータをマージした値を取得する
         /// </summary>
-        public int this[int u, int v]
+        public (int Index, T Data) this[int u, int v]
         {
             [MethodImpl(MethodImplOptions.AggressiveOptimization)]
             get => Lca(u, v);
         }
 
         /// <summary>
-        /// 2つの頂点の共通祖先を取得する
+        /// 2つの頂点の共通祖先とその経路のデータをマージした値を取得する
         /// </summary>
-        public int Lca(int u, int v)
+        public (int Index, T Data) Lca(int u, int v)
         {
+            var op = doubling.op;
             int dd = tree[u].Depth - tree[v].Depth;
-            if (dd > 0) u = doubling.Move(u, dd);
-            else if (dd < 0) v = doubling.Move(v, -dd);
+            T dres = op.Identity;
+            if (dd > 0)
+                (u, dres) = doubling.Move(u, dd);
+            else if (dd < 0)
+                (v, dres) = doubling.Move(v, -dd);
             if (u == v)
-                return u;
+                return (u, dres);
 
             var paths = doubling.paths;
             for (int i = paths.Length - 1; i >= 0; i--)
             {
                 var path = paths[i];
+                var ds = doubling.data[i];
                 if (path[u] != path[v])
                 {
+                    dres = op.Operate(op.Operate(dres, ds[u]), ds[v]);
                     u = path[u];
                     v = path[v];
                 }
             }
-            return paths[0][u];
+            return (paths[0][u], op.Operate(dres, op.Operate(doubling.data[0][v], doubling.data[0][u])));
         }
 
         /// <summary>
@@ -69,16 +79,16 @@ namespace Kzrnm.Competitive
             int dd = tree[u].Depth - tree[v].Depth;
             if (dd > 0)
             {
-                var u2 = doubling.Move(u, dd);
+                var u2 = doubling.Move(u, dd).To;
                 if (u2 == v)
-                    return (doubling.Move(u, dd - 1), v);
+                    return (doubling.Move(u, dd - 1).To, v);
                 u = u2;
             }
             else if (dd < 0)
             {
-                var v2 = doubling.Move(v, -dd);
+                var v2 = doubling.Move(v, -dd).To;
                 if (v2 == u)
-                    return (u, doubling.Move(v, -dd - 1));
+                    return (u, doubling.Move(v, -dd - 1).To);
                 v = v2;
             }
             else if (u == v)
@@ -102,16 +112,33 @@ namespace Kzrnm.Competitive
         /// </summary>
         public int Distance(int u, int v)
         {
-            var lca = this[u, v];
+            var lca = Lca(u, v).Index;
             return tree[u].Depth + tree[v].Depth - 2 * tree[lca].Depth;
         }
     }
 
-    public static class LowestCommonAncestorExt
+    public static class LowestCommonAncestorWithDataExt
     {
-        public static LowestCommonAncestor<TNode, TEdge> LowestCommonAncestor<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
+        public readonly struct Builder<TNode, TEdge>
             where TNode : ITreeNode<TEdge>
             where TEdge : IGraphEdge
-            => new LowestCommonAncestor<TNode, TEdge>(tree.AsArray());
+        {
+            private readonly ITreeGraph<TNode, TEdge> tree;
+            public Builder(ITreeGraph<TNode, TEdge> tree)
+            {
+                this.tree = tree;
+            }
+
+            public LowestCommonAncestorWithData<TNode, TEdge, T, TOp>
+                Build<T, TOp>(T[] data, TOp op = default)
+                where TOp : ISegtreeOperator<T>
+                => new LowestCommonAncestorWithData<TNode, TEdge, T, TOp>(tree.AsArray(), data, op);
+        }
+
+        public static Builder<TNode, TEdge>
+            LowestCommonAncestorWithDataBuilder<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
+            where TNode : ITreeNode<TEdge>
+            where TEdge : IGraphEdge
+            => new Builder<TNode, TEdge>(tree);
     }
 }

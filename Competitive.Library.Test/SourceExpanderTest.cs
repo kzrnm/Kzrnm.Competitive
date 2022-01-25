@@ -7,6 +7,7 @@ using Xunit;
 
 namespace Embedding
 {
+#if !LIBRARY
     public class SourceExpanderTest
     {
         [Fact]
@@ -35,4 +36,5 @@ namespace Embedding
                     "Kzrnm.Competitive.FenwickTreeExtension");
         }
     }
+#endif
 }
