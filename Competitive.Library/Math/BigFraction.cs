@@ -22,8 +22,13 @@ namespace Kzrnm.Competitive
         {
             if (分母 == 0)
             {
-                _numerator = long.MinValue;
-                _denominator = long.MinValue;
+                _numerator = 分子.Sign switch
+                {
+                    0 => 0,
+                    1 => long.MaxValue,
+                    _ => long.MinValue,
+                };
+                _denominator = -1;
                 return;
             }
             var negative = (分子 ^ 分母) < 0;
