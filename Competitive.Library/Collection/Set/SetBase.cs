@@ -1,5 +1,5 @@
-﻿using AtCoder.Internal;
-using Kzrnm.Competitive.SetInternals;
+﻿using AtCoder;
+using AtCoder.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,6 +32,45 @@ namespace Kzrnm.Competitive.SetInternals
         Right = 2,
         RightLeft = 3,
         LeftRight = 4,
+    }
+
+    [IsOperator]
+    public interface ISetBinarySearchOperator
+    {
+        /// <summary>
+        /// 左側を返す
+        /// </summary>
+        bool ReturnLeft { get; }
+
+        /// <summary>
+        /// 左側に潜る
+        /// </summary>
+        bool IntoLeft(int order);
+    }
+
+    public struct SetLowerBoundOperator : ISetBinarySearchOperator
+    {
+        public bool ReturnLeft => false;
+        [MethodImpl(AggressiveInlining)]
+        public bool IntoLeft(int order) => order <= 0;
+    }
+    public struct SetUpperBoundOperator : ISetBinarySearchOperator
+    {
+        public bool ReturnLeft => false;
+        [MethodImpl(AggressiveInlining)]
+        public bool IntoLeft(int order) => order < 0;
+    }
+    public struct SetLowerBoundReverseOperator : ISetBinarySearchOperator
+    {
+        public bool ReturnLeft => true;
+        [MethodImpl(AggressiveInlining)]
+        public bool IntoLeft(int order) => order < 0;
+    }
+    public struct SetUpperBoundReverseOperator : ISetBinarySearchOperator
+    {
+        public bool ReturnLeft => true;
+        [MethodImpl(AggressiveInlining)]
+        public bool IntoLeft(int order) => order <= 0;
     }
 
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
@@ -216,79 +255,22 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// <paramref name="item"/> 以上/超えるの要素のノードとインデックスを返します。
         /// </summary>
         /// <param name="item">検索する要素</param>
-        /// <param name="isLowerBound"><paramref name="item"/> を含めるかどうか</param>
-        public (Node node, int index) BinarySearch(TCmp item, bool isLowerBound)
+        /// <param name="bop">二分探索の判定オペレーター</param>
+        public (Node node, int index) BinarySearch<TBOp>(TCmp item, TBOp bop = default)
+            where TBOp : struct, ISetBinarySearchOperator
         {
-            Node right = null;
+            Node left = null, right = null;
             Node current = root;
             if (current == null) return (null, 0);
+            int li = -1;
             int ri = Count;
             int ci = NodeSize(current.Left);
             while (true)
             {
-                var order = op.Compare(item, current);
-                if (order < 0 || (isLowerBound && order == 0))
+                if (bop.IntoLeft(op.Compare(item, current)))
                 {
                     right = current;
                     ri = ci;
-                    current = current.Left;
-                    if (current != null)
-                        ci -= NodeSize(current.Right) + 1;
-                    else break;
-                }
-                else
-                {
-                    current = current.Right;
-                    if (current != null)
-                        ci += NodeSize(current.Left) + 1;
-                    else break;
-                }
-            }
-            return (right, ri);
-        }
-        /// <summary>
-        /// <paramref name="item"/> 以上の最初のノードを返します。
-        /// </summary>
-        public Node FindNodeLowerBound(TCmp item) => BinarySearch(item, true).node;
-        /// <summary>
-        /// <paramref name="item"/> 以上の最初のインデックスを返します。
-        /// </summary>
-        public int LowerBoundIndex(TCmp item) => BinarySearch(item, true).index;
-        /// <summary>
-        /// <paramref name="item"/> 以上の最初の要素を返します。
-        /// </summary>
-        public T LowerBoundItem(TCmp item) => op.GetValue(BinarySearch(item, true).node);
-        /// <summary>
-        /// <paramref name="item"/> を超える最初のノードを返します。
-        /// </summary>
-        public Node FindNodeUpperBound(TCmp item) => BinarySearch(item, false).node;
-        /// <summary>
-        /// <paramref name="item"/> を超える最初のインデックスを返します。
-        /// </summary>
-        public int UpperBoundIndex(TCmp item) => BinarySearch(item, false).index;
-        /// <summary>
-        /// <paramref name="item"/> を超える最初の要素を返します。
-        /// </summary>
-        public T UpperBoundItem(TCmp item) => op.GetValue(BinarySearch(item, false).node);
-
-
-
-        /// <summary>
-        /// <paramref name="item"/> 未満の要素のノードとインデックスを返します。
-        /// </summary>
-        /// <param name="item">検索する要素</param>
-        public (Node node, int index) BinarySearchRev(TCmp item)
-        {
-            Node left = null;
-            Node current = root;
-            if (current == null) return (null, 0);
-            int li = -1;
-            int ci = NodeSize(current.Left);
-            while (true)
-            {
-                var order = op.Compare(item, current);
-                if (order <= 0)
-                {
                     current = current.Left;
                     if (current != null)
                         ci -= NodeSize(current.Right) + 1;
@@ -304,20 +286,58 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                     else break;
                 }
             }
-            return (left, li);
+            return bop.ReturnLeft ? (left, li) : (right, ri);
         }
+        /// <summary>
+        /// <paramref name="item"/> 以上の最初のノードを返します。
+        /// </summary>
+        public Node FindNodeLowerBound(TCmp item) => BinarySearch<SetLowerBoundOperator>(item).node;
+        /// <summary>
+        /// <paramref name="item"/> 以上の最初のインデックスを返します。
+        /// </summary>
+        public int LowerBoundIndex(TCmp item) => BinarySearch<SetLowerBoundOperator>(item).index;
+        /// <summary>
+        /// <paramref name="item"/> 以上の最初の要素を返します。
+        /// </summary>
+        public T LowerBoundItem(TCmp item) => op.GetValue(BinarySearch<SetLowerBoundOperator>(item).node);
+        /// <summary>
+        /// <paramref name="item"/> を超える最初のノードを返します。
+        /// </summary>
+        public Node FindNodeUpperBound(TCmp item) => BinarySearch<SetUpperBoundOperator>(item).node;
+        /// <summary>
+        /// <paramref name="item"/> を超える最初のインデックスを返します。
+        /// </summary>
+        public int UpperBoundIndex(TCmp item) => BinarySearch<SetUpperBoundOperator>(item).index;
+        /// <summary>
+        /// <paramref name="item"/> を超える最初の要素を返します。
+        /// </summary>
+        public T UpperBoundItem(TCmp item) => op.GetValue(BinarySearch<SetUpperBoundOperator>(item).node);
+
+        /// <summary>
+        /// <paramref name="item"/> 以下の最後のノードを返します。
+        /// </summary>
+        public Node FindNodeReverseLowerBound(TCmp item) => BinarySearch<SetLowerBoundReverseOperator>(item).node;
+        /// <summary>
+        /// <paramref name="item"/> 以下の最後のインデックスを返します。
+        /// </summary>
+        public int ReverseLowerBoundIndex(TCmp item) => BinarySearch<SetLowerBoundReverseOperator>(item).index;
+        /// <summary>
+        /// <paramref name="item"/> 以下の最後の要素を返します。
+        /// </summary>
+        public T ReverseLowerBoundItem(TCmp item) => op.GetValue(BinarySearch<SetLowerBoundReverseOperator>(item).node);
+
         /// <summary>
         /// <paramref name="item"/> 未満の最後のノードを返します。
         /// </summary>
-        public Node FindNodeReverseBound(TCmp item) => BinarySearchRev(item).node;
+        public Node FindNodeReverseUpperBound(TCmp item) => BinarySearch<SetUpperBoundReverseOperator>(item).node;
         /// <summary>
         /// <paramref name="item"/> 未満の最後のインデックスを返します。
         /// </summary>
-        public int ReverseBoundIndex(TCmp item) => BinarySearchRev(item).index;
+        public int ReverseUpperBoundIndex(TCmp item) => BinarySearch<SetUpperBoundReverseOperator>(item).index;
         /// <summary>
         /// <paramref name="item"/> 未満の最後の要素を返します。
         /// </summary>
-        public T ReverseBoundItem(TCmp item) => op.GetValue(BinarySearchRev(item).node);
+        public T ReverseUpperBoundItem(TCmp item) => op.GetValue(BinarySearch<SetUpperBoundReverseOperator>(item).node);
         #endregion Search
 
         #region Enumerate
