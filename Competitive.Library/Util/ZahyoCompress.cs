@@ -71,7 +71,7 @@ namespace Kzrnm.Competitive
         /// 登録されている値から座標圧縮する。前に呼び出されたときと異なるならば作り直す。
         /// </summary>
         /// <returns></returns>
-        public ZahyoCompress<T> Compress() => Compress(Comparer<T>.Default);
+        public ZahyoCompress<T> Compress() => Compress(null);
 
         /// <summary>
         /// 登録されている値から座標圧縮する。前に呼び出されたときと異なるならば作り直す。
