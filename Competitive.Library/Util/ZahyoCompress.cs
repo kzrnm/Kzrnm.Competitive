@@ -1,5 +1,4 @@
-﻿using AtCoder.Internal;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -79,7 +78,8 @@ namespace Kzrnm.Competitive
         /// <returns></returns>
         public ZahyoCompress<T> Compress(IComparer<T> comparer)
         {
-            if (lastCompressVesion == version && comparer.Equals(lastComparer))
+            if (lastCompressVesion == version
+                && (comparer == lastComparer || comparer.Equals(lastComparer)))
                 return this;
             lastCompressVesion = version;
             lastComparer = comparer;
