@@ -16,10 +16,18 @@ namespace Competitive.Runner
         [STAThread]
         static void Main(string[] args)
         {
-            string expandedCode = null;
+            if (args.Length > 0 && args[0] == "expand")
+            {
+                string expandedCode = null;
 #if DEBUG
-            expandedCode = GetSourceCode(BasePath.Replace("HandMadeMain.cs", "Program.cs"))?.Code?.Replace("\r\n", "\n");
+                expandedCode = GetSourceCode(BasePath.Replace("HandMadeMain.cs", "Program.cs"))?.Code?.Replace("\r\n", "\n");
 #endif
+                if (expandedCode != null)
+                    Expand(args.AsSpan(1), expandedCode);
+                else
+                    Console.WriteLine("expandedCode is null.");
+                return;
+            }
             var utf8 = new UTF8Encoding(false);
             var outEnc = Console.OutputEncoding;
             if (outEnc.CodePage == 65001)
@@ -27,15 +35,7 @@ namespace Competitive.Runner
             PropertyConsoleReader reader;
             var writer = new ConsoleWriter(Console.OpenStandardOutput(), outEnc);
 
-            if (args.Length > 0 && args[0] == "expand")
-            {
-                if (expandedCode != null)
-                    Expand(args.AsSpan(1), expandedCode);
-                else
-                    Console.WriteLine("expandedCode is null.");
-                return;
-            }
-            else if (args.Length > 0)
+            if (args.Length > 0)
             {
                 reader = new PropertyConsoleReader(new FileStream(args[0], FileMode.Open), utf8);
             }
