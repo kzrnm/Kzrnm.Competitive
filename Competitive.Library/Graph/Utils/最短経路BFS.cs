@@ -12,7 +12,8 @@ namespace Kzrnm.Competitive
             where TEdge : IGraphEdge
         {
             var graphArr = graph.AsArray();
-            var res = Global.NewArray(graphArr.Length, uint.MaxValue);
+            var res = new uint[graphArr.Length];
+            System.Array.Fill(res, uint.MaxValue);
             var queue = new Queue<int>();
             queue.Enqueue(from);
             res[from] = 0;
@@ -35,7 +36,8 @@ namespace Kzrnm.Competitive
             where TEdge : IGraphEdge
         {
             var graphArr = graph.AsArray();
-            var res = Global.NewArray(graphArr.Length, uint.MaxValue);
+            var res = new uint[graphArr.Length];
+            System.Array.Fill(res, uint.MaxValue);
             var queue = new Queue<int>();
             queue.Enqueue(from);
             res[from] = 0;

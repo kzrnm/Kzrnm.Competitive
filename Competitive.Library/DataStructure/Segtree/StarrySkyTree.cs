@@ -21,8 +21,10 @@ namespace Kzrnm.Competitive.DataStructure
         {
             this.Length = size;
             rootLength = 1 << (BitOperationsEx.MSB(size - 1) + 1);
-            lazy = Global.NewArray((rootLength << 1) - 1, op.Identity);
-            data = Global.NewArray((rootLength << 1) - 1, op.Identity);
+            lazy = new T[(rootLength << 1) - 1];
+            data = new T[(rootLength << 1) - 1];
+            Array.Fill(lazy, op.Identity);
+            Array.Fill(data, op.Identity);
         }
         public void Apply(int from, int toExclusive, T value)
         {

@@ -23,17 +23,21 @@ namespace Kzrnm.Competitive
         /// </summary>
         public static T[] LCS<T>(ReadOnlySpan<T> s, ReadOnlySpan<T> t)
         {
-            var dp = Global.NewArray(s.Length + 1, t.Length + 1, 0);
+            var dp = new int[s.Length + 1][];
+            dp[0] = new int[s.Length + 1];
             int i, j;
             for (i = 0; i < s.Length; i++)
+            {
+                var crr = dp[i];
+                var nrr = dp[i + 1] = new int[s.Length + 1];
                 for (j = 0; j < t.Length; j++)
                 {
                     if (EqualityComparer<T>.Default.Equals(s[i], t[j]))
-                        dp[i + 1][j + 1] = dp[i][j] + 1;
+                        nrr[j + 1] = crr[j] + 1;
                     else
-                        dp[i + 1][j + 1] = Math.Max(dp[i][j + 1], dp[i + 1][j]);
+                        nrr[j + 1] = Math.Max(crr[j + 1], nrr[j]);
                 }
-
+            }
             var list = LCSSearch(dp, s, s.Length, t.Length);
             list.Reverse();
             return list.ToArray();

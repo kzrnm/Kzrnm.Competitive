@@ -1,6 +1,4 @@
-﻿using AtCoder;
-using AtCoder.Internal;
-using AtCoder.Operators;
+﻿using AtCoder.Operators;
 
 namespace Kzrnm.Competitive
 {
@@ -19,7 +17,8 @@ namespace Kzrnm.Competitive
             TOp op = default;
             var graphArr = graph.AsArray();
             var INF = op.MaxValue;
-            var res = Global.NewArray(graphArr.Length, INF);
+            var res = new T[graphArr.Length];
+            System.Array.Fill(res, INF);
             res[from] = default;
 
             var used = new bool[graphArr.Length];

@@ -1,5 +1,4 @@
-﻿using AtCoder;
-using AtCoder.Operators;
+﻿using AtCoder.Operators;
 namespace Kzrnm.Competitive
 {
     public static class 最短経路WarshallFloyd
@@ -17,9 +16,11 @@ namespace Kzrnm.Competitive
             TOp op = default;
             var graphArr = graph.AsArray();
             var INF = op.Divide(op.MaxValue, op.Increment(op.MultiplyIdentity));
-            var res = Global.NewArray(graphArr.Length, graphArr.Length, INF);
+            var res = new T[graphArr.Length][];
             for (var i = 0; i < graphArr.Length; i++)
             {
+                res[i] = new T[graphArr.Length];
+                System.Array.Fill(res[i], INF);
                 res[i][i] = default;
                 foreach (var e in graphArr[i].Children)
                     res[i][e.To] = e.Value;

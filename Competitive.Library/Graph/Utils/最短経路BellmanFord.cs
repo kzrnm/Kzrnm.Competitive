@@ -1,5 +1,4 @@
-﻿using AtCoder;
-using AtCoder.Operators;
+﻿using AtCoder.Operators;
 using System;
 
 namespace Kzrnm.Competitive
@@ -19,7 +18,8 @@ namespace Kzrnm.Competitive
             TOp op = default;
             var graphArr = graph.AsArray();
             var INF = op.Divide(op.MaxValue, op.Increment(op.MultiplyIdentity));
-            var res = Global.NewArray(graphArr.Length, INF);
+            var res = new T[graphArr.Length];
+            Array.Fill(res, INF);
             res[from] = default;
 
             for (int i = 1; i <= graphArr.Length; i++)
