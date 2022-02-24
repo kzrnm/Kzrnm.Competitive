@@ -11,9 +11,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<InternalsVisibleTo Include="Competitive.Library.Test"/>
+		<InternalsVisibleTo Include="Competitive.Library.Test" />
 		<PackageReference Include="ac-library-csharp" Version="1.9.1" />
-		<PackageReference Include="Competitive.IO" Version="0.5.2" />
+		<PackageReference Include="Competitive.IO" Version="0.5.3" />
 
 		<PackageReference Include="SourceExpander.Embedder" Version="4.0.2" Condition="'$(Configuration)' != 'Library'">
 			<PrivateAssets>all</PrivateAssets>
