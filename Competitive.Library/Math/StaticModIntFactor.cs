@@ -1,14 +1,15 @@
 ﻿using AtCoder;
+using System.Runtime.CompilerServices;
+
 namespace Kzrnm.Competitive
 {
+    using static MethodImplOptions;
     public class StaticModIntFactor<T> where T : struct, IStaticMod
     {
         private readonly StaticModInt<T>[] fac, finv;
         public StaticModIntFactor(int max)
         {
-            var mod = default(T).Mod;
-            ++max;
-            fac = new StaticModInt<T>[max];
+            fac = new StaticModInt<T>[++max];
             finv = new StaticModInt<T>[max];
             fac[0] = fac[1] = 1;
             finv[0] = finv[1] = 1;
@@ -20,6 +21,7 @@ namespace Kzrnm.Competitive
         }
 
         ///<summary>組み合わせ関数(二項係数)</summary>
+        [MethodImpl(AggressiveInlining)]
         public StaticModInt<T> Combination(int n, int k)
         {
             if (n < k) return 0;
@@ -28,9 +30,11 @@ namespace Kzrnm.Competitive
         }
 
         ///<summary>重複組み合わせ関数</summary>
+        [MethodImpl(AggressiveInlining)]
         public StaticModInt<T> Homogeneous(int n, int k) => Combination(n + k - 1, k);
 
         ///<summary>順列関数</summary>
+        [MethodImpl(AggressiveInlining)]
         public StaticModInt<T> Permutation(int n, int k)
         {
             if (n < k) return 0;
@@ -41,11 +45,13 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="n"/> の階乗
         /// </summary>
+        [MethodImpl(AggressiveInlining)]
         public StaticModInt<T> Factorial(int n) => fac[n];
 
         /// <summary>
         /// <paramref name="n"/> の階乗の逆数
         /// </summary>
+        [MethodImpl(AggressiveInlining)]
         public StaticModInt<T> FactorialInvers(int n) => finv[n];
     }
 }
