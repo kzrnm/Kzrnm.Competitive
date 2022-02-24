@@ -32,6 +32,8 @@ namespace Competitive.Runner
             var outEnc = Console.OutputEncoding;
             if (outEnc.CodePage == 65001)
                 outEnc = utf8;
+
+            Stopwatch stopwatch = null;
             PropertyConsoleReader reader;
             var writer = new ConsoleWriter(Console.OpenStandardOutput(), outEnc);
 
@@ -46,21 +48,44 @@ namespace Competitive.Runner
                     LoadInput() is { } fileInput &&
                     !string.IsNullOrWhiteSpace(fileInput))
                     sb.Add(fileInput);
+
+                Trace.Listeners.Add(new TextWriterTraceListener(Console.Error));
                 if (IsNotWhiteSpace(sb.sb))
                 {
-                    Trace.Listeners.Add(new TextWriterTraceListener(Console.Error));
                     reader = new PropertyConsoleReader(new MemoryStream(utf8.GetBytes(sb.ToString())), Encoding.UTF8);
+                    stopwatch = new Stopwatch();
                 }
                 else
                     reader = new PropertyConsoleReader();
             }
 
-            Trace.WriteLine("---start---");
-            var stopwatch = Stopwatch.StartNew();
-            new Program(reader, writer).Run();
-            stopwatch.Stop();
-            Trace.WriteLine($"---end({stopwatch.ElapsedMilliseconds}ms)---");
+            using (new StopwatchWrapper(stopwatch))
+            {
+                new Program(reader, writer).Run();
+            }
         }
+        struct StopwatchWrapper : IDisposable
+        {
+            Stopwatch Stopwatch;
+            public StopwatchWrapper(Stopwatch stopwatch)
+            {
+                this.Stopwatch = stopwatch;
+                if (stopwatch != null)
+                {
+                    Trace.WriteLine("---start---");
+                    stopwatch.Start();
+                }
+            }
+            void IDisposable.Dispose()
+            {
+                if (Stopwatch != null)
+                {
+                    Stopwatch.Stop();
+                    Trace.WriteLine($"---end({Stopwatch.ElapsedMilliseconds}ms)---");
+                }
+            }
+        }
+
         static void Expand(ReadOnlySpan<string> args, string expandedCode)
         {
             bool writeFile = false;
