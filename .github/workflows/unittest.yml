@@ -22,7 +22,6 @@ env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_NOLOGO: true
   NUGET_XMLDOC_MODE: skip
-  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
   WORKFLOW_BUILD_SLN: Competitive.Library/Competitive.Library.sln
 
 jobs:
@@ -36,69 +35,49 @@ jobs:
         with:
           repository: yosupo06/library-checker-problems
           path: LibraryChecker/library-checker-problems
-      - name: Setup .NET SDK 6.0
+      - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0.x'
-          include-prerelease: true
-      - name: Setup .NET Core SDK 3.1
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 3.1.x
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 5.0.x
+          dotnet-version: |
+            3.1.x
+            6.0.x
       - name: Set up Python
         uses: actions/setup-python@v1
         with:
           python-version: 3.7
       - uses: actions/cache@v2
+        name: NuGet cache
         with:
-          path: ${{ github.workspace }}/.nuget/packages
+          path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
+      - uses: actions/cache@v2
+        name: pip cache
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
       - name: Install python dependencies
         working-directory: LibraryChecker/library-checker-problems
         run: |
           python -m pip install --upgrade pip
           pip install --user -r requirements.txt
-      - name: Install dependencies
-        run: dotnet restore ${{ env.WORKFLOW_BUILD_SLN }}
       - name: Build
-        run: dotnet build ${{ env.WORKFLOW_BUILD_SLN }} --no-restore
+        run: dotnet build ${{ env.WORKFLOW_BUILD_SLN }}
       - name: Run
         working-directory: LibraryChecker
         run: |
           ulimit -s unlimited
-          dotnet run --project LibraryChecker.csproj
+          dotnet run --project LibraryChecker.csproj --no-build
+
   test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup .NET SDK 6.0
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '6.0.x'
-          include-prerelease: true
-      - name: Setup .NET Core SDK 3.1
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 3.1.x
-      - name: Setup .NET SDK 5.0
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 5.0.x
-      - uses: actions/cache@v2
-        with:
-          path: ${{ github.workspace }}/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-      - name: Install dependencies
-        run: dotnet restore ${{ env.WORKFLOW_BUILD_SLN }}
-      - name: Build
-        run: dotnet build ${{ env.WORKFLOW_BUILD_SLN }} --no-restore
-      - name: Test
-        run: dotnet test ${{ env.WORKFLOW_BUILD_SLN }} --no-build --verbosity normal --logger GitHubActions
+    uses: kzrnm/dotnet-actions/.github/workflows/unittest.yml@v1
+    with:
+      target: Competitive.Library/Competitive.Library.sln
+      os: ubuntu-latest
+      dotnet-version: |
+        3.1.x
+        6.0.x
+      test-logger: GitHubActions
