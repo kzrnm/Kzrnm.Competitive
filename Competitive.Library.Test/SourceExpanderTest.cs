@@ -35,6 +35,25 @@ namespace Embedding
                     "Kzrnm.Competitive.Global",
                     "Kzrnm.Competitive.FenwickTreeExtension");
         }
+
+        [Fact]
+        public async Task EmbeddedNamespaces()
+        {
+            var embedded = await EmbeddedData.LoadFromAssembly(typeof(Global));
+            embedded.AssemblyMetadatas.Should().ContainKey("SourceExpander.EmbeddedNamespaces");
+            embedded.EmbeddedNamespaces
+                .Should()
+                .Equal(
+                    "AtCoder.Extension",
+                    "Kzrnm.Competitive",
+                    "Kzrnm.Competitive.DataStructure",
+                    "Kzrnm.Competitive.DebugUtil",
+                    "Kzrnm.Competitive.Linq",
+                    "Kzrnm.Competitive.SetInternals",
+                    "System",
+                    "System.Linq");
+
+        }
     }
 #endif
 }
