@@ -110,7 +110,8 @@ namespace Kzrnm.Competitive
             return (primes.ToArray(), searches);
         }
         /// <summary>
-        /// <paramref name="num"/> が <see cref="this"/> の最大の2乗より大きい場合は誤って <see langword="true"/> を返す可能性があります。
+        /// <para>素数かどうか判定します。</para>
+        /// <para><paramref name="num"/> が <see langword="this"/> の最大の2乗より大きい場合は誤って <see langword="true"/> を返す可能性があります。</para>
         /// </summary>
         public bool IsPrime(long num)
         {

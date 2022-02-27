@@ -18,7 +18,7 @@ namespace Kzrnm.Competitive
         internal readonly T[] _weightDiff;
 
         /// <summary>
-        /// <see cref="WeightedUnionFind"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺のグラフとして初期化します。
+        /// <see cref="WeightedUnionFind{T, TOp}"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺のグラフとして初期化します。
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>

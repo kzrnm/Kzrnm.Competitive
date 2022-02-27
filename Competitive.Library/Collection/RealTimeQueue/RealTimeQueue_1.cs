@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Kzrnm.Competitive
@@ -141,7 +140,8 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 
                 Debug.Assert(_backwardsReversed != null);
                 return _backwardsReversed;
-                ImmutableStack<T> Reverse(ImmutableStack<T> stack)
+
+                static ImmutableStack<T> Reverse(ImmutableStack<T> stack)
                 {
                     var r = stack.Clear();
                     for (ImmutableStack<T> f = stack; !f.IsEmpty; f = f.Pop())
@@ -159,7 +159,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// <summary>
         /// Gets the element at the front of the queue.
         /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the queue is empty.</exception>
+        /// <exception cref="System.InvalidOperationException">Thrown when the queue is empty.</exception>
         public T Peek()
         {
             AtCoder.Internal.Contract.Assert(!IsEmpty, "This operation does not apply to an empty instance.");
@@ -170,7 +170,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// <summary>
         /// Gets a read-only reference to the element at the front of the queue.
         /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when the queue is empty.</exception>
+        /// <exception cref="System.InvalidOperationException">Thrown when the queue is empty.</exception>
         public ref readonly T PeekRef()
         {
             AtCoder.Internal.Contract.Assert(!IsEmpty, "This operation does not apply to an empty instance.");
@@ -206,7 +206,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// Returns a queue that is missing the front element.
         /// </summary>
         /// <returns>A queue; never <c>null</c>.</returns>
-        /// <exception cref="InvalidOperationException">Thrown when the queue is empty.</exception>
+        /// <exception cref="System.InvalidOperationException">Thrown when the queue is empty.</exception>
         public RealTimeQueue<T> Dequeue()
         {
             AtCoder.Internal.Contract.Assert(!IsEmpty, "This operation does not apply to an empty instance.");
@@ -223,7 +223,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// </summary>
         /// <param name="value">Receives the value from the head of the queue.</param>
         /// <returns>The new queue with the head element removed.</returns>
-        /// <exception cref="InvalidOperationException">Thrown when the queue is empty.</exception>
+        /// <exception cref="System.InvalidOperationException">Thrown when the queue is empty.</exception>
         public RealTimeQueue<T> Dequeue(out T value)
         {
             value = this.Peek();
@@ -234,7 +234,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// Returns a queue that is missing the front element.
         /// </summary>
         /// <returns>A queue; never <c>null</c>.</returns>
-        /// <exception cref="InvalidOperationException">Thrown when the queue is empty.</exception>
+        /// <exception cref="System.InvalidOperationException">Thrown when the queue is empty.</exception>
         IImmutableQueue<T> IImmutableQueue<T>.Dequeue()
         {
             return this.Dequeue();

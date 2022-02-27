@@ -1,8 +1,8 @@
 ﻿using AtCoder;
+using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
-namespace System.Linq
+namespace Kzrnm.Competitive
 {
     public static class StaticModIntExtension
     {

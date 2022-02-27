@@ -7,19 +7,19 @@ namespace Kzrnm.Competitive
     public static class __BinarySearchEx
     {
         /// <summary>
-        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <typeparamref name="TOp"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
+        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <c>Ok</c>(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
         /// </summary>
         /// <remarks>
-        /// <para>制約: <typeparamref name="TOp"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<typeparamref name="TOp"/>.Ok(<paramref name="ng"/>)</para>
+        /// <para>制約: <c>Ok</c>(<paramref name="ok"/>) &amp;&amp; !<c>Ok</c>(<paramref name="ng"/>)</para>
         /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
         /// </remarks>
         public static int BinarySearch(int ok, int ng, Func<int, bool> okFunc)
             => BinarySearch(new FuncOk<int>(okFunc), ok, ng);
         /// <summary>
-        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <typeparamref name="TOp"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
+        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <c>Ok</c>(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
         /// </summary>
         /// <remarks>
-        /// <para>制約: <typeparamref name="TOp"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<typeparamref name="TOp"/>.Ok(<paramref name="ng"/>)</para>
+        /// <para>制約: <c>Ok</c>(<paramref name="ok"/>) &amp;&amp; !<c>Ok</c>(<paramref name="ng"/>)</para>
         /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
         /// </remarks>
         public static int BinarySearch<TOp>(int ok, int ng) where TOp : struct, IOk<int>
@@ -43,19 +43,19 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <typeparamref name="TOp"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
+        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <c>Ok</c>(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
         /// </summary>
         /// <remarks>
-        /// <para>制約: <typeparamref name="TOp"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<typeparamref name="TOp"/>.Ok(<paramref name="ng"/>)</para>
+        /// <para>制約: <c>Ok</c>(<paramref name="ok"/>) &amp;&amp; !<c>Ok</c>(<paramref name="ng"/>)</para>
         /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
         /// </remarks>
         public static long BinarySearch(long ok, long ng, Func<long, bool> okFunc)
             => BinarySearch(new FuncOk<long>(okFunc), ok, ng);
         /// <summary>
-        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <typeparamref name="TOp"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
+        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <c>Ok</c>(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
         /// </summary>
         /// <remarks>
-        /// <para>制約: <typeparamref name="TOp"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<typeparamref name="TOp"/>.Ok(<paramref name="ng"/>)</para>
+        /// <para>制約: <c>Ok</c>(<paramref name="ok"/>) &amp;&amp; !<c>Ok</c>(<paramref name="ng"/>)</para>
         /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
         /// </remarks>
         public static long BinarySearch<TOp>(long ok, long ng) where TOp : struct, IOk<long>
@@ -79,19 +79,19 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <typeparamref name="TOp"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
+        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <c>Ok</c>(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
         /// </summary>
         /// <remarks>
-        /// <para>制約: <typeparamref name="TOp"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<typeparamref name="TOp"/>.Ok(<paramref name="ng"/>)</para>
+        /// <para>制約: <c>Ok</c>(<paramref name="ok"/>) &amp;&amp; !<c>Ok</c>(<paramref name="ng"/>)</para>
         /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
         /// </remarks>
         public static ulong BinarySearch(ulong ok, ulong ng, Func<ulong, bool> okFunc)
             => BinarySearch(new FuncOk<ulong>(okFunc), ok, ng);
         /// <summary>
-        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <typeparamref name="TOp"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
+        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <c>Ok</c>(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
         /// </summary>
         /// <remarks>
-        /// <para>制約: <typeparamref name="TOp"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<typeparamref name="TOp"/>.Ok(<paramref name="ng"/>)</para>
+        /// <para>制約: <c>Ok</c>(<paramref name="ok"/>) &amp;&amp; !<c>Ok</c>(<paramref name="ng"/>)</para>
         /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
         /// </remarks>
         public static ulong BinarySearch<TOp>(ulong ok, ulong ng) where TOp : struct, IOk<ulong>
@@ -115,19 +115,19 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <typeparamref name="TOp"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
+        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <c>Ok</c>(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
         /// </summary>
         /// <remarks>
-        /// <para>制約: <typeparamref name="TOp"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<typeparamref name="TOp"/>.Ok(<paramref name="ng"/>)</para>
+        /// <para>制約: <c>Ok</c>(<paramref name="ok"/>) &amp;&amp; !<c>Ok</c>(<paramref name="ng"/>)</para>
         /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
         /// </remarks>
         public static BigInteger BinarySearch(BigInteger ok, BigInteger ng, Func<BigInteger, bool> okFunc)
             => BinarySearch(new FuncOk<BigInteger>(okFunc), ok, ng);
         /// <summary>
-        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <typeparamref name="TOp"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
+        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <c>Ok</c>(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
         /// </summary>
         /// <remarks>
-        /// <para>制約: <typeparamref name="TOp"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<typeparamref name="TOp"/>.Ok(<paramref name="ng"/>)</para>
+        /// <para>制約: <c>Ok</c>(<paramref name="ok"/>) &amp;&amp; !<c>Ok</c>(<paramref name="ng"/>)</para>
         /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
         /// </remarks>
         public static BigInteger BinarySearch<TOp>(BigInteger ok, BigInteger ng) where TOp : struct, IOk<BigInteger>
@@ -151,28 +151,28 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// <paramref name="ok"/> 以上で <typeparamref name="TOp"/>.Ok(i) == true を満たす最も大きい値を取得します。
+        /// <paramref name="ok"/> 以上で <c>Ok</c>(i) == true を満たす最も大きい値を取得します。
         /// </summary>
         /// <remarks>
-        /// <para>制約: <typeparamref name="TOp"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<typeparamref name="TOp"/>.Ok(<paramref name="ng"/>)</para>
+        /// <para>制約: <c>Ok</c>(<paramref name="ok"/>)</para>
         /// <para>計算量: O(log |result|)</para>
         /// </remarks>
         public static long BinarySearchBig(long ok, Func<long, bool> okFunc)
             => BinarySearchBig(new FuncOk<long>(okFunc), ok);
         /// <summary>
-        /// <paramref name="ok"/> 以上で <typeparamref name="TOp"/>.Ok(i) == true を満たす最も大きい値を取得します。
+        /// <paramref name="ok"/> 以上で <c>Ok</c>(i) == true を満たす最も大きい値を取得します。
         /// </summary>
         /// <remarks>
-        /// <para>制約: <typeparamref name="TOp"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<typeparamref name="TOp"/>.Ok(<paramref name="ng"/>)</para>
+        /// <para>制約: <c>Ok</c>(<paramref name="ok"/>)</para>
         /// <para>計算量: O(log |result|)</para>
         /// </remarks>
         public static long BinarySearchBig<TOp>(long ok) where TOp : struct, IOk<long>
             => BinarySearchBig(default(TOp), ok);
         /// <summary>
-        /// <paramref name="ok"/> 以上で <typeparamref name="TOp"/>.Ok(i) == true を満たす最も大きい値を取得します。
+        /// <paramref name="ok"/> 以上で <c>Ok</c>(i) == true を満たす最も大きい値を取得します。
         /// </summary>
         /// <remarks>
-        /// <para>制約: <typeparamref name="TOp"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<typeparamref name="TOp"/>.Ok(<paramref name="ng"/>)</para>
+        /// <para>制約: <c>Ok</c>(<paramref name="ok"/>)</para>
         /// <para>計算量: O(log |result|)</para>
         /// </remarks>
         public static long BinarySearchBig<TOp>(this TOp op, long ok) where TOp : struct, IOk<long>
@@ -189,28 +189,28 @@ namespace Kzrnm.Competitive
 
 
         /// <summary>
-        /// <paramref name="ok"/> 以上で <typeparamref name="TOp"/>.Ok(i) == true を満たす最も大きい値を取得します。
+        /// <paramref name="ok"/> 以上で <c>Ok</c>(i) == true を満たす最も大きい値を取得します。
         /// </summary>
         /// <remarks>
-        /// <para>制約: <typeparamref name="TOp"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<typeparamref name="TOp"/>.Ok(<paramref name="ng"/>)</para>
+        /// <para>制約: <c>Ok</c>(<paramref name="ok"/>)</para>
         /// <para>計算量: O(log |result|)</para>
         /// </remarks>
         public static BigInteger BinarySearchBig(BigInteger ok, Func<BigInteger, bool> okFunc)
             => BinarySearchBig(ok, new FuncOk<BigInteger>(okFunc));
         /// <summary>
-        /// <paramref name="ok"/> 以上で <typeparamref name="TOp"/>.Ok(i) == true を満たす最も大きい値を取得します。
+        /// <paramref name="ok"/> 以上で <c>Ok</c>(i) == true を満たす最も大きい値を取得します。
         /// </summary>
         /// <remarks>
-        /// <para>制約: <typeparamref name="TOp"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<typeparamref name="TOp"/>.Ok(<paramref name="ng"/>)</para>
+        /// <para>制約: <c>Ok</c>(<paramref name="ok"/>)</para>
         /// <para>計算量: O(log |result|)</para>
         /// </remarks>
         public static BigInteger BinarySearchBig<TOp>(BigInteger ok) where TOp : struct, IOk<BigInteger>
             => BinarySearchBig(ok, default(TOp));
         /// <summary>
-        /// <paramref name="ok"/> 以上で <typeparamref name="TOp"/>.Ok(i) == true を満たす最も大きい値を取得します。
+        /// <paramref name="ok"/> 以上で <c>Ok</c>(i) == true を満たす最も大きい値を取得します。
         /// </summary>
         /// <remarks>
-        /// <para>制約: <typeparamref name="TOp"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<typeparamref name="TOp"/>.Ok(<paramref name="ng"/>)</para>
+        /// <para>制約: <c>Ok</c>(<paramref name="ok"/>)</para>
         /// <para>計算量: O(log |result|)</para>
         /// </remarks>
         public static BigInteger BinarySearchBig<TOp>(BigInteger ok, TOp op) where TOp : struct, IOk<BigInteger>
@@ -226,21 +226,19 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// <summary>
-        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <typeparamref name="TOp"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
+        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <c>Ok</c>(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
         /// </summary>
         /// <remarks>
-        /// <para>制約: <typeparamref name="TOp"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<typeparamref name="TOp"/>.Ok(<paramref name="ng"/>)</para>
+        /// <para>制約: <c>Ok</c>(<paramref name="ok"/>) &amp;&amp; !<c>Ok</c>(<paramref name="ng"/>)</para>
         /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
         /// </remarks>
         public static double BinarySearch(double ok, double ng, Func<double, bool> okFunc, double eps = 1e-7)
             => BinarySearch(new FuncOk<double>(okFunc), ok, ng, eps);
         /// <summary>
-        /// <summary>
-        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <typeparamref name="TOp"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
+        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <c>Ok</c>(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
         /// </summary>
         /// <remarks>
-        /// <para>制約: <typeparamref name="TOp"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<typeparamref name="TOp"/>.Ok(<paramref name="ng"/>)</para>
+        /// <para>制約: <c>Ok</c>(<paramref name="ok"/>) &amp;&amp; !<c>Ok</c>(<paramref name="ng"/>)</para>
         /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
         /// </remarks>
         public static double BinarySearch<TOp>(double ok, double ng, double eps = 1e-7) where TOp : struct, IOk<double>

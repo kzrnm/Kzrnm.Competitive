@@ -348,8 +348,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         }
 
         /// <summary>
-        /// <paramref name="from"/> 以上の要素を列挙する。<paramref name="from"/> がnullならばすべて列挙する。
+        /// <paramref name="from"/> 以上/以下の要素を列挙する。<paramref name="from"/> がnullならばすべて列挙する。
         /// </summary>
+        /// <param name="from">列挙開始するノードの値</param>
         /// <param name="reverse">以上ではなく以下を列挙する</param>
         /// <returns></returns>
         public IEnumerable<T> EnumerateItem(Node from = null, bool reverse = false)
@@ -358,8 +359,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             while (e.MoveNext()) yield return e.Current;
         }
         /// <summary>
-        /// <paramref name="from"/> 以上のノードを列挙する。<paramref name="from"/> がnullならばすべて列挙する。
+        /// <paramref name="from"/> 以上/以下のノードを列挙する。<paramref name="from"/> がnullならばすべて列挙する。
         /// </summary>
+        /// <param name="from">列挙開始するノードの値</param>
         /// <param name="reverse">以上ではなく以下を列挙する</param>
         /// <returns></returns>
         public IEnumerable<Node> EnumerateNode(Node from = null, bool reverse = false)

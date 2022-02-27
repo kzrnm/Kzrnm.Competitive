@@ -241,7 +241,7 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// [<paramref name="from"/>, <paramref name="toExclusive"/>)の範囲を列挙する。はみ出た範囲も含める。
+        /// [<paramref name="from"/>, <paramref name="toInclusive"/>]の範囲を列挙する。はみ出た範囲も含める。
         /// </summary>
         public IEnumerable<(T From, T ToInclusive)> RangeAll(T from, T toInclusive)
         {

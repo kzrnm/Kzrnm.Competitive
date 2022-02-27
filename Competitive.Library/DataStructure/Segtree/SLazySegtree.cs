@@ -15,11 +15,11 @@ namespace Kzrnm.Competitive
     public interface ISLazySegtreeOperator<T, F>
     {
         /// <summary>
-        /// Operate(x, <paramref name="Identity"/>) = x を満たす単位元。
+        /// <c>Operate(x, Identity) = x</c> を満たす単位元。
         /// </summary>
         T Identity { get; }
         /// <summary>
-        /// Mapping(<paramref name="FIdentity"/>, x) = x を満たす恒等写像。
+        /// <c>Mapping(FIdentity, x) = x</c> を満たす恒等写像。
         /// </summary>
         F FIdentity { get; }
         /// <summary>
@@ -67,7 +67,7 @@ namespace Kzrnm.Competitive
 
 
         /// <summary>
-        /// 長さ <paramref name="n"/> の数列 a　を持つ <see cref="SLazySegtree{TValue, F, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <see cref="TOp.Identity"/> です。
+        /// 長さ <paramref name="n"/> の数列 a　を持つ <see cref="SLazySegtree{TValue, F, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <c>Identity</c> です。
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
@@ -94,8 +94,8 @@ namespace Kzrnm.Competitive
         /// 長さ n=<paramref name="v"/>.Length の数列 a　を持つ <see cref="SLazySegtree{TValue, F, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <paramref name="v"/> です。
         /// </summary>
         /// <remarks>
-        /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
-        /// <para>計算量: O(<paramref name="n"/>)</para>
+        /// <para>制約: 0≤<c>n</c>≤10^8</para>
+        /// <para>計算量: O(<c>n</c>)</para>
         /// </remarks>
         /// <param name="v">初期配列</param>
         public SLazySegtree(TValue[] v) : this(v.Length)
@@ -160,13 +160,13 @@ namespace Kzrnm.Competitive
         public TValue Slice(int l, int len) => Prod(l, l + len);
 
         /// <summary>
-        /// <see cref="TOp.Operate"/>(a[<paramref name="l"/>], ..., a[<paramref name="r"/> - 1]) を返します。<paramref name="l"/> = <paramref name="r"/> のときは　<see cref="TOp.Identity"/> を返します。
+        /// <c>op.Operate</c>(a[<paramref name="l"/>], ..., a[<paramref name="r"/> - 1]) を返します。<paramref name="l"/> = <paramref name="r"/> のときは　<c>Identity</c> を返します。
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="l"/>≤<paramref name="r"/>≤n</para>
         /// <para>計算量: O(log n)</para>
         /// </remarks>
-        /// <returns><see cref="TOp.Operate"/>(a[<paramref name="l"/>], ..., a[<paramref name="r"/> - 1])</returns>
+        /// <returns><c>op.Operate</c>(a[<paramref name="l"/>], ..., a[<paramref name="r"/> - 1])</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public TValue Prod(int l, int r)
         {
@@ -195,16 +195,16 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// <see cref="TOp.Operate"/>(a[0], ..., a[n - 1]) を返します。n = 0 のときは　<see cref="TOp.Identity"/> を返します。
+        /// <c>op.Operate</c>(a[0], ..., a[n - 1]) を返します。n = 0 のときは　<c>Identity</c> を返します。
         /// </summary>
         /// <remarks>
         /// <para>計算量: O(1)</para>
         /// </remarks>
-        /// <returns><see cref="TOp.Operate"/>(a[0], ..., a[n - 1])</returns>
+        /// <returns><c>op.Operate</c>(a[0], ..., a[n - 1])</returns>
         public TValue AllProd => d[1];
 
         /// <summary>
-        /// a[<paramref name="p"/>] = <see cref="TOp.Mapping"/>(<paramref name="f"/>, a[<paramref name="p"/>])
+        /// a[<paramref name="p"/>] = <c>Mapping</c>(<paramref name="f"/>, a[<paramref name="p"/>])
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="p"/>≤n</para>
@@ -220,7 +220,7 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// i = <paramref name="l"/>..<paramref name="r"/> について a[i] = <see cref="TOp.Mapping"/>(<paramref name="f"/>, a[<paramref name="p"/>])
+        /// i = <paramref name="l"/>..<paramref name="r"/> について <paramref name="f"/> を作用させます。
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="l"/>≤<paramref name="r"/>≤n</para>
@@ -281,7 +281,7 @@ namespace Kzrnm.Competitive
         /// <description><paramref name="g"/> を同じ引数で呼んだ時、返り値は等しい(=副作用はない)。</description>
         /// </item>
         /// <item>
-        /// <description><paramref name="g"/>(<see cref="TOp.Identity"/>) = true</description>
+        /// <description><paramref name="g"/>(<c>Identity</c>) = true</description>
         /// </item>
         /// <item>
         /// <description>0≤<paramref name="l"/>≤n</description>
@@ -340,7 +340,7 @@ namespace Kzrnm.Competitive
         /// <description><paramref name="g"/> を同じ引数で呼んだ時、返り値は等しい(=副作用はない)。</description>
         /// </item>
         /// <item>
-        /// <description><paramref name="g"/>(<see cref="TOp.Identity"/>) = true</description>
+        /// <description><paramref name="g"/>(<c>Identity</c>) = true</description>
         /// </item>
         /// <item>
         /// <description>0≤<paramref name="r"/>≤n</description>

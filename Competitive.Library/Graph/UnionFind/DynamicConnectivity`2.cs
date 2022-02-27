@@ -581,7 +581,7 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// <paramref name="s"/> 番目の値 v を <see cref="TOp.Operate"/>(v, <paramref name="x"/>) で更新します。
+        /// <paramref name="s"/> 番目の値 v を <c>Operate(v, <paramref name="x"/>)</c> で更新します。
         /// </summary>
         [MethodImpl(AggressiveInlining)]
         public void Apply(int s, T x) => ett[0].Apply(s, x);

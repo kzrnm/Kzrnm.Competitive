@@ -1,7 +1,7 @@
-﻿using AtCoder.Operators;
-using Kzrnm.Competitive;
+﻿using AtCoder;
+using AtCoder.Operators;
 
-namespace AtCoder.Extension
+namespace Kzrnm.Competitive
 {
     public static class FenwickTreeExtension
     {
@@ -10,7 +10,7 @@ namespace AtCoder.Extension
         /// </summary>
         /// <remarks>
         /// <para>制約: <paramref name="fw"/> の値が非負。</para>
-        /// <para>計算量: O(log <paramref name="n"/>)</para>
+        /// <para>計算量: O(log <c>n</c>)</para>
         /// </remarks>
         public static int LowerBound<TValue, TOp>(this FenwickTree<TValue, TOp> fw, TValue v)
             where TOp : struct, IAdditionOperator<TValue>, ISubtractOperator<TValue>, ICompareOperator<TValue>
@@ -35,7 +35,7 @@ namespace AtCoder.Extension
         /// </summary>
         /// <remarks>
         /// <para>制約: <paramref name="fw"/> の値が非負。</para>
-        /// <para>計算量: O(log <paramref name="n"/>)</para>
+        /// <para>計算量: O(log <c>n</c>)</para>
         /// </remarks>
         public static int UpperBound<TValue, TOp>(this FenwickTree<TValue, TOp> fw, TValue v)
             where TOp : struct, IAdditionOperator<TValue>, ISubtractOperator<TValue>, ICompareOperator<TValue>

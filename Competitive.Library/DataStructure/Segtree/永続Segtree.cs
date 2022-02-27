@@ -35,7 +35,7 @@ namespace Kzrnm.Competitive
         internal readonly Node Root;
 
         /// <summary>
-        /// 長さ <paramref name="n"/> の数列 a　を持つ <see cref="PersistentSegtree{TValue, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <see cref="TOp.Identity"/> です。
+        /// 長さ <paramref name="n"/> の数列 a　を持つ <see cref="PersistentSegtree{TValue, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <c>Identity</c> です。
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
@@ -47,8 +47,8 @@ namespace Kzrnm.Competitive
         /// 長さ n=<paramref name="v"/>.Length の数列 a　を持つ <see cref="PersistentSegtree{TValue, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <paramref name="v"/> です。
         /// </summary>
         /// <remarks>
-        /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
-        /// <para>計算量: O(<paramref name="n"/>)</para>
+        /// <para>制約: <c>0≤n≤10^8</c></para>
+        /// <para>計算量: <c>O(n)</c></para>
         /// </remarks>
         /// <param name="v">初期配列</param>
         public PersistentSegtree(TValue[] v) : this(v.Length, Build(0, v.Length, v)) { }
@@ -115,13 +115,13 @@ namespace Kzrnm.Competitive
         public TValue Slice(int l, int len) => Prod(l, l + len);
 
         /// <summary>
-        /// <see cref="TOp.Operate"/>(a[<paramref name="l"/>], ..., a[<paramref name="r"/> - 1]) を返します。<paramref name="l"/> = <paramref name="r"/> のときは　<see cref="TOp.Identity"/> を返します。
+        /// <c>Operate</c>(a[<paramref name="l"/>], ..., a[<paramref name="r"/> - 1]) を返します。<paramref name="l"/> = <paramref name="r"/> のときは　<c>Identity</c> を返します。
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="l"/>≤<paramref name="r"/>≤n</para>
         /// <para>計算量: O(log n)</para>
         /// </remarks>
-        /// <returns><see cref="TOp.Operate"/>(a[<paramref name="l"/>], ..., a[<paramref name="r"/> - 1])</returns>
+        /// <returns><c>Operate</c>(a[<paramref name="l"/>], ..., a[<paramref name="r"/> - 1])</returns>
         [MethodImpl(AggressiveInlining)]
         public TValue Prod(int l, int r)
         {
@@ -142,12 +142,12 @@ namespace Kzrnm.Competitive
 
 
         /// <summary>
-        /// <see cref="TOp.Operate"/>(a[0], ..., a[n - 1]) を返します。n = 0 のときは　<see cref="TOp.Identity"/> を返します。
+        /// <c>Operate</c>(a[0], ..., a[n - 1]) を返します。n = 0 のときは　<c>Identity</c> を返します。
         /// </summary>
         /// <remarks>
         /// <para>計算量: O(1)</para>
         /// </remarks>
-        /// <returns><see cref="TOp.Operate"/>(a[0], ..., a[n - 1])</returns>
+        /// <returns><c>Operate</c>(a[0], ..., a[n - 1])</returns>
         public TValue AllProd => Root.data;
 
 

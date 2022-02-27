@@ -1,11 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using AtCoder.Internal;
 
-namespace System
+namespace Kzrnm.Competitive
 {
-    using static MethodImplOptions;
     public static class __CollectionExtension
     {
         public static TValue Get<TKey, TValue>(this IDictionary<TKey, TValue> dic, TKey key)

@@ -17,6 +17,7 @@ namespace Kzrnm.Competitive
         /// <param name="to">数値 i からの遷移先</param>
         /// <param name="data">数値 i でのデータ</param>
         /// <param name="max">最大何番目までの遷移を見たいか</param>
+        /// <param name="op">現在地 x と 遷移先の y の値を <c>Operate(x, y)</c> でマージする関数定義</param>
         public PathDoubling(int[] to, T[] data, long max, TOp op = default) : this(to, data, (ulong)max, op) { }
         /// <summary>
         /// <para><paramref name="to"/>: 頂点 i からの遷移先。負数は遷移先なしとする。</para>
@@ -26,6 +27,7 @@ namespace Kzrnm.Competitive
         /// <param name="to">数値 i からの遷移先</param>
         /// <param name="data">数値 i でのデータ</param>
         /// <param name="max">最大何番目までの遷移を見たいか</param>
+        /// <param name="op">現在地 x と 遷移先の y の値を <c>Operate(x, y)</c> でマージする関数定義</param>
         public PathDoubling(int[] to, T[] data, ulong max = ulong.MaxValue, TOp op = default)
         {
             this.op = op;

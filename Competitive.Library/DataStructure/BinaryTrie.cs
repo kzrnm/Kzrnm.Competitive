@@ -9,9 +9,9 @@ namespace Kzrnm.Competitive
     public class BinaryTrie
     {
         /// <summary>
-        /// 1 &lt;&lt; <paramref name="maxDepth"/> 未満の数値を取り扱う BinaryTrie を作成する。
+        /// <c>(1 &lt;&lt; <paramref name="maxDepth"/>)</c> 未満の数値を取り扱う BinaryTrie を作成する。
         /// </summary>
-        public BinaryTrie(int maxDepth = 64) : this(new Node()) { }
+        public BinaryTrie(int maxDepth = 64) : this(new Node(), maxDepth) { }
         private BinaryTrie(Node root, int maxDepth = 64)
         {
             _root = root;
@@ -52,7 +52,6 @@ namespace Kzrnm.Competitive
 
         /// <summary>
         /// <para><paramref name="num"/> をデクリメントする。</para>
-        /// <para><paramref name="idx"/> に対して −1 以外を与えると accept にそのノードにマッチする全ての値のindexが格納される。</para>
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱う。</para>
         /// </summary>
         public void Remove(ulong num, ulong xorVal = 0)

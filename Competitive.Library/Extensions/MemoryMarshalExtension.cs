@@ -1,10 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using AtCoder.Internal;
 using System.Runtime.InteropServices;
 
-namespace System
+namespace Kzrnm.Competitive
 {
     using static MethodImplOptions;
     public static class __MemoryMarshalExtension
