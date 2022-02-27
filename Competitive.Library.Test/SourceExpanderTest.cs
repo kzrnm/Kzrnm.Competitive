@@ -44,14 +44,11 @@ namespace Embedding
             embedded.EmbeddedNamespaces
                 .Should()
                 .Equal(
-                    "AtCoder.Extension",
                     "Kzrnm.Competitive",
                     "Kzrnm.Competitive.DataStructure",
                     "Kzrnm.Competitive.DebugUtil",
-                    "Kzrnm.Competitive.Linq",
-                    "Kzrnm.Competitive.SetInternals",
-                    "System",
-                    "System.Linq");
+                    "Kzrnm.Competitive.LinqInternals",
+                    "Kzrnm.Competitive.SetInternals");
 
         }
     }
