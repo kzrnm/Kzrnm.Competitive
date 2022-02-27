@@ -8,6 +8,25 @@
 		<NoWarn>1701;1702;CA1034;CA1036;CA1815;IDE0034;IDE0044;EMBED0004</NoWarn>
 		<DefineConstants>$(DefineConstants);ATCODER_CONTRACT</DefineConstants>
 		<Configurations>Debug;Release;Library</Configurations>
+
+		<PackageId>Kzrnm.Competitive</PackageId>
+		<Description>Competitive programming library</Description>
+		<PackageTags>competitive;ac-library-csharp;AtCoder</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+		<Authors>kzrnm</Authors>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryCommit Condition="'$(GIT_COMMIT)' != ''">$(GIT_COMMIT)</RepositoryCommit>
+		<PackageProjectUrl>https://github.com/kzrnm/Kzrnm.Competitive</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/kzrnm/Kzrnm.Competitive</RepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -15,6 +34,10 @@
 		<PackageReference Include="ac-library-csharp" Version="1.10.0" />
 		<PackageReference Include="Competitive.IO" Version="0.7.0" />
 
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="SourceExpander.Embedder" Version="4.1.1" Condition="'$(Configuration)' != 'Library'">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

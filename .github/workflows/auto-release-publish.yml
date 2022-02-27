@@ -1,0 +1,59 @@
+name: Auto release publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version (e.g. 1.0.0)"
+        required: true
+      is-prerelease:
+        type: boolean
+        description: "prerelease"
+        required: false
+        default: false
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_NOLOGO: true
+  NUGET_XMLDOC_MODE: skip
+  WORKFLOW_BUILD_SLN: Competitive.Library/Competitive.Library.sln
+  PACK_CSPROJ: Competitive.Library/Competitive.Library.csproj
+  VERSION: ${{ github.event.inputs.version }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: |
+            3.1.x
+            6.0.x
+      - uses: actions/cache@v2
+        with:
+          path: ${{ github.workspace }}/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      - name: Build
+        run: dotnet build ${{ env.WORKFLOW_BUILD_SLN }} -c Release -p:Version=${{ env.VERSION }}
+      - name: Test
+        run: dotnet test ${{ env.WORKFLOW_BUILD_SLN }} --no-build --logger GitHubActions -c Release
+      - name: Pack
+        run: dotnet pack ${{ env.PACK_CSPROJ }} --no-build -c Release -o bin/Packages/Release -p:Version=${{ env.VERSION }}
+      - uses: actions/upload-artifact@v1
+        with:
+          name: dist
+          path: bin/Packages/Release
+
+  publish:
+    needs: [build]
+    uses: kzrnm/dotnet-actions/.github/workflows/publish.yml@v1
+    with:
+      artifact-name: dist
+      version: ${{ github.event.inputs.version }}
+      is-prerelease: ${{ needs.get-version.outputs.is-prerelease == 'true' }}
+    secrets:
+      NUGET_KEY: ${{ secrets.NUGET_KEY }}
