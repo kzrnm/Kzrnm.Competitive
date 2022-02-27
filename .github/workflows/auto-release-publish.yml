@@ -6,6 +6,11 @@ on:
       version:
         description: "Version (e.g. 1.0.0)"
         required: true
+      is-prerelease:
+        type: boolean
+        description: "prerelease"
+        required: false
+        default: false
 env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
@@ -39,16 +44,16 @@ jobs:
       - name: Pack
         run: dotnet pack ${{ env.PACK_CSPROJ }} --no-build -c Release -o bin/Packages/Release -p:Version=${{ env.VERSION }}
       - uses: actions/upload-artifact@v1
-        if: ${{ needs.get-version.outputs.is-new == 'true' }}
         with:
           name: dist
           path: bin/Packages/Release
-          
+
   publish:
     needs: [build]
     uses: kzrnm/dotnet-actions/.github/workflows/publish.yml@v1
     with:
       artifact-name: dist
       version: ${{ github.event.inputs.version }}
+      is-prerelease: ${{ needs.get-version.outputs.is-prerelease == 'true' }}
     secrets:
       NUGET_KEY: ${{ secrets.NUGET_KEY }}
