@@ -3,12 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Text;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using static MethodImplOptions;
     [DebuggerTypeProxy(typeof(PriorityQueueDijkstra<,>.DebugView))]
     [DebuggerDisplay(nameof(Count) + " = {" + nameof(Count) + "}")]
     public class PriorityQueueDijkstra<TKey, TKOp> : IPriorityQueueOp<KeyValuePair<TKey, int>>
@@ -32,9 +30,9 @@ namespace Kzrnm.Competitive
         public int Count { get; private set; } = 0;
 
         public KeyValuePair<TKey, int> Peek => KeyValuePair.Create(keys[0], values[0]);
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         void IPriorityQueueOp<KeyValuePair<TKey, int>>.Enqueue(KeyValuePair<TKey, int> pair) => Enqueue(pair.Key, pair.Value);
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public void Enqueue(TKey key, int value)
         {
             var ix = indexes[value];
@@ -46,7 +44,7 @@ namespace Kzrnm.Competitive
             keys[ix] = key;
             UpdateUp(ix);
         }
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool TryDequeue(out TKey key, out int value)
         {
             if (Count == 0)
@@ -58,7 +56,7 @@ namespace Kzrnm.Competitive
             (key, value) = Dequeue();
             return true;
         }
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool TryDequeue(out KeyValuePair<TKey, int> result)
         {
             if (Count == 0)
@@ -69,7 +67,7 @@ namespace Kzrnm.Competitive
             result = Dequeue();
             return true;
         }
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public KeyValuePair<TKey, int> Dequeue()
         {
             indexes[values[0]] = -1;
@@ -80,7 +78,7 @@ namespace Kzrnm.Competitive
             UpdateDown(0);
             return res;
         }
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         private void UpdateUp(int i)
         {
             var tar = keys[i];
@@ -99,7 +97,7 @@ namespace Kzrnm.Competitive
             values[i] = tarVal;
             indexes[values[i]] = i;
         }
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         private void UpdateDown(int i)
         {
             var tar = keys[i];

@@ -3,11 +3,10 @@ using Kzrnm.Competitive.SetInternals;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using static MethodImplOptions;
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class Set<T> : Set<T, DefaultComparerStruct<T>>
@@ -50,19 +49,19 @@ namespace Kzrnm.Competitive
             {
                 this.comparer = comparer;
             }
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public Node Create(T item, NodeColor color) => new Node(item, color);
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public T GetValue(Node node) => node.Item;
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public void SetValue(ref Node node, T value) => node.Item = value;
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public T GetCompareKey(T item) => item;
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public int Compare(T x, T y) => comparer.Compare(x, y);
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public int Compare(Node node1, Node node2) => comparer.Compare(node1.Item, node2.Item);
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public int Compare(T value, Node node) => comparer.Compare(value, node.Item);
         }
     }

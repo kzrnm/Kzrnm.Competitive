@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -38,6 +38,7 @@ namespace Kzrnm.Competitive
         /// クエリの結果を返す
         /// </summary>
         /// <returns></returns>
+        [凾(256)]
         public T[] Solve()
         {
             var result = new T[Queries.Length];

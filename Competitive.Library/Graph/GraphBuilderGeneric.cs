@@ -1,9 +1,9 @@
 ﻿#pragma warning disable CA1819 // Properties should not return arrays
-using Kzrnm.Competitive.IO;
 using AtCoder.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -14,6 +14,7 @@ namespace Kzrnm.Competitive
         {
             edgeContainer = new EdgeContainer<GraphEdge<T>>(size, isDirected);
         }
+        [凾(256)]
         public void Add(int from, int to, T data) => edgeContainer.Add(from, new GraphEdge<T>(to, data));
 
 
@@ -110,11 +111,13 @@ namespace Kzrnm.Competitive
         public T Data { get; }
         public int To { get; }
         public override string ToString() => $"to:{To}, Data:{Data}";
+        [凾(256)]
         public void Deconstruct(out int to, out T data)
         {
             to = To;
             data = Data;
         }
+        [凾(256)]
         public GraphEdge<T> Reversed(int from) => new GraphEdge<T>(from, Data);
 
         public override int GetHashCode() => this.To;

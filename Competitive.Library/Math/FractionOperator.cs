@@ -1,43 +1,42 @@
 ﻿using AtCoder.Operators;
 using System;
-using System.Runtime.CompilerServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using static MethodImplOptions;
     public struct FractionOperator : INumOperator<Fraction>, ICompareOperator<Fraction>
     {
         public Fraction MinValue => new Fraction(long.MinValue, 1);
         public Fraction MaxValue => new Fraction(long.MaxValue, 1);
         public Fraction MultiplyIdentity => new Fraction(1, 1);
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public Fraction Add(Fraction x, Fraction y) => x + y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public Fraction Subtract(Fraction x, Fraction y) => x - y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public Fraction Multiply(Fraction x, Fraction y) => x * y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public Fraction Divide(Fraction x, Fraction y) => x / y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public Fraction Modulo(Fraction x, Fraction y) => throw new NotSupportedException();
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public int Compare(Fraction x, Fraction y) => x.CompareTo(y);
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool GreaterThan(Fraction x, Fraction y) => x > y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool GreaterThanOrEqual(Fraction x, Fraction y) => x >= y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool LessThan(Fraction x, Fraction y) => x < y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool LessThanOrEqual(Fraction x, Fraction y) => x <= y;
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public Fraction Minus(Fraction x) => -x;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public Fraction Increment(Fraction x) => throw new NotSupportedException();
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public Fraction Decrement(Fraction x) => throw new NotSupportedException();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AtCoder;
 using AtCoder.Internal;
 using System;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -43,6 +44,7 @@ namespace Kzrnm.Competitive
                 }
             }
 
+            [凾(256)]
             public uint[] MultiplyMod(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b)
             {
                 var beta = Convolution(a, b);
@@ -54,9 +56,11 @@ namespace Kzrnm.Competitive
                 return result;
             }
 
+            [凾(256)]
             public uint[] Convolution(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b)
-                => ConvolutionAnyMod.Convolution(a, b, (int)mod);
+                  => ConvolutionAnyMod.Convolution(a, b, (int)mod);
 
+            [凾(256)]
             public uint Calculate(long n)
             {
                 var b = new uint[a.Length];
@@ -118,6 +122,7 @@ namespace Kzrnm.Competitive
                 }
             }
 
+            [凾(256)]
             public uint[] MultiplyMod(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b)
             {
                 var beta = Convolution(a, b);
@@ -129,9 +134,11 @@ namespace Kzrnm.Competitive
                 return result;
             }
 
+            [凾(256)]
             public uint[] Convolution(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b)
-                => ConvolutionAnyMod.Convolution<TMod>(a, b);
+                   => ConvolutionAnyMod.Convolution<TMod>(a, b);
 
+            [凾(256)]
             public uint Calculate(long n)
             {
                 var b = new uint[a.Length];

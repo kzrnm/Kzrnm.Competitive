@@ -1,7 +1,7 @@
 ﻿
 using AtCoder.Internal;
-using System;
 using System.Collections.Generic;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -11,9 +11,10 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 閉路があれば返す。なければ(-1, null)
         /// </summary>
+        [凾(256)]
         public static (int from, TEdge[] edges) GetCycleDFS<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
-            where TNode : IGraphNode<TEdge>
-            where TEdge : IGraphEdge
+             where TNode : IGraphNode<TEdge>
+             where TEdge : IGraphEdge
         {
             var statuses = new Status[graph.Length];
             (int from, SimpleList<TEdge> edges) DFS(Stack<(int v, int childIdx)> stack)

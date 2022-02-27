@@ -1,6 +1,6 @@
 ﻿using AtCoder;
 using System;
-using System.Runtime.CompilerServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -36,13 +36,14 @@ namespace Kzrnm.Competitive
         /// </summary>
         public (int Index, T Data) this[int u, int v]
         {
-            [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+            [凾(256)]
             get => Lca(u, v);
         }
 
         /// <summary>
         /// 2つの頂点の共通祖先とその経路のデータをマージした値を取得する
         /// </summary>
+        [凾(256)]
         public (int Index, T Data) Lca(int u, int v)
         {
             var op = doubling.op;
@@ -74,6 +75,7 @@ namespace Kzrnm.Competitive
         /// <para>2つの頂点の共通祖先のそれぞれの子(最小非共通祖先)を返します。</para>
         /// <para>一方がもう一方の祖先の場合は祖先の方は自身を返します。</para>
         /// </summary>
+        [凾(256)]
         public (int uAncestor, int vAncestor) ChildOfLca(int u, int v)
         {
             int dd = tree[u].Depth - tree[v].Depth;
@@ -110,6 +112,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 2つの頂点の距離を取得する
         /// </summary>
+        [凾(256)]
         public int Distance(int u, int v)
         {
             var lca = Lca(u, v).Index;

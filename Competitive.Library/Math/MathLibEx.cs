@@ -1,33 +1,33 @@
-﻿using AtCoder;
+﻿using AtCoder.Internal;
 using AtCoder.Operators;
 using System;
 using System.Numerics;
-using System.Runtime.CompilerServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using static MethodImplOptions;
     public static class MathLibEx
     {
         /// <summary>
         /// 最大公約数
         /// </summary>
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public static int Gcd(int a, int b) => b > a ? Gcd(b, a) : (b == 0 ? a : Gcd(b, a % b));
         /// <summary>
         /// 最大公約数
         /// </summary>
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public static long Gcd(long a, long b) => b > a ? Gcd(b, a) : (b == 0 ? a : Gcd(b, a % b));
         /// <summary>
         /// 最大公約数
         /// </summary>
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public static BigInteger Gcd(BigInteger a, BigInteger b) => BigInteger.GreatestCommonDivisor(a, b);
 
         /// <summary>
         /// 最大公約数
         /// </summary>
+        [凾(256)]
         public static int Gcd(params int[] nums)
         {
             var gcd = nums[0];
@@ -38,6 +38,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 最大公約数
         /// </summary>
+        [凾(256)]
         public static long Gcd(params long[] nums)
         {
             var gcd = nums[0];
@@ -48,6 +49,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 最大公約数
         /// </summary>
+        [凾(256)]
         public static BigInteger Gcd(params BigInteger[] nums)
         {
             var gcd = nums[0];
@@ -59,22 +61,23 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 最小公倍数
         /// </summary>
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public static int Lcm(int a, int b) => a / Gcd(a, b) * b;
         /// <summary>
         /// 最小公倍数
         /// </summary>
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public static long Lcm(long a, long b) => checked(a / Gcd(a, b) * b);
         /// <summary>
         /// 最小公倍数
         /// </summary>
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public static BigInteger Lcm(BigInteger a, BigInteger b) => a / Gcd(a, b) * b;
 
         /// <summary>
         /// 最小公倍数
         /// </summary>
+        [凾(256)]
         public static int Lcm(params int[] nums)
         {
             var lcm = nums[0];
@@ -85,6 +88,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 最小公倍数
         /// </summary>
+        [凾(256)]
         public static long Lcm(params long[] nums)
         {
             var lcm = nums[0];
@@ -95,6 +99,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 最小公倍数
         /// </summary>
+        [凾(256)]
         public static BigInteger Lcm(params BigInteger[] nums)
         {
             var lcm = nums[0];
@@ -111,8 +116,8 @@ namespace Kzrnm.Competitive
             if (n == 1)
                 return new int[] { 1 };
 
-            var left = new AtCoder.Internal.SimpleList<int>();
-            var right = new AtCoder.Internal.SimpleList<int>();
+            var left = new SimpleList<int>();
+            var right = new SimpleList<int>();
             left.Add(1);
             right.Add(n);
 
@@ -142,8 +147,8 @@ namespace Kzrnm.Competitive
             if (n == 1)
                 return new long[] { 1 };
 
-            var left = new AtCoder.Internal.SimpleList<long>();
-            var right = new AtCoder.Internal.SimpleList<long>();
+            var left = new SimpleList<long>();
+            var right = new SimpleList<long>();
             left.Add(1);
             right.Add(n);
 

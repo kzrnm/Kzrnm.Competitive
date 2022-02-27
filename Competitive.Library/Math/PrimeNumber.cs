@@ -1,9 +1,9 @@
-﻿using AtCoder;
-using AtCoder.Internal;
+﻿using AtCoder.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -18,6 +18,7 @@ namespace Kzrnm.Competitive
         {
             (primes, searches) = Eratosthenes(max);
         }
+        [凾(256)]
         public Dictionary<long, int> PrimeFactoring(long num)
         {
             var primeFactors = new Dictionary<long, int>();
@@ -27,6 +28,7 @@ namespace Kzrnm.Competitive
             }
             return primeFactors;
         }
+        [凾(256)]
         public Dictionary<int, int> PrimeFactoring(int num)
         {
             if (num < searches.Length) return PrimeFactoringFast(num);
@@ -38,6 +40,7 @@ namespace Kzrnm.Competitive
             }
             return primeFactors;
         }
+        [凾(256)]
         IEnumerable<long> EnumerateFactor(long num)
         {
             foreach (var p in primes)
@@ -48,6 +51,7 @@ namespace Kzrnm.Competitive
             }
             if (num > 1) yield return num;
         }
+        [凾(256)]
         static bool DivIfMulti(ref long num, long p)
         {
             Math.DivRem(num, p, out var d);
@@ -58,6 +62,7 @@ namespace Kzrnm.Competitive
             }
             return false;
         }
+        [凾(256)]
         Dictionary<int, int> PrimeFactoringFast(int num)
         {
             if (num >= searches.Length) throw new ArgumentOutOfRangeException(nameof(num));
@@ -69,6 +74,7 @@ namespace Kzrnm.Competitive
             }
             return primeFactors;
         }
+        [凾(256)]
         static (int[] primes, int[] searches) Eratosthenes(int n)
         {
             var searches = new int[n + 1];
@@ -113,6 +119,7 @@ namespace Kzrnm.Competitive
         /// <para>素数かどうか判定します。</para>
         /// <para><paramref name="num"/> が <see langword="this"/> の最大の2乗より大きい場合は誤って <see langword="true"/> を返す可能性があります。</para>
         /// </summary>
+        [凾(256)]
         public bool IsPrime(long num)
         {
             if (num <= this.primes[^1])

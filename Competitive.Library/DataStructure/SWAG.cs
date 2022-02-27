@@ -1,8 +1,7 @@
 ﻿using AtCoder;
 using AtCoder.Internal;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -26,6 +25,7 @@ namespace Kzrnm.Competitive
         /// <para>[<paramref name="l"/>..<paramref name="r"/>) の範囲クエリの結果を返す。</para>
         /// <para>計算量: O(N)</para>
         /// </summary>
+        [凾(256)]
         public T Slide(int l, int r)
         {
             Contract.Assert(l <= r, "Range: l <= r");

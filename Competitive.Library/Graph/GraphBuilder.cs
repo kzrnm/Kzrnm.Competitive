@@ -4,6 +4,7 @@ using AtCoder.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -35,6 +36,7 @@ namespace Kzrnm.Competitive
                 gb.Add(cr.Int0, cr.Int0);
             return gb;
         }
+        [凾(256)]
         public void Add(int from, int to) => edgeContainer.Add(from, new GraphEdge(to));
 
 
@@ -127,8 +129,10 @@ namespace Kzrnm.Competitive
             To = to;
         }
         public int To { get; }
+        [凾(256)]
         public static implicit operator int(GraphEdge e) => e.To;
         public override string ToString() => To.ToString();
+        [凾(256)]
         public GraphEdge Reversed(int from) => new GraphEdge(from);
 
         public override int GetHashCode() => this.To;

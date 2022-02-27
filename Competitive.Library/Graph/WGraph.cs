@@ -1,7 +1,7 @@
-﻿using AtCoder;
-using AtCoder.Internal;
+﻿using AtCoder.Internal;
 using AtCoder.Operators;
 using System.Diagnostics;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -23,8 +23,9 @@ namespace Kzrnm.Competitive
         public CSR<TEdge> Edges { get; }
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         internal TNode[] Nodes { get; }
+        [凾(256)]
         public TNode[] AsArray() => Nodes;
-        public TNode this[int index] => Nodes[index];
+        public TNode this[int index] { [凾(256)] get => Nodes[index]; }
         public int Length => Nodes.Length;
         public WGraph(TNode[] array, CSR<TEdge> edges)
         {
@@ -39,8 +40,9 @@ namespace Kzrnm.Competitive
     {
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         internal TNode[] Nodes { get; }
+        [凾(256)]
         public TNode[] AsArray() => Nodes;
-        public TNode this[int index] => Nodes[index];
+        public TNode this[int index] { [凾(256)] get => Nodes[index]; }
         public int Length => Nodes.Length;
         public int Root { get; }
         public WTreeGraph(TNode[] array, int root)

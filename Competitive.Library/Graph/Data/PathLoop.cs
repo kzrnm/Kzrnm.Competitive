@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Text;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -48,14 +46,14 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <param name="moveNum">: 移動回数</param>
         /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [凾(256)]
         public int Move(long moveNum) => Move((ulong)moveNum);
         /// <summary>
         /// <para><paramref name="moveNum"/>: 移動回数</para>
         /// </summary>
         /// <param name="moveNum">: 移動回数</param>
         /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [凾(256)]
         public int Move(ulong moveNum)
         {
             if (moveNum < (ulong)Straight.Length)
@@ -69,7 +67,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <param name="moveNum">: 移動回数</param>
         /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [凾(256)]
         public int Move(BigInteger moveNum)
         {
             if (moveNum < Straight.Length)

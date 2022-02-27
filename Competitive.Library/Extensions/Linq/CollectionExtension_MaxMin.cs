@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -8,6 +9,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 最大値と最小値を取得する。空ならデフォルト
         /// </summary>
+        [凾(256)]
         public static (T Min, T Max) MinMax<T>(this IEnumerable<T> collection) where T : IComparable<T>
         {
             using var e = collection.GetEnumerator();
@@ -25,11 +27,13 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 最大値と最小値を取得する。空ならデフォルト
         /// </summary>
+        [凾(256)]
         public static (T Min, T Max) MinMax<T>(this Span<T> collection) where T : IComparable<T>
-            => MinMax((ReadOnlySpan<T>)collection);
+               => MinMax((ReadOnlySpan<T>)collection);
         /// <summary>
         /// 最大値と最小値を取得する。空ならデフォルト
         /// </summary>
+        [凾(256)]
         public static (T Min, T Max) MinMax<T>(this ReadOnlySpan<T> collection) where T : IComparable<T>
         {
             if (collection.IsEmpty) return default((T, T));

@@ -3,12 +3,11 @@ using AtCoder;
 using AtCoder.Internal;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using static MethodImplOptions;
 
     /// <summary>
     /// <para>削除可能 UnionFind</para>
@@ -34,46 +33,46 @@ namespace Kzrnm.Competitive
             internal byte flag;
             public bool Exact
             {
-                [MethodImpl(AggressiveInlining)]
+                [凾(256)]
                 set
                 {
                     if (value) flag |= 0b0001;
                     else flag &= unchecked((byte)~0b0001);
                 }
-                [MethodImpl(AggressiveInlining)]
+                [凾(256)]
                 get => (flag & 0b0001) > 0;
             }
             public bool ChildExact
             {
-                [MethodImpl(AggressiveInlining)]
+                [凾(256)]
                 set
                 {
                     if (value) flag |= 0b0010;
                     else flag &= unchecked((byte)~0b0010);
                 }
-                [MethodImpl(AggressiveInlining)]
+                [凾(256)]
                 get => (flag & 0b0010) > 0;
             }
             public bool EdgeConnected
             {
-                [MethodImpl(AggressiveInlining)]
+                [凾(256)]
                 set
                 {
                     if (value) flag |= 0b0100;
                     else flag &= unchecked((byte)~0b0100);
                 }
-                [MethodImpl(AggressiveInlining)]
+                [凾(256)]
                 get => (flag & 0b0100) > 0;
             }
             public bool ChildEdgeConnected
             {
-                [MethodImpl(AggressiveInlining)]
+                [凾(256)]
                 set
                 {
                     if (value) flag |= 0b1000;
                     else flag &= unchecked((byte)~0b1000);
                 }
-                [MethodImpl(AggressiveInlining)]
+                [凾(256)]
                 get => (flag & 0b1000) > 0;
             }
             public Node(int l, int r)
@@ -91,7 +90,7 @@ namespace Kzrnm.Competitive
         class EulerianTourTree
         {
             private Dictionary<(int, int), Node> ptr;
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             private Node GetNode(int l, int r)
             {
                 if (ptr.TryGetValue((l, r), out var node))
@@ -105,20 +104,20 @@ namespace Kzrnm.Competitive
                 return t;
             }
 
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             bool Same(Node s, Node t)
             {
                 if (s != null) Splay(s);
                 if (t != null) Splay(t);
                 return Root(s) == Root(t);
             }
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             Node ReRoot(Node t)
             {
                 var (s1, s2) = Split(t);
                 return Merge(s2, s1);
             }
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             (Node, Node) Split(Node s)
             {
                 Splay(s);
@@ -127,7 +126,7 @@ namespace Kzrnm.Competitive
                 s.ch0 = null;
                 return (t, Update(s));
             }
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             (Node, Node) Split2(Node s)
             {
                 Splay(s);
@@ -139,7 +138,7 @@ namespace Kzrnm.Competitive
                 s.ch1 = null;
                 return (t, u);
             }
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             (Node, Node, Node) Split(Node s, Node t)
             {
                 var (u1, u2) = Split2(s);
@@ -161,9 +160,9 @@ namespace Kzrnm.Competitive
                 return Update(s);
             }
 
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             private int Size(Node t) => t != null ? t.size : 0;
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             private Node Update(Node t)
             {
                 t.prod = op.Identity;
@@ -256,19 +255,19 @@ namespace Kzrnm.Competitive
                     ptr[(i, i)] = new Node(i, i);
             }
 
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public int Size(int s)
             {
                 Node t = GetNode(s, s);
                 Splay(t);
                 return t.size;
             }
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public bool Same(int s, int t)
             {
                 return Same(GetNode(s, s), GetNode(t, t));
             }
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public void SetValue(int s, T x)
             {
                 Node t = GetNode(s, s);
@@ -276,7 +275,7 @@ namespace Kzrnm.Competitive
                 t.val = x;
                 Update(t);
             }
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public void Apply(int s, T x)
             {
                 Node t = GetNode(s, s);
@@ -284,7 +283,7 @@ namespace Kzrnm.Competitive
                 t.val = op.Operate(t.val, x);
                 Update(t);
             }
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public void UpdateEdge(int s, UpdateEdgeStatus st)
             {
                 void Dfs(Node t, UpdateEdgeStatus st)
@@ -314,7 +313,7 @@ namespace Kzrnm.Competitive
                     Splay(t);
                 }
             }
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public bool TryReconnect(int s, ReconnectStatus r)
             {
                 bool Dfs(Node t, ReconnectStatus r)
@@ -341,7 +340,7 @@ namespace Kzrnm.Competitive
                 }
                 return false;
             }
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public void UpdateEdgeConnected(int s, bool b)
             {
                 Node t = GetNode(s, s);
@@ -349,7 +348,7 @@ namespace Kzrnm.Competitive
                 t.EdgeConnected = b;
                 Update(t);
             }
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public bool Link(int l, int r)
             {
                 if (Same(l, r)) return false;
@@ -359,7 +358,7 @@ namespace Kzrnm.Competitive
                         Merge(ReRoot(GetNode(r, r)), GetNode(r, l))));
                 return true;
             }
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public bool Cut(int l, int r)
             {
                 if (!ptr.ContainsKey((l, r))) return false;
@@ -369,7 +368,7 @@ namespace Kzrnm.Competitive
                 ptr.Remove((r, l));
                 return true;
             }
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public T Prod(int p, int v)
             {
                 Cut(p, v);
@@ -379,14 +378,14 @@ namespace Kzrnm.Competitive
                 Link(p, v);
                 return res;
             }
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public T Prod(int s)
             {
                 Node t = GetNode(s, s);
                 Splay(t);
                 return t.prod;
             }
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public T GetValue(int s)
             {
                 Node t = GetNode(s, s);
@@ -415,7 +414,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: 0≤<paramref name="s"/>, <paramref name="t"/>&lt;n</para>
         /// <para>計算量: O(log^2 n)</para>
         /// </remarks>
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool Link(int s, int t)
         {
             if (s == t) return false;
@@ -439,12 +438,12 @@ namespace Kzrnm.Competitive
         /// <para>制約: 0≤<paramref name="s"/>, <paramref name="t"/>&lt;n</para>
         /// <para>計算量: O(log n)</para>
         /// </remarks>
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool Same(int s, int t) => ett[0].Same(s, t);
         /// <summary>
         /// <paramref name="s"/> と連結している頂点の数を返します。
         /// </summary>
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public int Size(int s) => ett[0].Size(s);
 
         //private int[] GetVertex(int s)
@@ -459,7 +458,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: 0≤<paramref name="s"/>, <paramref name="t"/>&lt;n</para>
         /// <para>計算量: O(log^2 n)</para>
         /// </remarks>
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool Cut(int s, int t)
         {
             if (s == t) return false;
@@ -574,22 +573,22 @@ namespace Kzrnm.Competitive
         /// </summary>
         public T this[int s]
         {
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             get => ett[0].GetValue(s);
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             set => ett[0].SetValue(s, value);
         }
 
         /// <summary>
         /// <paramref name="s"/> 番目の値 v を <c>Operate(v, <paramref name="x"/>)</c> で更新します。
         /// </summary>
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public void Apply(int s, T x) => ett[0].Apply(s, x);
 
         /// <summary>
         /// <paramref name="s"/> と連結している頂点の総積を返します。
         /// </summary>
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public T Prod(int s) => ett[0].Prod(s);
     }
 }

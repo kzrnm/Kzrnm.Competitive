@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -7,9 +8,10 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 木を幅優先探索するときに訪れる順序に並んだインデックスを返す
         /// </summary>
+        [凾(256)]
         public static int[] BfsDescendant<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree, bool skipFirst = false)
-            where TNode : ITreeNode<TEdge>
-            where TEdge : IGraphEdge
+              where TNode : ITreeNode<TEdge>
+              where TEdge : IGraphEdge
         {
             var arr = tree.AsArray();
             var res = new int[arr.Length - (skipFirst ? 1 : 0)];
@@ -34,9 +36,10 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 木を深さ優先探索するときに訪れる順序に並んだインデックスを返す
         /// </summary>
+        [凾(256)]
         public static int[] DfsDescendant<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree, bool skipFirst = false)
-            where TNode : ITreeNode<TEdge>
-            where TEdge : IGraphEdge
+               where TNode : ITreeNode<TEdge>
+               where TEdge : IGraphEdge
         {
             var arr = tree.AsArray();
             var res = new int[arr.Length - (skipFirst ? 1 : 0)];

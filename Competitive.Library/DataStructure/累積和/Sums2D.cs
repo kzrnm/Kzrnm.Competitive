@@ -1,5 +1,5 @@
-﻿using AtCoder;
-using AtCoder.Operators;
+﻿using AtCoder.Operators;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -29,6 +29,7 @@ namespace Kzrnm.Competitive
                                 impl[i][j]), arr[i][j]);
             }
         }
+        [凾(256)]
         public Slicer Slice(int left, int length) => new Slicer(impl, left, left + length);
         public readonly ref struct Slicer
         {
@@ -36,6 +37,7 @@ namespace Kzrnm.Competitive
             readonly int left;
             readonly int rightExclusive;
             public int Length { get; }
+            [凾(256)]
             public Slicer(TValue[][] impl, int left, int rightExclusive)
             {
                 this.impl = impl;
@@ -43,6 +45,7 @@ namespace Kzrnm.Competitive
                 this.rightExclusive = rightExclusive;
                 this.Length = impl[0].Length - 1;
             }
+            [凾(256)]
             public TValue Slice(int top, int length)
             {
                 var bottomExclusive = top + length;

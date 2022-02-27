@@ -1,6 +1,7 @@
 ﻿using AtCoder.Internal;
 using System;
 using System.Collections.Generic;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -21,6 +22,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="s"/> と <paramref name="t"/> の LCS(最長共通部分列)を求めます。
         /// </summary>
+        [凾(256)]
         public static T[] LCS<T>(ReadOnlySpan<T> s, ReadOnlySpan<T> t)
         {
             var dp = new int[s.Length + 1][];

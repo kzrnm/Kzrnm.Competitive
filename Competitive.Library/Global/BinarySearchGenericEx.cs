@@ -1,6 +1,6 @@
 ﻿using AtCoder;
 using System;
-using System.Numerics;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -13,8 +13,9 @@ namespace Kzrnm.Competitive
         /// <para>制約: <typeparamref name="TOp"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<typeparamref name="TOp"/>.Ok(<paramref name="ng"/>)</para>
         /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
         /// </remarks>
+        [凾(256)]
         public static T BinarySearch<T, TOp>(T ok, T ng) where TOp : struct, IBinaryOk<T>
-            => BinarySearch(default(TOp), ok, ng);
+               => BinarySearch(default(TOp), ok, ng);
         /// <summary>
         /// <paramref name="ok"/> と <paramref name="ng"/> の間で <paramref name="op"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
         /// </summary>
@@ -22,6 +23,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: <paramref name="op"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<paramref name="op"/>.Ok(<paramref name="ng"/>)</para>
         /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
         /// </remarks>
+        [凾(256)]
         public static T BinarySearch<T, TOp>(TOp op, T ok, T ng) where TOp : struct, IBinaryOk<T>
         {
             while (op.Continue(ok, ng))
@@ -43,8 +45,11 @@ namespace Kzrnm.Competitive
                 this.mid = mid;
                 this.continueFunc = continueFunc;
             }
+            [凾(256)]
             public bool Ok(T value) => ok(value);
+            [凾(256)]
             public T Mid(T ok, T ng) => mid(ok, ng);
+            [凾(256)]
             public bool Continue(T ok, T ng) => continueFunc(ok, ng);
         }
     }

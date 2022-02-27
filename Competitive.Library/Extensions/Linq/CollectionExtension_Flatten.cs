@@ -1,6 +1,7 @@
 ﻿using AtCoder.Internal;
 using System;
 using System.Collections.Generic;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -9,14 +10,17 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 2次元のコレクションを1次元に平滑化
         /// </summary>
+        [凾(256)]
         public static T[] Flatten<T>(this T[][] array) => Flatten((ReadOnlySpan<T[]>)array);
         /// <summary>
         /// 2次元のコレクションを1次元に平滑化
         /// </summary>
+        [凾(256)]
         public static T[] Flatten<T>(this Span<T[]> span) => Flatten((ReadOnlySpan<T[]>)span);
         /// <summary>
         /// 2次元のコレクションを1次元に平滑化
         /// </summary>
+        [凾(256)]
         public static T[] Flatten<T>(this ReadOnlySpan<T[]> span)
         {
             var res = new SimpleList<T>(span.Length * Math.Max(span[0].Length, 1));
@@ -28,6 +32,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 2次元のコレクションを1次元に平滑化
         /// </summary>
+        [凾(256)]
         public static T[] Flatten<T>(this IEnumerable<IEnumerable<T>> collection)
         {
             var res = new SimpleList<T>();
@@ -39,6 +44,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 2次元のコレクションを1次元に平滑化
         /// </summary>
+        [凾(256)]
         public static char[] Flatten(this string[] strs)
         {
             var res = new SimpleList<char>(strs.Length * Math.Max(strs[0].Length, 1));

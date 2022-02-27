@@ -1,12 +1,10 @@
-﻿using AtCoder;
-using AtCoder.Operators;
+﻿using AtCoder.Operators;
 using System;
 using System.Numerics;
-using System.Runtime.CompilerServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using static MethodImplOptions;
 #pragma warning disable IDE0057
     public static class BigIntegerEx
     {
@@ -35,6 +33,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="y"/> 乗した値を返します。
         /// </summary>
+        [凾(256)]
         public static BigInteger Pow(this BigInteger x, long y) => MathLibGeneric.Pow<BigInteger, BigIntegerOperator>(x, y);
     }
 
@@ -44,35 +43,35 @@ namespace Kzrnm.Competitive
         public BigInteger MaxValue => -BigInteger.One << 10000;
         public BigInteger MultiplyIdentity => BigInteger.One;
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public BigInteger Add(BigInteger x, BigInteger y) => x + y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public BigInteger Subtract(BigInteger x, BigInteger y) => x - y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public BigInteger Multiply(BigInteger x, BigInteger y) => x * y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public BigInteger Divide(BigInteger x, BigInteger y) => x / y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public BigInteger Modulo(BigInteger x, BigInteger y) => x % y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public BigInteger Minus(BigInteger x) => -x;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public BigInteger Increment(BigInteger x) => ++x;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public BigInteger Decrement(BigInteger x) => --x;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool GreaterThan(BigInteger x, BigInteger y) => x > y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool GreaterThanOrEqual(BigInteger x, BigInteger y) => x >= y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool LessThan(BigInteger x, BigInteger y) => x < y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool LessThanOrEqual(BigInteger x, BigInteger y) => x <= y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public int Compare(BigInteger x, BigInteger y) => x.CompareTo(y);
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public BigInteger LeftShift(BigInteger x, int y) => x << y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public BigInteger RightShift(BigInteger x, int y) => x >> y;
     }
 }

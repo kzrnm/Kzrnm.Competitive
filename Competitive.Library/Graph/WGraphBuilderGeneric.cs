@@ -1,10 +1,10 @@
 ﻿#pragma warning disable CA1819 // Properties should not return arrays
-using AtCoder;
 using AtCoder.Internal;
 using AtCoder.Operators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -17,6 +17,7 @@ namespace Kzrnm.Competitive
         {
             edgeContainer = new EdgeContainer<WEdge<T, S>>(size, isDirected);
         }
+        [凾(256)]
         public void Add(int from, int to, T value, S data) => edgeContainer.Add(from, new WEdge<T, S>(to, value, data));
 
         public WGraph<T, TOp, WGraphNode<T, WEdge<T, S>>, WEdge<T, S>> ToGraph()
@@ -122,12 +123,14 @@ namespace Kzrnm.Competitive
         public static bool operator ==(WEdge<T, S> left, WEdge<T, S> right) => left.Equals(right);
         public static bool operator !=(WEdge<T, S> left, WEdge<T, S> right) => !(left == right);
         public override string ToString() => $"to:{To}, Value:{Value}, Data:{Data}";
+        [凾(256)]
         public void Deconstruct(out int to, out T value, out S data)
         {
             to = To;
             value = Value;
             data = Data;
         }
+        [凾(256)]
         public WEdge<T, S> Reversed(int from) => new WEdge<T, S>(from, Value, Data);
     }
 }

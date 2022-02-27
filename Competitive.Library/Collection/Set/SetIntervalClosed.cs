@@ -6,11 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using static MethodImplOptions;
     /// <summary>
     /// 閉区間をSetで保持する
     /// </summary>
@@ -316,25 +315,25 @@ namespace Kzrnm.Competitive
             {
                 this.comparer = comparer;
             }
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public Node Create((T From, T ToInclusive) item, NodeColor color) => new Node(item.From, item.ToInclusive, color);
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public (T From, T ToInclusive) GetValue(Node node) => node.Pair;
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public void SetValue(ref Node node, (T From, T ToInclusive) value)
             {
                 node.From = value.From;
                 node.ToInclusive = value.ToInclusive;
             }
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public T GetCompareKey((T From, T ToInclusive) item) => item.From;
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public int Compare(T x, T y) => comparer.Compare(x, y);
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public int Compare((T From, T ToInclusive) node1, (T From, T ToInclusive) node2) => comparer.Compare(node1.From, node2.From);
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public int Compare(Node node1, Node node2) => comparer.Compare(node1.From, node2.From);
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public int Compare(T value, Node node)
             {
                 int forder = comparer.Compare(node.From, value);

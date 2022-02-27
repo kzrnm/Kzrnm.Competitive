@@ -1,6 +1,6 @@
-﻿using AtCoder;
-using AtCoder.Operators;
+﻿using AtCoder.Operators;
 using System;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -20,6 +20,7 @@ namespace Kzrnm.Competitive
         public Polynomial(T[] polynomial) { this.Coefficients = polynomial; }
 
 
+        [凾(256)]
         public static Polynomial<T, TOp> operator +(Polynomial<T, TOp> lhs, Polynomial<T, TOp> rhs)
         {
             var lp = lhs.Coefficients;
@@ -32,6 +33,7 @@ namespace Kzrnm.Competitive
             }
             return new Polynomial<T, TOp>(arr);
         }
+        [凾(256)]
         public static Polynomial<T, TOp> operator -(Polynomial<T, TOp> lhs, Polynomial<T, TOp> rhs)
         {
             var lp = lhs.Coefficients;
@@ -44,6 +46,7 @@ namespace Kzrnm.Competitive
             }
             return new Polynomial<T, TOp>(arr);
         }
+        [凾(256)]
         public static Polynomial<T, TOp> operator *(Polynomial<T, TOp> lhs, Polynomial<T, TOp> rhs)
         {
             var lp = lhs.Coefficients;
@@ -56,6 +59,7 @@ namespace Kzrnm.Competitive
 
             return new Polynomial<T, TOp>(arr);
         }
+        [凾(256)]
         public static Polynomial<T, TOp> operator *(T lhs, Polynomial<T, TOp> rhs)
         {
             var rp = rhs.Coefficients;
@@ -66,9 +70,11 @@ namespace Kzrnm.Competitive
             return new Polynomial<T, TOp>(arr);
         }
 
+        [凾(256)]
         public static Polynomial<T, TOp> operator /(Polynomial<T, TOp> lhs, Polynomial<T, TOp> rhs)
-            => lhs.DivRem(rhs, out _);
+                => lhs.DivRem(rhs, out _);
 
+        [凾(256)]
         public Polynomial<T, TOp> DivRem(Polynomial<T, TOp> rhs, out Polynomial<T, TOp> remainder)
         {
             var lp = (T[])this.Coefficients.Clone();
@@ -100,6 +106,7 @@ namespace Kzrnm.Competitive
         /// 微分した多項式を返します。
         /// </summary>
         /// <returns></returns>
+        [凾(256)]
         public Polynomial<T, TOp> Derivative()
         {
             var arr = new T[Coefficients.Length - 1];
@@ -113,6 +120,7 @@ namespace Kzrnm.Competitive
         /// 積分した多項式を返します。
         /// </summary>
         /// <returns></returns>
+        [凾(256)]
         public Polynomial<T, TOp> Integrate()
         {
             var arr = new T[Coefficients.Length + 1];
@@ -126,6 +134,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 多項式に <paramref name="x"/> を代入した値を返します。
         /// </summary>
+        [凾(256)]
         public T Calc(T x)
         {
             T x_n = x;
@@ -143,6 +152,7 @@ namespace Kzrnm.Competitive
         /// <para>(x0, y0), ..., (xn, yn)を満たす n 次多項式を返します。</para>
         /// <para>制約: xは全て異なる</para>
         /// </summary>
+        [凾(256)]
         public static Polynomial<T, TOp> LagrangeInterpolation((T x, T y)[] plots) => LagrangeInterpolation((ReadOnlySpan<(T, T)>)plots);
 
         /// <summary>
@@ -154,6 +164,7 @@ namespace Kzrnm.Competitive
         /// <para>- xは全て異なる</para>
         /// <para>計算量: O(n^2)</para>
         /// </remarks>
+        [凾(256)]
         public static Polynomial<T, TOp> LagrangeInterpolation(ReadOnlySpan<(T x, T y)> plots)
         {
             // y = ∑ (y_i * (Π_k!=i (x - x_k)) / (Π_k!=i (x_i - x_k)) )
@@ -164,6 +175,7 @@ namespace Kzrnm.Competitive
             return res;
         }
         // y_i / (Π_k!=i (x_i - x_k)) )
+        [凾(256)]
         static T ConstantCoefficient(ReadOnlySpan<(T x, T y)> plots, int i)
         {
             var (xi, yi) = plots[i];
@@ -175,6 +187,7 @@ namespace Kzrnm.Competitive
         }
 
         // Π_k (x - x_k) となる n+1 次多項式の係数
+        [凾(256)]
         static T[] PAll(ReadOnlySpan<(T x, T y)> plots)
         {
             var res = new T[plots.Length + 1];
@@ -189,6 +202,7 @@ namespace Kzrnm.Competitive
         }
 
         // Π_k!=i (x - x_k)
+        [凾(256)]
         static Polynomial<T, TOp> Pk(ReadOnlySpan<(T x, T y)> plots, int i, T[] pall)
         {
             var xi = plots[i].x;

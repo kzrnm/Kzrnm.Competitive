@@ -1,9 +1,8 @@
 ﻿// https://ei1333.github.io/luzhiled/snippets/structure/link-cut-tree.html
 using AtCoder;
 using AtCoder.Internal;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -48,21 +47,25 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// ID が <paramref name="idx"/>, 値に <paramref name="val"/> を入れたノードを新しく生成する。
         /// </summary>
+        [凾(256)]
         public Node MakeNode(int idx, T val) => new Node(idx, val);
 
 
+        [凾(256)]
         private void Propagate(Node t, F x)
         {
             t.lazy = op.Composition(x, t.lazy);
             t.Key = op.Mapping(x, t.Key, 1);
             t.Sum = op.Mapping(x, t.Sum, t.size);
         }
+        [凾(256)]
         private void Toggle(Node t)
         {
             (t.Right, t.Left) = (t.Left, t.Right);
             t.Sum = op.Inverse(t.Sum);
             t.rev = !t.rev;
         }
+        [凾(256)]
         private void Push(Node t)
         {
             if (t.Left != null) Propagate(t.Left, t.lazy);
@@ -77,6 +80,7 @@ namespace Kzrnm.Competitive
             }
         }
 
+        [凾(256)]
         private void Update(Node t)
         {
             t.size = 1;
@@ -93,6 +97,7 @@ namespace Kzrnm.Competitive
             }
         }
 
+        [凾(256)]
         private void RotationRight(Node t)
         {
             var x = t.Parent;
@@ -113,6 +118,7 @@ namespace Kzrnm.Competitive
             }
         }
 
+        [凾(256)]
         private void RotationLeft(Node t)
         {
             var x = t.Parent;
@@ -131,6 +137,7 @@ namespace Kzrnm.Competitive
                 Update(y);
             }
         }
+        [凾(256)]
         private void Splay(Node t)
         {
             Push(t);
@@ -168,6 +175,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="t"/> と根との間を Heavy-edge でつなげる。戻り値は t ではないので注意。
         /// </summary>
+        [凾(256)]
         public Node Expose(Node t)
         {
             Node rp = null;
@@ -186,6 +194,7 @@ namespace Kzrnm.Competitive
         /// <para><paramref name="child"/> の親を <paramref name="parent"/> にする。</para>
         /// <para>制約: <paramref name="child"/> と <paramref name="parent"/>が非連結。</para>
         /// </summary>
+        [凾(256)]
         public void Link(Node child, Node parent)
         {
             Contract.Assert(Lca(child, parent) == null);
@@ -200,6 +209,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="child"/> の親と <paramref name="child"/> を切り離す。
         /// </summary>
+        [凾(256)]
         public void Cut(Node child)
         {
             Expose(child);
@@ -212,6 +222,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="t"/> を木の根にする。
         /// </summary>
+        [凾(256)]
         public void Evert(Node t)
         {
             Expose(t);
@@ -222,6 +233,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="u"/> と <paramref name="v"/> の最小共通祖先を返す。
         /// </summary>
+        [凾(256)]
         public Node Lca(Node u, Node v)
         {
             if (GetRoot(u) != GetRoot(v)) return null;
@@ -232,6 +244,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="x"/> から根までのパスに出現する頂点を返す(O(n))。
         /// </summary>
+        [凾(256)]
         public int[] GetPath(Node x)
         {
             var vs = new SList<int>();
@@ -260,6 +273,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 根からノード <paramref name="t"/> までのパスに作用素 <paramref name="x"/> を適用する。
         /// </summary>
+        [凾(256)]
         public void SetPropagate(Node t, F x)
         {
             Expose(t);
@@ -273,6 +287,7 @@ namespace Kzrnm.Competitive
         /// <param name="x"></param>
         /// <param name="k"></param>
         /// <returns></returns>
+        [凾(256)]
         public Node GetKth(Node x, int k)
         {
             Expose(x);
@@ -297,6 +312,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="x"/> の根を返す。
         /// </summary>
+        [凾(256)]
         public Node GetRoot(Node x)
         {
             Expose(x);
@@ -314,6 +330,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// ID が <paramref name="idx"/> のノードを新しく生成する。
         /// </summary>
+        [凾(256)]
         public Node MakeNode(int idx) => new Node(idx, null);
     }
     public struct NullOperator : ILinkCutTreeOperator<object, object>

@@ -1,32 +1,34 @@
 ﻿using AtCoder;
 using AtCoder.Internal;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
     public class SuffixArray
     {
+        [凾(256)]
         public static SuffixArray Create(string str)
         {
             var sa = StringLib.SuffixArray(str);
             var lcp = StringLib.LCPArray(str, sa);
             return new SuffixArray(sa, lcp);
         }
+        [凾(256)]
         public static SuffixArray Create<T>(ReadOnlySpan<T> str)
         {
             var sa = StringLib.SuffixArray(str);
             var lcp = StringLib.LCPArray(str, sa);
             return new SuffixArray(sa, lcp);
         }
+        [凾(256)]
         public static SuffixArray Create<T>(Span<T> str)
         {
             var sa = StringLib.SuffixArray(str);
             var lcp = StringLib.LCPArray(str, sa);
             return new SuffixArray(sa, lcp);
         }
+        [凾(256)]
         public static SuffixArray Create<T>(T[] str)
         {
             var sa = StringLib.SuffixArray(str);
@@ -57,6 +59,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// s[<paramref name="i"/>:] と s[<paramref name="j"/>:] の LCP(Longest Common Prefix) の長さ。
         /// </summary>
+        [凾(256)]
         public int LongestCommonPrefix(int i, int j)
         {
             if (i == j) return Length - i;
@@ -86,7 +89,7 @@ namespace Kzrnm.Competitive
         }
         private struct MinOp : ISparseTableOperator<int>
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [凾(256)]
             public int Operate(int x, int y) => Math.Min(x, y);
         }
     }

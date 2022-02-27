@@ -1,5 +1,6 @@
 ﻿using AtCoder.Internal;
 using System.Collections.Generic;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -26,8 +27,10 @@ namespace Kzrnm.Competitive
         /// <para><paramref name="idx"/> に対して −1 以外を与えると accept にそのノードにマッチする全ての値のindexが格納される。</para>
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱う。</para>
         /// </summary>
+        [凾(256)]
         public PersistentBinaryTrie Add(ulong num, int delta = 1, int idx = -1, ulong xorVal = 0)
-            => new PersistentBinaryTrie(Add(_root, num, idx, MaxDepth, delta, xorVal), MaxDepth + 1);
+              => new PersistentBinaryTrie(Add(_root, num, idx, MaxDepth, delta, xorVal), MaxDepth + 1);
+        [凾(256)]
         Node Add(Node t, ulong bit, int idx, int depth, int x, ulong xorVal, bool need = true)
         {
             if (need) t = t.Clone();
@@ -56,15 +59,18 @@ namespace Kzrnm.Competitive
         /// <para><paramref name="num"/> をデクリメントする。</para>
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱う。</para>
         /// </summary>
+        [凾(256)]
         public PersistentBinaryTrie Remove(ulong num, ulong xorVal = 0)
-            => Add(num, -1, -1, xorVal);
+             => Add(num, -1, -1, xorVal);
 
         /// <summary>
         /// <para><paramref name="num"/> に対応するノードを返す。</para>
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱う。</para>
         /// </summary>
+        [凾(256)]
         public Node Find(ulong num, ulong xorVal = 0)
-            => Find(_root, num, MaxDepth, xorVal);
+              => Find(_root, num, MaxDepth, xorVal);
+        [凾(256)]
         Node Find(Node t, ulong bit, int depth, ulong xorVal)
         {
             if (depth == -1)
@@ -81,12 +87,14 @@ namespace Kzrnm.Competitive
         /// <para><paramref name="num"/> に対応する個数を返す。</para>
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱う。</para>
         /// </summary>
+        [凾(256)]
         public int Count(ulong num, ulong xorVal = 0) => Find(num, xorVal)?.exist ?? 0;
 
         /// <summary>
         /// <para>最小値と対応するノードを返す。</para>
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱う。</para>
         /// </summary>
+        [凾(256)]
         public (ulong Num, Node Node) MinElement(ulong xorVal = 0)
         {
             Contract.Assert(_root.exist > 0);
@@ -97,6 +105,7 @@ namespace Kzrnm.Competitive
         /// <para>最大値と対応するノードを返す。</para>
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱う。</para>
         /// </summary>
+        [凾(256)]
         public (ulong Num, Node Node) MaxElement(ulong xorVal = 0)
         {
             Contract.Assert(_root.exist > 0);
@@ -107,6 +116,7 @@ namespace Kzrnm.Competitive
         /// <para><paramref name="k"/> 番目(0-indexed) に小さい値とそれに対応するノードを返す。</para>
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱う。</para>
         /// </summary>
+        [凾(256)]
         public (ulong Num, Node Node) KthElement(int k, ulong xorVal = 0)
         {
             Contract.Assert(0 <= k && k < _root.exist);
@@ -117,6 +127,7 @@ namespace Kzrnm.Competitive
         /// <para><paramref name="num"/> 未満の個数を返す。</para>
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱う。</para>
         /// </summary>
+        [凾(256)]
         public int CountLess(ulong num, ulong xorVal = 0)
         {
             return CountLess(_root, num, MaxDepth, xorVal);
@@ -128,6 +139,7 @@ namespace Kzrnm.Competitive
         /// <para><paramref name="k"/> 番目(0-indexed) に小さい値とそれに対応するノードを返す。</para>
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱う。</para>
         /// </summary>
+        [凾(256)]
         private (ulong Num, Node Node) KthElement(Node t, int k, int bitIndex, ulong xorVal)
         {
             if (bitIndex == -1)
@@ -148,6 +160,7 @@ namespace Kzrnm.Competitive
         /// <para><paramref name="num"/> 未満の個数を返す。</para>
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱う。</para>
         /// </summary>
+        [凾(256)]
         int CountLess(Node t, ulong num, int bitIndex, ulong xorVal)
         {
             if (bitIndex == -1) return 0;

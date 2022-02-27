@@ -1,5 +1,7 @@
 ﻿using AtCoder.Internal;
 using System;
+using System.ComponentModel;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -13,10 +15,18 @@ namespace Kzrnm.Competitive
             this.y = y;
         }
 
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+
+        [凾(256)]
         public void Deconstruct(out long v1, out long v2) { v1 = x; v2 = y; }
+
+        [凾(256)]
         public static implicit operator PointLong((long x, long y) tuple) => new PointLong(tuple.x, tuple.y);
+
+        [凾(256)]
         public double Distance(PointLong other) => Math.Sqrt(Distance2(other));
+
+        [凾(256)]
         public long Distance2(PointLong other)
         {
             var p = other - this;
@@ -25,13 +35,23 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 内積
         /// </summary>
+
+        [凾(256)]
         public long Inner(PointLong other) => x * other.x + y * other.y;
         /// <summary>
         /// 外積
         /// </summary>
+
+        [凾(256)]
         public long Cross(PointLong other) => x * other.y - y * other.x;
+
+        [凾(256)]
         public static PointLong operator +(PointLong a, PointLong b) => new PointLong(a.x + b.x, a.y + b.y);
+
+        [凾(256)]
         public static PointLong operator -(PointLong a, PointLong b) => new PointLong(a.x - b.x, a.y - b.y);
+
+        [凾(256)]
         public int CompareTo(PointLong other)
         {
             var sy = Math.Sign(y);
@@ -72,18 +92,23 @@ namespace Kzrnm.Competitive
             return ycmp;
         }
 
+
+        [凾(256)]
         public bool Equals(PointLong other) => this.x == other.x && this.y == other.y;
         public override bool Equals(object obj) => obj is PointLong p && this.Equals(p);
         public override int GetHashCode() => HashCode.Combine(x, y);
         public override string ToString() => $"{x} {y}";
 
+        [凾(256)]
         public static bool operator ==(PointLong left, PointLong right) => left.Equals(right);
+        [凾(256)]
         public static bool operator !=(PointLong left, PointLong right) => !left.Equals(right);
-        static int CrossSign(long x1, long y1, long x2, long y2) => Math.Sign(x1 * y2 - y1 * x2);
+        [凾(256)] static int CrossSign(long x1, long y1, long x2, long y2) => Math.Sign(x1 * y2 - y1 * x2);
 
         /// <summary>
         /// 凸包(一番外側の多角形)を求める
         /// </summary>
+        [凾(256)]
         public static int[] ConvexHull(PointLong[] points)
         {
             Contract.Assert(points.Length >= 2);
@@ -123,11 +148,13 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 多角形の面積を求める
         /// </summary>
+        [凾(256)]
         public static double Area(PointLong[] points) => Area2(points) / 2.0;
 
         /// <summary>
         /// 多角形の面積×2を求める
         /// </summary>
+        [凾(256)]
         public static long Area2(PointLong[] points)
         {
             Contract.Assert(points.Length >= 3);

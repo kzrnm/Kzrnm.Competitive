@@ -1,5 +1,6 @@
 ﻿using System;
 
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -31,6 +32,7 @@ namespace Kzrnm.Competitive
 
 
         /** <summary>[<paramref name="from"/>, <paramref name="len"/>) のハッシュ</summary> */
+        [凾(256)]
         public Hash Slice(int from, int len) => new Hash { a = hash1.Slice(from, len), b = hash2.Slice(from, len) };
 
 
@@ -53,6 +55,7 @@ namespace Kzrnm.Competitive
             }
 
             /** <summary>[<paramref name="from"/>, <paramref name="len"/>) のハッシュ</summary> */
+            [凾(256)]
             public ulong Slice(int from, int len) => hash[from + len] - (hash[from] * pow[len]);
         }
 
@@ -82,8 +85,10 @@ namespace Kzrnm.Competitive
                     hash[i + 1] = CalcMod(Mul(hash[i], Base) + s[i]);
             }
 
+            [凾(256)]
             public ulong Slice(int from, int len) => CalcMod(hash[from + len] + POSITIVIZER - Mul(hash[from], powMemo[len]));
 
+            [凾(256)]
             static ulong Mul(ulong l, ulong r)
             {
                 var lu = l >> 31;
@@ -94,6 +99,7 @@ namespace Kzrnm.Competitive
                 return ((lu * ru) << 1) + ld * rd + ((middleBit & MASK30) << 31) + (middleBit >> 30);
             }
 
+            [凾(256)]
             static ulong Mul(ulong l, uint r)
             {
                 var lu = l >> 31;
@@ -102,6 +108,7 @@ namespace Kzrnm.Competitive
                 return (l & MASK31) * rd + ((middleBit & MASK30) << 31) + (middleBit >> 30);
             }
 
+            [凾(256)]
             static ulong CalcMod(ulong val)
             {
                 val = (val & MOD) + (val >> 61);

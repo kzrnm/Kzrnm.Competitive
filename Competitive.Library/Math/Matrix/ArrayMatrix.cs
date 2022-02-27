@@ -1,14 +1,12 @@
-﻿using AtCoder;
-using AtCoder.Internal;
+﻿using AtCoder.Internal;
 using AtCoder.Operators;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using static MethodImplOptions;
     public readonly struct ArrayMatrix<T, TOp>
         where TOp : struct, IArithmeticOperator<T>
     {
@@ -353,22 +351,22 @@ namespace Kzrnm.Competitive
     {
         public ArrayMatrix<T, TOp> MultiplyIdentity => ArrayMatrix<T, TOp>.Identity;
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public ArrayMatrix<T, TOp> Add(ArrayMatrix<T, TOp> x, ArrayMatrix<T, TOp> y) => x + y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public ArrayMatrix<T, TOp> Subtract(ArrayMatrix<T, TOp> x, ArrayMatrix<T, TOp> y) => x - y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public ArrayMatrix<T, TOp> Multiply(ArrayMatrix<T, TOp> x, ArrayMatrix<T, TOp> y) => x * y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public ArrayMatrix<T, TOp> Minus(ArrayMatrix<T, TOp> x) => -x;
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public ArrayMatrix<T, TOp> Increment(ArrayMatrix<T, TOp> x) => throw new NotSupportedException();
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public ArrayMatrix<T, TOp> Decrement(ArrayMatrix<T, TOp> x) => throw new NotSupportedException();
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public ArrayMatrix<T, TOp> Divide(ArrayMatrix<T, TOp> x, ArrayMatrix<T, TOp> y) => throw new NotSupportedException();
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public ArrayMatrix<T, TOp> Modulo(ArrayMatrix<T, TOp> x, ArrayMatrix<T, TOp> y) => throw new NotSupportedException();
     }
 }

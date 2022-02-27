@@ -1,5 +1,6 @@
 ﻿using AtCoder;
 using System;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -8,6 +9,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 現在のセグ木の中身を配列にコピーして返します。
         /// </summary>
+        [凾(256)]
         public static TValue[] ToArray<TValue, TOp>(this Segtree<TValue, TOp> seg)
             where TOp : struct, ISegtreeOperator<TValue>
         {

@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using static MethodImplOptions;
     public static class __UpdateExtension
     {
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
 
         public static bool UpdateMax<T>(this ref T r, T val) where T : struct, IComparable<T>
         {
             if (r.CompareTo(val) < 0) { r = val; return true; }
             return false;
         }
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public static bool UpdateMin<T>(this ref T r, T val) where T : struct, IComparable<T>
         {
             if (r.CompareTo(val) > 0) { r = val; return true; }

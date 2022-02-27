@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -9,6 +8,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="num"/> の <paramref name="n"/> 乗根を整数に切り捨てた値
         /// </summary>
+        [凾(256)]
         public static ulong IntegerRoot(ulong num, long n)
         {
             if (num <= 1 || n == 1) return num;
@@ -24,6 +24,7 @@ namespace Kzrnm.Competitive
             }
             public readonly ulong a;
             public readonly long k;
+            [凾(256)]
             public bool Ok(ulong x)
             {
                 var y = k;

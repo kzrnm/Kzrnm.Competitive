@@ -1,4 +1,5 @@
 ﻿using System;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -49,35 +50,51 @@ namespace Kzrnm.Competitive
         }
         public override string ToString() => $"{Numerator}/{Denominator}";
         public override bool Equals(object obj) => obj is Fraction f && Equals(f);
+        [凾(256)]
         public bool Equals(Fraction other) => this._numerator == other._numerator && this._denominator == other._denominator;
         public override int GetHashCode() => HashCode.Combine(_numerator, _denominator);
 
+        [凾(256)]
         public static implicit operator Fraction(long x) => new Fraction(x, 1);
+        [凾(256)]
         public int CompareTo(Fraction other) => (this.Numerator * other.Denominator).CompareTo(other.Numerator * this.Denominator);
 
+        [凾(256)]
         public static Fraction operator -(Fraction x) => new Fraction(-x.Numerator, x.Denominator);
+        [凾(256)]
         public static Fraction operator +(Fraction x, Fraction y)
         {
             var gcd = MathLibEx.Gcd(x.Denominator, y.Denominator);
             var lcm = x.Denominator / gcd * y.Denominator;
             return new Fraction((x.Numerator * y.Denominator + y.Numerator * x.Denominator) / gcd, lcm);
         }
+        [凾(256)]
         public static Fraction operator -(Fraction x, Fraction y)
         {
             var gcd = MathLibEx.Gcd(x.Denominator, y.Denominator);
             var lcm = x.Denominator / gcd * y.Denominator;
             return new Fraction((x.Numerator * y.Denominator - y.Numerator * x.Denominator) / gcd, lcm);
         }
+        [凾(256)]
         public static Fraction operator *(Fraction x, Fraction y) => new Fraction(x.Numerator * y.Numerator, x.Denominator * y.Denominator);
+        [凾(256)]
         public static Fraction operator /(Fraction x, Fraction y) => new Fraction(x.Numerator * y.Denominator, x.Denominator * y.Numerator);
+        [凾(256)]
         public static bool operator ==(Fraction x, Fraction y) => x.Equals(y);
+        [凾(256)]
         public static bool operator !=(Fraction x, Fraction y) => !x.Equals(y);
+        [凾(256)]
         public static bool operator >=(Fraction x, Fraction y) => x.CompareTo(y) >= 0;
+        [凾(256)]
         public static bool operator <=(Fraction x, Fraction y) => x.CompareTo(y) <= 0;
+        [凾(256)]
         public static bool operator >(Fraction x, Fraction y) => x.CompareTo(y) > 0;
+        [凾(256)]
         public static bool operator <(Fraction x, Fraction y) => x.CompareTo(y) < 0;
 
+        [凾(256)]
         public Fraction Inverse() => new Fraction(Denominator, Numerator);
+        [凾(256)]
         public double ToDouble() => (double)Numerator / Denominator;
     }
 }
