@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using Xunit;
 
-namespace Kzrnm.Competitive.Extension
+namespace Kzrnm.Competitive.Extensions
 {
     public class BitArrayExtensionTests
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Xunit;
 
-namespace Kzrnm.Competitive.Extension
+namespace Kzrnm.Competitive.Extensions
 {
     public class ArrayExtensionTests
     {
