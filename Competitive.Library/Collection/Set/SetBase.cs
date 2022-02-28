@@ -628,7 +628,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         public int Count => NodeSize(root);
 
         [凾(256)]
-        internal static int NodeSize(Node node) => node == null ? 0 : node.Size;
+        internal static int NodeSize(Node node) => node?.Size ?? 0;
 
 
         [凾(256)]
