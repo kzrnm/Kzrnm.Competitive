@@ -22,17 +22,17 @@ namespace Kzrnm.Competitive.Collection
             set.Should().HaveCount(8);
             set.Should().Equal(1, 2, 3, 4, 6, 7, 8, 9);
             set.FindByIndex(8).Should().BeNull();
-            set.FindByIndex(7).Item.Should().Be(9);
+            set.FindByIndex(7).Value.Should().Be(9);
             set.FindNode(5).Should().BeNull();
 
-            set.FindNodeLowerBound(4).Item.Should().Be(4);
-            set.FindNodeUpperBound(4).Item.Should().Be(6);
-            set.FindNodeReverseUpperBound(4).Item.Should().Be(3);
-            set.FindNodeReverseLowerBound(4).Item.Should().Be(4);
-            set.FindNodeLowerBound(5).Item.Should().Be(6);
-            set.FindNodeUpperBound(5).Item.Should().Be(6);
-            set.FindNodeReverseUpperBound(5).Item.Should().Be(4);
-            set.FindNodeReverseUpperBound(5).Item.Should().Be(4);
+            set.FindNodeLowerBound(4).Value.Should().Be(4);
+            set.FindNodeUpperBound(4).Value.Should().Be(6);
+            set.FindNodeReverseUpperBound(4).Value.Should().Be(3);
+            set.FindNodeReverseLowerBound(4).Value.Should().Be(4);
+            set.FindNodeLowerBound(5).Value.Should().Be(6);
+            set.FindNodeUpperBound(5).Value.Should().Be(6);
+            set.FindNodeReverseUpperBound(5).Value.Should().Be(4);
+            set.FindNodeReverseUpperBound(5).Value.Should().Be(4);
 
             set.LowerBoundItem(4).Should().Be(4);
             set.UpperBoundItem(4).Should().Be(6);
@@ -86,7 +86,7 @@ namespace Kzrnm.Competitive.Collection
             set.Should().HaveCount(12);
             set.Should().Equal(1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9);
             set.FindByIndex(12).Should().BeNull();
-            set.FindByIndex(11).Item.Should().Be(9);
+            set.FindByIndex(11).Value.Should().Be(9);
             set.FindNode(5).Should().NotBeNull();
 
             set.Reversed().Should().Equal(9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1);
@@ -94,10 +94,10 @@ namespace Kzrnm.Competitive.Collection
             set.EnumerateItem(set.FindNodeLowerBound(6)).Should().Equal(6, 7, 8, 9);
             set.EnumerateItem(set.FindNodeLowerBound(6), true).Should().Equal(6, 5, 4, 3, 3, 2, 2, 1, 1);
 
-            set.FindNodeLowerBound(3).Item.Should().Be(3);
-            set.FindNodeUpperBound(3).Item.Should().Be(4);
-            set.FindNodeReverseLowerBound(3).Item.Should().Be(3);
-            set.FindNodeReverseUpperBound(3).Item.Should().Be(2);
+            set.FindNodeLowerBound(3).Value.Should().Be(3);
+            set.FindNodeUpperBound(3).Value.Should().Be(4);
+            set.FindNodeReverseLowerBound(3).Value.Should().Be(3);
+            set.FindNodeReverseUpperBound(3).Value.Should().Be(2);
 
             set.LowerBoundItem(3).Should().Be(3);
             set.UpperBoundItem(3).Should().Be(4);
@@ -129,13 +129,13 @@ namespace Kzrnm.Competitive.Collection
             set.Should().HaveCount(8);
             set.Should().Equal(9, 8, 7, 6, 4, 3, 2, 1);
             set.FindByIndex(8).Should().BeNull();
-            set.FindByIndex(7).Item.Should().Be(1);
+            set.FindByIndex(7).Value.Should().Be(1);
             set.FindNode(5).Should().BeNull();
 
-            set.FindNodeLowerBound(6).Item.Should().Be(6);
-            set.FindNodeUpperBound(6).Item.Should().Be(4);
-            set.FindNodeLowerBound(5).Item.Should().Be(4);
-            set.FindNodeUpperBound(5).Item.Should().Be(4);
+            set.FindNodeLowerBound(6).Value.Should().Be(6);
+            set.FindNodeUpperBound(6).Value.Should().Be(4);
+            set.FindNodeLowerBound(5).Value.Should().Be(4);
+            set.FindNodeUpperBound(5).Value.Should().Be(4);
 
             set.LowerBoundItem(6).Should().Be(6);
             set.UpperBoundItem(6).Should().Be(4);
@@ -160,7 +160,7 @@ namespace Kzrnm.Competitive.Collection
                 var set = new Set<int>(arr);
                 for (int i = 0; i < count; i++)
                 {
-                    set.FindByIndex(i).Item.Should().Be(i, "Index: {0}", i);
+                    set.FindByIndex(i).Value.Should().Be(i, "Index: {0}", i);
                 }
             }
         }

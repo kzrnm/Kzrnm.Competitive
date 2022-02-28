@@ -34,12 +34,12 @@ namespace Kzrnm.Competitive
         protected readonly TOp comparer;
         public class Node : SetNodeBase<Node>
         {
-            public T Item;
+            public T Value;
             internal Node(T item, NodeColor color) : base(color)
             {
-                Item = item;
+                Value = item;
             }
-            public override string ToString() => $"Item = {Item}, Size = {Size}";
+            public override string ToString() => $"Value = {Value}, Size = {Size}";
         }
         public readonly struct NodeOperator : ISetOperator<T, T, Node>
         {
@@ -52,17 +52,17 @@ namespace Kzrnm.Competitive
             [凾(256)]
             public Node Create(T item, NodeColor color) => new Node(item, color);
             [凾(256)]
-            public T GetValue(Node node) => node.Item;
+            public T GetValue(Node node) => node.Value;
             [凾(256)]
-            public void SetValue(ref Node node, T value) => node.Item = value;
+            public void SetValue(ref Node node, T value) => node.Value = value;
             [凾(256)]
             public T GetCompareKey(T item) => item;
             [凾(256)]
             public int Compare(T x, T y) => comparer.Compare(x, y);
             [凾(256)]
-            public int Compare(Node node1, Node node2) => comparer.Compare(node1.Item, node2.Item);
+            public int Compare(Node node1, Node node2) => comparer.Compare(node1.Value, node2.Value);
             [凾(256)]
-            public int Compare(T value, Node node) => comparer.Compare(value, node.Item);
+            public int Compare(T value, Node node) => comparer.Compare(value, node.Value);
         }
     }
 }
