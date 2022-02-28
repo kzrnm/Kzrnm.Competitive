@@ -48,14 +48,14 @@ namespace Kzrnm.Competitive
         public static Grid<T> Create<T>(ReadOnlySpan<T[]> data, T defaultValue) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);
 
         [凾(256)]
-        public static void WriteGrid(this Grid<char> grid, ConsoleWriter cw)
+        public static void WriteGrid(this ConsoleWriter cw, Grid<char> grid)
         {
             for (int i = 0; i < grid.H; i++)
                 cw.StreamWriter.WriteLine(grid.data.AsSpan(i * grid.W, grid.W));
         }
 
         [凾(256)]
-        public static void WriteGrid<T>(this Grid<T> grid, ConsoleWriter cw)
+        public static void WriteGrid<T>(this ConsoleWriter cw, Grid<T> grid)
         {
             for (int i = 0; i < grid.H; i++)
                 cw.WriteLineJoin(grid.data.AsSpan(i * grid.W, grid.W));
@@ -150,12 +150,19 @@ namespace Kzrnm.Competitive
                 return ToStringNoSplit((Grid<char>)(object)this);
             return ToStringSplit();
         }
+        /// <summary>
+        /// 対象の上下左右の座標を返します。
+        /// </summary>
         [凾(256)]
         public MoveEnumerator Moves(int index)
         {
             var (h, w) = FromIndex(index);
             return new MoveEnumerator(this, h, w);
         }
+
+        /// <summary>
+        /// 対象の上下左右の座標を返します。
+        /// </summary>
         [凾(256)]
         public MoveEnumerator Moves(int h, int w) => new MoveEnumerator(this, h, w);
         public struct MoveEnumerator : IEnumerator<(int h, int w)>, IEnumerable<(int h, int w)>
