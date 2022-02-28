@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -11,7 +12,6 @@ namespace Kzrnm.Competitive
     {
         public Trie() : this(null) { }
         public Trie(IComparer<TKey> comparer) { children = new SortedDictionary<TKey, Trie<TKey, TValue>>(comparer); }
-
 
         readonly SortedDictionary<TKey, Trie<TKey, TValue>> children;
         public bool HasValue { private set; get; }
@@ -26,7 +26,6 @@ namespace Kzrnm.Competitive
             get => _Value;
         }
         public int Count { private set; get; }
-
 
         /// <summary>
         /// <para><paramref name="index"/>から要素を取得する。</para>
@@ -113,15 +112,18 @@ namespace Kzrnm.Competitive
         /// </summary>
         public TValue this[ReadOnlySpan<TKey> key]
         {
+            [凾(256)]
             get
             {
                 var trie = GetChild(key);
-                if (trie != null && trie.HasValue)
-                    return trie.Value;
-                throw new KeyNotFoundException();
+                if (trie?.HasValue != true)
+                    ThrowKeyNotFoundException();
+                return trie.Value;
             }
+            [凾(256)]
             set => Add(key, value);
         }
+        private static void ThrowKeyNotFoundException() => throw new KeyNotFoundException();
 
         public bool Remove(ReadOnlySpan<TKey> key)
         {
@@ -158,6 +160,7 @@ namespace Kzrnm.Competitive
             }
             return true;
         }
+        [凾(256)]
         public bool TryGet(ReadOnlySpan<TKey> key, out TValue value)
         {
             var child = GetChild(key);
@@ -182,7 +185,7 @@ namespace Kzrnm.Competitive
                 list.RemoveLast();
             }
         }
-
+        [凾(256)]
         public IEnumerable<KeyValuePair<TKey[], TValue>> All() => All(new SimpleList<TKey>());
         public void Clear()
         {
@@ -193,6 +196,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="key"/> の prefix となる Trie の値を返します。
         /// </summary>
+        [凾(256)]
         public MatchEnumerator MatchGreedy(ReadOnlySpan<TKey> key)
             => new MatchEnumerator(this, key);
         public ref struct MatchEnumerator
@@ -266,7 +270,9 @@ namespace Kzrnm.Competitive
     {
         public Trie() : base() { }
         public Trie(IComparer<T> comparer) : base(comparer) { }
+        [凾(256)]
         public void Add(ReadOnlySpan<T> key) => Add(key, true);
+        [凾(256)]
         public bool Contains(ReadOnlySpan<T> key) => GetChild(key)?.Value == true;
     }
 }

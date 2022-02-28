@@ -1,12 +1,9 @@
-﻿using AtCoder;
-using AtCoder.Internal;
+﻿using AtCoder.Internal;
 using AtCoder.Operators;
-using System.Runtime.CompilerServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using static MethodImplOptions;
-
     /// <summary>
     /// 長さ H*W の2次元配列に対し、
     /// <list type="bullet">
@@ -26,7 +23,7 @@ namespace Kzrnm.Competitive
     {
         private static readonly TOp op = default;
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public void Add(int h, int w, T v)
         {
             for (var hh = h + 1; hh < tree.Length; hh += (int)InternalBit.ExtractLowestSetBit(hh))
@@ -34,7 +31,7 @@ namespace Kzrnm.Competitive
                     tree[hh][ww] = op.Add(tree[hh][ww], v);
         }
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public T Sum(int hExclusive, int wExclusive)
         {
             T res = default;
@@ -53,6 +50,7 @@ namespace Kzrnm.Competitive
         /// 要素の横方向の長さを返します。
         /// </summary>
         public int Width { get; }
+        [凾(256)]
         public Slicer Slice(int from, int length) => new Slicer(this, from, from + length);
 
         public FenwickTree2D(int H, int W)
@@ -76,6 +74,7 @@ namespace Kzrnm.Competitive
                 this.hToExclusive = hToExclusive;
                 this.Length = fw.Width - 1;
             }
+            [凾(256)]
             public T Slice(int wFrom, int length)
             {
                 var wToExclusive = wFrom + length;

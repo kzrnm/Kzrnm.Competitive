@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -13,33 +14,40 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 座標圧縮を行う
         /// </summary>
+        [凾(256)]
         public static ZahyoCompress<T> Create<T>(IEnumerable<T> orig) => new ZahyoCompress<T>(orig).Compress();
 
         /// <summary>
         /// 座標圧縮を行う
         /// </summary>
+        [凾(256)]
         public static ZahyoCompress<T> Create<T>(ReadOnlySpan<T> orig) => new ZahyoCompress<T>(orig).Compress();
         /// <summary>
         /// 座標圧縮を行う
         /// </summary>
+        [凾(256)]
         public static ZahyoCompress<T> Create<T>(Span<T> orig) => new ZahyoCompress<T>(orig).Compress();
         /// <summary>
         /// 座標圧縮を行う
         /// </summary>
+        [凾(256)]
         public static ZahyoCompress<T> Create<T>(T[] orig) => new ZahyoCompress<T>((ReadOnlySpan<T>)orig).Compress();
 
         /// <summary>
         /// 座標圧縮後の値に置換した配列を取得する
         /// </summary>
+        [凾(256)]
         public static int[] CompressedArray<T>(ReadOnlySpan<T> orig) => new ZahyoCompress<T>(orig).Replace(orig);
 
         /// <summary>
         /// 座標圧縮後の値に置換した配列を取得する
         /// </summary>
+        [凾(256)]
         public static int[] CompressedArray<T>(Span<T> orig) => CompressedArray((ReadOnlySpan<T>)orig);
         /// <summary>
         /// 座標圧縮後の値に置換した配列を取得する
         /// </summary>
+        [凾(256)]
         public static int[] CompressedArray<T>(T[] orig) => CompressedArray((ReadOnlySpan<T>)orig);
     }
     /// <summary>
@@ -60,6 +68,7 @@ namespace Kzrnm.Competitive
         private int version;
         private int lastCompressVesion = -1;
         private IComparer<T> lastComparer;
+        [凾(256)]
         public void Add(T item)
         {
             if (data.Add(item))
@@ -70,12 +79,14 @@ namespace Kzrnm.Competitive
         /// 登録されている値から座標圧縮する。前に呼び出されたときと異なるならば作り直す。
         /// </summary>
         /// <returns></returns>
+        [凾(256)]
         public ZahyoCompress<T> Compress() => Compress(null);
 
         /// <summary>
         /// 登録されている値から座標圧縮する。前に呼び出されたときと異なるならば作り直す。
         /// </summary>
         /// <returns></returns>
+        [凾(256)]
         public ZahyoCompress<T> Compress(IComparer<T> comparer)
         {
             if (lastCompressVesion == version
@@ -108,6 +119,7 @@ namespace Kzrnm.Competitive
 #pragma warning restore CA1819 // Properties should not return arrays
 
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [凾(256)]
         public void Deconstruct(out Dictionary<T, int> newTable, out T[] original)
         {
             newTable = NewTable;
@@ -117,11 +129,13 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 座標圧縮後の値に置換した配列を取得する
         /// </summary>
+        [凾(256)]
         public int[] Replace(T[] orig) => Replace((ReadOnlySpan<T>)orig);
 
         /// <summary>
         /// 座標圧縮後の値に置換した配列を取得する
         /// </summary>
+        [凾(256)]
         public int[] Replace(ReadOnlySpan<T> orig)
         {
             if (lastCompressVesion != version)

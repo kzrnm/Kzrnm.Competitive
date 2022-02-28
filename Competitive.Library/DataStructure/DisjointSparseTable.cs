@@ -1,13 +1,11 @@
-﻿using AtCoder;
-using AtCoder.Internal;
+﻿using AtCoder.Internal;
 using System;
 using System.Diagnostics;
 using System.Numerics;
-using System.Runtime.CompilerServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using static MethodImplOptions;
     /// <summary>
     /// <para>結合則が成り立つ半群への区間クエリを, 前計算 O(nlogn), クエリ O(1) で処理する</para>
     /// </summary>
@@ -51,10 +49,10 @@ namespace Kzrnm.Competitive
             }
         }
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public TValue Slice(int l, int length) => Prod(l, l + length);
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public TValue Prod(int l, int r)
         {
             Contract.Assert((uint)l < (uint)Length, "l < Length");

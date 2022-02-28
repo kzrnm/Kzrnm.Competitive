@@ -1,5 +1,5 @@
-﻿using AtCoder;
-using AtCoder.Operators;
+﻿using AtCoder.Operators;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -11,8 +11,9 @@ namespace Kzrnm.Competitive
         /// <remarks>
         /// <para>計算量: O(log <paramref name="y"/>)</para>
         /// </remarks>
+        [凾(256)]
         public static T Pow<T, TOp>(T x, long y)
-            where TOp : struct, IMultiplicationOperator<T>
+              where TOp : struct, IMultiplicationOperator<T>
         {
             var op = default(TOp);
             T res = ((y & 1) != 0) ? x : op.MultiplyIdentity;

@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -41,6 +42,7 @@ namespace Kzrnm.Competitive
             /// </summary>
             public T Current
             {
+                [凾(256)]
                 get
                 {
                     if (_remainingStack == null || _remainingStack.IsEmpty)
@@ -58,6 +60,7 @@ namespace Kzrnm.Competitive
             /// Moves to the first or next element.
             /// </summary>
             /// <returns>A value indicating whether there are any more elements.</returns>
+            [凾(256)]
             public bool MoveNext()
             {
                 if (_remainingStack == null)
@@ -109,6 +112,7 @@ namespace Kzrnm.Competitive
             /// </summary>
             public T Current
             {
+                [凾(256)]
                 get
                 {
                     this.ThrowIfDisposed();
@@ -136,6 +140,7 @@ namespace Kzrnm.Competitive
             /// Moves to the first or next element.
             /// </summary>
             /// <returns>A value indicating whether there are any more elements.</returns>
+            [凾(256)]
             public bool MoveNext()
             {
                 this.ThrowIfDisposed();

@@ -1,6 +1,7 @@
 ﻿using AtCoder.Internal;
 using System;
 using System.Diagnostics;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -32,6 +33,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: 0≤<paramref name="a"/>, <paramref name="b"/>&lt;n</para>
         /// <para>計算量: ならしO(a(n))</para>
         /// </remarks>
+        [凾(256)]
         public bool Merge(int a, int b)
         {
             Contract.Assert(0 <= a && a < _n);
@@ -51,6 +53,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: 0≤<paramref name="a"/>, <paramref name="b"/>&lt;n</para>
         /// <para>計算量: ならしO(a(n))</para>
         /// </remarks>
+        [凾(256)]
         public bool Same(int a, int b)
         {
             Contract.Assert(0 <= a && a < _n);
@@ -65,6 +68,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: 0≤<paramref name="a"/>&lt;n</para>
         /// <para>計算量: ならしO(a(n))</para>
         /// </remarks>
+        [凾(256)]
         public int Leader(int a)
         {
             if (_parentOrSize[a] < 0) return a;
@@ -83,6 +87,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: 0≤<paramref name="a"/>&lt;n</para>
         /// <para>計算量: ならしO(a(n))</para>
         /// </remarks>
+        [凾(256)]
         public int Size(int a)
         {
             Contract.Assert(0 <= a && a < _n);

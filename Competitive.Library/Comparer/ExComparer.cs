@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -33,6 +34,7 @@ namespace Kzrnm.Competitive
                         paramA, paramB);
                 this.func = compExp.Compile();
             }
+            [凾(256)]
             public int Compare(T x, T y) => func(x, y);
             public override bool Equals(object obj) => obj is ExpressionComparer<K> c && this.func == c.func;
             public override int GetHashCode() => func.GetHashCode();

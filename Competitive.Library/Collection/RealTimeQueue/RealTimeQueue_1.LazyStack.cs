@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -88,6 +89,7 @@ namespace Kzrnm.Competitive
             /// </summary>
             public static LazyStack Empty
             {
+                [凾(256)]
                 get
                 {
                     Debug.Assert(s_EmptyField.IsEmpty);
@@ -98,6 +100,7 @@ namespace Kzrnm.Competitive
             /// <summary>
             /// Gets the empty stack, upon which all stacks are built.
             /// </summary>
+            [凾(256)]
             public LazyStack Clear()
             {
                 Debug.Assert(s_EmptyField.IsEmpty);
@@ -120,6 +123,7 @@ namespace Kzrnm.Competitive
             /// </value>
             public bool IsEmpty
             {
+                [凾(256)]
                 get
                 {
                     return _tail is null && _lazySchedule is null;
@@ -133,6 +137,7 @@ namespace Kzrnm.Competitive
             /// The element on the top of the stack.
             /// </returns>
             /// <exception cref="InvalidOperationException">Thrown when the stack is empty.</exception>
+            [凾(256)]
             public T Peek()
             {
                 AtCoder.Internal.Contract.Assert(!IsEmpty, "This operation does not apply to an empty instance.");
@@ -151,6 +156,7 @@ namespace Kzrnm.Competitive
             /// A read-only reference to the element on the top of the stack.
             /// </returns>
             /// <exception cref="InvalidOperationException">Thrown when the stack is empty.</exception>
+            [凾(256)]
             public ref readonly T PeekRef()
             {
                 AtCoder.Internal.Contract.Assert(!IsEmpty, "This operation does not apply to an empty instance.");
@@ -168,6 +174,7 @@ namespace Kzrnm.Competitive
             /// </summary>
             /// <param name="value">The element to push onto the stack.</param>
             /// <returns>The new stack.</returns>
+            [凾(256)]
             public LazyStack Push(T value)
             {
                 return new LazyStack(value, this);
@@ -188,6 +195,7 @@ namespace Kzrnm.Competitive
             /// </summary>
             /// <returns>A stack; never <c>null</c></returns>
             /// <exception cref="InvalidOperationException">Thrown when the stack is empty.</exception>
+            [凾(256)]
             public LazyStack Pop()
             {
                 AtCoder.Internal.Contract.Assert(!IsEmpty, "This operation does not apply to an empty instance.");
@@ -217,6 +225,7 @@ namespace Kzrnm.Competitive
             /// <returns>
             /// A stack; never <c>null</c>
             /// </returns>
+            [凾(256)]
             public LazyStack Pop(out T value)
             {
                 if (_tail is null && _lazySchedule is { })
@@ -227,6 +236,7 @@ namespace Kzrnm.Competitive
                 return this.Pop();
             }
 
+            [凾(256)]
             internal void Rotate()
             {
                 Debug.Assert(_lazyHeads is { });

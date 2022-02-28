@@ -1,5 +1,6 @@
 ﻿using AtCoder;
 using AtCoder.Operators;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -12,6 +13,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: <paramref name="fw"/> の値が非負。</para>
         /// <para>計算量: O(log <c>n</c>)</para>
         /// </remarks>
+        [凾(256)]
         public static int LowerBound<TValue, TOp>(this FenwickTree<TValue, TOp> fw, TValue v)
             where TOp : struct, IAdditionOperator<TValue>, ISubtractOperator<TValue>, ICompareOperator<TValue>
         {
@@ -37,6 +39,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: <paramref name="fw"/> の値が非負。</para>
         /// <para>計算量: O(log <c>n</c>)</para>
         /// </remarks>
+        [凾(256)]
         public static int UpperBound<TValue, TOp>(this FenwickTree<TValue, TOp> fw, TValue v)
             where TOp : struct, IAdditionOperator<TValue>, ISubtractOperator<TValue>, ICompareOperator<TValue>
         {

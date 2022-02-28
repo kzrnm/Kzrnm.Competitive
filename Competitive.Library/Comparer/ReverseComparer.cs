@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -10,6 +11,7 @@ namespace Kzrnm.Competitive
         {
             this.orig = orig;
         }
+        [凾(256)]
         public int Compare(T x, T y) => orig.Compare(y, x);
         public override bool Equals(object obj) => obj is ReverseComparer<T>;
         public override int GetHashCode() => GetType().GetHashCode();

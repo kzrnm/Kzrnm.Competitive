@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
     public static class __CollectionExtension_MaxBy
     {
+        [凾(256)]
         public static (int index, T max) MaxBy<T>(this T[] arr) where T : IComparable<T>
              => MaxBy((ReadOnlySpan<T>)arr);
+        [凾(256)]
         public static (int index, T max) MaxBy<T>(this Span<T> arr) where T : IComparable<T>
              => MaxBy((ReadOnlySpan<T>)arr);
+        [凾(256)]
         public static (int index, T max) MaxBy<T>(this ReadOnlySpan<T> arr) where T : IComparable<T>
         {
             T max = arr[0];
@@ -23,10 +27,13 @@ namespace Kzrnm.Competitive
             }
             return (maxIndex, max);
         }
+        [凾(256)]
         public static (int index, T max) MaxBy<T, TMax>(this T[] arr, Func<T, TMax> maxBySelector) where TMax : IComparable<TMax>
             => MaxBy((ReadOnlySpan<T>)arr, maxBySelector);
+        [凾(256)]
         public static (int index, T max) MaxBy<T, TMax>(this Span<T> arr, Func<T, TMax> maxBySelector) where TMax : IComparable<TMax>
             => MaxBy((ReadOnlySpan<T>)arr, maxBySelector);
+        [凾(256)]
         public static (int index, T max) MaxBy<T, TMax>(this ReadOnlySpan<T> arr, Func<T, TMax> maxBySelector) where TMax : IComparable<TMax>
         {
             var maxItem = maxBySelector(arr[0]);
@@ -44,6 +51,7 @@ namespace Kzrnm.Competitive
             }
             return (maxIndex, max);
         }
+        [凾(256)]
         public static (TSource item, TMax max) MaxBy<TSource, TMax>
             (this IEnumerable<TSource> source, Func<TSource, TMax> maxBySelector)
             where TMax : IComparable<TMax>

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
-    public class BitArrayComparer : IComparer<System.Collections.BitArray>
+    public class ArrayComparer<T> : IComparer<T[]> where T : IComparable<T>
     {
         private readonly bool IsReverse;
-        public BitArrayComparer(bool isReverse = false)
+        public ArrayComparer(bool isReverse = false)
         {
             IsReverse = isReverse;
         }
-        public static readonly BitArrayComparer Default = new BitArrayComparer(false);
-        public static readonly BitArrayComparer Reverse = new BitArrayComparer(true);
-        public int Compare(System.Collections.BitArray x, System.Collections.BitArray y)
+        public static readonly ArrayComparer<T> Default = new ArrayComparer<T>(false);
+        public static readonly ArrayComparer<T> Reverse = new ArrayComparer<T>(true);
+        public int Compare(T[] x, T[] y)
         {
             if (IsReverse)
                 (x, y) = (y, x);

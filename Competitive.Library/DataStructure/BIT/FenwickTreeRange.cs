@@ -1,14 +1,11 @@
-﻿using AtCoder;
-using AtCoder.Internal;
+﻿using AtCoder.Internal;
 using AtCoder.Operators;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using static MethodImplOptions;
-
     /// <summary>
     /// 長さ N の配列に対し、
     /// <list type="bullet">
@@ -48,8 +45,7 @@ namespace Kzrnm.Competitive
             data2 = new T[n + 1];
         }
 
-
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         private static void Add(T[] data, int p, T w)
         {
             for (++p; p < data.Length; p += (int)InternalBit.ExtractLowestSetBit(p))
@@ -63,7 +59,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: 0≤<paramref name="l"/>&lt;n</para>
         /// <para>計算量: O(log n)</para>
         /// </remarks>
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public void Add(int l, int r, T x)
         {
             Add(data1, l, op.Multiply(op.Minus(x), cast.Cast(l)));
@@ -71,7 +67,7 @@ namespace Kzrnm.Competitive
             Add(data2, l, x);
             Add(data2, r, op.Minus(x));
         }
-
+        [凾(256)]
         private static T Sum(T[] data, int r)
         {
             T res = default;
@@ -87,20 +83,19 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(log n)</para>
         /// </remarks>
         /// <returns>a[<paramref name="l"/>] + a[<paramref name="l"/> - 1] + ... + a[<paramref name="r"/> - 1]</returns>
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public T Sum(int l, int r)
         {
             Contract.Assert(0U <= (uint)l && (uint)l <= (uint)r && (uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= {nameof(r)} && {nameof(r)} <= Length");
             return op.Subtract(Sum(r), Sum(l));
         }
 
-        [MethodImpl(AggressiveInlining)]
-
+        [凾(256)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public T Sum(int r) => op.Add(Sum(data1, r), op.Multiply(Sum(data2, r), cast.Cast(r)));
 
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public T Slice(int l, int len) => Sum(l, l + len);
 
         [DebuggerDisplay("Value = {" + nameof(value) + "}, Sum = {" + nameof(sum) + "}")]

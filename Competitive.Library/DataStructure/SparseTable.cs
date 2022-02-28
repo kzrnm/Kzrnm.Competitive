@@ -2,11 +2,10 @@
 using AtCoder.Internal;
 using System.Diagnostics;
 using System.Numerics;
-using System.Runtime.CompilerServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using static MethodImplOptions;
     [IsOperator]
     public interface ISparseTableOperator<T>
     {
@@ -39,10 +38,10 @@ namespace Kzrnm.Competitive
             }
         }
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public TValue Slice(int l, int length) => Prod(l, l + length);
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public TValue Prod(int l, int r)
         {
             Contract.Assert((uint)l < (uint)Length, "l < Length");

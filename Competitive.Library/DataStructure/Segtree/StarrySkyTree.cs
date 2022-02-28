@@ -1,11 +1,10 @@
 ﻿using AtCoder;
 using AtCoder.Internal;
 using System;
-using System.Runtime.CompilerServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.DataStructure
 {
-    using static MethodImplOptions;
     [System.Diagnostics.DebuggerTypeProxy(typeof(StarrySkyTree<,>.DebugView))]
     public class StarrySkyTree<T, TOp>
         where T : struct
@@ -108,12 +107,12 @@ namespace Kzrnm.Competitive.DataStructure
 
         public long FIdentity => 0;
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public long Composition(long f, long g) => f + g;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public long Mapping(long f, long x) => x + f;
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public long Operate(long x, long y) => Math.Max(x, y);
     }
 }

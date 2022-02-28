@@ -2,10 +2,8 @@
 using AtCoder.Internal;
 using System;
 using System.Diagnostics;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Runtime.CompilerServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -20,8 +18,9 @@ namespace Kzrnm.Competitive
         /// <para>- |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^24 = 16,777,216</para>
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|))</para>
         /// </remarks>
+        [凾(256)]
         public static uint[] Convolution(ReadOnlySpan<int> a, ReadOnlySpan<int> b, int mod)
-            => Convolution(MemoryMarshal.Cast<int, uint>(a), MemoryMarshal.Cast<int, uint>(b), mod);
+             => Convolution(MemoryMarshal.Cast<int, uint>(a), MemoryMarshal.Cast<int, uint>(b), mod);
 
         /// <summary>
         /// 任意 Mod で畳み込みを計算します。
@@ -32,6 +31,7 @@ namespace Kzrnm.Competitive
         /// <para>- |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^24 = 16,777,216</para>
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|))</para>
         /// </remarks>
+        [凾(256)]
         public static uint[] Convolution(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b, int mod)
         {
             uint umod = (uint)mod;
@@ -94,9 +94,10 @@ namespace Kzrnm.Competitive
         /// <para>- |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^24 = 16,777,216</para>
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|))</para>
         /// </remarks>
+        [凾(256)]
         public static uint[] Convolution<TMod>(ReadOnlySpan<int> a, ReadOnlySpan<int> b)
-            where TMod : struct, IStaticMod
-            => Convolution<TMod>(MemoryMarshal.Cast<int, uint>(a), MemoryMarshal.Cast<int, uint>(b));
+              where TMod : struct, IStaticMod
+              => Convolution<TMod>(MemoryMarshal.Cast<int, uint>(a), MemoryMarshal.Cast<int, uint>(b));
 
         /// <summary>
         /// 任意 Mod で畳み込みを計算します。
@@ -107,8 +108,9 @@ namespace Kzrnm.Competitive
         /// <para>- |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^24 = 16,777,216</para>
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|))</para>
         /// </remarks>
+        [凾(256)]
         public static uint[] Convolution<TMod>(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b)
-            where TMod : struct, IStaticMod
+             where TMod : struct, IStaticMod
         {
             var mod = default(TMod).Mod;
             if (default(TMod).IsPrime && a.Length + b.Length - 1 <= (1 << InternalBit.BSF(mod - 1)))

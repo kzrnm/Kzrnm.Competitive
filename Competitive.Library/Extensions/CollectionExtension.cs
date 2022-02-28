@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using AtCoder.Internal;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
     public static class __CollectionExtension
     {
+        [凾(256)]
         public static TValue Get<TKey, TValue>(this IDictionary<TKey, TValue> dic, TKey key)
         {
             dic.TryGetValue(key, out var v);

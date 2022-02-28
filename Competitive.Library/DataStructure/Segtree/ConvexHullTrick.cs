@@ -3,12 +3,10 @@ using AtCoder;
 using AtCoder.Internal;
 using AtCoder.Operators;
 using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using static MethodImplOptions;
     [IsOperator]
     public interface IConvexHullTrickOperator<T> { bool UseLeft(T left, T right); }
 
@@ -52,6 +50,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 直線 <paramref name="a"/>x + <paramref name="b"/> を追加します
         /// </summary>
+        [凾(256)]
         public void AddLine(T a, T b) => AddLine(a, b, 1, 0, size);
         /// <summary>
         /// 線分 <paramref name="a"/>x + <paramref name="b"/> (<see cref="xs"/>[l]≦x&lt;<see cref="xs"/>[r]) を追加します
@@ -124,6 +123,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <see cref="xs"/>[<paramref name="i"/>]での最小値・最大値を取得します。
         /// </summary>
+        [凾(256)]
         public T Query(int i) => Query(i, xs[i]);
         private T Query(int k, T x)
         {
@@ -176,14 +176,14 @@ namespace Kzrnm.Competitive
         where TOp : struct, ICompareOperator<T>
     {
         private static TOp op = default;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool UseLeft(T left, T right) => op.LessThan(left, right);
     }
     public struct MaxConvexHullTrickOperator<T, TOp> : IConvexHullTrickOperator<T>
         where TOp : struct, ICompareOperator<T>
     {
         private static TOp op = default;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool UseLeft(T left, T right) => op.GreaterThan(left, right);
     }
 }

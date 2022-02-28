@@ -1,4 +1,4 @@
-#region usings
+#region デフォルトの usings
 using AtCoder;
 using AtCoder.Extension;
 using Kzrnm.Competitive;
@@ -12,6 +12,7 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 using static System.Math;
 using static Kzrnm.Competitive.BitOperationsEx;
 using static Kzrnm.Competitive.Global;
@@ -26,7 +27,7 @@ partial class Program
 {
     string YesNo(bool b) => b ? "Yes" : "No";
     const bool __ManyTestCases = false;
-    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+    [凾(768)]
     private object Calc()
     {
         N = cr;

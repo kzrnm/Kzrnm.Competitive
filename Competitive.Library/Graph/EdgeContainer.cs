@@ -1,4 +1,5 @@
 ﻿using AtCoder.Internal;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -17,6 +18,7 @@ namespace Kzrnm.Competitive
             rootSizes = isDirected ? new int[size] : sizes;
             edges = new SimpleList<(int from, TEdge edge)>(size);
         }
+        [凾(256)]
         public void Add(int from, TEdge edge)
         {
             ++sizes[from];
@@ -24,6 +26,7 @@ namespace Kzrnm.Competitive
             edges.Add((from, edge));
         }
 
+        [凾(256)]
         public CSR<TEdge> ToCSR() => new CSR<TEdge>(Length, edges);
     }
 }

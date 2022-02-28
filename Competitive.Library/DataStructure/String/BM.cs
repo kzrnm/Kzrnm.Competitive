@@ -3,6 +3,7 @@ using System.Collections.Generic;
 #region https://algoful.com/Archive/Algorithm/BMSearch
 #endregion
 
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -12,21 +13,25 @@ namespace Kzrnm.Competitive
         /// BoyerMoore法で検索するパターンを初期化する
         /// </summary>
         /// <param name="pattern">検索したいパターン</param>
+        [凾(256)]
         public static BoyerMoore<T> Create<T>(ReadOnlySpan<T> pattern) => new BoyerMoore<T>(pattern);
         /// <summary>
         /// BoyerMoore法で検索するパターンを初期化する
         /// </summary>
         /// <param name="pattern">検索したいパターン</param>
+        [凾(256)]
         public static BoyerMoore<T> Create<T>(Span<T> pattern) => new BoyerMoore<T>(pattern);
         /// <summary>
         /// BoyerMoore法で検索するパターンを初期化する
         /// </summary>
         /// <param name="pattern">検索したいパターン</param>
+        [凾(256)]
         public static BoyerMoore<T> Create<T>(T[] pattern) => new BoyerMoore<T>(pattern);
         /// <summary>
         /// BoyerMoore法で検索するパターンを初期化する
         /// </summary>
         /// <param name="pattern">検索したいパターン</param>
+        [凾(256)]
         public static BoyerMoore<char> Create(string pattern) => new BoyerMoore<char>(pattern);
     }
     public ref struct BoyerMoore<T>
@@ -38,6 +43,7 @@ namespace Kzrnm.Competitive
             this.pattern = pattern;
             table = CreateTable(pattern);
         }
+        [凾(256)]
         static Dictionary<T, int> CreateTable(ReadOnlySpan<T> pattern)
         {
             var table = new Dictionary<T, int>();
@@ -51,6 +57,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="target"/> の中で pattern と一致するインデックスを1つ返す
         /// </summary>
+        [凾(256)]
         public int Match(ReadOnlySpan<T> target)
         {
             var i = pattern.Length - 1;

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -68,6 +69,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             _backwards = backwards;
             _lazy = lazy;
         }
+        [凾(256)]
         internal static RealTimeQueue<T> Create(LazyStack forwards, ImmutableStack<T> backwards, LazyStack lazy)
         {
             if (!lazy.IsEmpty)
@@ -160,6 +162,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// Gets the element at the front of the queue.
         /// </summary>
         /// <exception cref="System.InvalidOperationException">Thrown when the queue is empty.</exception>
+        [凾(256)]
         public T Peek()
         {
             AtCoder.Internal.Contract.Assert(!IsEmpty, "This operation does not apply to an empty instance.");
@@ -171,6 +174,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// Gets a read-only reference to the element at the front of the queue.
         /// </summary>
         /// <exception cref="System.InvalidOperationException">Thrown when the queue is empty.</exception>
+        [凾(256)]
         public ref readonly T PeekRef()
         {
             AtCoder.Internal.Contract.Assert(!IsEmpty, "This operation does not apply to an empty instance.");
@@ -185,6 +189,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// <returns>
         /// The new queue.
         /// </returns>
+        [凾(256)]
         public RealTimeQueue<T> Enqueue(T value)
         {
             return Create(_forwards, _backwards.Push(value), _lazy);
@@ -207,6 +212,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// </summary>
         /// <returns>A queue; never <c>null</c>.</returns>
         /// <exception cref="System.InvalidOperationException">Thrown when the queue is empty.</exception>
+        [凾(256)]
         public RealTimeQueue<T> Dequeue()
         {
             AtCoder.Internal.Contract.Assert(!IsEmpty, "This operation does not apply to an empty instance.");
@@ -224,6 +230,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// <param name="value">Receives the value from the head of the queue.</param>
         /// <returns>The new queue with the head element removed.</returns>
         /// <exception cref="System.InvalidOperationException">Thrown when the queue is empty.</exception>
+        [凾(256)]
         public RealTimeQueue<T> Dequeue(out T value)
         {
             value = this.Peek();

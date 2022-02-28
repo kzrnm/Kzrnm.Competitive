@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Linq;
 using AtCoder.Internal;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -37,6 +36,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: 0≤<paramref name="a"/>, <paramref name="b"/>&lt;n</para>
         /// <para>計算量: O(log^2(n))</para>
         /// </remarks>
+        [凾(256)]
         public PersistentUnionFind Merge(int a, int b)
         {
             Contract.Assert(0 <= a && a < _parentOrSize.Count);
@@ -62,6 +62,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: 0≤<paramref name="a"/>, <paramref name="b"/>&lt;n</para>
         /// <para>計算量: O(log^2(n))</para>
         /// </remarks>
+        [凾(256)]
         public bool Same(int a, int b)
         {
             Contract.Assert(0 <= a && a < _parentOrSize.Count);
@@ -76,6 +77,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: 0≤<paramref name="a"/>&lt;n</para>
         /// <para>計算量: O(log^2(n))</para>
         /// </remarks>
+        [凾(256)]
         public int Leader(int a)
         {
             var p = _parentOrSize[a];
@@ -91,6 +93,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: 0≤<paramref name="a"/>&lt;n</para>
         /// <para>計算量: O(log^2(n))</para>
         /// </remarks>
+        [凾(256)]
         public int Size(int a)
         {
             Contract.Assert(0 <= a && a < _parentOrSize.Count);

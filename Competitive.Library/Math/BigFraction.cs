@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -50,36 +51,53 @@ namespace Kzrnm.Competitive
         }
         public override string ToString() => $"{Numerator}/{Denominator}";
         public override bool Equals(object obj) => obj is BigFraction f && Equals(f);
+        [凾(256)]
         public bool Equals(BigFraction other) => this._numerator == other._numerator && this._denominator == other._denominator;
         public override int GetHashCode() => HashCode.Combine(_numerator, _denominator);
 
+        [凾(256)]
         public static implicit operator BigFraction(long x) => new BigFraction(x, 1);
+        [凾(256)]
         public static implicit operator BigFraction(BigInteger x) => new BigFraction(x, 1);
+        [凾(256)]
         public int CompareTo(BigFraction other) => (this.Numerator * other.Denominator).CompareTo(other.Numerator * this.Denominator);
 
+        [凾(256)]
         public static BigFraction operator -(BigFraction x) => new BigFraction(-x.Numerator, x.Denominator);
+        [凾(256)]
         public static BigFraction operator +(BigFraction x, BigFraction y)
         {
             var gcd = BigInteger.GreatestCommonDivisor(x.Denominator, y.Denominator);
             var lcm = x.Denominator / gcd * y.Denominator;
             return new BigFraction((x.Numerator * y.Denominator + y.Numerator * x.Denominator) / gcd, lcm);
         }
+        [凾(256)]
         public static BigFraction operator -(BigFraction x, BigFraction y)
         {
             var gcd = BigInteger.GreatestCommonDivisor(x.Denominator, y.Denominator);
             var lcm = x.Denominator / gcd * y.Denominator;
             return new BigFraction((x.Numerator * y.Denominator - y.Numerator * x.Denominator) / gcd, lcm);
         }
+        [凾(256)]
         public static BigFraction operator *(BigFraction x, BigFraction y) => new BigFraction(x.Numerator * y.Numerator, x.Denominator * y.Denominator);
+        [凾(256)]
         public static BigFraction operator /(BigFraction x, BigFraction y) => new BigFraction(x.Numerator * y.Denominator, x.Denominator * y.Numerator);
+        [凾(256)]
         public static bool operator ==(BigFraction x, BigFraction y) => x.Equals(y);
+        [凾(256)]
         public static bool operator !=(BigFraction x, BigFraction y) => !x.Equals(y);
+        [凾(256)]
         public static bool operator >=(BigFraction x, BigFraction y) => x.CompareTo(y) >= 0;
+        [凾(256)]
         public static bool operator <=(BigFraction x, BigFraction y) => x.CompareTo(y) <= 0;
+        [凾(256)]
         public static bool operator >(BigFraction x, BigFraction y) => x.CompareTo(y) > 0;
+        [凾(256)]
         public static bool operator <(BigFraction x, BigFraction y) => x.CompareTo(y) < 0;
 
+        [凾(256)]
         public BigFraction Inverse() => new BigFraction(Denominator, Numerator);
+        [凾(256)]
         public double ToDouble() => (double)Numerator / (double)Denominator;
     }
 }

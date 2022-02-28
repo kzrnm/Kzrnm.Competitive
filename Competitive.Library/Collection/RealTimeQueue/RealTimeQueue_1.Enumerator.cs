@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -50,6 +51,7 @@ namespace Kzrnm.Competitive
             /// </summary>
             public T Current
             {
+                [凾(256)]
                 get
                 {
                     if (_remainingForwardsStack == null)
@@ -78,6 +80,7 @@ namespace Kzrnm.Competitive
             /// Advances enumeration to the next element.
             /// </summary>
             /// <returns>A value indicating whether there is another element in the enumeration.</returns>
+            [凾(256)]
             public bool MoveNext()
             {
                 if (_remainingForwardsStack == null)
@@ -140,9 +143,10 @@ namespace Kzrnm.Competitive
             /// </summary>
             public T Current
             {
+                [凾(256)]
                 get
                 {
-                    this.ThrowIfDisposed();
+                    ThrowIfDisposed();
                     if (_remainingForwardsStack == null)
                     {
                         // The initial call to MoveNext has not yet been made.
@@ -177,6 +181,7 @@ namespace Kzrnm.Competitive
             /// Advances enumeration to the next element.
             /// </summary>
             /// <returns>A value indicating whether there is another element in the enumeration.</returns>
+            [凾(256)]
             public bool MoveNext()
             {
                 this.ThrowIfDisposed();

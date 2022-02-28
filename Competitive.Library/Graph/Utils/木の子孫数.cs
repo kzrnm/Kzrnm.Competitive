@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -7,9 +8,10 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 自身を含む子孫ノードの数を返す
         /// </summary>
+        [凾(256)]
         public static int[] DescendantsCounts<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
-            where TNode : ITreeNode<TEdge>
-            where TEdge : IGraphEdge
+              where TNode : ITreeNode<TEdge>
+              where TEdge : IGraphEdge
         {
             var treeArr = tree.AsArray();
             var res = new int[treeArr.Length];

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -17,7 +16,9 @@ namespace Kzrnm.Competitive
                 this.edge = edge;
                 this.isStart = isStart;
             }
+            [凾(256)]
             public Event Reverse() => new Event(root, edge, !isStart);
+            [凾(256)]
             public (int From, int To) Route() => isStart ? (root, edge.To) : (edge.To, root);
             public override string ToString() => $"{root}{(isStart ? '→' : '←')}{edge}";
         }
@@ -118,7 +119,7 @@ namespace Kzrnm.Competitive
         }
         private struct NodeMinOp : ISparseTableOperator<(int Node, int Depth)>
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [凾(256)]
             public (int Node, int Depth) Operate((int Node, int Depth) x, (int Node, int Depth) y) => x.Depth <= y.Depth ? x : y;
         }
     }

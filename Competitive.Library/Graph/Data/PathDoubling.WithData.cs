@@ -1,6 +1,6 @@
 ﻿using AtCoder;
 using System.Numerics;
-using System.Runtime.CompilerServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -71,7 +71,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <param name="start">: スタートするインデックス</param>
         /// <param name="moveNum">: 移動回数</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [凾(256)]
         public (int To, T Data) Move(int start, long moveNum) => Move(start, (ulong)moveNum);
         /// <summary>
         /// <para><paramref name="start"/>: スタートするインデックス</para>
@@ -79,7 +79,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <param name="start">: スタートするインデックス</param>
         /// <param name="moveNum">: 移動回数</param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [凾(256)]
         public (int To, T Data) Move(int start, ulong moveNum)
         {
             T d = op.Identity;

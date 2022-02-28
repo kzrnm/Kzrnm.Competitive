@@ -3,11 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using static MethodImplOptions;
     public class SetDictionary<TKey, TValue> : SetDictionary<TKey, TValue, DefaultComparerStruct<TKey>>
         where TKey : IComparable<TKey>
     {
@@ -64,9 +63,9 @@ namespace Kzrnm.Competitive
         IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values => ((IDictionary<TKey, TValue>)this).Values;
         public TValue this[TKey key]
         {
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             get => FindNode(key).Value;
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             set
             {
                 var node = FindNode(key);
@@ -77,9 +76,11 @@ namespace Kzrnm.Competitive
 
         void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> pair) => Add(pair.Key, pair.Value);
         void IDictionary<TKey, TValue>.Add(TKey key, TValue value) => DoAdd(KeyValuePair.Create(key, value));
+        [凾(256)]
         public bool Add(TKey key, TValue value) => DoAdd(KeyValuePair.Create(key, value));
 
 
+        [凾(256)]
         public bool ContainsKey(TKey key) => FindNode(key) != null;
         bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> pair)
         {
@@ -93,6 +94,7 @@ namespace Kzrnm.Competitive
             }
             return false;
         }
+        [凾(256)]
         public bool TryGetValue(TKey key, out TValue value)
         {
             var node = FindNode(key);
@@ -124,25 +126,25 @@ namespace Kzrnm.Competitive
             {
                 this.comparer = comparer;
             }
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public Node Create(KeyValuePair<TKey, TValue> item, NodeColor color) => new Node(item.Key, item.Value, color);
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public KeyValuePair<TKey, TValue> GetValue(Node node) => node.Pair;
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public void SetValue(ref Node node, KeyValuePair<TKey, TValue> value)
             {
                 node.Key = value.Key;
                 node.Value = value.Value;
             }
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public TKey GetCompareKey(KeyValuePair<TKey, TValue> item) => item.Key;
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public int Compare(TKey x, TKey y) => comparer.Compare(x, y);
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public int Compare(KeyValuePair<TKey, TValue> node1, KeyValuePair<TKey, TValue> node2) => comparer.Compare(node1.Key, node2.Key);
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public int Compare(Node node1, Node node2) => comparer.Compare(node1.Key, node2.Key);
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public int Compare(TKey value, Node node) => comparer.Compare(value, node.Key);
         }
         private class DebugView

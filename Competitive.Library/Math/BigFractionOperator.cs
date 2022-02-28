@@ -1,44 +1,43 @@
 ﻿using AtCoder.Operators;
 using System;
 using System.Numerics;
-using System.Runtime.CompilerServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using static MethodImplOptions;
     public struct BigFractionOperator : INumOperator<BigFraction>, ICompareOperator<BigFraction>
     {
         public BigFraction MinValue => BigInteger.MinusOne << 10000;
         public BigFraction MaxValue => BigInteger.One << 10000;
         public BigFraction MultiplyIdentity => new BigFraction(1, 1);
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public BigFraction Add(BigFraction x, BigFraction y) => x + y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public BigFraction Subtract(BigFraction x, BigFraction y) => x - y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public BigFraction Multiply(BigFraction x, BigFraction y) => x * y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public BigFraction Divide(BigFraction x, BigFraction y) => x / y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public BigFraction Modulo(BigFraction x, BigFraction y) => throw new NotSupportedException();
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public int Compare(BigFraction x, BigFraction y) => x.CompareTo(y);
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool GreaterThan(BigFraction x, BigFraction y) => x > y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool GreaterThanOrEqual(BigFraction x, BigFraction y) => x >= y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool LessThan(BigFraction x, BigFraction y) => x < y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool LessThanOrEqual(BigFraction x, BigFraction y) => x <= y;
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public BigFraction Minus(BigFraction x) => -x;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public BigFraction Increment(BigFraction x) => throw new NotSupportedException();
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public BigFraction Decrement(BigFraction x) => throw new NotSupportedException();
     }
 }

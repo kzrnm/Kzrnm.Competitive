@@ -4,31 +4,57 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using static MethodImplOptions;
     public static class Grid
     {
+        [凾(256)]
         public static Grid<char> GridString(this PropertyConsoleReader cr, int H) => Create(cr.Repeat(H).Ascii);
+
+        [凾(256)]
         public static Grid<char> GridString(this PropertyConsoleReader cr, int H, char defaultValue) => Create(cr.Repeat(H).Ascii, defaultValue);
+
+        [凾(256)]
         public static Grid<int> GridInt(this PropertyConsoleReader cr, int H, int W) => Create(cr.Repeat(H).Select(cr => cr.Repeat(W).Int));
+
+        [凾(256)]
         public static Grid<int> GridInt(this PropertyConsoleReader cr, int H, int W, int defaultValue) => Create(cr.Repeat(H).Select(cr => cr.Repeat(W).Int), defaultValue);
+
+        [凾(256)]
         public static Grid<char> Create(string[] data) => new Grid<char>(data.Flatten(), data.Length, data[0].Length, default(char));
+
+        [凾(256)]
         public static Grid<char> Create(string[] data, char defaultValue) => new Grid<char>(data.Flatten(), data.Length, data[0].Length, defaultValue);
+
+        [凾(256)]
         public static Grid<T> Create<T>(T[][] data) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, default(T));
+
+        [凾(256)]
         public static Grid<T> Create<T>(T[][] data, T defaultValue) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);
+
+        [凾(256)]
         public static Grid<T> Create<T>(Span<T[]> data) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, default(T));
+
+        [凾(256)]
         public static Grid<T> Create<T>(Span<T[]> data, T defaultValue) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);
+
+        [凾(256)]
         public static Grid<T> Create<T>(ReadOnlySpan<T[]> data) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, default(T));
+
+        [凾(256)]
         public static Grid<T> Create<T>(ReadOnlySpan<T[]> data, T defaultValue) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);
+
+        [凾(256)]
         public static void WriteGrid(this Grid<char> grid, ConsoleWriter cw)
         {
             for (int i = 0; i < grid.H; i++)
                 cw.StreamWriter.WriteLine(grid.data.AsSpan(i * grid.W, grid.W));
         }
+
+        [凾(256)]
         public static void WriteGrid<T>(this Grid<T> grid, ConsoleWriter cw)
         {
             for (int i = 0; i < grid.H; i++)
@@ -53,12 +79,12 @@ namespace Kzrnm.Competitive
             this.data = data;
             this.defaultValue = defaultValue;
         }
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public int Index(int h, int w) =>
-            (uint)h < (uint)H && (uint)w < (uint)W
-            ? h * W + w
-            : -1;
-        [MethodImpl(AggressiveInlining)]
+    (uint)h < (uint)H && (uint)w < (uint)W
+    ? h * W + w
+    : -1;
+        [凾(256)]
         public (int h, int w) FromIndex(int ix)
         {
             var h = ix / W;
@@ -66,7 +92,7 @@ namespace Kzrnm.Competitive
         }
 
         private T defaultReference;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         private ref T DefaultValueReference()
         {
             defaultReference = defaultValue;
@@ -74,12 +100,12 @@ namespace Kzrnm.Competitive
         }
         public ref T this[int h, int w]
         {
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             get => ref this[Index(h, w)];
         }
         public ref T this[int index]
         {
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             get
             {
                 if ((uint)index < (uint)data.Length)
@@ -124,13 +150,13 @@ namespace Kzrnm.Competitive
                 return ToStringNoSplit((Grid<char>)(object)this);
             return ToStringSplit();
         }
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public MoveEnumerator Moves(int index)
         {
             var (h, w) = FromIndex(index);
             return new MoveEnumerator(this, h, w);
         }
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public MoveEnumerator Moves(int h, int w) => new MoveEnumerator(this, h, w);
         public struct MoveEnumerator : IEnumerator<(int h, int w)>, IEnumerable<(int h, int w)>
         {
@@ -145,7 +171,7 @@ namespace Kzrnm.Competitive
             private readonly Grid<T> grid;
             private readonly int origH, origW;
             private Status status;
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public MoveEnumerator(Grid<T> grid, int h, int w)
             {
                 this.grid = grid;
@@ -155,7 +181,7 @@ namespace Kzrnm.Competitive
             }
             public (int h, int w) Current
             {
-                [MethodImpl(AggressiveInlining)]
+                [凾(256)]
                 get
                 {
                     int dh = 0;
@@ -181,7 +207,7 @@ namespace Kzrnm.Competitive
 
             object IEnumerator.Current => this.Current;
 
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public bool MoveNext()
             {
                 switch (status)
@@ -216,7 +242,7 @@ namespace Kzrnm.Competitive
                 }
             }
 
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             public MoveEnumerator GetEnumerator() => this;
             IEnumerator<(int h, int w)> IEnumerable<(int h, int w)>.GetEnumerator() => this;
             IEnumerator IEnumerable.GetEnumerator() => this;

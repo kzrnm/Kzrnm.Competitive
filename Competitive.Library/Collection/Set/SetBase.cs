@@ -7,10 +7,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.SetInternals
 {
-    using static MethodImplOptions;
     public interface ISetOperator<T, TCmp, Node> : IComparer<TCmp>
     {
         Node Create(T item, NodeColor color);
@@ -51,25 +51,25 @@ namespace Kzrnm.Competitive.SetInternals
     public struct SetLowerBoundOperator : ISetBinarySearchOperator
     {
         public bool ReturnLeft => false;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool IntoLeft(int order) => order <= 0;
     }
     public struct SetUpperBoundOperator : ISetBinarySearchOperator
     {
         public bool ReturnLeft => false;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool IntoLeft(int order) => order < 0;
     }
     public struct SetLowerBoundReverseOperator : ISetBinarySearchOperator
     {
         public bool ReturnLeft => true;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool IntoLeft(int order) => order < 0;
     }
     public struct SetUpperBoundReverseOperator : ISetBinarySearchOperator
     {
         public bool ReturnLeft => true;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public bool IntoLeft(int order) => order <= 0;
     }
 
@@ -181,6 +181,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             return root;
         }
         #endregion Constructor
+        [凾(256)]
         internal Node MinNode()
         {
             if (root == null) return null;
@@ -188,6 +189,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             while (cur.Left != null) { cur = cur.Left; }
             return cur;
         }
+        [凾(256)]
         internal Node MaxNode()
         {
             if (root == null) return null;
@@ -199,6 +201,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         public T Max => MaxNode() switch { { } n => op.GetValue(n), _ => default(T) };
 
         #region Search
+        [凾(256)]
         public Node FindNode(TCmp item)
         {
             Node current = root;
@@ -211,6 +214,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             return null;
         }
 
+        [凾(256)]
         public int Index(Node node)
         {
             var _node = node;
@@ -229,6 +233,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             return ret;
         }
 
+        [凾(256)]
         public Node FindByIndex(int index)
         {
             var current = root;
@@ -256,8 +261,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// </summary>
         /// <param name="item">検索する要素</param>
         /// <param name="bop">二分探索の判定オペレーター</param>
+        [凾(256)]
         public (Node node, int index) BinarySearch<TBOp>(TCmp item, TBOp bop = default)
-            where TBOp : struct, ISetBinarySearchOperator
+               where TBOp : struct, ISetBinarySearchOperator
         {
             Node left = null, right = null;
             Node current = root;
@@ -291,56 +297,69 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// <summary>
         /// <paramref name="item"/> 以上の最初のノードを返します。
         /// </summary>
+        [凾(256)]
         public Node FindNodeLowerBound(TCmp item) => BinarySearch<SetLowerBoundOperator>(item).node;
         /// <summary>
         /// <paramref name="item"/> 以上の最初のインデックスを返します。
         /// </summary>
+        [凾(256)]
         public int LowerBoundIndex(TCmp item) => BinarySearch<SetLowerBoundOperator>(item).index;
         /// <summary>
         /// <paramref name="item"/> 以上の最初の要素を返します。
         /// </summary>
+        [凾(256)]
         public T LowerBoundItem(TCmp item) => op.GetValue(BinarySearch<SetLowerBoundOperator>(item).node);
         /// <summary>
         /// <paramref name="item"/> を超える最初のノードを返します。
         /// </summary>
+        [凾(256)]
         public Node FindNodeUpperBound(TCmp item) => BinarySearch<SetUpperBoundOperator>(item).node;
         /// <summary>
         /// <paramref name="item"/> を超える最初のインデックスを返します。
         /// </summary>
+        [凾(256)]
         public int UpperBoundIndex(TCmp item) => BinarySearch<SetUpperBoundOperator>(item).index;
         /// <summary>
         /// <paramref name="item"/> を超える最初の要素を返します。
         /// </summary>
+        [凾(256)]
         public T UpperBoundItem(TCmp item) => op.GetValue(BinarySearch<SetUpperBoundOperator>(item).node);
 
         /// <summary>
         /// <paramref name="item"/> 以下の最後のノードを返します。
         /// </summary>
+        [凾(256)]
         public Node FindNodeReverseLowerBound(TCmp item) => BinarySearch<SetLowerBoundReverseOperator>(item).node;
         /// <summary>
         /// <paramref name="item"/> 以下の最後のインデックスを返します。
         /// </summary>
+        [凾(256)]
         public int ReverseLowerBoundIndex(TCmp item) => BinarySearch<SetLowerBoundReverseOperator>(item).index;
         /// <summary>
         /// <paramref name="item"/> 以下の最後の要素を返します。
         /// </summary>
+        [凾(256)]
         public T ReverseLowerBoundItem(TCmp item) => op.GetValue(BinarySearch<SetLowerBoundReverseOperator>(item).node);
 
         /// <summary>
         /// <paramref name="item"/> 未満の最後のノードを返します。
         /// </summary>
+        [凾(256)]
         public Node FindNodeReverseUpperBound(TCmp item) => BinarySearch<SetUpperBoundReverseOperator>(item).node;
         /// <summary>
         /// <paramref name="item"/> 未満の最後のインデックスを返します。
         /// </summary>
+        [凾(256)]
         public int ReverseUpperBoundIndex(TCmp item) => BinarySearch<SetUpperBoundReverseOperator>(item).index;
         /// <summary>
         /// <paramref name="item"/> 未満の最後の要素を返します。
         /// </summary>
+        [凾(256)]
         public T ReverseUpperBoundItem(TCmp item) => op.GetValue(BinarySearch<SetUpperBoundReverseOperator>(item).node);
         #endregion Search
 
         #region Enumerate
+        [凾(256)]
         public IEnumerable<T> Reversed()
         {
             var e = new ValueEnumerator(this, true, null);
@@ -353,6 +372,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// <param name="from">列挙開始するノードの値</param>
         /// <param name="reverse">以上ではなく以下を列挙する</param>
         /// <returns></returns>
+        [凾(256)]
         public IEnumerable<T> EnumerateItem(Node from = null, bool reverse = false)
         {
             var e = new ValueEnumerator(this, reverse, from);
@@ -364,6 +384,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// <param name="from">列挙開始するノードの値</param>
         /// <param name="reverse">以上ではなく以下を列挙する</param>
         /// <returns></returns>
+        [凾(256)]
         public IEnumerable<Node> EnumerateNode(Node from = null, bool reverse = false)
         {
             var e = new Enumerator(this, reverse, from);
@@ -374,6 +395,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         #region ICollection<T> members
         void ICollection<T>.Add(T item) => DoAdd(item);
 
+        [凾(256)]
         public bool Add(T item) => DoAdd(item);
         protected bool DoAdd(T item)
         {
@@ -489,6 +511,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             root?.ColorBlack();
         }
         bool ICollection<T>.Remove(T item) => Remove(op.GetCompareKey(item));
+        [凾(256)]
         public bool Remove(TCmp item) => DoRemove(item);
         protected bool DoRemove(TCmp item)
         {
@@ -557,6 +580,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             ReplaceChildOrRoot(greatGrandParent, grandParent, newChildOfGreatGrandParent);
 
         }
+        [凾(256)]
         protected void ReplaceChildOrRoot(Node parent, Node child, Node newChild)
         {
             if (parent != null)
@@ -567,6 +591,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 if (root != null) root.Parent = null;
             }
         }
+        [凾(256)]
         protected void ReplaceNode(Node match, Node parentOfMatch, Node successor, Node parentOfSuccessor)
         {
             Debug.Assert(match != null);
@@ -602,10 +627,11 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         object ICollection.SyncRoot => this;
         public int Count => NodeSize(root);
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         internal static int NodeSize(Node node) => node == null ? 0 : node.Size;
 
 
+        [凾(256)]
         public ValueEnumerator GetEnumerator() => new ValueEnumerator(this);
         IEnumerator<T> IEnumerable<T>.GetEnumerator() => new ValueEnumerator(this);
         IEnumerator IEnumerable.GetEnumerator() => new ValueEnumerator(this);
@@ -629,6 +655,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 else Intialize(startNode);
 
             }
+            [凾(256)]
             void IntializeAll()
             {
                 var node = tree.root;
@@ -639,6 +666,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                     node = next;
                 }
             }
+            [凾(256)]
             void Intialize(Node startNode)
             {
                 if (startNode == null)
@@ -649,6 +677,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 list.Reverse();
                 foreach (var n in list) stack.Push(n);
             }
+            [凾(256)]
             SimpleList<Node> InitializeNormal(Node node)
             {
                 var list = new SimpleList<Node>(2 * Log2(tree.Count + 1));
@@ -671,6 +700,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 }
                 return list;
             }
+            [凾(256)]
             SimpleList<Node> InitializeReverse(Node node)
             {
                 var list = new SimpleList<Node>(2 * Log2(tree.Count + 1));
@@ -694,12 +724,13 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 return list;
             }
 
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             static int Log2(int num) => BitOperations.Log2((uint)num) + 1;
             public Node Current => current;
-            [MethodImpl(AggressiveInlining)]
+            [凾(256)]
             internal T CurrentValue() => tree.op.GetValue(current);
 
+            [凾(256)]
             public bool MoveNext()
             {
                 if (stack.Count == 0)
@@ -738,19 +769,20 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             object IEnumerator.Current => Current;
 
             public void Dispose() { }
+            [凾(256)]
             public bool MoveNext() => inner.MoveNext();
             public void Reset() => throw new NotSupportedException();
         }
     }
     public static class SetNodeBaseExt
     {
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public static bool IsNonNullBlack<TNode>(this TNode node) where TNode : SetNodeBase<TNode> => node != null && node.IsBlack;
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public static bool IsNonNullRed<TNode>(this TNode node) where TNode : SetNodeBase<TNode> => node != null && node.IsRed;
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public static bool IsNullOrBlack<TNode>(this TNode node) where TNode : SetNodeBase<TNode> => node == null || node.IsBlack;
     }
     public class SetNodeBase<TNode> where TNode : SetNodeBase<TNode>
@@ -803,6 +835,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         {
             get; private set;
         } = 1;
+        [凾(256)]
         internal bool UpdateSize()
         {
             var oldsize = this.Size;
@@ -817,12 +850,12 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         internal bool IsRed => Color == NodeColor.Red;
         internal bool Is2Node => IsBlack && Left.IsNullOrBlack() && Right.IsNullOrBlack();
         internal bool Is4Node => Left.IsNonNullRed() && Right.IsNonNullRed();
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         internal void ColorBlack() => Color = NodeColor.Black;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         internal void ColorRed() => Color = NodeColor.Red;
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         internal TreeRotation GetRotation(TNode current, TNode sibling)
         {
             Debug.Assert(sibling.Left.IsNonNullRed() || sibling.Right.IsNonNullRed());
@@ -832,7 +865,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 (currentIsLeftChild ? TreeRotation.Left : TreeRotation.LeftRight);
         }
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         internal TNode GetSibling(TNode node)
         {
             Debug.Assert(node != null);
@@ -840,7 +873,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 
             return node == Left ? Right : Left;
         }
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         internal void Split4Node()
         {
             Debug.Assert(Left != null);
@@ -850,7 +883,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             Left.ColorBlack();
             Right.ColorBlack();
         }
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         internal TNode Rotate(TreeRotation rotation)
         {
             TNode removeRed;
@@ -876,7 +909,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                     throw new InvalidOperationException();
             }
         }
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         internal TNode RotateLeft()
         {
             TNode child = Right;
@@ -884,7 +917,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             child.Left = this.AsGeneric;
             return child;
         }
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         internal TNode RotateLeftRight()
         {
             TNode child = Left;
@@ -896,7 +929,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             grandChild.Left = child;
             return grandChild;
         }
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         internal TNode RotateRight()
         {
             TNode child = Left;
@@ -904,7 +937,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             child.Right = this.AsGeneric;
             return child;
         }
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         internal TNode RotateRightLeft()
         {
             TNode child = Right;
@@ -916,7 +949,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             grandChild.Right = child;
             return grandChild;
         }
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         internal void Merge2Nodes()
         {
             Debug.Assert(IsRed);
@@ -928,7 +961,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             Left.ColorRed();
             Right.ColorRed();
         }
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         internal void ReplaceChild(TNode child, TNode newChild)
         {
             if (Left == child)

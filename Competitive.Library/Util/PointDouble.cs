@@ -1,6 +1,7 @@
 ﻿using AtCoder.Internal;
 using System;
-using System.Net.Http.Headers;
+using System.ComponentModel;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -15,10 +16,14 @@ namespace Kzrnm.Competitive
             this.y = y;
         }
 
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [凾(256)]
         public void Deconstruct(out double v1, out double v2) { v1 = x; v2 = y; }
+        [凾(256)]
         public static implicit operator PointDouble((double x, double y) tuple) => new PointDouble(tuple.x, tuple.y);
+        [凾(256)]
         public double Distance(PointDouble other) => Math.Sqrt(Distance2(other));
+        [凾(256)]
         public double Distance2(PointDouble other)
         {
             var p = other - this;
@@ -27,13 +32,18 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 内積
         /// </summary>
+        [凾(256)]
         public double Inner(PointDouble other) => x * other.x + y * other.y;
         /// <summary>
         /// 外積
         /// </summary>
+        [凾(256)]
         public double Cross(PointDouble other) => x * other.y - y * other.x;
+        [凾(256)]
         public static PointDouble operator +(PointDouble a, PointDouble b) => new PointDouble(a.x + b.x, a.y + b.y);
+        [凾(256)]
         public static PointDouble operator -(PointDouble a, PointDouble b) => new PointDouble(a.x - b.x, a.y - b.y);
+        [凾(256)]
         public int CompareTo(PointDouble other)
         {
             var sy = Math.Sign(y);
@@ -75,6 +85,7 @@ namespace Kzrnm.Competitive
         }
         public bool IsNaN => double.IsNaN(x) || double.IsNaN(y);
 
+        [凾(256)]
         public bool Equals(PointDouble other) => this.x == other.x && this.y == other.y;
         public override bool Equals(object obj) => obj is PointDouble p && this.Equals(p);
         public override int GetHashCode() => HashCode.Combine(x, y);
@@ -83,6 +94,7 @@ namespace Kzrnm.Competitive
         public static bool operator ==(PointDouble left, PointDouble right) => left.Equals(right);
         public static bool operator !=(PointDouble left, PointDouble right) => !left.Equals(right);
 
+        [凾(256)]
         static int CrossSign(double x1, double y1, double x2, double y2) => Math.Sign(x1 * y2 - y1 * x2);
 
         /// <summary>
@@ -145,12 +157,14 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// A*x+B*y+C=0 との距離
         /// </summary>
+        [凾(256)]
         public double 直線との距離(double A, double B, double C)
             => Math.Abs(A * x + B * y + C) / Math.Sqrt(A * A + B * B);
 
         /// <summary>
         /// 2点を通る直線 A*x+B*y+C=0
         /// </summary>
+        [凾(256)]
         public (double A, double B, double C) 直線(PointDouble other)
             => (other.y - this.y, this.x - other.x, this.y * (other.x - this.x) - this.x * (other.y - this.y));
 
@@ -158,6 +172,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 2点の垂直二等分線 A*x+B*y+C=0
         /// </summary>
+        [凾(256)]
         public (double A, double B, double C) 垂直二等分線(PointDouble other)
             => (this.x - other.x, this.y - other.y, (this.x * this.x - other.x * other.x + this.y * this.y - other.y * other.y) * -.5);
 
@@ -165,21 +180,25 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// P をとおる A*x+B*y=Any の垂線
         /// </summary>
+        [凾(256)]
         public static (double A, double B, double C) 直線の垂線(double a, double b, PointDouble p) => (b, -a, b * p.x - a * p.y);
 
         /// <summary>
         /// <paramref name="x"/> での A*x+B*y+C=0 の垂線
         /// </summary>
+        [凾(256)]
         public static (double A, double B, double C) 直線の垂線をXから求める(double a, double b, double c, double x) => (b, -a, b * x - a * (c - a * x));
 
         /// <summary>
         /// <paramref name="y"/> での A*x+B*y+C=0 の垂線
         /// </summary>
+        [凾(256)]
         public static (double A, double B, double C) 直線の垂線をYから求める(double a, double b, double c, double y) => (b, -a, b * (c - a * y) - a * y);
 
         /// <summary>
         /// A*x+B*y+C=0, U*x+V*y+W=0の交点
         /// </summary>
+        [凾(256)]
         public static PointDouble 直線と直線の交点(double a, double b, double c, double u, double v, double w)
         {
             var dd = a * v - b * u;
@@ -190,6 +209,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// A*x+B*y+C=0 と Pを中心とする半径rの円の交点
         /// </summary>
+        [凾(256)]
         public static PointDouble[] 直線と円の交点(double a, double b, double c, PointDouble p, double r)
         {
             var l = a * a + b * b;
@@ -219,6 +239,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// P1 を中心とする半径 r1 の円とP2 を中心とする半径 r2 の円の交点
         /// </summary>
+        [凾(256)]
         public static PointDouble[] 円の交点(PointDouble p1, double r1, PointDouble p2, double r2)
         {
             var xx = p1.x - p2.x;
@@ -232,6 +253,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="a1"/> から <paramref name="b1"/>までの線分と<paramref name="a2"/> から <paramref name="b2"/>までの線分が交差しているか
         /// </summary>
+        [凾(256)]
         public static bool 線分が交差しているか(PointDouble a1, PointDouble b1, PointDouble a2, PointDouble b2)
         {
             var ta = (a2.x - b2.x) * (a1.y - a2.y) + (a2.y - b2.y) * (a2.x - a1.x);
@@ -245,11 +267,13 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 多角形の面積を求める
         /// </summary>
+        [凾(256)]
         public static double Area(PointDouble[] points) => Area2(points) / 2.0;
 
         /// <summary>
         /// 多角形の面積×2を求める
         /// </summary>
+        [凾(256)]
         public static double Area2(PointDouble[] points)
         {
             Contract.Assert(points.Length >= 3);
