@@ -81,9 +81,9 @@ namespace Kzrnm.Competitive
         }
         [凾(256)]
         public int Index(int h, int w) =>
-    (uint)h < (uint)H && (uint)w < (uint)W
-    ? h * W + w
-    : -1;
+            (uint)h < (uint)H && (uint)w < (uint)W
+            ? h * W + w
+            : -1;
         [凾(256)]
         public (int h, int w) FromIndex(int ix)
         {
