@@ -1,6 +1,6 @@
 ﻿using Kzrnm.Competitive.IO;
 using System.Globalization;
-
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 internal partial class Program
 {
     static void Main() => new Program(new PropertyConsoleReader(), new ConsoleWriter()).Run();
@@ -32,6 +32,7 @@ internal partial class Program
 #endif
 partial class Program
 {
+    [凾(256)]
     object Calc() => null;
     bool __ManyTestCases = false;
     string YesNo(bool b) => b ? "Yes" : "No";
