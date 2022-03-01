@@ -28,7 +28,7 @@ namespace Kzrnm.Competitive
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱う。</para>
         /// </summary>
         [凾(256)]
-        public void Add(ulong num, int delta = 1, int idx = -1, ulong xorVal = 0)
+        public void Add(ulong num, int delta, int idx = -1, ulong xorVal = 0)
              => _root = Add(_root, num, idx, MaxDepth, delta, xorVal);
         [凾(256)]
         Node Add(Node t, ulong bit, int idx, int depth, int x, ulong xorVal)
@@ -58,7 +58,15 @@ namespace Kzrnm.Competitive
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱う。</para>
         /// </summary>
         [凾(256)]
-        public void Remove(ulong num, ulong xorVal = 0)
+        public void Increment(ulong num, ulong xorVal = 0)
+             => Add(num, 1, -1, xorVal);
+
+        /// <summary>
+        /// <para><paramref name="num"/> をデクリメントする。</para>
+        /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱う。</para>
+        /// </summary>
+        [凾(256)]
+        public void Decrement(ulong num, ulong xorVal = 0)
              => Add(num, -1, -1, xorVal);
 
         /// <summary>
@@ -131,8 +139,6 @@ namespace Kzrnm.Competitive
             return CountLess(_root, num, MaxDepth, xorVal);
         }
 
-
-
         /// <summary>
         /// <para><paramref name="k"/> 番目(0-indexed) に小さい値とそれに対応するノードを返す。</para>
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱う。</para>
@@ -140,18 +146,25 @@ namespace Kzrnm.Competitive
         [凾(256)]
         private (ulong Num, Node Node) KthElement(Node t, int k, int bitIndex, ulong xorVal)
         {
-            if (bitIndex == -1)
-                return (0, t);
-            bool f = ((xorVal >> bitIndex) & 1) != 0;
-            var tn = f ? t.right : t.left;
-            var nb = tn?.exist ?? 0;
-            if (nb <= k)
+            ulong num = 0;
+            var bb = 1ul << bitIndex;
+            for (; bb > 0; bb >>= 1)
             {
-                var (num, node) = KthElement((!f ? t.right : t.left), k - nb, bitIndex - 1, xorVal);
-                num |= 1ul << bitIndex;
-                return (num, node);
+                bool f = (xorVal & bb) != 0;
+                var tn = f ? t.right : t.left;
+                var nb = tn?.exist ?? 0;
+                if (nb <= k)
+                {
+                    t = !f ? t.right : t.left;
+                    k -= nb;
+                    num |= bb;
+                }
+                else
+                {
+                    t = tn;
+                }
             }
-            return KthElement(tn, k, bitIndex - 1, xorVal);
+            return (num, t);
         }
 
         /// <summary>
@@ -161,16 +174,16 @@ namespace Kzrnm.Competitive
         [凾(256)]
         int CountLess(Node t, ulong num, int bitIndex, ulong xorVal)
         {
-            if (bitIndex == -1) return 0;
             int ret = 0;
-            bool f = ((xorVal >> bitIndex) & 1) != 0;
-            var tn = f ? t.right : t.left;
-            if ((num >> bitIndex & 1) != 0 && tn != null)
-                ret += tn.exist;
-            var nf = ((num >> bitIndex & 1) != 0) != f;
-            var tf = nf ? t.right : t.left;
-            if (tf != null)
-                ret += CountLess(tf, num, bitIndex - 1, xorVal);
+            var bb = 1ul << bitIndex;
+            for (; bb > 0 && t != null; bb >>= 1)
+            {
+                bool f = (xorVal & bb) != 0;
+                var tn = f ? t.right : t.left;
+                if ((num & bb) != 0 && tn != null)
+                    ret += tn.exist;
+                t = (((num & bb) != 0) != f) ? t.right : t.left;
+            }
             return ret;
         }
 

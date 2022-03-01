@@ -10,8 +10,8 @@ namespace Kzrnm.Competitive.DataStructure
         {
             var bt = new BinaryTrie();
             bt.Add(1, 2);
-            bt.Add(2);
-            bt.Add(5);
+            bt.Increment(2);
+            bt.Increment(5);
 
             bt.KthElement(0).Num.Should().Be(1);
             bt.KthElement(1).Num.Should().Be(1);
@@ -53,7 +53,7 @@ namespace Kzrnm.Competitive.DataStructure
             bt.CountLess(6, 4).Should().Be(3);
             bt.CountLess(7, 4).Should().Be(4);
 
-            bt.Remove(2);
+            bt.Decrement(2);
             bt.KthElement(0).Num.Should().Be(1);
             bt.KthElement(1).Num.Should().Be(1);
             bt.KthElement(2).Num.Should().Be(5);
