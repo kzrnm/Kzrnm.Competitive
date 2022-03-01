@@ -27,7 +27,9 @@ partial class Program
 {
     string YesNo(bool b) => b ? "Yes" : "No";
     const bool __ManyTestCases = false;
-    [凾(768)]
+#if !LOCAL_RUNNING
+    [凾(256)]
+#endif
     private object Calc()
     {
         N = cr;
