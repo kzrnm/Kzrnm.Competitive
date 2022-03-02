@@ -32,10 +32,6 @@ partial class Program
 #endif
     private object Calc()
     {
-        N = cr;
-        AB = cr.Repeat(N).Select<(int A, int B)>(cr => (cr, cr));
         return null;
     }
-    public static int N;
-    public static (int A, int B)[] AB;
 }
