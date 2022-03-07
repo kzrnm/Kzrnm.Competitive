@@ -19,6 +19,7 @@ namespace Competitive.Runner
         {
             if (args.Length > 0 && args[0] == "expand")
             {
+                Console.WriteLine("expand mode");
                 string expandedCode = null;
 #if DEBUG
                 expandedCode = GetSourceCode(BasePath.Replace("HandMadeMain.cs", "Program.cs"))
