@@ -6,11 +6,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    [IsOperator]
-    public interface ISparseTableOperator<T>
-    {
-        T Operate(T x, T y);
-    }
     /// <summary>
     /// <para>冪等半群に対する区間クエリを, 前計算 O(nlogn), クエリ O(1) で処理する</para>
     /// <para>冪等: 操作を何回行っても集合が等しければ等しくなる性質(最小値・最大値など)</para>
