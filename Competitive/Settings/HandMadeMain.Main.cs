@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Competitive.Runner
 {
@@ -23,9 +24,14 @@ namespace Competitive.Runner
                 expandedCode = GetSourceCode(BasePath.Replace("HandMadeMain.cs", "Program.cs"))
                     ?.Code
                     ?.Replace("\r\n", "\n")
-                    ?.Replace("using MI=System.Runtime.CompilerServices.MethodImplAttribute;", "")
-                    ?.Replace("[MI(", "[凾(")
-                    ?.Replace("[MethodImpl(", "[凾(");
+                    ?.Replace("using MI=System.Runtime.CompilerServices.MethodImplAttribute;", "");
+                expandedCode = ReplaceMethodImpl(expandedCode);
+                static string ReplaceMethodImpl(string code)
+                {
+                    if (code is null) return null;
+
+                    return Regex.Replace(code, @"\[(MI|MethodImpl)\(((MethodImplOptions\.)?AggressiveInlining|256)\)", "[凾(256)");
+                }
 #endif
                 if (expandedCode != null)
                     Expand(args.AsSpan(1), expandedCode);
