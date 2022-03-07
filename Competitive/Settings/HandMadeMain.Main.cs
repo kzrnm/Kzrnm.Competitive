@@ -20,7 +20,12 @@ namespace Competitive.Runner
             {
                 string expandedCode = null;
 #if DEBUG
-                expandedCode = GetSourceCode(BasePath.Replace("HandMadeMain.cs", "Program.cs"))?.Code?.Replace("\r\n", "\n");
+                expandedCode = GetSourceCode(BasePath.Replace("HandMadeMain.cs", "Program.cs"))
+                    ?.Code
+                    ?.Replace("\r\n", "\n")
+                    ?.Replace("using MI=System.Runtime.CompilerServices.MethodImplAttribute;", "")
+                    ?.Replace("[MI(", "[凾(")
+                    ?.Replace("[MethodImpl(", "[凾(");
 #endif
                 if (expandedCode != null)
                     Expand(args.AsSpan(1), expandedCode);
