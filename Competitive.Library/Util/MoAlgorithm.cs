@@ -4,10 +4,17 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    [AtCoder.IsOperator]
     public interface IMoAlgorithmOperator<T>
     {
         T Indentity { get; }
+        /// <summary>
+        /// [l, r) から [l-1, r) または [l, r+1) を求める。
+        /// </summary>
         void Add(ref T current, int index);
+        /// <summary>
+        /// [l, r) から [l+1, r) または [l, r-1) を求める。
+        /// </summary>
         void Remove(ref T current, int index);
     }
     /// <summary>
@@ -16,7 +23,7 @@ namespace Kzrnm.Competitive
     public class MoAlgorithm<T, TOp> where TOp : struct, IMoAlgorithmOperator<T>
     {
         private readonly TOp op;
-        private readonly int Length;
+        //private readonly int Length;
         private readonly (int From, int ToExclusive, int Index)[] Queries;
         /// <summary>
         /// 平方分割でオフラインクエリを計算する
@@ -27,7 +34,7 @@ namespace Kzrnm.Competitive
         public MoAlgorithm(int n, (int From, int ToExclusive)[] queries, TOp op = default)
         {
             this.op = op;
-            this.Length = n;
+            //this.Length = n;
             Queries = queries.Indexed().Select(t => (t.Value.From, t.Value.ToExclusive, t.Index))
                 .ToArray();
             int sq = (int)Math.Sqrt(n);
