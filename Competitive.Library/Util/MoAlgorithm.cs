@@ -1,67 +1,96 @@
-﻿using System;
+﻿using AtCoder;
+using Kzrnm.Competitive.IO;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    [AtCoder.IsOperator]
-    public interface IMoAlgorithmOperator<T>
+    /// <summary>
+    /// Mo's algorithm の 状態を保持する
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    [IsOperator]
+    public interface IMoAlgorithmState<T>
     {
-        T Indentity { get; }
         /// <summary>
         /// [l, r) から [l-1, r) または [l, r+1) を求める。
         /// </summary>
-        void Add(ref T current, int index);
+        void Add(int index);
         /// <summary>
         /// [l, r) から [l+1, r) または [l, r-1) を求める。
         /// </summary>
-        void Remove(ref T current, int index);
+        void Remove(int index);
+
+        /// <summary>
+        /// 現在の [l, r) の 状態を返す。
+        /// </summary>
+        T Current { get; }
     }
     /// <summary>
     /// Mo's algorithm. 平方分割
     /// </summary>
-    public class MoAlgorithm<T, TOp> where TOp : struct, IMoAlgorithmOperator<T>
+    public class MoAlgorithm<T, TOp> where TOp : struct, IMoAlgorithmState<T>
     {
-        private readonly TOp op;
-        //private readonly int Length;
-        private readonly (int From, int ToExclusive, int Index)[] Queries;
+        private TOp st;
+        private int Max;
+        private readonly List<(int From, int ToExclusive, int Index)> builder;
         /// <summary>
         /// 平方分割でオフラインクエリを計算する
         /// </summary>
-        /// <param name="n">元データの長さ</param>
-        /// <param name="queries"></param>
-        /// <param name="op"></param>
-        public MoAlgorithm(int n, (int From, int ToExclusive)[] queries, TOp op = default)
+        /// <param name="st">現在の状態を保持する構造体</param>
+        public MoAlgorithm(TOp st)
         {
-            this.op = op;
-            //this.Length = n;
-            Queries = queries.Indexed().Select(t => (t.Value.From, t.Value.ToExclusive, t.Index))
-                .ToArray();
-            int sq = (int)Math.Sqrt(n);
-            Array.Sort(Queries.Select(t => (t.From / sq, t.ToExclusive)).ToArray(), Queries);
+            this.st = st;
+            builder = new List<(int From, int ToExclusive, int Index)>();
+        }
+
+        /// <summary>
+        /// クエリを追加する
+        /// </summary>
+        [凾(256)]
+        public void AddQuery(int from, int toExclusive)
+        {
+            Max = Math.Max(toExclusive, Max);
+            builder.Add((from, toExclusive, builder.Count));
         }
 
         /// <summary>
         /// クエリの結果を返す
         /// </summary>
-        /// <returns></returns>
         [凾(256)]
         public T[] Solve()
         {
-            var result = new T[Queries.Length];
-            int left = 0, right = 0;
-            foreach (var (f, t, i) in Queries)
+            if (builder.Count == 0) 
+                return Array.Empty<T>();
+
+            var queries = builder.ToArray();
+
+            int sq = (int)Math.Sqrt(Max);
+            Array.Sort(queries.Select(t =>
             {
-                ref var res = ref result[i];
-                res = op.Indentity;
+                var block = t.From / sq;
+                var second = (uint)t.ToExclusive;
+                if ((block & 1) != 0)
+                    second = ~second;
+                return ((ulong)block) << 32 | second;
+            }).ToArray(), queries);
+
+            var result = new T[queries.Length];
+            int left = 0, right = 0;
+            foreach (var (f, t, i) in queries)
+            {
                 while (f < left)
-                    op.Add(ref res, --left);
-                while (left < f)
-                    op.Remove(ref res, left++);
+                    st.Add(--left);
                 while (right < t)
-                    op.Add(ref res, right++);
+                    st.Add(right++);
+                while (left < f)
+                    st.Remove(left++);
                 while (t < right)
-                    op.Remove(ref res, --right);
+                    st.Remove(--right);
+
+                result[i] = st.Current;
             }
             return result;
         }
