@@ -294,7 +294,7 @@ function Update-Input {
     $mainPath = $config.Project.ProgramPath
     $main = (Get-Content $mainPath -Raw)
     if ($modInt) {
-        $main = ($main -replace 'using ModInt = [^;]+;', "using ModInt = AtCoder.StaticModInt<AtCoder.Mod$modInt>;")
+        $main = ($main -replace '(using ModInt[\S]*) ?= ?([^<]+)+[^;]+;', ('$1 = $2'+"<AtCoder.Mod$modInt>;"))
     }
     ($main -replace 'private object Calc\(\)[\s\S]*', ("private object Calc()")) > $mainPath
     "$indent{" >> $mainPath

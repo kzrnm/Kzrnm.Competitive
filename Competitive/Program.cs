@@ -22,6 +22,8 @@ using static Kzrnm.Competitive.__BinarySearchEx;
 using static Program;
 #endregion
 using ModInt = AtCoder.StaticModInt<AtCoder.Mod998244353>;
+using ModIntOperator = AtCoder.StaticModIntOperator<AtCoder.Mod998244353>;
+using ModIntFactor = Kzrnm.Competitive.StaticModIntFactor<AtCoder.Mod998244353>;
 
 partial class Program
 {
