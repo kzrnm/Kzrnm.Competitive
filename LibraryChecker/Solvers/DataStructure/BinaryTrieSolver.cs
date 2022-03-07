@@ -16,11 +16,11 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
                 uint x = cr;
                 if (t == 0)
                 {
-                    if (bt.Count(x) == 0) bt.Add(x);
+                    if (bt.Count(x) == 0) bt.Increment(x);
                 }
                 else if (t == 1)
                 {
-                    if (bt.Count(x) != 0) bt.Remove(x);
+                    if (bt.Count(x) != 0) bt.Decrement(x);
                 }
                 else
                     cw.WriteLine(bt.MinElement(x).Num);
