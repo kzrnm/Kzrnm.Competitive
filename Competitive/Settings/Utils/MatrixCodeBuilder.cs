@@ -11,22 +11,24 @@ namespace Competitive.Settings.Utils
         {
             var name = $"Matrix{size}x{size}";
             var sb = new StringBuilder();
-            sb.AppendLine($@"namespace Kzrnm.Competitive
+            sb.AppendLine($@"using System;
+using AtCoder.Operators;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
+namespace Kzrnm.Competitive
 {{
-    using static MethodImplOptions;
     public readonly struct {name}<T, TOp>
         where TOp : struct, IArithmeticOperator<T>
     {{
         private static TOp op = default;");
             {
-                var rowTuple = "(" + FormatJoin("T Col{0}") + ")";
+                var rowTuple = "(" + FormatJoin("T C{0}") + ")";
                 for (int i = 0; i < size; i++)
-                    sb.AppendLine($"        public readonly {rowTuple} Row{i};");
+                    sb.AppendLine($"        public readonly {rowTuple} R{i};");
                 var constructorArgs = FormatJoin($"{rowTuple} row{{0}}");
                 sb.AppendLine($"public {name}({string.Join(", ", constructorArgs)})");
                 sb.AppendLine("        {");
                 for (int i = 0; i < size; i++)
-                    sb.AppendLine($"            this.Row{i} = row{i};");
+                    sb.AppendLine($"            this.R{i} = row{i};");
                 sb.AppendLine("        }");
             }
             {
@@ -60,7 +62,7 @@ namespace Competitive.Settings.Utils
                     sb.Append("            (");
                     for (int j = 0; j < size; j++)
                     {
-                        sb.Append($"op.Minus(x.Row{i}.Col{j})");
+                        sb.Append($"op.Minus(x.R{i}.C{j})");
                         if (j + 1 < size)
                             sb.Append(", ");
                     }
@@ -79,7 +81,7 @@ namespace Competitive.Settings.Utils
                     sb.Append("            (");
                     for (int j = 0; j < size; j++)
                     {
-                        sb.Append($"op.Add(x.Row{i}.Col{j}, y.Row{i}.Col{j})");
+                        sb.Append($"op.Add(x.R{i}.C{j}, y.R{i}.C{j})");
                         if (j + 1 < size)
                             sb.Append(", ");
                     }
@@ -98,7 +100,7 @@ namespace Competitive.Settings.Utils
                     sb.Append("            (");
                     for (int j = 0; j < size; j++)
                     {
-                        sb.Append($"op.Subtract(x.Row{i}.Col{j}, y.Row{i}.Col{j})");
+                        sb.Append($"op.Subtract(x.R{i}.C{j}, y.R{i}.C{j})");
                         if (j + 1 < size)
                             sb.Append(", ");
                     }
@@ -122,7 +124,7 @@ namespace Competitive.Settings.Utils
                             sb.Append("op.Add(");
                         for (int k = 0; k < size; k++)
                         {
-                            sb.Append($"op.Multiply(x.Row{i}.Col{k}, y.Row{k}.Col{j})");
+                            sb.Append($"op.Multiply(x.R{i}.C{k}, y.R{k}.C{j})");
                             if (k > 0)
                                 sb.Append(')');
                             sb.Append(',');
@@ -147,7 +149,7 @@ namespace Competitive.Settings.Utils
                     sb.Append("            (");
                     for (int j = 0; j < size; j++)
                     {
-                        sb.Append($"op.Multiply(a, y.Row{i}.Col{j})");
+                        sb.Append($"op.Multiply(a, y.R{i}.C{j})");
                         if (j + 1 < size)
                             sb.Append(", ");
                     }
@@ -183,7 +185,7 @@ namespace Competitive.Settings.Utils
                         sb.Append("op.Add(");
                     for (int k = 0; k < size; k++)
                     {
-                        sb.Append($"op.Multiply(Row{i}.Col{k}, v{k})");
+                        sb.Append($"op.Multiply(R{i}.C{k}, v{k})");
                         if (k > 0)
                             sb.Append(')');
                         if (k + 1 < size)
@@ -210,22 +212,22 @@ namespace Competitive.Settings.Utils
     {{
         public {name}<T, TOp> MultiplyIdentity => {name}<T, TOp>.Identity;
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public {name}<T, TOp> Add({name}<T, TOp> x, {name}<T, TOp> y) => x + y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public {name}<T, TOp> Subtract({name}<T, TOp> x, {name}<T, TOp> y) => x - y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public {name}<T, TOp> Multiply({name}<T, TOp> x, {name}<T, TOp> y) => x * y;
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public {name}<T, TOp> Minus({name}<T, TOp> x) => -x;
 
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public {name}<T, TOp> Increment({name}<T, TOp> x) => throw new NotSupportedException();
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public {name}<T, TOp> Decrement({name}<T, TOp> x) => throw new NotSupportedException();
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public {name}<T, TOp> Divide({name}<T, TOp> x, {name}<T, TOp> y) => throw new NotSupportedException();
-        [MethodImpl(AggressiveInlining)]
+        [凾(256)]
         public {name}<T, TOp> Modulo({name}<T, TOp> x, {name}<T, TOp> y) => throw new NotSupportedException();
     }}
 }}");
