@@ -2,11 +2,11 @@
 
 namespace Kzrnm.Competitive.Solvers.DataStructure
 {
-    public class RealTimeQueueSolver : ISolver
+    public class RealTimeQueueSolver : Solver
     {
-        public string Name => "persistent_queue";
-
-        public void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public override string Name => "persistent_queue";
+        public override double TimeoutSecond => 5;
+        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int q = cr;
             var queues = new RealTimeQueue<int>[q];

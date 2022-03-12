@@ -2,11 +2,11 @@
 
 namespace Kzrnm.Competitive.Solvers.DataStructure
 {
-    public class BinaryTrieSolver : ISolver
+    public class BinaryTrieSolver : Solver
     {
-        public string Name => "set_xor_min";
-
-        public void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public override string Name => "set_xor_min";
+        public override double TimeoutSecond => 5;
+        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int N = cr;
             var bt = new BinaryTrie(30);

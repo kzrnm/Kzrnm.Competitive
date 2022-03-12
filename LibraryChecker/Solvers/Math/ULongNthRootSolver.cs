@@ -2,11 +2,11 @@
 
 namespace Kzrnm.Competitive.Solvers.DataStructure
 {
-    public class ULongNthRootSolver : ISolver
+    public class ULongNthRootSolver : Solver
     {
-        public string Name => "kth_root_integer";
-
-        public void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public override string Name => "kth_root_integer";
+        public override double TimeoutSecond => 10;
+        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int Q = cr;
             for (int q = 0; q < Q; q++)

@@ -4,11 +4,11 @@ using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive.Solvers.DataStructure
 {
-    public class LinkCutTreeSolver : ISolver
+    public class LinkCutTreeSolver : Solver
     {
-        public string Name => "dynamic_tree_vertex_add_path_sum";
-
-        public void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public override string Name => "dynamic_tree_vertex_add_path_sum";
+        public override double TimeoutSecond => 5;
+        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int N = cr;
             int Q = cr;

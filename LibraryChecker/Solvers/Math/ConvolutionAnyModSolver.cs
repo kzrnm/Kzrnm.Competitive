@@ -2,11 +2,11 @@
 
 namespace Kzrnm.Competitive.Solvers.DataStructure
 {
-    public class ConvolutionAnyModSolver : ISolver
+    public class ConvolutionAnyModSolver : Solver
     {
-        public string Name => "convolution_mod_1000000007";
-
-        public void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public override string Name => "convolution_mod_1000000007";
+        public override double TimeoutSecond => 10;
+        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int N = cr;
             int M = cr;

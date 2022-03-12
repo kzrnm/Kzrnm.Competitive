@@ -2,11 +2,11 @@
 
 namespace Kzrnm.Competitive.Solvers.DataStructure
 {
-    public class WaveletMatrixSolver : ISolver
+    public class WaveletMatrixSolver : Solver
     {
-        public string Name => "range_kth_smallest";
-
-        public void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public override string Name => "range_kth_smallest";
+        public override double TimeoutSecond => 5;
+        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int n = cr;
             int q = cr;
