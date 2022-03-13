@@ -15,7 +15,6 @@ namespace Kzrnm.Competitive
     {
         private static readonly T op = default;
         internal static readonly Vector256<uint> R;
-        internal static readonly Vector256<uint> M0;
         internal static readonly Vector256<uint> M1;
         internal static readonly Vector256<uint> M2;
         internal static readonly Vector256<uint> N2;
@@ -25,7 +24,6 @@ namespace Kzrnm.Competitive
             for (int i = 0; i < 4; ++i) rv *= 2 - op.Mod * rv;
             System.Diagnostics.Debug.Assert(rv * op.Mod == 1);
             R = Vector256.Create(rv);
-            M0 = default;
             M1 = Vector256.Create(op.Mod);
             M2 = Vector256.Create(op.Mod * 2);
             N2 = Vector256.Create((uint)(((ulong)-op.Mod) % op.Mod));
@@ -96,7 +94,7 @@ namespace Kzrnm.Competitive
             var unpalo_ = Avx2.UnpackLow(prod02_, prod13_);
             var unpahi_ = Avx2.UnpackHigh(prod02_, prod13_);
             var prod = Avx2.UnpackHigh(unpalo_.AsUInt64(), unpahi_.AsUInt64()).AsUInt32();
-            var cmp = Avx2.CompareGreaterThan(prod.AsInt32(), M0.AsInt32()).AsUInt32();
+            var cmp = Avx2.CompareGreaterThan(prod.AsInt32(), Vector256<int>.Zero).AsUInt32();
             var dif = Avx2.And(cmp, M1);
             return new VectorizedStaticModInt<T>(Avx2.Subtract(dif, prod));
         }
@@ -108,7 +106,7 @@ namespace Kzrnm.Competitive
             var B = rhs.Value;
             var apb = Avx2.Add(A, B);
             var ret = Avx2.Subtract(apb, M2);
-            var cmp = Avx2.CompareGreaterThan(M0.AsInt32(), ret.AsInt32()).AsUInt32();
+            var cmp = Avx2.CompareGreaterThan(Vector256<int>.Zero, ret.AsInt32()).AsUInt32();
             var add = Avx2.And(cmp, M2);
             return new VectorizedStaticModInt<T>(Avx2.Add(add, ret));
         }
@@ -119,7 +117,7 @@ namespace Kzrnm.Competitive
             var A = lhs.Value;
             var B = rhs.Value;
             var ret = Avx2.Subtract(A, B);
-            var cmp = Avx2.CompareGreaterThan(M0.AsInt32(), ret.AsInt32()).AsUInt32();
+            var cmp = Avx2.CompareGreaterThan(Vector256<int>.Zero, ret.AsInt32()).AsUInt32();
             var add = Avx2.And(cmp, M2);
             return new VectorizedStaticModInt<T>(Avx2.Add(add, ret));
         }
