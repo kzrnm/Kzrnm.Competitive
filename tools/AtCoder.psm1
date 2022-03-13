@@ -102,6 +102,9 @@ class ATVariable {
     [string]ToInit() {
         return "$($this.name) = cr;"
     }
+    [string]ToDefineInit() {
+        return "var $($this.name) = cr.Int;"
+    }
     [string]ToDefine() {
         return "int $($this.name);"
     }
@@ -116,6 +119,9 @@ class ATArray {
 
     [string]ToInit() {
         return "$($this.name) = cr.Repeat($($this.length));"
+    }
+    [string]ToDefineInit() {
+        return "var $($this.name) = cr.Repeat($($this.length)).Int;"
     }
     [string]ToDefine() {
         return "int[] $($this.name);"
@@ -134,6 +140,9 @@ class ATArray2 {
     [string]ToInit() {
         return "$($this.name) = cr.Repeat($($this.length1)).Select(cr => cr.Repeat($($this.length2)).Int);"
     }
+    [string]ToDefineInit() {
+        return "var $($this.name) = cr.Repeat($($this.length1)).Select(cr => cr.Repeat($($this.length2)).Int);"
+    }
     [string]ToDefine() {
         return "int[][] $($this.name);"
     }
@@ -143,9 +152,11 @@ class ATGrid {
     ATGrid([string]$length) {
         $this.length = $length
     }
-
     [string]ToInit() {
         return "grid = cr.Repeat($($this.length));"
+    }
+    [string]ToDefineInit() {
+        return "var grid = cr.Repeat($($this.length)).Ascii;"
     }
     [string]ToDefine() {
         return "string[] grid;"
@@ -165,6 +176,9 @@ class ATTuples {
 
     [string]ToInit() {
         return "$($this.varname) = cr.Repeat($($this.length)).Select<$($this.typename)>(cr => ($(@('cr')*$this.names.Length -join ',')));"
+    }
+    [string]ToDefineInit() {
+        return "var $($this.varname) = cr.Repeat($($this.length)).Select<$($this.typename)>(cr => ($(@('cr')*$this.names.Length -join ',')));"
     }
     [string]ToDefine() {
         return "$($this.typename)[] $($this.varname);"
@@ -282,7 +296,10 @@ function Update-Input {
     param(
         [Parameter(Mandatory = $true)]
         [AngleSharp.Html.Dom.IHtmlDocument]
-        $document
+        $document,
+        [Parameter(Mandatory = $false)]
+        [bool]
+        $StaticField = $false
     )
     $vars = (Get-Parsed-Input $document)
     if (-not $vars) {
@@ -294,14 +311,16 @@ function Update-Input {
     $mainPath = $config.Project.ProgramPath
     $main = (Get-Content $mainPath -Raw)
     if ($modInt) {
-        $main = ($main -replace '(using ModInt[\S]*) ?= ?([^<]+)+[^;]+;', ('$1 = $2'+"<AtCoder.Mod$modInt>;"))
+        $main = ($main -replace '(using ModInt[\S]*) ?= ?([^<]+)+[^;]+;', ('$1 = $2' + "<AtCoder.Mod$modInt>;"))
     }
     ($main -replace 'private object Calc\(\)[\s\S]*', ("private object Calc()")) > $mainPath
     "$indent{" >> $mainPath
-    $vars | ForEach-Object { $indent * 2 + $_.ToInit() } >> $mainPath
+    $vars | ForEach-Object { $indent * 2 + ($StaticField ? $_.ToInit() : $_.ToDefineInit()) } >> $mainPath
     "$indent${indent}return null;" >> $mainPath
     "$indent}" >> $mainPath
-    $vars | ForEach-Object { $indent + "public static " + $_.ToDefine() } >> $mainPath
+    if ($StaticField) {
+        $vars | ForEach-Object { $indent + "public static " + $_.ToDefine() } >> $mainPath
+    }
     "}" >> $mainPath
 }
 
@@ -309,13 +328,16 @@ function ParseAtCoder {
     param(
         [Parameter(Mandatory = $true)]
         [string]
-        $Url
+        $Url,
+        [Parameter(Mandatory = $false)]
+        [switch]
+        $StaticField
     )
 
     Set-Variable -Name "lastAtCoderUrl" -Value $Url -Scope Script
     $document = (Get-Parsed-AtCoder)
     Update-InOut (Get-InOut $document)
-    Update-Input $document
+    Update-Input $document -StaticField $StaticField
 }
 Set-Alias at "ParseAtCoder"
 #endregion Parse AtCoder
