@@ -10,7 +10,7 @@ namespace Kzrnm.Competitive
     public readonly struct ArrayMatrix<T, TOp>
         where TOp : struct, IArithmeticOperator<T>
     {
-        public T this[int row, int col] => this.Value[row][col];
+        public T this[int row, int col] => Value[row][col];
 
         private static TOp op = default;
         public readonly T[][] Value;
@@ -18,17 +18,17 @@ namespace Kzrnm.Competitive
 
         public static readonly ArrayMatrix<T, TOp> Zero = new ArrayMatrix<T, TOp>(ArrayMatrixKind.Zero);
         public static readonly ArrayMatrix<T, TOp> Identity = new ArrayMatrix<T, TOp>(ArrayMatrixKind.Identity);
-        private readonly ArrayMatrixKind kind;
-        private ArrayMatrix(ArrayMatrixKind kind)
+        internal readonly ArrayMatrixKind kind;
+        internal ArrayMatrix(ArrayMatrixKind kind)
         {
             this.kind = kind;
-            this.Value = null;
+            Value = null;
         }
 
 
         public ArrayMatrix(T[][] value)
         {
-            this.Value = value;
+            Value = value;
             kind = ArrayMatrixKind.Normal;
         }
         public ArrayMatrix(T[,] value)
@@ -339,12 +339,12 @@ namespace Kzrnm.Competitive
                 }
             return false;
         }
-        private enum ArrayMatrixKind
-        {
-            Zero,
-            Identity,
-            Normal,
-        }
+    }
+    internal enum ArrayMatrixKind
+    {
+        Zero,
+        Identity,
+        Normal,
     }
     public struct ArrayMatrixOperator<T, TOp> : IArithmeticOperator<ArrayMatrix<T, TOp>>
         where TOp : struct, IArithmeticOperator<T>

@@ -1,5 +1,6 @@
 ﻿using AtCoder;
 using FluentAssertions;
+using System.Linq;
 using Xunit;
 
 namespace Kzrnm.Competitive.MathNS.Matrix
@@ -230,6 +231,26 @@ namespace Kzrnm.Competitive.MathNS.Matrix
             default(ArrayMatrixOperator<int, IntOperator>).Multiply(mat1, mat2).Value.Should().BeEquivalentTo(expected.Value);
         }
 
+        [Theory]
+        [Trait("Category", "Operator")]
+        [MemberData(nameof(Multiply_Data))]
+        public void MultiplyModInt(ArrayMatrix<int, IntOperator> matInt1, ArrayMatrix<int, IntOperator> matInt2, ArrayMatrix<int, IntOperator> expectedInt)
+        {
+            var mat1 = Int2ModInt(matInt1);
+            var mat2 = Int2ModInt(matInt2);
+            var expected = Int2ModInt(expectedInt);
+            (mat1 * mat2).Value.Should().BeEquivalentTo(expected.Value);
+            mat1.Strassen(mat2).Value.Should().BeEquivalentTo(expected.Value);
+            default(ArrayMatrixOperator<StaticModInt<Mod1000000007>, StaticModIntOperator<Mod1000000007>>)
+                .Multiply(mat1, mat2).Value.Should().BeEquivalentTo(expected.Value);
+        }
+        private static ArrayMatrix<StaticModInt<Mod1000000007>, StaticModIntOperator<Mod1000000007>> Int2ModInt(ArrayMatrix<int, IntOperator> mat)
+            => mat.kind switch
+            {
+                ArrayMatrixKind.Normal
+                    => new(mat.Value.Select(arr => arr.Select(n => new StaticModInt<Mod1000000007>(n)).ToArray()).ToArray()),
+                _ => new ArrayMatrix<StaticModInt<Mod1000000007>, StaticModIntOperator<Mod1000000007>>(mat.kind),
+            };
 
         public static TheoryData MultiplyScalar_Data = new TheoryData<int, ArrayMatrix<int, IntOperator>, ArrayMatrix<int, IntOperator>>
         {
