@@ -5,7 +5,7 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class SLazySegtreeSolver : Solver
     {
-        public override string Name => "range_affine_range_sum";
+        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/range_affine_range_sum
         public override double TimeoutSecond => 5;
         public override void Solve(ConsoleReader cr, ConsoleWriter cw)
         {

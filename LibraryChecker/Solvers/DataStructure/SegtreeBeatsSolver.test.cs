@@ -6,7 +6,7 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class SegtreeBeatsSolver : Solver
     {
-        public override string Name => "range_chmin_chmax_add_range_sum";
+        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/range_chmin_chmax_add_range_sum
         public override double TimeoutSecond => 10;
         public override void Solve(ConsoleReader cr, ConsoleWriter cw)
         {

@@ -4,7 +4,7 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class ConvolutionAnyModSolver : Solver
     {
-        public override string Name => "convolution_mod_1000000007";
+        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/convolution_mod_1000000007
         public override double TimeoutSecond => 10;
         public override void Solve(ConsoleReader cr, ConsoleWriter cw)
         {

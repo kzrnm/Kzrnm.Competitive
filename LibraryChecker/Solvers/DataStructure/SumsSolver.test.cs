@@ -4,7 +4,7 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class SumsSolver : Solver
     {
-        public override string Name => "static_range_sum";
+        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/static_range_sum
         public override double TimeoutSecond => 5;
         public override void Solve(ConsoleReader cr, ConsoleWriter cw)
         {

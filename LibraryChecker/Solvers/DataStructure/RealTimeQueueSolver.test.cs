@@ -4,7 +4,7 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class RealTimeQueueSolver : Solver
     {
-        public override string Name => "persistent_queue";
+        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/persistent_queue
         public override double TimeoutSecond => 5;
         public override void Solve(ConsoleReader cr, ConsoleWriter cw)
         {

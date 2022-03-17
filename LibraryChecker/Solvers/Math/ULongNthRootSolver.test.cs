@@ -4,7 +4,7 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class ULongNthRootSolver : Solver
     {
-        public override string Name => "kth_root_integer";
+        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/kth_root_integer
         public override double TimeoutSecond => 10;
         public override void Solve(ConsoleReader cr, ConsoleWriter cw)
         {

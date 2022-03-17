@@ -6,7 +6,7 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class LinkCutTreeSolver : Solver
     {
-        public override string Name => "dynamic_tree_vertex_add_path_sum";
+        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/dynamic_tree_vertex_add_path_sum
         public override double TimeoutSecond => 5;
         public override void Solve(ConsoleReader cr, ConsoleWriter cw)
         {

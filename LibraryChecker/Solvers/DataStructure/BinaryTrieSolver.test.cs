@@ -4,7 +4,7 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class BinaryTrieSolver : Solver
     {
-        public override string Name => "set_xor_min";
+        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/set_xor_min
         public override double TimeoutSecond => 5;
         public override void Solve(ConsoleReader cr, ConsoleWriter cw)
         {

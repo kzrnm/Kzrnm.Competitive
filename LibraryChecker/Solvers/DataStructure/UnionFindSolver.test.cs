@@ -4,7 +4,7 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class UnionFindSolver : Solver
     {
-        public override string Name => "unionfind";
+        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/unionfind
         public override double TimeoutSecond => 5;
         public override void Solve(ConsoleReader cr, ConsoleWriter cw)
         {

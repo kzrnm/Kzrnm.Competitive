@@ -6,7 +6,7 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class DynamicConnectivitySolver : Solver
     {
-        public override string Name => "dynamic_graph_vertex_add_component_sum";
+        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/dynamic_graph_vertex_add_component_sum
         public override double TimeoutSecond => 10;
         public override void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
