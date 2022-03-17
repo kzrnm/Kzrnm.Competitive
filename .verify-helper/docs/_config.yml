@@ -1,13 +1,13 @@
 exclude:
   # ライブラリ以外は exclude
-  # - Competitive.Library
-  # - LibraryChecker
+  # - Library/Competitive.Library
+  # - Library/LibraryChecker
+  - Library/Competitive.Library.Test
   - .github
   - .verify-helper
   - .vscode
   - bin
   - Competitive
-  - Competitive.Library.Test
   - Competitive.Runner
   - JOI
   - poem
