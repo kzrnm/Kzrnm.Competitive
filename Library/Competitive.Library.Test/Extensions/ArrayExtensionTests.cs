@@ -176,7 +176,9 @@ namespace Kzrnm.Competitive.Extensions
         public void GetOrDummySpan()
         {
             Span<long> arr = stackalloc long[] {
-                43,24,8373,
+                43,
+                24,
+                8373,
             };
             arr.GetOrDummy(0).Should().Be(43);
             arr.GetOrDummy(1).Should().Be(24);
@@ -200,7 +202,9 @@ namespace Kzrnm.Competitive.Extensions
         public void GetOrDummyReadOnlySpan()
         {
             ReadOnlySpan<long> arr = stackalloc long[] {
-                43,24,8373,
+                43,
+                24,
+                8373,
             };
             arr.GetOrDummy(0).Should().Be(43);
             arr.GetOrDummy(1).Should().Be(24);

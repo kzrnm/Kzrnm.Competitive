@@ -5,10 +5,13 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class SLazySegtreeSolver
     {
-        static void Main() => new SLazySegtreeSolver().Solve(new ConsoleReader(), new ConsoleWriter()).Flush();
+        static void Main()
+        {
+            using (var cw = new ConsoleWriter()) Solve(new ConsoleReader(), cw);
+        }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/range_affine_range_sum
         public double TimeoutSecond => 5;
-        public ConsoleWriter Solve(ConsoleReader cr, ConsoleWriter cw)
+        static void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int N = cr;
             int Q = cr;
@@ -27,7 +30,6 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
                 else
                     cw.WriteLine(seg[l..r]);
             }
-            return cw;
         }
     }
     struct LazySegtreeSolverOp : ISLazySegtreeOperator<uint, (uint b, uint c)>

@@ -4,10 +4,13 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class RealTimeQueueSolver
     {
-        static void Main() => new RealTimeQueueSolver().Solve(new ConsoleReader(), new ConsoleWriter()).Flush();
+        static void Main()
+        {
+            using (var cw = new ConsoleWriter()) Solve(new ConsoleReader(), cw);
+        }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/persistent_queue
         public double TimeoutSecond => 5;
-        public ConsoleWriter Solve(ConsoleReader cr, ConsoleWriter cw)
+        static void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int q = cr;
             var queues = new RealTimeQueue<int>[q];
@@ -26,7 +29,6 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
                     cw.WriteLine(v);
                 }
             }
-            return cw;
         }
     }
 }

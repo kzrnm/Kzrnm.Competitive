@@ -6,10 +6,13 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class SegtreeBeatsSolver
     {
-        static void Main() => new SegtreeBeatsSolver().Solve(new ConsoleReader(), new ConsoleWriter()).Flush();
+        static void Main()
+        {
+            using (var cw = new ConsoleWriter()) Solve(new ConsoleReader(), cw);
+        }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/range_chmin_chmax_add_range_sum
         public double TimeoutSecond => 10;
-        public ConsoleWriter Solve(ConsoleReader cr, ConsoleWriter cw)
+        static void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int N = cr;
             int Q = cr;
@@ -33,7 +36,6 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
                         seg.Apply(l, r, F.Add(b));
                 }
             }
-            return cw;
         }
     }
     struct S
