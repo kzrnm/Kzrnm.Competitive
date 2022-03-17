@@ -1,0 +1,2 @@
+[[languages.csharp]]
+enable_bundle_projects = ["Library/LibraryChecker/LibraryChecker.csproj"]

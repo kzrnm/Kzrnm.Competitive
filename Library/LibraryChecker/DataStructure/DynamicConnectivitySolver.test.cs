@@ -4,11 +4,12 @@ using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive.Solvers.DataStructure
 {
-    public class DynamicConnectivitySolver : Solver
+    public class DynamicConnectivitySolver
     {
+        static void Main() => new DynamicConnectivitySolver().Solve(new ConsoleReader(), new ConsoleWriter());
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/dynamic_graph_vertex_add_component_sum
-        public override double TimeoutSecond => 10;
-        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public double TimeoutSecond => 10;
+        public void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int n = cr;
             int k = cr;

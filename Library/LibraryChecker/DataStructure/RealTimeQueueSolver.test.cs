@@ -2,11 +2,12 @@
 
 namespace Kzrnm.Competitive.Solvers.DataStructure
 {
-    public class RealTimeQueueSolver : Solver
+    public class RealTimeQueueSolver
     {
+        static void Main() => new RealTimeQueueSolver().Solve(new ConsoleReader(), new ConsoleWriter());
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/persistent_queue
-        public override double TimeoutSecond => 5;
-        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public double TimeoutSecond => 5;
+        public void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int q = cr;
             var queues = new RealTimeQueue<int>[q];

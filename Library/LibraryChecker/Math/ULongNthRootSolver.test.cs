@@ -2,11 +2,12 @@
 
 namespace Kzrnm.Competitive.Solvers.DataStructure
 {
-    public class ULongNthRootSolver : Solver
+    public class ULongNthRootSolver
     {
+        static void Main() => new ULongNthRootSolver().Solve(new ConsoleReader(), new ConsoleWriter());
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/kth_root_integer
-        public override double TimeoutSecond => 10;
-        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public double TimeoutSecond => 10;
+        public void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int Q = cr;
             for (int q = 0; q < Q; q++)

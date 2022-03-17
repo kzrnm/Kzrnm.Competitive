@@ -4,11 +4,12 @@ using ModIntOperator = AtCoder.StaticModIntOperator<AtCoder.Mod998244353>;
 
 namespace Kzrnm.Competitive.Solvers.Math
 {
-    public class MatrixStrassenSolver : Solver
+    public class MatrixStrassenSolver
     {
+        static void Main() => new MatrixStrassenSolver().Solve(new ConsoleReader(), new ConsoleWriter());
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/matrix_product
-        public override double TimeoutSecond => 10;
-        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public double TimeoutSecond => 10;
+        public void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             N = cr;
             M = cr;

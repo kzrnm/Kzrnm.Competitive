@@ -3,11 +3,12 @@ using System.Linq;
 
 namespace Kzrnm.Competitive.Solvers.DataStructure
 {
-    public class SLazySegtreeSolver : Solver
+    public class SLazySegtreeSolver
     {
+        static void Main() => new SLazySegtreeSolver().Solve(new ConsoleReader(), new ConsoleWriter());
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/range_affine_range_sum
-        public override double TimeoutSecond => 5;
-        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public double TimeoutSecond => 5;
+        public void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int N = cr;
             int Q = cr;

@@ -2,11 +2,12 @@
 
 namespace Kzrnm.Competitive.Solvers.DataStructure
 {
-    public class PersistentUnionFindSolver : Solver
+    public class PersistentUnionFindSolver
     {
+        static void Main() => new PersistentUnionFindSolver().Solve(new ConsoleReader(), new ConsoleWriter());
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/persistent_unionfind
-        public override double TimeoutSecond => 5;
-        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public double TimeoutSecond => 5;
+        public void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int N = cr;
             int Q = cr;

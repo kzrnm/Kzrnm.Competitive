@@ -46,7 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Competitive.Library\Competitive.Library.csproj" />
+    <ProjectReference Include="..\Library\Competitive.Library\Competitive.Library.csproj" />
   </ItemGroup>
 
 </Project>

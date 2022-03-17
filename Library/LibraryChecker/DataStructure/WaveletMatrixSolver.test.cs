@@ -2,11 +2,12 @@
 
 namespace Kzrnm.Competitive.Solvers.DataStructure
 {
-    public class WaveletMatrixSolver : Solver
+    public class WaveletMatrixSolver
     {
+        static void Main() => new WaveletMatrixSolver().Solve(new ConsoleReader(), new ConsoleWriter());
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/range_kth_smallest
-        public override double TimeoutSecond => 5;
-        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public double TimeoutSecond => 5;
+        public void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int n = cr;
             int q = cr;

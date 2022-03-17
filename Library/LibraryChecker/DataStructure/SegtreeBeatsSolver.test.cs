@@ -4,11 +4,12 @@ using static System.Math;
 
 namespace Kzrnm.Competitive.Solvers.DataStructure
 {
-    public class SegtreeBeatsSolver : Solver
+    public class SegtreeBeatsSolver
     {
+        static void Main() => new SegtreeBeatsSolver().Solve(new ConsoleReader(), new ConsoleWriter());
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/range_chmin_chmax_add_range_sum
-        public override double TimeoutSecond => 10;
-        public override void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public double TimeoutSecond => 10;
+        public void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int N = cr;
             int Q = cr;
