@@ -4,10 +4,10 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class ULongNthRootSolver
     {
-        static void Main() => new ULongNthRootSolver().Solve(new ConsoleReader(), new ConsoleWriter());
+        static void Main() => new ULongNthRootSolver().Solve(new ConsoleReader(), new ConsoleWriter()).Flush();
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/kth_root_integer
         public double TimeoutSecond => 10;
-        public void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public ConsoleWriter Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int Q = cr;
             for (int q = 0; q < Q; q++)
@@ -16,6 +16,7 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
                 int k = cr;
                 cw.WriteLine(NthRoots.IntegerRoot(a, k));
             }
+            return cw;
         }
     }
 }

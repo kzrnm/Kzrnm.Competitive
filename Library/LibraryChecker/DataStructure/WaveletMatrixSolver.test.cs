@@ -4,10 +4,10 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class WaveletMatrixSolver
     {
-        static void Main() => new WaveletMatrixSolver().Solve(new ConsoleReader(), new ConsoleWriter());
+        static void Main() => new WaveletMatrixSolver().Solve(new ConsoleReader(), new ConsoleWriter()).Flush();
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/range_kth_smallest
         public double TimeoutSecond => 5;
-        public void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public ConsoleWriter Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int n = cr;
             int q = cr;
@@ -20,6 +20,7 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
                 int k = cr;
                 cw.WriteLine(mat.KthSmallest(l, r, k));
             }
+            return cw;
         }
     }
 }

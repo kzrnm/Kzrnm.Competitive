@@ -4,10 +4,10 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class PersistentUnionFindSolver
     {
-        static void Main() => new PersistentUnionFindSolver().Solve(new ConsoleReader(), new ConsoleWriter());
+        static void Main() => new PersistentUnionFindSolver().Solve(new ConsoleReader(), new ConsoleWriter()).Flush();
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/persistent_unionfind
         public double TimeoutSecond => 5;
-        public void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public ConsoleWriter Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int N = cr;
             int Q = cr;
@@ -26,6 +26,7 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
                 else
                     cw.WriteLine(ufs.Get(k).Same(u, v) ? "1" : "0");
             }
+            return cw;
         }
     }
 }

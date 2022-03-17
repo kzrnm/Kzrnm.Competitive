@@ -6,10 +6,10 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class LinkCutTreeSolver
     {
-        static void Main() => new LinkCutTreeSolver().Solve(new ConsoleReader(), new ConsoleWriter());
+        static void Main() => new LinkCutTreeSolver().Solve(new ConsoleReader(), new ConsoleWriter()).Flush();
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/dynamic_tree_vertex_add_path_sum
         public double TimeoutSecond => 5;
-        public void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public ConsoleWriter Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int N = cr;
             int Q = cr;
@@ -49,6 +49,7 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
                     cw.WriteLine(nodes[v].Sum);
                 }
             }
+            return cw;
         }
 
         struct Op : ILinkCutTreeOperator<long, long>

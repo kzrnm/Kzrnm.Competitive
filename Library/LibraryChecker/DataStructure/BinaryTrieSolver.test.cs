@@ -4,10 +4,10 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class BinaryTrieSolver
     {
-        static void Main() => new BinaryTrieSolver().Solve(new ConsoleReader(), new ConsoleWriter());
+        static void Main() => new BinaryTrieSolver().Solve(new ConsoleReader(), new ConsoleWriter()).Flush();
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/set_xor_min
         public double TimeoutSecond => 5;
-        public void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public ConsoleWriter Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int N = cr;
             var bt = new BinaryTrie(30);
@@ -26,6 +26,7 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
                 else
                     cw.WriteLine(bt.MinElement(x).Num);
             }
+            return cw;
         }
     }
 }

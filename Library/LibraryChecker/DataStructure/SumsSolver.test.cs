@@ -4,10 +4,10 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class SumsSolver
     {
-        static void Main() => new SumsSolver().Solve(new ConsoleReader(), new ConsoleWriter());
+        static void Main() => new SumsSolver().Solve(new ConsoleReader(), new ConsoleWriter()).Flush();
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/static_range_sum
         public double TimeoutSecond => 5;
-        public void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public ConsoleWriter Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int n = cr;
             int q = cr;
@@ -18,6 +18,7 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
                 int r = cr;
                 cw.WriteLine(sums[l..r]);
             }
+            return cw;
         }
     }
 }

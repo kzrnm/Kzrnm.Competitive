@@ -6,10 +6,10 @@ namespace Kzrnm.Competitive.Solvers.Math
 {
     public class MatrixStrassenSolver
     {
-        static void Main() => new MatrixStrassenSolver().Solve(new ConsoleReader(), new ConsoleWriter());
+        static void Main() => new MatrixStrassenSolver().Solve(new ConsoleReader(), new ConsoleWriter()).Flush();
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/matrix_product
         public double TimeoutSecond => 10;
-        public void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public ConsoleWriter Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             N = cr;
             M = cr;
@@ -20,6 +20,7 @@ namespace Kzrnm.Competitive.Solvers.Math
                 cr.Repeat(M).Select(cr => cr.Repeat(K).Select(cr => ModInt.Raw(cr))));
 
             cw.WriteGrid(mat1.Strassen(mat2).Value);
+            return cw;
         }
         int N, M, K;
     }

@@ -6,10 +6,10 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
 {
     public class DynamicConnectivitySolver
     {
-        static void Main() => new DynamicConnectivitySolver().Solve(new ConsoleReader(), new ConsoleWriter());
+        static void Main() => new DynamicConnectivitySolver().Solve(new ConsoleReader(), new ConsoleWriter()).Flush();
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/dynamic_graph_vertex_add_component_sum
         public double TimeoutSecond => 10;
-        public void Solve(ConsoleReader cr, ConsoleWriter cw)
+        public ConsoleWriter Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int n = cr;
             int k = cr;
@@ -43,6 +43,7 @@ namespace Kzrnm.Competitive.Solvers.DataStructure
                     cw.WriteLine(dc.Prod(v));
                 }
             }
+            return cw;
         }
         struct Op : ISegtreeOperator<long>
         {
