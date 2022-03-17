@@ -25,16 +25,31 @@ env:
   WORKFLOW_BUILD_SLN: Competitive.Library/Competitive.Library.sln
 
 jobs:
-  library-checker:
-    uses: kzrnm/Competitive.LibraryChecker/.github/workflows/competitive-library-checker.yml@v1
-    with:
-      target: LibraryChecker/LibraryChecker.csproj
-      dll-name: LibraryChecker.dll
-      dotnet-version: |
+  verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: |
             3.1.x
             6.0.x
-      timeout-coefficient: 1.2
-
+      - uses: actions/cache@v2
+        with:
+          path: ${{ github.workspace }}/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      - run: dotnet tool install -g SourceExpander.Console
+      - uses: actions/setup-python@v1
+      - run: pip3 install git+https://github.com/kzrnm/verification-helper
+      - name: Run tests
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: oj-verify all
 
   test:
     uses: kzrnm/dotnet-actions/.github/workflows/unittest.yml@v1

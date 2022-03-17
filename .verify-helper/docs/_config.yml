@@ -1,0 +1,15 @@
+exclude:
+  # ライブラリ以外は exclude
+  # - Competitive.Library
+  # - LibraryChecker
+  - .github
+  - .verify-helper
+  - .vscode
+  - bin
+  - Competitive
+  - Competitive.Library.Test
+  - Competitive.Runner
+  - JOI
+  - poem
+  - tenkei90
+  - tools
