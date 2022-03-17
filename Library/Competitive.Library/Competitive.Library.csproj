@@ -31,11 +31,6 @@
 
 	<ItemGroup>
 		<InternalsVisibleTo Include="Competitive.Library.Test" />
-		<None Include="Math\Matrix\MatrixProdStrassen.Simd.cs">
-		  <DesignTime>True</DesignTime>
-		  <AutoGen>True</AutoGen>
-		  <DependentUpon>MatrixProdStrassen.Simd.tt</DependentUpon>
-		</None>
 		<PackageReference Include="ac-library-csharp" Version="1.11.1" />
 		<PackageReference Include="Competitive.IO" Version="0.8.0" />
 
@@ -56,18 +51,11 @@
 	    <Generator>TextTemplatingFileGenerator</Generator>
 	    <LastGenOutput>MatrixProdStrassen.Simd.cs</LastGenOutput>
 	  </None>
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Compile Update="Math\Matrix\MatrixProdStrassen.Simd.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>MatrixProdStrassen.Simd.tt</DependentUpon>
 	  </Compile>
 	</ItemGroup>
-
 </Project>
