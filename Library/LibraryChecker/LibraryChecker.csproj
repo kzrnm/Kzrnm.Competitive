@@ -1,19 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Kzrnm.Competitive</RootNamespace>
     <Configurations>Debug;Release;Library</Configurations>
+    <StartupObject>Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="library-checker-problems\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Kzrnm.Competitive.LibraryChecker" Version="1.1.0" />
-    <PackageReference Include="ProcessX" Version="1.5.4" />
+    <PackageReference Include="AtCoderAnalyzer" Version="1.11.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

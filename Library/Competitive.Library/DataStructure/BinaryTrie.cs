@@ -90,6 +90,11 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
+        /// 現在の要素数を返す。
+        /// </summary>
+        public int CountAll => _root.exist;
+
+        /// <summary>
         /// <para><paramref name="num"/> に対応する個数を返す。</para>
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱う。</para>
         /// </summary>

@@ -2,16 +2,12 @@
 using ModInt = AtCoder.StaticModInt<AtCoder.Mod998244353>;
 using ModIntOperator = AtCoder.StaticModIntOperator<AtCoder.Mod998244353>;
 
-namespace Kzrnm.Competitive.Solvers.Math
+namespace Kzrnm.Competitive.Math
 {
-    public class MatrixStrassenSolver
+    public class MatrixStrassenTest
     {
-        static void Main()
-        {
-            using (var cw = new ConsoleWriter()) Solve(new ConsoleReader(), cw);
-        }
+        static void Main() { using var cw = new ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/matrix_product
-        public double TimeoutSecond => 10;
         static void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int N = cr;

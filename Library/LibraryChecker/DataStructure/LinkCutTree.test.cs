@@ -2,16 +2,12 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace Kzrnm.Competitive.Solvers.DataStructure
+namespace Kzrnm.Competitive.DataStructure
 {
-    public class LinkCutTreeSolver
+    public class LinkCutTreeTest
     {
-        static void Main()
-        {
-            using (var cw = new ConsoleWriter()) Solve(new ConsoleReader(), cw);
-        }
+        static void Main() { using var cw = new ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/dynamic_tree_vertex_add_path_sum
-        public double TimeoutSecond => 5;
         static void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int N = cr;

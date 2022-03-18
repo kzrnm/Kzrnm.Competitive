@@ -1,15 +1,11 @@
 ﻿using Kzrnm.Competitive.IO;
 
-namespace Kzrnm.Competitive.Solvers.DataStructure
+namespace Kzrnm.Competitive.DataStructure
 {
-    public class SumsSolver
+    public class SumsTest
     {
-        static void Main()
-        {
-            using (var cw = new ConsoleWriter()) Solve(new ConsoleReader(), cw);
-        }
+        static void Main() { using var cw = new ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/static_range_sum
-        public double TimeoutSecond => 5;
         static void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int n = cr;

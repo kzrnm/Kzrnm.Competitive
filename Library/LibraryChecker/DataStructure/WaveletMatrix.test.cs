@@ -1,15 +1,11 @@
 ﻿using Kzrnm.Competitive.IO;
 
-namespace Kzrnm.Competitive.Solvers.DataStructure
+namespace Kzrnm.Competitive.DataStructure
 {
-    public class WaveletMatrixSolver
+    public class WaveletMatrixTest
     {
-        static void Main()
-        {
-            using (var cw = new ConsoleWriter()) Solve(new ConsoleReader(), cw);
-        }
+        static void Main() { using var cw = new ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/range_kth_smallest
-        public double TimeoutSecond => 5;
         static void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int n = cr;

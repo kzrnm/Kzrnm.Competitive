@@ -1,15 +1,11 @@
 ﻿using Kzrnm.Competitive.IO;
 
-namespace Kzrnm.Competitive.Solvers.DataStructure
+namespace Kzrnm.Competitive.DataStructure
 {
-    public class ConvolutionAnyModSolver
+    public class ConvolutionAnyModTest
     {
-        static void Main()
-        {
-            using (var cw = new ConsoleWriter()) Solve(new ConsoleReader(), cw);
-        }
+        static void Main() { using var cw = new ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/convolution_mod_1000000007
-        public double TimeoutSecond => 10;
         static void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int N = cr;

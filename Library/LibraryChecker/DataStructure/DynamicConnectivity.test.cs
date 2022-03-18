@@ -2,16 +2,12 @@
 using Kzrnm.Competitive.IO;
 using System.Runtime.CompilerServices;
 
-namespace Kzrnm.Competitive.Solvers.DataStructure
+namespace Kzrnm.Competitive.DataStructure
 {
-    public class DynamicConnectivitySolver
+    public class DynamicConnectivityTest
     {
-        static void Main()
-        {
-            using (var cw = new ConsoleWriter()) Solve(new ConsoleReader(), cw);
-        }
+        static void Main() { using var cw = new ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/dynamic_graph_vertex_add_component_sum
-        public double TimeoutSecond => 10;
         static void Solve(ConsoleReader cr, ConsoleWriter cw)
         {
             int n = cr;
