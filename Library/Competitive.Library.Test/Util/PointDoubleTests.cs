@@ -28,14 +28,6 @@ namespace Kzrnm.Competitive.Util
         public static PointDouble[] SortedPoints = new PointDouble[]
         {
             new (0, 0),
-            new (-500, -1),
-            new (-1, -1),
-            new (-2, -2),
-            new (-1, -50000),
-            new (0, -1),
-            new (0, -2000),
-            new (1, -10),
-            new (100000, -1),
             new (1, 0),
             new (5, 0),
             new (100000, 1),
@@ -50,6 +42,14 @@ namespace Kzrnm.Competitive.Util
             new (-1, 0),
             new (-2, 0),
             new (-500, 0),
+            new (-500, -1),
+            new (-1, -1),
+            new (-2, -2),
+            new (-1, -50000),
+            new (0, -1),
+            new (0, -2000),
+            new (1, -10),
+            new (100000, -1),
         };
         [Fact]
         public void CompareTo()

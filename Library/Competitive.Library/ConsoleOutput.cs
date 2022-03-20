@@ -5,7 +5,7 @@ namespace Kzrnm.Competitive
 {
     public static class ConsoleOutputExt
     {
-        public static ConsoleOutput ToConsoleOutput(this IUtf8ConsoleWriterFormatter f)
+        public static ConsoleOutput ToConsoleOutput<T>(this T f) where T : IUtf8ConsoleWriterFormatter
         {
             var cw = ConsoleOutput.cw;
             f.Write(cw);

@@ -1,12 +1,12 @@
 ﻿using AtCoder.Internal;
+using Kzrnm.Competitive.IO;
 using System;
 using System.ComponentModel;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-
-    public readonly struct PointInt : IEquatable<PointInt>, IComparable<PointInt>
+    public readonly struct PointInt : IEquatable<PointInt>, IComparable<PointInt>, IUtf8ConsoleWriterFormatter
     {
         public readonly int x;
         public readonly int y;
@@ -30,9 +30,12 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public long Distance2(PointInt other)
         {
-            var p = other - this;
-            return (long)p.x * p.x + (long)p.y * p.y;
+            var u = other.x - x;
+            var v = other.y - y;
+            return (long)u * u + (long)v * v;
         }
+        [凾(256)]
+        public long Distance2Origin() => (long)x * x + (long)y * y;
         /// <summary>
         /// 内積
         /// </summary>
@@ -52,45 +55,45 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static PointInt operator -(PointInt a, PointInt b) => new PointInt(a.x - b.x, a.y - b.y);
 
+        /// <summary>
+        /// <para>Atan2 の値で比較する(偏角ソート)。</para>
+        /// <para>偏角は(0≦θ&lt;2π)とする。</para>
+        /// <para>(0, 0) の偏角は 0 とする。</para>
+        /// <para>偏角が等しければベクトルの絶対値で比較する。</para>
+        /// </summary>
         [凾(256)]
         public int CompareTo(PointInt other)
         {
-            var sy = Math.Sign(y);
-            var syo = Math.Sign(other.y);
+            // 90°回転させると x の符号が同じなら tan(θ) の大小関係が θ の大小関係と等しくなる。
+            var x1 = -y;
+            var y1 = x;
+            var x2 = -other.y;
+            var y2 = other.x;
 
-            if (sy == 0)
-            {
-                var sx = Math.Sign(x);
-                var sxo = Math.Sign(other.x);
-                if (syo == 0)
-                {
-                    if (sx == sxo)
-                        return Math.Abs(x).CompareTo(Math.Abs(other.x));
-                    if (sx == 0) return -1;
-                    if (sxo == 0) return 1;
-                    return sxo.CompareTo(sx);
-                }
-                if (sx == 0) return -1;
-                if (sx < 0) return 1;
-                return 0.CompareTo(syo);
-            }
-            if (syo == 0)
-            {
-                var sxo = Math.Sign(other.x);
-                if (sxo == 0) return 1;
-                if (sxo < 0) return -1;
-                return sy.CompareTo(0);
-            }
+            int xo1 = x1 > 0 ? 1 : 0;
+            int xo2 = x2 > 0 ? 1 : 0;
 
-            var ycmp = sy.CompareTo(syo);
-            if (ycmp == 0)
-            {
-                var cr = CrossSign(other.x, other.y, x, y);
-                if (cr == 0)
-                    return this.Distance2(default).CompareTo(other.Distance2(default));
-                return cr;
-            }
-            return ycmp;
+            int cmp = xo1 - xo2;
+            if (cmp != 0) return cmp;
+
+            if (xo1 == 0) (x1, y1) = (-x1, -y1);
+            if (xo2 == 0) (x2, y2) = (-x2, -y2);
+            // tan(θ) = y/x の大小関係は θ の大小関係と等しい
+            cmp = ((long)x2 * y1).CompareTo((long)x1 * y2);
+            if (cmp != 0) return cmp;
+
+            // θ が等しいのでベクトルの絶対値の大小関係で比較する
+            // x=0 でなければ x の大小関係が絶対値の大小関係と等しい
+            cmp = x1.CompareTo(x2);
+            if (cmp != 0) return cmp;
+
+            // x=0 のときは y の符号ごとに場合分け
+            // y の符号が同じなら y の絶対値の大小関係がベクトルの大小関係と等しい
+            if (y1 == 0) return y2 == 0 ? 0 : -1;
+            if (y2 == 0) return 1;
+
+            if ((y1 ^ y2) < 0) return y1.CompareTo(y2);
+            return Math.Abs(y1).CompareTo(Math.Abs(y2));
         }
 
         [凾(256)]
@@ -98,7 +101,8 @@ namespace Kzrnm.Competitive
         public override bool Equals(object obj) => obj is PointInt p && this.Equals(p);
         public override int GetHashCode() => HashCode.Combine(x, y);
         public override string ToString() => $"{x} {y}";
-
+        [凾(256)] void IUtf8ConsoleWriterFormatter.Write(Utf8ConsoleWriter cw) => cw.Write(x).Write(' ').Write(y);
+        public static implicit operator ConsoleOutput(PointInt p) => p.ToConsoleOutput();
 
         [凾(256)]
         public static bool operator ==(PointInt left, PointInt right) => left.Equals(right);
