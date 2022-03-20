@@ -3,6 +3,7 @@
 "Library/LibraryChecker/Collection/Set.test.cs": "2022-03-17 23:10:07 +0900",
 "Library/LibraryChecker/Collection/SetAsAssociativeArray.test.cs": "2022-03-17 23:10:07 +0900",
 "Library/LibraryChecker/DataStructure/BinaryTrie.test.cs": "2022-03-18 15:24:51 +0900",
+"Library/LibraryChecker/DataStructure/DisjointSparseTable.test.cs": "2022-03-17 23:10:07 +0900",
 "Library/LibraryChecker/DataStructure/DynamicConnectivity.test.cs": "2022-03-17 23:10:07 +0900",
 "Library/LibraryChecker/DataStructure/LinkCutTree.test.cs": "2022-03-17 23:10:07 +0900",
 "Library/LibraryChecker/DataStructure/PersistentUnionFind.test.cs": "2022-03-17 23:10:07 +0900",
