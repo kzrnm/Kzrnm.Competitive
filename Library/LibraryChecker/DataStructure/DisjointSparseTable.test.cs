@@ -5,9 +5,9 @@ namespace Kzrnm.Competitive.DataStructure
 {
     public class DisjointSparseTable
     {
-        static void Main() { using var cw = new ConsoleWriter(); Solve(new ConsoleReader(), cw); }
+        static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/static_range_sum
-        static void Solve(ConsoleReader cr, ConsoleWriter cw)
+        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             int Q = cr;
@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive.DataStructure
             {
                 int l = cr;
                 int r = cr;
-                cw.StreamWriter.WriteLine(st[l..r]);
+                cw.WriteLine(st[l..r]);
             }
         }
         struct Op : ISparseTableOperator<long> { [MethodImpl(256)] public long Operate(long x, long y) => x + y; }

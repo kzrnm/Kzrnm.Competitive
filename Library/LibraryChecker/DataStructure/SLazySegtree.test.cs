@@ -5,9 +5,9 @@ namespace Kzrnm.Competitive.DataStructure
 {
     public class SLazySegtreeTest
     {
-        static void Main() { using var cw = new ConsoleWriter(); Solve(new ConsoleReader(), cw); }
+        static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/range_affine_range_sum
-        static void Solve(ConsoleReader cr, ConsoleWriter cw)
+        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             int Q = cr;

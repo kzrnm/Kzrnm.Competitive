@@ -4,9 +4,9 @@ namespace Kzrnm.Competitive.MathNs
 {
     public class ULongNthRootTest
     {
-        static void Main() { using var cw = new ConsoleWriter(); Solve(new ConsoleReader(), cw); }
+        static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/kth_root_integer
-        static void Solve(ConsoleReader cr, ConsoleWriter cw)
+        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int Q = cr;
             for (int q = 0; q < Q; q++)

@@ -6,9 +6,9 @@ namespace Kzrnm.Competitive.MathNs
 {
     public class MatrixStrassenTest
     {
-        static void Main() { using var cw = new ConsoleWriter(); Solve(new ConsoleReader(), cw); }
+        static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/matrix_product
-        static void Solve(ConsoleReader cr, ConsoleWriter cw)
+        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             int M = cr;

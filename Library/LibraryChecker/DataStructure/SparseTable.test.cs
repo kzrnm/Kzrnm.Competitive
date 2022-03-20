@@ -5,9 +5,9 @@ namespace Kzrnm.Competitive.DataStructure
 {
     public class SparseTable
     {
-        static void Main() { using var cw = new ConsoleWriter(); Solve(new ConsoleReader(), cw); }
+        static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/staticrmq
-        static void Solve(ConsoleReader cr, ConsoleWriter cw)
+        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int n = cr;
             int q = cr;
@@ -17,7 +17,7 @@ namespace Kzrnm.Competitive.DataStructure
             {
                 int l = cr;
                 int r = cr;
-                cw.StreamWriter.WriteLine(st[l..r]);
+                cw.WriteLine(st[l..r]);
             }
         }
         struct Op : ISparseTableOperator<int>

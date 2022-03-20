@@ -5,9 +5,9 @@ namespace Kzrnm.Competitive.Collection
 {
     public class SetTest
     {
-        static void Main() { using var cw = new ConsoleWriter(); Solve(new ConsoleReader(), cw); }
+        static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/predecessor_problem
-        static void Solve(ConsoleReader cr, ConsoleWriter cw)
+        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             int Q = cr;
@@ -24,11 +24,11 @@ namespace Kzrnm.Competitive.Collection
                     case 1:
                         set.Remove(k); break;
                     case 2:
-                        cw.StreamWriter.WriteLine(set.FindNode(k) is null ? 0 : 1); break;
+                        cw.WriteLine(set.FindNode(k) is null ? 0 : 1); break;
                     case 3:
-                        cw.StreamWriter.WriteLine(set.FindNodeLowerBound(k)?.Value ?? -1); break;
+                        cw.WriteLine(set.FindNodeLowerBound(k)?.Value ?? -1); break;
                     default:
-                        cw.StreamWriter.WriteLine(set.FindNodeReverseLowerBound(k)?.Value ?? -1); break;
+                        cw.WriteLine(set.FindNodeReverseLowerBound(k)?.Value ?? -1); break;
                 }
             }
         }
