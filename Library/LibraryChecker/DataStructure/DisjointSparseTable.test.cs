@@ -1,0 +1,24 @@
+﻿using Kzrnm.Competitive.IO;
+using System.Runtime.CompilerServices;
+
+namespace Kzrnm.Competitive.DataStructure
+{
+    public class DisjointSparseTable
+    {
+        static void Main() { using var cw = new ConsoleWriter(); Solve(new ConsoleReader(), cw); }
+        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/static_range_sum
+        static void Solve(ConsoleReader cr, ConsoleWriter cw)
+        {
+            int N = cr;
+            int Q = cr;
+            var st = new DisjointSparseTable<long, Op>(cr.Repeat(N));
+            for (int i = 0; i < Q; i++)
+            {
+                int l = cr;
+                int r = cr;
+                cw.StreamWriter.WriteLine(st[l..r]);
+            }
+        }
+        struct Op : ISparseTableOperator<long> { [MethodImpl(256)] public long Operate(long x, long y) => x + y; }
+    }
+}
