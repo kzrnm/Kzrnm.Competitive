@@ -32,7 +32,7 @@
 	<ItemGroup>
 		<InternalsVisibleTo Include="Competitive.Library.Test" />
 		<PackageReference Include="ac-library-csharp" Version="1.11.1" />
-		<PackageReference Include="Competitive.IO" Version="0.8.0" />
+		<PackageReference Include="Competitive.IO" Version="0.9.1" />
 
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
 			<PrivateAssets>all</PrivateAssets>

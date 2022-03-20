@@ -1,30 +1,52 @@
-﻿using Kzrnm.Competitive.IO;
+﻿using Kzrnm.Competitive;
+using Kzrnm.Competitive.IO;
+using System;
 using System.Globalization;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 internal partial class Program
 {
-    static void Main() => new Program(new PropertyConsoleReader(), new ConsoleWriter()).Run();
+    static void Main() => new Program(new PropertyConsoleReader(), new Utf8ConsoleWriter()).Run();
     public PropertyConsoleReader cr;
-    public ConsoleWriter cw;
-    public Program(PropertyConsoleReader r, ConsoleWriter w)
+    public Utf8ConsoleWriter cw;
+    public Program(PropertyConsoleReader r, Utf8ConsoleWriter w)
     {
-        this.cr = r;
-        this.cw = w;
+        cr = r;
+        ConsoleOutput.cw = cw = w;
         CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
     }
     public void Run()
     {
-        var sw = cw.StreamWriter;
         int Q = __ManyTestCases ? cr.Int : 1;
         for (; Q > 0; Q--)
-        {
-            var res = Calc();
-            if (res is double d) sw.WriteLine(d.ToString("0.####################", CultureInfo.InvariantCulture));
-            else if (res is bool b) sw.WriteLine(YesNo(b));
-            else if (res is char[] chrs) sw.WriteLine(chrs);
-            else if (res != null && res != cw) sw.WriteLine(res.ToString());
-        }
+            Calc(cr, cw);
         cw.Flush();
+    }
+}
+namespace Kzrnm.Competitive
+{
+    public static class ConsoleOutputExt
+    {
+        public static ConsoleOutput ToConsoleOutput(this IUtf8ConsoleWriterFormatter f)
+        {
+            var cw = ConsoleOutput.cw;
+            f.Write(cw);
+            return cw.WriteLine();
+        }
+    }
+    public struct ConsoleOutput
+    {
+        public static Utf8ConsoleWriter cw;
+        public static implicit operator ConsoleOutput(int v) => cw.WriteLine(v);
+        public static implicit operator ConsoleOutput(long v) => cw.WriteLine(v);
+        public static implicit operator ConsoleOutput(uint v) => cw.WriteLine(v);
+        public static implicit operator ConsoleOutput(ulong v) => cw.WriteLine(v);
+        public static implicit operator ConsoleOutput(double v) => cw.WriteLine(v);
+        public static implicit operator ConsoleOutput(decimal v) => cw.WriteLine(v);
+        public static implicit operator ConsoleOutput(char v) => cw.WriteLine(v);
+        public static implicit operator ConsoleOutput(char[] v) => cw.WriteLine((ReadOnlySpan<char>)v);
+        public static implicit operator ConsoleOutput(string v) => cw.WriteLine((ReadOnlySpan<char>)v);
+        public static implicit operator ConsoleOutput(bool v) => cw.WriteLine((ReadOnlySpan<char>)Program.YesNo(v));
+        public static implicit operator ConsoleOutput(Utf8ConsoleWriter _) => default;
     }
 }
 #if !LIBRARY
@@ -32,8 +54,10 @@ internal partial class Program
 #endif
 partial class Program
 {
+#pragma warning disable
     [凾(256)]
-    object Calc() => null;
+    Kzrnm.Competitive.ConsoleOutput? Calc(PropertyConsoleReader cr, Utf8ConsoleWriter cw) => null;
     bool __ManyTestCases = false;
-    string YesNo(bool b) => b ? "Yes" : "No";
+    public static string YesNo(bool b) => b ? "Yes" : "No";
+#pragma warning restore
 }

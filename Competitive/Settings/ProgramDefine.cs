@@ -1,4 +1,5 @@
-﻿using Kzrnm.Competitive.IO;
+﻿using Kzrnm.Competitive;
+using Kzrnm.Competitive.IO;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,17 +13,17 @@ public partial class Program
     public PropertyConsoleReader cr;
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    public ConsoleWriter cw;
-    public Program(PropertyConsoleReader r, ConsoleWriter w)
+    public Utf8ConsoleWriter cw;
+    public Program(PropertyConsoleReader r, Utf8ConsoleWriter w)
     {
-        this.cr = r;
-        this.cw = w;
+        cr = r;
+        ConsoleOutput.cw = cw = w;
         CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
     }
     public void Run()
     {
-        var sw = cw.StreamWriter;
         int Q = 1;
+#pragma warning disable IDE0079
 #pragma warning disable CS0162 // 到達できないコードが検出されました
         if (__ManyTestCases)
         {
@@ -33,13 +34,7 @@ public partial class Program
         }
 #pragma warning restore CS0162 // 到達できないコードが検出されました
         for (; Q > 0; Q--)
-        {
-            var res = Calc();
-            if (res is double d) sw.WriteLine(d.ToString("0.####################", CultureInfo.InvariantCulture));
-            else if (res is bool b) sw.WriteLine(YesNo(b));
-            else if (res is char[] chrs) sw.WriteLine(chrs);
-            else if (res != null && res != cw) sw.WriteLine(res.ToString());
-        }
+            Calc(cr, cw);
         cw.Flush();
     }
 }

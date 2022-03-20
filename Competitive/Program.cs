@@ -27,12 +27,12 @@ using ModIntFactor = Kzrnm.Competitive.StaticModIntFactor<AtCoder.Mod998244353>;
 
 partial class Program
 {
-    string YesNo(bool b) => b ? "Yes" : "No";
+    public static string YesNo(bool b) => b ? "Yes" : "No";
     const bool __ManyTestCases = false;
 #if !LOCAL_RUNNING
     [凾(256)]
 #endif
-    private object Calc()
+    private ConsoleOutput? Calc(PropertyConsoleReader cr, Utf8ConsoleWriter cw)
     {
         return null;
     }

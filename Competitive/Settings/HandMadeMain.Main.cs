@@ -31,7 +31,7 @@ namespace Competitive.Runner
                 {
                     if (code is null) return null;
 
-                    return Regex.Replace(code, @"\[(MI|MethodImpl)\(((MethodImplOptions\.)?AggressiveInlining|256)\)", "[凾(256)");
+                    return Regex.Replace(code, @"\[(MI|MethodImpl)\(((MethodImplOptions\.)?AggressiveInlining|256)", "[凾(256");
                 }
 #endif
                 if (expandedCode != null)
@@ -41,13 +41,9 @@ namespace Competitive.Runner
                 return;
             }
             var utf8 = new UTF8Encoding(false);
-            var outEnc = Console.OutputEncoding;
-            if (outEnc.CodePage == 65001)
-                outEnc = utf8;
-
             Stopwatch stopwatch = null;
             PropertyConsoleReader reader;
-            var writer = new ConsoleWriter(Console.OpenStandardOutput(), outEnc);
+            var writer = new Utf8ConsoleWriter(Console.OpenStandardOutput());
 
             if (args.Length > 0)
             {
