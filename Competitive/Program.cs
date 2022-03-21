@@ -30,6 +30,7 @@ partial class Program
     public static string YesNo(bool b) => b ? "Yes" : "No";
     const bool __ManyTestCases = false;
 #if !LOCAL_RUNNING
+    static void Main()=>new Program(new PropertyConsoleReader(),new Utf8ConsoleWriter()).Run();
     [凾(256)]
 #endif
     private ConsoleOutput? Calc(PropertyConsoleReader cr, Utf8ConsoleWriter cw)

@@ -313,7 +313,7 @@ function Update-Input {
     if ($modInt) {
         $main = ($main -replace '(using ModInt[\S]*) ?= ?([^<]+)+[^;]+;', ('$1 = $2' + "<AtCoder.Mod$modInt>;"))
     }
-    ($main -replace 'private ConsoleOutput\? Calc\((.*)\)[\s\S]*', ('private ConsoleOutput? Calc($1)')) > $mainPath
+    ($main -replace 'ConsoleOutput\? Calc\((.*)\)[\s\S]*', ('ConsoleOutput? Calc($1)')) > $mainPath
     "$indent{" >> $mainPath
     $vars | ForEach-Object { $indent * 2 + ($StaticField ? $_.ToInit() : $_.ToDefineInit()) } >> $mainPath
     "$indent${indent}return null;" >> $mainPath
