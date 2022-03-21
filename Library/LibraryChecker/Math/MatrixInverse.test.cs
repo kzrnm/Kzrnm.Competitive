@@ -4,20 +4,18 @@ using ModIntOperator = AtCoder.StaticModIntOperator<AtCoder.Mod998244353>;
 
 namespace Kzrnm.Competitive.MathNs
 {
-    public class MatrixLinearSystemTest
+    public class MatrixMatrixInverseTest
     {
         static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/system_of_linear_equations
         static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
-            int M = cr;
-            var mat = new ArrayMatrix<ModInt, ModIntOperator>(cr.Grid(N, M, cr => ModInt.Raw(cr)));
-
-            var r = mat.LinearSystem(cr.Repeat(N).Select(cr => ModInt.Raw(cr)));
-            cw.WriteLine(r.Length - 1);
-            if (r.Length > 0)
-                cw.WriteGrid(r);
+            var mat = new ArrayMatrix<ModInt, ModIntOperator>(cr.Grid(N, N, cr => ModInt.Raw(cr))).Inv();
+            if (mat.IsZero)
+                cw.WriteLine(-1);
+            else
+                cw.WriteGrid(mat.Value);
         }
     }
 }
