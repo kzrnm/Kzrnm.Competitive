@@ -1,5 +1,6 @@
 ﻿using AtCoder.Operators;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -24,7 +25,13 @@ namespace Kzrnm.Competitive
         /// 多項式を生成します。
         /// </summary>
         /// <param name="polynomial"><paramref name="polynomial"/>[i] がi次の係数となる多項式</param>
-        public Polynomial(T[] polynomial) { Coefficients = polynomial; }
+        public Polynomial(T[] polynomial)
+        {
+            var span = polynomial.AsSpan();
+            while (span.Length > 1 && EqualityComparer<T>.Default.Equals(span[^1], default))
+                span = span[..^1];
+            Coefficients = span.ToArray();
+        }
 
         [凾(256)]
         public static Polynomial<T, TOp> operator +(Polynomial<T, TOp> lhs, Polynomial<T, TOp> rhs)
@@ -99,11 +106,12 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public (Polynomial<T, TOp> Quotient, Polynomial<T, TOp> Remainder) DivRem(Polynomial<T, TOp> rhs)
         {
+            if (Coefficients.Length < rhs.Coefficients.Length)
+                return (new Polynomial<T, TOp>(Array.Empty<T>()), this);
+
             var lp = (T[])Coefficients.Clone();
             ReadOnlySpan<T> rp = rhs.Coefficients;
 
-            if (lp.Length < rp.Length)
-                return (new Polynomial<T, TOp>(Array.Empty<T>()), this);
 
             var res = new T[lp.Length - rp.Length + 1];
 

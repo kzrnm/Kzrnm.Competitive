@@ -1,9 +1,9 @@
 ﻿using AtCoder;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -24,7 +24,13 @@ namespace Kzrnm.Competitive
         /// 多項式を生成します。
         /// </summary>
         /// <param name="polynomial"><paramref name="polynomial"/>[i] がi次の係数となる多項式</param>
-        public PolynomialModInt(StaticModInt<T>[] polynomial) { Coefficients = polynomial; }
+        public PolynomialModInt(StaticModInt<T>[] polynomial)
+        {
+            var span = polynomial.AsSpan();
+            while (span.Length > 1 && EqualityComparer<StaticModInt<T>>.Default.Equals(span[^1], default))
+                span = span[..^1];
+            Coefficients = span.ToArray();
+        }
 
         [凾(256)]
         public static PolynomialModInt<T> operator +(PolynomialModInt<T> lhs, PolynomialModInt<T> rhs)
