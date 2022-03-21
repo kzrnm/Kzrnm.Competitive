@@ -1,4 +1,4 @@
-name: verify library
+name: verify
 
 on:
   push:
