@@ -1,8 +1,9 @@
-﻿using AtCoder.Operators;
+﻿using AtCoder;
 using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -10,86 +11,78 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 多項式
     /// </summary>
-    public class Polynomial<T, TOp>
-        where T : struct
-        where TOp : struct, IArithmeticOperator<T>, IUnaryNumOperator<T>
+    public class PolynomialModInt<T>
+        where T : struct, IStaticMod
     {
-        private static readonly TOp op = default;
+        private static readonly StaticModIntOperator<T> op = default;
         /// <summary>
         /// 多項式の係数
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-        public readonly T[] Coefficients;
+        public readonly StaticModInt<T>[] Coefficients;
         /// <summary>
         /// 多項式を生成します。
         /// </summary>
         /// <param name="polynomial"><paramref name="polynomial"/>[i] がi次の係数となる多項式</param>
-        public Polynomial(T[] polynomial) { Coefficients = polynomial; }
+        public PolynomialModInt(StaticModInt<T>[] polynomial) { Coefficients = polynomial; }
 
         [凾(256)]
-        public static Polynomial<T, TOp> operator +(Polynomial<T, TOp> lhs, Polynomial<T, TOp> rhs)
+        public static PolynomialModInt<T> operator +(PolynomialModInt<T> lhs, PolynomialModInt<T> rhs)
         {
             var ll = lhs.Coefficients.Length;
             var rl = rhs.Coefficients.Length;
             ref var lp = ref lhs.Coefficients[0];
             ref var rp = ref rhs.Coefficients[0];
-            var arr = new T[Math.Max(ll, rl)];
+            var arr = new StaticModInt<T>[Math.Max(ll, rl)];
             for (int i = 0; i < arr.Length; i++)
             {
                 var lv = i < ll ? Unsafe.Add(ref lp, i) : default;
                 var rv = i < rl ? Unsafe.Add(ref rp, i) : default;
                 arr[i] = op.Add(lv, rv);
             }
-            return new Polynomial<T, TOp>(arr);
+            return new PolynomialModInt<T>(arr);
         }
         [凾(256)]
-        public static Polynomial<T, TOp> operator -(Polynomial<T, TOp> lhs, Polynomial<T, TOp> rhs)
+        public static PolynomialModInt<T> operator -(PolynomialModInt<T> lhs, PolynomialModInt<T> rhs)
         {
             var ll = lhs.Coefficients.Length;
             var rl = rhs.Coefficients.Length;
             ref var lp = ref lhs.Coefficients[0];
             ref var rp = ref rhs.Coefficients[0];
-            var arr = new T[Math.Max(ll, rl)];
+            var arr = new StaticModInt<T>[Math.Max(ll, rl)];
             for (int i = 0; i < arr.Length; i++)
             {
                 var lv = i < ll ? Unsafe.Add(ref lp, i) : default;
                 var rv = i < rl ? Unsafe.Add(ref rp, i) : default;
                 arr[i] = op.Subtract(lv, rv);
             }
-            return new Polynomial<T, TOp>(arr);
+            return new PolynomialModInt<T>(arr);
         }
         [凾(256)]
-        public static Polynomial<T, TOp> operator -(Polynomial<T, TOp> p)
+        public static PolynomialModInt<T> operator -(PolynomialModInt<T> p)
         {
             var arr = p.Coefficients.Select(op.Minus).ToArray();
-            return new Polynomial<T, TOp>(arr);
+            return new PolynomialModInt<T>(arr);
         }
         [凾(256)]
-        public static Polynomial<T, TOp> operator *(Polynomial<T, TOp> lhs, Polynomial<T, TOp> rhs)
+        public static PolynomialModInt<T> operator *(PolynomialModInt<T> lhs, PolynomialModInt<T> rhs)
         {
-            var lp = lhs.Coefficients;
-            var rp = rhs.Coefficients;
-            var arr = new T[lp.Length + rp.Length - 1];
-
-            for (int l = 0; l < lp.Length; l++)
-                for (int r = 0; r < rp.Length; r++)
-                    arr[l + r] = op.Add(arr[l + r], op.Multiply(lp[l], rp[r]));
-
-            return new Polynomial<T, TOp>(arr);
+            var arr = ConvolutionAnyMod.Convolution<T>(lhs.Coefficients, rhs.Coefficients);
+            return new PolynomialModInt<T>(arr);
         }
         [凾(256)]
-        public static Polynomial<T, TOp> operator *(T lhs, Polynomial<T, TOp> rhs)
+        public static PolynomialModInt<T> operator *(StaticModInt<T> lhs, PolynomialModInt<T> rhs)
         {
             var rp = rhs.Coefficients;
-            var arr = new T[rp.Length];
+            var arr = new StaticModInt<T>[rp.Length];
             for (int r = 0; r < rp.Length; r++)
                 arr[r] = op.Multiply(lhs, rp[r]);
 
-            return new Polynomial<T, TOp>(arr);
+            return new PolynomialModInt<T>(arr);
         }
 
         [凾(256)]
-        public static Polynomial<T, TOp> operator /(Polynomial<T, TOp> lhs, Polynomial<T, TOp> rhs)
+        public static PolynomialModInt<T> operator /(PolynomialModInt<T> lhs, PolynomialModInt<T> rhs)
                 => lhs.DivRem(rhs).Quotient;
 
 
@@ -97,15 +90,15 @@ namespace Kzrnm.Competitive
         /// 多項式の割り算
         /// </summary>
         [凾(256)]
-        public (Polynomial<T, TOp> Quotient, Polynomial<T, TOp> Remainder) DivRem(Polynomial<T, TOp> rhs)
+        public (PolynomialModInt<T> Quotient, PolynomialModInt<T> Remainder) DivRem(PolynomialModInt<T> rhs)
         {
-            var lp = (T[])Coefficients.Clone();
-            ReadOnlySpan<T> rp = rhs.Coefficients;
+            var lp = (StaticModInt<T>[])Coefficients.Clone();
+            ReadOnlySpan<StaticModInt<T>> rp = rhs.Coefficients;
 
             if (lp.Length < rp.Length)
-                return (new Polynomial<T, TOp>(Array.Empty<T>()), this);
+                return (new PolynomialModInt<T>(Array.Empty<StaticModInt<T>>()), this);
 
-            var res = new T[lp.Length - rp.Length + 1];
+            var res = new StaticModInt<T>[lp.Length - rp.Length + 1];
 
             for (int i = res.Length - 1; i >= 0; i--)
             {
@@ -117,8 +110,8 @@ namespace Kzrnm.Competitive
                 }
             }
 
-            var remainder = new Polynomial<T, TOp>(lp.AsSpan(0, rp.Length - 1).ToArray());
-            return (new Polynomial<T, TOp>(res), remainder);
+            var remainder = new PolynomialModInt<T>(lp.AsSpan(0, rp.Length - 1).ToArray());
+            return (new PolynomialModInt<T>(res), remainder);
         }
 
         /// <summary>
@@ -126,38 +119,38 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <returns></returns>
         [凾(256)]
-        public Polynomial<T, TOp> Derivative()
+        public PolynomialModInt<T> Derivative()
         {
-            var arr = new T[Coefficients.Length - 1];
-            T a = default;
+            var arr = new StaticModInt<T>[Coefficients.Length - 1];
+            StaticModInt<T> a = default;
             for (int i = 0; i < arr.Length; i++)
                 arr[i] = op.Multiply(a = op.Increment(a), Coefficients[i + 1]);
 
-            return new Polynomial<T, TOp>(arr);
+            return new PolynomialModInt<T>(arr);
         }
         /// <summary>
         /// 積分した多項式を返します。
         /// </summary>
         /// <returns></returns>
         [凾(256)]
-        public Polynomial<T, TOp> Integrate()
+        public PolynomialModInt<T> Integrate()
         {
-            var arr = new T[Coefficients.Length + 1];
-            T a = default;
+            var arr = new StaticModInt<T>[Coefficients.Length + 1];
+            StaticModInt<T> a = default;
             for (int i = 1; i < arr.Length; i++)
                 arr[i] = op.Divide(Coefficients[i - 1], a = op.Increment(a));
 
-            return new Polynomial<T, TOp>(arr);
+            return new PolynomialModInt<T>(arr);
         }
 
         /// <summary>
         /// 多項式に <paramref name="x"/> を代入した値を返します。
         /// </summary>
         [凾(256)]
-        public T Calc(T x)
+        public StaticModInt<T> Calc(StaticModInt<T> x)
         {
-            T x_n = x;
-            T res = Coefficients[0];
+            StaticModInt<T> x_n = x;
+            StaticModInt<T> res = Coefficients[0];
             foreach (var a in Coefficients.AsSpan(1))
             {
                 res = op.Add(res, op.Multiply(a, x_n));
@@ -172,7 +165,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: xは全て異なる</para>
         /// </summary>
         [凾(256)]
-        public static Polynomial<T, TOp> LagrangeInterpolation((T x, T y)[] plots) => LagrangeInterpolation((ReadOnlySpan<(T, T)>)plots);
+        public static PolynomialModInt<T> LagrangeInterpolation((StaticModInt<T> x, StaticModInt<T> y)[] plots) => LagrangeInterpolation((ReadOnlySpan<(StaticModInt<T>, StaticModInt<T>)>)plots);
 
         /// <summary>
         /// <para>ラグランジュ補間</para>
@@ -184,10 +177,10 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(n^2)</para>
         /// </remarks>
         [凾(256)]
-        public static Polynomial<T, TOp> LagrangeInterpolation(ReadOnlySpan<(T x, T y)> plots)
+        public static PolynomialModInt<T> LagrangeInterpolation(ReadOnlySpan<(StaticModInt<T> x, StaticModInt<T> y)> plots)
         {
             // y = ∑ (y_i * (Π_k!=i (x - x_k)) / (Π_k!=i (x_i - x_k)) )
-            var res = new Polynomial<T, TOp>(new T[plots.Length]);
+            var res = new PolynomialModInt<T>(new StaticModInt<T>[plots.Length]);
             var pall = PAll(plots);
             for (int i = 0; i < plots.Length; i++)
                 res += ConstantCoefficient(plots, i) * Pk(plots, i, pall);
@@ -195,7 +188,7 @@ namespace Kzrnm.Competitive
         }
         // y_i / (Π_k!=i (x_i - x_k)) )
         [凾(256)]
-        static T ConstantCoefficient(ReadOnlySpan<(T x, T y)> plots, int i)
+        static StaticModInt<T> ConstantCoefficient(ReadOnlySpan<(StaticModInt<T> x, StaticModInt<T> y)> plots, int i)
         {
             var (xi, yi) = plots[i];
             var d = op.MultiplyIdentity;
@@ -207,9 +200,9 @@ namespace Kzrnm.Competitive
 
         // Π_k (x - x_k) となる n+1 次多項式の係数
         [凾(256)]
-        static T[] PAll(ReadOnlySpan<(T x, T y)> plots)
+        static StaticModInt<T>[] PAll(ReadOnlySpan<(StaticModInt<T> x, StaticModInt<T> y)> plots)
         {
-            var res = new T[plots.Length + 1];
+            var res = new StaticModInt<T>[plots.Length + 1];
             res[^1] = op.MultiplyIdentity;
             for (int k = plots.Length - 1; k >= 0; k--)
             {
@@ -222,14 +215,14 @@ namespace Kzrnm.Competitive
 
         // Π_k!=i (x - x_k)
         [凾(256)]
-        static Polynomial<T, TOp> Pk(ReadOnlySpan<(T x, T y)> plots, int i, T[] pall)
+        static PolynomialModInt<T> Pk(ReadOnlySpan<(StaticModInt<T> x, StaticModInt<T> y)> plots, int i, StaticModInt<T>[] pall)
         {
             var xi = plots[i].x;
-            var res = new T[plots.Length];
+            var res = new StaticModInt<T>[plots.Length];
             res[^1] = op.MultiplyIdentity;
             for (int j = plots.Length - 2; j >= 0; j--)
                 res[j] = op.Add(op.Multiply(xi, res[j + 1]), pall[j + 1]);
-            return new Polynomial<T, TOp>(res);
+            return new PolynomialModInt<T>(res);
         }
     }
 }

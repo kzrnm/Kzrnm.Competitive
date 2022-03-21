@@ -109,15 +109,55 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|))</para>
         /// </remarks>
         [凾(256)]
-        public static uint[] Convolution<TMod>(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b)
+        public static StaticModInt<TMod>[] Convolution<TMod>(ReadOnlySpan<StaticModInt<TMod>> a, ReadOnlySpan<StaticModInt<TMod>> b)
              where TMod : struct, IStaticMod
         {
             var mod = default(TMod).Mod;
             if (default(TMod).IsPrime && a.Length + b.Length - 1 <= (1 << InternalBit.BSF(mod - 1)))
             {
                 // ACL で解けるならOK
+                return MathLib.Convolution(a, b);
+            }
+            return
+                MemoryMarshal.Cast<uint, StaticModInt<TMod>>(
+                    ConvolutionImpl<TMod>(
+                        MemoryMarshal.Cast<StaticModInt<TMod>, uint>(a),
+                        MemoryMarshal.Cast<StaticModInt<TMod>, uint>(b))).ToArray();
+        }
+        /// <summary>
+        /// 任意 Mod で畳み込みを計算します。
+        /// </summary>
+        /// <remarks>
+        /// <para><paramref name="a"/>, <paramref name="b"/> の少なくとも一方が空の場合は空配列を返します。</para>
+        /// <para>制約:</para>
+        /// <para>- |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^24 = 16,777,216</para>
+        /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|))</para>
+        /// </remarks>
+        [凾(256)]
+        public static uint[] Convolution<TMod>(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b)
+             where TMod : struct, IStaticMod
+        {
+            if (default(TMod).IsPrime && a.Length + b.Length - 1 <= (1 << InternalBit.BSF(default(TMod).Mod - 1)))
+            {
+                // ACL で解けるならOK
                 return MathLib.Convolution<TMod>(a, b);
             }
+            return ConvolutionImpl<TMod>(a, b);
+        }
+        /// <summary>
+        /// 任意 Mod で畳み込みを計算します。
+        /// </summary>
+        /// <remarks>
+        /// <para><paramref name="a"/>, <paramref name="b"/> の少なくとも一方が空の場合は空配列を返します。</para>
+        /// <para>制約:</para>
+        /// <para>- |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^24 = 16,777,216</para>
+        /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|))</para>
+        /// </remarks>
+        [凾(256)]
+        private static uint[] ConvolutionImpl<TMod>(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b)
+             where TMod : struct, IStaticMod
+        {
+            var mod = default(TMod).Mod;
             unchecked
             {
                 var n = a.Length;

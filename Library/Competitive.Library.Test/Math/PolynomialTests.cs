@@ -27,6 +27,14 @@ namespace Kzrnm.Competitive.MathNS
                 .Coefficients.Should().Equal(-1, 3, -3, 2);
         }
         [Fact]
+        public void Minus()
+        {
+            (-new Polynomial<int, IntOperator>(new int[] { 1, 2, 3 }))
+                .Coefficients.Should().Equal(-1, -2, -3);
+            (-new Polynomial<int, IntOperator>(new int[] { -1, -2, -3 }))
+                .Coefficients.Should().Equal(1, 2, 3);
+        }
+        [Fact]
         public void Multiply()
         {
             (new Polynomial<int, IntOperator>(new int[] { 1, 2, 3 })
