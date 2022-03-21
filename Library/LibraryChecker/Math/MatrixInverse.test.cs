@@ -7,7 +7,7 @@ namespace Kzrnm.Competitive.MathNs
     public class MatrixMatrixInverseTest
     {
         static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/system_of_linear_equations
+        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/inverse_matrix
         static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
