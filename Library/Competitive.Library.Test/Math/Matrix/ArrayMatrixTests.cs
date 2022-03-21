@@ -450,7 +450,9 @@ new Fraction[,]
             (inv * orig).Value.Should().BeEquivalentTo(id);
         }
 
-        public static TheoryData GaussianElimination_Data = new TheoryData<ArrayMatrix<Fraction, FractionOperator>, ArrayMatrix<Fraction, FractionOperator>>
+        public static TheoryData GaussianElimination_Data = new TheoryData<
+            ArrayMatrix<Fraction, FractionOperator>,
+            ArrayMatrix<Fraction, FractionOperator>>
         {
             {
                 new(new Fraction[2,3]{
@@ -521,7 +523,7 @@ new Fraction[,]
                     { 1,2,3,4 },
                 }),
                 new(new Fraction[3,4]{
-                    { 1,2,3,4 },
+                    { 1,2,3,0 },
                     { 0,0,0,1 },
                     { 0,0,0,0 },
                 })
@@ -536,6 +538,55 @@ new Fraction[,]
             got.Value.Should().HaveSameCount(expected.Value);
             for (int i = 0; i < got.Value.Length; i++)
                 got.Value[i].Should().Equal(expected.Value[i], because: "row {0}", i);
+        }
+
+        public static TheoryData LinearSystem_Data = new TheoryData<
+            ArrayMatrix<Fraction, FractionOperator>,
+            Fraction[],
+            Fraction[][]>
+        {
+            {
+                new(new Fraction[2,3]{
+                    { 1,-4,3 },
+                    { 3,2,2 },
+                }),
+                new Fraction[2] { 7, 2 },
+                new Fraction[][]
+                {
+                    new Fraction[]{ new(11,7), new(-19,14), 0 },
+                    new Fraction[]{-1, new(1,2), 1},
+                }
+            },
+            {
+                new(new Fraction[2,2]{
+                    { 1,2 },
+                    { 2,4 },
+                }),
+                new Fraction[2] { 1, 2 },
+                new Fraction[][]
+                {
+                    new Fraction[]{ 1, 0 },
+                    new Fraction[]{-2, 1 },
+                }
+            },
+            {
+                new(new Fraction[2,2]{
+                    { 1,2 },
+                    { 2,4 },
+                }),
+                new Fraction[2] { 1, 3 },
+                new Fraction[0][]
+            },
+        };
+
+        [Theory]
+        [MemberData(nameof(LinearSystem_Data))]
+        public void LinearSystem(ArrayMatrix<Fraction, FractionOperator> matrix, Fraction[] vector, Fraction[][] expected)
+        {
+            var got = matrix.LinearSystem(vector);
+            got.Should().HaveSameCount(expected);
+            for (int i = 0; i < got.Length; i++)
+                got[i].Should().Equal(expected[i], because: "got[{0}]", i);
         }
     }
 }

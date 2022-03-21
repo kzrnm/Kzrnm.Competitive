@@ -2,6 +2,7 @@
 using AtCoder.Operators;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -35,7 +36,7 @@ namespace Kzrnm.Competitive
         {
             var len0 = value.GetLength(0);
             var len1 = value.GetLength(1);
-            var arr = this.Value = new T[len0][];
+            var arr = Value = new T[len0][];
             var span = MemoryMarshal.CreateReadOnlySpan(ref value[0, 0], len0 * len1);
             for (int i = 0; i < arr.Length; i++)
             {
@@ -156,7 +157,7 @@ namespace Kzrnm.Competitive
         }
         private ArrayMatrix<T, TOp> Multiply(ArrayMatrix<T, TOp> other)
         {
-            var arr = this.Value;
+            var arr = Value;
             var otherArr = other.Value;
             var res = NormalZeroMatrix(Value.Length, other.Value[0].Length);
             Contract.Assert(Value[0].Length == other.Value.Length);
@@ -192,7 +193,7 @@ namespace Kzrnm.Competitive
 
         private ArrayMatrix<T, TOp> MultiplyScalar(T scalar)
         {
-            var arr = this.Value;
+            var arr = Value;
             var res = NormalZeroMatrix(arr.Length, arr[0].Length);
             for (int i = 0; i < arr.Length; i++)
                 for (int j = 0; j < arr[i].Length; j++)
@@ -230,7 +231,7 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// 行列式を求める
+        /// 行列式を求める。行列式
         /// </summary>
         public T Determinant()
         {
@@ -243,7 +244,7 @@ namespace Kzrnm.Competitive
             {
                 if (EqualityComparer<T>.Default.Equals(arr[i][i], default))
                 {
-                    if (!SearchNonZero(arr, i))
+                    if (!SearchNonZero(arr, i, i))
                         return default;
                     swap = !swap;
                 }
@@ -284,7 +285,7 @@ namespace Kzrnm.Competitive
                 Array.Copy(orig[i], arr[i], orig.Length);
                 arr[i][arr.Length + i] = op.MultiplyIdentity;
             }
-            GaussianEliminationImpl(arr);
+            GaussianEliminationImpl(arr, true);
             var res = new T[arr.Length][];
             for (int i = 0; i < res.Length; i++)
                 res[i] = arr[i][res.Length..];
@@ -294,50 +295,123 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// ガウスの消去法(掃き出し法)
         /// </summary>
-        public ArrayMatrix<T, TOp> GaussianElimination()
+        /// <param name="isReduced">行標準形にするかどうか。false ならば上三角行列</param>
+        public ArrayMatrix<T, TOp> GaussianElimination(bool isReduced = true)
         {
-            Contract.Assert(this.kind == ArrayMatrixKind.Normal);
+            Contract.Assert(kind == ArrayMatrixKind.Normal);
             var arr = CloneArray(Value);
-            GaussianEliminationImpl(arr);
+            GaussianEliminationImpl(arr, isReduced);
             return new ArrayMatrix<T, TOp>(arr);
         }
 
         /// <summary>
         /// <para>ガウスの消去法(掃き出し法)</para>
         /// </summary>
-        private static void GaussianEliminationImpl(T[][] arr)
+        /// <param name="arr">対象の行列</param>
+        /// <param name="isReduced">行標準形にするかどうか。false ならば上三角行列</param>
+        /// <returns>0ではない行のインデックス</returns>
+        private static List<int> GaussianEliminationImpl(T[][] arr, bool isReduced)
         {
-            var len = Math.Min(arr.Length, arr[0].Length);
-            for (int i = 0; i < len; i++)
+            var idx = new List<int>(arr.Length);
+            int r = 0;
+            int width = arr[0].Length;
+            int ys = isReduced ? 0 : r + 1;
+            for (int x = 0; x < width && r < arr.Length; x++)
             {
-                if (EqualityComparer<T>.Default.Equals(arr[i][i], default))
+                if (!SearchNonZero(arr, r, x))
+                    continue;
                 {
-                    if (!SearchNonZero(arr, i))
+                    var inv = op.Divide(op.MultiplyIdentity, arr[r][x]);
+                    arr[r][x] = op.MultiplyIdentity;
+                    for (int i = x + 1; i < arr[r].Length; i++)
+                        arr[r][i] = op.Multiply(inv, arr[r][i]);
+                }
+                for (int y = ys; y < arr.Length; y++)
+                {
+                    if (y == r || EqualityComparer<T>.Default.Equals(arr[y][x], default))
                         continue;
+                    var freq = arr[y][x];
+                    for (int k = x + 1; k < arr[y].Length; k++)
+                        arr[y][k] = op.Subtract(arr[y][k], op.Multiply(freq, arr[r][k]));
+                    arr[y][x] = default;
                 }
-                var inv = op.Divide(op.MultiplyIdentity, arr[i][i]);
-
-                for (int k = i; k < arr[i].Length; k++)
-                    arr[i][k] = op.Multiply(arr[i][k], inv);
-
-                for (int j = 0; j < arr.Length; j++)
-                {
-                    if (i == j) continue;
-                    for (int k = i + 1; k < arr[j].Length; k++)
-                        arr[j][k] = op.Subtract(arr[j][k], op.Multiply(arr[i][k], arr[j][i]));
-                    arr[j][i] = default;
-                }
+                ++r;
+                idx.Add(x);
             }
+            return idx;
         }
-        private static bool SearchNonZero(T[][] mat, int i)
+        /// <summary>
+        /// <paramref name="r"/> より下で <paramref name="x"/> 列が 0 ではない行を探して、<paramref name="r"/> 行に置く。
+        /// </summary>
+        /// <returns>0 ではない行が見つかったかどうか</returns>
+        private static bool SearchNonZero(T[][] mat, int r, int x)
         {
-            for (int j = i + 1; j < mat.Length; j++)
-                if (!EqualityComparer<T>.Default.Equals(mat[j][i], default))
+            for (int y = r; y < mat.Length; y++)
+                if (!EqualityComparer<T>.Default.Equals(mat[y][x], default))
                 {
-                    (mat[i], mat[j]) = (mat[j], mat[i]);
+                    (mat[r], mat[y]) = (mat[y], mat[r]);
                     return true;
                 }
             return false;
+        }
+        /// <summary>
+        /// 連立一次方程式 <see langword="this"/>・X=<paramref name="vector"/> を満たす ベクトル X を求める。
+        /// </summary>
+        /// <returns>
+        /// <list type="bullet">
+        /// <item><description>最初の配列: 特殊解</description></item>
+        /// <item><description>2番目以降の配列: 解空間の基底ベクトル</description></item>
+        /// <item><description>ただし解無しのときは空配列を返す</description></item>
+        /// </list>
+        /// </returns>
+        public T[][] LinearSystem(T[] vector)
+        {
+            Contract.Assert(Value.Length == vector.Length);
+            var impl = Value.Zip(vector, (row, v) => row.Append(v).ToArray()).ToArray();
+            var idxs = GaussianEliminationImpl(impl, false).AsSpan();
+            var r = idxs.Length;
+            int w = Value[0].Length;
+
+            // 解があるかチェック
+            // a×0+b×0+c×0..+z×0≠0 になっていたら解無し
+            if (idxs[^1] == w)
+                return Array.Empty<T[]>();
+            for (int i = r; i < impl.Length; i++)
+            {
+                if (!EqualityComparer<T>.Default.Equals(impl[i][^1], default))
+                    return Array.Empty<T[]>();
+            }
+
+            var used = new HashSet<int>(Enumerable.Range(0, w));
+            var lst = new List<T[]>(w);
+            {
+                var v = new T[w];
+                for (int y = idxs.Length - 1; y >= 0; y--)
+                {
+                    int f = idxs[y];
+                    used.Remove(f);
+                    v[f] = impl[y][^1];
+                    for (int x = f + 1; x < w; x++)
+                        v[f] = op.Subtract(v[f], op.Multiply(impl[y][x], v[x]));
+                    v[f] = op.Divide(v[f], impl[y][f]);
+                }
+                lst.Add(v);
+            }
+
+            foreach(var s in used)
+            {
+                var v = new T[w];
+                v[s] = op.MultiplyIdentity;
+                for (int y = idxs.Length - 1; y >= 0; y--)
+                {
+                    int f = idxs[y];
+                    for (int x = f + 1; x < w; x++)
+                        v[f] = op.Subtract(v[f], op.Multiply(impl[y][x], v[x]));
+                    v[f] = op.Divide(v[f], impl[y][f]);
+                }
+                lst.Add(v);
+            }
+            return lst.ToArray();
         }
     }
     internal enum ArrayMatrixKind
