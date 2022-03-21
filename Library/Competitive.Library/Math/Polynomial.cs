@@ -1,5 +1,6 @@
 ﻿using AtCoder.Operators;
 using System;
+using System.Runtime.CompilerServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -12,37 +13,45 @@ namespace Kzrnm.Competitive
         where TOp : struct, IArithmeticOperator<T>, IUnaryNumOperator<T>
     {
         private static readonly TOp op = default;
+        /// <summary>
+        /// 多項式の係数
+        /// </summary>
         public readonly T[] Coefficients;
         /// <summary>
         /// 多項式を生成します。
         /// </summary>
         /// <param name="polynomial"><paramref name="polynomial"/>[i] がi次の係数となる多項式</param>
-        public Polynomial(T[] polynomial) { this.Coefficients = polynomial; }
-
+        public Polynomial(T[] polynomial) { Coefficients = polynomial; }
 
         [凾(256)]
         public static Polynomial<T, TOp> operator +(Polynomial<T, TOp> lhs, Polynomial<T, TOp> rhs)
         {
-            var lp = lhs.Coefficients;
-            var rp = rhs.Coefficients;
-            var arr = new T[Math.Max(lp.Length, rp.Length)];
-            lp.CopyTo(arr.AsSpan());
-            for (int i = 0; i < rp.Length; i++)
+            var ll = lhs.Coefficients.Length;
+            var rl = rhs.Coefficients.Length;
+            ref var lp = ref lhs.Coefficients[0];
+            ref var rp = ref rhs.Coefficients[0];
+            var arr = new T[Math.Max(ll, rl)];
+            for (int i = 0; i < arr.Length; i++)
             {
-                arr[i] = op.Add(arr[i], rp[i]);
+                var lv = i < ll ? Unsafe.Add(ref lp, i) : default;
+                var rv = i < rl ? Unsafe.Add(ref rp, i) : default;
+                arr[i] = op.Add(lv, rv);
             }
             return new Polynomial<T, TOp>(arr);
         }
         [凾(256)]
         public static Polynomial<T, TOp> operator -(Polynomial<T, TOp> lhs, Polynomial<T, TOp> rhs)
         {
-            var lp = lhs.Coefficients;
-            var rp = rhs.Coefficients;
-            var arr = new T[Math.Max(lp.Length, rp.Length)];
-            lp.CopyTo(arr.AsSpan());
-            for (int i = 0; i < rp.Length; i++)
+            var ll = lhs.Coefficients.Length;
+            var rl = rhs.Coefficients.Length;
+            ref var lp = ref lhs.Coefficients[0];
+            ref var rp = ref rhs.Coefficients[0];
+            var arr = new T[Math.Max(ll, rl)];
+            for (int i = 0; i < arr.Length; i++)
             {
-                arr[i] = op.Subtract(arr[i], rp[i]);
+                var lv = i < ll ? Unsafe.Add(ref lp, i) : default;
+                var rv = i < rl ? Unsafe.Add(ref rp, i) : default;
+                arr[i] = op.Subtract(lv, rv);
             }
             return new Polynomial<T, TOp>(arr);
         }
@@ -72,19 +81,20 @@ namespace Kzrnm.Competitive
 
         [凾(256)]
         public static Polynomial<T, TOp> operator /(Polynomial<T, TOp> lhs, Polynomial<T, TOp> rhs)
-                => lhs.DivRem(rhs, out _);
+                => lhs.DivRem(rhs).Quotient;
 
+
+        /// <summary>
+        /// 多項式の割り算
+        /// </summary>
         [凾(256)]
-        public Polynomial<T, TOp> DivRem(Polynomial<T, TOp> rhs, out Polynomial<T, TOp> remainder)
+        public (Polynomial<T, TOp> Quotient, Polynomial<T, TOp> Remainder) DivRem(Polynomial<T, TOp> rhs)
         {
-            var lp = (T[])this.Coefficients.Clone();
+            var lp = (T[])Coefficients.Clone();
             ReadOnlySpan<T> rp = rhs.Coefficients;
 
             if (lp.Length < rp.Length)
-            {
-                remainder = new Polynomial<T, TOp>(Array.Empty<T>());
-                return this;
-            }
+                return (new Polynomial<T, TOp>(Array.Empty<T>()), this);
 
             var res = new T[lp.Length - rp.Length + 1];
 
@@ -98,8 +108,8 @@ namespace Kzrnm.Competitive
                 }
             }
 
-            remainder = new Polynomial<T, TOp>(lp.AsSpan(0, rp.Length - 1).ToArray());
-            return new Polynomial<T, TOp>(res);
+            var remainder = new Polynomial<T, TOp>(lp.AsSpan(0, rp.Length - 1).ToArray());
+            return (new Polynomial<T, TOp>(res), remainder);
         }
 
         /// <summary>

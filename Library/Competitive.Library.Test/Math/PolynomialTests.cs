@@ -45,6 +45,9 @@ namespace Kzrnm.Competitive.MathNS
             (new Polynomial<int, IntOperator>(new int[] { 0, 5, 10, 17, 4, 6 })
                 / new Polynomial<int, IntOperator>(new int[] { 1, 2, 3 }))
                 .Coefficients.Should().Equal(0, 5, 0, 2);
+            (new Polynomial<int, IntOperator>(new int[] { 1, 2, 3 })
+                / new Polynomial<int, IntOperator>(new int[] { 0, 5, 10, 17, 4, 6 }))
+                .Coefficients.Should().BeEmpty();
         }
         [Fact]
         public void Derivative()
