@@ -7,7 +7,7 @@ namespace Kzrnm.Competitive.Collection
     {
         static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/predecessor_problem
-        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             int Q = cr;
@@ -31,6 +31,7 @@ namespace Kzrnm.Competitive.Collection
                         cw.WriteLine(set.FindNodeReverseLowerBound(k)?.Value ?? -1); break;
                 }
             }
+            return null;
         }
     }
 }

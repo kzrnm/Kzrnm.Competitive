@@ -8,7 +8,7 @@ namespace Kzrnm.Competitive.MathNs
     {
         static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/matrix_product
-        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             int M = cr;
@@ -19,6 +19,7 @@ namespace Kzrnm.Competitive.MathNs
                 cr.Repeat(M).Select(cr => cr.Repeat(K).Select(cr => ModInt.Raw(cr))));
 
             cw.WriteGrid(mat1.Strassen(mat2).Value);
+            return null;
         }
     }
 }

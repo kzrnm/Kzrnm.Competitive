@@ -8,7 +8,7 @@ namespace Kzrnm.Competitive.MathNs
     {
         static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/inverse_matrix
-        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             var mat = new ArrayMatrix<ModInt, ModIntOperator>(cr.Grid(N, N, cr => ModInt.Raw(cr))).Inv();
@@ -16,6 +16,7 @@ namespace Kzrnm.Competitive.MathNs
                 cw.WriteLine(-1);
             else
                 cw.WriteGrid(mat.Value);
+            return null;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Kzrnm.Competitive.DataStructure
     {
         static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/dynamic_graph_vertex_add_component_sum
-        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int n = cr;
             int k = cr;
@@ -42,10 +42,11 @@ namespace Kzrnm.Competitive.DataStructure
                     cw.WriteLine(dc.Prod(v));
                 }
             }
+            return null;
         }
         struct Op : ISegtreeOperator<long>
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(256)]
             public long Operate(long x, long y) => x + y;
             public long Identity => default;
         }

@@ -1,5 +1,6 @@
 ﻿using Kzrnm.Competitive.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive.DataStructure
 {
@@ -7,7 +8,7 @@ namespace Kzrnm.Competitive.DataStructure
     {
         static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/range_affine_range_sum
-        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             int Q = cr;
@@ -26,21 +27,30 @@ namespace Kzrnm.Competitive.DataStructure
                 else
                     cw.WriteLine(seg[l..r]);
             }
+            return null;
         }
     }
     struct LazySegtreeSolverOp : ISLazySegtreeOperator<uint, (uint b, uint c)>
     {
         const uint MOD = 998244353;
+
+        [MethodImpl(256)]
         public uint Operate(uint x, uint y) => SafeAdd(x, y);
+        [MethodImpl(256)]
         public uint Mapping((uint b, uint c) f, uint x, int size) => SafeAdd(SafeMul(f.b, x), SafeMul(f.c, (uint)size));
+        [MethodImpl(256)]
         public (uint b, uint c) Composition((uint b, uint c) f, (uint b, uint c) g) => (SafeMul(f.b, g.b), SafeAdd(SafeMul(f.b, g.c), f.c));
         public uint Identity => 0;
         public (uint b, uint c) FIdentity => (1, 0);
+
+        [MethodImpl(256)]
         static uint SafeAdd(uint a, uint b)
         {
             var r = a + b;
             return r < MOD ? r : r - MOD;
         }
+
+        [MethodImpl(256)]
         static uint SafeMul(uint a, uint b) => (uint)((ulong)a * b % MOD);
     }
 }

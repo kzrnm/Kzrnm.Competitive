@@ -8,7 +8,7 @@ namespace Kzrnm.Competitive.MathNs
     {
         static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/system_of_linear_equations
-        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             int M = cr;
@@ -18,6 +18,7 @@ namespace Kzrnm.Competitive.MathNs
             cw.WriteLine(r.Length - 1);
             if (r.Length > 0)
                 cw.WriteGrid(r);
+            return null;
         }
     }
 }

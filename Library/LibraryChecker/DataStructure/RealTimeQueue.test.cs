@@ -6,7 +6,7 @@ namespace Kzrnm.Competitive.DataStructure
     {
         static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/persistent_queue
-        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int q = cr;
             var queues = new RealTimeQueue<int>[q];
@@ -25,6 +25,7 @@ namespace Kzrnm.Competitive.DataStructure
                     cw.WriteLine(v);
                 }
             }
+            return null;
         }
     }
 }

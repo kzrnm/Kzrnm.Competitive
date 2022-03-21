@@ -6,7 +6,7 @@ namespace Kzrnm.Competitive.DataStructure
     {
         static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/set_xor_min
-        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             var bt = new BinaryTrie(30);
@@ -25,6 +25,7 @@ namespace Kzrnm.Competitive.DataStructure
                 else
                     cw.WriteLine(bt.MinElement(x).Num);
             }
+            return null;
         }
     }
 }

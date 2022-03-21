@@ -8,7 +8,7 @@ namespace Kzrnm.Competitive.DataStructure
     {
         static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/dynamic_tree_vertex_add_path_sum
-        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             int Q = cr;
@@ -48,6 +48,7 @@ namespace Kzrnm.Competitive.DataStructure
                     cw.WriteLine(nodes[v].Sum);
                 }
             }
+            return null;
         }
 
         struct Op : ILinkCutTreeOperator<long, long>

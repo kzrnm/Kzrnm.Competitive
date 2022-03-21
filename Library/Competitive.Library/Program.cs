@@ -1,6 +1,5 @@
 ﻿using Kzrnm.Competitive;
 using Kzrnm.Competitive.IO;
-using System;
 using System.Globalization;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 internal partial class Program

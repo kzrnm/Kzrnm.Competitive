@@ -6,7 +6,7 @@ namespace Kzrnm.Competitive.DataStructure
     {
         static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/unionfind
-        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int n = cr;
             int q = cr;
@@ -23,6 +23,7 @@ namespace Kzrnm.Competitive.DataStructure
                 else
                     cw.WriteLine(dsu.Same(u, v) ? 1 : 0);
             }
+            return null;
         }
     }
 }

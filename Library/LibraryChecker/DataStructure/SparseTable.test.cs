@@ -7,7 +7,7 @@ namespace Kzrnm.Competitive.DataStructure
     {
         static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/staticrmq
-        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int n = cr;
             int q = cr;
@@ -19,6 +19,7 @@ namespace Kzrnm.Competitive.DataStructure
                 int r = cr;
                 cw.WriteLine(st[l..r]);
             }
+            return null;
         }
         struct Op : ISparseTableOperator<int>
         {

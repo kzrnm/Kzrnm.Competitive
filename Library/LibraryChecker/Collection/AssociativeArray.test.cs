@@ -7,7 +7,7 @@ namespace Kzrnm.Competitive.Collection
     {
         static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/associative_array
-        static void Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int Q = cr;
             var dic = new Dictionary<long, long>();
@@ -23,6 +23,7 @@ namespace Kzrnm.Competitive.Collection
                 else
                     cw.WriteLine(dic.Get(k));
             }
+            return null;
         }
     }
 }
