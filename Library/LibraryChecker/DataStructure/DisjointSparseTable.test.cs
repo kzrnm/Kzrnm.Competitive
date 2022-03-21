@@ -19,6 +19,6 @@ namespace Kzrnm.Competitive.DataStructure
                 cw.WriteLine(st[l..r]);
             }
         }
-        struct Op : ISparseTableOperator<long> { [MethodImpl(256)] public long Operate(long x, long y) => x + y; }
+        struct Op : ISparseTableOperator<long> {[MethodImpl(256)] public long Operate(long x, long y) => x + y; }
     }
 }
