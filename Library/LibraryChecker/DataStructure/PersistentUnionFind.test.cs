@@ -4,7 +4,7 @@ namespace Kzrnm.Competitive.DataStructure
 {
     public class PersistentUnionFindTest
     {
-        static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
+        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/persistent_unionfind
         static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {

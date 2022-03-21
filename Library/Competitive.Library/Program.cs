@@ -4,7 +4,6 @@ using System.Globalization;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 internal partial class Program
 {
-    static void Main() => new Program(new PropertyConsoleReader(), new Utf8ConsoleWriter()).Run();
     public PropertyConsoleReader cr;
     public Utf8ConsoleWriter cw;
     public Program(PropertyConsoleReader r, Utf8ConsoleWriter w)

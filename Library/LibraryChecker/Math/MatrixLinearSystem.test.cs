@@ -6,7 +6,7 @@ namespace Kzrnm.Competitive.MathNs
 {
     public class MatrixLinearSystemTest
     {
-        static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
+        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/system_of_linear_equations
         static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {

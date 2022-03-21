@@ -7,7 +7,7 @@ namespace Kzrnm.Competitive.DataStructure
 {
     public class SegtreeBeatsTest
     {
-        static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
+        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/range_chmin_chmax_add_range_sum
         static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {

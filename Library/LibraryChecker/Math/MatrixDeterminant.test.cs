@@ -6,7 +6,7 @@ namespace Kzrnm.Competitive.MathNs
 {
     public class MatrixDeterminantTest
     {
-        static void Main() { using var cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
+        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/matrix_det
         static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
