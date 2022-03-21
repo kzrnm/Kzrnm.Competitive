@@ -8,16 +8,32 @@ namespace Kzrnm.Competitive
 {
     public static class MathLibEx
     {
+        // 高速な Gcd の実装
+        // https://nyaannyaan.github.io/library/trial/fast-gcd.hpp
         /// <summary>
         /// 最大公約数
         /// </summary>
         [凾(256)]
-        public static int Gcd(int a, int b) => b > a ? Gcd(b, a) : (b == 0 ? a : Gcd(b, a % b));
+        public static int Gcd(int a, int b) => (int)Gcd((long)a, b);
         /// <summary>
         /// 最大公約数
         /// </summary>
         [凾(256)]
-        public static long Gcd(long a, long b) => b > a ? Gcd(b, a) : (b == 0 ? a : Gcd(b, a % b));
+        public static long Gcd(long a, long b)
+        {
+            if (a == 0 || b == 0) return a | b;
+            int n = BitOperations.TrailingZeroCount(a);
+            int m = BitOperations.TrailingZeroCount(b);
+            a >>= n;
+            b >>= m;
+            while (a != b)
+            {
+                int m2 = BitOperations.TrailingZeroCount(a - b);
+                if (a < b) (a, b) = (b, a);
+                a = (a - b) >> m2;
+            }
+            return a << Math.Min(n, m);
+        }
         /// <summary>
         /// 最大公約数
         /// </summary>
