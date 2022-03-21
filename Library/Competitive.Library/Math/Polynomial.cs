@@ -25,9 +25,9 @@ namespace Kzrnm.Competitive
         /// 多項式を生成します。
         /// </summary>
         /// <param name="polynomial"><paramref name="polynomial"/>[i] がi次の係数となる多項式</param>
-        public Polynomial(T[] polynomial)
+        public Polynomial(ReadOnlySpan<T> polynomial)
         {
-            var span = polynomial.AsSpan();
+            var span = polynomial;
             while (span.Length > 1 && EqualityComparer<T>.Default.Equals(span[^1], default))
                 span = span[..^1];
             Coefficients = span.ToArray();
@@ -38,6 +38,8 @@ namespace Kzrnm.Competitive
         {
             var ll = lhs.Coefficients.Length;
             var rl = rhs.Coefficients.Length;
+            if (ll == 0) return rhs;
+            if (rl == 0) return lhs;
             ref var lp = ref lhs.Coefficients[0];
             ref var rp = ref rhs.Coefficients[0];
             var arr = new T[Math.Max(ll, rl)];
@@ -54,6 +56,8 @@ namespace Kzrnm.Competitive
         {
             var ll = lhs.Coefficients.Length;
             var rl = rhs.Coefficients.Length;
+            if (ll == 0) return rhs;
+            if (rl == 0) return lhs;
             ref var lp = ref lhs.Coefficients[0];
             ref var rp = ref rhs.Coefficients[0];
             var arr = new T[Math.Max(ll, rl)];
@@ -98,7 +102,9 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static Polynomial<T, TOp> operator /(Polynomial<T, TOp> lhs, Polynomial<T, TOp> rhs)
                 => lhs.DivRem(rhs).Quotient;
-
+        [凾(256)]
+        public static Polynomial<T, TOp> operator %(Polynomial<T, TOp> lhs, Polynomial<T, TOp> rhs)
+                => lhs.DivRem(rhs).Remainder;
 
         /// <summary>
         /// 多項式の割り算
@@ -110,19 +116,15 @@ namespace Kzrnm.Competitive
                 return (new Polynomial<T, TOp>(Array.Empty<T>()), this);
 
             var lp = (T[])Coefficients.Clone();
-            ReadOnlySpan<T> rp = rhs.Coefficients;
-
+            var rp = rhs.Coefficients;
 
             var res = new T[lp.Length - rp.Length + 1];
-
             for (int i = res.Length - 1; i >= 0; i--)
             {
                 var current = lp.AsSpan(i, rp.Length);
                 res[i] = op.Divide(current[^1], rp[^1]);
                 for (int j = 0; j < current.Length; j++)
-                {
                     current[j] = op.Subtract(current[j], op.Multiply(res[i], rp[j]));
-                }
             }
 
             var remainder = new Polynomial<T, TOp>(lp.AsSpan(0, rp.Length - 1).ToArray());
