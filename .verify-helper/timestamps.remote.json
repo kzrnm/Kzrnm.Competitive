@@ -14,7 +14,7 @@
 "Library/LibraryChecker/DataStructure/Sums.test.cs": "2022-03-17 23:10:07 +0900",
 "Library/LibraryChecker/DataStructure/UnionFind.test.cs": "2022-03-17 23:10:07 +0900",
 "Library/LibraryChecker/DataStructure/WaveletMatrix.test.cs": "2022-03-17 23:10:07 +0900",
-"Library/LibraryChecker/Math/ConvolutionAnyMod.test.cs": "2022-03-17 23:10:07 +0900",
-"Library/LibraryChecker/Math/MatrixStrassen.test.cs": "2022-03-17 23:10:07 +0900",
+"Library/LibraryChecker/Math/ConvolutionAnyMod.test.cs": "2022-03-21 21:51:39 +0900",
+"Library/LibraryChecker/Math/MatrixDeterminant.test.cs": "2022-03-21 19:21:16 +0900",
 "Library/LibraryChecker/Math/ULongNthRoot.test.cs": "2022-03-17 23:10:07 +0900"
 }
