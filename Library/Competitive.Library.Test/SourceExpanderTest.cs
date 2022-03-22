@@ -48,7 +48,8 @@ namespace Embedding
                     "Kzrnm.Competitive.DataStructure",
                     "Kzrnm.Competitive.DebugUtil",
                     "Kzrnm.Competitive.LinqInternals",
-                    "Kzrnm.Competitive.SetInternals");
+                    "Kzrnm.Competitive.SetInternals",
+                    "Kzrnm.Competitive.Testing");
 
         }
     }
