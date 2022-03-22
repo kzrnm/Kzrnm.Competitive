@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.DataStructure.String
 {
-    [Verify] // verification-helper: PROBLEM https://judge.yosupo.jp/problem/aplusb
+    // verification-helper: SAMEAS Library/run.test.py
     public class BMTests
     {
         public static TheoryData Match_Data = new TheoryData<string, string, int>

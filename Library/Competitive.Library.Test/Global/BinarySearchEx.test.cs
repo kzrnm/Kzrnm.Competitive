@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.GlobalNS
 {
-    [Verify] // verification-helper: PROBLEM https://judge.yosupo.jp/problem/aplusb
+    // verification-helper: SAMEAS Library/run.test.py
     public class BinarySearchExTests
     {
         private struct DelegateOk<T> : IOk<T>

@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.Comparer
 {
-    [Verify] // verification-helper: PROBLEM https://judge.yosupo.jp/problem/aplusb
+    // verification-helper: SAMEAS Library/run.test.py
     public class ExComparerTests
     {
         [Fact]

@@ -4,7 +4,7 @@ using static System.Math;
 
 namespace Kzrnm.Competitive.Testing.DataStructure
 {
-    [Verify] // verification-helper: PROBLEM https://judge.yosupo.jp/problem/aplusb
+    // verification-helper: SAMEAS Library/run.test.py
     public class SegtreeBeatsTests
     {
         [Fact]

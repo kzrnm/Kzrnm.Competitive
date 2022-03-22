@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.MathNS
 {
-    [Verify] // verification-helper: PROBLEM https://judge.yosupo.jp/problem/aplusb
+    // verification-helper: SAMEAS Library/run.test.py
     public class ConvolutionTests
     {
         private struct Mod1000000000 : IStaticMod

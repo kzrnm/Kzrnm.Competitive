@@ -5,7 +5,7 @@ using System.Runtime.Intrinsics.X86;
 
 namespace Kzrnm.Competitive.Testing.Bits
 {
-    [Verify] // verification-helper: PROBLEM https://judge.yosupo.jp/problem/aplusb
+    // verification-helper: SAMEAS Library/run.test.py
     public class BitTests
     {
         sealed class OnlyX64TheoryAttribute : TheoryAttribute

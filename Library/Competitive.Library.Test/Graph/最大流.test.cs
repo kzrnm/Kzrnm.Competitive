@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.Graph
 {
-    [Verify] // verification-helper: PROBLEM https://judge.yosupo.jp/problem/aplusb
+    // verification-helper: SAMEAS Library/run.test.py
     public class 最大流Tests
     {
         [Fact]
