@@ -5,7 +5,6 @@ exclude:
   - Library/Competitive.Library/_Runner
   - Library/LibraryChecker/Program.cs
   - Library/Competitive.Library.Test/SourceExpanderTest.cs
-  - Library/Competitive.Library.Test/TestUtil/RandomUtil.cs
   - .github
   - .verify-helper
   - .vscode
