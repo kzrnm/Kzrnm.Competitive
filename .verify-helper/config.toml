@@ -1,4 +1,5 @@
 [languages.csharp]
+csproj_template = ".verify-helper/runner.csproj.xml"
 static_embedding = """
 
 // 実行用に埋め込む
