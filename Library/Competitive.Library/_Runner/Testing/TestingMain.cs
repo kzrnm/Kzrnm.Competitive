@@ -8,6 +8,9 @@ namespace Kzrnm.Competitive.Testing
     {
         /// <summary>
         /// TestingMain を埋め込むための Attribute
+        /// 
+        /// PROBLEM も一緒に書く
+        /// [Verify] // verification-helper: PROBLEM https://judge.yosupo.jp/problem/aplusb
         /// </summary>
         public VerifyAttribute() { }
     }

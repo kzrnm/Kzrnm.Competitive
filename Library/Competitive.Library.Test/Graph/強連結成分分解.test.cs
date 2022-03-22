@@ -3,6 +3,7 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.Graph
 {
+    [Verify] // verification-helper: PROBLEM https://judge.yosupo.jp/problem/aplusb
     public class 強連結成分分解Tests
     {
         [Fact]

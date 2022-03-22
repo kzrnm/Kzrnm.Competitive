@@ -4,6 +4,7 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.MathNS.Matrix
 {
+    [Verify] // verification-helper: PROBLEM https://judge.yosupo.jp/problem/aplusb
     public class Matrix2x2Tests
     {
         [Fact]

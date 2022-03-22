@@ -4,6 +4,7 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.Util
 {
+    [Verify] // verification-helper: PROBLEM https://judge.yosupo.jp/problem/aplusb
     public class PointIntTests
     {
         public static TheoryData Distance_Data = new TheoryData<PointInt, PointInt, long, double>

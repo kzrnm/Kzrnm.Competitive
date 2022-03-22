@@ -5,6 +5,7 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.GlobalNS
 {
+    [Verify] // verification-helper: PROBLEM https://judge.yosupo.jp/problem/aplusb
     public class BinarySearchExTests
     {
         private struct DelegateOk<T> : IOk<T>

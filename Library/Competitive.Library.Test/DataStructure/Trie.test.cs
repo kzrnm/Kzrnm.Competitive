@@ -6,6 +6,7 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.DataStructure
 {
+    [Verify] // verification-helper: PROBLEM https://judge.yosupo.jp/problem/aplusb
     public class TrieTests
     {
         static SortedDictionary<TKey, Trie<TKey, TValue>> TrieDic<TKey, TValue>(Trie<TKey, TValue> trie)

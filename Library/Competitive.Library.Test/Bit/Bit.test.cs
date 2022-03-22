@@ -5,6 +5,7 @@ using System.Runtime.Intrinsics.X86;
 
 namespace Kzrnm.Competitive.Testing.Bits
 {
+    [Verify] // verification-helper: PROBLEM https://judge.yosupo.jp/problem/aplusb
     public class BitTests
     {
         sealed class OnlyX64TheoryAttribute : TheoryAttribute

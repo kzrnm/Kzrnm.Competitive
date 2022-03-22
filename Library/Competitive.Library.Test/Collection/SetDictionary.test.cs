@@ -5,6 +5,7 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.Collection
 {
+    [Verify] // verification-helper: PROBLEM https://judge.yosupo.jp/problem/aplusb
     public class SetDictionaryTests
     {
         [Fact]

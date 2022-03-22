@@ -5,6 +5,7 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.DataStructure.String
 {
+    [Verify] // verification-helper: PROBLEM https://judge.yosupo.jp/problem/aplusb
     public class KMPTests
     {
         public static TheoryData Match_Data = new TheoryData<string, string, IEnumerable<int>>

@@ -4,6 +4,7 @@ using static System.Math;
 
 namespace Kzrnm.Competitive.Testing.DataStructure
 {
+    [Verify] // verification-helper: PROBLEM https://judge.yosupo.jp/problem/aplusb
     public class SegtreeBeatsTests
     {
         [Fact]

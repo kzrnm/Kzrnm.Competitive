@@ -4,6 +4,7 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.Extensions
 {
+    [Verify] // verification-helper: PROBLEM https://judge.yosupo.jp/problem/aplusb
     public class UpdateExtensionTests
     {
         [Fact]

@@ -5,6 +5,7 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.Collection
 {
+    [Verify] // verification-helper: PROBLEM https://judge.yosupo.jp/problem/aplusb
     public class SetIntervalTests
     {
         public static TheoryData Add_Data = new TheoryData<(int from, int to)[], (int from, int to)[]>

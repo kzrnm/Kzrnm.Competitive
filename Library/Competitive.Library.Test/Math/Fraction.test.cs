@@ -6,6 +6,7 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.MathNS
 {
+    [Verify] // verification-helper: PROBLEM https://judge.yosupo.jp/problem/aplusb
     public class FractionTests
     {
         static IEnumerable<Fraction> RandomFractions(Random rnd)
