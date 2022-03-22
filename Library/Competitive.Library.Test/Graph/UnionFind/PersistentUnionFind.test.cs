@@ -21,7 +21,7 @@ namespace Kzrnm.Competitive.Testing.Graph
         [Fact]
         public void Line()
         {
-            int n = 50000;
+            int n = 1000;
             var ufs = new PersistentUnionFind[n];
             ufs[0] = new PersistentUnionFind(n);
             for (int i = 0; i + 1 < n; i++)
@@ -39,7 +39,7 @@ namespace Kzrnm.Competitive.Testing.Graph
         [Fact]
         public void LineReverse()
         {
-            int n = 50000;
+            int n = 1000;
             var ufs = new PersistentUnionFind[n];
             ufs[^1] = new PersistentUnionFind(n);
             for (int i = n - 2; i >= 0; i--)

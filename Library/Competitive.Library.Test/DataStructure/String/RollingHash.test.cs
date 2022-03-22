@@ -33,12 +33,12 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
                                     notMatchHashNotMatchCount++;
                             }
                         }
-            ((double)notMatchHashNotMatchCount / notMatchCount).Should().BeGreaterThan(0.99);
+            ((double)notMatchHashNotMatchCount / notMatchCount).Should().BeGreaterThan(0.9999);
         }
         [Fact]
         public void Repeat()
         {
-            ReadOnlySpan<char> str = string.Join("", Enumerable.Repeat(new Random().NextString(10), 7));
+            ReadOnlySpan<char> str = string.Join("", Enumerable.Repeat(new Random().NextString(7), 4));
             var rh = new RollingHash(str);
 
             var notMatchCount = 0;
@@ -60,12 +60,12 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
                                     notMatchHashNotMatchCount++;
                             }
                         }
-           ((double)notMatchHashNotMatchCount / notMatchCount).Should().BeGreaterThan(0.99);
+           ((double)notMatchHashNotMatchCount / notMatchCount).Should().BeGreaterThan(0.9999);
         }
         [Fact]
         public void Large()
         {
-            ReadOnlySpan<char> str = new Random().NextString(70);
+            ReadOnlySpan<char> str = new Random().NextString(40);
             var rh = new RollingHash(str);
 
             var notMatchCount = 0;
@@ -87,7 +87,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
                                     notMatchHashNotMatchCount++;
                             }
                         }
-           ((double)notMatchHashNotMatchCount / notMatchCount).Should().BeGreaterThan(0.99);
+           ((double)notMatchHashNotMatchCount / notMatchCount).Should().BeGreaterThan(0.9999);
         }
     }
 }

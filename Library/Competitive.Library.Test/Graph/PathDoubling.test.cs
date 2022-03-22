@@ -9,21 +9,22 @@ namespace Kzrnm.Competitive.Testing.Graph
         [Fact]
         public void Move()
         {
-            var arr = new int[500];
+            const int N = 100;
+            var arr = new int[N];
             for (int i = 0; i < arr.Length; i++)
                 arr[i] = (i + 1) % arr.Length;
             var rnd = new Random();
             var db = new PathDoubling(arr);
 
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i < N; i++)
                 for (int k = 0; k < 20; k++)
                     db.Move(i, k).Should().Be((i + k) % arr.Length);
             Span<ulong> ks = stackalloc ulong[1];
-            for (int t = 0; t < 128; t++)
+            for (int t = 0; t < 64; t++)
             {
                 rnd.NextBytes(ks.Cast<ulong, byte>());
                 var k = ks[0];
-                for (int i = 0; i < 500; i++)
+                for (int i = 0; i < N; i++)
                 {
                     db.Move(i, k).Should().Be((int)(((uint)i + k) % (uint)arr.Length));
                     if ((long)k >= 0)

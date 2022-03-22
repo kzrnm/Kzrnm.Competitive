@@ -35,7 +35,7 @@ namespace Kzrnm.Competitive.Testing.Graph
         [Fact]
         public void Line()
         {
-            int n = 500000;
+            int n = 10000;
             var uf = new UnionFind<long>(Enumerable.Range(0, n).Select(a => (long)a).ToArray(), (a, b) => a + b);
             for (int i = 0; i < n - 1; i++)
             {
@@ -49,7 +49,7 @@ namespace Kzrnm.Competitive.Testing.Graph
         [Fact]
         public void LineReverse()
         {
-            int n = 500000;
+            int n = 10000;
             var uf = new UnionFind<long>(Enumerable.Range(0, n).Select(a => (long)a).ToArray(), (a, b) => a + b);
             for (int i = n - 2; i >= 0; i--)
             {

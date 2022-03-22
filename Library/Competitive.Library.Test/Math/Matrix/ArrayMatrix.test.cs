@@ -414,7 +414,7 @@ new Fraction[,]
         [Trait("Category", "Normal")]
         public void Determinant3()
         {
-            int n = 300;
+            int n = 60;
             var array = new Fraction[n, n];
             for (int i = 0; i < n; i++)
             {

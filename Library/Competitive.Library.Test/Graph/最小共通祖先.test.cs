@@ -137,7 +137,7 @@ namespace Kzrnm.Competitive.Testing.Graph
         [Fact]
         public void Random()
         {
-            const int N = 60;
+            const int N = 20;
             var wgb = new WIntGraphBuilder(N, false);
             var gb = new GraphBuilder(N, false);
             var arr = Enumerable.Range(0, N).OrderBy(_ => Guid.NewGuid()).ToArray();

@@ -27,7 +27,7 @@ namespace Kzrnm.Competitive.Testing.Graph
         [Fact]
         public void Line()
         {
-            int n = 500000;
+            int n = 10000;
             var uf = new UnionFind(n);
             for (int i = 0; i < n - 1; i++)
             {
@@ -40,7 +40,7 @@ namespace Kzrnm.Competitive.Testing.Graph
         [Fact]
         public void LineReverse()
         {
-            int n = 500000;
+            int n = 10000;
             var uf = new UnionFind(n);
             for (int i = n - 2; i >= 0; i--)
             {

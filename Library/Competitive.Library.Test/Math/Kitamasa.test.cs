@@ -27,7 +27,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         public void Mod1000000007()
         {
             var rnd = new Random(42);
-            for (int n = 2; n < 20; n++)
+            for (int n = 2; n < 10; n++)
             {
                 var arr = MemoryMarshal.Cast<int, uint>(rnd.NextIntArray(n, 0, 1000000007));
                 var crr = MemoryMarshal.Cast<int, uint>(rnd.NextIntArray(n, 0, 1000000007));
@@ -44,7 +44,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         public void Mod998244353()
         {
             var rnd = new Random(42);
-            for (int n = 2; n < 20; n++)
+            for (int n = 2; n < 10; n++)
             {
                 var arr = MemoryMarshal.Cast<int, uint>(rnd.NextIntArray(n, 0, 998244353));
                 var crr = MemoryMarshal.Cast<int, uint>(rnd.NextIntArray(n, 0, 998244353));

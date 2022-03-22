@@ -10,13 +10,14 @@ namespace Kzrnm.Competitive.Testing.Graph
         [Fact]
         public void Move()
         {
-            var arr = new int[500];
+            const int N = 180;
+            var arr = new int[N];
             for (int i = 0; i < arr.Length; i++)
                 arr[i] = (i + 1) % arr.Length;
             var rnd = new Random();
             var pl = Enumerable.Range(0, arr.Length).Select(i => new PathLoop(arr, i)).ToArray();
 
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i < N; i++)
                 for (int k = 0; k < 20; k++)
                     pl[i].Move(k).Should().Be((i + k) % arr.Length);
             Span<ulong> ks = stackalloc ulong[1];
@@ -24,7 +25,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             {
                 rnd.NextBytes(ks.Cast<ulong, byte>());
                 var k = ks[0];
-                for (int i = 0; i < 500; i++)
+                for (int i = 0; i < N; i++)
                 {
                     pl[i].Move(k).Should().Be((int)(((uint)i + k) % (uint)arr.Length));
                     if ((long)k >= 0)

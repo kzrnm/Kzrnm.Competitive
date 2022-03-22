@@ -37,7 +37,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         [Fact]
         public void Native()
         {
-            for (int len = 1; len < 260; len++)
+            for (int len = 1; len < 50; len++)
             {
                 var arr = new short[len];
                 rnd.NextBytes(MemoryMarshal.Cast<short, byte>(arr));

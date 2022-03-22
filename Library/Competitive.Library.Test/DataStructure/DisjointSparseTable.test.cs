@@ -38,7 +38,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         [Fact]
         public void NativeMin()
         {
-            for (int len = 1; len < 260; len++)
+            for (int len = 1; len < 50; len++)
             {
                 var arr = new short[len];
                 rnd.NextBytes(MemoryMarshal.Cast<short, byte>(arr));
@@ -80,7 +80,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         [Fact]
         public void NativeSum()
         {
-            for (int len = 1; len < 260; len++)
+            for (int len = 1; len < 50; len++)
             {
                 var arr = new uint[len];
                 rnd.NextBytes(MemoryMarshal.Cast<uint, byte>(arr));

@@ -51,7 +51,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         public void Mid()
         {
             var rnd = new Random(42);
-            int n = 1234, m = 2345;
+            int n = 123, m = 234;
             var a = new uint[n];
             var b = new uint[m];
             for (int i = 0; i < n; i++)
@@ -111,9 +111,9 @@ namespace Kzrnm.Competitive.Testing.MathNS
         {
             var rnd = new Random(42);
             for (int c = 0; c < 100; c++)
-                for (int n = 1; n < 20; n++)
+                for (int n = 1; n < 10; n++)
                 {
-                    for (int m = 1; m < 20; m++)
+                    for (int m = 1; m < 10; m++)
                     {
                         var a = new uint[n];
                         var b = new uint[m];

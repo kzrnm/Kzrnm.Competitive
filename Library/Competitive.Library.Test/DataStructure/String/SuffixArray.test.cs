@@ -12,7 +12,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
         public void LCPInt()
         {
             var rnd = new Random();
-            for (int n = 1; n < 100; n++)
+            for (int n = 1; n < 50; n++)
             {
                 var str = rnd.NextIntArray(n, -5, 5);
                 var sa = SuffixArray.Create(str);
@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
                         sa.LongestCommonPrefix(i, j).Should().Be(sa.LongestCommonPrefix(j, i)).And.Be(saNative.GetLCP(i, j));
             }
             {
-                var str = Enumerable.Repeat(1, 100).ToArray();
+                var str = Enumerable.Repeat(1, 50).ToArray();
                 var sa = SuffixArray.Create(str);
                 var saNative = GetNative((ReadOnlySpan<int>)str);
 
@@ -32,7 +32,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
                         sa.LongestCommonPrefix(i, j).Should().Be(sa.LongestCommonPrefix(j, i)).And.Be(saNative.GetLCP(i, j));
             }
             {
-                var str = Enumerable.Range(0, 100).ToArray();
+                var str = Enumerable.Range(0, 50).ToArray();
                 var sa = SuffixArray.Create(str);
                 var saNative = GetNative((ReadOnlySpan<int>)str);
 
@@ -57,7 +57,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
         public void LCPString()
         {
             var rnd = new Random();
-            for (int n = 1; n < 100; n++)
+            for (int n = 1; n < 50; n++)
             {
                 var str = rnd.NextString(n);
                 var sa = SuffixArray.Create(str);
