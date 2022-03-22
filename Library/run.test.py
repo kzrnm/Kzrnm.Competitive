@@ -1,15 +1,12 @@
-# verification-helper: PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/lesson/2/ITP1/1/ITP1_1_A
+# verification-helper: STANDALONE
 from pathlib import Path
 import subprocess
-import sys
 
 
 def main():
-    print('Hello World')
-    thisfile = Path(__file__).resolve()
     subprocess.run([
-        'dotnet', 'test', str(thisfile.parent / 'Competitive.Library.sln')],
-        stdout=sys.stderr)
+        'dotnet', 'test', str(Path(__file__).resolve().parent / 'Competitive.Library.sln')],
+        check=True)
 
 
 if __name__ == '__main__':
