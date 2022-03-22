@@ -2,7 +2,7 @@
 using Kzrnm.Competitive.DataStructure;
 using Xunit;
 
-namespace Kzrnm.Competitive.Testing
+namespace Kzrnm.Competitive.Testing.DataStructure
 {
     public class StarrySkyTreeTests
     {
