@@ -3,7 +3,7 @@ using System;
 using System.Numerics;
 using Xunit;
 
-namespace Kzrnm.Competitive.GlobalNS
+namespace Kzrnm.Competitive.Testing.GlobalNS
 {
     public class BinarySearchExTests
     {

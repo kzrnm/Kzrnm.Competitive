@@ -3,7 +3,7 @@ using System;
 using Xunit;
 using System.Runtime.Intrinsics.X86;
 
-namespace Kzrnm.Competitive.Bits
+namespace Kzrnm.Competitive.Testing.Bits
 {
     public class BitTests
     {

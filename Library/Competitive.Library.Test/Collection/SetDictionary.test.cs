@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace Kzrnm.Competitive.Collection
+namespace Kzrnm.Competitive.Testing.Collection
 {
     public class SetDictionaryTests
     {

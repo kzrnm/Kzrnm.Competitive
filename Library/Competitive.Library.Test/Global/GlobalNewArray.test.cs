@@ -2,7 +2,7 @@
 using System.Linq;
 using Xunit;
 
-namespace Kzrnm.Competitive.GlobalNS
+namespace Kzrnm.Competitive.Testing.GlobalNS
 {
     public class GlobalNewArrayTests
     {

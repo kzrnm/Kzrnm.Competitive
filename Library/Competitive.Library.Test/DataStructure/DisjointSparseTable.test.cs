@@ -5,7 +5,7 @@ using System;
 using System.Runtime.InteropServices;
 using Xunit;
 
-namespace Kzrnm.Competitive.DataStructure
+namespace Kzrnm.Competitive.Testing.DataStructure
 {
     public class DisjointSparseTableTests
     {

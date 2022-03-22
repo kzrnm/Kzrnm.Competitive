@@ -1,7 +1,8 @@
 ﻿using FluentAssertions;
+using Kzrnm.Competitive.DataStructure;
 using Xunit;
 
-namespace Kzrnm.Competitive.DataStructure
+namespace Kzrnm.Competitive.Testing
 {
     public class StarrySkyTreeTests
     {

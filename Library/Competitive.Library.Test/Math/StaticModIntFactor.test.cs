@@ -3,7 +3,7 @@ using FluentAssertions;
 using System;
 using Xunit;
 
-namespace Kzrnm.Competitive.MathNS
+namespace Kzrnm.Competitive.Testing.MathNS
 {
     public class StaticModIntFactorTests
     {

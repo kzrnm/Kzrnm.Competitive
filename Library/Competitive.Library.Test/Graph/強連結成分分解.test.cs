@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Xunit;
 
-namespace Kzrnm.Competitive.Graph
+namespace Kzrnm.Competitive.Testing.Graph
 {
     public class 強連結成分分解Tests
     {

@@ -3,7 +3,7 @@ using System;
 using Xunit;
 
 
-namespace Kzrnm.Competitive.Graph
+namespace Kzrnm.Competitive.Testing.Graph
 {
     public class PersistentUnionFindTests
     {

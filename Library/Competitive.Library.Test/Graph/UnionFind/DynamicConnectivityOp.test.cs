@@ -3,7 +3,7 @@ using FluentAssertions;
 using System.Runtime.CompilerServices;
 using Xunit;
 
-namespace Kzrnm.Competitive.Graph
+namespace Kzrnm.Competitive.Testing.Graph
 {
     public class DynamicConnectivityOpTests
     {

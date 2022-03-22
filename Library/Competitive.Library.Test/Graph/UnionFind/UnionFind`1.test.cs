@@ -4,7 +4,7 @@ using System.Linq;
 using Xunit;
 
 
-namespace Kzrnm.Competitive.Graph
+namespace Kzrnm.Competitive.Testing.Graph
 {
     public class UnionFindDataTests
     {

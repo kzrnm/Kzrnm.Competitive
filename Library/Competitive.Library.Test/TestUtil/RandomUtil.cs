@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Kzrnm.Competitive
+namespace Kzrnm.Competitive.Testing
 {
     public static class RandomUtil
     {

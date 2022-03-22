@@ -5,7 +5,7 @@ using System.Linq;
 using System.Numerics;
 using Xunit;
 
-namespace Kzrnm.Competitive.MathNS
+namespace Kzrnm.Competitive.Testing.MathNS
 {
     public class ConvolutionTests
     {

@@ -2,7 +2,7 @@
 using System;
 using Xunit;
 
-namespace Kzrnm.Competitive.Util
+namespace Kzrnm.Competitive.Testing.Util
 {
     public class GridTests
     {

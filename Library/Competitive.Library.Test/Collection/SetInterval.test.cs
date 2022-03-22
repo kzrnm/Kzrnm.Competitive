@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace Kzrnm.Competitive.Collection
+namespace Kzrnm.Competitive.Testing.Collection
 {
     public class SetIntervalTests
     {

@@ -2,7 +2,7 @@
 using Xunit;
 using static System.Math;
 
-namespace Kzrnm.Competitive.DataStructure
+namespace Kzrnm.Competitive.Testing.DataStructure
 {
     public class SegtreeBeatsTests
     {

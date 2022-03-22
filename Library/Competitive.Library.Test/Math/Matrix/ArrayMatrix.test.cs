@@ -3,7 +3,7 @@ using FluentAssertions;
 using System.Linq;
 using Xunit;
 
-namespace Kzrnm.Competitive.MathNS.Matrix
+namespace Kzrnm.Competitive.Testing.MathNS.Matrix
 {
     public class ArrayMatrixTests
     {

@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using Xunit;
 
-namespace Kzrnm.Competitive.DataStructure.String
+namespace Kzrnm.Competitive.Testing.DataStructure.String
 {
     public class RollingHashTests
     {

@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Xunit;
 
-namespace Kzrnm.Competitive.Util
+namespace Kzrnm.Competitive.Testing.Util
 {
     public class PointIntTests
     {

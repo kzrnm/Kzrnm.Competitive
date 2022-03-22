@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Xunit;
 
-namespace Kzrnm.Competitive.MathNS
+namespace Kzrnm.Competitive.Testing.MathNS
 {
     public class PrimeNumberTests
     {

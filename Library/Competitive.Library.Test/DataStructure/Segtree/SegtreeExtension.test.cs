@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using Xunit;
 
-namespace Kzrnm.Competitive.DataStructure
+namespace Kzrnm.Competitive.Testing.DataStructure
 {
     public class SegtreeExtensionTests
     {

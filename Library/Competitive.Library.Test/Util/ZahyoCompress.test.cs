@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace Kzrnm.Competitive.Util
+namespace Kzrnm.Competitive.Testing.Util
 {
     public class ZahyoCompressTests
     {

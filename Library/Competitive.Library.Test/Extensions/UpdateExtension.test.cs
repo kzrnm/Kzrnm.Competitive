@@ -2,7 +2,7 @@
 using System;
 using Xunit;
 
-namespace Kzrnm.Competitive.Extensions
+namespace Kzrnm.Competitive.Testing.Extensions
 {
     public class UpdateExtensionTests
     {

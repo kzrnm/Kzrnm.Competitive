@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Xunit;
 
-namespace Kzrnm.Competitive.DataStructure.String
+namespace Kzrnm.Competitive.Testing.DataStructure.String
 {
     public class LCSTests
     {

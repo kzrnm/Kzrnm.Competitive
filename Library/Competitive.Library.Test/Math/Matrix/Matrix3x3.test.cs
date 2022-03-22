@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Xunit;
 
-namespace Kzrnm.Competitive.MathNS.Matrix
+namespace Kzrnm.Competitive.Testing.MathNS.Matrix
 {
     public class Matrix3x3Tests
     {
