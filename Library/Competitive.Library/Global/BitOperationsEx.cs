@@ -4,68 +4,69 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    using static BitOperations;
     public static class BitOperationsEx
     {
         /// <summary>
         /// <paramref name="x"/> の立っているビットの数
         /// </summary>
         [凾(256)]
-        public static int PopCount(uint x) => BitOperations.PopCount(x);
+        public static int PopCount(uint x) => PopCount(x);
         /// <summary>
         /// <paramref name="x"/> の立っているビットの数
         /// </summary>
         [凾(256)]
-        public static int PopCount(ulong x) => BitOperations.PopCount(x);
+        public static int PopCount(ulong x) => PopCount(x);
         /// <summary>
         /// <paramref name="x"/> の立っているビットの数
         /// </summary>
         [凾(256)]
-        public static int PopCount(int x) => BitOperations.PopCount((uint)x);
+        public static int PopCount(int x) => PopCount((uint)x);
         /// <summary>
         /// <paramref name="x"/> の立っているビットの数
         /// </summary>
         [凾(256)]
-        public static int PopCount(long x) => BitOperations.PopCount((ulong)x);
+        public static int PopCount(long x) => PopCount((ulong)x);
         /// <summary>
         /// <paramref name="x"/> の最上位ビット
         /// </summary>
         [凾(256)]
-        public static int MSB(uint x) => BitOperations.Log2(x);
+        public static int MSB(uint x) => Log2(x);
         /// <summary>
         /// <paramref name="x"/> の最上位ビット
         /// </summary>
         [凾(256)]
-        public static int MSB(ulong x) => BitOperations.Log2(x);
+        public static int MSB(ulong x) => Log2(x);
         /// <summary>
         /// <paramref name="x"/> の最上位ビット
         /// </summary>
         [凾(256)]
-        public static int MSB(int x) => BitOperations.Log2((uint)x);
+        public static int MSB(int x) => Log2((uint)x);
         /// <summary>
         /// <paramref name="x"/> の最上位ビット
         /// </summary>
         [凾(256)]
-        public static int MSB(long x) => BitOperations.Log2((ulong)x);
+        public static int MSB(long x) => Log2((ulong)x);
         /// <summary>
         /// <paramref name="x"/> の最下位ビット
         /// </summary>
         [凾(256)]
-        public static int LSB(uint x) => BitOperations.TrailingZeroCount(x);
+        public static int LSB(uint x) => TrailingZeroCount(x);
         /// <summary>
         /// <paramref name="x"/> の最下位ビット
         /// </summary>
         [凾(256)]
-        public static int LSB(ulong x) => BitOperations.TrailingZeroCount(x);
+        public static int LSB(ulong x) => TrailingZeroCount(x);
         /// <summary>
         /// <paramref name="x"/> の最下位ビット
         /// </summary>
         [凾(256)]
-        public static int LSB(int x) => BitOperations.TrailingZeroCount((uint)x);
+        public static int LSB(int x) => TrailingZeroCount((uint)x);
         /// <summary>
         /// <paramref name="x"/> の最下位ビット
         /// </summary>
         [凾(256)]
-        public static int LSB(long x) => BitOperations.TrailingZeroCount((ulong)x);
+        public static int LSB(long x) => TrailingZeroCount((ulong)x);
 
         /// <summary>
         /// <para><paramref name="x"/> を <paramref name="mask"/> に移す</para>
