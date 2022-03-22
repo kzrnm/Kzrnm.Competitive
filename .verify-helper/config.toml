@@ -4,4 +4,12 @@ static_embedding = """
 
 // 実行用に埋め込む
 partial class Program{ConsoleOutput? Calc(PropertyConsoleReader cr, Utf8ConsoleWriter cw) => null;bool __ManyTestCases = false;public static string YesNo(bool b) => b ? "Yes" : "No";}
+namespace Kzrnm.Competitive.Testing
+{public static class RandomUtil
+{
+    public static string NextString(this Random rnd, int length)=>default;
+    public static int[] NextIntArray(this Random rnd, int length)=>default;
+    public static int[] NextIntArray(this Random rnd, int length, int minValue, int maxValue)=>default;
+    public static uint NextUInt(this Random rnd)=>default;
+}}
 """
