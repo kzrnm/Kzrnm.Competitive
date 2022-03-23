@@ -1,5 +1,4 @@
-﻿#pragma warning disable CA1819 // Properties should not return arrays
-using Kzrnm.Competitive.IO;
+﻿using Kzrnm.Competitive.IO;
 using AtCoder.Internal;
 using System;
 using System.Collections.Generic;
