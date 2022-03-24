@@ -53,7 +53,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public void AddLine(T a, T b) => AddLine(a, b, 1, 0, size);
         /// <summary>
-        /// 線分 <paramref name="a"/>x + <paramref name="b"/> (<see cref="xs"/>[l]≦x&lt;<see cref="xs"/>[r]) を追加します
+        /// 線分 <paramref name="a"/>x + <paramref name="b"/> (xs[l]≦x&lt;xs[r]) を追加します
         /// </summary>
         public void AddSegmentLine(T a, T b, int l, int r)
         {
@@ -121,7 +121,7 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// <see cref="xs"/>[<paramref name="i"/>]での最小値・最大値を取得します。
+        /// xs[<paramref name="i"/>]での最小値・最大値を取得します。
         /// </summary>
         [凾(256)]
         public T Query(int i) => Query(i, xs[i]);
@@ -151,7 +151,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 使用する <paramref name="xs"/> の値を初期化します。<paramref name="xs"/> はソート済みであること。
         /// </summary>
-        public LongMinConvexHullTrick(long[] xs) : this(xs, 1000000000, 1000000000000000000) { }
+        public LongMinConvexHullTrick(long[] xs) : this(xs, (long)1e9, (long)1e18) { }
         /// <summary>
         /// 使用する <paramref name="xs"/> の値を初期化します。<paramref name="xs"/> はソート済みであること。
         /// </summary>
@@ -166,7 +166,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 使用する <paramref name="xs"/> の値を初期化します。<paramref name="xs"/> はソート済みであること。
         /// </summary>
-        public LongMaxConvexHullTrick(long[] xs) : this(xs, 1000000000, -1000000000000000000) { }
+        public LongMaxConvexHullTrick(long[] xs) : this(xs, (long)1e9, -(long)1e18) { }
         /// <summary>
         /// 使用する <paramref name="xs"/> の値を初期化します。<paramref name="xs"/> はソート済みであること。
         /// </summary>
@@ -175,15 +175,13 @@ namespace Kzrnm.Competitive
     public struct MinConvexHullTrickOperator<T, TOp> : IConvexHullTrickOperator<T>
         where TOp : struct, ICompareOperator<T>
     {
-        private static TOp op = default;
         [凾(256)]
-        public bool UseLeft(T left, T right) => op.LessThan(left, right);
+        public bool UseLeft(T left, T right) => default(TOp).LessThan(left, right);
     }
     public struct MaxConvexHullTrickOperator<T, TOp> : IConvexHullTrickOperator<T>
         where TOp : struct, ICompareOperator<T>
     {
-        private static TOp op = default;
         [凾(256)]
-        public bool UseLeft(T left, T right) => op.GreaterThan(left, right);
+        public bool UseLeft(T left, T right) => default(TOp).GreaterThan(left, right);
     }
 }

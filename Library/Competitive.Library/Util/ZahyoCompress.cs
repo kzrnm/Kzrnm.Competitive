@@ -114,9 +114,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// インデックスに対応する元の値を保持する
         /// </summary>
-#pragma warning disable CA1819 // Properties should not return arrays
         public T[] Original { private set; get; }
-#pragma warning restore CA1819 // Properties should not return arrays
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [凾(256)]
