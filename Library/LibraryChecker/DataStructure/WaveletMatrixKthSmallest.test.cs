@@ -2,7 +2,7 @@
 
 namespace Kzrnm.Competitive.DataStructure
 {
-    public class WaveletMatrixTest
+    public class WaveletMatrixKthSmallestTest
     {
         static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
         // verification-helper: PROBLEM https://judge.yosupo.jp/problem/range_kth_smallest
