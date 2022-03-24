@@ -1,55 +1,62 @@
-﻿using AtCoder;
+﻿/*
+ * Original
+ * https://github.com/kmyk/library-checker-problems/blob/47ba6600eb6dc445ce742de511ca69cb6fc749b1/datastructure/queue_operate_all_composite/sol/correct.cpp
+ * 
+ * Apache License Version 2.0
+ * https://github.com/yosupo06/library-checker-problems
+ */
+using AtCoder;
 using AtCoder.Internal;
-using System;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
     /// <summary>
-    /// モノイドの範囲演算を移動しながら求める。計算量: O(N)
+    /// Slide Window Aggrigation: モノイドの範囲演算を移動しながら求める。計算量: O(N)
     /// </summary>
-    public class SWAG<T, TOp> where TOp : struct, ISegtreeOperator<T>
+    public class Swag<T, TOp> where TOp : struct, ISegtreeOperator<T>
     {
         private static TOp op = default;
-        private readonly T[] array;
-        private int left, right;
-        private T front;
-        private SimpleList<T> back;
-        public SWAG(T[] array)
+        private int frontSize = 0;
+        private T back = op.Identity;
+        private readonly Deque<T> data;
+        public Swag()
         {
-            this.array = array;
-            front = op.Identity;
-            back = new SimpleList<T>();
+            data = new Deque<T>();
+        }
+        public Swag(int capacity)
+        {
+            data = new Deque<T>(capacity);
         }
         /// <summary>
-        /// <para>[<paramref name="l"/>..<paramref name="r"/>) の範囲クエリの結果を返す。</para>
-        /// <para>計算量: O(N)</para>
+        /// 末尾にモノイドを追加します。
         /// </summary>
-        [凾(256)]
-        public T Slide(int l, int r)
+        public void Push(T x)
         {
-            Contract.Assert(l <= r, "Range: l <= r");
-            Contract.Assert(left <= l, "左端は使用済みです");
-            Contract.Assert(right <= r, "右端は使用済みです");
-            Contract.Assert(l < array.Length, "左端が配列の範囲外です");
-            Contract.Assert(r <= array.Length, "右端が配列の範囲外です");
-            foreach (var v in array.AsSpan()[right..r])
-                front = op.Operate(front, v);
-            right = r;
-            while (left < l)
-            {
-                if (back.Count == 0)
-                {
-                    var tmp = op.Identity;
-                    for (int u = right - 1; u >= left; --u)
-                        back.Add(tmp = op.Operate(array[u], tmp));
-                    front = op.Identity;
-                }
-                back.RemoveLast();
-                ++left;
-            }
-            if (back.Count == 0) return front;
-            return op.Operate(back[^1], front);
+            data.AddLast(x);
+            back = op.Operate(back, x);
         }
+
+        /// <summary>
+        /// 先頭のモノイドを削除します。
+        /// </summary>
+        public void Pop()
+        {
+            Contract.Assert(data.Count > 0, "data is empty.");
+            data.PopFirst();
+            if (--frontSize < 0)
+            {
+                for (int i = data.Count - 2; i >= 0; i--)
+                {
+                    data[i] = op.Operate(data[i], data[i + 1]);
+                }
+                frontSize = data.Count;
+                back = op.Identity;
+            }
+        }
+        /// <summary>
+        /// モノイドをマージした結果を返します。
+        /// </summary>
+        public T AllProd { [凾(256)] get => frontSize > 0 ? op.Operate(data.First, back) : back; }
     }
 }
