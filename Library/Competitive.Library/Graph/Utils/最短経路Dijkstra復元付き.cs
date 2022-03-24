@@ -1,15 +1,17 @@
 ﻿using AtCoder.Operators;
 using System;
+using System.Collections.Immutable;
 
 namespace Kzrnm.Competitive
 {
-    public static class 最短経路Dijkstra
+    public static class 最短経路Dijkstra復元付き
     {
         /// <summary>
         /// <para><paramref name="from"/> からの最短経路長をダイクストラ法で求める。</para>
+        /// <para>また、最短経路となるルートをスタックに積んで返す</para>
         /// <para>計算量: O( (|E| + |V|) log |V| )</para>
         /// </summary>
-        public static T[] Dijkstra<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph, int from)
+        public static (T Distance, ImmutableStack<TEdge> Route)[] DijkstraWithRoute<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph, int from)
             where T : struct
             where TOp : struct, INumOperator<T>
             where TNode : IGraphNode<TEdge>
@@ -17,10 +19,9 @@ namespace Kzrnm.Competitive
         {
             TOp op = default;
             var graphArr = graph.AsArray();
-            var INF = op.MaxValue;
-            var res = new T[graphArr.Length];
-            Array.Fill(res, INF);
-            res[from] = default;
+            var res = new (T Distance, ImmutableStack<TEdge> Route)[graphArr.Length];
+            Array.Fill(res, (op.MaxValue, null));
+            res[from] = (default, ImmutableStack<TEdge>.Empty);
 
             var used = new bool[graphArr.Length];
             int count = 0;
@@ -36,8 +37,11 @@ namespace Kzrnm.Competitive
                 {
                     var to = e.To;
                     var nextLength = op.Add(len, e.Value);
-                    if (op.GreaterThan(res[to], nextLength))
-                        remains.Enqueue(res[to] = nextLength, to);
+                    if (op.GreaterThan(res[to].Distance, nextLength))
+                    {
+                        res[to] = (nextLength, res[ix].Route.Push(e));
+                        remains.Enqueue(nextLength, to);
+                    }
                 }
             }
             return res;
