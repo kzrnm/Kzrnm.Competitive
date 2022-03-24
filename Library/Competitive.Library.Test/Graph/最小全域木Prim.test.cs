@@ -20,7 +20,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 3, 6);
             gb.Add(4, 0, 1);
             var graph = gb.ToGraph();
-            graph.Prim().Should().Equal(
+            graph.MinimumSpanningTreePrim().Should().Equal(
                 (0, new WEdge<int>(1, 1)),
                 (0, new WEdge<int>(4, 1)),
                 (1, new WEdge<int>(2, 5)),
@@ -36,19 +36,19 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(1, 2, 1);
             gb.Add(0, 3, 5);
             var graph = gb.ToGraph();
-            graph.Prim().Should().Equal(
+            graph.MinimumSpanningTreePrim().Should().Equal(
                 (0, new WEdge<int>(1, 1)),
                 (0, new WEdge<int>(2, 1)),
                 (0, new WEdge<int>(3, 5)));
-            graph.Prim(1).Should().Equal(
+            graph.MinimumSpanningTreePrim(1).Should().Equal(
                 (1, new WEdge<int>(0, 1)),
                 (1, new WEdge<int>(2, 1)),
                 (0, new WEdge<int>(3, 5)));
-            graph.Prim(2).Should().Equal(
+            graph.MinimumSpanningTreePrim(2).Should().Equal(
                 (2, new WEdge<int>(0, 1)),
                 (2, new WEdge<int>(1, 1)),
                 (0, new WEdge<int>(3, 5)));
-            graph.Prim(3).Should().Equal(
+            graph.MinimumSpanningTreePrim(3).Should().Equal(
                 (3, new WEdge<int>(0, 5)),
                 (0, new WEdge<int>(1, 1)),
                 (0, new WEdge<int>(2, 1)));
@@ -68,7 +68,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 3, 6);
             gb.Add(4, 0, 1);
             var graph = gb.ToGraph();
-            graph.Prim().Should().Equal(
+            graph.MinimumSpanningTreePrim().Should().Equal(
                 (0, new WEdge<long>(1, 1)),
                 (0, new WEdge<long>(4, 1)),
                 (1, new WEdge<long>(2, 5)),

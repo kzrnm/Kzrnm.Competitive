@@ -4,7 +4,7 @@ using Xunit;
 namespace Kzrnm.Competitive.Testing.Graph
 {
     // verification-helper: SAMEAS Library/run.test.py
-    public class 最小全域木KruskalTests
+    public class 最小全域森KruskalTests
     {
         [Fact]
         public void 重みなしグラフ()
@@ -20,7 +20,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 3);
             gb.Add(4, 0);
             var graph = gb.ToGraph();
-            var res = graph.Kruskal();
+            var res = graph.MinimumSpanningForestKruskal();
             res.Should().HaveCount(1);
             res[0].Should().Equal(
                 (0, new GraphEdge(1)),
@@ -40,7 +40,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 7);
             gb.Add(6, 5);
             var graph = gb.ToGraph();
-            var res = graph.Kruskal();
+            var res = graph.MinimumSpanningForestKruskal();
             res.Should().HaveCount(3);
             res[0].Should().Equal(
                 (0, new GraphEdge(1)),
@@ -60,7 +60,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(1, 3);
             gb.Add(2, 3);
             var graph = gb.ToGraph();
-            var res = graph.Kruskal();
+            var res = graph.MinimumSpanningForestKruskal();
             res.Should().HaveCount(1);
             res[0].Should().Equal(
                 (0, new GraphEdge(2)),

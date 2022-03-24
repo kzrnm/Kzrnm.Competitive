@@ -1,6 +1,7 @@
 ﻿using AtCoder.Internal;
 using AtCoder.Operators;
 using System.Collections.Generic;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -11,7 +12,7 @@ namespace Kzrnm.Competitive
         /// <para><paramref name="root"/>を根とする木を構築する。</para>
         /// <para>計算量は O(E + V log(V))</para>
         /// </summary>
-        public static (int from, TEdge edge)[] Prim<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph, int root = 0)
+        public static (int from, TEdge edge)[] MinimumSpanningTreePrim<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph, int root = 0)
             where TOp : struct, IAdditionOperator<T>, IComparer<T>
             where TNode : IGraphNode<TEdge>
             where TEdge : IWGraphEdge<T>
@@ -19,7 +20,7 @@ namespace Kzrnm.Competitive
             var graphArr = graph.AsArray();
             var sumi = new bool[graphArr.Length];
             var pq = new PriorityQueueOp<TEdge, int, Comparer<T, TOp, TEdge>>(graphArr.Length);
-            var res = new SimpleList<(int from, TEdge edge)>(graphArr.Length - 1);
+            var res = new List<(int from, TEdge edge)>(graphArr.Length - 1);
             sumi[root] = true;
             foreach (var e in graphArr[root].Children)
                 pq.Enqueue(e, root);
@@ -41,8 +42,8 @@ namespace Kzrnm.Competitive
             where TOp : struct, IAdditionOperator<T>, IComparer<T>
             where TEdge : IWGraphEdge<T>
         {
-            private static readonly TOp op = default;
-            public int Compare(TEdge x, TEdge y) => op.Compare(x.Value, y.Value);
+            [凾(256)]
+            public int Compare(TEdge x, TEdge y) => default(TOp).Compare(x.Value, y.Value);
         }
     }
 }

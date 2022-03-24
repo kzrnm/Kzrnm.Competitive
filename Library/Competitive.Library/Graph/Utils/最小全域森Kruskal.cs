@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
-    public static class 最小全域木Kruskal
+    public static class 最小全域森Kruskal
     {
         /// <summary>
         /// <para>最小全域森をKruskal法で求める。グラフが連結なら最小全域木となる。</para>
@@ -62,7 +62,7 @@ namespace Kzrnm.Competitive
         /// <para>最小全域森をKruskal法で求める。グラフが連結なら最小全域木となる。</para>
         /// <para>計算量: O(E log(E))</para>
         /// </summary>
-        public static (int from, TEdge edge)[][] Kruskal<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
+        public static (int from, TEdge edge)[][] MinimumSpanningForestKruskal<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
             where TNode : IGraphNode<TEdge>
             where TEdge : IGraphEdge
         {
