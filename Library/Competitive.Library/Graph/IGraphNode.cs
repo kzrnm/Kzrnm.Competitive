@@ -1,6 +1,4 @@
-﻿#pragma warning disable CA1819 // Properties should not return arrays
-
-namespace Kzrnm.Competitive
+﻿namespace Kzrnm.Competitive
 {
     public interface IReversable<T> where T : IGraphEdge
     {
@@ -13,6 +11,10 @@ namespace Kzrnm.Competitive
     public interface IWGraphEdge<T> : IGraphEdge
     {
         T Value { get; }
+    }
+    public interface IGraphData<T> : IGraphEdge
+    {
+        T Data { get; }
     }
     public interface IGraphNode<out TEdge> where TEdge : IGraphEdge
     {

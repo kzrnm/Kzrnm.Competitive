@@ -1,5 +1,4 @@
-﻿#pragma warning disable CA1819 // Properties should not return arrays
-using AtCoder.Internal;
+﻿using AtCoder.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -100,7 +99,7 @@ namespace Kzrnm.Competitive
         }
     }
 
-    public readonly struct GraphEdge<T> : IGraphEdge, IReversable<GraphEdge<T>>, IEquatable<GraphEdge<T>>
+    public readonly struct GraphEdge<T> : IGraphEdge, IGraphData<T>, IReversable<GraphEdge<T>>, IEquatable<GraphEdge<T>>
     {
         public static GraphEdge<T> None { get; } = new GraphEdge<T>(-1, default);
         public GraphEdge(int to, T data)

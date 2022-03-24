@@ -1,5 +1,4 @@
-﻿#pragma warning disable CA1819 // Properties should not return arrays
-using AtCoder.Internal;
+﻿using AtCoder.Internal;
 using AtCoder.Operators;
 using System;
 using System.Collections.Generic;
@@ -102,7 +101,7 @@ namespace Kzrnm.Competitive
         }
     }
 
-    public readonly struct WEdge<T, S> : IWGraphEdge<T>, IReversable<WEdge<T, S>>, IEquatable<WEdge<T, S>>
+    public readonly struct WEdge<T, S> : IWGraphEdge<T>, IGraphData<S>, IReversable<WEdge<T, S>>, IEquatable<WEdge<T, S>>
     {
         public static WEdge<T, S> None { get; } = new WEdge<T, S>(-1, default, default);
         public WEdge(int to, T value, S data)
