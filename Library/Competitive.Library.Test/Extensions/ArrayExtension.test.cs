@@ -328,5 +328,52 @@ namespace Kzrnm.Competitive.Testing.Extensions
             arr[1][0].Should().Equal(15, 16);
             arr[1][1].Should().Equal(17, 18);
         }
+
+
+        [Fact]
+        public void Find()
+        {
+            var arr = new double[] {
+                double.NegativeInfinity,
+                -1e109,
+                -1e19,
+                -1.5,
+                0,
+                0,
+                0,
+                0,
+                0,
+                26,
+                27,
+                30,
+            };
+            arr.Find(double.NegativeInfinity).Should().Be(0);
+            ((Span<double>)arr).Find(double.NegativeInfinity).Should().Be(0);
+            ((ReadOnlySpan<double>)arr).Find(double.NegativeInfinity).Should().Be(0);
+
+            arr.Find(-1e200).Should().Be(1);
+            ((Span<double>)arr).Find(-1e200).Should().Be(1);
+            ((ReadOnlySpan<double>)arr).Find(-1e200).Should().Be(1);
+
+            arr.Find(-1e109).Should().Be(1);
+            ((Span<double>)arr).Find(-1e109).Should().Be(1);
+            ((ReadOnlySpan<double>)arr).Find(-1e109).Should().Be(1);
+
+            arr.Find(-10).Should().Be(3);
+            ((Span<double>)arr).Find(-10).Should().Be(3);
+            ((ReadOnlySpan<double>)arr).Find(-10).Should().Be(3);
+
+            arr.Find(0).Should().BeInRange(4, 8);
+            ((Span<double>)arr).Find(0).Should().BeInRange(4, 8);
+            ((ReadOnlySpan<double>)arr).Find(0).Should().BeInRange(4, 8);
+
+            arr.Find(1).Should().Be(9);
+            ((Span<double>)arr).Find(1).Should().Be(9);
+            ((ReadOnlySpan<double>)arr).Find(1).Should().Be(9);
+
+            arr.Find(40).Should().Be(12);
+            ((Span<double>)arr).Find(40).Should().Be(12);
+            ((ReadOnlySpan<double>)arr).Find(40).Should().Be(12);
+        }
     }
 }
