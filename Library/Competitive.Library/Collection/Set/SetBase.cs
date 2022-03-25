@@ -11,14 +11,12 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.SetInternals
 {
-    public interface ISetOperator<T, TCmp, Node> : IComparer<TCmp>
+    public interface ISetOperator<T, TCmp, Node> : IComparer<T>
     {
         Node Create(T item, NodeColor color);
         T GetValue(Node node);
         void SetValue(ref Node node, T value);
         TCmp GetCompareKey(T item);
-        int Compare(T x, T y);
-        int Compare(Node x, Node y);
         int Compare(TCmp value, Node node);
     }
     public enum NodeColor : byte
@@ -106,76 +104,73 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         }
         protected SetBase(bool isMulti, TOp op, IEnumerable<T> collection) : this(isMulti, op)
         {
-            var (arr, count) = InitArray(collection);
-            this.root = ConstructRootFromSortedArray(arr, 0, count - 1, null);
+            var arr = InitArray(collection);
+            this.root = ConstructRootFromSortedArray(arr, null);
         }
-        protected virtual (T[] array, int arrayCount) InitArray(IEnumerable<T> collection)
+        protected virtual ReadOnlySpan<T> InitArray(IEnumerable<T> collection)
         {
-            var comparer = Comparer<T>.Create((a, b) => op.Compare(a, b));
             T[] arr;
             int count;
             if (IsMulti)
             {
                 arr = collection.ToArray();
-                Array.Sort(arr, comparer);
+                Array.Sort(arr, op);
                 count = arr.Length;
             }
             else
             {
                 arr = collection.ToArray();
-                if (arr.Length == 0) return (arr, 0);
+                if (arr.Length == 0) return arr;
                 count = 1;
-                Array.Sort(arr, comparer);
+                Array.Sort(arr, op);
                 for (int i = 1; i < arr.Length; i++)
                 {
-                    if (comparer.Compare(arr[i], arr[i - 1]) != 0)
+                    if (op.Compare(arr[i], arr[i - 1]) != 0)
                     {
                         arr[count++] = arr[i];
                     }
                 }
             }
-            return (arr, count);
+            return arr.AsSpan(0, count);
         }
-        protected virtual Node ConstructRootFromSortedArray(T[] arr, int startIndex, int endIndex, Node redNode)
+        protected virtual Node ConstructRootFromSortedArray(ReadOnlySpan<T> arr, Node redNode)
         {
-            int size = endIndex - startIndex + 1;
             Node root;
-
-            switch (size)
+            switch (arr.Length)
             {
                 case 0:
                     return null;
                 case 1:
-                    root = op.Create(arr[startIndex], NodeColor.Black);
+                    root = op.Create(arr[0], NodeColor.Black);
                     if (redNode != null)
                     {
                         root.Left = redNode;
                     }
                     break;
                 case 2:
-                    root = op.Create(arr[startIndex], NodeColor.Black);
-                    root.Right = op.Create(arr[endIndex], NodeColor.Red);
+                    root = op.Create(arr[0], NodeColor.Black);
+                    root.Right = op.Create(arr[^1], NodeColor.Red);
                     if (redNode != null)
                     {
                         root.Left = redNode;
                     }
                     break;
                 case 3:
-                    root = op.Create(arr[startIndex + 1], NodeColor.Black);
-                    root.Left = op.Create(arr[startIndex], NodeColor.Black);
-                    root.Right = op.Create(arr[endIndex], NodeColor.Black);
+                    root = op.Create(arr[1], NodeColor.Black);
+                    root.Left = op.Create(arr[0], NodeColor.Black);
+                    root.Right = op.Create(arr[^1], NodeColor.Black);
                     if (redNode != null)
                     {
                         root.Left.Left = redNode;
                     }
                     break;
                 default:
-                    int midpt = ((startIndex + endIndex) / 2);
+                    int midpt = (arr.Length - 1) / 2;
                     root = op.Create(arr[midpt], NodeColor.Black);
-                    root.Left = ConstructRootFromSortedArray(arr, startIndex, midpt - 1, redNode);
-                    root.Right = size % 2 == 0 ?
-                        ConstructRootFromSortedArray(arr, midpt + 2, endIndex, op.Create(arr[midpt + 1], NodeColor.Red)) :
-                        ConstructRootFromSortedArray(arr, midpt + 1, endIndex, null);
+                    root.Left = ConstructRootFromSortedArray(arr[..midpt], redNode);
+                    root.Right = arr.Length % 2 == 0 ?
+                        ConstructRootFromSortedArray(arr[(midpt + 2)..], op.Create(arr[midpt + 1], NodeColor.Red)) :
+                        ConstructRootFromSortedArray(arr[(midpt + 1)..], null);
                     break;
             }
             return root;
@@ -510,7 +505,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
             root?.ColorBlack();
         }
-        bool ICollection<T>.Remove(T item) => Remove(op.GetCompareKey(item));
+        bool ICollection<T>.Remove(T item) => DoRemove(op.GetCompareKey(item));
         [凾(256)]
         public bool Remove(TCmp item) => DoRemove(item);
         protected bool DoRemove(TCmp item)

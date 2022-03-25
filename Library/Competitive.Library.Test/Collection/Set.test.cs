@@ -9,6 +9,22 @@ namespace Kzrnm.Competitive.Testing.Collection
     public class SetTests
     {
         [Fact]
+        public void InitSingleSet()
+        {
+            for (int i = 0; i < 64; i++)
+                new Set<int>(Enumerable.Range(0, i).Reverse().Concat(Enumerable.Range(0, i)))
+                    .Should().Equal(Enumerable.Range(0, i));
+        }
+
+        [Fact]
+        public void InitMultiSet()
+        {
+            for (int i = 0; i < 64; i++)
+                new Set<int>(Enumerable.Range(0, i).Reverse().Concat(Enumerable.Range(0, i)), true)
+                    .Should().Equal(Enumerable.Range(0, i).SelectMany(n => new[] { n, n }));
+        }
+
+        [Fact]
         public void Set()
         {
             var set = new Set<int>(new[]

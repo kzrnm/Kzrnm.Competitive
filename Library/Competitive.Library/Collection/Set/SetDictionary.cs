@@ -139,13 +139,9 @@ namespace Kzrnm.Competitive
             [凾(256)]
             public TKey GetCompareKey(KeyValuePair<TKey, TValue> item) => item.Key;
             [凾(256)]
-            public int Compare(TKey x, TKey y) => comparer.Compare(x, y);
-            [凾(256)]
-            public int Compare(KeyValuePair<TKey, TValue> node1, KeyValuePair<TKey, TValue> node2) => comparer.Compare(node1.Key, node2.Key);
-            [凾(256)]
-            public int Compare(Node node1, Node node2) => comparer.Compare(node1.Key, node2.Key);
-            [凾(256)]
             public int Compare(TKey value, Node node) => comparer.Compare(value, node.Key);
+            [凾(256)]
+            public int Compare(KeyValuePair<TKey, TValue> x, KeyValuePair<TKey, TValue> y) => comparer.Compare(x.Key, y.Key);
         }
         private class DebugView
         {

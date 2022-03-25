@@ -1,5 +1,4 @@
 ﻿using AtCoder;
-using AtCoder.Internal;
 using AtCoder.Operators;
 using Kzrnm.Competitive.SetInternals;
 using System;
@@ -44,14 +43,14 @@ namespace Kzrnm.Competitive
         }
         public SetIntervalClosed(IEnumerable<(T From, T ToInclusive)> collection, TOp comparer)
             : base(false, new NodeOperator(comparer), collection) { }
-        protected override ((T From, T ToInclusive)[] array, int arrayCount) InitArray(IEnumerable<(T From, T ToInclusive)> collection)
+        protected override ReadOnlySpan<(T From, T ToInclusive)> InitArray(IEnumerable<(T From, T ToInclusive)> collection)
         {
-            var list = new SimpleList<(T From, T ToInclusive)>(
+            var list = new List<(T From, T ToInclusive)>(
                 collection.Where(t => comparer.Compare(t.From, t.ToInclusive) <= 0));
-            if (list.Count == 0) return (Array.Empty<(T From, T ToInclusive)>(), 0);
+            if (list.Count == 0) return Array.Empty<(T From, T ToInclusive)>();
 
             list.Sort();
-            var resList = new SimpleList<(T From, T ToInclusive)>(list.Count)
+            var resList = new List<(T From, T ToInclusive)>(list.Count)
             {
                 list[0]
             };
@@ -62,13 +61,13 @@ namespace Kzrnm.Competitive
                 if (comparer.Compare(pt, f) >= 0)
                 {
                     if (comparer.Compare(pt, t) < 0)
-                        resList[^1].ToInclusive = t;
+                        resList[^1] = (resList[^1].From, t);
                 }
                 else
                     resList.Add((f, t));
             }
 
-            return (resList.ToArray(), resList.Count);
+            return resList.ToArray();
         }
 
         protected readonly TOp comparer;
@@ -328,12 +327,6 @@ namespace Kzrnm.Competitive
             [凾(256)]
             public T GetCompareKey((T From, T ToInclusive) item) => item.From;
             [凾(256)]
-            public int Compare(T x, T y) => comparer.Compare(x, y);
-            [凾(256)]
-            public int Compare((T From, T ToInclusive) node1, (T From, T ToInclusive) node2) => comparer.Compare(node1.From, node2.From);
-            [凾(256)]
-            public int Compare(Node node1, Node node2) => comparer.Compare(node1.From, node2.From);
-            [凾(256)]
             public int Compare(T value, Node node)
             {
                 int forder = comparer.Compare(node.From, value);
@@ -343,6 +336,8 @@ namespace Kzrnm.Competitive
                     return 0;
                 return 1;
             }
+            [凾(256)]
+            public int Compare((T From, T ToInclusive) x, (T From, T ToInclusive) y) => comparer.Compare(x.From, y.From);
         }
         private class DebugView
         {

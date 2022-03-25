@@ -58,11 +58,9 @@ namespace Kzrnm.Competitive
             [凾(256)]
             public T GetCompareKey(T item) => item;
             [凾(256)]
-            public int Compare(T x, T y) => comparer.Compare(x, y);
-            [凾(256)]
-            public int Compare(Node node1, Node node2) => comparer.Compare(node1.Value, node2.Value);
-            [凾(256)]
             public int Compare(T value, Node node) => comparer.Compare(value, node.Value);
+            [凾(256)]
+            public int Compare(T x, T y) => comparer.Compare(x, y);
         }
     }
 }
