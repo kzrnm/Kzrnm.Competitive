@@ -11,15 +11,11 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.SetInternals
 {
-    public interface ISetOperator<T, TCmp, Node> : IComparer<TCmp>
+    public interface ISetOperator<T, TCmp, Node> : IComparer<T>
     {
         Node Create(T item, NodeColor color);
         T GetValue(Node node);
-        void SetValue(ref Node node, T value);
         TCmp GetCompareKey(T item);
-        int Compare(T x, T y);
-        int Compare(Node x, Node y);
-        int Compare(TCmp value, Node node);
     }
     public enum NodeColor : byte
     {
@@ -34,6 +30,7 @@ namespace Kzrnm.Competitive.SetInternals
         LeftRight = 4,
     }
 
+    #region ISetBinarySearchOperator
     [IsOperator]
     public interface ISetBinarySearchOperator
     {
@@ -47,36 +44,37 @@ namespace Kzrnm.Competitive.SetInternals
         /// </summary>
         bool IntoLeft(int order);
     }
-
-    public struct SetLowerBoundOperator : ISetBinarySearchOperator
+    public struct L : ISetBinarySearchOperator
     {
         public bool ReturnLeft => false;
         [凾(256)]
         public bool IntoLeft(int order) => order <= 0;
     }
-    public struct SetUpperBoundOperator : ISetBinarySearchOperator
+    public struct U : ISetBinarySearchOperator
     {
         public bool ReturnLeft => false;
         [凾(256)]
         public bool IntoLeft(int order) => order < 0;
     }
-    public struct SetLowerBoundReverseOperator : ISetBinarySearchOperator
+    public struct LR : ISetBinarySearchOperator
     {
         public bool ReturnLeft => true;
         [凾(256)]
         public bool IntoLeft(int order) => order < 0;
     }
-    public struct SetUpperBoundReverseOperator : ISetBinarySearchOperator
+    public struct UR : ISetBinarySearchOperator
     {
         public bool ReturnLeft => true;
         [凾(256)]
         public bool IntoLeft(int order) => order <= 0;
     }
+    #endregion ISetBinarySearchOperator
 
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public abstract class SetBase<T, TCmp, Node, TOp> : ICollection, ICollection<T>, IReadOnlyCollection<T>
         where Node : SetNodeBase<Node>
+        where TCmp : IComparable<Node>
         where TOp : struct, ISetOperator<T, TCmp, Node>
     {
         /*
@@ -101,81 +99,78 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         #region Constructor
         protected SetBase(bool isMulti, TOp op)
         {
-            this.IsMulti = isMulti;
+            IsMulti = isMulti;
             this.op = op;
         }
         protected SetBase(bool isMulti, TOp op, IEnumerable<T> collection) : this(isMulti, op)
         {
-            var (arr, count) = InitArray(collection);
-            this.root = ConstructRootFromSortedArray(arr, 0, count - 1, null);
+            var arr = InitArray(collection);
+            root = ConstructRootFromSortedArray(arr, null);
         }
-        protected virtual (T[] array, int arrayCount) InitArray(IEnumerable<T> collection)
+        protected virtual ReadOnlySpan<T> InitArray(IEnumerable<T> collection)
         {
-            var comparer = Comparer<T>.Create((a, b) => op.Compare(a, b));
             T[] arr;
             int count;
             if (IsMulti)
             {
                 arr = collection.ToArray();
-                Array.Sort(arr, comparer);
+                Array.Sort(arr, op);
                 count = arr.Length;
             }
             else
             {
                 arr = collection.ToArray();
-                if (arr.Length == 0) return (arr, 0);
+                if (arr.Length == 0) return arr;
                 count = 1;
-                Array.Sort(arr, comparer);
+                Array.Sort(arr, op);
                 for (int i = 1; i < arr.Length; i++)
                 {
-                    if (comparer.Compare(arr[i], arr[i - 1]) != 0)
+                    if (op.Compare(arr[i], arr[i - 1]) != 0)
                     {
                         arr[count++] = arr[i];
                     }
                 }
             }
-            return (arr, count);
+            return arr.AsSpan(0, count);
         }
-        protected virtual Node ConstructRootFromSortedArray(T[] arr, int startIndex, int endIndex, Node redNode)
+        protected virtual Node ConstructRootFromSortedArray(ReadOnlySpan<T> arr, Node redNode)
         {
-            int size = endIndex - startIndex + 1;
             Node root;
-
-            switch (size)
+            switch (arr.Length)
             {
                 case 0:
                     return null;
                 case 1:
-                    root = op.Create(arr[startIndex], NodeColor.Black);
+                    root = op.Create(arr[0], NodeColor.Black);
                     if (redNode != null)
                     {
                         root.Left = redNode;
                     }
                     break;
                 case 2:
-                    root = op.Create(arr[startIndex], NodeColor.Black);
-                    root.Right = op.Create(arr[endIndex], NodeColor.Red);
+                    root = op.Create(arr[0], NodeColor.Black);
+                    root.Right = op.Create(arr[^1], NodeColor.Red);
                     if (redNode != null)
                     {
                         root.Left = redNode;
                     }
                     break;
                 case 3:
-                    root = op.Create(arr[startIndex + 1], NodeColor.Black);
-                    root.Left = op.Create(arr[startIndex], NodeColor.Black);
-                    root.Right = op.Create(arr[endIndex], NodeColor.Black);
+                    root = op.Create(arr[1], NodeColor.Black);
+                    root.Left = op.Create(arr[0], NodeColor.Black);
+                    root.Right = op.Create(arr[^1], NodeColor.Black);
                     if (redNode != null)
                     {
                         root.Left.Left = redNode;
                     }
                     break;
                 default:
-                    int midpt = ((startIndex + endIndex) / 2);
+                    int midpt = (arr.Length - 1) / 2;
                     root = op.Create(arr[midpt], NodeColor.Black);
-                    root.Left = ConstructRootFromSortedArray(arr, startIndex, midpt - 1, redNode);
-                    root.Right = size % 2 == 0 ?
-                        ConstructRootFromSortedArray(arr, midpt + 2, endIndex, op.Create(arr[midpt + 1], NodeColor.Red)) :
-                        ConstructRootFromSortedArray(arr, midpt + 1, endIndex, null);
+                    root.Left = ConstructRootFromSortedArray(arr[..midpt], redNode);
+                    root.Right = arr.Length % 2 == 0 ?
+                        ConstructRootFromSortedArray(arr[(midpt + 2)..], op.Create(arr[midpt + 1], NodeColor.Red)) :
+                        ConstructRootFromSortedArray(arr[(midpt + 1)..], null);
                     break;
             }
             return root;
@@ -197,17 +192,18 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             while (cur.Right != null) { cur = cur.Right; }
             return cur;
         }
-        public T Min => MinNode() switch { { } n => op.GetValue(n), _ => default(T) };
-        public T Max => MaxNode() switch { { } n => op.GetValue(n), _ => default(T) };
+        public T Min { [凾(256)] get => MinNode() switch { { } n => op.GetValue(n), _ => default }; }
+        public T Max { [凾(256)] get => MaxNode() switch { { } n => op.GetValue(n), _ => default }; }
 
         #region Search
         [凾(256)]
-        public Node FindNode(TCmp item)
+        public Node FindNode(T item) => FindNode(op.GetCompareKey(item));
+        protected Node FindNode<TKey>(TKey key) where TKey : IComparable<Node>
         {
             Node current = root;
             while (current != null)
             {
-                int order = op.Compare(item, current);
+                int order = key.CompareTo(current);
                 if (order == 0) return current;
                 current = order < 0 ? current.Left : current.Right;
             }
@@ -262,8 +258,18 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// <param name="item">検索する要素</param>
         /// <param name="bop">二分探索の判定オペレーター</param>
         [凾(256)]
-        public (Node node, int index) BinarySearch<TBOp>(TCmp item, TBOp bop = default)
+        public (Node node, int index) BinarySearch<TBOp>(T item, TBOp bop = default)
                where TBOp : struct, ISetBinarySearchOperator
+            => BinarySearch(op.GetCompareKey(item), bop);
+        /// <summary>
+        /// <paramref name="key"/> 以上/超えるの要素のノードとインデックスを返します。
+        /// </summary>
+        /// <param name="key">検索する要素</param>
+        /// <param name="bop">二分探索の判定オペレーター</param>
+        [凾(256)]
+        protected (Node node, int index) BinarySearch<TKey, TBOp>(TKey key, TBOp bop = default)
+            where TKey : IComparable<Node>
+            where TBOp : struct, ISetBinarySearchOperator
         {
             Node left = null, right = null;
             Node current = root;
@@ -273,7 +279,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             int ci = NodeSize(current.Left);
             while (true)
             {
-                if (bop.IntoLeft(op.Compare(item, current)))
+                if (bop.IntoLeft(key.CompareTo(current)))
                 {
                     right = current;
                     ri = ci;
@@ -298,64 +304,64 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// <paramref name="item"/> 以上の最初のノードを返します。
         /// </summary>
         [凾(256)]
-        public Node FindNodeLowerBound(TCmp item) => BinarySearch<SetLowerBoundOperator>(item).node;
+        public Node FindNodeLowerBound(T item) => BinarySearch<L>(item).node;
         /// <summary>
         /// <paramref name="item"/> 以上の最初のインデックスを返します。
         /// </summary>
         [凾(256)]
-        public int LowerBoundIndex(TCmp item) => BinarySearch<SetLowerBoundOperator>(item).index;
+        public int LowerBoundIndex(T item) => BinarySearch<L>(item).index;
         /// <summary>
         /// <paramref name="item"/> 以上の最初の要素を返します。
         /// </summary>
         [凾(256)]
-        public T LowerBoundItem(TCmp item) => op.GetValue(BinarySearch<SetLowerBoundOperator>(item).node);
+        public T LowerBoundItem(T item) => op.GetValue(BinarySearch<L>(item).node);
         /// <summary>
         /// <paramref name="item"/> を超える最初のノードを返します。
         /// </summary>
         [凾(256)]
-        public Node FindNodeUpperBound(TCmp item) => BinarySearch<SetUpperBoundOperator>(item).node;
+        public Node FindNodeUpperBound(T item) => BinarySearch<U>(item).node;
         /// <summary>
         /// <paramref name="item"/> を超える最初のインデックスを返します。
         /// </summary>
         [凾(256)]
-        public int UpperBoundIndex(TCmp item) => BinarySearch<SetUpperBoundOperator>(item).index;
+        public int UpperBoundIndex(T item) => BinarySearch<U>(item).index;
         /// <summary>
         /// <paramref name="item"/> を超える最初の要素を返します。
         /// </summary>
         [凾(256)]
-        public T UpperBoundItem(TCmp item) => op.GetValue(BinarySearch<SetUpperBoundOperator>(item).node);
+        public T UpperBoundItem(T item) => op.GetValue(BinarySearch<U>(item).node);
 
         /// <summary>
         /// <paramref name="item"/> 以下の最後のノードを返します。
         /// </summary>
         [凾(256)]
-        public Node FindNodeReverseLowerBound(TCmp item) => BinarySearch<SetLowerBoundReverseOperator>(item).node;
+        public Node FindNodeReverseLowerBound(T item) => BinarySearch<LR>(item).node;
         /// <summary>
         /// <paramref name="item"/> 以下の最後のインデックスを返します。
         /// </summary>
         [凾(256)]
-        public int ReverseLowerBoundIndex(TCmp item) => BinarySearch<SetLowerBoundReverseOperator>(item).index;
+        public int ReverseLowerBoundIndex(T item) => BinarySearch<LR>(item).index;
         /// <summary>
         /// <paramref name="item"/> 以下の最後の要素を返します。
         /// </summary>
         [凾(256)]
-        public T ReverseLowerBoundItem(TCmp item) => op.GetValue(BinarySearch<SetLowerBoundReverseOperator>(item).node);
+        public T ReverseLowerBoundItem(T item) => op.GetValue(BinarySearch<LR>(item).node);
 
         /// <summary>
         /// <paramref name="item"/> 未満の最後のノードを返します。
         /// </summary>
         [凾(256)]
-        public Node FindNodeReverseUpperBound(TCmp item) => BinarySearch<SetUpperBoundReverseOperator>(item).node;
+        public Node FindNodeReverseUpperBound(T item) => BinarySearch<UR>(item).node;
         /// <summary>
         /// <paramref name="item"/> 未満の最後のインデックスを返します。
         /// </summary>
         [凾(256)]
-        public int ReverseUpperBoundIndex(TCmp item) => BinarySearch<SetUpperBoundReverseOperator>(item).index;
+        public int ReverseUpperBoundIndex(T item) => BinarySearch<UR>(item).index;
         /// <summary>
         /// <paramref name="item"/> 未満の最後の要素を返します。
         /// </summary>
         [凾(256)]
-        public T ReverseUpperBoundItem(TCmp item) => op.GetValue(BinarySearch<SetUpperBoundReverseOperator>(item).node);
+        public T ReverseUpperBoundItem(T item) => op.GetValue(BinarySearch<UR>(item).node);
         #endregion Search
 
         #region Enumerate
@@ -412,10 +418,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             int order = 0;
             while (current != null)
             {
-                order = op.Compare(key, current);
-                if (order == 0 && !this.IsMulti)
+                order = key.CompareTo(current);
+                if (order == 0 && !IsMulti)
                 {
-                    //op.SetValue(ref current, item);
                     root.ColorBlack();
                     return false;
                 }
@@ -510,10 +515,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
             root?.ColorBlack();
         }
-        bool ICollection<T>.Remove(T item) => Remove(op.GetCompareKey(item));
         [凾(256)]
-        public bool Remove(TCmp item) => DoRemove(item);
-        protected bool DoRemove(TCmp item)
+        public bool Remove(T item) => DoRemove(op.GetCompareKey(item));
+        protected bool DoRemove(TCmp key)
         {
             if (root == null) return false;
             Node current = root;
@@ -526,7 +530,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             {
                 if (current.Is2Node)
                     Fix2Node(match, ref parentOfMatch, current, parent, grandParent);
-                int order = foundMatch ? -1 : op.Compare(item, current);
+                int order = foundMatch ? -1 : key.CompareTo(current);
                 if (order == 0)
                 {
                     foundMatch = true;
@@ -548,8 +552,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         {
             root = null;
         }
-        public bool Contains(T item) => Contains(op.GetCompareKey(item));
-        public bool Contains(TCmp item) => FindNode(item) != null;
+        public bool Contains(T item) => FindNode(item) != null;
         void ICollection.CopyTo(Array array, int index) => CopyTo((T[])array, index);
         public void CopyTo(T[] array, int arrayIndex)
         {
@@ -906,8 +909,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                     Debug.Assert(Left.Right.IsRed);
                     return RotateLeftRight();
                 default:
-                    throw new InvalidOperationException();
+                    return Throw();
             }
+            static TNode Throw() => throw new InvalidOperationException();
         }
         [凾(256)]
         internal TNode RotateLeft()

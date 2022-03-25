@@ -57,7 +57,7 @@ namespace Kzrnm.Competitive
                     if (_remainingForwardsStack == null)
                     {
                         // The initial call to MoveNext has not yet been made.
-                        throw new InvalidOperationException();
+                        return ThrowInvalidOperationException();
                     }
 
                     if (!_remainingForwardsStack.IsEmpty)
@@ -71,7 +71,7 @@ namespace Kzrnm.Competitive
                     else
                     {
                         // We've advanced beyond the end of the queue.
-                        throw new InvalidOperationException();
+                        return ThrowInvalidOperationException();
                     }
                 }
             }
@@ -150,7 +150,7 @@ namespace Kzrnm.Competitive
                     if (_remainingForwardsStack == null)
                     {
                         // The initial call to MoveNext has not yet been made.
-                        throw new InvalidOperationException();
+                        return ThrowInvalidOperationException();
                     }
 
                     if (!_remainingForwardsStack.IsEmpty)
@@ -164,7 +164,7 @@ namespace Kzrnm.Competitive
                     else
                     {
                         // We've advanced beyond the end of the queue.
-                        throw new InvalidOperationException();
+                        return ThrowInvalidOperationException();
                     }
                 }
             }

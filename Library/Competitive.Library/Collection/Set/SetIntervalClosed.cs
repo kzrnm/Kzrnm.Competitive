@@ -1,5 +1,4 @@
 ﻿using AtCoder;
-using AtCoder.Internal;
 using AtCoder.Operators;
 using Kzrnm.Competitive.SetInternals;
 using System;
@@ -33,25 +32,32 @@ namespace Kzrnm.Competitive
     [DebuggerTypeProxy(typeof(SetIntervalClosed<,>.DebugView))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class SetIntervalClosed<T, TOp>
-        : SetBase<(T From, T ToInclusive), T, SetIntervalClosed<T, TOp>.Node, SetIntervalClosed<T, TOp>.NodeOperator>
-        where TOp : struct, IComparer<T>, IUnaryNumOperator<T>, IMinMaxValue<T>
+        : SetBase<(T From, T ToInclusive), SetIntervalClosed<T, TOp>.C<T>, SetIntervalClosed<T, TOp>.Node, SetIntervalClosed<T, TOp>.NodeOperator>
+        where T : IComparable<T>
+        where TOp : struct, IUnaryNumOperator<T>, IMinMaxValue<T>
     {
         public SetIntervalClosed() : this(default(TOp)) { }
         public SetIntervalClosed(IEnumerable<(T From, T ToInclusive)> collection) : this(collection, default(TOp)) { }
-        public SetIntervalClosed(TOp comparer) : base(false, new NodeOperator(comparer))
+        public SetIntervalClosed(TOp op) : base(false, new NodeOperator())
         {
-            this.comparer = comparer;
+            this.op = op;
         }
-        public SetIntervalClosed(IEnumerable<(T From, T ToInclusive)> collection, TOp comparer)
-            : base(false, new NodeOperator(comparer), collection) { }
-        protected override ((T From, T ToInclusive)[] array, int arrayCount) InitArray(IEnumerable<(T From, T ToInclusive)> collection)
+        public SetIntervalClosed(IEnumerable<(T From, T ToInclusive)> collection, TOp op)
+            : base(false, new NodeOperator(), collection)
         {
-            var list = new SimpleList<(T From, T ToInclusive)>(
-                collection.Where(t => comparer.Compare(t.From, t.ToInclusive) <= 0));
-            if (list.Count == 0) return (Array.Empty<(T From, T ToInclusive)>(), 0);
+            this.op = op;
+        }
+
+        protected readonly TOp op;
+
+        protected override ReadOnlySpan<(T From, T ToInclusive)> InitArray(IEnumerable<(T From, T ToInclusive)> collection)
+        {
+            var list = new List<(T From, T ToInclusive)>(
+                collection.Where(t => t.From.CompareTo(t.ToInclusive) <= 0));
+            if (list.Count == 0) return Array.Empty<(T From, T ToInclusive)>();
 
             list.Sort();
-            var resList = new SimpleList<(T From, T ToInclusive)>(list.Count)
+            var resList = new List<(T From, T ToInclusive)>(list.Count)
             {
                 list[0]
             };
@@ -59,16 +65,16 @@ namespace Kzrnm.Competitive
             {
                 var pt = resList[^1].ToInclusive;
                 var (f, t) = list[i];
-                if (comparer.Compare(pt, f) >= 0)
+                if (pt.CompareTo(f) >= 0)
                 {
-                    if (comparer.Compare(pt, t) < 0)
-                        resList[^1].ToInclusive = t;
+                    if (pt.CompareTo(t) < 0)
+                        resList[^1] = (resList[^1].From, t);
                 }
                 else
                     resList.Add((f, t));
             }
 
-            return (resList.ToArray(), resList.Count);
+            return resList.ToArray();
         }
 
         protected readonly TOp comparer;
@@ -80,10 +86,10 @@ namespace Kzrnm.Competitive
             var right = FindNodeLowerBound(toInclusive);
             if (left != null)
             {
-                if (comparer.Compare(toInclusive, left.ToInclusive) <= 0)
+                if (toInclusive.CompareTo(left.ToInclusive) <= 0)
                     return false;
             }
-            if (right != null && comparer.Compare(toInclusive, right.From) < 0)
+            if (right != null && toInclusive.CompareTo(right.From) < 0)
                 right = null;
 
             if (left != null && right != null)
@@ -94,7 +100,7 @@ namespace Kzrnm.Competitive
             }
             else
             {
-                Remove(comparer.Increment(from), comparer.Decrement(toInclusive));
+                Remove(op.Increment(from), op.Decrement(toInclusive));
                 if (left != null)
                     left.ToInclusive = toInclusive;
                 else if (right != null)
@@ -119,7 +125,7 @@ namespace Kzrnm.Competitive
             int order = 0;
             while (current != null)
             {
-                order = comparer.Compare(from, current.From);
+                order = from.CompareTo(current.From);
                 if (current.Is4Node)
                 {
                     current.Split4Node();
@@ -161,8 +167,8 @@ namespace Kzrnm.Competitive
                 {
                     if (current.Is2Node)
                         Fix2Node(match, ref parentOfMatch, current, parent, grandParent);
-                    int order = foundMatch ? -1 : comparer.Compare(from, current.From);
-                    if (!foundMatch && order <= 0 && comparer.Compare(toInclusive, current.ToInclusive) >= 0)
+                    int order = foundMatch ? -1 : from.CompareTo(current.From);
+                    if (!foundMatch && order <= 0 && toInclusive.CompareTo(current.ToInclusive) >= 0)
                     {
                         resultMatch = foundMatch = true;
                         match = current;
@@ -182,25 +188,25 @@ namespace Kzrnm.Competitive
                 var match = FindNodeLowerBound(from);
                 if (match != null)
                 {
-                    int order = comparer.Compare(from, match.From);
+                    int order = from.CompareTo(match.From);
                     if (order <= 0)
                     {
-                        if (comparer.Compare(toInclusive, match.From) >= 0) // 右側
+                        if (toInclusive.CompareTo(match.From) >= 0) // 右側
                         {
                             resultMatch = true;
-                            match.From = comparer.Increment(toInclusive);
+                            match.From = op.Increment(toInclusive);
                         }
                     }
                     else
                     {
-                        if (comparer.Compare(toInclusive, match.ToInclusive) >= 0) // 左側
+                        if (toInclusive.CompareTo(match.ToInclusive) >= 0) // 左側
                         {
                             resultMatch = true;
-                            match.ToInclusive = comparer.Decrement(from);
+                            match.ToInclusive = op.Decrement(from);
 
                             match = FindNodeLowerBound(toInclusive);
-                            if (match != null && comparer.Compare(toInclusive, match.From) >= 0)
-                                match.From = comparer.Increment(toInclusive);
+                            if (match != null && toInclusive.CompareTo(match.From) >= 0)
+                                match.From = op.Increment(toInclusive);
                         }
                         else // 分割
                         {
@@ -220,7 +226,7 @@ namespace Kzrnm.Competitive
         public bool Contains(T from, T toInclusive)
         {
             var node = FindNode(from);
-            return node != null && comparer.Compare(toInclusive, node.ToInclusive) <= 0;
+            return node != null && toInclusive.CompareTo(node.ToInclusive) <= 0;
         }
 
         /// <summary>
@@ -228,13 +234,13 @@ namespace Kzrnm.Competitive
         /// </summary>
         public IEnumerable<(T From, T ToInclusive)> RangeTruncate(T from, T toInclusive)
         {
-            if (comparer.Compare(from, Max.ToInclusive) > 0) yield break;
+            if (from.CompareTo(Max.ToInclusive) > 0) yield break;
             foreach (var tup in EnumerateItem(FindNodeLowerBound(from)))
             {
                 var (f, t) = tup;
-                if (comparer.Compare(f, from) < 0) f = from;
-                if (comparer.Compare(f, toInclusive) > 0) yield break;
-                if (comparer.Compare(t, toInclusive) > 0) t = toInclusive;
+                if (f.CompareTo(from) < 0) f = from;
+                if (f.CompareTo(toInclusive) > 0) yield break;
+                if (t.CompareTo(toInclusive) > 0) t = toInclusive;
                 yield return (f, t);
             }
         }
@@ -244,10 +250,10 @@ namespace Kzrnm.Competitive
         /// </summary>
         public IEnumerable<(T From, T ToInclusive)> RangeAll(T from, T toInclusive)
         {
-            if (comparer.Compare(from, Max.ToInclusive) > 0) yield break;
+            if (from.CompareTo(Max.ToInclusive) > 0) yield break;
             foreach (var (f, t) in EnumerateItem(FindNodeLowerBound(from)))
             {
-                if (comparer.Compare(f, toInclusive) > 0) yield break;
+                if (f.CompareTo(toInclusive) > 0) yield break;
                 yield return (f, t);
             }
         }
@@ -258,7 +264,7 @@ namespace Kzrnm.Competitive
         public void UnionWith(IEnumerable<(T From, T ToInclusive)> other)
         {
             foreach (var (f, t) in other)
-                this.Add(f, t);
+                Add(f, t);
         }
 
         /// <summary>
@@ -267,7 +273,7 @@ namespace Kzrnm.Competitive
         public void ExceptWith(IEnumerable<(T From, T ToInclusive)> other)
         {
             foreach (var (f, t) in other)
-                this.Remove(f, t);
+                Remove(f, t);
         }
 
         /// <summary>
@@ -281,18 +287,18 @@ namespace Kzrnm.Competitive
             {
                 if (isCalled)
                 {
-                    this.Remove(comparer.Increment(last.ToInclusive), comparer.Decrement(tup.From));
+                    Remove(op.Increment(last.ToInclusive), op.Decrement(tup.From));
                 }
                 else
                 {
                     isCalled = true;
-                    if (comparer.Compare(comparer.MinValue, tup.From) < 0)
-                        this.Remove(comparer.MinValue, comparer.Decrement(tup.From));
+                    if (op.MinValue.CompareTo(tup.From) < 0)
+                        Remove(op.MinValue, op.Decrement(tup.From));
                 }
                 last = tup;
             }
-            if (isCalled && comparer.Compare(last.ToInclusive, comparer.MaxValue) < 0)
-                this.Remove(comparer.Increment(last.ToInclusive), comparer.MaxValue);
+            if (isCalled && last.ToInclusive.CompareTo(op.MaxValue) < 0)
+                Remove(op.Increment(last.ToInclusive), op.MaxValue);
         }
 
         public class Node : SetNodeBase<Node>
@@ -302,48 +308,91 @@ namespace Kzrnm.Competitive
             public (T From, T ToInclusive) Pair => (From, ToInclusive);
             internal Node(T from, T toInclusive, NodeColor color) : base(color)
             {
-                this.From = from;
-                this.ToInclusive = toInclusive;
+                From = from;
+                ToInclusive = toInclusive;
             }
             public override string ToString() => $"Range = [{From}, {ToInclusive}], Size = {Size}";
         }
-        public struct NodeOperator : ISetOperator<(T From, T ToInclusive), T, Node>
+        public readonly struct C<Tv> : IComparable<Node> where Tv : IComparable<T>
         {
-            private readonly TOp comparer;
-            public IComparer<T> Comparer => comparer;
-            public NodeOperator(TOp comparer)
+            private readonly Tv v;
+            public C(Tv val) { v = val; }
+            [凾(256)]
+            public int CompareTo(Node other)
             {
-                this.comparer = comparer;
+                int forder = v.CompareTo(other.From);
+                if (forder < 0) return -1;
+                int torder = v.CompareTo(other.ToInclusive);
+                if (torder <= 0)
+                    return 0;
+                return 1;
             }
+        }
+        public struct NodeOperator : ISetOperator<(T From, T ToInclusive), C<T>, Node>
+        {
             [凾(256)]
             public Node Create((T From, T ToInclusive) item, NodeColor color) => new Node(item.From, item.ToInclusive, color);
             [凾(256)]
             public (T From, T ToInclusive) GetValue(Node node) => node.Pair;
             [凾(256)]
-            public void SetValue(ref Node node, (T From, T ToInclusive) value)
-            {
-                node.From = value.From;
-                node.ToInclusive = value.ToInclusive;
-            }
+            public C<T> GetCompareKey((T From, T ToInclusive) item) => new C<T>(item.From);
             [凾(256)]
-            public T GetCompareKey((T From, T ToInclusive) item) => item.From;
-            [凾(256)]
-            public int Compare(T x, T y) => comparer.Compare(x, y);
-            [凾(256)]
-            public int Compare((T From, T ToInclusive) node1, (T From, T ToInclusive) node2) => comparer.Compare(node1.From, node2.From);
-            [凾(256)]
-            public int Compare(Node node1, Node node2) => comparer.Compare(node1.From, node2.From);
-            [凾(256)]
-            public int Compare(T value, Node node)
-            {
-                int forder = comparer.Compare(node.From, value);
-                if (forder > 0) return -1;
-                int torder = comparer.Compare(node.ToInclusive, value);
-                if (torder >= 0)
-                    return 0;
-                return 1;
-            }
+            public int Compare((T From, T ToInclusive) x, (T From, T ToInclusive) y) => x.From.CompareTo(y.From);
         }
+        #region Search
+        [凾(256)] public new Node FindNode<Tv>(Tv item) where Tv : IComparable<T> => base.FindNode(new C<Tv>(item));
+        [凾(256)] public bool Contains<Tv>(Tv item) where Tv : IComparable<T> => FindNode(item) != null;
+        /// <summary>
+        /// <paramref name="item"/> 以上の最初のノードを返します。
+        /// </summary>
+        [凾(256)] public Node FindNodeLowerBound<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(L)).node;
+        /// <summary>
+        /// <paramref name="item"/> 以上の最初のインデックスを返します。
+        /// </summary>
+        [凾(256)] public int LowerBoundIndex<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(L)).index;
+        /// <summary>
+        /// <paramref name="item"/> 以上の最初の要素を返します。
+        /// </summary>
+        [凾(256)] public (T From, T ToInclusive) LowerBoundItem<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(L)).node.Pair;
+        /// <summary>
+        /// <paramref name="item"/> を超える最初のノードを返します。
+        /// </summary>
+        [凾(256)] public Node FindNodeUpperBound<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(U)).node;
+        /// <summary>
+        /// <paramref name="item"/> を超える最初のインデックスを返します。
+        /// </summary>
+        [凾(256)] public int UpperBoundIndex<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(U)).index;
+        /// <summary>
+        /// <paramref name="item"/> を超える最初の要素を返します。
+        /// </summary>
+        [凾(256)] public (T From, T ToInclusive) UpperBoundItem<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(U)).node.Pair;
+
+        /// <summary>
+        /// <paramref name="item"/> 以下の最後のノードを返します。
+        /// </summary>
+        [凾(256)] public Node FindNodeReverseLowerBound<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(LR)).node;
+        /// <summary>
+        /// <paramref name="item"/> 以下の最後のインデックスを返します。
+        /// </summary>
+        [凾(256)] public int ReverseLowerBoundIndex<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(LR)).index;
+        /// <summary>
+        /// <paramref name="item"/> 以下の最後の要素を返します。
+        /// </summary>
+        [凾(256)] public (T From, T ToInclusive) ReverseLowerBoundItem<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(LR)).node.Pair;
+
+        /// <summary>
+        /// <paramref name="item"/> 未満の最後のノードを返します。
+        /// </summary>
+        [凾(256)] public Node FindNodeReverseUpperBound<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(UR)).node;
+        /// <summary>
+        /// <paramref name="item"/> 未満の最後のインデックスを返します。
+        /// </summary>
+        [凾(256)] public int ReverseUpperBoundIndex<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(UR)).index;
+        /// <summary>
+        /// <paramref name="item"/> 未満の最後の要素を返します。
+        /// </summary>
+        [凾(256)] public (T From, T ToInclusive) ReverseUpperBoundItem<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(UR)).node.Pair;
+        #endregion Search
         private class DebugView
         {
             [DebuggerDisplay("[{" + nameof(From) + "}, {" + nameof(ToInclusive) + "}]")]
