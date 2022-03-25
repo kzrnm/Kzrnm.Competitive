@@ -331,7 +331,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
 
 
         [Fact]
-        public void Find()
+        public void FindByBinarySearch()
         {
             var arr = new double[] {
                 double.NegativeInfinity,
@@ -347,33 +347,33 @@ namespace Kzrnm.Competitive.Testing.Extensions
                 27,
                 30,
             };
-            arr.Find(double.NegativeInfinity).Should().Be(0);
-            ((Span<double>)arr).Find(double.NegativeInfinity).Should().Be(0);
-            ((ReadOnlySpan<double>)arr).Find(double.NegativeInfinity).Should().Be(0);
+            arr.FindByBinarySearch(double.NegativeInfinity).Should().Be(0);
+            ((Span<double>)arr).FindByBinarySearch(double.NegativeInfinity).Should().Be(0);
+            ((ReadOnlySpan<double>)arr).FindByBinarySearch(double.NegativeInfinity).Should().Be(0);
 
-            arr.Find(-1e200).Should().Be(1);
-            ((Span<double>)arr).Find(-1e200).Should().Be(1);
-            ((ReadOnlySpan<double>)arr).Find(-1e200).Should().Be(1);
+            arr.FindByBinarySearch(-1e200).Should().Be(1);
+            ((Span<double>)arr).FindByBinarySearch(-1e200).Should().Be(1);
+            ((ReadOnlySpan<double>)arr).FindByBinarySearch(-1e200).Should().Be(1);
 
-            arr.Find(-1e109).Should().Be(1);
-            ((Span<double>)arr).Find(-1e109).Should().Be(1);
-            ((ReadOnlySpan<double>)arr).Find(-1e109).Should().Be(1);
+            arr.FindByBinarySearch(-1e109).Should().Be(1);
+            ((Span<double>)arr).FindByBinarySearch(-1e109).Should().Be(1);
+            ((ReadOnlySpan<double>)arr).FindByBinarySearch(-1e109).Should().Be(1);
 
-            arr.Find(-10).Should().Be(3);
-            ((Span<double>)arr).Find(-10).Should().Be(3);
-            ((ReadOnlySpan<double>)arr).Find(-10).Should().Be(3);
+            arr.FindByBinarySearch(-10.0).Should().Be(3);
+            ((Span<double>)arr).FindByBinarySearch(-10.0).Should().Be(3);
+            ((ReadOnlySpan<double>)arr).FindByBinarySearch(-10.0).Should().Be(3);
 
-            arr.Find(0).Should().BeInRange(4, 8);
-            ((Span<double>)arr).Find(0).Should().BeInRange(4, 8);
-            ((ReadOnlySpan<double>)arr).Find(0).Should().BeInRange(4, 8);
+            arr.FindByBinarySearch(0.0).Should().BeInRange(4, 8);
+            ((Span<double>)arr).FindByBinarySearch(0.0).Should().BeInRange(4, 8);
+            ((ReadOnlySpan<double>)arr).FindByBinarySearch(0.0).Should().BeInRange(4, 8);
 
-            arr.Find(1).Should().Be(9);
-            ((Span<double>)arr).Find(1).Should().Be(9);
-            ((ReadOnlySpan<double>)arr).Find(1).Should().Be(9);
+            arr.FindByBinarySearch(1.0).Should().Be(9);
+            ((Span<double>)arr).FindByBinarySearch(1.0).Should().Be(9);
+            ((ReadOnlySpan<double>)arr).FindByBinarySearch(1.0).Should().Be(9);
 
-            arr.Find(40).Should().Be(12);
-            ((Span<double>)arr).Find(40).Should().Be(12);
-            ((ReadOnlySpan<double>)arr).Find(40).Should().Be(12);
+            arr.FindByBinarySearch(40.0).Should().Be(12);
+            ((Span<double>)arr).FindByBinarySearch(40.0).Should().Be(12);
+            ((ReadOnlySpan<double>)arr).FindByBinarySearch(40.0).Should().Be(12);
         }
     }
 }

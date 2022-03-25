@@ -138,7 +138,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <remarks>制約: <paramref name="arr"/> はソート済みであること</remarks>
         [凾(256)]
-        public static int Find<T>(this T[] arr, T value) where T : IComparable<T> => Find((ReadOnlySpan<T>)arr, value);
+        public static int FindByBinarySearch<T, TCv>(this T[] arr, TCv value) where TCv : IComparable<T> => FindByBinarySearch((ReadOnlySpan<T>)arr, value);
         /// <summary>
         /// <para>ソート済みの <paramref name="arr"/> から <paramref name="value"/> のインデックスを返します。</para>
         /// <para><paramref name="arr"/> に <paramref name="value"/> が複数存在するならばそのいずれかのインデックスを返します。</para>
@@ -146,7 +146,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <remarks>制約: <paramref name="arr"/> はソート済みであること</remarks>
         [凾(256)]
-        public static int Find<T>(this Span<T> arr, T value) where T : IComparable<T> => Find((ReadOnlySpan<T>)arr, value);
+        public static int FindByBinarySearch<T, TCv>(this Span<T> arr, TCv value) where TCv : IComparable<T> => FindByBinarySearch((ReadOnlySpan<T>)arr, value);
         /// <summary>
         /// <para>ソート済みの <paramref name="arr"/> から <paramref name="value"/> のインデックスを返します。</para>
         /// <para><paramref name="arr"/> に <paramref name="value"/> が複数存在するならばそのいずれかのインデックスを返します。</para>
@@ -154,7 +154,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <remarks>制約: <paramref name="arr"/> はソート済みであること</remarks>
         [凾(256)]
-        public static int Find<T>(this ReadOnlySpan<T> arr, T value) where T : IComparable<T>
+        public static int FindByBinarySearch<T, TCv>(this ReadOnlySpan<T> arr, TCv value) where TCv : IComparable<T>
         {
             int ix = arr.BinarySearch(value);
             if (ix < 0)
