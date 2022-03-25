@@ -10,6 +10,7 @@ exclude:
   - .vscode
   - bin
   - Competitive
+  - Competitive.Benchmark
   - Competitive.Runner
   - JOI
   - poem
