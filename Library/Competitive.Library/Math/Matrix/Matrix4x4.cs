@@ -14,10 +14,10 @@ namespace Kzrnm.Competitive
         public readonly (T Col0, T Col1, T Col2, T Col3) Row3;
         public Matrix4x4((T Col0, T Col1, T Col2, T Col3) row0, (T Col0, T Col1, T Col2, T Col3) row1, (T Col0, T Col1, T Col2, T Col3) row2, (T Col0, T Col1, T Col2, T Col3) row3)
         {
-            this.Row0 = row0;
-            this.Row1 = row1;
-            this.Row2 = row2;
-            this.Row3 = row3;
+            Row0 = row0;
+            Row1 = row1;
+            Row2 = row2;
+            Row3 = row3;
         }
         public static readonly Matrix4x4<T, TOp> Identity = new Matrix4x4<T, TOp>(
             (op.MultiplyIdentity, default, default, default),

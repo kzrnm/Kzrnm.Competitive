@@ -792,8 +792,8 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
     {
         internal SetNodeBase(NodeColor color)
         {
-            Contract.Assert(this.GetType() == typeof(TNode));
-            this.Color = color;
+            Contract.Assert(GetType() == typeof(TNode));
+            Color = color;
         }
         private TNode AsGeneric => Unsafe.As<TNode>(this);
         public TNode Parent { get; internal set; }
@@ -803,7 +803,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             get => _left;
             set
             {
-                _left = value; if (value != null) value.Parent = this.AsGeneric;
+                _left = value; if (value != null) value.Parent = AsGeneric;
                 for (var cur = this; cur != null; cur = cur.Parent)
                 {
                     if (!cur.UpdateSize()) break;
@@ -822,7 +822,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             set
             {
                 _right = value;
-                if (value != null) value.Parent = this.AsGeneric;
+                if (value != null) value.Parent = AsGeneric;
                 for (var cur = this; cur != null; cur = cur.Parent)
                 {
                     if (!cur.UpdateSize()) break;
@@ -841,11 +841,11 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         [凾(256)]
         internal bool UpdateSize()
         {
-            var oldsize = this.Size;
+            var oldsize = Size;
             var size = 1;
             if (Left != null) size += Left.Size;
             if (Right != null) size += Right.Size;
-            this.Size = size;
+            Size = size;
             return oldsize != size;
         }
         internal NodeColor Color { get; set; }
@@ -918,7 +918,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         {
             TNode child = Right;
             Right = child.Left;
-            child.Left = this.AsGeneric;
+            child.Left = AsGeneric;
             return child;
         }
         [凾(256)]
@@ -928,7 +928,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             TNode grandChild = child.Right;
 
             Left = grandChild.Right;
-            grandChild.Right = this.AsGeneric;
+            grandChild.Right = AsGeneric;
             child.Right = grandChild.Left;
             grandChild.Left = child;
             return grandChild;
@@ -938,7 +938,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         {
             TNode child = Left;
             Left = child.Right;
-            child.Right = this.AsGeneric;
+            child.Right = AsGeneric;
             return child;
         }
         [凾(256)]
@@ -948,7 +948,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             TNode grandChild = child.Left;
 
             Right = grandChild.Left;
-            grandChild.Left = this.AsGeneric;
+            grandChild.Left = AsGeneric;
             child.Left = grandChild.Right;
             grandChild.Right = child;
             return grandChild;

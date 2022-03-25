@@ -32,11 +32,11 @@ namespace Kzrnm.Competitive
                         typeof(K).GetMethod(nameof(IComparable<K>.CompareTo), new[] { typeof(K) }),
                         f2.Body),
                         paramA, paramB);
-                this.func = compExp.Compile();
+                func = compExp.Compile();
             }
             [凾(256)]
             public int Compare(T x, T y) => func(x, y);
-            public override bool Equals(object obj) => obj is ExpressionComparer<K> c && this.func == c.func;
+            public override bool Equals(object obj) => obj is ExpressionComparer<K> c && func == c.func;
             public override int GetHashCode() => func.GetHashCode();
         }
         public static IComparer<T> CreateExp<K>(Expression<Func<T, K>> expression) where K : IComparable<K> => new ExpressionComparer<K>(expression);

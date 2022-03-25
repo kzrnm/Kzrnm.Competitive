@@ -18,7 +18,7 @@ namespace Kzrnm.Competitive.DataStructure
         public int Length { get; }
         public StarrySkyTree(int size)
         {
-            this.Length = size;
+            Length = size;
             rootLength = 1 << (BitOperationsEx.MSB(size - 1) + 1);
             lazy = new T[(rootLength << 1) - 1];
             data = new T[(rootLength << 1) - 1];

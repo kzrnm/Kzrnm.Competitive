@@ -169,8 +169,8 @@ namespace Kzrnm.Competitive
             public bool Used = false;
             public EdgeInternal(int from, TEdge edge)
             {
-                this.From = from;
-                this.ToEdge = edge;
+                From = from;
+                ToEdge = edge;
             }
 
             public TEdge Edge(int from)

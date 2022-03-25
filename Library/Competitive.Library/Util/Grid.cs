@@ -182,9 +182,9 @@ namespace Kzrnm.Competitive
             public MoveEnumerator(Grid<T> grid, int h, int w)
             {
                 this.grid = grid;
-                this.origH = h;
-                this.origW = w;
-                this.status = Status.None;
+                origH = h;
+                origW = w;
+                status = Status.None;
             }
             public (int h, int w) Current
             {
@@ -212,7 +212,7 @@ namespace Kzrnm.Competitive
                 }
             }
 
-            object IEnumerator.Current => this.Current;
+            object IEnumerator.Current => Current;
 
             [凾(256)]
             public bool MoveNext()

@@ -96,8 +96,8 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        public bool Equals(PointLong other) => this.x == other.x && this.y == other.y;
-        public override bool Equals(object obj) => obj is PointLong p && this.Equals(p);
+        public bool Equals(PointLong other) => x == other.x && y == other.y;
+        public override bool Equals(object obj) => obj is PointLong p && Equals(p);
         public override int GetHashCode() => HashCode.Combine(x, y);
         public override string ToString() => $"{x} {y}";
         [凾(256)] void IUtf8ConsoleWriterFormatter.Write(Utf8ConsoleWriter cw) => cw.Write(x).Write(' ').Write(y);

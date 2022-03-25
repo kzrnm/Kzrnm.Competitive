@@ -19,7 +19,7 @@ namespace Kzrnm.Competitive
                 Contract.Assert(a.Length == c.Length, reason: "漸化式の係数 c と数列 a の数が違います");
                 this.a = a;
                 this.mod = (uint)mod;
-                CreateC(c, mod, out this.c, out this.ic);
+                CreateC(c, mod, out this.c, out ic);
             }
             static void CreateC(ReadOnlySpan<uint> origC,
                 int mod,
@@ -98,7 +98,7 @@ namespace Kzrnm.Competitive
             {
                 Contract.Assert(a.Length == c.Length, reason: "漸化式の係数 c と数列 a の数が違います");
                 this.a = a;
-                CreateC(c, out this.c, out this.ic);
+                CreateC(c, out this.c, out ic);
             }
             static void CreateC(ReadOnlySpan<uint> origC,
                 out ReadOnlySpan<uint> c,

@@ -184,10 +184,10 @@ namespace Kzrnm.Competitive
             public Node Clone()
                 => new Node
                 {
-                    left = this.left,
-                    right = this.right,
-                    exist = this.exist,
-                    accept = new List<int>(this.accept),
+                    left = left,
+                    right = right,
+                    exist = exist,
+                    accept = new List<int>(accept),
                 };
         }
     }

@@ -111,10 +111,10 @@ namespace Kzrnm.Competitive
         public int To { get; }
         public T Value { get; }
 
-        public override bool Equals(object obj) => obj is WEdge<T> edge && this.Equals(edge);
-        public bool Equals(WEdge<T> other) => this.To == other.To &&
-                   EqualityComparer<T>.Default.Equals(this.Value, other.Value);
-        public override int GetHashCode() => HashCode.Combine(this.To, this.Value);
+        public override bool Equals(object obj) => obj is WEdge<T> edge && Equals(edge);
+        public bool Equals(WEdge<T> other) => To == other.To &&
+                   EqualityComparer<T>.Default.Equals(Value, other.Value);
+        public override int GetHashCode() => HashCode.Combine(To, Value);
         public static bool operator ==(WEdge<T> left, WEdge<T> right) => left.Equals(right);
         public static bool operator !=(WEdge<T> left, WEdge<T> right) => !(left == right);
         public override string ToString() => (To, Value).ToString();

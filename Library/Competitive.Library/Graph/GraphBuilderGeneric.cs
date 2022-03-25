@@ -119,9 +119,9 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public GraphEdge<T> Reversed(int from) => new GraphEdge<T>(from, Data);
 
-        public override int GetHashCode() => this.To;
-        public override bool Equals(object obj) => obj is GraphEdge<T> edge && this.Equals(edge);
-        public bool Equals(GraphEdge<T> other) => this.To == other.To;
+        public override int GetHashCode() => To;
+        public override bool Equals(object obj) => obj is GraphEdge<T> edge && Equals(edge);
+        public bool Equals(GraphEdge<T> other) => To == other.To;
         public static bool operator ==(GraphEdge<T> left, GraphEdge<T> right) => left.Equals(right);
         public static bool operator !=(GraphEdge<T> left, GraphEdge<T> right) => !left.Equals(right);
     }

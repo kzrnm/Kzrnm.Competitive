@@ -115,7 +115,7 @@ namespace Kzrnm.Competitive
                 [凾(256)]
                 get
                 {
-                    this.ThrowIfDisposed();
+                    ThrowIfDisposed();
                     if (_remainingStack == null || _remainingStack.IsEmpty)
                     {
                         return ThrowInvalidOperationException();
@@ -132,7 +132,7 @@ namespace Kzrnm.Competitive
             /// </summary>
             object IEnumerator.Current
             {
-                get { return this.Current; }
+                get { return Current; }
             }
 
 
@@ -143,7 +143,7 @@ namespace Kzrnm.Competitive
             [凾(256)]
             public bool MoveNext()
             {
-                this.ThrowIfDisposed();
+                ThrowIfDisposed();
 
                 if (_remainingStack == null)
                 {
@@ -163,7 +163,7 @@ namespace Kzrnm.Competitive
             /// </summary>
             public void Reset()
             {
-                this.ThrowIfDisposed();
+                ThrowIfDisposed();
                 _remainingStack = null;
             }
 

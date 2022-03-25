@@ -90,8 +90,8 @@ namespace Kzrnm.Competitive
         public bool IsNaN => double.IsNaN(x) || double.IsNaN(y);
 
         [凾(256)]
-        public bool Equals(PointDouble other) => this.x == other.x && this.y == other.y;
-        public override bool Equals(object obj) => obj is PointDouble p && this.Equals(p);
+        public bool Equals(PointDouble other) => x == other.x && y == other.y;
+        public override bool Equals(object obj) => obj is PointDouble p && Equals(p);
         public override int GetHashCode() => HashCode.Combine(x, y);
         public override string ToString() => $"{x} {y}";
         [凾(256)] void IUtf8ConsoleWriterFormatter.Write(Utf8ConsoleWriter cw) => cw.Write(x).Write(' ').Write(y);
@@ -171,7 +171,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)]
         public (double A, double B, double C) 直線(PointDouble other)
-            => (other.y - this.y, this.x - other.x, this.y * (other.x - this.x) - this.x * (other.y - this.y));
+            => (other.y - y, x - other.x, y * (other.x - x) - x * (other.y - y));
 
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)]
         public (double A, double B, double C) 垂直二等分線(PointDouble other)
-            => (this.x - other.x, this.y - other.y, (this.x * this.x - other.x * other.x + this.y * this.y - other.y * other.y) * -.5);
+            => (x - other.x, y - other.y, (x * x - other.x * other.x + y * y - other.y * other.y) * -.5);
 
 
         /// <summary>

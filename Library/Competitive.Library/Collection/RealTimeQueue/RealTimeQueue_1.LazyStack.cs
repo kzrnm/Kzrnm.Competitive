@@ -112,7 +112,7 @@ namespace Kzrnm.Competitive
             /// </summary>
             IImmutableStack<T> IImmutableStack<T>.Clear()
             {
-                return this.Clear();
+                return Clear();
             }
 
             /// <summary>
@@ -187,7 +187,7 @@ namespace Kzrnm.Competitive
             /// <returns>The new stack.</returns>
             IImmutableStack<T> IImmutableStack<T>.Push(T value)
             {
-                return this.Push(value);
+                return Push(value);
             }
 
             /// <summary>
@@ -215,7 +215,7 @@ namespace Kzrnm.Competitive
             /// <exception cref="InvalidOperationException">Thrown when the stack is empty.</exception>
             IImmutableStack<T> IImmutableStack<T>.Pop()
             {
-                return this.Pop();
+                return Pop();
             }
 
             /// <summary>
@@ -232,8 +232,8 @@ namespace Kzrnm.Competitive
                 {
                     Rotate();
                 }
-                value = this.Peek();
-                return this.Pop();
+                value = Peek();
+                return Pop();
             }
 
             [凾(256)]
@@ -279,7 +279,7 @@ namespace Kzrnm.Competitive
             /// </returns>
             IEnumerator<T> IEnumerable<T>.GetEnumerator()
             {
-                return this.IsEmpty ?
+                return IsEmpty ?
                     Enumerable.Empty<T>().GetEnumerator() :
                     new LazyStackEnumeratorObject(this);
             }

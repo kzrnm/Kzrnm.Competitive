@@ -13,7 +13,7 @@ namespace Kzrnm.Competitive
             public ulong b;
 
             public override bool Equals(object obj) => obj is Hash h && Equals(h);
-            public bool Equals(Hash other) => this.a == other.a && this.b == other.b;
+            public bool Equals(Hash other) => a == other.a && b == other.b;
             public static bool operator ==(Hash hash1, Hash hash2) => hash1.Equals(hash2);
             public static bool operator !=(Hash hash1, Hash hash2) => !hash1.Equals(hash2);
             public override int GetHashCode() => HashCode.Combine(a, b);
@@ -25,7 +25,7 @@ namespace Kzrnm.Competitive
         public int Length { get; }
         public RollingHash(ReadOnlySpan<char> s)
         {
-            this.Length = s.Length;
+            Length = s.Length;
             hash1 = new RollingHashUInt64(s);
             hash2 = new RollingHashFast(s);
         }
@@ -44,7 +44,7 @@ namespace Kzrnm.Competitive
             public int Length { get; }
             public RollingHashUInt64(ReadOnlySpan<char> s)
             {
-                this.Length = s.Length;
+                Length = s.Length;
                 pow = new ulong[s.Length + 1];
                 pow[0] = 1;
                 for (int i = 0; i < s.Length; i++)
@@ -79,7 +79,7 @@ namespace Kzrnm.Competitive
             public int Length { get; }
             public RollingHashFast(ReadOnlySpan<char> s)
             {
-                this.Length = s.Length;
+                Length = s.Length;
                 hash = new ulong[s.Length + 1];
                 for (int i = 0; i < s.Length; i++)
                     hash[i + 1] = CalcMod(Mul(hash[i], Base) + s[i]);

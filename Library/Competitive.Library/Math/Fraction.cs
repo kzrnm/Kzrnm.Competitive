@@ -51,13 +51,13 @@ namespace Kzrnm.Competitive
         public override string ToString() => $"{Numerator}/{Denominator}";
         public override bool Equals(object obj) => obj is Fraction f && Equals(f);
         [凾(256)]
-        public bool Equals(Fraction other) => this._numerator == other._numerator && this._denominator == other._denominator;
+        public bool Equals(Fraction other) => _numerator == other._numerator && _denominator == other._denominator;
         public override int GetHashCode() => HashCode.Combine(_numerator, _denominator);
 
         [凾(256)]
         public static implicit operator Fraction(long x) => new Fraction(x, 1);
         [凾(256)]
-        public int CompareTo(Fraction other) => (this.Numerator * other.Denominator).CompareTo(other.Numerator * this.Denominator);
+        public int CompareTo(Fraction other) => (Numerator * other.Denominator).CompareTo(other.Numerator * Denominator);
 
         [凾(256)]
         public static Fraction operator -(Fraction x) => new Fraction(-x.Numerator, x.Denominator);

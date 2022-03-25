@@ -174,7 +174,7 @@ namespace Kzrnm.Competitive
             /// </summary>
             object IEnumerator.Current
             {
-                get { return this.Current!; }
+                get { return Current!; }
             }
 
             /// <summary>
@@ -184,7 +184,7 @@ namespace Kzrnm.Competitive
             [凾(256)]
             public bool MoveNext()
             {
-                this.ThrowIfDisposed();
+                ThrowIfDisposed();
                 if (_remainingForwardsStack == null)
                 {
                     // This is the initial step.
@@ -209,7 +209,7 @@ namespace Kzrnm.Competitive
             /// </summary>
             public void Reset()
             {
-                this.ThrowIfDisposed();
+                ThrowIfDisposed();
                 _remainingBackwardsStack = null;
                 _remainingForwardsStack = null;
             }

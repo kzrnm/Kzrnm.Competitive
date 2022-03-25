@@ -72,7 +72,7 @@ namespace Kzrnm.Competitive
                 this.fw = fw;
                 this.hFrom = hFrom;
                 this.hToExclusive = hToExclusive;
-                this.Length = fw.Width - 1;
+                Length = fw.Width - 1;
             }
             [凾(256)]
             public T Slice(int wFrom, int length)

@@ -79,11 +79,11 @@ namespace Kzrnm.Competitive
             {
                 this.l = l;
                 this.r = r;
-                this.size = l == r ? 1 : 0;
+                size = l == r ? 1 : 0;
 
                 // Exact = ChildExact = l < r;
                 if (l < r)
-                    this.flag = 0b0011;
+                    flag = 0b0011;
             }
             public bool IsRoot => parent == null;
         }

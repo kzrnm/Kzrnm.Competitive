@@ -7,9 +7,9 @@ namespace Kzrnm.Competitive
     {
         public WGraphNode(int i, TEdge[] roots, TEdge[] children)
         {
-            this.Index = i;
-            this.Roots = roots;
-            this.Children = children;
+            Index = i;
+            Roots = roots;
+            Children = children;
         }
         public int Index { get; }
         public TEdge[] Roots { get; }
@@ -17,20 +17,20 @@ namespace Kzrnm.Competitive
         public bool IsDirected => Roots != Children;
 
         public override string ToString() => $"children: {string.Join(",", Children)}";
-        public override bool Equals(object obj) => obj is WGraphNode<T, TEdge> d && this.Equals(d);
-        public bool Equals(WGraphNode<T, TEdge> other) => this.Index == other.Index;
-        public override int GetHashCode() => this.Index;
+        public override bool Equals(object obj) => obj is WGraphNode<T, TEdge> d && Equals(d);
+        public bool Equals(WGraphNode<T, TEdge> other) => Index == other.Index;
+        public override int GetHashCode() => Index;
     }
     public class WTreeNode<T, TEdge> : ITreeNode<TEdge>, IEquatable<WTreeNode<T, TEdge>>
         where TEdge : IWGraphEdge<T>
     {
         public WTreeNode(int i, TEdge root, int depth, T depthLength, TEdge[] children)
         {
-            this.Index = i;
-            this.Root = root;
-            this.Children = children;
-            this.Depth = depth;
-            this.DepthLength = depthLength;
+            Index = i;
+            Root = root;
+            Children = children;
+            Depth = depth;
+            DepthLength = depthLength;
         }
         public int Index { get; }
         public TEdge Root { get; }
@@ -39,8 +39,8 @@ namespace Kzrnm.Competitive
         public T DepthLength { get; }
 
         public override string ToString() => $"children: {string.Join(",", Children)}";
-        public override bool Equals(object obj) => obj is WTreeNode<T, TEdge> node && this.Equals(node);
-        public bool Equals(WTreeNode<T, TEdge> other) => other != null && this.Index == other.Index;
-        public override int GetHashCode() => this.Index;
+        public override bool Equals(object obj) => obj is WTreeNode<T, TEdge> node && Equals(node);
+        public bool Equals(WTreeNode<T, TEdge> other) => other != null && Index == other.Index;
+        public override int GetHashCode() => Index;
     }
 }

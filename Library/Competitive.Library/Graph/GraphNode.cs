@@ -8,9 +8,9 @@ namespace Kzrnm.Competitive
     {
         public GraphNode(int i, TEdge[] roots, TEdge[] children)
         {
-            this.Index = i;
-            this.Roots = roots;
-            this.Children = children;
+            Index = i;
+            Roots = roots;
+            Children = children;
         }
         public int Index { get; }
         public TEdge[] Roots { get; }
@@ -18,18 +18,18 @@ namespace Kzrnm.Competitive
         public bool IsDirected => Roots != Children;
 
         public override string ToString() => $"children: {string.Join(",", Children)}";
-        public override bool Equals(object obj) => obj is GraphNode<TEdge> d && this.Equals(d);
-        public bool Equals(GraphNode<TEdge> other) => this.Index == other?.Index;
-        public override int GetHashCode() => this.Index;
+        public override bool Equals(object obj) => obj is GraphNode<TEdge> d && Equals(d);
+        public bool Equals(GraphNode<TEdge> other) => Index == other?.Index;
+        public override int GetHashCode() => Index;
     }
     public class TreeNode<T> : ITreeNode<GraphEdge<T>>, IEquatable<TreeNode<T>>
     {
         public TreeNode(int i, GraphEdge<T> root, int depth, GraphEdge<T>[] children)
         {
-            this.Index = i;
-            this.Root = root;
-            this.Children = children;
-            this.Depth = depth;
+            Index = i;
+            Root = root;
+            Children = children;
+            Depth = depth;
         }
         public int Index { get; }
         public GraphEdge<T> Root { get; }
@@ -37,8 +37,8 @@ namespace Kzrnm.Competitive
         public int Depth { get; }
 
         public override string ToString() => $"children: {string.Join(",", Children)}";
-        public override bool Equals(object obj) => obj is TreeNode<T> node && this.Equals(node);
-        public bool Equals(TreeNode<T> other) => other != null && this.Index == other.Index;
-        public override int GetHashCode() => this.Index;
+        public override bool Equals(object obj) => obj is TreeNode<T> node && Equals(node);
+        public bool Equals(TreeNode<T> other) => other != null && Index == other.Index;
+        public override int GetHashCode() => Index;
     }
 }

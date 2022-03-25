@@ -38,8 +38,8 @@ namespace Kzrnm.Competitive
             internal Node(int index, T key) : this(index, key, op.FIdentity) { }
             internal Node(int index, T key, F lazy)
             {
-                this.Index = index;
-                this.Sum = this.Key = key;
+                Index = index;
+                Sum = Key = key;
                 this.lazy = lazy;
             }
         }

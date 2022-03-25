@@ -72,11 +72,11 @@ namespace Kzrnm.Competitive
             var trie = this;
             if (key.Length == 0)
             {
-                if (!this.HasValue)
+                if (!HasValue)
                 {
-                    ++this.Count;
+                    ++Count;
                 }
-                this.Value = value;
+                Value = value;
                 return this;
             }
 
@@ -95,7 +95,7 @@ namespace Kzrnm.Competitive
             }
             if (updatedTries.Count == key.Length && trie.HasValue)
             {
-                --this.Count;
+                --Count;
                 foreach (var trie2 in updatedTries.AsSpan())
                 {
                     --trie2.Count;
@@ -173,8 +173,8 @@ namespace Kzrnm.Competitive
         }
         IEnumerable<KeyValuePair<TKey[], TValue>> All(List<TKey> list)
         {
-            if (this.HasValue)
-                yield return KeyValuePair.Create(list.ToArray(), this.Value);
+            if (HasValue)
+                yield return KeyValuePair.Create(list.ToArray(), Value);
 
             foreach (var (k, trie) in children)
             {

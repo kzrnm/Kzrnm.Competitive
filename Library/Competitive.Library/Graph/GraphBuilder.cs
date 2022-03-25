@@ -134,9 +134,9 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public GraphEdge Reversed(int from) => new GraphEdge(from);
 
-        public override int GetHashCode() => this.To;
-        public override bool Equals(object obj) => obj is GraphEdge edge && this.Equals(edge);
-        public bool Equals(GraphEdge other) => this.To == other.To;
+        public override int GetHashCode() => To;
+        public override bool Equals(object obj) => obj is GraphEdge edge && Equals(edge);
+        public bool Equals(GraphEdge other) => To == other.To;
         public static bool operator ==(GraphEdge left, GraphEdge right) => left.Equals(right);
         public static bool operator !=(GraphEdge left, GraphEdge right) => !left.Equals(right);
     }
@@ -145,9 +145,9 @@ namespace Kzrnm.Competitive
     {
         public GraphNode(int i, GraphEdge[] roots, GraphEdge[] children)
         {
-            this.Index = i;
-            this.Roots = roots;
-            this.Children = children;
+            Index = i;
+            Roots = roots;
+            Children = children;
         }
         public int Index { get; }
         public GraphEdge[] Roots { get; }
@@ -155,18 +155,18 @@ namespace Kzrnm.Competitive
         public bool IsDirected => Roots != Children;
 
         public override string ToString() => $"children: {string.Join(",", Children)}";
-        public override bool Equals(object obj) => obj is GraphNode d && this.Equals(d);
-        public bool Equals(GraphNode other) => this.Index == other?.Index;
-        public override int GetHashCode() => this.Index;
+        public override bool Equals(object obj) => obj is GraphNode d && Equals(d);
+        public bool Equals(GraphNode other) => Index == other?.Index;
+        public override int GetHashCode() => Index;
     }
     public class TreeNode : ITreeNode<GraphEdge>, IEquatable<TreeNode>
     {
         public TreeNode(int i, GraphEdge root, int depth, GraphEdge[] children)
         {
-            this.Index = i;
-            this.Root = root;
-            this.Children = children;
-            this.Depth = depth;
+            Index = i;
+            Root = root;
+            Children = children;
+            Depth = depth;
         }
         public int Index { get; }
         public GraphEdge Root { get; }
@@ -174,8 +174,8 @@ namespace Kzrnm.Competitive
         public int Depth { get; }
 
         public override string ToString() => $"children: {string.Join(",", Children)}";
-        public override bool Equals(object obj) => obj is TreeNode node && this.Equals(node);
-        public bool Equals(TreeNode other) => other != null && this.Index == other.Index;
-        public override int GetHashCode() => this.Index;
+        public override bool Equals(object obj) => obj is TreeNode node && Equals(node);
+        public bool Equals(TreeNode other) => other != null && Index == other.Index;
+        public override int GetHashCode() => Index;
     }
 }

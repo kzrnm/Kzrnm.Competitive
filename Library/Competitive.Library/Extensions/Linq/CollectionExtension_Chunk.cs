@@ -48,7 +48,7 @@ namespace Kzrnm.Competitive
                 }
             }
 
-            IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
     }
 }

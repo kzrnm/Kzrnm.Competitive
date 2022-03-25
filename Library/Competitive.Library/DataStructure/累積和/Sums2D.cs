@@ -43,7 +43,7 @@ namespace Kzrnm.Competitive
                 this.impl = impl;
                 this.left = left;
                 this.rightExclusive = rightExclusive;
-                this.Length = impl[0].Length - 1;
+                Length = impl[0].Length - 1;
             }
             [凾(256)]
             public TValue Slice(int top, int length)

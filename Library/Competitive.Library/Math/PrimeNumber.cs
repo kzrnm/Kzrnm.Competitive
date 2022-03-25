@@ -122,7 +122,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public bool IsPrime(long num)
         {
-            if (num <= this.primes[^1])
+            if (num <= primes[^1])
                 return Contains((int)num);
             foreach (var p in this)
                 if (num % p == 0)

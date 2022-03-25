@@ -52,7 +52,7 @@ namespace Kzrnm.Competitive
         public override string ToString() => $"{Numerator}/{Denominator}";
         public override bool Equals(object obj) => obj is BigFraction f && Equals(f);
         [凾(256)]
-        public bool Equals(BigFraction other) => this._numerator == other._numerator && this._denominator == other._denominator;
+        public bool Equals(BigFraction other) => _numerator == other._numerator && _denominator == other._denominator;
         public override int GetHashCode() => HashCode.Combine(_numerator, _denominator);
 
         [凾(256)]
@@ -60,7 +60,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static implicit operator BigFraction(BigInteger x) => new BigFraction(x, 1);
         [凾(256)]
-        public int CompareTo(BigFraction other) => (this.Numerator * other.Denominator).CompareTo(other.Numerator * this.Denominator);
+        public int CompareTo(BigFraction other) => (Numerator * other.Denominator).CompareTo(other.Numerator * Denominator);
 
         [凾(256)]
         public static BigFraction operator -(BigFraction x) => new BigFraction(-x.Numerator, x.Denominator);

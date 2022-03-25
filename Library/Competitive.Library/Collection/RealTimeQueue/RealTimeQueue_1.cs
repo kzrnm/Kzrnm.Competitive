@@ -123,7 +123,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         IImmutableQueue<T> IImmutableQueue<T>.Clear()
         {
             Debug.Assert(s_EmptyField.IsEmpty);
-            return this.Clear();
+            return Clear();
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// </returns>
         IImmutableQueue<T> IImmutableQueue<T>.Enqueue(T value)
         {
-            return this.Enqueue(value);
+            return Enqueue(value);
         }
 
         /// <summary>
@@ -234,8 +234,8 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         [凾(256)]
         public RealTimeQueue<T> Dequeue(out T value)
         {
-            value = this.Peek();
-            return this.Dequeue();
+            value = Peek();
+            return Dequeue();
         }
 
         /// <summary>
@@ -245,7 +245,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// <exception cref="System.InvalidOperationException">Thrown when the queue is empty.</exception>
         IImmutableQueue<T> IImmutableQueue<T>.Dequeue()
         {
-            return this.Dequeue();
+            return Dequeue();
         }
 
         /// <summary>
@@ -267,7 +267,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// </returns>
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
-            return this.IsEmpty ?
+            return IsEmpty ?
                 Enumerable.Empty<T>().GetEnumerator() :
                 new EnumeratorObject(this);
         }

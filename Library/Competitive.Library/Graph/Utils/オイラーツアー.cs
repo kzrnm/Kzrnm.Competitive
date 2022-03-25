@@ -36,7 +36,7 @@ namespace Kzrnm.Competitive
         public オイラーツアー((int left, int right)[] nodes, Event[] events)
         {
             this.nodes = nodes;
-            this.Events = events;
+            Events = events;
         }
 
         /// <summary>

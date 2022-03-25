@@ -35,8 +35,8 @@ namespace Kzrnm.Competitive
         public int Length => Nodes.Length;
         public SimpleGraph(TNode[] array, CSR<TEdge> edges)
         {
-            this.Nodes = array;
-            this.Edges = edges;
+            Nodes = array;
+            Edges = edges;
         }
     }
     public class TreeGraph<TNode, TEdge> : ITreeGraph<TNode, TEdge>
@@ -52,8 +52,8 @@ namespace Kzrnm.Competitive
         public int Root { get; }
         public TreeGraph(TNode[] array, int root)
         {
-            this.Root = root;
-            this.Nodes = array;
+            Root = root;
+            Nodes = array;
         }
     }
 }

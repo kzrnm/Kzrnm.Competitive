@@ -29,8 +29,8 @@ namespace Kzrnm.Competitive
         public int Length => Nodes.Length;
         public WGraph(TNode[] array, CSR<TEdge> edges)
         {
-            this.Nodes = array;
-            this.Edges = edges;
+            Nodes = array;
+            Edges = edges;
         }
     }
     public class WTreeGraph<T, TOp, TNode, TEdge> : IWTreeGraph<T, TOp, TNode, TEdge>
@@ -47,8 +47,8 @@ namespace Kzrnm.Competitive
         public int Root { get; }
         public WTreeGraph(TNode[] array, int root)
         {
-            this.Root = root;
-            this.Nodes = array;
+            Root = root;
+            Nodes = array;
         }
     }
 }
