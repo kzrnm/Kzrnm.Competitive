@@ -131,12 +131,6 @@ namespace Kzrnm.Competitive
             [凾(256)]
             public KeyValuePair<TKey, TValue> GetValue(Node node) => node.Pair;
             [凾(256)]
-            public void SetValue(ref Node node, KeyValuePair<TKey, TValue> value)
-            {
-                node.Key = value.Key;
-                node.Value = value.Value;
-            }
-            [凾(256)]
             public TKey GetCompareKey(KeyValuePair<TKey, TValue> item) => item.Key;
             [凾(256)]
             public int Compare(TKey value, Node node) => comparer.Compare(value, node.Key);

@@ -15,7 +15,6 @@ namespace Kzrnm.Competitive.SetInternals
     {
         Node Create(T item, NodeColor color);
         T GetValue(Node node);
-        void SetValue(ref Node node, T value);
         TCmp GetCompareKey(T item);
         int Compare(TCmp value, Node node);
     }
@@ -410,7 +409,6 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 order = op.Compare(key, current);
                 if (order == 0 && !this.IsMulti)
                 {
-                    //op.SetValue(ref current, item);
                     root.ColorBlack();
                     return false;
                 }
@@ -901,8 +899,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                     Debug.Assert(Left.Right.IsRed);
                     return RotateLeftRight();
                 default:
-                    throw new InvalidOperationException();
+                    return Throw();
             }
+            static TNode Throw() => throw new InvalidOperationException();
         }
         [凾(256)]
         internal TNode RotateLeft()

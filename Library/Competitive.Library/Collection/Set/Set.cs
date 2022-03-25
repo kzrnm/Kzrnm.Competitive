@@ -54,8 +54,6 @@ namespace Kzrnm.Competitive
             [凾(256)]
             public T GetValue(Node node) => node.Value;
             [凾(256)]
-            public void SetValue(ref Node node, T value) => node.Value = value;
-            [凾(256)]
             public T GetCompareKey(T item) => item;
             [凾(256)]
             public int Compare(T value, Node node) => comparer.Compare(value, node.Value);

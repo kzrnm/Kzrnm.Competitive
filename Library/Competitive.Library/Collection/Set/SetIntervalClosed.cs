@@ -319,12 +319,6 @@ namespace Kzrnm.Competitive
             [凾(256)]
             public (T From, T ToInclusive) GetValue(Node node) => node.Pair;
             [凾(256)]
-            public void SetValue(ref Node node, (T From, T ToInclusive) value)
-            {
-                node.From = value.From;
-                node.ToInclusive = value.ToInclusive;
-            }
-            [凾(256)]
             public T GetCompareKey((T From, T ToInclusive) item) => item.From;
             [凾(256)]
             public int Compare(T value, Node node)
