@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive
             foreach (var node in graphArr)
                 foreach (var e in node.Children)
                     edges.Add((node.Index, e));
-            edges.Sort(Comparer<(int from, TEdge edge)>.Create((t1, t2) => default(TOp).Compare(t1.edge.Value, t2.edge.Value)));
+            edges.Sort(Comparer<(int from, TEdge edge)>.Create((t1, t2) => new TOp().Compare(t1.edge.Value, t2.edge.Value)));
             var gr = new SimpleList<(int from, TEdge edge)>[graph.Length];
             foreach (var (from, e) in edges.AsSpan())
             {

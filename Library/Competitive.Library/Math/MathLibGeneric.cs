@@ -15,7 +15,7 @@ namespace Kzrnm.Competitive
         public static T Pow<T, TOp>(T x, long y)
               where TOp : struct, IMultiplicationOperator<T>
         {
-            var op = default(TOp);
+            var op = new TOp();
             T res = ((y & 1) != 0) ? x : op.MultiplyIdentity;
             for (y >>= 1; y > 0; y >>= 1)
             {

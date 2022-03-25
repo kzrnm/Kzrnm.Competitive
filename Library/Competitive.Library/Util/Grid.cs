@@ -24,25 +24,25 @@ namespace Kzrnm.Competitive
         public static Grid<int> GridInt(this PropertyConsoleReader cr, int H, int W, int defaultValue) => Create(cr.Repeat(H).Select(cr => cr.Repeat(W).Int), defaultValue);
 
         [凾(256)]
-        public static Grid<char> Create(string[] data) => new Grid<char>(data.Flatten(), data.Length, data[0].Length, default(char));
+        public static Grid<char> Create(string[] data) => new Grid<char>(data.Flatten(), data.Length, data[0].Length, new char());
 
         [凾(256)]
         public static Grid<char> Create(string[] data, char defaultValue) => new Grid<char>(data.Flatten(), data.Length, data[0].Length, defaultValue);
 
         [凾(256)]
-        public static Grid<T> Create<T>(T[][] data) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, default(T));
+        public static Grid<T> Create<T>(T[][] data) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, default);
 
         [凾(256)]
         public static Grid<T> Create<T>(T[][] data, T defaultValue) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);
 
         [凾(256)]
-        public static Grid<T> Create<T>(Span<T[]> data) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, default(T));
+        public static Grid<T> Create<T>(Span<T[]> data) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, default);
 
         [凾(256)]
         public static Grid<T> Create<T>(Span<T[]> data, T defaultValue) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);
 
         [凾(256)]
-        public static Grid<T> Create<T>(ReadOnlySpan<T[]> data) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, default(T));
+        public static Grid<T> Create<T>(ReadOnlySpan<T[]> data) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, default);
 
         [凾(256)]
         public static Grid<T> Create<T>(ReadOnlySpan<T[]> data, T defaultValue) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);
@@ -71,7 +71,7 @@ namespace Kzrnm.Competitive
         public readonly int W;
         internal readonly T[] data;
         private readonly T defaultValue;
-        public Grid(int H, int W, T defaultValue = default(T)) : this(new T[H * W].Fill(defaultValue), H, W, defaultValue) { }
+        public Grid(int H, int W, T defaultValue = default) : this(new T[H * W].Fill(defaultValue), H, W, defaultValue) { }
         internal Grid(T[] data, int H, int W, T defaultValue)
         {
             this.H = H;

@@ -58,9 +58,9 @@ namespace Kzrnm.Competitive
                 const long M12i3 = 190329765;
                 long M12i = (long)(ulong)(Mod1 * Mod2) % umod;
 
-                Debug.Assert(default(FFTMod1).Mod == Mod1);
-                Debug.Assert(default(FFTMod2).Mod == Mod2);
-                Debug.Assert(default(FFTMod3).Mod == Mod3);
+                Debug.Assert(new FFTMod1().Mod == Mod1);
+                Debug.Assert(new FFTMod2().Mod == Mod2);
+                Debug.Assert(new FFTMod3().Mod == Mod3);
                 Debug.Assert(M1i2 == new StaticModInt<FFTMod2>(Mod1).Inv().Value);
                 Debug.Assert(M12i3 == new StaticModInt<FFTMod3>(Mod1 * Mod2).Inv().Value);
 
@@ -112,8 +112,8 @@ namespace Kzrnm.Competitive
         public static StaticModInt<TMod>[] Convolution<TMod>(ReadOnlySpan<StaticModInt<TMod>> a, ReadOnlySpan<StaticModInt<TMod>> b)
              where TMod : struct, IStaticMod
         {
-            var mod = default(TMod).Mod;
-            if (default(TMod).IsPrime && a.Length + b.Length - 1 <= (1 << InternalBit.BSF(mod - 1)))
+            var mod = new TMod().Mod;
+            if (new TMod().IsPrime && a.Length + b.Length - 1 <= (1 << InternalBit.BSF(mod - 1)))
             {
                 // ACL で解けるならOK
                 return MathLib.Convolution(a, b);
@@ -137,7 +137,7 @@ namespace Kzrnm.Competitive
         public static uint[] Convolution<TMod>(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b)
              where TMod : struct, IStaticMod
         {
-            if (default(TMod).IsPrime && a.Length + b.Length - 1 <= (1 << InternalBit.BSF(default(TMod).Mod - 1)))
+            if (new TMod().IsPrime && a.Length + b.Length - 1 <= (1 << InternalBit.BSF(new TMod().Mod - 1)))
             {
                 // ACL で解けるならOK
                 return MathLib.Convolution<TMod>(a, b);
@@ -157,7 +157,7 @@ namespace Kzrnm.Competitive
         private static uint[] ConvolutionImpl<TMod>(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b)
              where TMod : struct, IStaticMod
         {
-            var mod = default(TMod).Mod;
+            var mod = new TMod().Mod;
             unchecked
             {
                 var n = a.Length;
@@ -181,9 +181,9 @@ namespace Kzrnm.Competitive
                 const long M12i3 = 190329765;
                 long M12i = (long)(ulong)(Mod1 * Mod2) % mod;
 
-                Debug.Assert(default(FFTMod1).Mod == Mod1);
-                Debug.Assert(default(FFTMod2).Mod == Mod2);
-                Debug.Assert(default(FFTMod3).Mod == Mod3);
+                Debug.Assert(new FFTMod1().Mod == Mod1);
+                Debug.Assert(new FFTMod2().Mod == Mod2);
+                Debug.Assert(new FFTMod3().Mod == Mod3);
                 Debug.Assert(M1i2 == new StaticModInt<FFTMod2>(Mod1).Inv().Value);
                 Debug.Assert(M12i3 == new StaticModInt<FFTMod3>(Mod1 * Mod2).Inv().Value);
 

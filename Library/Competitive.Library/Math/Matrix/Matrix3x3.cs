@@ -13,14 +13,14 @@ namespace Kzrnm.Competitive
         public readonly (T Col0, T Col1, T Col2) Row2;
         public Matrix3x3((T Col0, T Col1, T Col2) row0, (T Col0, T Col1, T Col2) row1, (T Col0, T Col1, T Col2) row2)
         {
-            this.Row0 = row0;
-            this.Row1 = row1;
-            this.Row2 = row2;
+            Row0 = row0;
+            Row1 = row1;
+            Row2 = row2;
         }
         public static readonly Matrix3x3<T, TOp> Identity = new Matrix3x3<T, TOp>(
-            (op.MultiplyIdentity, default(T), default(T)),
-            (default(T), op.MultiplyIdentity, default(T)),
-            (default(T), default(T), op.MultiplyIdentity));
+            (op.MultiplyIdentity, default, default),
+            (default, op.MultiplyIdentity, default),
+            (default, default, op.MultiplyIdentity));
 
         [凾(256)]
         public static Matrix3x3<T, TOp> operator -(Matrix3x3<T, TOp> x)

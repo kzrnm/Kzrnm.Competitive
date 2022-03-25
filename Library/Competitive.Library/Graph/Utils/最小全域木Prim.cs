@@ -43,7 +43,7 @@ namespace Kzrnm.Competitive
             where TEdge : IWGraphEdge<T>
         {
             [凾(256)]
-            public int Compare(TEdge x, TEdge y) => default(TOp).Compare(x.Value, y.Value);
+            public int Compare(TEdge x, TEdge y) => new TOp().Compare(x.Value, y.Value);
         }
     }
 }

@@ -176,12 +176,12 @@ namespace Kzrnm.Competitive
         where TOp : struct, ICompareOperator<T>
     {
         [凾(256)]
-        public bool UseLeft(T left, T right) => default(TOp).LessThan(left, right);
+        public bool UseLeft(T left, T right) => new TOp().LessThan(left, right);
     }
     public struct MaxConvexHullTrickOperator<T, TOp> : IConvexHullTrickOperator<T>
         where TOp : struct, ICompareOperator<T>
     {
         [凾(256)]
-        public bool UseLeft(T left, T right) => default(TOp).GreaterThan(left, right);
+        public bool UseLeft(T left, T right) => new TOp().GreaterThan(left, right);
     }
 }

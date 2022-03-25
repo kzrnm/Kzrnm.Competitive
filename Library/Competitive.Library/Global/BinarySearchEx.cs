@@ -26,7 +26,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         [凾(256)]
         public static int BinarySearch<TOp>(int ok, int ng) where TOp : struct, IOk<int>
-               => BinarySearch(default(TOp), ok, ng);
+               => BinarySearch(new TOp(), ok, ng);
         /// <summary>
         /// <paramref name="ok"/> と <paramref name="ng"/> の間で <paramref name="op"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
         /// </summary>
@@ -65,7 +65,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         [凾(256)]
         public static long BinarySearch<TOp>(long ok, long ng) where TOp : struct, IOk<long>
-            => BinarySearch(default(TOp), ok, ng);
+            => BinarySearch(new TOp(), ok, ng);
         /// <summary>
         /// <paramref name="ok"/> と <paramref name="ng"/> の間で <paramref name="op"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
         /// </summary>
@@ -104,7 +104,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         [凾(256)]
         public static ulong BinarySearch<TOp>(ulong ok, ulong ng) where TOp : struct, IOk<ulong>
-            => BinarySearch(default(TOp), ok, ng);
+            => BinarySearch(new TOp(), ok, ng);
         /// <summary>
         /// <paramref name="ok"/> と <paramref name="ng"/> の間で <paramref name="op"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
         /// </summary>
@@ -143,7 +143,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         [凾(256)]
         public static BigInteger BinarySearch<TOp>(BigInteger ok, BigInteger ng) where TOp : struct, IOk<BigInteger>
-            => BinarySearch(default(TOp), ok, ng);
+            => BinarySearch(new TOp(), ok, ng);
         /// <summary>
         /// <paramref name="ok"/> と <paramref name="ng"/> の間で <paramref name="op"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
         /// </summary>
@@ -182,7 +182,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         [凾(256)]
         public static long BinarySearchBig<TOp>(long ok) where TOp : struct, IOk<long>
-            => BinarySearchBig(default(TOp), ok);
+            => BinarySearchBig(new TOp(), ok);
         /// <summary>
         /// <paramref name="ok"/> 以上で <c>Ok</c>(i) == true を満たす最も大きい値を取得します。
         /// </summary>
@@ -223,7 +223,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         [凾(256)]
         public static BigInteger BinarySearchBig<TOp>(BigInteger ok) where TOp : struct, IOk<BigInteger>
-            => BinarySearchBig(ok, default(TOp));
+            => BinarySearchBig(ok, new TOp());
         /// <summary>
         /// <paramref name="ok"/> 以上で <c>Ok</c>(i) == true を満たす最も大きい値を取得します。
         /// </summary>
@@ -263,7 +263,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         [凾(256)]
         public static double BinarySearch<TOp>(double ok, double ng, double eps = 1e-7) where TOp : struct, IOk<double>
-            => BinarySearch(default(TOp), ok, ng, eps);
+            => BinarySearch(new TOp(), ok, ng, eps);
         /// <summary>
         /// <paramref name="ok"/> と <paramref name="ng"/> の間で <paramref name="op"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
         /// </summary>

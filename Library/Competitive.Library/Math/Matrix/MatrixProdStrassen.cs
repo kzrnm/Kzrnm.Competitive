@@ -36,7 +36,7 @@ namespace Kzrnm.Competitive
             }
             public StaticModInt<T>[][] Strassen(StaticModInt<T>[][] mat1, StaticModInt<T>[][] mat2)
             {
-                Contract.Assert(default(T).Mod % 2 == 1);
+                Contract.Assert(new T().Mod % 2 == 1);
                 Contract.Assert(mat1.Length <= S);
                 Contract.Assert(mat2.Length <= S);
                 Contract.Assert(mat1[0].Length <= S);

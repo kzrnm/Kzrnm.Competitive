@@ -204,9 +204,9 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <param name="maxSize">n の最大値</param>
         public static T[][] CombinationTable<T, TOp>(int maxSize)
-            where TOp : IAdditionOperator<T>, IMultiplicationOperator<T>
+            where TOp : struct, IAdditionOperator<T>, IMultiplicationOperator<T>
         {
-            var op = default(TOp);
+            var op = new TOp();
             var c = new T[++maxSize][];
             for (int i = 0; i < c.Length; i++)
             {

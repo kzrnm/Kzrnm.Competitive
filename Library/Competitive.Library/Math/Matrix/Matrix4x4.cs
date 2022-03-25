@@ -20,10 +20,10 @@ namespace Kzrnm.Competitive
             this.Row3 = row3;
         }
         public static readonly Matrix4x4<T, TOp> Identity = new Matrix4x4<T, TOp>(
-            (op.MultiplyIdentity, default(T), default(T), default(T)),
-            (default(T), op.MultiplyIdentity, default(T), default(T)),
-            (default(T), default(T), op.MultiplyIdentity, default(T)),
-            (default(T), default(T), default(T), op.MultiplyIdentity));
+            (op.MultiplyIdentity, default, default, default),
+            (default, op.MultiplyIdentity, default, default),
+            (default, default, op.MultiplyIdentity, default),
+            (default, default, default, op.MultiplyIdentity));
 
         [凾(256)]
         public static Matrix4x4<T, TOp> operator -(Matrix4x4<T, TOp> x)

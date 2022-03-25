@@ -12,12 +12,12 @@ namespace Kzrnm.Competitive
         public readonly (T Col0, T Col1) Row1;
         public Matrix2x2((T Col0, T Col1) row0, (T Col0, T Col1) row1)
         {
-            this.Row0 = row0;
-            this.Row1 = row1;
+            Row0 = row0;
+            Row1 = row1;
         }
         public static readonly Matrix2x2<T, TOp> Identity = new Matrix2x2<T, TOp>(
-            (op.MultiplyIdentity, default(T)),
-            (default(T), op.MultiplyIdentity));
+            (op.MultiplyIdentity, default),
+            (default, op.MultiplyIdentity));
 
         [凾(256)]
         public static Matrix2x2<T, TOp> operator -(Matrix2x2<T, TOp> x)

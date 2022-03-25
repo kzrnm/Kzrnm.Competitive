@@ -12,8 +12,8 @@ namespace Kzrnm.Competitive
     public class Set<T, TOp> : SetBase<T, Set<T, TOp>.C, Set<T, TOp>.Node, Set<T, TOp>.NodeOperator>
         where TOp : struct, IComparer<T>
     {
-        public Set(bool isMulti = false) : this(default(TOp), isMulti) { }
-        public Set(IEnumerable<T> collection, bool isMulti = false) : this(collection, default(TOp), isMulti) { }
+        public Set(bool isMulti = false) : this(new TOp(), isMulti) { }
+        public Set(IEnumerable<T> collection, bool isMulti = false) : this(collection, new TOp(), isMulti) { }
         public Set(TOp comparer, bool isMulti = false) : base(isMulti, new NodeOperator(comparer))
         {
             this.comparer = comparer;

@@ -18,7 +18,7 @@ namespace Kzrnm.Competitive
         public static int LowerBound<TValue, TOp>(this FenwickTree<TValue, TOp> fw, TValue v)
             where TOp : struct, IAdditionOperator<TValue>, ISubtractOperator<TValue>, ICompareOperator<TValue>
         {
-            var op = default(TOp);
+            var op = new TOp();
             if (op.LessThanOrEqual(v, default)) return 0;
             int x = 0;
             for (int k = 1 << BitOperationsEx.MSB(fw.data.Length - 1); k > 0; k >>= 1)
@@ -44,7 +44,7 @@ namespace Kzrnm.Competitive
         public static int UpperBound<TValue, TOp>(this FenwickTree<TValue, TOp> fw, TValue v)
             where TOp : struct, IAdditionOperator<TValue>, ISubtractOperator<TValue>, ICompareOperator<TValue>
         {
-            var op = default(TOp);
+            var op = new TOp();
             if (op.LessThanOrEqual(v, default)) return 0;
             int x = 0;
             for (int k = 1 << BitOperationsEx.MSB(fw.data.Length - 1); k > 0; k >>= 1)
@@ -67,7 +67,7 @@ namespace Kzrnm.Competitive
         public static (TValue Item, TValue Sum)[] ToArray<TValue, TOp>(this FenwickTree<TValue, TOp> fw)
             where TOp : struct, IAdditionOperator<TValue>, ISubtractOperator<TValue>
         {
-            var op = default(TOp);
+            var op = new TOp();
             var data = fw.data;
             var items = new (TValue Item, TValue Sum)[data.Length - 1];
             items[0] = (data[1], data[1]);

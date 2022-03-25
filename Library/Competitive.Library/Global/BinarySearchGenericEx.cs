@@ -15,7 +15,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         [凾(256)]
         public static T BinarySearch<T, TOp>(T ok, T ng) where TOp : struct, IBinaryOk<T>
-               => BinarySearch(default(TOp), ok, ng);
+               => BinarySearch(new TOp(), ok, ng);
         /// <summary>
         /// <paramref name="ok"/> と <paramref name="ng"/> の間で <paramref name="op"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
         /// </summary>

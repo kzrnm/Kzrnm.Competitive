@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive
         private int[] values;
         private int[] indexes;
         private readonly TKOp _comparer;
-        public PriorityQueueDijkstra(int capacity) : this(capacity, default(TKOp)) { }
+        public PriorityQueueDijkstra(int capacity) : this(capacity, default) { }
         public PriorityQueueDijkstra(int capacity, TKOp comparer)
         {
             if (comparer == null)
@@ -49,8 +49,8 @@ namespace Kzrnm.Competitive
         {
             if (Count == 0)
             {
-                key = default(TKey);
-                value = default(int);
+                key = default;
+                value = 0;
                 return false;
             }
             (key, value) = Dequeue();
@@ -61,7 +61,7 @@ namespace Kzrnm.Competitive
         {
             if (Count == 0)
             {
-                result = default(KeyValuePair<TKey, int>);
+                result = new KeyValuePair<TKey, int>();
                 return false;
             }
             result = Dequeue();
