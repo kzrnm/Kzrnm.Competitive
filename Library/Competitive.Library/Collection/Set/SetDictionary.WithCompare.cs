@@ -7,15 +7,26 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    [DebuggerTypeProxy(typeof(SetDictionary<,>.DebugView))]
+    [DebuggerTypeProxy(typeof(SetDictionary<,,>.DebugView))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class SetDictionary<TKey, TValue>
-        : SetBase<KeyValuePair<TKey, TValue>, SetDictionary<TKey, TValue>.C<TKey>, SetDictionary<TKey, TValue>.Node, SetDictionary<TKey, TValue>.NodeOperator>
+    public class SetDictionary<TKey, TValue, TOp>
+        : SetBase<KeyValuePair<TKey, TValue>, SetDictionary<TKey, TValue, TOp>.C, SetDictionary<TKey, TValue, TOp>.Node, SetDictionary<TKey, TValue, TOp>.NodeOperator>
         , IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
-        where TKey : IComparable<TKey>
+        where TOp : struct, IComparer<TKey>
     {
-        public SetDictionary(bool isMulti = false) : base(isMulti, new NodeOperator()) { }
-        public SetDictionary(IDictionary<TKey, TValue> dict, bool isMulti = false) : base(isMulti, new NodeOperator(), dict) { }
+        public SetDictionary(bool isMulti = false) : this(default(TOp), isMulti) { }
+        public SetDictionary(IDictionary<TKey, TValue> dict, bool isMulti = false) : this(dict, default(TOp), isMulti) { }
+        public SetDictionary(TOp comparer, bool isMulti = false) : base(isMulti, new NodeOperator(comparer))
+        {
+            this.comparer = comparer;
+        }
+        public SetDictionary(IDictionary<TKey, TValue> dict, TOp comparer, bool isMulti = false)
+            : base(isMulti, new NodeOperator(comparer), dict)
+        {
+            this.comparer = comparer;
+        }
+
+        protected readonly TOp comparer;
 
         #region IDictionary
         ICollection<TKey> IDictionary<TKey, TValue>.Keys
@@ -51,11 +62,11 @@ namespace Kzrnm.Competitive
         public TValue this[TKey key]
         {
             [凾(256)]
-            get => base.FindNode(new C<TKey>(key)).Value;
+            get => FindNode(new C(comparer, key)).Value;
             [凾(256)]
             set
             {
-                var node = base.FindNode(new C<TKey>(key));
+                var node = FindNode(new C(comparer, key));
                 if (node == null) Add(key, value);
                 else node.Value = value;
             }
@@ -67,19 +78,19 @@ namespace Kzrnm.Competitive
         public bool Add(TKey key, TValue value) => DoAdd(KeyValuePair.Create(key, value));
 
         [凾(256)]
-        public bool Remove(TKey key) => DoRemove(new C<TKey>(key));
+        public bool Remove(TKey key) => DoRemove(new C(comparer, key));
 
 
         [凾(256)]
-        public bool ContainsKey(TKey key) => base.FindNode(new C<TKey>(key)) != null;
+        public bool ContainsKey(TKey key) => FindNode(new C(comparer, key)) != null;
         bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> pair)
         {
-            var node = BinarySearch(new C<TKey>(pair.Key), default(L)).node; // LowerBound
+            var node = BinarySearch(new C(comparer, pair.Key), default(L)).node; // LowerBound
             if (node == null) return false;
             var e = new Enumerator(this, false, node);
             while (e.MoveNext())
             {
-                if (pair.Key.CompareTo(e.Current.Key) != 0) break;
+                if (comparer.Compare(pair.Key, e.Current.Key) != 0) break;
                 if (EqualityComparer<TValue>.Default.Equals(pair.Value, e.Current.Value)) return true;
             }
             return false;
@@ -87,7 +98,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public bool TryGetValue(TKey key, out TValue value)
         {
-            var node = base.FindNode(new C<TKey>(key));
+            var node = FindNode(new C(comparer, key));
             if (node == null)
             {
                 value = default;
@@ -111,74 +122,83 @@ namespace Kzrnm.Competitive
             }
             public override string ToString() => $"Key = {Key}, Value = {Value}, Size = {Size}";
         }
-        public readonly struct C<Tv> : IComparable<Node> where Tv : IComparable<TKey>
+        public readonly struct C : IComparable<Node>
         {
-            private readonly Tv v;
-            public C(Tv val) { v = val; }
-            [凾(256)] public int CompareTo(Node other) => v.CompareTo(other.Key);
+            private readonly TOp op;
+            private readonly TKey v;
+            public C(TOp op, TKey val) { this.op = op; v = val; }
+            [凾(256)] public int CompareTo(Node other) => op.Compare(v, other.Key);
         }
-        public readonly struct NodeOperator : ISetOperator<KeyValuePair<TKey, TValue>, C<TKey>, Node>
+        public struct NodeOperator : ISetOperator<KeyValuePair<TKey, TValue>, C, Node>
         {
-            [凾(256)] public Node Create(KeyValuePair<TKey, TValue> item, NodeColor color) => new Node(item.Key, item.Value, color);
-            [凾(256)] public KeyValuePair<TKey, TValue> GetValue(Node node) => node.Pair;
-            [凾(256)] public C<TKey> GetCompareKey(KeyValuePair<TKey, TValue> item) => new C<TKey>(item.Key);
-            [凾(256)] public int Compare(KeyValuePair<TKey, TValue> x, KeyValuePair<TKey, TValue> y) => x.Key.CompareTo(y.Key);
+            private readonly TOp comparer;
+            public IComparer<TKey> Comparer => comparer;
+            public NodeOperator(TOp comparer)
+            {
+                this.comparer = comparer;
+            }
+            [凾(256)]
+            public Node Create(KeyValuePair<TKey, TValue> item, NodeColor color) => new Node(item.Key, item.Value, color);
+            [凾(256)]
+            public KeyValuePair<TKey, TValue> GetValue(Node node) => node.Pair;
+            [凾(256)]
+            public C GetCompareKey(KeyValuePair<TKey, TValue> item) => new C(comparer, item.Key);
+            public int Compare(KeyValuePair<TKey, TValue> x, KeyValuePair<TKey, TValue> y) => comparer.Compare(x.Key, y.Key);
         }
         #endregion Operators
 
         #region Search
-        [凾(256)] public new Node FindNode<Tv>(Tv item) where Tv : IComparable<TKey> => base.FindNode(new C<Tv>(item));
-        [凾(256)] public bool Contains<Tv>(Tv item) where Tv : IComparable<TKey> => FindNode(item) != null;
+        [凾(256)] public Node FindNode(TKey item) => base.FindNode(new C(comparer, item));
         /// <summary>
         /// <paramref name="item"/> 以上の最初のノードを返します。
         /// </summary>
-        [凾(256)] public Node FindNodeLowerBound<Tv>(Tv item) where Tv : IComparable<TKey> => BinarySearch(new C<Tv>(item), default(L)).node;
+        [凾(256)] public Node FindNodeLowerBound(TKey item) => BinarySearch(new C(comparer, item), default(L)).node;
         /// <summary>
         /// <paramref name="item"/> 以上の最初のインデックスを返します。
         /// </summary>
-        [凾(256)] public int LowerBoundIndex<Tv>(Tv item) where Tv : IComparable<TKey> => BinarySearch(new C<Tv>(item), default(L)).index;
+        [凾(256)] public int LowerBoundIndex(TKey item) => BinarySearch(new C(comparer, item), default(L)).index;
         /// <summary>
         /// <paramref name="item"/> 以上の最初の要素を返します。
         /// </summary>
-        [凾(256)] public KeyValuePair<TKey, TValue> LowerBoundItem<Tv>(Tv item) where Tv : IComparable<TKey> => BinarySearch(new C<Tv>(item), default(L)).node.Pair;
+        [凾(256)] public KeyValuePair<TKey, TValue> LowerBoundItem(TKey item) => BinarySearch(new C(comparer, item), default(L)).node.Pair;
         /// <summary>
         /// <paramref name="item"/> を超える最初のノードを返します。
         /// </summary>
-        [凾(256)] public Node FindNodeUpperBound<Tv>(Tv item) where Tv : IComparable<TKey> => BinarySearch(new C<Tv>(item), default(U)).node;
+        [凾(256)] public Node FindNodeUpperBound(TKey item) => BinarySearch(new C(comparer, item), default(U)).node;
         /// <summary>
         /// <paramref name="item"/> を超える最初のインデックスを返します。
         /// </summary>
-        [凾(256)] public int UpperBoundIndex<Tv>(Tv item) where Tv : IComparable<TKey> => BinarySearch(new C<Tv>(item), default(U)).index;
+        [凾(256)] public int UpperBoundIndex(TKey item) => BinarySearch(new C(comparer, item), default(U)).index;
         /// <summary>
         /// <paramref name="item"/> を超える最初の要素を返します。
         /// </summary>
-        [凾(256)] public KeyValuePair<TKey, TValue> UpperBoundItem<Tv>(Tv item) where Tv : IComparable<TKey> => BinarySearch(new C<Tv>(item), default(U)).node.Pair;
+        [凾(256)] public KeyValuePair<TKey, TValue> UpperBoundItem(TKey item) => BinarySearch(new C(comparer, item), default(U)).node.Pair;
 
         /// <summary>
         /// <paramref name="item"/> 以下の最後のノードを返します。
         /// </summary>
-        [凾(256)] public Node FindNodeReverseLowerBound<Tv>(Tv item) where Tv : IComparable<TKey> => BinarySearch(new C<Tv>(item), default(LR)).node;
+        [凾(256)] public Node FindNodeReverseLowerBound(TKey item) => BinarySearch(new C(comparer, item), default(LR)).node;
         /// <summary>
         /// <paramref name="item"/> 以下の最後のインデックスを返します。
         /// </summary>
-        [凾(256)] public int ReverseLowerBoundIndex<Tv>(Tv item) where Tv : IComparable<TKey> => BinarySearch(new C<Tv>(item), default(LR)).index;
+        [凾(256)] public int ReverseLowerBoundIndex(TKey item) => BinarySearch(new C(comparer, item), default(LR)).index;
         /// <summary>
         /// <paramref name="item"/> 以下の最後の要素を返します。
         /// </summary>
-        [凾(256)] public KeyValuePair<TKey, TValue> ReverseLowerBoundItem<Tv>(Tv item) where Tv : IComparable<TKey> => BinarySearch(new C<Tv>(item), default(LR)).node.Pair;
+        [凾(256)] public KeyValuePair<TKey, TValue> ReverseLowerBoundItem(TKey item) => BinarySearch(new C(comparer, item), default(LR)).node.Pair;
 
         /// <summary>
         /// <paramref name="item"/> 未満の最後のノードを返します。
         /// </summary>
-        [凾(256)] public Node FindNodeReverseUpperBound<Tv>(Tv item) where Tv : IComparable<TKey> => BinarySearch(new C<Tv>(item), default(UR)).node;
+        [凾(256)] public Node FindNodeReverseUpperBound(TKey item) => BinarySearch(new C(comparer, item), default(UR)).node;
         /// <summary>
         /// <paramref name="item"/> 未満の最後のインデックスを返します。
         /// </summary>
-        [凾(256)] public int ReverseUpperBoundIndex<Tv>(Tv item) where Tv : IComparable<TKey> => BinarySearch(new C<Tv>(item), default(UR)).index;
+        [凾(256)] public int ReverseUpperBoundIndex(TKey item) => BinarySearch(new C(comparer, item), default(UR)).index;
         /// <summary>
         /// <paramref name="item"/> 未満の最後の要素を返します。
         /// </summary>
-        [凾(256)] public KeyValuePair<TKey, TValue> ReverseUpperBoundItem<Tv>(Tv item) where Tv : IComparable<TKey> => BinarySearch(new C<Tv>(item), default(UR)).node.Pair;
+        [凾(256)] public KeyValuePair<TKey, TValue> ReverseUpperBoundItem(TKey item) => BinarySearch(new C(comparer, item), default(UR)).node.Pair;
         #endregion Search
 
         private class DebugView

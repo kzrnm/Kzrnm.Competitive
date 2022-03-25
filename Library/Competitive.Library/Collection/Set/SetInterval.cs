@@ -32,21 +32,28 @@ namespace Kzrnm.Competitive
     [DebuggerTypeProxy(typeof(SetInterval<,>.DebugView))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class SetInterval<T, TOp>
-        : SetBase<(T From, T ToExclusive), T, SetInterval<T, TOp>.Node, SetInterval<T, TOp>.NodeOperator>
-        where TOp : struct, IComparer<T>, IUnaryNumOperator<T>, IMinMaxValue<T>
+        : SetBase<(T From, T ToExclusive), SetInterval<T, TOp>.C<T>, SetInterval<T, TOp>.Node, SetInterval<T, TOp>.NodeOperator>
+        where T : IComparable<T>
+        where TOp : struct, IUnaryNumOperator<T>, IMinMaxValue<T>
     {
         public SetInterval() : this(default(TOp)) { }
         public SetInterval(IEnumerable<(T From, T ToExclusive)> collection) : this(collection, default(TOp)) { }
-        public SetInterval(TOp comparer) : base(false, new NodeOperator(comparer))
+        public SetInterval(TOp op) : base(false, new NodeOperator())
         {
-            this.comparer = comparer;
+            this.op = op;
         }
-        public SetInterval(IEnumerable<(T From, T ToExclusive)> collection, TOp comparer)
-            : base(false, new NodeOperator(comparer), collection) { }
+        public SetInterval(IEnumerable<(T From, T ToExclusive)> collection, TOp op)
+            : base(false, new NodeOperator(), collection)
+        {
+            this.op = op;
+        }
+
+        protected readonly TOp op;
+
         protected override ReadOnlySpan<(T From, T ToExclusive)> InitArray(IEnumerable<(T From, T ToExclusive)> collection)
         {
             var list = new List<(T From, T ToExclusive)>(
-                collection.Where(t => comparer.Compare(t.From, t.ToExclusive) < 0));
+                collection.Where(t => t.From.CompareTo(t.ToExclusive) < 0));
             if (list.Count == 0) return Array.Empty<(T From, T ToExclusive)>();
 
             list.Sort();
@@ -58,9 +65,9 @@ namespace Kzrnm.Competitive
             {
                 var pt = resList[^1].ToExclusive;
                 var (f, t) = list[i];
-                if (comparer.Compare(pt, f) >= 0)
+                if (pt.CompareTo(f) >= 0)
                 {
-                    if (comparer.Compare(pt, t) < 0)
+                    if (pt.CompareTo(t) < 0)
                         resList[^1] = (resList[^1].From, t);
                 }
                 else
@@ -70,21 +77,20 @@ namespace Kzrnm.Competitive
             return resList.ToArray();
         }
 
-        protected readonly TOp comparer;
 
         protected new bool Add((T From, T ToExclusive) item) => Add(item.From, item.ToExclusive);
         public bool Add(T from, T toExclusive)
         {
-            var left = FindNodeLowerBound(comparer.Decrement(from));
-            var right = FindNodeLowerBound(comparer.Decrement(toExclusive));
+            var left = FindNodeLowerBound(op.Decrement(from));
+            var right = FindNodeLowerBound(op.Decrement(toExclusive));
             if (left != null)
             {
-                if (comparer.Compare(from, left.From) < 0 || comparer.Compare(from, left.ToExclusive) > 0)
+                if (from.CompareTo(left.From) < 0 || from.CompareTo(left.ToExclusive) > 0)
                     left = null;
-                else if (comparer.Compare(toExclusive, left.ToExclusive) <= 0)
+                else if (toExclusive.CompareTo(left.ToExclusive) <= 0)
                     return false;
             }
-            if (right != null && comparer.Compare(toExclusive, right.From) < 0)
+            if (right != null && toExclusive.CompareTo(right.From) < 0)
                 right = null;
 
             if (left != null && right != null)
@@ -95,7 +101,7 @@ namespace Kzrnm.Competitive
             }
             else
             {
-                Remove(comparer.Increment(from), comparer.Decrement(toExclusive));
+                Remove(op.Increment(from), op.Decrement(toExclusive));
                 if (left != null)
                     left.ToExclusive = toExclusive;
                 else if (right != null)
@@ -120,7 +126,7 @@ namespace Kzrnm.Competitive
             int order = 0;
             while (current != null)
             {
-                order = comparer.Compare(from, current.From);
+                order = from.CompareTo(current.From);
                 if (current.Is4Node)
                 {
                     current.Split4Node();
@@ -159,8 +165,8 @@ namespace Kzrnm.Competitive
                 {
                     if (current.Is2Node)
                         Fix2Node(match, ref parentOfMatch, current, parent, grandParent);
-                    int order = foundMatch ? -1 : comparer.Compare(from, current.From);
-                    if (!foundMatch && order <= 0 && comparer.Compare(toExclusive, current.ToExclusive) >= 0)
+                    int order = foundMatch ? -1 : from.CompareTo(current.From);
+                    if (!foundMatch && order <= 0 && toExclusive.CompareTo(current.ToExclusive) >= 0)
                     {
                         resultMatch = foundMatch = true;
                         match = current;
@@ -180,10 +186,10 @@ namespace Kzrnm.Competitive
                 var match = FindNodeLowerBound(from);
                 if (match != null)
                 {
-                    int order = comparer.Compare(from, match.From);
+                    int order = from.CompareTo(match.From);
                     if (order <= 0)
                     {
-                        if (comparer.Compare(toExclusive, match.From) > 0) // 右側
+                        if (toExclusive.CompareTo(match.From) > 0) // 右側
                         {
                             resultMatch = true;
                             match.From = toExclusive;
@@ -191,13 +197,13 @@ namespace Kzrnm.Competitive
                     }
                     else
                     {
-                        if (comparer.Compare(toExclusive, match.ToExclusive) >= 0) // 左側
+                        if (toExclusive.CompareTo(match.ToExclusive) >= 0) // 左側
                         {
                             resultMatch = true;
                             match.ToExclusive = from;
 
                             match = FindNodeLowerBound(toExclusive);
-                            if (match != null && comparer.Compare(toExclusive, match.From) > 0)
+                            if (match != null && toExclusive.CompareTo(match.From) > 0)
                                 match.From = toExclusive;
                         }
                         else // 分割
@@ -218,7 +224,7 @@ namespace Kzrnm.Competitive
         public bool Contains(T from, T toExclusive)
         {
             var node = FindNode(from);
-            return node != null && comparer.Compare(toExclusive, node.ToExclusive) <= 0;
+            return node != null && toExclusive.CompareTo(node.ToExclusive) <= 0;
         }
 
         /// <summary>
@@ -226,13 +232,13 @@ namespace Kzrnm.Competitive
         /// </summary>
         public IEnumerable<(T From, T ToExclusive)> RangeTruncate(T from, T toExclusive)
         {
-            if (comparer.Compare(from, Max.ToExclusive) >= 0) yield break;
+            if (from.CompareTo(Max.ToExclusive) >= 0) yield break;
             foreach (var tup in EnumerateItem(FindNodeLowerBound(from)))
             {
                 var (f, t) = tup;
-                if (comparer.Compare(f, from) < 0) f = from;
-                if (comparer.Compare(f, toExclusive) >= 0) yield break;
-                if (comparer.Compare(t, toExclusive) > 0) t = toExclusive;
+                if (f.CompareTo(from) < 0) f = from;
+                if (f.CompareTo(toExclusive) >= 0) yield break;
+                if (t.CompareTo(toExclusive) > 0) t = toExclusive;
                 yield return (f, t);
             }
         }
@@ -242,10 +248,10 @@ namespace Kzrnm.Competitive
         /// </summary>
         public IEnumerable<(T From, T ToExclusive)> RangeAll(T from, T toExclusive)
         {
-            if (comparer.Compare(from, Max.ToExclusive) >= 0) yield break;
+            if (from.CompareTo(Max.ToExclusive) >= 0) yield break;
             foreach (var (f, t) in EnumerateItem(FindNodeLowerBound(from)))
             {
-                if (comparer.Compare(f, toExclusive) >= 0) yield break;
+                if (f.CompareTo(toExclusive) >= 0) yield break;
                 yield return (f, t);
             }
         }
@@ -256,7 +262,7 @@ namespace Kzrnm.Competitive
         public void UnionWith(IEnumerable<(T From, T ToExclusive)> other)
         {
             foreach (var (f, t) in other)
-                this.Add(f, t);
+                Add(f, t);
         }
 
         /// <summary>
@@ -265,7 +271,7 @@ namespace Kzrnm.Competitive
         public void ExceptWith(IEnumerable<(T From, T ToExclusive)> other)
         {
             foreach (var (f, t) in other)
-                this.Remove(f, t);
+                Remove(f, t);
         }
 
         /// <summary>
@@ -279,17 +285,17 @@ namespace Kzrnm.Competitive
             {
                 if (isCalled)
                 {
-                    this.Remove(last.ToExclusive, tup.From);
+                    Remove(last.ToExclusive, tup.From);
                 }
                 else
                 {
                     isCalled = true;
-                    this.Remove(comparer.MinValue, tup.From);
+                    Remove(op.MinValue, tup.From);
                 }
                 last = tup;
             }
             if (isCalled)
-                this.Remove(last.ToExclusive, comparer.MaxValue);
+                Remove(last.ToExclusive, op.MaxValue);
         }
 
         public class Node : SetNodeBase<Node>
@@ -299,38 +305,93 @@ namespace Kzrnm.Competitive
             public (T From, T ToExclusive) Pair => (From, ToExclusive);
             internal Node(T from, T toExclusive, NodeColor color) : base(color)
             {
-                this.From = from;
-                this.ToExclusive = toExclusive;
+                From = from;
+                ToExclusive = toExclusive;
             }
             public override string ToString() => $"Range = [{From}, {ToExclusive}), Size = {Size}";
         }
-        public struct NodeOperator : ISetOperator<(T From, T ToExclusive), T, Node>
+        public readonly struct C<Tv> : IComparable<Node> where Tv : IComparable<T>
         {
-            private readonly TOp comparer;
-            public IComparer<T> Comparer => comparer;
-            public NodeOperator(TOp comparer)
+            private readonly Tv v;
+            public C(Tv val) { v = val; }
+            [凾(256)]
+            public int CompareTo(Node other)
             {
-                this.comparer = comparer;
+                int forder = v.CompareTo(other.From);
+                if (forder < 0) return -1;
+                int torder = v.CompareTo(other.ToExclusive);
+                if (torder < 0)
+                    return 0;
+                return 1;
             }
+        }
+        public struct NodeOperator : ISetOperator<(T From, T ToExclusive), C<T>, Node>
+        {
             [凾(256)]
             public Node Create((T From, T ToExclusive) item, NodeColor color) => new Node(item.From, item.ToExclusive, color);
             [凾(256)]
             public (T From, T ToExclusive) GetValue(Node node) => node.Pair;
             [凾(256)]
-            public T GetCompareKey((T From, T ToExclusive) item) => item.From;
+            public int Compare((T From, T ToExclusive) x, (T From, T ToExclusive) y) => x.From.CompareTo(y.From);
             [凾(256)]
-            public int Compare(T value, Node node)
-            {
-                int forder = comparer.Compare(node.From, value);
-                if (forder > 0) return -1;
-                int torder = comparer.Compare(node.ToExclusive, value);
-                if (torder > 0)
-                    return 0;
-                return 1;
-            }
-            [凾(256)]
-            public int Compare((T From, T ToExclusive) x, (T From, T ToExclusive) y) => comparer.Compare(x.From, y.From);
+            public C<T> GetCompareKey((T From, T ToExclusive) item) => new C<T>(item.From);
         }
+
+        #region Search
+        [凾(256)] public new Node FindNode<Tv>(Tv item) where Tv : IComparable<T> => base.FindNode(new C<Tv>(item));
+        [凾(256)] public bool Contains<Tv>(Tv item) where Tv : IComparable<T> => FindNode(item) != null;
+        /// <summary>
+        /// <paramref name="item"/> 以上の最初のノードを返します。
+        /// </summary>
+        [凾(256)] public Node FindNodeLowerBound<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(L)).node;
+        /// <summary>
+        /// <paramref name="item"/> 以上の最初のインデックスを返します。
+        /// </summary>
+        [凾(256)] public int LowerBoundIndex<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(L)).index;
+        /// <summary>
+        /// <paramref name="item"/> 以上の最初の要素を返します。
+        /// </summary>
+        [凾(256)] public (T From, T ToExclusive) LowerBoundItem<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(L)).node.Pair;
+        /// <summary>
+        /// <paramref name="item"/> を超える最初のノードを返します。
+        /// </summary>
+        [凾(256)] public Node FindNodeUpperBound<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(U)).node;
+        /// <summary>
+        /// <paramref name="item"/> を超える最初のインデックスを返します。
+        /// </summary>
+        [凾(256)] public int UpperBoundIndex<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(U)).index;
+        /// <summary>
+        /// <paramref name="item"/> を超える最初の要素を返します。
+        /// </summary>
+        [凾(256)] public (T From, T ToExclusive) UpperBoundItem<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(U)).node.Pair;
+
+        /// <summary>
+        /// <paramref name="item"/> 以下の最後のノードを返します。
+        /// </summary>
+        [凾(256)] public Node FindNodeReverseLowerBound<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(LR)).node;
+        /// <summary>
+        /// <paramref name="item"/> 以下の最後のインデックスを返します。
+        /// </summary>
+        [凾(256)] public int ReverseLowerBoundIndex<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(LR)).index;
+        /// <summary>
+        /// <paramref name="item"/> 以下の最後の要素を返します。
+        /// </summary>
+        [凾(256)] public (T From, T ToExclusive) ReverseLowerBoundItem<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(LR)).node.Pair;
+
+        /// <summary>
+        /// <paramref name="item"/> 未満の最後のノードを返します。
+        /// </summary>
+        [凾(256)] public Node FindNodeReverseUpperBound<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(UR)).node;
+        /// <summary>
+        /// <paramref name="item"/> 未満の最後のインデックスを返します。
+        /// </summary>
+        [凾(256)] public int ReverseUpperBoundIndex<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(UR)).index;
+        /// <summary>
+        /// <paramref name="item"/> 未満の最後の要素を返します。
+        /// </summary>
+        [凾(256)] public (T From, T ToExclusive) ReverseUpperBoundItem<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), default(UR)).node.Pair;
+        #endregion Search
+
         private class DebugView
         {
             [DebuggerDisplay("[{" + nameof(From) + "}, {" + nameof(ToExclusive) + "})")]

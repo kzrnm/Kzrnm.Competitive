@@ -1,19 +1,17 @@
 ﻿using AtCoder;
 using AtCoder.Internal;
-using Kzrnm.Competitive;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
-namespace Kzrnm.Competitive2.SetInternals
+namespace Kzrnm.Competitive.SetInternals
 {
-    public interface ISetOperator<T, TCmp, Node>
+    public interface ISetOperator<T, TCmp, Node> : IComparer<T>
     {
         Node Create(T item, NodeColor color);
         T GetValue(Node node);
@@ -101,23 +99,22 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         #region Constructor
         protected SetBase(bool isMulti, TOp op)
         {
-            this.IsMulti = isMulti;
+            IsMulti = isMulti;
             this.op = op;
         }
         protected SetBase(bool isMulti, TOp op, IEnumerable<T> collection) : this(isMulti, op)
         {
             var arr = InitArray(collection);
-            this.root = ConstructRootFromSortedArray(arr, null);
+            root = ConstructRootFromSortedArray(arr, null);
         }
         protected virtual ReadOnlySpan<T> InitArray(IEnumerable<T> collection)
         {
-            var comparer = Comparer<T>.Create((a, b) => op.GetCompareKey(a).CompareTo(op.Create(b, NodeColor.Red)));
             T[] arr;
             int count;
             if (IsMulti)
             {
                 arr = collection.ToArray();
-                Array.Sort(arr, comparer);
+                Array.Sort(arr, op);
                 count = arr.Length;
             }
             else
@@ -125,10 +122,10 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 arr = collection.ToArray();
                 if (arr.Length == 0) return arr;
                 count = 1;
-                Array.Sort(arr, comparer);
+                Array.Sort(arr, op);
                 for (int i = 1; i < arr.Length; i++)
                 {
-                    if (comparer.Compare(arr[i], arr[i - 1]) != 0)
+                    if (op.Compare(arr[i], arr[i - 1]) != 0)
                     {
                         arr[count++] = arr[i];
                     }
@@ -200,9 +197,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 
         #region Search
         [凾(256)]
-        public Node FindNode(T item)
+        public Node FindNode(T item) => FindNode(op.GetCompareKey(item));
+        protected Node FindNode<TKey>(TKey key) where TKey : IComparable<Node>
         {
-            var key = op.GetCompareKey(item);
             Node current = root;
             while (current != null)
             {
@@ -263,8 +260,17 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         [凾(256)]
         public (Node node, int index) BinarySearch<TBOp>(T item, TBOp bop = default)
                where TBOp : struct, ISetBinarySearchOperator
+            => BinarySearch(op.GetCompareKey(item), bop);
+        /// <summary>
+        /// <paramref name="key"/> 以上/超えるの要素のノードとインデックスを返します。
+        /// </summary>
+        /// <param name="key">検索する要素</param>
+        /// <param name="bop">二分探索の判定オペレーター</param>
+        [凾(256)]
+        protected (Node node, int index) BinarySearch<TKey, TBOp>(TKey key, TBOp bop = default)
+            where TKey : IComparable<Node>
+            where TBOp : struct, ISetBinarySearchOperator
         {
-            var key = op.GetCompareKey(item);
             Node left = null, right = null;
             Node current = root;
             if (current == null) return (null, 0);
@@ -510,11 +516,10 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             root?.ColorBlack();
         }
         [凾(256)]
-        public bool Remove(T item) => DoRemove(item);
-        protected bool DoRemove(T item)
+        public bool Remove(T item) => DoRemove(op.GetCompareKey(item));
+        protected bool DoRemove(TCmp key)
         {
             if (root == null) return false;
-            var key = op.GetCompareKey(item);
             Node current = root;
             Node parent = null;
             Node grandParent = null;
