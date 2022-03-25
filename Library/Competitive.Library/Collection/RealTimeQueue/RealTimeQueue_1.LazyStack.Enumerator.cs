@@ -47,7 +47,7 @@ namespace Kzrnm.Competitive
                 {
                     if (_remainingStack == null || _remainingStack.IsEmpty)
                     {
-                        throw new InvalidOperationException();
+                        return ThrowInvalidOperationException();
                     }
                     else
                     {
@@ -118,7 +118,7 @@ namespace Kzrnm.Competitive
                     this.ThrowIfDisposed();
                     if (_remainingStack == null || _remainingStack.IsEmpty)
                     {
-                        throw new InvalidOperationException();
+                        return ThrowInvalidOperationException();
                     }
                     else
                     {
