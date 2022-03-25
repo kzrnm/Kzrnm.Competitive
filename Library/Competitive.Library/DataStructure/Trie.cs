@@ -1,5 +1,4 @@
-﻿using AtCoder.Internal;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -81,7 +80,7 @@ namespace Kzrnm.Competitive
                 return this;
             }
 
-            var updatedTries = new SimpleList<Trie<TKey, TValue>>(key.Length);
+            var updatedTries = new List<Trie<TKey, TValue>>(key.Length);
             ++trie.Count;
             foreach (var k in key)
             {
@@ -97,7 +96,7 @@ namespace Kzrnm.Competitive
             if (updatedTries.Count == key.Length && trie.HasValue)
             {
                 --this.Count;
-                foreach (var trie2 in updatedTries)
+                foreach (var trie2 in updatedTries.AsSpan())
                 {
                     --trie2.Count;
                 }
@@ -172,21 +171,21 @@ namespace Kzrnm.Competitive
             value = child.Value;
             return true;
         }
-        IEnumerable<KeyValuePair<TKey[], TValue>> All(SimpleList<TKey> list)
+        IEnumerable<KeyValuePair<TKey[], TValue>> All(List<TKey> list)
         {
             if (this.HasValue)
-                yield return KeyValuePair.Create(list.AsSpan().ToArray(), this.Value);
+                yield return KeyValuePair.Create(list.ToArray(), this.Value);
 
             foreach (var (k, trie) in children)
             {
                 list.Add(k);
                 foreach (var p in trie.All(list))
                     yield return p;
-                list.RemoveLast();
+                list.RemoveAt(list.Count - 1);
             }
         }
         [凾(256)]
-        public IEnumerable<KeyValuePair<TKey[], TValue>> All() => All(new SimpleList<TKey>());
+        public IEnumerable<KeyValuePair<TKey[], TValue>> All() => All(new List<TKey>());
         public void Clear()
         {
             HasValue = false;

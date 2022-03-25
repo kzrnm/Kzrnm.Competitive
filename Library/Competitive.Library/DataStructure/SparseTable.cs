@@ -1,5 +1,5 @@
-﻿using AtCoder;
-using AtCoder.Internal;
+﻿using AtCoder.Internal;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -75,7 +75,7 @@ namespace Kzrnm.Competitive
             {
                 get
                 {
-                    var items = new SimpleList<DebugItem>(st.st.Length * st.Length);
+                    var items = new List<DebugItem>(st.st.Length * st.Length);
                     for (int b = 0; b < st.st.Length; b++)
                     {
                         var len = 1 << b;

@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static T[] Flatten<T>(this ReadOnlySpan<T[]> span)
         {
-            var res = new SimpleList<T>(span.Length * Math.Max(span[0].Length, 1));
+            var res = new List<T>(span.Length * Math.Max(span[0].Length, 1));
             for (int i = 0; i < span.Length; i++)
                 for (int j = 0; j < span[i].Length; j++)
                     res.Add(span[i][j]);
@@ -35,7 +35,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static T[] Flatten<T>(this IEnumerable<IEnumerable<T>> collection)
         {
-            var res = new SimpleList<T>();
+            var res = new List<T>();
             foreach (var col in collection)
                 foreach (var item in col)
                     res.Add(item);
@@ -47,7 +47,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static char[] Flatten(this string[] strs)
         {
-            var res = new SimpleList<char>(strs.Length * Math.Max(strs[0].Length, 1));
+            var res = new List<char>(strs.Length * Math.Max(strs[0].Length, 1));
             for (int i = 0; i < strs.Length; i++)
                 for (int j = 0; j < strs[i].Length; j++)
                     res.Add(strs[i][j]);

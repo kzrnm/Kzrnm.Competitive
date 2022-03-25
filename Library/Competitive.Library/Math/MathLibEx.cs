@@ -1,6 +1,7 @@
 ﻿using AtCoder.Internal;
 using AtCoder.Operators;
 using System;
+using System.Collections.Generic;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -132,8 +133,8 @@ namespace Kzrnm.Competitive
             if (n == 1)
                 return new int[] { 1 };
 
-            var left = new SimpleList<int>();
-            var right = new SimpleList<int>();
+            var left = new List<int>();
+            var right = new List<int>();
             left.Add(1);
             right.Add(n);
 
@@ -163,8 +164,8 @@ namespace Kzrnm.Competitive
             if (n == 1)
                 return new long[] { 1 };
 
-            var left = new SimpleList<long>();
-            var right = new SimpleList<long>();
+            var left = new List<long>();
+            var right = new List<long>();
             left.Add(1);
             right.Add(n);
 

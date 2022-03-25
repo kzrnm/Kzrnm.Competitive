@@ -17,9 +17,9 @@ namespace Kzrnm.Competitive
              where TEdge : IGraphEdge
         {
             var statuses = new Status[graph.Length];
-            (int from, SimpleList<TEdge> edges) DFS(Stack<(int v, int childIdx)> stack)
+            (int from, List<TEdge> edges) DFS(Stack<(int v, int childIdx)> stack)
             {
-                SimpleList<TEdge> list = null;
+                List<TEdge> list = null;
                 while (stack.Count > 0)
                 {
                     var (v, ci) = stack.Pop();
@@ -45,7 +45,7 @@ namespace Kzrnm.Competitive
                                 stack.Push((child, 0));
                                 break;
                             case Status.Active:
-                                list = new SimpleList<TEdge> { e };
+                                list = new List<TEdge> { e };
                                 break;
                         }
                     }

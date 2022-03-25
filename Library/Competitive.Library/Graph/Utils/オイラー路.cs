@@ -130,7 +130,7 @@ namespace Kzrnm.Competitive
         private static TEdge[] EulerianTrail<TEdge>(Queue<EdgeInternal<TEdge>>[] graph, int from)
             where TEdge : struct, IGraphEdge, IReversable<TEdge>
         {
-            var res = new SimpleList<TEdge>();
+            var res = new List<TEdge>();
             var idx = new Stack<TEdge>();
             while (graph[from].Count > 0)
             {

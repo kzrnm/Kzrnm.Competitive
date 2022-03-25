@@ -80,7 +80,7 @@ namespace Kzrnm.Competitive
             var searches = new int[n + 1];
             Array.Copy(new int[11] { 0, 1, 2, 3, 2, 5, 2, 7, 2, 3, 2 }, searches, Math.Min(11, searches.Length));
 
-            var primes = new SimpleList<int>(n) { 2, 3, 5, 7 };
+            var primes = new List<int>(n) { 2, 3, 5, 7 };
             if (n < 11) return (primes.TakeWhile(p => p <= n).ToArray(), searches);
 
             for (int i = 11; i < searches.Length; i += 2)

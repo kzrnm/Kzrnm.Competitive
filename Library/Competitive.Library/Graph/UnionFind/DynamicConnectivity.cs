@@ -236,8 +236,8 @@ namespace Kzrnm.Competitive
                 }
             }
 
-            public SimpleList<(int f, int t)> Debug(Node n) => Debug(n, new SimpleList<(int f, int t)>());
-            private SimpleList<(int f, int t)> Debug(Node n, SimpleList<(int f, int t)> list)
+            public List<(int f, int t)> Debug(Node n) => Debug(n, new List<(int f, int t)>());
+            private List<(int f, int t)> Debug(Node n, List<(int f, int t)> list)
             {
                 Debug(n.ch0, list);
                 list.Add((n.l, n.r));
@@ -366,14 +366,14 @@ namespace Kzrnm.Competitive
         }
 
         private int _size;
-        private SimpleList<EulerianTourTree> ett;
-        private SimpleList<HashSet<int>[]> edges;
+        private List<EulerianTourTree> ett;
+        private List<HashSet<int>[]> edges;
 
         public DynamicConnectivity(int size)
         {
             _size = size;
-            ett = new SimpleList<EulerianTourTree> { new EulerianTourTree(size) };
-            edges = new SimpleList<HashSet<int>[]> { new HashSet<int>[size] };
+            ett = new List<EulerianTourTree> { new EulerianTourTree(size) };
+            edges = new List<HashSet<int>[]> { new HashSet<int>[size] };
         }
 
         /// <summary>
@@ -470,8 +470,8 @@ namespace Kzrnm.Competitive
         }
         struct ReconnectStatus
         {
-            public SimpleList<EulerianTourTree> ett;
-            public SimpleList<HashSet<int>[]> edges;
+            public List<EulerianTourTree> ett;
+            public List<HashSet<int>[]> edges;
             public int index;
             public bool F(int x)
             {
@@ -483,7 +483,7 @@ namespace Kzrnm.Competitive
                 var edgeX = edge[x];
                 if (edgeX == null)
                     edge[x] = edgeX = new HashSet<int>();
-                var used = new SimpleList<int>();
+                var used = new List<int>();
                 var ys = edgeX.ToArray();
                 foreach (var y in ys)
                 {

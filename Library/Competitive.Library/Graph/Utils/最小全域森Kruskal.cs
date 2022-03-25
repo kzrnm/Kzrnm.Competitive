@@ -19,19 +19,19 @@ namespace Kzrnm.Competitive
         {
             var graphArr = graph.AsArray();
             var uf = new DSU(graphArr.Length);
-            var edges = new SimpleList<(int from, TEdge edge)>();
+            var edges = new List<(int from, TEdge edge)>();
             foreach (var node in graphArr)
                 foreach (var e in node.Children)
                     edges.Add((node.Index, e));
             edges.Sort(Comparer<(int from, TEdge edge)>.Create((t1, t2) => new TOp().Compare(t1.edge.Value, t2.edge.Value)));
-            var gr = new SimpleList<(int from, TEdge edge)>[graph.Length];
+            var gr = new List<(int from, TEdge edge)>[graph.Length];
             foreach (var (from, e) in edges.AsSpan())
             {
                 var f = uf.Leader(from);
                 var t = uf.Leader(e.To);
                 if (f == t) continue;
                 else if (gr[f] == null && gr[t] == null)
-                    gr[uf.Merge(f, t)] = new SimpleList<(int from, TEdge edge)> { (from, e) };
+                    gr[uf.Merge(f, t)] = new List<(int from, TEdge edge)> { (from, e) };
                 else if (gr[t] == null)
                 {
                     gr[f].Add((from, e));
@@ -68,18 +68,18 @@ namespace Kzrnm.Competitive
         {
             var graphArr = graph.AsArray();
             var uf = new DSU(graphArr.Length);
-            var edges = new SimpleList<(int from, TEdge edge)>();
+            var edges = new List<(int from, TEdge edge)>();
             foreach (var node in graphArr)
                 foreach (var e in node.Children)
                     edges.Add((node.Index, e));
-            var gr = new SimpleList<(int from, TEdge edge)>[graph.Length];
+            var gr = new List<(int from, TEdge edge)>[graph.Length];
             foreach (var (from, e) in edges.AsSpan())
             {
                 var f = uf.Leader(from);
                 var t = uf.Leader(e.To);
                 if (f == t) continue;
                 else if (gr[f] == null && gr[t] == null)
-                    gr[uf.Merge(f, t)] = new SimpleList<(int from, TEdge edge)> { (from, e) };
+                    gr[uf.Merge(f, t)] = new List<(int from, TEdge edge)> { (from, e) };
                 else if (gr[t] == null)
                 {
                     gr[f].Add((from, e));

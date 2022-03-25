@@ -139,7 +139,7 @@ namespace Kzrnm.Competitive
         {
             int[] leaderBuf = new int[_n];
             int[] id = new int[_n];
-            var resultList = new SimpleList<int[]>(_n);
+            var resultList = new List<int[]>(_n);
             for (int i = 0; i < leaderBuf.Length; i++)
             {
                 leaderBuf[i] = Leader(i);

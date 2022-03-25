@@ -1,4 +1,5 @@
 ﻿using AtCoder.Internal;
+using System.Collections.Generic;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -7,7 +8,7 @@ namespace Kzrnm.Competitive
     {
         public int Length { get; }
         public bool IsDirected { get; }
-        public readonly SimpleList<(int from, TEdge edge)> edges;
+        public readonly List<(int from, TEdge edge)> edges;
         public readonly int[] sizes;
         public readonly int[] rootSizes;
         public EdgeContainer(int size, bool isDirected)
@@ -16,7 +17,7 @@ namespace Kzrnm.Competitive
             IsDirected = isDirected;
             sizes = new int[size];
             rootSizes = isDirected ? new int[size] : sizes;
-            edges = new SimpleList<(int from, TEdge edge)>(size);
+            edges = new List<(int from, TEdge edge)>(size);
         }
         [凾(256)]
         public void Add(int from, TEdge edge)

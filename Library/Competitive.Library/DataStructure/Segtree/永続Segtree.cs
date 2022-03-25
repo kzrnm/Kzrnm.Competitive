@@ -196,7 +196,7 @@ namespace Kzrnm.Competitive
                         }
                         return tmps;
                     }
-                    var items = new SimpleList<DebugItem>(2 * segtree.Length);
+                    var items = new List<DebugItem>(2 * segtree.Length);
                     var tmps = CreateTmps();
 
                     int l = 0;

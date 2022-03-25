@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using AtCoder.Internal;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -110,7 +111,7 @@ namespace Kzrnm.Competitive
             int _n = _parentOrSize.Count;
             int[] leaderBuf = new int[_n];
             int[] id = new int[_n];
-            var resultList = new SimpleList<int[]>(_n);
+            var resultList = new List<int[]>(_n);
             for (int i = 0; i < leaderBuf.Length; i++)
             {
                 leaderBuf[i] = Leader(i);

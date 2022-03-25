@@ -76,9 +76,9 @@ namespace Kzrnm.Competitive
             }
             public int Current => index - pattern.Length;
             public Enumerator GetEnumerator() => this;
-            public SimpleList<int> ToList()
+            public List<int> ToList()
             {
-                var list = new SimpleList<int>();
+                var list = new List<int>();
                 foreach (var item in this)
                     list.Add(item);
                 return list;

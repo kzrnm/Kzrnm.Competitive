@@ -1,6 +1,7 @@
 ﻿using AtCoder.Internal;
 using Kzrnm.Competitive.IO;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -125,20 +126,20 @@ namespace Kzrnm.Competitive
                 pts[i] = (points[i].x, points[i].y, i);
             Array.Sort(pts);
 
-            var upper = new SimpleList<(int x, int y, int ix)> { pts[0], pts[1] };
-            var lower = new SimpleList<(int x, int y, int ix)> { pts[0], pts[1] };
+            var upper = new List<(int x, int y, int ix)> { pts[0], pts[1] };
+            var lower = new List<(int x, int y, int ix)> { pts[0], pts[1] };
             for (int i = 2; i < pts.Length; i++)
             {
                 while (upper.Count > 1
                     && CrossSign(upper[^1].x - upper[^2].x, upper[^1].y - upper[^2].y, pts[i].x - upper[^2].x, pts[i].y - upper[^2].y) > 0)
                 {
-                    upper.RemoveLast();
+                    upper.RemoveAt(upper.Count - 1);
                 }
                 upper.Add(pts[i]);
                 while (lower.Count > 1
                     && CrossSign(lower[^1].x - lower[^2].x, lower[^1].y - lower[^2].y, pts[i].x - lower[^2].x, pts[i].y - lower[^2].y) < 0)
                 {
-                    lower.RemoveLast();
+                    lower.RemoveAt(lower.Count - 1);
                 }
                 lower.Add(pts[i]);
             }

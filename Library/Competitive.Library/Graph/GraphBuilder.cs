@@ -68,12 +68,12 @@ namespace Kzrnm.Competitive
         {
             Contract.Assert(!edgeContainer.IsDirected, "木には無向グラフをしたほうが良い");
             var res = new TreeNode[edgeContainer.Length];
-            var children = new SimpleList<GraphEdge>[res.Length];
+            var children = new List<GraphEdge>[res.Length];
             foreach (var (from, e) in edgeContainer.edges)
             {
                 var to = e.To;
-                if (children[from] == null) children[from] = new SimpleList<GraphEdge>();
-                if (children[to] == null) children[to] = new SimpleList<GraphEdge>();
+                if (children[from] == null) children[from] = new List<GraphEdge>();
+                if (children[to] == null) children[to] = new List<GraphEdge>();
                 children[from].Add(e);
                 children[to].Add(e.Reversed(from));
             }
@@ -102,7 +102,7 @@ namespace Kzrnm.Competitive
                     childrenBuilder = children[cur];
                 else
                 {
-                    childrenBuilder = new SimpleList<GraphEdge>(children[cur].Count);
+                    childrenBuilder = new List<GraphEdge>(children[cur].Count);
                     foreach (var c in children[cur])
                         if (c != parent)
                             childrenBuilder.Add(c);
