@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace Kzrnm.Competitive.Testing.DataStructure
+namespace Kzrnm.Competitive.Testing.TwoDimensional
 {
     // verification-helper: SAMEAS Library/run.test.py
     public class ConvexHullTrickTests

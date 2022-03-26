@@ -1,6 +1,6 @@
 ﻿using Kzrnm.Competitive.IO;
 
-namespace Kzrnm.Competitive.DataStructure
+namespace Kzrnm.Competitive.TwoDimensional
 {
     public class ConvexHullTrickSegmentTest
     {
