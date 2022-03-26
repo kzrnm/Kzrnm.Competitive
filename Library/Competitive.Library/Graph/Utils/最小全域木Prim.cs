@@ -17,6 +17,8 @@ namespace Kzrnm.Competitive
             where TNode : IGraphNode<TEdge>
             where TEdge : IWGraphEdge<T>
         {
+            Contract.Assert(!graph[0].IsDirected, "有向グラフでは求められません");
+
             var graphArr = graph.AsArray();
             var sumi = new bool[graphArr.Length];
             var pq = new PriorityQueueOp<TEdge, int, Comparer<T, TOp, TEdge>>(graphArr.Length);
