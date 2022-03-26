@@ -28,26 +28,30 @@ namespace Kzrnm.Competitive
             {
                 var f = uf.Leader(from);
                 var t = uf.Leader(e.To);
+                var grf = gr[f];
+                var grt = gr[t];
                 if (f == t) continue;
-                else if (gr[f] == null && gr[t] == null)
+                else if (grf == null && grt == null)
                     gr[uf.Merge(f, t)] = new List<(int from, TEdge edge)> { (from, e) };
-                else if (gr[t] == null)
+                else if (grt == null)
                 {
-                    gr[f].Add((from, e));
-                    gr[uf.Merge(f, t)] = gr[f];
+                    grf.Add((from, e));
+                    gr[uf.Merge(f, t)] = grf;
                 }
-                else if (gr[f] == null)
+                else if (grf == null)
                 {
-                    gr[t].Add((from, e));
-                    gr[uf.Merge(f, t)] = gr[t];
+                    grt.Add((from, e));
+                    gr[uf.Merge(f, t)] = grt;
                 }
                 else
                 {
-                    var m = uf.Merge(f, t);
-                    if (t == m) t = f;
-                    foreach (var tt in gr[t].AsSpan())
-                        gr[m].Add(tt);
-                    gr[m].Add((from, e));
+                    // 多い方に統合する。 grf が多い方だとする
+                    if (grf.Count < grt.Count)
+                        (grf, grt) = (grt, grf);
+                    foreach (var tt in grt.AsSpan())
+                        grf.Add(tt);
+                    grf.Add((from, e));
+                    gr[uf.Merge(f, t)] = grf;
                 }
             }
             var gg = uf.Groups();
@@ -76,26 +80,30 @@ namespace Kzrnm.Competitive
             {
                 var f = uf.Leader(from);
                 var t = uf.Leader(e.To);
+                var grf = gr[f];
+                var grt = gr[t];
                 if (f == t) continue;
-                else if (gr[f] == null && gr[t] == null)
+                else if (grf == null && grt == null)
                     gr[uf.Merge(f, t)] = new List<(int from, TEdge edge)> { (from, e) };
-                else if (gr[t] == null)
+                else if (grt == null)
                 {
-                    gr[f].Add((from, e));
-                    gr[uf.Merge(f, t)] = gr[f];
+                    grf.Add((from, e));
+                    gr[uf.Merge(f, t)] = grf;
                 }
-                else if (gr[f] == null)
+                else if (grf == null)
                 {
-                    gr[t].Add((from, e));
-                    gr[uf.Merge(f, t)] = gr[t];
+                    grt.Add((from, e));
+                    gr[uf.Merge(f, t)] = grt;
                 }
                 else
                 {
-                    var m = uf.Merge(f, t);
-                    if (t == m) t = f;
-                    foreach (var tt in gr[t].AsSpan())
-                        gr[m].Add(tt);
-                    gr[m].Add((from, e));
+                    // 多い方に統合する。 grf が多い方だとする
+                    if (grf.Count < grt.Count)
+                        (grf, grt) = (grt, grf);
+                    foreach (var tt in grt.AsSpan())
+                        grf.Add(tt);
+                    grf.Add((from, e));
+                    gr[uf.Merge(f, t)] = grf;
                 }
             }
             var gg = uf.Groups();

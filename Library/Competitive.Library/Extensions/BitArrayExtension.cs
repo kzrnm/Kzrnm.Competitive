@@ -35,11 +35,11 @@ namespace Kzrnm.Competitive
             if (arr.Length == 0) return Array.Empty<int>();
             b.CopyTo(arr);
             var brr = MemoryMarshal.Cast<uint, ulong>(arr);
-            var l = new List<int>();
+            var l = new List<int>(b.Length);
             for (var i = 0; i < brr.Length; ++i)
                 foreach (var bit in brr[i].Bits())
                     l.Add(bit + 64 * i);
-            return l.ToArray();
+            return l.AsSpan().ToArray();
         }
     }
 }

@@ -247,7 +247,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public int[] GetPath(Node x)
         {
-            var vs = new SList<int>();
+            var vs = new List<int>();
             Expose(x);
             var stack = new Stack<(Node cur, bool right)>();
             stack.Push((x, true));
@@ -337,9 +337,14 @@ namespace Kzrnm.Competitive
     {
         public object Identity => null;
         public object FIdentity => null;
+
+        [凾(256)]
         public object Composition(object nf, object cf) => null;
+        [凾(256)]
         public object Inverse(object v) => null;
+        [凾(256)]
         public object Mapping(object f, object x, int size) => null;
+        [凾(256)]
         public object Operate(object x, object y) => null;
     }
 

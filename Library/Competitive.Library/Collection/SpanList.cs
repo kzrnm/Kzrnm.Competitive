@@ -19,10 +19,10 @@ namespace Kzrnm.Competitive
         public int Count { get; private set; }
 
         [凾(256)] public Span<T> AsSpan() => sp[..Count];
-
         [凾(256)] public void Add(T item) => sp[Count++] = item;
         [凾(256)] public void RemoveLast() => --Count;
         [凾(256)] public void Clear() => Count = 0;
+        [凾(256)] public void Reverse() => AsSpan().Reverse();
         [凾(256)] public Span<T>.Enumerator GetEnumerator() => AsSpan().GetEnumerator();
     }
 }

@@ -643,7 +643,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         public struct Enumerator : IEnumerator<Node>
         {
             internal readonly SetBase<T, TCmp, Node, TOp> tree;
-            readonly Stack<Node> stack;
+            readonly Deque<Node> stack;
             Node current;
 
             readonly bool reverse;
@@ -651,12 +651,11 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             internal Enumerator(SetBase<T, TCmp, Node, TOp> set, bool reverse, Node startNode)
             {
                 tree = set;
-                stack = new Stack<Node>(2 * Log2(tree.Count + 1));
+                stack = new Deque<Node>(2 * Log2(tree.Count + 1));
                 current = null;
                 this.reverse = reverse;
                 if (startNode == null) IntializeAll();
                 else Intialize(startNode);
-
             }
             [凾(256)]
             void IntializeAll()
@@ -665,7 +664,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 while (node != null)
                 {
                     var next = reverse ? node.Right : node.Left;
-                    stack.Push(node);
+                    stack.AddLast(node);
                     node = next;
                 }
             }
@@ -675,21 +674,19 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 if (startNode == null)
                     throw new InvalidOperationException(nameof(startNode) + "is null");
                 current = null;
-                var list = reverse ? InitializeReverse(startNode) : InitializeNormal(startNode);
-
-                list.Reverse();
-                foreach (var n in list) stack.Push(n);
+                if (reverse)
+                    InitializeReverse(startNode);
+                else
+                    InitializeNormal(startNode);
             }
             [凾(256)]
-            SimpleList<Node> InitializeNormal(Node node)
+            void InitializeNormal(Node node)
             {
-                var list = new SimpleList<Node>(2 * Log2(tree.Count + 1));
-
                 while (node != null)
                 {
                     while (node != null)
                     {
-                        list.Add(node);
+                        stack.AddFirst(node);
                         var parent = node.Parent;
                         if (parent == null || parent.Right == node) { node = parent; break; }
                         node = parent;
@@ -701,18 +698,15 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                         node = parent;
                     }
                 }
-                return list;
             }
             [凾(256)]
-            SimpleList<Node> InitializeReverse(Node node)
+            void InitializeReverse(Node node)
             {
-                var list = new SimpleList<Node>(2 * Log2(tree.Count + 1));
-
                 while (node != null)
                 {
                     while (node != null)
                     {
-                        list.Add(node);
+                        stack.AddFirst(node);
                         var parent = node.Parent;
                         if (parent == null || parent.Left == node) { node = parent; break; }
                         node = parent;
@@ -724,7 +718,6 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                         node = parent;
                     }
                 }
-                return list;
             }
 
             [凾(256)]
@@ -741,12 +734,12 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                     current = null;
                     return false;
                 }
-                current = stack.Pop();
+                current = stack.PopLast();
                 var node = reverse ? current.Left : current.Right;
                 while (node != null)
                 {
                     var next = reverse ? node.Right : node.Left;
-                    stack.Push(node);
+                    stack.AddLast(node);
                     node = next;
                 }
                 return true;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -20,7 +21,7 @@ namespace Kzrnm.Competitive
         public PathLoop(int[] to, int start)
         {
             var used = new int[to.Length];
-            var list = new SList<int>(to.Length);
+            var list = new List<int>(to.Length);
             int cur = start;
             while (used[cur] == 0)
             {
@@ -29,14 +30,15 @@ namespace Kzrnm.Competitive
                 cur = to[cur];
                 if ((uint)cur >= (uint)to.Length)
                 {
-                    Straight = list.ToArray();
+                    Straight = list.AsSpan().ToArray();
                     Loop = Array.Empty<int>();
                     return;
                 }
             }
             var ix = used[cur] - 1;
-            Straight = list.AsSpan()[..ix].ToArray();
-            Loop = list.AsSpan()[ix..].ToArray();
+            var sp = list.AsSpan();
+            Straight = sp[..ix].ToArray();
+            Loop = sp[ix..].ToArray();
         }
         public readonly int[] Straight;
         public readonly int[] Loop;
