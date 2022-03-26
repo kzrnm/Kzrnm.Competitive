@@ -138,6 +138,9 @@ namespace Kzrnm.Competitive
                 => new LowestCommonAncestorWithData<TNode, TEdge, T, TOp>(tree.AsArray(), data, op);
         }
 
+        /**
+         * <summary>データ付き最小共通祖先</summary> 
+         */
         public static Builder<TNode, TEdge>
             LowestCommonAncestorWithDataBuilder<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
             where TNode : ITreeNode<TEdge>
