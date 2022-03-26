@@ -1,8 +1,6 @@
 ﻿using AtCoder.Internal;
 using Kzrnm.Competitive.IO;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -10,6 +8,7 @@ namespace Kzrnm.Competitive
     public class GraphBuilder
     {
         internal readonly EdgeContainer<GraphEdge> edgeContainer;
+
         public GraphBuilder(int size, bool isDirected)
         {
             edgeContainer = new EdgeContainer<GraphEdge>(size, isDirected);
@@ -38,79 +37,23 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public void Add(int from, int to) => edgeContainer.Add(from, new GraphEdge(to));
 
-
         public SimpleGraph<GraphNode, GraphEdge> ToGraph()
-        {
-            var res = new GraphNode[edgeContainer.Length];
-            var csr = edgeContainer.ToCSR();
-            var counter = new int[res.Length];
-            var rootCounter = edgeContainer.IsDirected ? new int[res.Length] : counter;
-            var children = new GraphEdge[res.Length][];
-            var roots = edgeContainer.IsDirected ? new GraphEdge[res.Length][] : children;
-            for (int i = 0; i < res.Length; i++)
-            {
-                if (children[i] == null) children[i] = new GraphEdge[edgeContainer.sizes[i]];
-                if (roots[i] == null) roots[i] = new GraphEdge[edgeContainer.rootSizes[i]];
-                res[i] = new GraphNode(i, roots[i], children[i]);
-                foreach (ref var e in csr.EList.AsSpan(csr.Start[i], csr.Start[i + 1] - csr.Start[i]))
-                {
-                    var to = e.To;
-                    if (roots[to] == null)
-                        roots[to] = new GraphEdge[edgeContainer.rootSizes[to]];
-                    children[i][counter[i]++] = e;
-                    roots[to][rootCounter[to]++] = e.Reversed(i);
-                }
-            }
-            return new SimpleGraph<GraphNode, GraphEdge>(res, csr);
-        }
+            => GraphBuilderLogic.ToGraph<SimpleGraph<GraphNode, GraphEdge>, GraphNode, GraphEdge, TOp>(edgeContainer);
 
         public TreeGraph<TreeNode, GraphEdge> ToTree(int root = 0)
+            => GraphBuilderLogic.ToTree<TreeGraph<TreeNode, GraphEdge>, TreeNode, GraphEdge, TOp>(edgeContainer, root);
+        struct TOp :
+            IGraphBuildOperator<SimpleGraph<GraphNode, GraphEdge>, GraphNode, GraphEdge>,
+            ITreeBuildOperator<TreeGraph<TreeNode, GraphEdge>, TreeNode, GraphEdge>
         {
-            Contract.Assert(!edgeContainer.IsDirected, "木には無向グラフをしたほうが良い");
-            var res = new TreeNode[edgeContainer.Length];
-            var children = edgeContainer.sizes.Select(s => new List<GraphEdge>(s)).ToArray();
-            foreach (var (from, e) in edgeContainer.edges.AsSpan())
-            {
-                var to = e.To;
-                children[from].Add(e);
-                children[to].Add(e.Reversed(from));
-            }
+            [凾(256)] public SimpleGraph<GraphNode, GraphEdge> Graph(GraphNode[] nodes, CSR<GraphEdge> edges) => new SimpleGraph<GraphNode, GraphEdge>(nodes, edges);
+            [凾(256)] public GraphNode Node(int i, GraphEdge[] roots, GraphEdge[] children) => new GraphNode(i, roots, children);
 
-            if (edgeContainer.Length == 1)
-            {
-                return new TreeGraph<TreeNode, GraphEdge>(
-                    new TreeNode[1] { new TreeNode(root, GraphEdge.None, 0, Array.Empty<GraphEdge>()) }, root);
-            }
-
-            res[root] = new TreeNode(root, GraphEdge.None, 0,
-                children[root]?.ToArray() ?? Array.Empty<GraphEdge>());
-
-            var stack = new Stack<(int parent, int child)>();
-            foreach (var child in res[root].Children)
-                stack.Push((root, child));
-
-            while (stack.Count > 0)
-            {
-                var (parent, cur) = stack.Pop();
-
-                List<GraphEdge> childrenBuilder;
-                if (parent == -1)
-                    childrenBuilder = children[cur];
-                else
-                {
-                    childrenBuilder = new List<GraphEdge>(children[cur].Count);
-                    foreach (var c in children[cur].AsSpan())
-                        if (c != parent)
-                            childrenBuilder.Add(c);
-                }
-
-                var childrenArr = childrenBuilder.ToArray();
-                res[cur] = new TreeNode(cur, new GraphEdge(parent), res[parent].Depth + 1, childrenArr);
-                foreach (var child in childrenArr)
-                    stack.Push((cur, child));
-            }
-
-            return new TreeGraph<TreeNode, GraphEdge>(res, root);
+            [凾(256)] public TreeGraph<TreeNode, GraphEdge> Tree(TreeNode[] nodes, int root) => new TreeGraph<TreeNode, GraphEdge>(nodes, root);
+            [凾(256)]
+            public TreeNode TreeNode(int i, TreeNode parent, GraphEdge edge, GraphEdge[] children)
+                => new TreeNode(i, edge.Reversed(parent.Index), parent.Depth + 1, children);
+            [凾(256)] public TreeNode TreeRootNode(int i, GraphEdge[] children) => new TreeNode(i, GraphEdge.None, 0, children);
         }
     }
 

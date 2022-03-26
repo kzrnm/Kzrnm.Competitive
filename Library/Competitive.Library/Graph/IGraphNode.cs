@@ -1,4 +1,7 @@
-﻿namespace Kzrnm.Competitive
+﻿using AtCoder;
+using AtCoder.Internal;
+
+namespace Kzrnm.Competitive
 {
     public interface IReversable<T> where T : IGraphEdge
     {
@@ -62,5 +65,18 @@
         /// 何個遡ったら根になるか
         /// </summary>
         int Depth { get; }
+    }
+    [IsOperator]
+    public interface IGraphBuildOperator<TGraph, TNode, TEdge>
+    {
+        TNode Node(int i, TEdge[] roots, TEdge[] children);
+        TGraph Graph(TNode[] nodes, CSR<TEdge> edges);
+    }
+    [IsOperator]
+    public interface ITreeBuildOperator<TTree, TNode, TEdge>
+    {
+        TNode TreeNode(int i, TNode parent, TEdge edge, TEdge[] children);
+        TNode TreeRootNode(int i, TEdge[] children);
+        TTree Tree(TNode[] nodes, int root);
     }
 }
