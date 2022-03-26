@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
+﻿using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
+using System;
 
 namespace Kzrnm.Competitive
 {
@@ -60,12 +58,5 @@ namespace Kzrnm.Competitive
             return arr;
         }
         #endregion NewArray
-
-        public static IEnumerable<(int u, int v)> ToManhattan(IEnumerable<(int x, int y)> col)
-            => col.Select(t =>
-            {
-                var (x, y) = t;
-                return (x + y, x - y);
-            });
     }
 }

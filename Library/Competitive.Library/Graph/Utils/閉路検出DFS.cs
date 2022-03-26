@@ -1,6 +1,4 @@
-﻿
-using AtCoder.Internal;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive

@@ -1,5 +1,4 @@
-﻿using AtCoder.Internal;
-using System;
+﻿using System;
 using System.Collections.Generic;
 #region https://algoful.com/Archive/Algorithm/KMPSearch
 #endregion

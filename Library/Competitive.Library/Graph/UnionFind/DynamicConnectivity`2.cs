@@ -1,6 +1,5 @@
 ﻿// https://qiita.com/hotman78/items/78cd3aa50b05a57738d4
 using AtCoder;
-using AtCoder.Internal;
 using System.Collections.Generic;
 using System.Linq;
 
