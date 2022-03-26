@@ -1,8 +1,8 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
+using System;
 using Xunit;
 
-namespace Kzrnm.Competitive.Testing.Util
+namespace Kzrnm.Competitive.Testing.TwoDimensional
 {
     // verification-helper: SAMEAS Library/run.test.py
     public class PointDoubleTests
