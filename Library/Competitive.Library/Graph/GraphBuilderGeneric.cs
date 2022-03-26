@@ -46,12 +46,10 @@ namespace Kzrnm.Competitive
         {
             Contract.Assert(!edgeContainer.IsDirected, "木には無向グラフをしたほうが良い");
             var res = new TreeNode<T>[edgeContainer.Length];
-            var children = new List<GraphEdge<T>>[res.Length];
-            foreach (var (from, e) in edgeContainer.edges)
+            var children = edgeContainer.sizes.Select(s => new List<GraphEdge<T>>(s)).ToArray();
+            foreach (var (from, e) in edgeContainer.edges.AsSpan())
             {
                 var to = e.To;
-                if (children[from] == null) children[from] = new List<GraphEdge<T>>();
-                if (children[to] == null) children[to] = new List<GraphEdge<T>>();
                 children[from].Add(e);
                 children[to].Add(e.Reversed(from));
             }
@@ -66,23 +64,21 @@ namespace Kzrnm.Competitive
             res[root] = new TreeNode<T>(root, GraphEdge<T>.None, 0,
                 children[root]?.ToArray() ?? Array.Empty<GraphEdge<T>>());
 
-            var queue = new Queue<(int parent, int child, T data)>();
+            var stack = new Stack<(int parent, int child, T data)>();
             foreach (var e in res[root].Children)
-            {
-                queue.Enqueue((root, e.To, e.Data));
-            }
+                stack.Push((root, e.To, e.Data));
 
-            while (queue.Count > 0)
+            while (stack.Count > 0)
             {
-                var (parent, cur, value) = queue.Dequeue();
+                var (parent, cur, value) = stack.Pop();
 
-                IList<GraphEdge<T>> childrenBuilder;
+                List<GraphEdge<T>> childrenBuilder;
                 if (parent == -1)
                     childrenBuilder = children[cur];
                 else
                 {
                     childrenBuilder = new List<GraphEdge<T>>(children[cur].Count);
-                    foreach (var e in children[cur])
+                    foreach (var e in children[cur].AsSpan())
                         if (e.To != parent)
                             childrenBuilder.Add(e);
                 }
@@ -90,9 +86,7 @@ namespace Kzrnm.Competitive
                 var childrenArr = childrenBuilder.ToArray();
                 res[cur] = new TreeNode<T>(cur, new GraphEdge<T>(parent, value), res[parent].Depth + 1, childrenArr);
                 foreach (var e in childrenArr)
-                {
-                    queue.Enqueue((cur, e.To, e.Data));
-                }
+                    stack.Push((cur, e.To, e.Data));
             }
 
             return new TreeGraph<TreeNode<T>, GraphEdge<T>>(res, root);

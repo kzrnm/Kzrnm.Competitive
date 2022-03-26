@@ -48,12 +48,10 @@ namespace Kzrnm.Competitive
         {
             Contract.Assert(!edgeContainer.IsDirected, "木には無向グラフをしたほうが良い");
             var res = new WTreeNode<T, WEdge<T>>[edgeContainer.Length];
-            var children = new List<WEdge<T>>[res.Length];
-            foreach (var (from, e) in edgeContainer.edges)
+            var children = edgeContainer.sizes.Select(s => new List<WEdge<T>>(s)).ToArray();
+            foreach (var (from, e) in edgeContainer.edges.AsSpan())
             {
                 var to = e.To;
-                if (children[from] == null) children[from] = new List<WEdge<T>>();
-                if (children[to] == null) children[to] = new List<WEdge<T>>();
                 children[from].Add(e);
                 children[to].Add(e.Reversed(from));
             }
@@ -67,23 +65,21 @@ namespace Kzrnm.Competitive
             res[root] = new WTreeNode<T, WEdge<T>>(root, WEdge<T>.None, 0, default,
                 children[root]?.ToArray() ?? Array.Empty<WEdge<T>>());
 
-            var queue = new Queue<(int parent, int child, T value)>();
+            var stack = new Stack<(int parent, int child, T value)>();
             foreach (var e in res[root].Children)
-            {
-                queue.Enqueue((root, e.To, e.Value));
-            }
+                stack.Push((root, e.To, e.Value));
 
-            while (queue.Count > 0)
+            while (stack.Count > 0)
             {
-                var (parent, cur, value) = queue.Dequeue();
+                var (parent, cur, value) = stack.Pop();
 
-                IList<WEdge<T>> childrenBuilder;
+                List<WEdge<T>> childrenBuilder;
                 if (parent == -1)
                     childrenBuilder = children[cur];
                 else
                 {
                     childrenBuilder = new List<WEdge<T>>(children[cur].Count);
-                    foreach (var e in children[cur])
+                    foreach (var e in children[cur].AsSpan())
                         if (e.To != parent)
                             childrenBuilder.Add(e);
                 }
@@ -91,9 +87,7 @@ namespace Kzrnm.Competitive
                 var childrenArr = childrenBuilder.ToArray();
                 res[cur] = new WTreeNode<T, WEdge<T>>(cur, new WEdge<T>(parent, value), res[parent].Depth + 1, op.Add(res[parent].DepthLength, value), childrenArr);
                 foreach (var e in childrenArr)
-                {
-                    queue.Enqueue((cur, e.To, e.Value));
-                }
+                    stack.Push((cur, e.To, e.Value));
             }
 
             return new WTreeGraph<T, TOp, WTreeNode<T, WEdge<T>>, WEdge<T>>(res, root);
