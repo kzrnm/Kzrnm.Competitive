@@ -36,6 +36,9 @@ namespace Kzrnm.Competitive
         public TEdge Root { get; }
         public TEdge[] Children { get; }
         public int Depth { get; }
+        /// <summary>
+        /// 根からの重みの総和
+        /// </summary>
         public T DepthLength { get; }
 
         public override string ToString() => $"children: {string.Join(",", Children)}";

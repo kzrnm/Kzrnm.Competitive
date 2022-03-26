@@ -25,7 +25,7 @@ public class BenchmarkConfig : ManualConfig
 #if DEBUG
         BenchmarkSwitcher.FromAssembly(typeof(BenchmarkConfig).Assembly).Run(args, new DebugInProcessConfig());
 #else
-_ = BenchmarkRunner.Run(typeof(Benchmark).Assembly);
+        _ = BenchmarkRunner.Run(typeof(Benchmark).Assembly);
 #endif
     }
     public BenchmarkConfig()
@@ -42,28 +42,51 @@ public class Benchmark
 {
     private readonly Random rnd = new Random(42);
     const int MAX_N = 1 << 20;
-    [Params(
+    [Params(new object[]
+    {
+        1<<5,
+        1<<10,
+        1<<15,
         //1 << 10,
         //1 << 15,
-        1 << 20)]
+        //1 << 20,
+    })]
     public int N;
-    Set<int> set;
 
     [GlobalSetup]
     public void Setup()
     {
         var array = new int[N];
         rnd.NextBytes(MemoryMarshal.Cast<int, byte>(array));
-        set = new Set<int>(array);
     }
 
     [Benchmark]
-    [BenchmarkCategory("LowerBound")]
-    public int NewLowerBound()
+    [BenchmarkCategory("ListAdd")]
+    public long OldListAdd()
     {
-        int ix = 0;
-        for (int i = 0; i < 1_000_000; i++)
-            ix ^= set.LowerBoundIndex(ix);
-        return ix;
+        var list = new List<long>(N);
+        for (int i = 0; i < N; i++)
+            list.Add(rnd.Next());
+        return list[^1];
+    }
+
+    [Benchmark]
+    [BenchmarkCategory("ListAdd")]
+    public long NewListAdd()
+    {
+        var list = new SpanList<long>(new long[N]);
+        for (int i = 0; i < N; i++)
+            list.Add(rnd.Next());
+        return list[^1];
+    }
+
+    [Benchmark]
+    [BenchmarkCategory("ListAdd")]
+    public long StackListAdd()
+    {
+        var list = new SpanList<long>(stackalloc long[N]);
+        for (int i = 0; i < N; i++)
+            list.Add(rnd.Next());
+        return list[^1];
     }
 }
