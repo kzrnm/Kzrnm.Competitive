@@ -27,9 +27,9 @@ namespace Kzrnm.Competitive
 
             [凾(256)] public TreeGraph<TreeNode<T>, GraphEdge<T>> Tree(TreeNode<T>[] nodes, int root) => new TreeGraph<TreeNode<T>, GraphEdge<T>>(nodes, root);
             [凾(256)]
-            public TreeNode<T> TreeNode(int i, TreeNode<T> parent, GraphEdge<T> edge, GraphEdge<T>[] children)
-                => new TreeNode<T>(i, edge.Reversed(parent.Index), parent.Depth + 1, children);
-            [凾(256)] public TreeNode<T> TreeRootNode(int i, GraphEdge<T>[] children) => new TreeNode<T>(i, GraphEdge<T>.None, 0, children);
+            public TreeNode<T> TreeNode(int i, int size, TreeNode<T> parent, GraphEdge<T> edge, GraphEdge<T>[] children)
+                => new TreeNode<T>(i, size, edge.Reversed(parent.Index), parent.Depth + 1, children);
+            [凾(256)] public TreeNode<T> TreeRootNode(int i, int size, GraphEdge<T>[] children) => new TreeNode<T>(i, size, GraphEdge<T>.None, 0, children);
         }
     }
 
@@ -81,17 +81,19 @@ namespace Kzrnm.Competitive
     }
     public class TreeNode<T> : ITreeNode<GraphEdge<T>>, IEquatable<TreeNode<T>>
     {
-        public TreeNode(int i, GraphEdge<T> root, int depth, GraphEdge<T>[] children)
+        public TreeNode(int i, int size, GraphEdge<T> root, int depth, GraphEdge<T>[] children)
         {
             Index = i;
             Root = root;
             Children = children;
             Depth = depth;
+            Size = size;
         }
         public int Index { get; }
         public GraphEdge<T> Root { get; }
         public GraphEdge<T>[] Children { get; }
         public int Depth { get; }
+        public int Size { get; }
 
         public override string ToString() => $"children: {string.Join(",", Children)}";
         public override bool Equals(object obj) => obj is TreeNode<T> node && Equals(node);

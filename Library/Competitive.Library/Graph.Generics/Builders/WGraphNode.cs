@@ -24,18 +24,20 @@ namespace Kzrnm.Competitive
     public class WTreeNode<T, TEdge> : ITreeNode<TEdge>, IEquatable<WTreeNode<T, TEdge>>
         where TEdge : IWGraphEdge<T>
     {
-        public WTreeNode(int i, TEdge root, int depth, T depthLength, TEdge[] children)
+        public WTreeNode(int i, int size, TEdge root, int depth, T depthLength, TEdge[] children)
         {
             Index = i;
             Root = root;
             Children = children;
             Depth = depth;
             DepthLength = depthLength;
+            Size = size;
         }
         public int Index { get; }
         public TEdge Root { get; }
         public TEdge[] Children { get; }
         public int Depth { get; }
+        public int Size { get; }
         /// <summary>
         /// 根からの重みの総和
         /// </summary>

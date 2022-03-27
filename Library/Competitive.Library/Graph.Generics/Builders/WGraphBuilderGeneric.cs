@@ -32,9 +32,9 @@ namespace Kzrnm.Competitive
 
             [凾(256)] public WTreeGraph<T, TOp, WTreeNode<T, WEdge<T, S>>, WEdge<T, S>> Tree(WTreeNode<T, WEdge<T, S>>[] nodes, int root) => new WTreeGraph<T, TOp, WTreeNode<T, WEdge<T, S>>, WEdge<T, S>>(nodes, root);
             [凾(256)]
-            public WTreeNode<T, WEdge<T, S>> TreeNode(int i, WTreeNode<T, WEdge<T, S>> parent, WEdge<T, S> edge, WEdge<T, S>[] children)
-                => new WTreeNode<T, WEdge<T, S>>(i, edge.Reversed(parent.Index), parent.Depth + 1, op.Add(parent.DepthLength, edge.Value), children);
-            [凾(256)] public WTreeNode<T, WEdge<T, S>> TreeRootNode(int i, WEdge<T, S>[] children) => new WTreeNode<T, WEdge<T, S>>(i, WEdge<T, S>.None, 0, default, children);
+            public WTreeNode<T, WEdge<T, S>> TreeNode(int i, int size, WTreeNode<T, WEdge<T, S>> parent, WEdge<T, S> edge, WEdge<T, S>[] children)
+                => new WTreeNode<T, WEdge<T, S>>(i, size, edge.Reversed(parent.Index), parent.Depth + 1, op.Add(parent.DepthLength, edge.Value), children);
+            [凾(256)] public WTreeNode<T, WEdge<T, S>> TreeRootNode(int i, int size, WEdge<T, S>[] children) => new WTreeNode<T, WEdge<T, S>>(i, size, WEdge<T, S>.None, 0, default, children);
         }
     }
 

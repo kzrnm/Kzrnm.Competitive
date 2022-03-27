@@ -51,9 +51,9 @@ namespace Kzrnm.Competitive
 
             [凾(256)] public TreeGraph<TreeNode, GraphEdge> Tree(TreeNode[] nodes, int root) => new TreeGraph<TreeNode, GraphEdge>(nodes, root);
             [凾(256)]
-            public TreeNode TreeNode(int i, TreeNode parent, GraphEdge edge, GraphEdge[] children)
-                => new TreeNode(i, edge.Reversed(parent.Index), parent.Depth + 1, children);
-            [凾(256)] public TreeNode TreeRootNode(int i, GraphEdge[] children) => new TreeNode(i, GraphEdge.None, 0, children);
+            public TreeNode TreeNode(int i, int size, TreeNode parent, GraphEdge edge, GraphEdge[] children)
+                => new TreeNode(i, size, edge.Reversed(parent.Index), parent.Depth + 1, children);
+            [凾(256)] public TreeNode TreeRootNode(int i, int size, GraphEdge[] children) => new TreeNode(i, size, GraphEdge.None, 0, children);
         }
     }
 
@@ -98,17 +98,19 @@ namespace Kzrnm.Competitive
     }
     public class TreeNode : ITreeNode<GraphEdge>, IEquatable<TreeNode>
     {
-        public TreeNode(int i, GraphEdge root, int depth, GraphEdge[] children)
+        public TreeNode(int i, int size, GraphEdge root, int depth, GraphEdge[] children)
         {
             Index = i;
             Root = root;
             Children = children;
             Depth = depth;
+            Size = size;
         }
         public int Index { get; }
         public GraphEdge Root { get; }
         public GraphEdge[] Children { get; }
         public int Depth { get; }
+        public int Size { get; }
 
         public override string ToString() => $"children: {string.Join(",", Children)}";
         public override bool Equals(object obj) => obj is TreeNode node && Equals(node);

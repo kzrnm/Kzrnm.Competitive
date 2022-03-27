@@ -5,6 +5,10 @@ namespace Kzrnm.Competitive
 {
     public interface IReversable<T> where T : IGraphEdge
     {
+        /// <summary>
+        /// <paramref name="from"/> と <see cref="IGraphEdge.To"/> を逆にする。
+        /// </summary>
+        /// <returns><see cref="IGraphEdge.To"/> が <paramref name="from"/> になった <typeparamref name="T"/></returns>
         T Reversed(int from);
     }
     public interface IGraphEdge
@@ -65,6 +69,10 @@ namespace Kzrnm.Competitive
         /// 何個遡ったら根になるか
         /// </summary>
         int Depth { get; }
+        /// <summary>
+        /// 部分木のサイズ
+        /// </summary>
+        int Size { get; }
     }
     [IsOperator]
     public interface IGraphBuildOperator<TGraph, TNode, TEdge>
@@ -75,8 +83,8 @@ namespace Kzrnm.Competitive
     [IsOperator]
     public interface ITreeBuildOperator<TTree, TNode, TEdge>
     {
-        TNode TreeNode(int i, TNode parent, TEdge parentEdge, TEdge[] children);
-        TNode TreeRootNode(int i, TEdge[] children);
+        TNode TreeNode(int i, int size, TNode parent, TEdge parentEdge, TEdge[] children);
+        TNode TreeRootNode(int i, int size, TEdge[] children);
         TTree Tree(TNode[] nodes, int root);
     }
     public interface IGraph<TNode, TEdge>

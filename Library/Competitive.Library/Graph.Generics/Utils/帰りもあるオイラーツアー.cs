@@ -3,7 +3,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public class オイラーツアー<TEdge> where TEdge : IGraphEdge, IReversable<TEdge>
+    public class 帰りもあるオイラーツアー<TEdge> where TEdge : IGraphEdge, IReversable<TEdge>
     {
         public readonly struct Event
         {
@@ -33,7 +33,7 @@ namespace Kzrnm.Competitive
 
         public Event[] Events;
 
-        public オイラーツアー((int left, int right)[] nodes, Event[] events)
+        public 帰りもあるオイラーツアー((int left, int right)[] nodes, Event[] events)
         {
             this.nodes = nodes;
             Events = events;
@@ -43,7 +43,7 @@ namespace Kzrnm.Competitive
         /// <para>オイラーツアーを求める。</para>
         /// <para>根から各ノードを深さ優先探索するとき、ノードに入る/出るをイベント化したときのインデックスを返す。</para>
         /// </summary>
-        public static オイラーツアー<TEdge> Create<TNode>(ITreeGraph<TNode, TEdge> tree)
+        public static 帰りもあるオイラーツアー<TEdge> Create<TNode>(ITreeGraph<TNode, TEdge> tree)
             where TNode : ITreeNode<TEdge>
         {
             var treeArr = tree.AsArray();
@@ -86,7 +86,7 @@ namespace Kzrnm.Competitive
             }
             Dfs(root);
             */
-            return new オイラーツアー<TEdge>(nodes, events);
+            return new 帰りもあるオイラーツアー<TEdge>(nodes, events);
         }
 
         /// <summary>
@@ -129,8 +129,8 @@ namespace Kzrnm.Competitive
         /// <para>オイラーツアーを求める。</para>
         /// <para>根から各ノードを深さ優先探索するとき、ノードに入る/出るをイベント化したときのインデックスを返す。</para>
         /// </summary>
-        public static オイラーツアー<TEdge> EulerianTour<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
+        public static 帰りもあるオイラーツアー<TEdge> EulerianTour<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
             where TNode : ITreeNode<TEdge>
-            where TEdge : IGraphEdge, IReversable<TEdge> => オイラーツアー<TEdge>.Create(tree);
+            where TEdge : IGraphEdge, IReversable<TEdge> => 帰りもあるオイラーツアー<TEdge>.Create(tree);
     }
 }

@@ -24,7 +24,7 @@ namespace Kzrnm.Competitive
             for (int i = 0; i < res.Length; i++)
             {
                 res[i] = op.Node(i, roots[i], children[i]);
-                foreach (ref var e in csr.EList.AsSpan(csr.Start[i], csr.Start[i + 1] - csr.Start[i]))
+                foreach (var e in csr.EList.AsSpan(csr.Start[i], csr.Start[i + 1] - csr.Start[i]))
                 {
                     var to = e.To;
                     children[i][counter[i]++] = e;
@@ -41,62 +41,93 @@ namespace Kzrnm.Competitive
             where TOp : struct, ITreeBuildOperator<TGraph, TNode, TEdge>
         {
             var op = new TOp();
+            int size = edgeContainer.Length;
             Contract.Assert(!edgeContainer.IsDirected, "木には無向グラフをしたほうが良い");
-            var res = new TNode[edgeContainer.Length];
-
-            var children = SizeToList<TEdge>(edgeContainer.sizes);
-
+            var edges = SizeToArray<TEdge>(edgeContainer.sizes);
+            var idxs = new int[edges.Length];
             foreach (var (from, e) in edgeContainer.edges.AsSpan())
             {
                 var to = e.To;
-                children[from].Add(e);
-                children[to].Add(e.Reversed(from));
+                edges[from][idxs[from]++] = e;
+                edges[to][idxs[to]++] = e.Reversed(from);
             }
 
-            if (edgeContainer.Length == 1)
-                return op.Tree(new[] { op.TreeRootNode(root, Array.Empty<TEdge>()) }, root);
+            idxs.AsSpan().Clear();
+            var sz = new int[size].Fill(1); // 部分木のサイズ
+            var children = SizeToArray<TEdge>(edgeContainer.sizes, -1, root);
 
-            res[root] = op.TreeRootNode(root, children[root]?.ToArray() ?? Array.Empty<TEdge>());
-
-            var stack = new Stack<(int parent, TEdge edge)>();
-            foreach (var e in res[root].Children)
-                stack.Push((root, e));
-
-            while (stack.Count > 0)
+            // 深さ優先探索で構築
+            var parent = new int[size];
+            parent[root] = -1;
+            var stack = new Stack<(int Cur, int Chix)>(size);
+            stack.Push((root, 0));
+            while (stack.TryPop(out var cur, out var ci))
             {
-                var (parent, edge) = stack.Pop();
-                var cur = edge.To;
-                List<TEdge> childrenBuilder;
-                if (parent == -1)
-                    childrenBuilder = children[cur];
-                else
+                var es = edges[cur];
+                if (--ci >= 0)
                 {
-                    childrenBuilder = new List<TEdge>(children[cur].Count);
-                    foreach (var e in children[cur].AsSpan())
-                        if (e.To != parent)
-                            childrenBuilder.Add(e);
+                    // まず一つ前の子をチェック
+                    var tp = es[ci].To;
+                    sz[cur] += sz[tp];
+                    // HL分解のため最大の子を先頭に出しておく
+                    if (sz[tp] > sz[es[0].To])
+                        (children[cur][0], children[cur][ci]) = (children[cur][ci], children[cur][0]);
+                }
+                if (++ci < children[cur].Length)
+                {
+                    var to = es[ci].To;
+                    if (parent[cur] == to)
+                    {
+                        // 親は末尾に置く
+                        (es[ci], es[^1]) = (es[^1], es[ci]);
+                        to = es[ci].To;
+                    }
+                    stack.Push((cur, ci + 1));
+                    stack.Push((to, 0));
+                    children[cur][ci] = es[ci];
+                    parent[to] = cur;
+                }
+            }
+
+            var etid = 0;
+            var down = new int[size];
+            var up = new int[size];
+            var nxt = new int[size];
+            var nodes = new TNode[size];
+            stack.Push((root, 0));
+            while (stack.TryPop(out var cur, out var ci))
+            {
+                down[cur] = etid++;
+                var ch = children[cur];
+                if (ci == 0)
+                {
+                    System.Diagnostics.Debug.Assert(
+                        root == cur
+                        || (uint)parent[cur] < (uint)nodes.Length
+                        && nodes[parent[cur]] != null);
+                    nodes[cur] = root == cur
+                        ? op.TreeRootNode(cur, sz[cur], children[cur])
+                        : op.TreeNode(cur, sz[cur], nodes[parent[cur]], edges[cur][^1], children[cur]);
                 }
 
-                var childrenArr = childrenBuilder.ToArray();
-                res[cur] = op.TreeNode(cur, res[parent], edge.Reversed(parent), childrenArr);
-                foreach (var e in childrenArr)
-                    stack.Push((cur, e));
+                if (ci < ch.Length)
+                {
+                    var to = ch[ci].To;
+                    nxt[to] = ci == 0 ? nxt[cur] : to;
+                    stack.Push((cur, ci + 1));
+                    stack.Push((to, 0));
+                }
+                else
+                    up[cur] = etid;
             }
 
-            return op.Tree(res, root);
+            return op.Tree(nodes, root);
         }
-        static T[][] SizeToArray<T>(int[] sizeArray)
+        static T[][] SizeToArray<T>(int[] sizeArray, int offset = 0, int root = -1)
         {
             var a = new T[sizeArray.Length][];
             for (int i = 0; i < sizeArray.Length; i++)
-                a[i] = new T[sizeArray[i]];
-            return a;
-        }
-        static List<T>[] SizeToList<T>(int[] sizeArray)
-        {
-            var a = new List<T>[sizeArray.Length];
-            for (int i = 0; i < sizeArray.Length; i++)
-                a[i] = new List<T>(sizeArray[i]);
+                a[i] = new T[sizeArray[i] + (root == i ? 0 : offset)];
             return a;
         }
     }
