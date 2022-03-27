@@ -79,4 +79,22 @@ namespace Kzrnm.Competitive
         TNode TreeRootNode(int i, TEdge[] children);
         TTree Tree(TNode[] nodes, int root);
     }
+    public interface IGraph<TNode, TEdge>
+        where TNode : IGraphNode<TEdge>
+        where TEdge : IGraphEdge
+    {
+        CSR<TEdge> Edges { get; }
+        TNode[] AsArray();
+        TNode this[int index] { get; }
+        int Length { get; }
+    }
+    public interface ITreeGraph<TNode, TEdge>
+        where TNode : ITreeNode<TEdge>
+        where TEdge : IGraphEdge
+    {
+        int Root { get; }
+        TNode[] AsArray();
+        TNode this[int index] { get; }
+        int Length { get; }
+    }
 }
