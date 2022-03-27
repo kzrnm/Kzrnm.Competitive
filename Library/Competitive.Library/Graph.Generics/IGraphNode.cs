@@ -75,7 +75,7 @@ namespace Kzrnm.Competitive
     [IsOperator]
     public interface ITreeBuildOperator<TTree, TNode, TEdge>
     {
-        TNode TreeNode(int i, TNode parent, TEdge edge, TEdge[] children);
+        TNode TreeNode(int i, TNode parent, TEdge parentEdge, TEdge[] children);
         TNode TreeRootNode(int i, TEdge[] children);
         TTree Tree(TNode[] nodes, int root);
     }
