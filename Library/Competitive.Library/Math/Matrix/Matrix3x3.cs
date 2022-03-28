@@ -94,7 +94,7 @@ namespace Kzrnm.Competitive
         /// <paramref name="y"/> 乗した行列を返す。
         /// </summary>
         [凾(256)]
-        public Matrix3x3<T, TOp> Pow(long y) => MathLibGeneric.Pow<Matrix3x3<T, TOp>, Matrix3x3Operator<T, TOp>>(this, y);
+        public Matrix3x3<T, TOp> Pow(long y) => MathLibGeneric.Pow<Matrix3x3<T, TOp>, Operator>(this, y);
 
         /// <summary>
         /// 行列式を求める
@@ -137,29 +137,27 @@ namespace Kzrnm.Competitive
                 (op.Multiply(detinv, r2c0), op.Multiply(detinv, r2c1), op.Multiply(detinv, r2c2))
             );
         }
-    }
+        public struct Operator : IArithmeticOperator<Matrix3x3<T, TOp>>
+        {
+            public Matrix3x3<T, TOp> MultiplyIdentity => Identity;
 
-    public struct Matrix3x3Operator<T, TOp> : IArithmeticOperator<Matrix3x3<T, TOp>>
-        where TOp : struct, IArithmeticOperator<T>
-    {
-        public Matrix3x3<T, TOp> MultiplyIdentity => Matrix3x3<T, TOp>.Identity;
+            [凾(256)]
+            public Matrix3x3<T, TOp> Add(Matrix3x3<T, TOp> x, Matrix3x3<T, TOp> y) => x + y;
+            [凾(256)]
+            public Matrix3x3<T, TOp> Subtract(Matrix3x3<T, TOp> x, Matrix3x3<T, TOp> y) => x - y;
+            [凾(256)]
+            public Matrix3x3<T, TOp> Multiply(Matrix3x3<T, TOp> x, Matrix3x3<T, TOp> y) => x * y;
+            [凾(256)]
+            public Matrix3x3<T, TOp> Minus(Matrix3x3<T, TOp> x) => -x;
 
-        [凾(256)]
-        public Matrix3x3<T, TOp> Add(Matrix3x3<T, TOp> x, Matrix3x3<T, TOp> y) => x + y;
-        [凾(256)]
-        public Matrix3x3<T, TOp> Subtract(Matrix3x3<T, TOp> x, Matrix3x3<T, TOp> y) => x - y;
-        [凾(256)]
-        public Matrix3x3<T, TOp> Multiply(Matrix3x3<T, TOp> x, Matrix3x3<T, TOp> y) => x * y;
-        [凾(256)]
-        public Matrix3x3<T, TOp> Minus(Matrix3x3<T, TOp> x) => -x;
-
-        [凾(256)]
-        public Matrix3x3<T, TOp> Increment(Matrix3x3<T, TOp> x) => throw new NotSupportedException();
-        [凾(256)]
-        public Matrix3x3<T, TOp> Decrement(Matrix3x3<T, TOp> x) => throw new NotSupportedException();
-        [凾(256)]
-        public Matrix3x3<T, TOp> Divide(Matrix3x3<T, TOp> x, Matrix3x3<T, TOp> y) => throw new NotSupportedException();
-        [凾(256)]
-        public Matrix3x3<T, TOp> Modulo(Matrix3x3<T, TOp> x, Matrix3x3<T, TOp> y) => throw new NotSupportedException();
+            [凾(256)]
+            public Matrix3x3<T, TOp> Increment(Matrix3x3<T, TOp> x) => throw new NotSupportedException();
+            [凾(256)]
+            public Matrix3x3<T, TOp> Decrement(Matrix3x3<T, TOp> x) => throw new NotSupportedException();
+            [凾(256)]
+            public Matrix3x3<T, TOp> Divide(Matrix3x3<T, TOp> x, Matrix3x3<T, TOp> y) => throw new NotSupportedException();
+            [凾(256)]
+            public Matrix3x3<T, TOp> Modulo(Matrix3x3<T, TOp> x, Matrix3x3<T, TOp> y) => throw new NotSupportedException();
+        }
     }
 }

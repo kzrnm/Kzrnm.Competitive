@@ -111,7 +111,7 @@ namespace Kzrnm.Competitive
         /// <paramref name="y"/> 乗した行列を返す。
         /// </summary>
         [凾(256)]
-        public Matrix4x4<T, TOp> Pow(long y) => MathLibGeneric.Pow<Matrix4x4<T, TOp>, Matrix4x4Operator<T, TOp>>(this, y);
+        public Matrix4x4<T, TOp> Pow(long y) => MathLibGeneric.Pow<Matrix4x4<T, TOp>, Operator>(this, y);
 
         /// <summary>
         /// 行列式を求める
@@ -277,29 +277,28 @@ namespace Kzrnm.Competitive
                 (op.Multiply(detinv, r3c0), op.Multiply(detinv, r3c1), op.Multiply(detinv, r3c2), op.Multiply(detinv, r3c3))
             );
         }
-    }
 
-    public struct Matrix4x4Operator<T, TOp> : IArithmeticOperator<Matrix4x4<T, TOp>>
-        where TOp : struct, IArithmeticOperator<T>
-    {
-        public Matrix4x4<T, TOp> MultiplyIdentity => Matrix4x4<T, TOp>.Identity;
+        public struct Operator : IArithmeticOperator<Matrix4x4<T, TOp>>
+        {
+            public Matrix4x4<T, TOp> MultiplyIdentity => Identity;
 
-        [凾(256)]
-        public Matrix4x4<T, TOp> Add(Matrix4x4<T, TOp> x, Matrix4x4<T, TOp> y) => x + y;
-        [凾(256)]
-        public Matrix4x4<T, TOp> Subtract(Matrix4x4<T, TOp> x, Matrix4x4<T, TOp> y) => x - y;
-        [凾(256)]
-        public Matrix4x4<T, TOp> Multiply(Matrix4x4<T, TOp> x, Matrix4x4<T, TOp> y) => x * y;
-        [凾(256)]
-        public Matrix4x4<T, TOp> Minus(Matrix4x4<T, TOp> x) => -x;
+            [凾(256)]
+            public Matrix4x4<T, TOp> Add(Matrix4x4<T, TOp> x, Matrix4x4<T, TOp> y) => x + y;
+            [凾(256)]
+            public Matrix4x4<T, TOp> Subtract(Matrix4x4<T, TOp> x, Matrix4x4<T, TOp> y) => x - y;
+            [凾(256)]
+            public Matrix4x4<T, TOp> Multiply(Matrix4x4<T, TOp> x, Matrix4x4<T, TOp> y) => x * y;
+            [凾(256)]
+            public Matrix4x4<T, TOp> Minus(Matrix4x4<T, TOp> x) => -x;
 
-        [凾(256)]
-        public Matrix4x4<T, TOp> Increment(Matrix4x4<T, TOp> x) => throw new NotSupportedException();
-        [凾(256)]
-        public Matrix4x4<T, TOp> Decrement(Matrix4x4<T, TOp> x) => throw new NotSupportedException();
-        [凾(256)]
-        public Matrix4x4<T, TOp> Divide(Matrix4x4<T, TOp> x, Matrix4x4<T, TOp> y) => throw new NotSupportedException();
-        [凾(256)]
-        public Matrix4x4<T, TOp> Modulo(Matrix4x4<T, TOp> x, Matrix4x4<T, TOp> y) => throw new NotSupportedException();
+            [凾(256)]
+            public Matrix4x4<T, TOp> Increment(Matrix4x4<T, TOp> x) => throw new NotSupportedException();
+            [凾(256)]
+            public Matrix4x4<T, TOp> Decrement(Matrix4x4<T, TOp> x) => throw new NotSupportedException();
+            [凾(256)]
+            public Matrix4x4<T, TOp> Divide(Matrix4x4<T, TOp> x, Matrix4x4<T, TOp> y) => throw new NotSupportedException();
+            [凾(256)]
+            public Matrix4x4<T, TOp> Modulo(Matrix4x4<T, TOp> x, Matrix4x4<T, TOp> y) => throw new NotSupportedException();
+        }
     }
 }

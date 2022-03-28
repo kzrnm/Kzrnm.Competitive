@@ -76,7 +76,7 @@ namespace Kzrnm.Competitive
         /// <paramref name="y"/> 乗した行列を返す。
         /// </summary>
         [凾(256)]
-        public Matrix2x2<T, TOp> Pow(long y) => MathLibGeneric.Pow<Matrix2x2<T, TOp>, Matrix2x2Operator<T, TOp>>(this, y);
+        public Matrix2x2<T, TOp> Pow(long y) => MathLibGeneric.Pow<Matrix2x2<T, TOp>, Operator>(this, y);
 
 
         /// <summary>
@@ -101,29 +101,27 @@ namespace Kzrnm.Competitive
                 (op.Multiply(detinv, op.Minus(Row1.Col0)), op.Multiply(detinv, Row0.Col0))
             );
         }
-    }
+        public struct Operator : IArithmeticOperator<Matrix2x2<T, TOp>>
+        {
+            public Matrix2x2<T, TOp> MultiplyIdentity => Identity;
 
-    public struct Matrix2x2Operator<T, TOp> : IArithmeticOperator<Matrix2x2<T, TOp>>
-        where TOp : struct, IArithmeticOperator<T>
-    {
-        public Matrix2x2<T, TOp> MultiplyIdentity => Matrix2x2<T, TOp>.Identity;
+            [凾(256)]
+            public Matrix2x2<T, TOp> Add(Matrix2x2<T, TOp> x, Matrix2x2<T, TOp> y) => x + y;
+            [凾(256)]
+            public Matrix2x2<T, TOp> Subtract(Matrix2x2<T, TOp> x, Matrix2x2<T, TOp> y) => x - y;
+            [凾(256)]
+            public Matrix2x2<T, TOp> Multiply(Matrix2x2<T, TOp> x, Matrix2x2<T, TOp> y) => x * y;
+            [凾(256)]
+            public Matrix2x2<T, TOp> Minus(Matrix2x2<T, TOp> x) => -x;
 
-        [凾(256)]
-        public Matrix2x2<T, TOp> Add(Matrix2x2<T, TOp> x, Matrix2x2<T, TOp> y) => x + y;
-        [凾(256)]
-        public Matrix2x2<T, TOp> Subtract(Matrix2x2<T, TOp> x, Matrix2x2<T, TOp> y) => x - y;
-        [凾(256)]
-        public Matrix2x2<T, TOp> Multiply(Matrix2x2<T, TOp> x, Matrix2x2<T, TOp> y) => x * y;
-        [凾(256)]
-        public Matrix2x2<T, TOp> Minus(Matrix2x2<T, TOp> x) => -x;
-
-        [凾(256)]
-        public Matrix2x2<T, TOp> Increment(Matrix2x2<T, TOp> x) => throw new NotSupportedException();
-        [凾(256)]
-        public Matrix2x2<T, TOp> Decrement(Matrix2x2<T, TOp> x) => throw new NotSupportedException();
-        [凾(256)]
-        public Matrix2x2<T, TOp> Divide(Matrix2x2<T, TOp> x, Matrix2x2<T, TOp> y) => throw new NotSupportedException();
-        [凾(256)]
-        public Matrix2x2<T, TOp> Modulo(Matrix2x2<T, TOp> x, Matrix2x2<T, TOp> y) => throw new NotSupportedException();
+            [凾(256)]
+            public Matrix2x2<T, TOp> Increment(Matrix2x2<T, TOp> x) => throw new NotSupportedException();
+            [凾(256)]
+            public Matrix2x2<T, TOp> Decrement(Matrix2x2<T, TOp> x) => throw new NotSupportedException();
+            [凾(256)]
+            public Matrix2x2<T, TOp> Divide(Matrix2x2<T, TOp> x, Matrix2x2<T, TOp> y) => throw new NotSupportedException();
+            [凾(256)]
+            public Matrix2x2<T, TOp> Modulo(Matrix2x2<T, TOp> x, Matrix2x2<T, TOp> y) => throw new NotSupportedException();
+        }
     }
 }

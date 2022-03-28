@@ -106,8 +106,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         {
             (mat1 + mat2).Value.Should().BeEquivalentTo(expected.Value);
             (mat2 + mat1).Value.Should().BeEquivalentTo(expected.Value);
-            default(ArrayMatrixOperator<int, IntOperator>).Add(mat1, mat2).Value.Should().BeEquivalentTo(expected.Value);
-            default(ArrayMatrixOperator<int, IntOperator>).Add(mat2, mat1).Value.Should().BeEquivalentTo(expected.Value);
+            default(ArrayMatrix<int, IntOperator>.Operator).Add(mat1, mat2).Value.Should().BeEquivalentTo(expected.Value);
+            default(ArrayMatrix<int, IntOperator>.Operator).Add(mat2, mat1).Value.Should().BeEquivalentTo(expected.Value);
         }
 
         public static TheoryData Subtract_Data = new TheoryData<ArrayMatrix<int, IntOperator>, ArrayMatrix<int, IntOperator>, ArrayMatrix<int, IntOperator>>
@@ -167,7 +167,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         public void Subtract(ArrayMatrix<int, IntOperator> mat1, ArrayMatrix<int, IntOperator> mat2, ArrayMatrix<int, IntOperator> expected)
         {
             (mat1 - mat2).Value.Should().BeEquivalentTo(expected.Value);
-            default(ArrayMatrixOperator<int, IntOperator>).Subtract(mat1, mat2).Value.Should().BeEquivalentTo(expected.Value);
+            default(ArrayMatrix<int, IntOperator>.Operator).Subtract(mat1, mat2).Value.Should().BeEquivalentTo(expected.Value);
         }
 
         public static TheoryData Multiply_Data = new TheoryData<ArrayMatrix<int, IntOperator>, ArrayMatrix<int, IntOperator>, ArrayMatrix<int, IntOperator>>
@@ -229,7 +229,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         public void Multiply(ArrayMatrix<int, IntOperator> mat1, ArrayMatrix<int, IntOperator> mat2, ArrayMatrix<int, IntOperator> expected)
         {
             (mat1 * mat2).Value.Should().BeEquivalentTo(expected.Value);
-            default(ArrayMatrixOperator<int, IntOperator>).Multiply(mat1, mat2).Value.Should().BeEquivalentTo(expected.Value);
+            default(ArrayMatrix<int, IntOperator>.Operator).Multiply(mat1, mat2).Value.Should().BeEquivalentTo(expected.Value);
         }
 
         [Theory]
@@ -242,7 +242,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             var expected = Int2ModInt(expectedInt);
             (mat1 * mat2).Value.Should().BeEquivalentTo(expected.Value);
             mat1.Strassen(mat2).Value.Should().BeEquivalentTo(expected.Value);
-            default(ArrayMatrixOperator<StaticModInt<Mod1000000007>, StaticModIntOperator<Mod1000000007>>)
+            default(ArrayMatrix<StaticModInt<Mod1000000007>, StaticModIntOperator<Mod1000000007>>.Operator)
                 .Multiply(mat1, mat2).Value.Should().BeEquivalentTo(expected.Value);
         }
         private static ArrayMatrix<StaticModInt<Mod1000000007>, StaticModIntOperator<Mod1000000007>> Int2ModInt(ArrayMatrix<int, IntOperator> mat)

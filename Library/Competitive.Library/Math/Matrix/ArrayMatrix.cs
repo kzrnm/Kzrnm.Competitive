@@ -271,7 +271,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="y"/> 乗した行列を返す。
         /// </summary>
-        public ArrayMatrix<T, TOp> Pow(long y) => MathLibGeneric.Pow<ArrayMatrix<T, TOp>, ArrayMatrixOperator<T, TOp>>(this, y);
+        public ArrayMatrix<T, TOp> Pow(long y) => MathLibGeneric.Pow<ArrayMatrix<T, TOp>, Operator>(this, y);
 
         /// <summary>
         /// 逆行列を掃き出し法で求める。求められなければ零行列を返す。
@@ -423,34 +423,33 @@ namespace Kzrnm.Competitive
             }
             return lst.ToArray();
         }
+        public struct Operator : IArithmeticOperator<ArrayMatrix<T, TOp>>
+        {
+            public ArrayMatrix<T, TOp> MultiplyIdentity => Identity;
+
+            [凾(256)]
+            public ArrayMatrix<T, TOp> Add(ArrayMatrix<T, TOp> x, ArrayMatrix<T, TOp> y) => x + y;
+            [凾(256)]
+            public ArrayMatrix<T, TOp> Subtract(ArrayMatrix<T, TOp> x, ArrayMatrix<T, TOp> y) => x - y;
+            [凾(256)]
+            public ArrayMatrix<T, TOp> Multiply(ArrayMatrix<T, TOp> x, ArrayMatrix<T, TOp> y) => x * y;
+            [凾(256)]
+            public ArrayMatrix<T, TOp> Minus(ArrayMatrix<T, TOp> x) => -x;
+
+            [凾(256)]
+            public ArrayMatrix<T, TOp> Increment(ArrayMatrix<T, TOp> x) => throw new NotSupportedException();
+            [凾(256)]
+            public ArrayMatrix<T, TOp> Decrement(ArrayMatrix<T, TOp> x) => throw new NotSupportedException();
+            [凾(256)]
+            public ArrayMatrix<T, TOp> Divide(ArrayMatrix<T, TOp> x, ArrayMatrix<T, TOp> y) => throw new NotSupportedException();
+            [凾(256)]
+            public ArrayMatrix<T, TOp> Modulo(ArrayMatrix<T, TOp> x, ArrayMatrix<T, TOp> y) => throw new NotSupportedException();
+        }
     }
     internal enum ArrayMatrixKind
     {
         Zero,
         Identity,
         Normal,
-    }
-    public struct ArrayMatrixOperator<T, TOp> : IArithmeticOperator<ArrayMatrix<T, TOp>>
-        where TOp : struct, IArithmeticOperator<T>
-    {
-        public ArrayMatrix<T, TOp> MultiplyIdentity => ArrayMatrix<T, TOp>.Identity;
-
-        [凾(256)]
-        public ArrayMatrix<T, TOp> Add(ArrayMatrix<T, TOp> x, ArrayMatrix<T, TOp> y) => x + y;
-        [凾(256)]
-        public ArrayMatrix<T, TOp> Subtract(ArrayMatrix<T, TOp> x, ArrayMatrix<T, TOp> y) => x - y;
-        [凾(256)]
-        public ArrayMatrix<T, TOp> Multiply(ArrayMatrix<T, TOp> x, ArrayMatrix<T, TOp> y) => x * y;
-        [凾(256)]
-        public ArrayMatrix<T, TOp> Minus(ArrayMatrix<T, TOp> x) => -x;
-
-        [凾(256)]
-        public ArrayMatrix<T, TOp> Increment(ArrayMatrix<T, TOp> x) => throw new NotSupportedException();
-        [凾(256)]
-        public ArrayMatrix<T, TOp> Decrement(ArrayMatrix<T, TOp> x) => throw new NotSupportedException();
-        [凾(256)]
-        public ArrayMatrix<T, TOp> Divide(ArrayMatrix<T, TOp> x, ArrayMatrix<T, TOp> y) => throw new NotSupportedException();
-        [凾(256)]
-        public ArrayMatrix<T, TOp> Modulo(ArrayMatrix<T, TOp> x, ArrayMatrix<T, TOp> y) => throw new NotSupportedException();
     }
 }
