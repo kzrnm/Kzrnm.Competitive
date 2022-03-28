@@ -86,6 +86,20 @@ namespace Kzrnm.Competitive
                 f.Operate(from, to);
         }
 
+        /// <summary>
+        /// <paramref name="u"/> から <paramref name="v"/> に <paramref name="f"/> を適用する。
+        /// </summary>
+        /// <param name="u">パスの始点</param>
+        /// <param name="v">パスの終点</param>
+        /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
+        /// <param name="f">クエリ関数オペレータ。Segtree などの範囲演算をさせると良い。</param>
+        public void PathQuery<TOp>(int u, int v, bool vertex, ref TOp f)
+            where TOp : IHlDecompositionOperator
+        {
+            foreach (var (from, to) in new PathEnumerator(this, u, v, vertex))
+                f.Operate(from, to);
+        }
+
 
         /// <summary>
         /// 部分木に <paramref name="f"/> を適用する。
@@ -103,6 +117,16 @@ namespace Kzrnm.Competitive
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
         /// <param name="f">クエリ関数オペレータ。Segtree などの範囲演算をさせると良い。</param>
         public void SubtreeQuery<TOp>(int u, bool vertex, TOp f)
+            where TOp : IHlDecompositionOperator
+            => f.Operate(down[u] + (vertex ? 0 : 1), up[u]);
+
+        /// <summary>
+        /// 部分木に <paramref name="f"/> を適用する。
+        /// </summary>
+        /// <param name="u">部分木の根</param>
+        /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
+        /// <param name="f">クエリ関数オペレータ。Segtree などの範囲演算をさせると良い。</param>
+        public void SubtreeQuery<TOp>(int u, bool vertex, ref TOp f)
             where TOp : IHlDecompositionOperator
             => f.Operate(down[u] + (vertex ? 0 : 1), up[u]);
 
