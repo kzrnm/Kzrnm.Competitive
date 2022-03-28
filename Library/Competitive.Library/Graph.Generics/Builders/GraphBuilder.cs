@@ -49,7 +49,7 @@ namespace Kzrnm.Competitive
             [凾(256)] public SimpleGraph<GraphNode, GraphEdge> Graph(GraphNode[] nodes, CSR<GraphEdge> edges) => new SimpleGraph<GraphNode, GraphEdge>(nodes, edges);
             [凾(256)] public GraphNode Node(int i, GraphEdge[] roots, GraphEdge[] children) => new GraphNode(i, roots, children);
 
-            [凾(256)] public TreeGraph<TreeNode, GraphEdge> Tree(TreeNode[] nodes, int root) => new TreeGraph<TreeNode, GraphEdge>(nodes, root);
+            [凾(256)] public TreeGraph<TreeNode, GraphEdge> Tree(TreeNode[] nodes, int root, HeavyLightDecomposition<TreeNode, GraphEdge> hl) => new TreeGraph<TreeNode, GraphEdge>(nodes, root, hl);
             [凾(256)]
             public TreeNode TreeNode(int i, int size, TreeNode parent, GraphEdge edge, GraphEdge[] children)
                 => new TreeNode(i, size, edge.Reversed(parent.Index), parent.Depth + 1, children);

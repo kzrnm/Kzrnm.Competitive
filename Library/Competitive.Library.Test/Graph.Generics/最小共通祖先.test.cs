@@ -19,7 +19,26 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(2, 5);
             gb.Add(2, 6);
             gb.Add(3, 7);
-            var lca0 = gb.ToTree().LowestCommonAncestor();
+
+            var tree = gb.ToTree();
+            tree.HlDecomposition.LowestCommonAncestor(0, 0).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(0, 1).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(0, 2).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(0, 3).Should().Be(0);
+            tree.HlDecomposition.LowestCommonAncestor(0, 4).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(0, 5).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(0, 6).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(0, 7).Should().Be(0);
+            tree.HlDecomposition.LowestCommonAncestor(1, 0).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(1, 1).Should().Be(1); tree.HlDecomposition.LowestCommonAncestor(1, 2).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(1, 3).Should().Be(1);
+            tree.HlDecomposition.LowestCommonAncestor(1, 4).Should().Be(1); tree.HlDecomposition.LowestCommonAncestor(1, 5).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(1, 6).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(1, 7).Should().Be(1);
+            tree.HlDecomposition.LowestCommonAncestor(2, 0).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(2, 1).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(2, 2).Should().Be(2); tree.HlDecomposition.LowestCommonAncestor(2, 3).Should().Be(0);
+            tree.HlDecomposition.LowestCommonAncestor(2, 4).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(2, 5).Should().Be(2); tree.HlDecomposition.LowestCommonAncestor(2, 6).Should().Be(2); tree.HlDecomposition.LowestCommonAncestor(2, 7).Should().Be(0);
+            tree.HlDecomposition.LowestCommonAncestor(3, 0).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(3, 1).Should().Be(1); tree.HlDecomposition.LowestCommonAncestor(3, 2).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(3, 3).Should().Be(3);
+            tree.HlDecomposition.LowestCommonAncestor(3, 4).Should().Be(1); tree.HlDecomposition.LowestCommonAncestor(3, 5).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(3, 6).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(3, 7).Should().Be(3);
+            tree.HlDecomposition.LowestCommonAncestor(4, 0).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(4, 1).Should().Be(1); tree.HlDecomposition.LowestCommonAncestor(4, 2).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(4, 3).Should().Be(1);
+            tree.HlDecomposition.LowestCommonAncestor(4, 4).Should().Be(4); tree.HlDecomposition.LowestCommonAncestor(4, 5).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(4, 6).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(4, 7).Should().Be(1);
+            tree.HlDecomposition.LowestCommonAncestor(5, 0).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(5, 1).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(5, 2).Should().Be(2); tree.HlDecomposition.LowestCommonAncestor(5, 3).Should().Be(0);
+            tree.HlDecomposition.LowestCommonAncestor(5, 4).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(5, 5).Should().Be(5); tree.HlDecomposition.LowestCommonAncestor(5, 6).Should().Be(2); tree.HlDecomposition.LowestCommonAncestor(5, 7).Should().Be(0);
+            tree.HlDecomposition.LowestCommonAncestor(6, 0).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(6, 1).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(6, 2).Should().Be(2); tree.HlDecomposition.LowestCommonAncestor(6, 3).Should().Be(0);
+            tree.HlDecomposition.LowestCommonAncestor(6, 4).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(6, 5).Should().Be(2); tree.HlDecomposition.LowestCommonAncestor(6, 6).Should().Be(6); tree.HlDecomposition.LowestCommonAncestor(6, 7).Should().Be(0);
+            tree.HlDecomposition.LowestCommonAncestor(7, 0).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(7, 1).Should().Be(1); tree.HlDecomposition.LowestCommonAncestor(7, 2).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(7, 3).Should().Be(3);
+            tree.HlDecomposition.LowestCommonAncestor(7, 4).Should().Be(1); tree.HlDecomposition.LowestCommonAncestor(7, 5).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(7, 6).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(7, 7).Should().Be(7);
+
+            var lca0 = tree.LowestCommonAncestor();
             lca0.Lca(0, 0).Should().Be(0); lca0.Lca(0, 1).Should().Be(0); lca0.Lca(0, 2).Should().Be(0); lca0.Lca(0, 3).Should().Be(0);
             lca0.Lca(0, 4).Should().Be(0); lca0.Lca(0, 5).Should().Be(0); lca0.Lca(0, 6).Should().Be(0); lca0.Lca(0, 7).Should().Be(0);
             lca0.Lca(1, 0).Should().Be(0); lca0.Lca(1, 1).Should().Be(1); lca0.Lca(1, 2).Should().Be(0); lca0.Lca(1, 3).Should().Be(1);
@@ -82,7 +101,8 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(2, 5, 5);
             gb.Add(2, 6, 6);
             gb.Add(3, 7, 7);
-            var lca0 = gb.ToTree().LowestCommonAncestor();
+            var tree = gb.ToTree();
+            var lca0 = tree.LowestCommonAncestor();
             lca0.Lca(0, 0).Should().Be(0); lca0.Lca(0, 1).Should().Be(0); lca0.Lca(0, 2).Should().Be(0); lca0.Lca(0, 3).Should().Be(0);
             lca0.Lca(0, 4).Should().Be(0); lca0.Lca(0, 5).Should().Be(0); lca0.Lca(0, 6).Should().Be(0); lca0.Lca(0, 7).Should().Be(0);
             lca0.Lca(1, 0).Should().Be(0); lca0.Lca(1, 1).Should().Be(1); lca0.Lca(1, 2).Should().Be(0); lca0.Lca(1, 3).Should().Be(1);
@@ -157,6 +177,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                     for (int j = 0; j < N; j++)
                     {
                         var (expectedLca, expectedDist) = LcaDirect(tree.AsArray(), i, j);
+                        tree.HlDecomposition.LowestCommonAncestor(i, j).Should().Be(expectedLca);
                         lca.Lca(i, j).Should().Be(expectedLca);
                         wlca.Lca(i, j).Should().Be(expectedLca);
                         lca.Distance(i, j).Should().Be(expectedDist);

@@ -97,10 +97,10 @@ namespace Kzrnm.Competitive
             stack.Push((root, 0));
             while (stack.TryPop(out var cur, out var ci))
             {
-                down[cur] = etid++;
                 var ch = children[cur];
                 if (ci == 0)
                 {
+                    down[cur] = etid++;
                     System.Diagnostics.Debug.Assert(
                         root == cur
                         || (uint)parent[cur] < (uint)nodes.Length
@@ -120,8 +120,8 @@ namespace Kzrnm.Competitive
                 else
                     up[cur] = etid;
             }
-
-            return op.Tree(nodes, root);
+            var hl = new HeavyLightDecomposition<TNode, TEdge>(nodes, nxt, down, up);
+            return op.Tree(nodes, root, hl);
         }
         static T[][] SizeToArray<T>(int[] sizeArray, int offset = 0, int root = -1)
         {

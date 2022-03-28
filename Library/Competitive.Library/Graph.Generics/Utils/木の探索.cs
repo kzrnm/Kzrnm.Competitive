@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -41,26 +42,12 @@ namespace Kzrnm.Competitive
                where TNode : ITreeNode<TEdge>
                where TEdge : IGraphEdge
         {
-            var arr = tree.AsArray();
-            var res = new int[arr.Length - (skipFirst ? 1 : 0)];
-            int cur = 0;
-            var stack = new Stack<int>(arr.Length);
+            var down = tree.HlDecomposition.down;
+            var res = new int[down.Length];
+            for (int i = 0; i < res.Length; i++)
+                res[down[i]] = i;
             if (skipFirst)
-            {
-                var children = arr[tree.Root].Children;
-                for (int i = children.Length - 1; i >= 0; i--)
-                    stack.Push(children[i].To);
-            }
-            else
-                stack.Push(tree.Root);
-            while (stack.TryPop(out var ix))
-            {
-                res[cur++] = ix;
-                var children = arr[ix].Children;
-                for (int i = children.Length - 1; i >= 0; i--)
-                    stack.Push(children[i].To);
-            }
-
+                return res[1..];
             return res;
         }
     }

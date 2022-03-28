@@ -82,10 +82,12 @@ namespace Kzrnm.Competitive
     }
     [IsOperator]
     public interface ITreeBuildOperator<TTree, TNode, TEdge>
+            where TNode : ITreeNode<TEdge>
+            where TEdge : IGraphEdge
     {
         TNode TreeNode(int i, int size, TNode parent, TEdge parentEdge, TEdge[] children);
         TNode TreeRootNode(int i, int size, TEdge[] children);
-        TTree Tree(TNode[] nodes, int root);
+        TTree Tree(TNode[] nodes, int root, HeavyLightDecomposition<TNode, TEdge> hl);
     }
     public interface IGraph<TNode, TEdge>
         where TNode : IGraphNode<TEdge>
@@ -104,5 +106,6 @@ namespace Kzrnm.Competitive
         TNode[] AsArray();
         TNode this[int index] { get; }
         int Length { get; }
+        HeavyLightDecomposition<TNode, TEdge> HlDecomposition { get; }
     }
 }

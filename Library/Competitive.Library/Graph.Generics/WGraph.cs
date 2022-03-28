@@ -35,10 +35,13 @@ namespace Kzrnm.Competitive
         public TNode this[int index] { [凾(256)] get => Nodes[index]; }
         public int Length => Nodes.Length;
         public int Root { get; }
-        public WTreeGraph(TNode[] array, int root)
+        public HeavyLightDecomposition<TNode, TEdge> HlDecomposition { get; }
+
+        public WTreeGraph(TNode[] array, int root, HeavyLightDecomposition<TNode, TEdge> hl)
         {
             Root = root;
             Nodes = array;
+            HlDecomposition = hl;
         }
     }
 }

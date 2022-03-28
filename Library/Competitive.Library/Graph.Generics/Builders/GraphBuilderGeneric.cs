@@ -25,7 +25,7 @@ namespace Kzrnm.Competitive
             [凾(256)] public SimpleGraph<GraphNode<GraphEdge<T>>, GraphEdge<T>> Graph(GraphNode<GraphEdge<T>>[] nodes, CSR<GraphEdge<T>> edges) => new SimpleGraph<GraphNode<GraphEdge<T>>, GraphEdge<T>>(nodes, edges);
             [凾(256)] public GraphNode<GraphEdge<T>> Node(int i, GraphEdge<T>[] roots, GraphEdge<T>[] children) => new GraphNode<GraphEdge<T>>(i, roots, children);
 
-            [凾(256)] public TreeGraph<TreeNode<T>, GraphEdge<T>> Tree(TreeNode<T>[] nodes, int root) => new TreeGraph<TreeNode<T>, GraphEdge<T>>(nodes, root);
+            [凾(256)] public TreeGraph<TreeNode<T>, GraphEdge<T>> Tree(TreeNode<T>[] nodes, int root, HeavyLightDecomposition<TreeNode<T>, GraphEdge<T>> hl) => new TreeGraph<TreeNode<T>, GraphEdge<T>>(nodes, root, hl);
             [凾(256)]
             public TreeNode<T> TreeNode(int i, int size, TreeNode<T> parent, GraphEdge<T> edge, GraphEdge<T>[] children)
                 => new TreeNode<T>(i, size, edge.Reversed(parent.Index), parent.Depth + 1, children);

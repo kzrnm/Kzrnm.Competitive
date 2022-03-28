@@ -30,7 +30,7 @@ namespace Kzrnm.Competitive
             [凾(256)] public WGraph<T, TOp, WGraphNode<T, WEdge<T, S>>, WEdge<T, S>> Graph(WGraphNode<T, WEdge<T, S>>[] nodes, CSR<WEdge<T, S>> edges) => new WGraph<T, TOp, WGraphNode<T, WEdge<T, S>>, WEdge<T, S>>(nodes, edges);
             [凾(256)] public WGraphNode<T, WEdge<T, S>> Node(int i, WEdge<T, S>[] roots, WEdge<T, S>[] children) => new WGraphNode<T, WEdge<T, S>>(i, roots, children);
 
-            [凾(256)] public WTreeGraph<T, TOp, WTreeNode<T, WEdge<T, S>>, WEdge<T, S>> Tree(WTreeNode<T, WEdge<T, S>>[] nodes, int root) => new WTreeGraph<T, TOp, WTreeNode<T, WEdge<T, S>>, WEdge<T, S>>(nodes, root);
+            [凾(256)] public WTreeGraph<T, TOp, WTreeNode<T, WEdge<T, S>>, WEdge<T, S>> Tree(WTreeNode<T, WEdge<T, S>>[] nodes, int root, HeavyLightDecomposition<WTreeNode<T, WEdge<T, S>>, WEdge<T, S>> hl) => new WTreeGraph<T, TOp, WTreeNode<T, WEdge<T, S>>, WEdge<T, S>>(nodes, root, hl);
             [凾(256)]
             public WTreeNode<T, WEdge<T, S>> TreeNode(int i, int size, WTreeNode<T, WEdge<T, S>> parent, WEdge<T, S> edge, WEdge<T, S>[] children)
                 => new WTreeNode<T, WEdge<T, S>>(i, size, edge.Reversed(parent.Index), parent.Depth + 1, op.Add(parent.DepthLength, edge.Value), children);
