@@ -1,10 +1,148 @@
-﻿using AtCoder.Internal;
+﻿using AtCoder;
+using AtCoder.Internal;
 using System;
 using System.Collections.Generic;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
+
+// グラフ関連で使うやつ全部入れる
 namespace Kzrnm.Competitive
 {
+    #region Interfaces
+    public interface IReversable<T> where T : IGraphEdge
+    {
+        /// <summary>
+        /// <paramref name="from"/> と <see cref="IGraphEdge.To"/> を逆にする。
+        /// </summary>
+        /// <returns><see cref="IGraphEdge.To"/> が <paramref name="from"/> になった <typeparamref name="T"/></returns>
+        T Reversed(int from);
+    }
+    public interface IGraphEdge
+    {
+        /// <summary>
+        /// 向き先
+        /// </summary>
+        int To { get; }
+    }
+    public interface IWGraphEdge<T> : IGraphEdge
+    {
+        /// <summary>
+        /// 重み
+        /// </summary>
+        T Value { get; }
+    }
+    public interface IGraphData<T> : IGraphEdge
+    {
+        /// <summary>
+        /// 自由なデータ
+        /// </summary>
+        T Data { get; }
+    }
+    public interface IGraphNode<out TEdge> where TEdge : IGraphEdge
+    {
+        /// <summary>
+        /// ノードのインデックス
+        /// </summary>
+        int Index { get; }
+        /// <summary>
+        /// 入ってくる辺の向いてる先
+        /// </summary>
+        TEdge[] Roots { get; }
+        /// <summary>
+        /// 出ている辺の向いてる先
+        /// </summary>
+        TEdge[] Children { get; }
+        /// <summary>
+        /// 有向グラフかどうか
+        /// </summary>
+        bool IsDirected { get; }
+    }
+    public interface ITreeNode<TEdge> where TEdge : IGraphEdge
+    {
+        /// <summary>
+        /// ノードのインデックス
+        /// </summary>
+        int Index { get; }
+        /// <summary>
+        /// 親ノード
+        /// </summary>
+        TEdge Root { get; }
+        /// <summary>
+        /// 子ノード
+        /// </summary>
+        TEdge[] Children { get; }
+        /// <summary>
+        /// 何個遡ったら根になるか
+        /// </summary>
+        int Depth { get; }
+        /// <summary>
+        /// 部分木のサイズ
+        /// </summary>
+        int Size { get; }
+    }
+    [IsOperator]
+    public interface IGraphBuildOperator<TGraph, TNode, TEdge>
+    {
+        TNode Node(int i, TEdge[] roots, TEdge[] children);
+        TGraph Graph(TNode[] nodes, CSR<TEdge> edges);
+    }
+    [IsOperator]
+    public interface ITreeBuildOperator<TTree, TNode, TEdge>
+            where TNode : ITreeNode<TEdge>
+            where TEdge : IGraphEdge
+    {
+        TNode TreeNode(int i, int size, TNode parent, TEdge parentEdge, TEdge[] children);
+        TNode TreeRootNode(int i, int size, TEdge[] children);
+        TTree Tree(TNode[] nodes, int root, HeavyLightDecomposition<TNode, TEdge> hl);
+    }
+    public interface IGraph<TNode, TEdge>
+        where TNode : IGraphNode<TEdge>
+        where TEdge : IGraphEdge
+    {
+        CSR<TEdge> Edges { get; }
+        TNode[] AsArray();
+        TNode this[int index] { get; }
+        int Length { get; }
+    }
+    public interface ITreeGraph<TNode, TEdge>
+        where TNode : ITreeNode<TEdge>
+        where TEdge : IGraphEdge
+    {
+        int Root { get; }
+        TNode[] AsArray();
+        TNode this[int index] { get; }
+        int Length { get; }
+        HeavyLightDecomposition<TNode, TEdge> HlDecomposition { get; }
+    }
+    #endregion Interfaces
+
+    #region classes
+    public class EdgeContainer<TEdge> where TEdge : IGraphEdge
+    {
+        public int Length { get; }
+        public bool IsDirected { get; }
+        public readonly List<(int from, TEdge edge)> edges;
+        public readonly int[] sizes;
+        public readonly int[] rootSizes;
+        public EdgeContainer(int size, bool isDirected)
+        {
+            Length = size;
+            IsDirected = isDirected;
+            sizes = new int[size];
+            rootSizes = isDirected ? new int[size] : sizes;
+            edges = new List<(int from, TEdge edge)>(size);
+        }
+        [凾(256)]
+        public void Add(int from, TEdge edge)
+        {
+            ++sizes[from];
+            ++rootSizes[edge.To];
+            edges.Add((from, edge));
+        }
+
+        [凾(256)]
+        public CSR<TEdge> ToCSR() => new CSR<TEdge>(Length, edges);
+    }
     internal static class GraphBuilderLogic
     {
         [凾(512)]
@@ -132,5 +270,15 @@ namespace Kzrnm.Competitive
                 a[i] = new T[sizeArray[i] + (root == i ? 0 : offset)];
             return a;
         }
+    }
+    #endregion classes
+
+    public static class GraphExtensions
+    {
+        [凾(256)]
+        public static int LowestCommonAncestor<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree, int u, int v)
+        where TNode : ITreeNode<TEdge>
+        where TEdge : IGraphEdge
+            => tree.HlDecomposition.LowestCommonAncestor(u, v);
     }
 }

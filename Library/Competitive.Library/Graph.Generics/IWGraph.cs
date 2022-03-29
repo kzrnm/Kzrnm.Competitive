@@ -1,7 +1,4 @@
-﻿using AtCoder.Internal;
-using AtCoder.Operators;
-using System.Diagnostics;
-using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
+﻿using AtCoder.Operators;
 
 namespace Kzrnm.Competitive
 {

@@ -15,14 +15,14 @@ namespace Kzrnm.Competitive.DataStructure
                 gb.Add(i, cr);
 
             var tree = gb.ToTree(0);
-            var et = tree.EulerianTour();
-            var lca = tree.LowestCommonAncestor();
+            var hl = tree.HlDecomposition;
+            var lca = tree.LowestCommonAncestorDoubling();
             for (int q = 0; q < Q; q++)
             {
                 int u = cr;
                 int v = cr;
                 var res = lca.Lca(u, v);
-                if (et.LowestCommonAncestor(u, v) != res)
+                if (hl.LowestCommonAncestor(u, v) != res)
                     Throw();
                 cw.WriteLine(res);
             }

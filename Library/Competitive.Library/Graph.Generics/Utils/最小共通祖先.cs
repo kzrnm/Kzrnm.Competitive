@@ -112,7 +112,7 @@ namespace Kzrnm.Competitive
 
     public static class LowestCommonAncestorExt
     {
-        public static LowestCommonAncestor<TNode, TEdge> LowestCommonAncestor<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
+        public static LowestCommonAncestor<TNode, TEdge> LowestCommonAncestorDoubling<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
             where TNode : ITreeNode<TEdge>
             where TEdge : IGraphEdge
             => new LowestCommonAncestor<TNode, TEdge>(tree.AsArray());

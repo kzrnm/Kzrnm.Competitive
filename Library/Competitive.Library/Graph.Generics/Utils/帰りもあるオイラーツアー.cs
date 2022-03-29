@@ -88,40 +88,6 @@ namespace Kzrnm.Competitive
             */
             return new 帰りもあるオイラーツアー<TEdge>(nodes, events);
         }
-
-        /// <summary>
-        /// <paramref name="u"/>と<paramref name="v"/>の最小共通祖先を返します。
-        /// </summary>
-        public int LowestCommonAncestor(int u, int v)
-        {
-            if (u == v) return u;
-            var f = nodes[u].left;
-            var t = nodes[v].left;
-            if (t < f) (f, t) = (t, f);
-            return LowestCommonAncestorTable[f..t].Node;
-        }
-
-        private SparseTable<(int Node, int Depth), NodeMinOp> _LowestCommonAncestorTable;
-        private SparseTable<(int Node, int Depth), NodeMinOp> LowestCommonAncestorTable
-            => _LowestCommonAncestorTable ??= BuildLowestCommonAncestorTable();
-        private SparseTable<(int Node, int Depth), NodeMinOp> BuildLowestCommonAncestorTable()
-        {
-            var arr = new (int Node, int Depth)[Events.Length];
-            int dep = -1;
-            for (int i = 0; i < arr.Length; i++)
-            {
-                if (Events[i].isStart)
-                    arr[i] = (Events[i].edge.To, ++dep);
-                else
-                    arr[i] = (Events[i].root, --dep);
-            }
-            return new SparseTable<(int Node, int Depth), NodeMinOp>(arr);
-        }
-        private struct NodeMinOp : ISparseTableOperator<(int Node, int Depth)>
-        {
-            [凾(256)]
-            public (int Node, int Depth) Operate((int Node, int Depth) x, (int Node, int Depth) y) => x.Depth <= y.Depth ? x : y;
-        }
     }
     public static class オイラーツアーExt
     {

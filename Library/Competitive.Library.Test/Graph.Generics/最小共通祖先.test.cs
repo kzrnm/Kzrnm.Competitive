@@ -38,7 +38,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             tree.HlDecomposition.LowestCommonAncestor(7, 0).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(7, 1).Should().Be(1); tree.HlDecomposition.LowestCommonAncestor(7, 2).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(7, 3).Should().Be(3);
             tree.HlDecomposition.LowestCommonAncestor(7, 4).Should().Be(1); tree.HlDecomposition.LowestCommonAncestor(7, 5).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(7, 6).Should().Be(0); tree.HlDecomposition.LowestCommonAncestor(7, 7).Should().Be(7);
 
-            var lca0 = tree.LowestCommonAncestor();
+            var lca0 = tree.LowestCommonAncestorDoubling();
             lca0.Lca(0, 0).Should().Be(0); lca0.Lca(0, 1).Should().Be(0); lca0.Lca(0, 2).Should().Be(0); lca0.Lca(0, 3).Should().Be(0);
             lca0.Lca(0, 4).Should().Be(0); lca0.Lca(0, 5).Should().Be(0); lca0.Lca(0, 6).Should().Be(0); lca0.Lca(0, 7).Should().Be(0);
             lca0.Lca(1, 0).Should().Be(0); lca0.Lca(1, 1).Should().Be(1); lca0.Lca(1, 2).Should().Be(0); lca0.Lca(1, 3).Should().Be(1);
@@ -102,7 +102,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(2, 6, 6);
             gb.Add(3, 7, 7);
             var tree = gb.ToTree();
-            var lca0 = tree.LowestCommonAncestor();
+            var lca0 = tree.LowestCommonAncestorDoubling();
             lca0.Lca(0, 0).Should().Be(0); lca0.Lca(0, 1).Should().Be(0); lca0.Lca(0, 2).Should().Be(0); lca0.Lca(0, 3).Should().Be(0);
             lca0.Lca(0, 4).Should().Be(0); lca0.Lca(0, 5).Should().Be(0); lca0.Lca(0, 6).Should().Be(0); lca0.Lca(0, 7).Should().Be(0);
             lca0.Lca(1, 0).Should().Be(0); lca0.Lca(1, 1).Should().Be(1); lca0.Lca(1, 2).Should().Be(0); lca0.Lca(1, 3).Should().Be(1);
@@ -171,8 +171,8 @@ namespace Kzrnm.Competitive.Testing.Graph
             {
                 var tree = gb.ToTree(r);
                 var wtree = wgb.ToTree(r);
-                var lca = tree.LowestCommonAncestor();
-                var wlca = wtree.LowestCommonAncestor();
+                var lca = tree.LowestCommonAncestorDoubling();
+                var wlca = wtree.LowestCommonAncestorDoubling();
                 for (int i = 0; i < N; i++)
                     for (int j = 0; j < N; j++)
                     {

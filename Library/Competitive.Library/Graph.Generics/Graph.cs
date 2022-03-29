@@ -33,7 +33,6 @@ namespace Kzrnm.Competitive
         public int Length => Nodes.Length;
         public int Root { get; }
         public HeavyLightDecomposition<TNode, TEdge> HlDecomposition { get; }
-
         public TreeGraph(TNode[] array, int root, HeavyLightDecomposition<TNode, TEdge> hl)
         {
             Root = root;

@@ -39,14 +39,6 @@ namespace Kzrnm.Competitive.Testing.Graph
                 new 帰りもあるオイラーツアー<GraphEdge>.Event(-1, new GraphEdge(0), false));
             Enumerable.Range(0, 8).Select(i => tour[i]).Should().Equal(
                 (0, 15), (1, 8), (9, 14), (2, 5), (6, 7), (12, 13), (10, 11), (3, 4));
-
-            var lca = tree.LowestCommonAncestor();
-            for (int i = 0; i < 8; i++)
-                for (int j = 0; j < 8; j++)
-                {
-                    var expectedLca = lca.Lca(i, j);
-                    tour.LowestCommonAncestor(i, j).Should().Be(expectedLca, "Lca {0} and {1} → {2}", i, j, expectedLca);
-                }
         }
         [Fact]
         public void 重み付きグラフ()
@@ -81,11 +73,6 @@ namespace Kzrnm.Competitive.Testing.Graph
             Enumerable.Range(0, 8).Select(i => tour[i]).Should().Equal(
                 (0, 15),
                 (1, 8), (9, 14), (2, 5), (6, 7), (12, 13), (10, 11), (3, 4));
-
-            var lca = tree.LowestCommonAncestor();
-            for (int i = 0; i < 8; i++)
-                for (int j = 0; j < 8; j++)
-                    tour.LowestCommonAncestor(i, j).Should().Be(lca.Lca(i, j));
         }
     }
 }

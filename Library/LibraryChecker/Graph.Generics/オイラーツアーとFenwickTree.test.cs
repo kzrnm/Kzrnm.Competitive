@@ -16,7 +16,8 @@ namespace Kzrnm.Competitive.DataStructure
             for (var i = 1; i < N; i++)
                 gb.Add(cr, cr);
 
-            var et = gb.ToTree().EulerianTour();
+            var tree = gb.ToTree();
+            var et = tree.EulerianTour();
             var fw = new LongFenwickTree(2 * N);
             for (int i = 0; i < a.Length; i++)
             {
@@ -39,7 +40,7 @@ namespace Kzrnm.Competitive.DataStructure
                 {
                     int u = cr;
                     int v = cr;
-                    var lca = et.LowestCommonAncestor(u, v);
+                    var lca = tree.HlDecomposition.LowestCommonAncestor(u, v);
 
                     long res = 0;
                     if (u != lca)
