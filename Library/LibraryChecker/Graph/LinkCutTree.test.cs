@@ -29,7 +29,6 @@ namespace Kzrnm.Competitive.Graph
                     int x = cr;
                     lct.Evert(nodes[u]);
                     lct.Cut(nodes[v]);
-
                     lct.Link(nodes[w], nodes[x]);
                 }
                 else if (T == 1)
@@ -53,18 +52,18 @@ namespace Kzrnm.Competitive.Graph
 
         struct Op : ILinkCutTreeOperator<long, long>
         {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(256)]
             public long Operate(long x, long y) => x + y;
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(256)]
             public long Mapping(long f, long x, int size) => size * f + x;
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(256)]
             public long Composition(long nf, long cf) => nf + cf;
 
             public long Identity => default;
 
             public long FIdentity => default;
 
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            [MethodImpl(256)]
             public long Inverse(long v) => v;
         }
     }
