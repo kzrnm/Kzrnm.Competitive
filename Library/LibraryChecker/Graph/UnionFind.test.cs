@@ -1,6 +1,6 @@
 ﻿using Kzrnm.Competitive.IO;
 
-namespace Kzrnm.Competitive.DataStructure
+namespace Kzrnm.Competitive.Graph
 {
     public class UnionFindTest
     {

@@ -2,7 +2,7 @@
 using Kzrnm.Competitive.IO;
 using System.Runtime.CompilerServices;
 
-namespace Kzrnm.Competitive.DataStructure
+namespace Kzrnm.Competitive.Graph
 {
     public class DynamicConnectivityTest
     {
