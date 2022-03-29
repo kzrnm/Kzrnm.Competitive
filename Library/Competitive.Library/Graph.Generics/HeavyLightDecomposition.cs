@@ -41,8 +41,18 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
+        /// 頂点 <paramref name="u"/> のオイラーツアーのインデックスを返します。
+        /// </summary>
+        [凾(256)] public (int From, int To) Index(int u) => (down[u], up[u]);
+
+        /// <summary>
         /// <paramref name="u"/>と<paramref name="v"/>の最小共通祖先を返します。
         /// </summary>
+        /// <remarks>
+        /// <para>計算量(初回): O(n)</para>
+        /// <para>計算量(2回目以降): O(1)</para>
+        /// </remarks>
+        [凾(256)]
         public int LowestCommonAncestor(int u, int v)
         {
             if (u == v) return u;
@@ -56,6 +66,11 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="u"/>と<paramref name="v"/>の距離(間にあるノード数)を返します。
         /// </summary>
+        /// <remarks>
+        /// <para>計算量(初回): O(n)</para>
+        /// <para>計算量(2回目以降): O(1)</para>
+        /// </remarks>
+        [凾(256)]
         public int Distance(int u, int v)
         {
             var l = LowestCommonAncestor(u, v);
@@ -68,7 +83,11 @@ namespace Kzrnm.Competitive
         /// <param name="u">パスの始点</param>
         /// <param name="v">パスの終点</param>
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
-        /// <param name="f">クエリ関タ。Segtree などの範囲演算をさせると良い。</param>
+        /// <param name="f">クエリ関数。Segtree などの範囲演算をさせると良い。</param>
+        /// <remarks>
+        /// <para>計算量(<paramref name="f"/> を O(1), 木のノード数を n とするとき): O(n)</para>
+        /// </remarks>
+        [凾(256)]
         public void PathQuery(int u, int v, bool vertex, Action<int, int> f)
             => PathQuery(u, v, vertex, new FWrapper(f));
 
@@ -79,6 +98,10 @@ namespace Kzrnm.Competitive
         /// <param name="v">パスの終点</param>
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
         /// <param name="f">クエリ関数オペレータ。Segtree などの範囲演算をさせると良い。</param>
+        /// <remarks>
+        /// <para>計算量(<paramref name="f"/> を O(1), 木のノード数を n とするとき): O(n)</para>
+        /// </remarks>
+        [凾(256)]
         public void PathQuery<TOp>(int u, int v, bool vertex, TOp f)
             where TOp : IHlDecompositionOperator
         {
@@ -93,6 +116,10 @@ namespace Kzrnm.Competitive
         /// <param name="v">パスの終点</param>
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
         /// <param name="f">クエリ関数オペレータ。Segtree などの範囲演算をさせると良い。</param>
+        /// <remarks>
+        /// <para>計算量(<paramref name="f"/> を O(1), 木のノード数を n とするとき): O(n)</para>
+        /// </remarks>
+        [凾(256)]
         public void PathQuery<TOp>(int u, int v, bool vertex, ref TOp f)
             where TOp : IHlDecompositionOperator
         {
@@ -106,7 +133,11 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <param name="u">部分木の根</param>
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
-        /// <param name="f">クエリ関タ。Segtree などの範囲演算をさせると良い。</param>
+        /// <param name="f">クエリ関数。Segtree などの範囲演算をさせると良い。</param>
+        /// <remarks>
+        /// <para>計算量(<paramref name="f"/> を O(1) とするとき): O(1)</para>
+        /// </remarks>
+        [凾(256)]
         public void SubtreeQuery(int u, bool vertex, Action<int, int> f)
             => SubtreeQuery(u, vertex, new FWrapper(f));
 
@@ -116,6 +147,10 @@ namespace Kzrnm.Competitive
         /// <param name="u">部分木の根</param>
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
         /// <param name="f">クエリ関数オペレータ。Segtree などの範囲演算をさせると良い。</param>
+        /// <remarks>
+        /// <para>計算量(<paramref name="f"/> を O(1) とするとき): O(1)</para>
+        /// </remarks>
+        [凾(256)]
         public void SubtreeQuery<TOp>(int u, bool vertex, TOp f)
             where TOp : IHlDecompositionOperator
             => f.Operate(down[u] + (vertex ? 0 : 1), up[u]);
@@ -126,6 +161,10 @@ namespace Kzrnm.Competitive
         /// <param name="u">部分木の根</param>
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
         /// <param name="f">クエリ関数オペレータ。Segtree などの範囲演算をさせると良い。</param>
+        /// <remarks>
+        /// <para>計算量(<paramref name="f"/> を O(1) とするとき): O(1)</para>
+        /// </remarks>
+        [凾(256)]
         public void SubtreeQuery<TOp>(int u, bool vertex, ref TOp f)
             where TOp : IHlDecompositionOperator
             => f.Operate(down[u] + (vertex ? 0 : 1), up[u]);
@@ -246,10 +285,10 @@ namespace Kzrnm.Competitive
     public interface IHlDecompositionOperator
     {
         /// <summary>
-        /// <paramref name="u"/> から <paramref name="v"/> までのパスに適用する関数。Segtree などの範囲演算をさせると良い。<paramref name="v"/> はパスに含まないのに注意。
+        /// <paramref name="f"/> から <paramref name="t"/> までのパスに適用する関数。Segtree などの範囲演算をさせると良い。<paramref name="t"/> はパスに含まないのに注意。
         /// </summary>
-        /// <param name="u"></param>
-        /// <param name="v"></param>
-        void Operate(int u, int v);
+        /// <param name="f">オイラーツアーの開始のインデックス</param>
+        /// <param name="t">オイラーツアーの終了のインデックス</param>
+        void Operate(int f, int t);
     }
 }

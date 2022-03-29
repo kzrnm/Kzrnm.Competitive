@@ -79,8 +79,9 @@ namespace Kzrnm.Competitive
                     if (parent[cur] == to)
                     {
                         // 親は末尾に置く
-                        //(es[ci], es[^1]) = (es[^1], es[ci]);
-                        (es[ci], es[es.Length-1]) = (es[es.Length-1], es[ci]); // Roslyn のバグがあるっぽい
+                        // Roslyn のバグがあるっぽいので参照を取り出してからswap https://github.com/dotnet/roslyn/issues/58472
+                        var b = es.Length - 1;
+                        (es[ci], es[b]) = (es[b], es[ci]);
                         to = es[ci].To;
                     }
                     stack.Push((cur, ci + 1));
