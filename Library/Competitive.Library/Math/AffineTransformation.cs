@@ -33,6 +33,9 @@ namespace Kzrnm.Competitive
         public T Apply(T x)
             => op.Add(op.Multiply(a, x), b);
 
+        /// <summary>
+        /// <paramref name="g"/>(<paramref name="f"/>(x))
+        /// </summary>
         [凾(256)]
         public static AffineTransformation<T, TOp> operator *(AffineTransformation<T, TOp> f, AffineTransformation<T, TOp> g)
             => new AffineTransformation<T, TOp>(op.Multiply(f.a, g.a), op.Add(op.Multiply(g.a, f.b), g.b));

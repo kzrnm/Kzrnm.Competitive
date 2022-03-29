@@ -52,15 +52,15 @@ namespace Kzrnm.Competitive.DataStructure
                     int v = cr;
                     int x = cr;
                     ModInt res = x;
-                    tree.HlDecomposition.PathQuery(u, v, true, (u, v) =>
+                    tree.HlDecomposition.PathQuery(u, v, true, (f, t) =>
                     {
-                        if (u < v)
+                        if (f < t)
                         {
-                            res = seg2[u..v].Apply(res);
+                            res = seg2[f..t].Apply(res);
                         }
                         else
                         {
-                            res = seg1[v..u].Apply(res);
+                            res = seg1[t..f].Apply(res);
                         }
                     });
                     cw.WriteLine(res);
