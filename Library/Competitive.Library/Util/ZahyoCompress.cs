@@ -56,6 +56,7 @@ namespace Kzrnm.Competitive
     public class ZahyoCompress<T>
     {
         public ZahyoCompress() { data = new HashSet<T>(); }
+        public ZahyoCompress(T[] arr) { data = new HashSet<T>(arr); }
         public ZahyoCompress(IEnumerable<T> collection) { data = new HashSet<T>(collection); }
         public ZahyoCompress(ReadOnlySpan<T> span)
         {
