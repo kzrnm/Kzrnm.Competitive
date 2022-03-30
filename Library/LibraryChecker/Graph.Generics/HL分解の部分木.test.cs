@@ -1,7 +1,7 @@
 ﻿using AtCoder;
 using Kzrnm.Competitive.IO;
 
-namespace Kzrnm.Competitive.DataStructure
+namespace Kzrnm.Competitive.Graph
 {
     public class HL分解の部分木Test
     {

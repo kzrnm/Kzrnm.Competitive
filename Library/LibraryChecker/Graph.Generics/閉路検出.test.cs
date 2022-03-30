@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Kzrnm.Competitive.IO;
 
-namespace Kzrnm.Competitive.DataStructure
+namespace Kzrnm.Competitive.Graph
 {
     public class 閉路検出Test
     {

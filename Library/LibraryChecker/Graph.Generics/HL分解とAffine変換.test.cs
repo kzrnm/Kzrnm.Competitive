@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using ModInt = AtCoder.StaticModInt<AtCoder.Mod998244353>;
 using ModIntOperator = AtCoder.StaticModIntOperator<AtCoder.Mod998244353>;
 
-namespace Kzrnm.Competitive.DataStructure
+namespace Kzrnm.Competitive.Graph
 {
     public class HL分解とAffine変換Test
     {

@@ -1,7 +1,7 @@
 ﻿using Kzrnm.Competitive.IO;
 using System.Collections.Generic;
 
-namespace Kzrnm.Competitive.DataStructure
+namespace Kzrnm.Competitive.Graph
 {
     public class TreeDiameterTest
     {

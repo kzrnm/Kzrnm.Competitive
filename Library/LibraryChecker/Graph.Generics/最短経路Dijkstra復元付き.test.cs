@@ -1,7 +1,7 @@
 ﻿using Kzrnm.Competitive.IO;
 using System.Linq;
 
-namespace Kzrnm.Competitive.DataStructure
+namespace Kzrnm.Competitive.Graph
 {
     public class 最短経路Dijkstra復元付きTest
     {
