@@ -8,12 +8,6 @@ namespace Kzrnm.Competitive
 {
     public static class 最小有向全域木
     {
-        public struct Result<T, TEdge>
-            where TEdge : struct, IWGraphEdge<T>
-        {
-            public T Cost;
-            public (int from, TEdge edge)[] Edges;
-        }
         /// <summary>
         /// <para>有向グラフの最小全域木を求める。</para>
         /// <para><paramref name="root"/>を根とする木を構築する。</para>
@@ -23,7 +17,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: <typeparamref name="T"/> は符号付き</para>
         /// <para>制約: <paramref name="graph"/> の <paramref name="root"/> からすべての頂点に到達できる</para>
         /// </remarks>
-        public static Result<T, TEdge> DirectedMinimumSpanningTree<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph, int root)
+        public static MstResult<T, TEdge> DirectedMinimumSpanningTree<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph, int root)
             where TOp : struct, IAdditionOperator<T>, IUnaryNumOperator<T>, IComparer<T>
             where TNode : IGraphNode<TEdge>
             where TEdge : struct, IWGraphEdge<T>, IReversable<TEdge>
@@ -95,7 +89,7 @@ namespace Kzrnm.Competitive
                     visited[j] = true;
                 }
             }
-            return new Result<T, TEdge>
+            return new MstResult<T, TEdge>
             {
                 Cost = cost,
                 Edges = result.ToArray()

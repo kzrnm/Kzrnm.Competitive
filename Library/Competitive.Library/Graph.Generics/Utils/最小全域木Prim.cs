@@ -12,7 +12,7 @@ namespace Kzrnm.Competitive
         /// <para><paramref name="root"/>を根とする木を構築する。</para>
         /// <para>計算量は O(E + V log(V))</para>
         /// </summary>
-        public static (int from, TEdge edge)[] MinimumSpanningTreePrim<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph, int root = 0)
+        public static MstResult<T, TEdge> MinimumSpanningTreePrim<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph, int root = 0)
             where TOp : struct, IAdditionOperator<T>, IComparer<T>
             where TNode : IGraphNode<TEdge>
             where TEdge : IWGraphEdge<T>
@@ -27,18 +27,24 @@ namespace Kzrnm.Competitive
             foreach (var e in graphArr[root].Children)
                 pq.Enqueue(e, root);
             var sumiCnt = 1;
+            T cost = default;
             while (sumiCnt < sumi.Length && pq.TryDequeue(out var edge, out var from))
             {
                 var to = edge.To;
                 if (sumi[to]) continue;
                 sumi[to] = true;
                 ++sumiCnt;
+                cost = new TOp().Add(cost, edge.Value);
                 res.Add((from, edge));
                 foreach (var e in graphArr[to].Children)
                     if (!sumi[e.To])
                         pq.Enqueue(e, to);
             }
-            return res.ToArray();
+            return new MstResult<T, TEdge>
+            {
+                Cost = cost,
+                Edges = res.ToArray(),
+            };
         }
         private readonly struct Comparer<T, TOp, TEdge> : IComparer<TEdge>
             where TOp : struct, IAdditionOperator<T>, IComparer<T>
