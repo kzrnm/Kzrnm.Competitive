@@ -18,9 +18,8 @@ namespace Kzrnm.Competitive
             (int from, List<TEdge> edges) DFS(Stack<(int v, int childIdx)> stack)
             {
                 List<TEdge> list = null;
-                while (stack.Count > 0)
+                while (stack.TryPop(out var v, out var ci))
                 {
-                    var (v, ci) = stack.Pop();
                     var children = graph[v].Children;
                     if (ci == 0)
                         statuses[v] = Status.Active;
@@ -54,9 +53,9 @@ namespace Kzrnm.Competitive
             }
             for (var i = 0; i < graph.Length; i++)
             {
+                var stack = new Stack<(int v, int childIdx)>();
                 if (statuses[i] == Status.None)
                 {
-                    var stack = new Stack<(int v, int childIdx)>();
                     stack.Push((i, 0));
                     var (from, res) = DFS(stack);
                     if (res != null)
@@ -64,6 +63,7 @@ namespace Kzrnm.Competitive
                         res.Reverse();
                         return (from, res.ToArray());
                     }
+                    stack.Clear();
                 }
             }
             return (-1, null);
