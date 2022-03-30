@@ -36,7 +36,7 @@ namespace Competitive.Runner
             using var inSteam = new MemoryStream(encoding.GetBytes(input));
             using var outStream = new MemoryStream(30 * 100000);
             var cr = new PropertyConsoleReader(inSteam, encoding);
-            var cw = new ConsoleWriter(outStream, encoding);
+            var cw = new Utf8ConsoleWriter(outStream);
             new Program(cr, cw).Run();
 
             var result = encoding.GetString(outStream.ToArray());
