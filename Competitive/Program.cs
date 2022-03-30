@@ -27,7 +27,6 @@ using ModIntFactor = Kzrnm.Competitive.StaticModIntFactor<AtCoder.Mod998244353>;
 
 partial class Program
 {
-    public static string YesNo(bool b) => b ? "Yes" : "No";
     const bool __ManyTestCases = false;
 #if !LOCAL_RUNNING
     static void Main()=>new Program(new PropertyConsoleReader(),new Utf8ConsoleWriter()).Run();

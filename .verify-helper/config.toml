@@ -3,5 +3,5 @@ csproj_template = ".verify-helper/runner.csproj.xml"
 static_embedding = """
 
 // 実行用に埋め込む
-partial class Program{ConsoleOutput? Calc(PropertyConsoleReader cr, Utf8ConsoleWriter cw) => null;bool __ManyTestCases = false;public static string YesNo(bool b) => b ? "Yes" : "No";}
+partial class Program{ConsoleOutput? Calc(PropertyConsoleReader cr, Utf8ConsoleWriter cw) => null;bool __ManyTestCases = false;}
 """

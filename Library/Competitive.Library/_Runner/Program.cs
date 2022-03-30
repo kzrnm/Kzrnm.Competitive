@@ -12,6 +12,7 @@ internal partial class Program
         ConsoleOutput.cw = cw = w;
         CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
     }
+    public static string YesNo(bool b) => b ? "Yes" : "No";
     public void Run()
     {
         int Q = __ManyTestCases ? cr.Int : 1;
@@ -29,7 +30,6 @@ partial class Program
     [凾(256)]
     Kzrnm.Competitive.ConsoleOutput? Calc(PropertyConsoleReader cr, Utf8ConsoleWriter cw) => null;
     bool __ManyTestCases = false;
-    public static string YesNo(bool b) => b ? "Yes" : "No";
 #pragma warning restore
 }
 // @brief 起動クラス
