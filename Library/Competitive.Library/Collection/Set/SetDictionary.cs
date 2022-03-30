@@ -66,8 +66,8 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public bool Add(TKey key, TValue value) => DoAdd(KeyValuePair.Create(key, value));
 
-        [凾(256)]
-        public bool Remove(TKey key) => DoRemove(new C<TKey>(key));
+        [凾(256)] public bool Remove(TKey key) => DoRemove(new C<TKey>(key)) != null;
+        [凾(256)] public Node GetAndRemove(TKey key) => DoRemove(new C<TKey>(key));
 
 
         [凾(256)]

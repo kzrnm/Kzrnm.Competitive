@@ -515,11 +515,11 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
             root?.ColorBlack();
         }
-        [凾(256)]
-        public bool Remove(T item) => DoRemove(op.GetCompareKey(item));
-        protected bool DoRemove(TCmp key)
+        [凾(256)] public Node GetAndRemove(T item) => DoRemove(op.GetCompareKey(item));
+        [凾(256)] public bool Remove(T item) => DoRemove(op.GetCompareKey(item)) != null;
+        protected Node DoRemove(TCmp key)
         {
-            if (root == null) return false;
+            if (root == null) return null;
             Node current = root;
             Node parent = null;
             Node grandParent = null;
@@ -546,7 +546,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 ReplaceNode(match, parentOfMatch, parent, grandParent);
             }
             root?.ColorBlack();
-            return foundMatch;
+            return match;
         }
         public void Clear()
         {
