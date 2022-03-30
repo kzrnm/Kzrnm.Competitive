@@ -33,6 +33,8 @@ namespace Kzrnm.Competitive
             Coefficients = span.ToArray();
         }
 
+        public override string ToString() => string.Join(", ", Coefficients);
+
         [凾(256)]
         public static Polynomial<T, TOp> operator +(Polynomial<T, TOp> lhs, Polynomial<T, TOp> rhs)
         {

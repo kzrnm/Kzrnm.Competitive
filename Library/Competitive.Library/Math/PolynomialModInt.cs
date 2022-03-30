@@ -32,6 +32,8 @@ namespace Kzrnm.Competitive
             Coefficients = span.ToArray();
         }
 
+        public override string ToString() => string.Join(", ", Coefficients);
+
         [凾(256)]
         public static PolynomialModInt<T> operator +(PolynomialModInt<T> lhs, PolynomialModInt<T> rhs)
         {
