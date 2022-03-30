@@ -28,3 +28,5 @@ namespace Kzrnm.Competitive
         public static implicit operator ConsoleOutput(Utf8ConsoleWriter _) => default;
     }
 }
+// @brief 出力用のラッパー
+// @docs Library/docs/_Runner/ConsoleOutput.md

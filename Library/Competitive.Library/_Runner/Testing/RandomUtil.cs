@@ -34,3 +34,5 @@ namespace Kzrnm.Competitive.Testing
         }
     }
 }
+// @brief テスト用の乱数生成
+// @docs Library/docs/_Runner/Testing/RandomUtil.md

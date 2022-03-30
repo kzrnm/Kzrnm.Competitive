@@ -2,7 +2,6 @@ exclude:
   # ライブラリ以外は exclude
   # - Library/Competitive.Library
   # - Library/LibraryChecker
-  - Library/Competitive.Library/_Runner
   - Library/LibraryChecker/Program.cs
   - Library/Competitive.Library.Test/SourceExpanderTest.cs
   - .github

@@ -32,3 +32,5 @@ partial class Program
     public static string YesNo(bool b) => b ? "Yes" : "No";
 #pragma warning restore
 }
+// @brief 起動クラス
+// @docs Library/docs/_Runner/Program.md
