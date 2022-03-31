@@ -36,29 +36,17 @@ namespace Kzrnm.Competitive.DataStructure
                 int u = cr;
                 return (l, d, r, u);
             });
-            foreach (var (x, y, _, _) in queries)
-            {
-                var tup = (x, y);
-                dic.TryAdd(tup, 0);
-            }
-            var ps = dic.Keys.ToArray();
-            var vs = dic.Values.ToArray();
-            Array.Sort(ps, vs);
-            var wm = new WaveletMatrixWithFenwickTree<int, long, LongOperator>(ps.Zip(vs, (p, v) => (p.y, v)).ToArray());
+            foreach (var (x, y, _, u) in queries)
+                if (u < 0)
+                    dic.TryAdd((x, y), 0);
+            var wm = new WaveletMatrix2DWithFenwickTree<int, long, LongOperator>(dic.Keys.Zip(dic.Values).ToArray());
 
             foreach (var (l, d, r, u) in queries)
             {
                 if (u < 0)
-                {
-                    var ix = ps.LowerBound((l, d));
-                    wm.PointAdd(ix, r);
-                }
+                    wm.PointAdd(l, d, r);
                 else
-                {
-                    var a = ps.LowerBound((l, -1));
-                    var c = ps.LowerBound((r, -1));
-                    cw.WriteLine(wm.RectSum(a, c, d, u));
-                }
+                    cw.WriteLine(wm.RectSum(l, r, d, u));
             }
             return null;
         }

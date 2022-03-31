@@ -1,6 +1,7 @@
 ﻿// Original: https://ei1333.github.io/library/structure/wavelet/wavelet-matrix.cpp.html
-using AtCoder.Internal;
 using AtCoder.Extension;
+using AtCoder.Internal;
+using Kzrnm.Competitive.InternalWavelet;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -15,9 +16,11 @@ namespace Kzrnm.Competitive
     {
         /// <summary>
         /// <para>各要素の高さ <paramref name="v"/> を初期値として構築する。</para>
+        /// </summary>
+        /// <remarks>
         /// <para>計算量: O(N log(V))</para>
         /// <para>  N は要素数。 V は最大値。</para>
-        /// </summary>
+        /// </remarks>
         public WaveletMatrix(ReadOnlySpan<T> v) : base(v, new DefaultComparerStruct<T>()) { }
     }
 
@@ -28,16 +31,18 @@ namespace Kzrnm.Competitive
         where T : struct
         where TOp : IComparer<T>
     {
-        private TOp comparer;
-        private readonly WaveletMatrixCompressed mat;
-        private readonly Dictionary<T, int> pos;
-        private readonly T[] ys;
+        TOp comparer;
+        readonly WaveletMatrixCompressed mat;
+        readonly Dictionary<T, int> pos;
+        readonly T[] ys;
 
         /// <summary>
         /// <para>各要素の高さ <paramref name="v"/> を初期値として構築する。</para>
+        /// </summary>
+        /// <remarks>
         /// <para>計算量: O(N log(V))</para>
         /// <para>  N は要素数。 V は最大値。</para>
-        /// </summary>
+        /// </remarks>
         public WaveletMatrix(ReadOnlySpan<T> v, TOp comparer)
         {
             var zahyoCompress = new ZahyoCompress<T>(v).Compress();
@@ -49,9 +54,11 @@ namespace Kzrnm.Competitive
 
         /// <summary>
         /// <para><paramref name="k"/> 番目の要素を取得する。</para>
+        /// </summary>
+        /// <remarks>
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
-        /// </summary>
+        /// </remarks>
         public T this[int k]
         {
             [凾(256)]
@@ -60,45 +67,55 @@ namespace Kzrnm.Competitive
 
         /// <summary>
         /// <para>区間 [0, <paramref name="r"/>) に含まれる <paramref name="x"/> の個数を返す。</para>
+        /// </summary>
+        /// <remarks>
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
-        /// </summary>
+        /// </remarks>
         [凾(256)]
         public int Rank(T x, int r)
             => pos.TryGetValue(x, out var p) ? mat.Rank(p, r) : 0;
 
         /// <summary>
         /// <para>区間 [<paramref name="l"/>, <paramref name="r"/>) に含まれる要素のうち <paramref name="k"/> 番目(0-indexed) に小さいものを返す</para>
+        /// </summary>
+        /// <remarks>
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
-        /// </summary>
+        /// </remarks>
         [凾(256)]
         public T KthSmallest(int l, int r, int k)
             => ys[mat.KthSmallest(l, r, k)];
 
         /// <summary>
         /// <para>区間 [<paramref name="l"/>, <paramref name="r"/>) に含まれる要素のうち <paramref name="k"/> 番目(0-indexed) に大きいものを返す</para>
+        /// </summary>
+        /// <remarks>
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
-        /// </summary>
+        /// </remarks>
         [凾(256)]
         public T KthLargest(int l, int r, int k)
             => ys[mat.KthLargest(l, r, k)];
 
         /// <summary>
         /// <para>区間 [<paramref name="l"/>, <paramref name="r"/>) に含まれる要素のうち [<paramref name="lower"/>, <paramref name="upper"/>) である要素数を返す</para>
+        /// </summary>
+        /// <remarks>
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
-        /// </summary>
+        /// </remarks>
         [凾(256)]
         public int RangeFreq(int l, int r, T lower, T upper)
             => mat.RangeFreq(l, r, ys.LowerBound(lower, comparer), ys.LowerBound(upper, comparer));
 
         /// <summary>
         /// <para>区間 [<paramref name="l"/>, <paramref name="r"/>) に含まれる要素のうち [0, <paramref name="upper"/>) である要素数を返す</para>
+        /// </summary>
+        /// <remarks>
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
-        /// </summary>
+        /// </remarks>
         [凾(256)]
         public int RangeFreq(int l, int r, T upper)
             => mat.RangeFreq(l, r, ys.LowerBound(upper, comparer));
@@ -106,9 +123,11 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <para>区間 [<paramref name="l"/>, <paramref name="r"/>) に含まれる要素のうち <paramref name="upper"/> の次に小さいものを返す</para>
         /// <para>見つからなければnullを返す</para>
+        /// </summary>
+        /// <remarks>
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
-        /// </summary>
+        /// </remarks>
         [凾(256)]
         public T? PrevValue(int l, int r, T upper)
         {
@@ -121,9 +140,11 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <para>区間 [<paramref name="l"/>, <paramref name="r"/>) に含まれる要素のうち <paramref name="lower"/> の次に大きいものを返す</para>
         /// <para>見つからなければnullを返す</para>
+        /// </summary>
+        /// <remarks>
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
-        /// </summary>
+        /// </remarks>
         [凾(256)]
         public T? NextValue(int l, int r, T lower)
         {
@@ -146,9 +167,11 @@ namespace Kzrnm.Competitive
 
         /// <summary>
         /// <para>各要素の高さ <paramref name="v"/> を初期値として構築する。</para>
+        /// </summary>
+        /// <remarks>
         /// <para>計算量: O(N log(V))</para>
         /// <para>  N は要素数。 V は最大値。</para>
-        /// </summary>
+        /// </remarks>
         public WaveletMatrixCompressed(ReadOnlySpan<int> v, int max)
         {
             var vv = v.ToArray();
@@ -192,9 +215,11 @@ namespace Kzrnm.Competitive
 
         /// <summary>
         /// <para><paramref name="k"/> 番目の要素を取得する。</para>
+        /// </summary>
+        /// <remarks>
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
-        /// </summary>
+        /// </remarks>
         public int this[int k]
         {
             [凾(256)]
@@ -213,9 +238,11 @@ namespace Kzrnm.Competitive
 
         /// <summary>
         /// <para>区間 [0, <paramref name="r"/>) に含まれる <paramref name="x"/> の個数を返す。</para>
+        /// </summary>
+        /// <remarks>
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
-        /// </summary>
+        /// </remarks>
         [凾(256)]
         public int Rank(int x, int r)
         {
@@ -229,9 +256,11 @@ namespace Kzrnm.Competitive
 
         /// <summary>
         /// <para>区間 [<paramref name="l"/>, <paramref name="r"/>) に含まれる要素のうち <paramref name="k"/> 番目(0-indexed) に小さいものを返す</para>
+        /// </summary>
+        /// <remarks>
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
-        /// </summary>
+        /// </remarks>
         [凾(256)]
         public int KthSmallest(int l, int r, int k)
         {
@@ -253,26 +282,32 @@ namespace Kzrnm.Competitive
 
         /// <summary>
         /// <para>区間 [<paramref name="l"/>, <paramref name="r"/>) に含まれる要素のうち <paramref name="k"/> 番目(0-indexed) に大きいものを返す</para>
+        /// </summary>
+        /// <remarks>
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
-        /// </summary>
+        /// </remarks>
         [凾(256)]
         public int KthLargest(int l, int r, int k) => KthSmallest(l, r, r - l - k - 1);
 
         /// <summary>
         /// <para>区間 [<paramref name="l"/>, <paramref name="r"/>) に含まれる要素のうち [<paramref name="lower"/>, <paramref name="upper"/>) である要素数を返す</para>
+        /// </summary>
+        /// <remarks>
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
-        /// </summary>
+        /// </remarks>
         [凾(256)]
         public int RangeFreq(int l, int r, int lower, int upper)
             => RangeFreq(l, r, upper) - RangeFreq(l, r, lower);
 
         /// <summary>
         /// <para>区間 [<paramref name="l"/>, <paramref name="r"/>) に含まれる要素のうち [0, <paramref name="upper"/>) である要素数を返す</para>
+        /// </summary>
+        /// <remarks>
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
-        /// </summary>
+        /// </remarks>
         [凾(256)]
         public int RangeFreq(int l, int r, int upper)
         {
@@ -289,9 +324,11 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <para>区間 [<paramref name="l"/>, <paramref name="r"/>) に含まれる要素のうち <paramref name="upper"/> の次に小さいものを返す</para>
         /// <para>見つからなければ-1を返す</para>
+        /// </summary>
+        /// <remarks>
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
-        /// </summary>
+        /// </remarks>
         [凾(256)]
         public int PrevValue(int l, int r, int upper)
         {
@@ -302,51 +339,16 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <para>区間 [<paramref name="l"/>, <paramref name="r"/>) に含まれる要素のうち <paramref name="lower"/> 以上で最小のものを返す</para>
         /// <para>見つからなければ-1を返す</para>
+        /// </summary>
+        /// <remarks>
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
-        /// </summary>
+        /// </remarks>
         [凾(256)]
         public int NextValue(int l, int r, int lower)
         {
             int cnt = RangeFreq(l, r, lower);
             return cnt == r - l ? -1 : KthSmallest(l, r, cnt);
-        }
-
-        private class SuccinctIndexableDictionary
-        {
-            readonly uint[] bit, sum;
-            public SuccinctIndexableDictionary(int length)
-            {
-                var block = (length + 31) >> 5;
-                bit = new uint[block];
-                sum = new uint[block];
-            }
-
-            [凾(256)]
-            public void Set(int k)
-            {
-                bit[k >> 5] |= 1U << (k & 0x1F);
-            }
-            public void Build()
-            {
-                sum[0] = 0U;
-                for (int i = 1; i < sum.Length; i++)
-                {
-                    sum[i] = sum[i - 1] + (uint)BitOperations.PopCount(bit[i - 1]);
-                }
-            }
-
-            public bool this[int k]
-            {
-                [凾(256)]
-                get => ((bit[k >> 5] >> (k & 0x1F)) & 1) != 0;
-            }
-
-            [凾(256)]
-            public int Rank(int k) => (int)(sum[k >> 5] + (uint)BitOperations.PopCount(bit[k >> 5] & ((1U << (k & 0x1F)) - 1)));
-
-            [凾(256)]
-            public int Rank(bool val, int k) => val ? Rank(k) : k - Rank(k);
         }
     }
 }

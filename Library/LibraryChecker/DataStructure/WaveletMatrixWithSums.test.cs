@@ -25,10 +25,7 @@ namespace Kzrnm.Competitive.DataStructure
                 dic.TryGetValue(tup, out var ww);
                 dic[tup] = ww + w;
             }
-            var ps = dic.Keys.ToArray();
-            var vs = dic.Values.ToArray();
-            Array.Sort(ps, vs);
-            var wm = new WaveletMatrixWithSums<int, long, LongOperator>(ps.Zip(vs, (p, v) => (p.y, v)).ToArray());
+            var wm = new WaveletMatrix2DWithSums<int, long, LongOperator>(dic.Keys.Zip(dic.Values).ToArray());
 
             for (int q = 0; q < Q; q++)
             {
@@ -36,10 +33,7 @@ namespace Kzrnm.Competitive.DataStructure
                 int d = cr;
                 int r = cr;
                 int u = cr;
-
-                var a = ps.LowerBound((l, -1));
-                var c = ps.LowerBound((r, -1));
-                cw.WriteLine(wm.RectSum(a, c, d, u));
+                cw.WriteLine(wm.RectSum(l, r, d, u));
             }
             return null;
         }
