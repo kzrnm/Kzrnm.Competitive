@@ -71,13 +71,19 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <para><paramref name="x"/> を <paramref name="mask"/> に移す</para>
         /// </summary>
-        /// <returns>ex. x=0b1101 mask=0b11110000 → 0b11010000</returns>
+        /// <example>
+        /// <para>ex. x=0b1101 mask=0b11110000 → 0b11010000</para>
+        /// <para>https://atcoder.jp/contests/abc187/submissions/19171980</para>
+        /// </example>
         [凾(256)]
         public static int ParallelBitDeposit(int x, uint mask) => (int)ParallelBitDeposit((uint)x, mask);
         /// <summary>
         /// <para><paramref name="x"/> を <paramref name="mask"/> に移す</para>
         /// </summary>
-        /// <returns>ex. x=0b1101 mask=0b11110000 → 0b11010000</returns>
+        /// <example>
+        /// <para>ex. x=0b1101 mask=0b11110000 → 0b11010000</para>
+        /// <para>https://atcoder.jp/contests/abc187/submissions/19171980</para>
+        /// </example>
         [凾(256)]
         public static uint ParallelBitDeposit(uint x, uint mask)
         {
@@ -102,13 +108,13 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <para><paramref name="x"/> の <paramref name="mask"/> に合致する箇所を取り出す</para>
         /// </summary>
-        /// <returns>ex. x=0b01101 mask=0b11110 → 0b110</returns>
+        /// <example>ex. x=0b01101 mask=0b11110 → 0b110</example>
         [凾(256)]
         public static int ParallelBitExtract(int x, uint mask) => (int)ParallelBitExtract((uint)x, mask);
         /// <summary>
         /// <para><paramref name="x"/> の <paramref name="mask"/> に合致する箇所を取り出す</para>
         /// </summary>
-        /// <returns>ex. x=0b101101 mask=0b011110 → 0b110</returns>
+        /// <example>ex. x=0b01101 mask=0b11110 → 0b110</example>
         [凾(256)]
         public static uint ParallelBitExtract(uint x, uint mask)
         {
