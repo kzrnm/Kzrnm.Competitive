@@ -1,5 +1,16 @@
+![NuGet version (Kzrnm.Competitive)](https://img.shields.io/nuget/v/Kzrnm.Competitive.svg?style=flat-square)
 ![build](https://github.com/kzrnm/Kzrnm.Competitive/workflows/test/badge.svg?branch=master)
  [![GitHub Pages](https://img.shields.io/static/v1?label=GitHub+Pages&message=Kzrnm.Competitife+&color=brightgreen&logo=github)](https://kzrnm.github.io/Kzrnm.Competitive/)
+
+## 使い方
+
+このリポジトリ内で使うつもりで作ったライブラリですが、NuGet からインストールもできます。[SourceExpander](https://github.com/kzrnm/SourceExpander) と一緒に使ってください。
+
+```sh
+dotnet add package Kzrnm.Competitive
+dotnet add package SourceExpander
+```
+
 ## LICENSE
 
 基本的には MIT license とします。
@@ -11,3 +22,4 @@
 - `Competitive.Library/Collection/Set`
 
 上記については、MIT license で公開されている .NET のコードを元にしているので競技プログラミング用途でも MIT license としてください。
+[SourceExpander](https://github.com/kzrnm/SourceExpander) で埋め込む場合はライセンス表記が `string` として残るので確実です。
