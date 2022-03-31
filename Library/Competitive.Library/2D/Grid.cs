@@ -11,41 +11,12 @@ namespace Kzrnm.Competitive
 {
     public static class Grid
     {
-        [凾(256)]
-        public static Grid<char> GridString(this PropertyConsoleReader cr, int H) => Create(cr.Repeat(H).Ascii);
-
-        [凾(256)]
-        public static Grid<char> GridString(this PropertyConsoleReader cr, int H, char defaultValue) => Create(cr.Repeat(H).Ascii, defaultValue);
-
-        [凾(256)]
-        public static Grid<int> GridInt(this PropertyConsoleReader cr, int H, int W) => Create(cr.Repeat(H).Select(cr => cr.Repeat(W).Int));
-
-        [凾(256)]
-        public static Grid<int> GridInt(this PropertyConsoleReader cr, int H, int W, int defaultValue) => Create(cr.Repeat(H).Select(cr => cr.Repeat(W).Int), defaultValue);
-
-        [凾(256)]
-        public static Grid<char> Create(string[] data) => new Grid<char>(data.Flatten(), data.Length, data[0].Length, new char());
-
-        [凾(256)]
-        public static Grid<char> Create(string[] data, char defaultValue) => new Grid<char>(data.Flatten(), data.Length, data[0].Length, defaultValue);
-
-        [凾(256)]
-        public static Grid<T> Create<T>(T[][] data) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, default);
-
-        [凾(256)]
-        public static Grid<T> Create<T>(T[][] data, T defaultValue) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);
-
-        [凾(256)]
-        public static Grid<T> Create<T>(Span<T[]> data) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, default);
-
-        [凾(256)]
-        public static Grid<T> Create<T>(Span<T[]> data, T defaultValue) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);
-
-        [凾(256)]
-        public static Grid<T> Create<T>(ReadOnlySpan<T[]> data) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, default);
-
-        [凾(256)]
-        public static Grid<T> Create<T>(ReadOnlySpan<T[]> data, T defaultValue) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);
+        [凾(256)] public static Grid<char> GridString(this PropertyConsoleReader cr, int H, char defaultValue = default) => Create(cr.Repeat(H).Ascii, defaultValue);
+        [凾(256)] public static Grid<int> GridInt(this PropertyConsoleReader cr, int H, int W, int defaultValue = default) => Create(cr.Repeat(H).Select(cr => cr.Repeat(W).Int), defaultValue);
+        [凾(256)] public static Grid<char> Create(string[] data, char defaultValue = default) => new Grid<char>(data.Flatten(), data.Length, data[0].Length, defaultValue);
+        [凾(256)] public static Grid<T> Create<T>(T[][] data, T defaultValue = default) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);
+        [凾(256)] public static Grid<T> Create<T>(Span<T[]> data, T defaultValue = default) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);
+        [凾(256)] public static Grid<T> Create<T>(ReadOnlySpan<T[]> data, T defaultValue = default) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);
 
         [凾(256)]
         public static void WriteGrid(this ConsoleWriter cw, Grid<char> grid)
