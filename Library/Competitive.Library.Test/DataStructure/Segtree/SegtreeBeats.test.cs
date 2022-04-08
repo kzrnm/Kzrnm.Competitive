@@ -4,7 +4,7 @@ using static System.Math;
 
 namespace Kzrnm.Competitive.Testing.DataStructure
 {
-    // verification-helper: SAMEAS Library/run.test.py
+    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class SegtreeBeatsTests
     {
         [Fact]

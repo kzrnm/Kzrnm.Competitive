@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.TwoDimensional
 {
-    // verification-helper: SAMEAS Library/run.test.py
+    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class PointDoubleTests
     {
         public static TheoryData Distance_Data = new TheoryData<PointDouble, PointDouble, double, double>

@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.Collection
 {
-    // verification-helper: SAMEAS Library/run.test.py
+    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class SetIntervalClosedTests
     {
         public static TheoryData Add_Data = new TheoryData<(int from, int to)[], (int from, int to)[]>

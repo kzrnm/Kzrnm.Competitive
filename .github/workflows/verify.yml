@@ -42,7 +42,7 @@ jobs:
       - name: Build
         run: dotnet build Library/Competitive.Library.sln
       - name: Test
-        run: dotnet test Library/Competitive.Library.sln --no-build --logger GitHubActions
+        run: if ! dotnet test Library/Competitive.Library.sln --no-build --logger GitHubActions; then echo "unittest_failure=1" >> $GITHUB_ENV; fi
 
       - uses: actions/cache@v3
         name: Cache pip

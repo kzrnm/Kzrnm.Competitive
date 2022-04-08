@@ -5,7 +5,7 @@ using System.Runtime.Intrinsics.X86;
 
 namespace Kzrnm.Competitive.Testing.Bits
 {
-    // verification-helper: SAMEAS Library/run.test.py
+    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class BitTests
     {
         sealed class OnlyX64TheoryAttribute : TheoryAttribute

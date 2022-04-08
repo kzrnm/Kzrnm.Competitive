@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.Extensions
 {
-    // verification-helper: SAMEAS Library/run.test.py
+    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class MemoryMarshalExtensionTests
     {
         [Fact]
