@@ -1,6 +1,8 @@
 ﻿using Kzrnm.Competitive.IO;
 using System;
 
+// @brief 出力用のラッパー
+// @docs Library/docs/_Runner/ConsoleOutput.md
 namespace Kzrnm.Competitive
 {
     using O = ConsoleOutput;
@@ -29,5 +31,3 @@ namespace Kzrnm.Competitive
         public static implicit operator O(Utf8ConsoleWriter _) => default;
     }
 }
-// @brief 出力用のラッパー
-// @docs Library/docs/_Runner/ConsoleOutput.md

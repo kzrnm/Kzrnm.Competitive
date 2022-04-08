@@ -2,6 +2,9 @@
 using Kzrnm.Competitive.IO;
 using System.Globalization;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
+
+// @brief 起動クラス
+// @docs Library/docs/_Runner/Program.md
 internal partial class Program
 {
     public PropertyConsoleReader cr;
@@ -32,5 +35,3 @@ partial class Program
     bool __ManyTestCases = false;
 #pragma warning restore
 }
-// @brief 起動クラス
-// @docs Library/docs/_Runner/Program.md
