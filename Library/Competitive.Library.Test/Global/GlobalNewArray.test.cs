@@ -4,14 +4,14 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.GlobalNS
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
+    // verification-helper: SAMEAS Library/run.test.py
     public class GlobalNewArrayTests
     {
         [Fact]
         public void NewArray1()
         {
             var arr = Global.NewArray(2, 1);
-            arr.Should().HaveCount(3);//失敗
+            arr.Should().HaveCount(2);
             arr.Should().Equal(Enumerable.Repeat(1, 2));
         }
         [Fact]
