@@ -4,9 +4,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-#pragma warning disable CA2231 // Overload operator equals on overriding value type Equals
     public struct DefaultComparerStruct<T> : IComparer<T> where T : IComparable<T>
-#pragma warning restore CA2231 // Overload operator equals on overriding value type Equals
     {
         public static DefaultComparerStruct<T> Default { get; } = default;
         [凾(256)]
