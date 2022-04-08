@@ -103,7 +103,7 @@ class ATVariable {
         return "$($this.name) = cr;"
     }
     [string]ToDefineInit() {
-        return "var $($this.name) = cr.Int;"
+        return "int $($this.name) = cr;"
     }
     [string]ToDefine() {
         return "int $($this.name);"
@@ -121,7 +121,7 @@ class ATArray {
         return "$($this.name) = cr.Repeat($($this.length));"
     }
     [string]ToDefineInit() {
-        return "var $($this.name) = cr.Repeat($($this.length)).Int;"
+        return "int[] $($this.name) = cr.Repeat($($this.length));"
     }
     [string]ToDefine() {
         return "int[] $($this.name);"
