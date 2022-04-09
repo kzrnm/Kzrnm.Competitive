@@ -1,4 +1,5 @@
 ﻿using AtCoder.Operators;
+using System;
 
 namespace Kzrnm.Competitive
 {
@@ -21,7 +22,7 @@ namespace Kzrnm.Competitive
             for (var i = 0; i < graphArr.Length; i++)
             {
                 res[i] = new T[graphArr.Length];
-                System.Array.Fill(res[i], INF);
+                Array.Fill(res[i], INF);
                 res[i][i] = default;
                 foreach (var e in graphArr[i].Children)
                     res[i][e.To] = e.Value;
