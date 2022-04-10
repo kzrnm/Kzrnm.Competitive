@@ -130,14 +130,20 @@ namespace Kzrnm.Competitive
             var lower = new List<(int x, int y, int ix)> { pts[0], pts[1] };
             for (int i = 2; i < pts.Length; i++)
             {
+                int x1, y1, x2, y2;
+                (x1, y1, _) = upper[^1];
+                (x2, y2, _) = upper[^2];
                 while (upper.Count > 1
-                    && CrossSign(upper[^1].x - upper[^2].x, upper[^1].y - upper[^2].y, pts[i].x - upper[^2].x, pts[i].y - upper[^2].y) > 0)
+                    && CrossSign(x1 - x2, y1 - y2, pts[i].x - x2, pts[i].y - y2) > 0)
                 {
                     upper.RemoveAt(upper.Count - 1);
                 }
                 upper.Add(pts[i]);
+
+                (x1, y1, _) = lower[^1];
+                (x2, y2, _) = lower[^2];
                 while (lower.Count > 1
-                    && CrossSign(lower[^1].x - lower[^2].x, lower[^1].y - lower[^2].y, pts[i].x - lower[^2].x, pts[i].y - lower[^2].y) < 0)
+                    && CrossSign(x1 - x2, y1 - y2, pts[i].x - x2, pts[i].y - y2) < 0)
                 {
                     lower.RemoveAt(lower.Count - 1);
                 }
