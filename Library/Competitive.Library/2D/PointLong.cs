@@ -113,7 +113,7 @@ namespace Kzrnm.Competitive
         /// 凸包(一番外側の多角形)を求める
         /// </summary>
         [凾(256)]
-        public static int[] ConvexHull(PointLong[] points)
+        public static int[] ConvexHull(ReadOnlySpan<PointLong> points)
         {
             Contract.Assert(points.Length >= 2);
             var pts = new (long x, long y, int ix)[points.Length];
@@ -159,13 +159,13 @@ namespace Kzrnm.Competitive
         /// 多角形の面積を求める
         /// </summary>
         [凾(256)]
-        public static double Area(PointLong[] points) => Area2(points) / 2.0;
+        public static double Area(ReadOnlySpan<PointLong> points) => Area2(points) / 2.0;
 
         /// <summary>
         /// 多角形の面積×2を求める
         /// </summary>
         [凾(256)]
-        public static long Area2(PointLong[] points)
+        public static long Area2(ReadOnlySpan<PointLong> points)
         {
             Contract.Assert(points.Length >= 3);
             long res = (points[^1].x - points[0].x) * (points[^1].y + points[0].y);
