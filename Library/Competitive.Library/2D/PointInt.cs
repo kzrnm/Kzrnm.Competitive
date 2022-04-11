@@ -116,10 +116,10 @@ namespace Kzrnm.Competitive
         [凾(256)]
         static int CrossSign(in P origin, in P p1, in P p2)
         {
-            var x1 = p1.x - origin.x;
-            var y1 = p1.y - origin.y;
-            var x2 = p2.x - origin.x;
-            var y2 = p2.y - origin.y;
+            long x1 = p1.x - origin.x;
+            long y1 = p1.y - origin.y;
+            long x2 = p2.x - origin.x;
+            long y2 = p2.y - origin.y;
             return Math.Sign(x1 * y2 - y1 * x2);
         }
 
