@@ -41,6 +41,8 @@ namespace Competitive.Runner
                 return;
             }
             var utf8 = new UTF8Encoding(false);
+            Console.InputEncoding = utf8;
+            Console.OutputEncoding = utf8;
             Stopwatch stopwatch = null;
             PropertyConsoleReader reader;
             var writer = new Utf8ConsoleWriter(Console.OpenStandardOutput());
