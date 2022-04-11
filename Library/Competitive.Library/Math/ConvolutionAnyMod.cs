@@ -109,6 +109,32 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|))</para>
         /// </remarks>
         [凾(256)]
+        public static StaticModInt<TMod>[] Convolution<TMod>(StaticModInt<TMod>[] a, StaticModInt<TMod>[] b)
+             where TMod : struct, IStaticMod
+            => Convolution((ReadOnlySpan<StaticModInt<TMod>>)a, b);
+        /// <summary>
+        /// 任意 Mod で畳み込みを計算します。
+        /// </summary>
+        /// <remarks>
+        /// <para><paramref name="a"/>, <paramref name="b"/> の少なくとも一方が空の場合は空配列を返します。</para>
+        /// <para>制約:</para>
+        /// <para>- |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^24 = 16,777,216</para>
+        /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|))</para>
+        /// </remarks>
+        [凾(256)]
+        public static StaticModInt<TMod>[] Convolution<TMod>(Span<StaticModInt<TMod>> a, Span<StaticModInt<TMod>> b)
+             where TMod : struct, IStaticMod
+            => Convolution((ReadOnlySpan<StaticModInt<TMod>>)a, b);
+        /// <summary>
+        /// 任意 Mod で畳み込みを計算します。
+        /// </summary>
+        /// <remarks>
+        /// <para><paramref name="a"/>, <paramref name="b"/> の少なくとも一方が空の場合は空配列を返します。</para>
+        /// <para>制約:</para>
+        /// <para>- |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^24 = 16,777,216</para>
+        /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|))</para>
+        /// </remarks>
+        [凾(256)]
         public static StaticModInt<TMod>[] Convolution<TMod>(ReadOnlySpan<StaticModInt<TMod>> a, ReadOnlySpan<StaticModInt<TMod>> b)
              where TMod : struct, IStaticMod
         {
