@@ -7,7 +7,8 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public readonly struct PointDouble : IEquatable<PointDouble>, IComparable<PointDouble>, IUtf8ConsoleWriterFormatter
+    using P = PointDouble;
+    public readonly struct PointDouble : IEquatable<P>, IComparable<P>, IUtf8ConsoleWriterFormatter
     {
         public readonly double x;
         public readonly double y;
@@ -21,11 +22,11 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public void Deconstruct(out double v1, out double v2) { v1 = x; v2 = y; }
         [凾(256)]
-        public static implicit operator PointDouble((double x, double y) tuple) => new PointDouble(tuple.x, tuple.y);
+        public static implicit operator P((double x, double y) tuple) => new P(tuple.x, tuple.y);
         [凾(256)]
-        public double Distance(PointDouble other) => Math.Sqrt(Distance2(other));
+        public double Distance(P other) => Math.Sqrt(Distance2(other));
         [凾(256)]
-        public double Distance2(PointDouble other)
+        public double Distance2(P other)
         {
             var u = other.x - x;
             var v = other.y - y;
@@ -35,16 +36,16 @@ namespace Kzrnm.Competitive
         /// 内積
         /// </summary>
         [凾(256)]
-        public double Inner(PointDouble other) => x * other.x + y * other.y;
+        public double Inner(P other) => x * other.x + y * other.y;
         /// <summary>
         /// 外積
         /// </summary>
         [凾(256)]
-        public double Cross(PointDouble other) => x * other.y - y * other.x;
+        public double Cross(P other) => x * other.y - y * other.x;
         [凾(256)]
-        public static PointDouble operator +(PointDouble a, PointDouble b) => new PointDouble(a.x + b.x, a.y + b.y);
+        public static P operator +(P a, P b) => new P(a.x + b.x, a.y + b.y);
         [凾(256)]
-        public static PointDouble operator -(PointDouble a, PointDouble b) => new PointDouble(a.x - b.x, a.y - b.y);
+        public static P operator -(P a, P b) => new P(a.x - b.x, a.y - b.y);
 
         /// <summary>
         /// <para>Atan2 の値で比較する(偏角ソート)。</para>
@@ -53,7 +54,7 @@ namespace Kzrnm.Competitive
         /// <para>偏角が等しければベクトルの絶対値で比較する。</para>
         /// </summary>
         [凾(256)]
-        public int CompareTo(PointDouble other)
+        public int CompareTo(P other)
         {
             // 90°回転させると x の符号が同じなら tan(θ) の大小関係が θ の大小関係と等しくなる。
             // x=0
@@ -90,67 +91,82 @@ namespace Kzrnm.Competitive
         public bool IsNaN => double.IsNaN(x) || double.IsNaN(y);
 
         [凾(256)]
-        public bool Equals(PointDouble other) => x == other.x && y == other.y;
-        public override bool Equals(object obj) => obj is PointDouble p && Equals(p);
+        public bool Equals(P other) => x == other.x && y == other.y;
+        public override bool Equals(object obj) => obj is P p && Equals(p);
         public override int GetHashCode() => HashCode.Combine(x, y);
         public override string ToString() => $"{x} {y}";
         [凾(256)] void IUtf8ConsoleWriterFormatter.Write(Utf8ConsoleWriter cw) => cw.Write(x).Write(' ').Write(y);
-        public static implicit operator ConsoleOutput(PointDouble p) => p.ToConsoleOutput();
-        public static bool operator ==(PointDouble left, PointDouble right) => left.Equals(right);
-        public static bool operator !=(PointDouble left, PointDouble right) => !left.Equals(right);
+        public static implicit operator ConsoleOutput(P p) => p.ToConsoleOutput();
+        public static bool operator ==(P left, P right) => left.Equals(right);
+        public static bool operator !=(P left, P right) => !left.Equals(right);
 
         [凾(256)]
-        static int CrossSign(double x1, double y1, double x2, double y2) => Math.Sign(x1 * y2 - y1 * x2);
+        static int CrossSign(in P origin, in P p1, in P p2)
+        {
+            var x1 = p1.x - origin.x;
+            var y1 = p1.y - origin.y;
+            var x2 = p2.x - origin.x;
+            var y2 = p2.y - origin.y;
+            return Math.Sign(x1 * y2 - y1 * x2);
+        }
 
         /// <summary>
         /// 凸包(一番外側の多角形)を求める
         /// </summary>
-        public static int[] ConvexHull(ReadOnlySpan<PointDouble> points)
+        [凾(256)]
+        public static int[] ConvexHull(ReadOnlySpan<P> points)
         {
-            Contract.Assert(points.Length >= 3);
-            var pts = new (double x, double y, int ix)[points.Length];
-            for (int i = 0; i < points.Length; i++)
-                pts[i] = (points[i].x, points[i].y, i);
-            Array.Sort(pts);
-
-            var upper = new List<(double x, double y, int ix)> { pts[0], pts[1] };
-            var lower = new List<(double x, double y, int ix)> { pts[0], pts[1] };
-            for (int i = 2; i < pts.Length; i++)
+            // https://en.wikipedia.org/wiki/Graham_scan
+            Contract.Assert(points.Length >= 2);
+            var idx = new int[points.Length];
+            P[] pts = new P[points.Length];
             {
-                double x1, y1, x2, y2;
-                (x1, y1, _) = upper[^1];
-                (x2, y2, _) = upper[^2];
-                while (upper.Count > 1
-                    && CrossSign(x1 - x2, y1 - y2, pts[i].x - x2, pts[i].y - y2) > 0)
+                // 最もy座標が小さいものを起点とする
+                // 最もy座標が小さいものが複数あるならばx座標が小さいものを起点とする
+                P origin = points[0];
+                for (int i = 1; i < points.Length; i++)
                 {
-                    upper.RemoveAt(upper.Count - 1);
+                    idx[i] = i;
+                    int cmp = points[i].y.CompareTo(origin.y);
+                    if (cmp < 0 || (cmp == 0 && points[i].x < origin.x))
+                        origin = points[i];
                 }
-                upper.Add(pts[i]);
 
-                (x1, y1, _) = lower[^1];
-                (x2, y2, _) = lower[^2];
-                while (lower.Count > 1
-                    && CrossSign(x1 - x2, y1 - y2, pts[i].x - x2, pts[i].y - y2) < 0)
-                {
-                    lower.RemoveAt(lower.Count - 1);
-                }
-                lower.Add(pts[i]);
+
+                for (int i = 0; i < pts.Length; i++)
+                    pts[i] = points[i] - origin;
+
+                // 偏角ソート
+                // 偏角が同じなら原点から近い順
+                Array.Sort(pts, idx);
             }
 
-            var res = new int[upper.Count + lower.Count - 2];
-            var span = upper.AsSpan();
-            for (int i = 0; i < span.Length; i++)
-                res[res.Length - i - 1] = span[i].ix;
-            span = lower.AsSpan()[1..^1];
-            for (int i = 0; i < span.Length; i++)
-                res[i] = span[i].ix;
+            var st = new List<int>(pts.Length) { 0 };
+            for (int i = 1; i < pts.Length; i++)
+            {
+                while (st.Count > 1 && CrossSign(pts[st[^2]], pts[st[^1]], pts[i]) < 0)
+                    st.RemoveAt(st.Count - 1);
+                st.Add(i);
+            }
+
+            // 最後の並びが起点から一直線に並んでいる場合は保存されていないので追加で確認する
+            for (int i = st[^1] - 1; i > 0; i--)
+            {
+                if (CrossSign(pts[st[^1]], pts[i], pts[0]) == 0)
+                    st.Add(i);
+                else break;
+            }
+
+            var res = new int[st.Count];
+            for (int i = st.Count - 1; i >= 0; i--)
+                res[i] = idx[st[i]];
             return res;
         }
 
         /// <summary>
         /// 3点の外心(外接円の中心=3点と等距離な点)を求める。3点が直線上にあるときはNaNとなる
         /// </summary>
-        public static PointDouble 外心(PointDouble a, PointDouble b, PointDouble c)
+        public static P 外心(P a, P b, P c)
         {
             var ab = a.Distance(b);
             var cb = c.Distance(b);
@@ -161,9 +177,9 @@ namespace Kzrnm.Competitive
             var cosC = (cb * cb + ac * ac - ab * ab) / 2 / cb / ac;
 
             var d = cb * cosA + ac * cosB + ab * cosC;
-            return new PointDouble(cb * cosA * a.x / d, cb * cosA * a.y / d)
-                + new PointDouble(ac * cosB * b.x / d, ac * cosB * b.y / d)
-                + new PointDouble(ab * cosC * c.x / d, ab * cosC * c.y / d);
+            return new P(cb * cosA * a.x / d, cb * cosA * a.y / d)
+                + new P(ac * cosB * b.x / d, ac * cosB * b.y / d)
+                + new P(ab * cosC * c.x / d, ab * cosC * c.y / d);
         }
         /// <summary>
         /// A*x+B*y+C=0 との距離
@@ -176,7 +192,7 @@ namespace Kzrnm.Competitive
         /// 2点を通る直線 A*x+B*y+C=0
         /// </summary>
         [凾(256)]
-        public (double A, double B, double C) 直線(PointDouble other)
+        public (double A, double B, double C) 直線(P other)
             => (other.y - y, x - other.x, y * (other.x - x) - x * (other.y - y));
 
 
@@ -184,7 +200,7 @@ namespace Kzrnm.Competitive
         /// 2点の垂直二等分線 A*x+B*y+C=0
         /// </summary>
         [凾(256)]
-        public (double A, double B, double C) 垂直二等分線(PointDouble other)
+        public (double A, double B, double C) 垂直二等分線(P other)
             => (x - other.x, y - other.y, (x * x - other.x * other.x + y * y - other.y * other.y) * -.5);
 
 
@@ -192,7 +208,7 @@ namespace Kzrnm.Competitive
         /// P をとおる A*x+B*y=Any の垂線
         /// </summary>
         [凾(256)]
-        public static (double A, double B, double C) 直線の垂線(double a, double b, PointDouble p) => (b, -a, b * p.x - a * p.y);
+        public static (double A, double B, double C) 直線の垂線(double a, double b, P p) => (b, -a, b * p.x - a * p.y);
 
         /// <summary>
         /// <paramref name="x"/> での A*x+B*y+C=0 の垂線
@@ -210,10 +226,10 @@ namespace Kzrnm.Competitive
         /// A*x+B*y+C=0, U*x+V*y+W=0の交点
         /// </summary>
         [凾(256)]
-        public static PointDouble 直線と直線の交点(double a, double b, double c, double u, double v, double w)
+        public static P 直線と直線の交点(double a, double b, double c, double u, double v, double w)
         {
             var dd = a * v - b * u;
-            return new PointDouble((b * w - c * v) / dd, (c * u - a * w) / dd);
+            return new P((b * w - c * v) / dd, (c * u - a * w) / dd);
         }
 
 
@@ -221,29 +237,29 @@ namespace Kzrnm.Competitive
         /// A*x+B*y+C=0 と Pを中心とする半径rの円の交点
         /// </summary>
         [凾(256)]
-        public static PointDouble[] 直線と円の交点(double a, double b, double c, PointDouble p, double r)
+        public static P[] 直線と円の交点(double a, double b, double c, P p, double r)
         {
             var l = a * a + b * b;
             var k = a * p.x + b * p.y + c;
             var d = l * r * r - k * k;
 
             if (d < 0)
-                return Array.Empty<PointDouble>();
+                return Array.Empty<P>();
 
             var apl = a / l;
             var bpl = b / l;
             var xc = p.x - apl * k;
             var yc = p.y - bpl * k;
             if (d == 0)
-                return new[] { new PointDouble(xc, yc), };
+                return new[] { new P(xc, yc), };
 
             var ds = Math.Sqrt(d);
             var xd = bpl * ds;
             var yd = apl * ds;
             return new[]
             {
-                new PointDouble(xc - xd, yc + yd),
-                new PointDouble(xc + xd, yc - yd),
+                new P(xc - xd, yc + yd),
+                new P(xc + xd, yc - yd),
             };
         }
 
@@ -251,7 +267,7 @@ namespace Kzrnm.Competitive
         /// P1 を中心とする半径 r1 の円とP2 を中心とする半径 r2 の円の交点
         /// </summary>
         [凾(256)]
-        public static PointDouble[] 円の交点(PointDouble p1, double r1, PointDouble p2, double r2)
+        public static P[] 円の交点(P p1, double r1, P p2, double r2)
         {
             var xx = p1.x - p2.x;
             var yy = p1.y - p2.y;
@@ -265,7 +281,7 @@ namespace Kzrnm.Competitive
         /// <paramref name="a1"/> から <paramref name="b1"/>までの線分と<paramref name="a2"/> から <paramref name="b2"/>までの線分が交差しているか
         /// </summary>
         [凾(256)]
-        public static bool 線分が交差しているか(PointDouble a1, PointDouble b1, PointDouble a2, PointDouble b2)
+        public static bool 線分が交差しているか(P a1, P b1, P a2, P b2)
         {
             var ta = (a2.x - b2.x) * (a1.y - a2.y) + (a2.y - b2.y) * (a2.x - a1.x);
             var tb = (a2.x - b2.x) * (b1.y - a2.y) + (a2.y - b2.y) * (a2.x - b1.x);
@@ -279,13 +295,13 @@ namespace Kzrnm.Competitive
         /// 多角形の面積を求める
         /// </summary>
         [凾(256)]
-        public static double Area(ReadOnlySpan<PointDouble> points) => Area2(points) / 2.0;
+        public static double Area(ReadOnlySpan<P> points) => Area2(points) / 2.0;
 
         /// <summary>
         /// 多角形の面積×2を求める
         /// </summary>
         [凾(256)]
-        public static double Area2(ReadOnlySpan<PointDouble> points)
+        public static double Area2(ReadOnlySpan<P> points)
         {
             Contract.Assert(points.Length >= 3);
             double res = (points[^1].x - points[0].x) * (points[^1].y + points[0].y);

@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace Kzrnm.Competitive.Testing.TwoDimensional
@@ -131,6 +132,73 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         {
             PointLong.Area2(points).Should().Be(expected);
             PointLong.Area(points).Should().Be(expected / 2.0);
+        }
+
+        [Fact]
+        public void ConvexHull1()
+        {
+            var points = new PointLong[]
+            {
+                (10, 10),
+                ( 8,  9),
+                ( 1, -1),
+                (10,  8),
+                ( 4,  2),
+                ( 8,  6),
+                ( 4,  8),
+                ( 1,  5),
+                (11, 10),
+                ( 6,  8),
+                ( 8,  8),
+                (-1,  5),
+            };
+            PointLong.ConvexHull(points)
+                .Select(i => points[i])
+                .Should().Equal(
+                    (1, -1),
+                    (4, 2),
+                    (8, 6),
+                    (10, 8),
+                    (11, 10),
+                    (10, 10),
+                    (4, 8),
+                    (-1, 5)
+                );
+        }
+
+        [Fact]
+        public void ConvexHull2()
+        {
+            var points = new PointLong[]
+            {
+                (10, 10),
+                ( 8,  9),
+                ( 8,  8),
+                (10,  8),
+                ( 0,  0),
+                ( 4,  0),
+                ( 8,  6),
+                ( 1,  5),
+                ( 6,  8),
+                (11, 10),
+                ( 1,  8),
+                (-6,  6),
+                (-4,  4),
+                (-1,  1)
+            };
+            PointLong.ConvexHull(points)
+                .Select(i => points[i])
+                .Should().Equal(
+                    (0, 0),
+                    (4, 0),
+                    (10, 8),
+                    (11, 10),
+                    (10, 10),
+                    (1, 8),
+                    (-6, 6),
+                    (-4, 4),
+                    (-1, 1)
+                );
         }
     }
 }

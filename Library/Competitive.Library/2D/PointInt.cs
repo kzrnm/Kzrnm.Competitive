@@ -7,7 +7,8 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public readonly struct PointInt : IEquatable<PointInt>, IComparable<PointInt>, IUtf8ConsoleWriterFormatter
+    using P = PointInt;
+    public readonly struct PointInt : IEquatable<P>, IComparable<P>, IUtf8ConsoleWriterFormatter
     {
         public readonly int x;
         public readonly int y;
@@ -23,13 +24,13 @@ namespace Kzrnm.Competitive
         public void Deconstruct(out int v1, out int v2) { v1 = x; v2 = y; }
 
         [凾(256)]
-        public static implicit operator PointInt((int x, int y) tuple) => new PointInt(tuple.x, tuple.y);
+        public static implicit operator P((int x, int y) tuple) => new P(tuple.x, tuple.y);
 
         [凾(256)]
-        public double Distance(PointInt other) => Math.Sqrt(Distance2(other));
+        public double Distance(P other) => Math.Sqrt(Distance2(other));
 
         [凾(256)]
-        public long Distance2(PointInt other)
+        public long Distance2(P other)
         {
             var u = other.x - x;
             var v = other.y - y;
@@ -42,19 +43,19 @@ namespace Kzrnm.Competitive
         /// </summary>
 
         [凾(256)]
-        public long Inner(PointInt other) => (long)x * other.x + (long)y * other.y;
+        public long Inner(P other) => (long)x * other.x + (long)y * other.y;
         /// <summary>
         /// 外積
         /// </summary>
 
         [凾(256)]
-        public long Cross(PointInt other) => (long)x * other.y - (long)y * other.x;
+        public long Cross(P other) => (long)x * other.y - (long)y * other.x;
 
         [凾(256)]
-        public static PointInt operator +(PointInt a, PointInt b) => new PointInt(a.x + b.x, a.y + b.y);
+        public static P operator +(P a, P b) => new P(a.x + b.x, a.y + b.y);
 
         [凾(256)]
-        public static PointInt operator -(PointInt a, PointInt b) => new PointInt(a.x - b.x, a.y - b.y);
+        public static P operator -(P a, P b) => new P(a.x - b.x, a.y - b.y);
 
         /// <summary>
         /// <para>Atan2 の値で比較する(偏角ソート)。</para>
@@ -63,7 +64,7 @@ namespace Kzrnm.Competitive
         /// <para>偏角が等しければベクトルの絶対値で比較する。</para>
         /// </summary>
         [凾(256)]
-        public int CompareTo(PointInt other)
+        public int CompareTo(P other)
         {
             // 90°回転させると x の符号が同じなら tan(θ) の大小関係が θ の大小関係と等しくなる。
             var x1 = -y;
@@ -98,80 +99,96 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        public bool Equals(PointInt other) => x == other.x && y == other.y;
-        public override bool Equals(object obj) => obj is PointInt p && Equals(p);
+        public bool Equals(P other) => x == other.x && y == other.y;
+        public override bool Equals(object obj) => obj is P p && Equals(p);
         public override int GetHashCode() => HashCode.Combine(x, y);
         public override string ToString() => $"{x} {y}";
         [凾(256)] void IUtf8ConsoleWriterFormatter.Write(Utf8ConsoleWriter cw) => cw.Write(x).Write(' ').Write(y);
-        public static implicit operator ConsoleOutput(PointInt p) => p.ToConsoleOutput();
+        public static implicit operator ConsoleOutput(P p) => p.ToConsoleOutput();
 
         [凾(256)]
-        public static bool operator ==(PointInt left, PointInt right) => left.Equals(right);
+        public static bool operator ==(P left, P right) => left.Equals(right);
 
         [凾(256)]
-        public static bool operator !=(PointInt left, PointInt right) => !left.Equals(right);
+        public static bool operator !=(P left, P right) => !left.Equals(right);
 
-        static int CrossSign(long x1, long y1, long x2, long y2) => Math.Sign(x1 * y2 - y1 * x2);
+
+        [凾(256)]
+        static int CrossSign(in P origin, in P p1, in P p2)
+        {
+            var x1 = p1.x - origin.x;
+            var y1 = p1.y - origin.y;
+            var x2 = p2.x - origin.x;
+            var y2 = p2.y - origin.y;
+            return Math.Sign(x1 * y2 - y1 * x2);
+        }
 
         /// <summary>
         /// 凸包(一番外側の多角形)を求める
         /// </summary>
-
         [凾(256)]
-        public static int[] ConvexHull(ReadOnlySpan<PointInt> points)
+        public static int[] ConvexHull(ReadOnlySpan<P> points)
         {
-            Contract.Assert(points.Length >= 3);
-            var pts = new (int x, int y, int ix)[points.Length];
-            for (int i = 0; i < points.Length; i++)
-                pts[i] = (points[i].x, points[i].y, i);
-            Array.Sort(pts);
-
-            var upper = new List<(int x, int y, int ix)> { pts[0], pts[1] };
-            var lower = new List<(int x, int y, int ix)> { pts[0], pts[1] };
-            for (int i = 2; i < pts.Length; i++)
+            // https://en.wikipedia.org/wiki/Graham_scan
+            Contract.Assert(points.Length >= 2);
+            var idx = new int[points.Length];
+            P[] pts = new P[points.Length];
             {
-                int x1, y1, x2, y2;
-                (x1, y1, _) = upper[^1];
-                (x2, y2, _) = upper[^2];
-                while (upper.Count > 1
-                    && CrossSign(x1 - x2, y1 - y2, pts[i].x - x2, pts[i].y - y2) > 0)
+                // 最もy座標が小さいものを起点とする
+                // 最もy座標が小さいものが複数あるならばx座標が小さいものを起点とする
+                P origin = points[0];
+                for (int i = 1; i < points.Length; i++)
                 {
-                    upper.RemoveAt(upper.Count - 1);
+                    idx[i] = i;
+                    int cmp = points[i].y.CompareTo(origin.y);
+                    if (cmp < 0 || (cmp == 0 && points[i].x < origin.x))
+                        origin = points[i];
                 }
-                upper.Add(pts[i]);
 
-                (x1, y1, _) = lower[^1];
-                (x2, y2, _) = lower[^2];
-                while (lower.Count > 1
-                    && CrossSign(x1 - x2, y1 - y2, pts[i].x - x2, pts[i].y - y2) < 0)
-                {
-                    lower.RemoveAt(lower.Count - 1);
-                }
-                lower.Add(pts[i]);
+
+                for (int i = 0; i < pts.Length; i++)
+                    pts[i] = points[i] - origin;
+
+                // 偏角ソート
+                // 偏角が同じなら原点から近い順
+                Array.Sort(pts, idx);
             }
 
-            var res = new int[upper.Count + lower.Count - 2];
-            var span = upper.AsSpan();
-            for (int i = 0; i < span.Length; i++)
-                res[res.Length - i - 1] = span[i].ix;
-            span = lower.AsSpan()[1..^1];
-            for (int i = 0; i < span.Length; i++)
-                res[i] = span[i].ix;
+            var st = new List<int>(pts.Length) { 0 };
+            for (int i = 1; i < pts.Length; i++)
+            {
+                while (st.Count > 1 && CrossSign(pts[st[^2]], pts[st[^1]], pts[i]) < 0)
+                    st.RemoveAt(st.Count - 1);
+                st.Add(i);
+            }
+
+            // 最後の並びが起点から一直線に並んでいる場合は保存されていないので追加で確認する
+            for (int i = st[^1] - 1; i > 0; i--)
+            {
+                if (CrossSign(pts[st[^1]], pts[i], pts[0]) == 0)
+                    st.Add(i);
+                else break;
+            }
+
+            var res = new int[st.Count];
+            for (int i = st.Count - 1; i >= 0; i--)
+                res[i] = idx[st[i]];
             return res;
         }
+
         /// <summary>
         /// 多角形の面積を求める
         /// </summary>
 
         [凾(256)]
-        public static double Area(ReadOnlySpan<PointInt> points) => Area2(points) / 2.0;
+        public static double Area(ReadOnlySpan<P> points) => Area2(points) / 2.0;
 
         /// <summary>
         /// 多角形の面積×2を求める
         /// </summary>
 
         [凾(256)]
-        public static long Area2(ReadOnlySpan<PointInt> points)
+        public static long Area2(ReadOnlySpan<P> points)
         {
             Contract.Assert(points.Length >= 3);
             long res = ((long)points[^1].x - points[0].x) * ((long)points[^1].y + points[0].y);
