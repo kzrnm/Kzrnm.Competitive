@@ -36,5 +36,12 @@ namespace Competitive.Runner
                 sb.Add(i, rnd.Next(1, i));
             return sb;
         }
+        static MyStringBuilder BuildBinaryTree(MyStringBuilder sb, int size)
+        {
+            sb.Add(size);
+            for (int i = 2; i <= size; i++)
+                sb.Add(i, i / 2);
+            return sb;
+        }
     }
 }
