@@ -19,7 +19,7 @@ internal partial class Program
     public void Run()
     {
         int Q = __ManyTestCases ? cr.Int : 1;
-        for (; Q > 0; Q--)
+        while (--Q >= 0)
             Calc(cr, cw);
         cw.Flush();
     }
