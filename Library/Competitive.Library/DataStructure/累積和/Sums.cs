@@ -1,4 +1,4 @@
-﻿using AtCoder.Operators;
+using AtCoder.Operators;
 using System.Collections.Generic;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -26,8 +26,7 @@ namespace Kzrnm.Competitive
             for (var i = 0; i < collection.Count; i++)
                 impl[i + 1] = op.Add(impl[i], collection[i]);
         }
-        [凾(256)]
-        public TValue Slice(int from, int length) => op.Subtract(impl[from + length], impl[from]);
+        [凾(256)] public TValue Slice(int from, int length) => op.Subtract(impl[from + length], impl[from]);
         public TValue this[int toExclusive] { [凾(256)] get => impl[toExclusive]; }
         public TValue this[int from, int toExclusive] { [凾(256)] get => op.Subtract(impl[toExclusive], impl[from]); }
     }
