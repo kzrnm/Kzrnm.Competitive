@@ -48,6 +48,7 @@ namespace Kzrnm.Competitive
         public int To { get; }
         public T Value { get; }
 
+        [凾(256)] public static implicit operator int(WEdge<T> e) => e.To;
         public override bool Equals(object obj) => obj is WEdge<T> edge && Equals(edge);
         public bool Equals(WEdge<T> other) => To == other.To &&
                    EqualityComparer<T>.Default.Equals(Value, other.Value);

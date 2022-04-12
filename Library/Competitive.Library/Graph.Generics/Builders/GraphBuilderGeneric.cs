@@ -43,6 +43,7 @@ namespace Kzrnm.Competitive
         }
         public T Data { get; }
         public int To { get; }
+        [凾(256)] public static implicit operator int(GraphEdge<T> e) => e.To;
         public override string ToString() => $"to:{To}, Data:{Data}";
         [凾(256)]
         public void Deconstruct(out int to, out T data)
