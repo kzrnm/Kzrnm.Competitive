@@ -1,4 +1,4 @@
-﻿using AtCoder;
+using AtCoder;
 using FluentAssertions;
 using Xunit;
 
@@ -77,14 +77,14 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 .Equal(0, 0, 5 / 2.0, 10 / 3.0, 17 / 4.0, 4 / 5.0, 6 / 6.0);
         }
         [Fact]
-        public void Calc()
+        public void Eval()
         {
             new Polynomial<int, IntOperator>(new int[] { 0, 5, 10, 17, 4, 6 })
-                .Calc(1)
+                .Eval(1)
                 .Should()
                 .Be(42);
             new Polynomial<int, IntOperator>(new int[] { 0, 5, 10, 17, 4, 6 })
-                .Calc(2)
+                .Eval(2)
                 .Should()
                 .Be(442);
         }
@@ -118,7 +118,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             polynomial.Coefficients.Should().HaveCount(data.Length);
             foreach (var (x, y) in data)
             {
-                polynomial.Calc(x).Should().BeApproximately(y, 1e-8);
+                polynomial.Eval(x).Should().BeApproximately(y, 1e-8);
             }
         }
     }

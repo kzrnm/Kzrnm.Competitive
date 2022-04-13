@@ -1,7 +1,8 @@
-﻿using AtCoder;
+using AtCoder;
 using AtCoder.Internal;
 using System;
 using System.Diagnostics;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -183,16 +184,16 @@ namespace Kzrnm.Competitive
         private static uint[] ConvolutionImpl<TMod>(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b)
              where TMod : struct, IStaticMod
         {
-            var mod = new TMod().Mod;
+            var op = new TMod();
             unchecked
             {
                 var n = a.Length;
                 var m = b.Length;
 
                 var la = new long[n];
-                for (int i = 0; i < la.Length; i++) la[i] = a[i] % mod;
+                for (int i = 0; i < la.Length; i++) la[i] = a[i] % op.Mod;
                 var lb = new long[m];
-                for (int i = 0; i < lb.Length; i++) lb[i] = b[i] % mod;
+                for (int i = 0; i < lb.Length; i++) lb[i] = b[i] % op.Mod;
 
                 if (n == 0 || m == 0)
                 {
@@ -205,7 +206,7 @@ namespace Kzrnm.Competitive
 
                 const long M1i2 = 104391568;
                 const long M12i3 = 190329765;
-                long M12i = (long)(ulong)(Mod1 * Mod2) % mod;
+                long M12i = (long)(ulong)(Mod1 * Mod2) % op.Mod;
 
                 Debug.Assert(new FFTMod1().Mod == Mod1);
                 Debug.Assert(new FFTMod2().Mod == Mod2);
@@ -224,14 +225,24 @@ namespace Kzrnm.Competitive
                     if (v1 < 0) v1 += Mod2;
                     var v2 = (c3[i] - (c1[i] + Mod1 * v1) % Mod3) * M12i3 % Mod3;
                     if (v2 < 0) v2 += Mod3;
-                    var x = (c1[i] + Mod1 * v1 + M12i * v2) % mod;
-                    if (x < 0) x += mod;
+                    var x = (c1[i] + Mod1 * v1 + M12i * v2) % op.Mod;
+                    if (x < 0) x += op.Mod;
 
                     c[i] = (uint)x;
                 }
 
                 return c;
             }
+        }
+
+        /// <summary>
+        /// NTT(数論変換)で使えるかどうかを返します。
+        /// </summary>
+        [凾(256)]
+        internal static bool CanNtt<TMod>() where TMod : struct, IStaticMod
+        {
+            var m = new TMod();
+            return m.IsPrime && BitOperations.TrailingZeroCount(m.Mod - 1) >= 23;
         }
 
         private readonly struct FFTMod1 : IStaticMod

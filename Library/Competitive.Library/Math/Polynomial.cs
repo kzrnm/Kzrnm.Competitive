@@ -1,4 +1,4 @@
-﻿using AtCoder.Operators;
+using AtCoder.Operators;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -58,7 +58,7 @@ namespace Kzrnm.Competitive
         {
             var ll = lhs.Coefficients.Length;
             var rl = rhs.Coefficients.Length;
-            if (ll == 0) return rhs;
+            if (ll == 0) return -rhs;
             if (rl == 0) return lhs;
             ref var lp = ref lhs.Coefficients[0];
             ref var rp = ref rhs.Coefficients[0];
@@ -166,7 +166,7 @@ namespace Kzrnm.Competitive
         /// 多項式に <paramref name="x"/> を代入した値を返します。
         /// </summary>
         [凾(256)]
-        public T Calc(T x)
+        public T Eval(T x)
         {
             T x_n = x;
             T res = Coefficients[0];
