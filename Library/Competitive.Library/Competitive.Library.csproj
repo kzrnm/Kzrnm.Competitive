@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>netcoreapp3.1</TargetFrameworks>
@@ -32,7 +32,7 @@
 	<ItemGroup>
 		<InternalsVisibleTo Include="Competitive.Library.Test" />
 		<PackageReference Include="ac-library-csharp" Version="1.15.0" />
-		<PackageReference Include="AtCoderAnalyzer" Version="1.15.0">
+		<PackageReference Include="AtCoderAnalyzer" Version="1.16.0">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
