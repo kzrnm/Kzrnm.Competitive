@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using Kzrnm.Competitive;
 using SourceExpander;
 using System.Linq;
@@ -47,9 +47,7 @@ namespace Embedding
                     "Kzrnm.Competitive",
                     "Kzrnm.Competitive.DataStructure",
                     "Kzrnm.Competitive.DebugUtil",
-                    "Kzrnm.Competitive.InternalWavelet",
-                    "Kzrnm.Competitive.LinqInternals",
-                    "Kzrnm.Competitive.SetInternals",
+                    "Kzrnm.Competitive.Internal",
                     "Kzrnm.Competitive.Testing");
 
         }

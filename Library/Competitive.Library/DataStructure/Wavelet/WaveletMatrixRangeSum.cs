@@ -2,7 +2,7 @@
 using AtCoder;
 using AtCoder.Extension;
 using AtCoder.Operators;
-using Kzrnm.Competitive.InternalWavelet;
+using Kzrnm.Competitive.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    namespace InternalWavelet
+    namespace Internal
     {
         /// <summary>
         /// 範囲演算データ構造

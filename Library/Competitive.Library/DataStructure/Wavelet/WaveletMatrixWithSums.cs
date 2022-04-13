@@ -1,6 +1,6 @@
 ﻿// Original: https://ei1333.github.io/library/structure/wavelet/wavelet-matrix.cpp.html
 using AtCoder.Operators;
-using Kzrnm.Competitive.InternalWavelet;
+using Kzrnm.Competitive.Internal;
 using System;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -31,7 +31,7 @@ namespace Kzrnm.Competitive
     {
         public WaveletMatrixWithSums(ReadOnlySpan<(F V, T d)> v) : base(v) { }
     }
-    namespace InternalWavelet
+    namespace Internal
     {
         public struct SumOp<T, TOp> : IWabeletSumOperator<T>
             where TOp : struct, IAdditionOperator<T>, ISubtractOperator<T>

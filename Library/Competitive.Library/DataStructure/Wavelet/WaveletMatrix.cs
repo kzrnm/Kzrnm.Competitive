@@ -1,7 +1,7 @@
 ﻿// Original: https://ei1333.github.io/library/structure/wavelet/wavelet-matrix.cpp.html
 using AtCoder.Extension;
 using AtCoder.Internal;
-using Kzrnm.Competitive.InternalWavelet;
+using Kzrnm.Competitive.Internal;
 using System;
 using System.Collections.Generic;
 using System.Numerics;

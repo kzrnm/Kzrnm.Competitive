@@ -1,4 +1,4 @@
-﻿using Kzrnm.Competitive.LinqInternals;
+using Kzrnm.Competitive.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static ChunkBuffer<T> Chunk<T>(this IEnumerable<T> collection, int bufferSize) => new ChunkBuffer<T>(collection, bufferSize);
     }
-    namespace LinqInternals
+    namespace Internal
     {
         public class ChunkBuffer<T> : IEnumerable<T[]>
         {

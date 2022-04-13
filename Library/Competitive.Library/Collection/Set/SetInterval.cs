@@ -1,6 +1,6 @@
 ﻿using AtCoder;
 using AtCoder.Operators;
-using Kzrnm.Competitive.SetInternals;
+using Kzrnm.Competitive.Internal;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

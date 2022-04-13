@@ -9,7 +9,7 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
-namespace Kzrnm.Competitive.SetInternals
+namespace Kzrnm.Competitive.Internal
 {
     public interface ISetOperator<T, TCmp, Node> : IComparer<T>
     {

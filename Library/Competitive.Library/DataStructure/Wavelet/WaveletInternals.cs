@@ -4,7 +4,7 @@ using System.Numerics;
 using System.Text;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
-namespace Kzrnm.Competitive.InternalWavelet
+namespace Kzrnm.Competitive.Internal
 {
     internal class SuccinctIndexableDictionary
     {
