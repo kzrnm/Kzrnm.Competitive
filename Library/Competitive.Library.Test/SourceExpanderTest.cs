@@ -43,12 +43,9 @@ namespace Embedding
             embedded.AssemblyMetadatas.Should().ContainKey("SourceExpander.EmbeddedNamespaces");
             embedded.EmbeddedNamespaces
                 .Should()
-                .Equal(
-                    "Kzrnm.Competitive",
-                    "Kzrnm.Competitive.DataStructure",
-                    "Kzrnm.Competitive.DebugUtil",
+                .Contain(
                     "Kzrnm.Competitive.Internal",
-                    "Kzrnm.Competitive.Testing");
+                    "Kzrnm.Competitive");
 
         }
     }
