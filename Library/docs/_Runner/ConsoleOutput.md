@@ -1,3 +1,8 @@
+---
+title: 出力用のラッパー
+documentation_of: //Library/Competitive.Library/+Runner/ConsoleOutput.cs
+---
+
 ## 概要
 
 `Utf8ConsoleWriter` は呼び出した型ごとに高速に標準出力に書き込める。

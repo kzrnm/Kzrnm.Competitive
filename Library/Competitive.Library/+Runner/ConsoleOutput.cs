@@ -1,8 +1,6 @@
 ﻿using Kzrnm.Competitive.IO;
 using System;
 
-// @brief 出力用のラッパー
-// @docs Library/docs/_Runner/ConsoleOutput.md
 namespace Kzrnm.Competitive
 {
     using O = ConsoleOutput;
