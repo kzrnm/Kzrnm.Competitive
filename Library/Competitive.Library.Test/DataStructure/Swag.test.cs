@@ -1,4 +1,4 @@
-﻿using AtCoder;
+using AtCoder;
 using AtCoder.Internal;
 using FluentAssertions;
 using System;
@@ -17,7 +17,6 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         [Fact]
         public void SlideMin()
         {
-            var array = new int[] { 4, 1, 4, 6, 2, 3, 9, 7 };
             var swag = new Swag<int, SlideMinOp>();
             swag.Push(4);
             swag.AllProd.Should().Be(4);
@@ -91,6 +90,11 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             swag.Invoking(swag => swag.Pop()).Should()
                 .ThrowExactly<ContractAssertException>()
                 .WithMessage("data is empty.");
+        }
+        public struct SlideMaxOp : ISegtreeOperator<int>
+        {
+            public int Identity => int.MinValue;
+            public int Operate(int x, int y) => Math.Max(x, y);
         }
     }
 }

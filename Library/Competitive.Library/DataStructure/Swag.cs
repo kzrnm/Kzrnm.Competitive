@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Original
  * https://github.com/kmyk/library-checker-problems/blob/47ba6600eb6dc445ce742de511ca69cb6fc749b1/datastructure/queue_operate_all_composite/sol/correct.cpp
  * 
@@ -20,10 +20,17 @@ namespace Kzrnm.Competitive
         private int frontSize = 0;
         private T back = op.Identity;
         private readonly Deque<T> data;
+        /// <summary>
+        /// Slide Window Aggrigation: モノイドの範囲演算を移動しながら求める。計算量: O(N)
+        /// </summary>
         public Swag()
         {
             data = new Deque<T>();
         }
+        /// <summary>
+        /// Slide Window Aggrigation: モノイドの範囲演算を移動しながら求める。計算量: O(N)
+        /// </summary>
+        /// <param name="capacity">内部で保持する <see cref="Deque{T}"/> の初期サイズ</param>
         public Swag(int capacity)
         {
             data = new Deque<T>(capacity);
@@ -58,5 +65,16 @@ namespace Kzrnm.Competitive
         /// モノイドをマージした結果を返します。
         /// </summary>
         public T AllProd { [凾(256)] get => frontSize > 0 ? op.Operate(data.First, back) : back; }
+
+        /// <summary>
+        /// 格納されたモノイドをすべて削除します
+        /// </summary>
+        [凾(256)]
+        public void Clear()
+        {
+            frontSize = 0;
+            back = op.Identity;
+            data.Clear();
+        }
     }
 }
