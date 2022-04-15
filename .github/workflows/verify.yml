@@ -6,7 +6,6 @@ on:
       - master
     paths:
       - "Library/**"
-      - "!**.md"
   pull_request:
     types: [opened, synchronize]
     paths:
