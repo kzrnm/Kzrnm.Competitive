@@ -1,8 +1,11 @@
-﻿using AtCoder;
+using AtCoder;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    /// <summary>
+    /// 階乗とその逆数を保持する。O(N) で初期構築したあとは二項係数を O(1) で求められる。
+    /// </summary>
     public class StaticModIntFactor<T> where T : struct, IStaticMod
     {
         private readonly StaticModInt<T>[] fac, finv;
