@@ -135,7 +135,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 var rem = new FormalPowerSeries<T>(remArray);
 
                 var p = lhs * rhs + rem;
-                var (q, r) = FormalPowerSeries<T>.DivRem(p, rhs);
+                var (q, r) = p.DivRem(rhs);
 
                 q.Coefficients.Should().Equal((p / rhs).Coefficients);
                 r.Coefficients.Should().Equal((p % rhs).Coefficients);

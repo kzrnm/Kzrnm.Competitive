@@ -20,6 +20,11 @@ namespace Kzrnm.Competitive
         public readonly StaticModInt<T>[] Coefficients;
 
         /// <summary>
+        /// 多項式の次数
+        /// </summary>
+        public int Count => Coefficients.Length;
+
+        /// <summary>
         /// 多項式を生成します。
         /// </summary>
         /// <remarks>
@@ -167,21 +172,20 @@ namespace Kzrnm.Competitive
         /// </remarks>
         [凾(256)]
         public static FormalPowerSeries<T> operator %(FormalPowerSeries<T> lhs, FormalPowerSeries<T> rhs)
-            => DivRem(lhs, rhs).Remainder;
+            => lhs.DivRem(rhs).Remainder;
 
         /// <summary>
-        /// <paramref name="lhs"/> / <paramref name="rhs"/> の商とあまり
+        /// <see langword="this"/> / <paramref name="other"/> の商とあまり
         /// </summary>
         /// <remarks>
         /// <para>計算量: O( N log N )</para>
         /// </remarks>
-        /// <param name="lhs">割られる多項式</param>
-        /// <param name="rhs">割る多項式</param>
+        /// <param name="other">割る多項式</param>
         /// <returns>(商, あまり) のタプル</returns>
         [凾(256)]
-        public static (FormalPowerSeries<T> Quotient, FormalPowerSeries<T> Remainder) DivRem(FormalPowerSeries<T> lhs, FormalPowerSeries<T> rhs)
+        public (FormalPowerSeries<T> Quotient, FormalPowerSeries<T> Remainder) DivRem(FormalPowerSeries<T> other)
         {
-            var (q, r) = new Impl(lhs).DivRem(rhs.Coefficients);
+            var (q, r) = new Impl(this).DivRem(other.Coefficients);
             return (new FormalPowerSeries<T>(q), new FormalPowerSeries<T>(r));
         }
         #endregion Divide
