@@ -14,6 +14,9 @@ namespace Kzrnm.Competitive
         /// <para>(x0, y0), ..., (xn, yn)を満たす n 次多項式を返します。</para>
         /// <para>制約: xは全て異なる</para>
         /// </summary>
+        /// <remarks>
+        /// <para>計算量: O(N^2)</para>
+        /// </remarks>
         [凾(512)]
         public static FormalPowerSeries<T> Coefficient<T>((StaticModInt<T> x, StaticModInt<T> y)[] plots) where T : struct, IStaticMod
         {
@@ -65,6 +68,9 @@ namespace Kzrnm.Competitive
         /// <para>(0, y0), ..., (n, yn)を満たす n 次多項式に <paramref name="x"/> を代入した値を返します。</para>
         /// <para>制約: <paramref name="combination"/> が初期化済みならば、<paramref name="y"/>.Length までは使えること</para>
         /// </summary>
+        /// <remarks>
+        /// <para>計算量: O(N)</para>
+        /// </remarks>
         [凾(512)]
         public static StaticModInt<T> Eval<T>(StaticModInt<T>[] y, long x, StaticModIntFactor<T> combination = null) where T : struct, IStaticMod
         {
