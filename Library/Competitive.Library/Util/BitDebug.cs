@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Numerics;
 
-namespace Kzrnm.Competitive.DebugUtil
+namespace Kzrnm.Competitive
 {
     public class BitDebug
     {
