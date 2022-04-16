@@ -65,5 +65,33 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 }
             }
         }
+
+        [Fact]
+        public void Fibonacci()
+        {
+            var rnd = new Random(42);
+            for (int n = 2; n < 200; n++)
+            {
+                var a0 = rnd.Next();
+                var a1 = rnd.Next();
+                var N = (long)rnd.NextUInt() << 24;
+                RunTest<Mod998244353>(a0, a1, N);
+                RunTest<Mod1000000007>(a0, a1, N);
+            }
+
+
+            void RunTest<T>(int a0, int a1, long n) where T : struct, IStaticMod
+            {
+                var mat = new Matrix2x2<StaticModInt<T>, StaticModIntOperator<T>>(
+                    (0, 1),
+                    (1, 1)
+                );
+
+                LinearRecurrence.Kitamasa<T>(
+                    stackalloc StaticModInt<T>[2] { a0, a1 },
+                    stackalloc StaticModInt<T>[2] { 1, 1 }, n)
+                    .Should().Be(mat.Pow(n).Multiply(a0, a1).v0);
+            }
+        }
     }
 }
