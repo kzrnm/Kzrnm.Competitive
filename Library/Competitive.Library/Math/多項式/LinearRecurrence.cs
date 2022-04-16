@@ -217,9 +217,7 @@ namespace Kzrnm.Competitive
             var f1 = f0.Pre(a.Length).Reverse().LeftShift(m + c.Length - a.Length);
 
             Q.AsSpan().Reverse();
-            var res = f1.Divide(Q).a;
-            res.AsSpan().Reverse();
-            return res;
+            return f1.Divide(Q).Reverse().Pre(m).AsSpan().ToArray();
         }
     }
 }
