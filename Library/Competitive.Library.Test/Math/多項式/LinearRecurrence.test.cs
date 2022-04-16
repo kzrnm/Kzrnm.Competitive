@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         }
 
         [Fact]
-        public void Mod1000000007()
+        public void Kitamasa_Mod1000000007()
         {
             var rnd = new Random(42);
             for (int n = 2; n < 10; n++)
@@ -45,7 +45,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         }
 
         [Fact]
-        public void Mod998244353()
+        public void Kitamasa_Mod998244353()
         {
             var rnd = new Random(42);
             for (int n = 2; n < 10; n++)
@@ -67,7 +67,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         }
 
         [Fact]
-        public void Fibonacci()
+        public void Kitamasa_Fibonacci()
         {
             var rnd = new Random(42);
             for (int n = 2; n < 200; n++)
@@ -80,7 +80,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             }
 
 
-            void RunTest<T>(int a0, int a1, long n) where T : struct, IStaticMod
+            static void RunTest<T>(int a0, int a1, long n) where T : struct, IStaticMod
             {
                 var mat = new Matrix2x2<StaticModInt<T>, StaticModIntOperator<T>>(
                     (0, 1),
@@ -91,6 +91,104 @@ namespace Kzrnm.Competitive.Testing.MathNS
                     stackalloc StaticModInt<T>[2] { a0, a1 },
                     stackalloc StaticModInt<T>[2] { 1, 1 }, n)
                     .Should().Be(mat.Pow(n).Multiply(a0, a1).v0);
+            }
+        }
+
+        [Fact]
+        public void Recurrence_Tribonacci()
+        {
+            var rnd = new Random(42);
+
+
+            for (int n = 0; n < 4; n++)
+            {
+                long a0 = rnd.Next();
+                long a1 = rnd.Next();
+                long a2 = rnd.Next();
+
+                var native998244353 = Native<Mod998244353>(a0, a1, a2, 80);
+                var native1000000007 = Native<Mod1000000007>(a0, a1, a2, 80);
+
+                for (int len = 0; len < 80; len++)
+                {
+                    LinearRecurrence.Recurrence(
+                        new StaticModInt<Mod998244353>[] { a0, a1, a2 },
+                        new StaticModInt<Mod998244353>[] { 1, 1, 1 }, len)
+                        .Should().HaveCount(len)
+                        .And
+                        .Equal(native998244353[..len]);
+
+                    LinearRecurrence.Recurrence(
+                        new StaticModInt<Mod1000000007>[] { a0, a1, a2 },
+                        new StaticModInt<Mod1000000007>[] { 1, 1, 1 }, len)
+                        .Should().HaveCount(len)
+                        .And
+                        .Equal(native1000000007[..len]);
+                }
+            }
+            for (int n = 0; n < 4; n++)
+            {
+                long a0 = rnd.Next();
+                long a1 = rnd.Next();
+                var a2 = a0 + a1;
+
+                var native998244353 = Native<Mod998244353>(a0, a1, a2, 80);
+                var native1000000007 = Native<Mod1000000007>(a0, a1, a2, 80);
+
+                for (int len = 0; len < 80; len++)
+                {
+                    LinearRecurrence.Recurrence(
+                        new StaticModInt<Mod998244353>[] { a0, a1 },
+                        new StaticModInt<Mod998244353>[] { 1, 1, 1 }, len)
+                        .Should().HaveCount(len)
+                        .And
+                        .Equal(native998244353[..len]);
+
+                    LinearRecurrence.Recurrence(
+                        new StaticModInt<Mod1000000007>[] { a0, a1 },
+                        new StaticModInt<Mod1000000007>[] { 1, 1, 1 }, len)
+                        .Should().HaveCount(len)
+                        .And
+                        .Equal(native1000000007[..len]);
+                }
+            }
+            for (int n = 0; n < 4; n++)
+            {
+                long a0 = rnd.Next();
+                var a1 = a0;
+                var a2 = a0 + a1;
+
+                var native998244353 = Native<Mod998244353>(a0, a1, a2, 80);
+                var native1000000007 = Native<Mod1000000007>(a0, a1, a2, 80);
+
+                for (int len = 0; len < 80; len++)
+                {
+                    LinearRecurrence.Recurrence(
+                        new StaticModInt<Mod998244353>[] { a0 },
+                        new StaticModInt<Mod998244353>[] { 1, 1, 1 }, len)
+                        .Should().HaveCount(len)
+                        .And
+                        .Equal(native998244353[..len]);
+
+                    LinearRecurrence.Recurrence(
+                        new StaticModInt<Mod1000000007>[] { a0 },
+                        new StaticModInt<Mod1000000007>[] { 1, 1, 1 }, len)
+                        .Should().HaveCount(len)
+                        .And
+                        .Equal(native1000000007[..len]);
+                }
+            }
+
+            static StaticModInt<T>[] Native<T>(long a0, long a1, long a2, int len) where T : struct, IStaticMod
+            {
+                var dp = new StaticModInt<T>[len];
+                dp[0] = a0;
+                dp[1] = a1;
+                dp[2] = a2;
+
+                for (int i = 3; i < dp.Length; i++)
+                    dp[i] = dp[i - 1] + dp[i - 2] + dp[i - 3];
+                return dp;
             }
         }
     }

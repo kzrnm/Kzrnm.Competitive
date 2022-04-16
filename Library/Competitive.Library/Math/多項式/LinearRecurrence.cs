@@ -167,5 +167,59 @@ namespace Kzrnm.Competitive
             var P = new FormalPowerSeries<T>.Impl(a.ToArray()).Multiply(Q).Pre(c.Length);
             return BostanMori(new FormalPowerSeries<T>(Q), P.ToFps(), n);
         }
+
+        // https://twitter.com/e869120/status/1414166592565383169/photo/1
+        /// <summary>
+        /// <para><paramref name="a"/>[n+k] = <paramref name="c"/>[0]*<paramref name="a"/>[n+k-1]+...+<paramref name="c"/>[k-1]*<paramref name="a"/>[n] である漸化式 <paramref name="a"/>(0-based) の <paramref name="m"/> 項目までを求めます。</para>
+        /// <para>計算量: O(m log m)</para>
+        /// </summary>
+        [凾(256)]
+        public static StaticModInt<T>[] Recurrence<T>(ReadOnlySpan<int> a, ReadOnlySpan<int> c, int m) where T : struct, IStaticMod
+            => Recurrence(MemoryMarshal.Cast<int, StaticModInt<T>>(a), MemoryMarshal.Cast<int, StaticModInt<T>>(c), m);
+        /// <summary>
+        /// <para><paramref name="a"/>[n+k] = <paramref name="c"/>[0]*<paramref name="a"/>[n+k-1]+...+<paramref name="c"/>[k-1]*<paramref name="a"/>[n] である漸化式 <paramref name="a"/>(0-based) の <paramref name="m"/> 項目までを求めます。</para>
+        /// <para>計算量: O(m log m)</para>
+        /// </summary>
+        [凾(256)]
+        public static StaticModInt<T>[] Recurrence<T>(ReadOnlySpan<uint> a, ReadOnlySpan<uint> c, int m) where T : struct, IStaticMod
+            => Recurrence(MemoryMarshal.Cast<uint, StaticModInt<T>>(a), MemoryMarshal.Cast<uint, StaticModInt<T>>(c), m);
+
+        /// <summary>
+        /// <para><paramref name="a"/>[n+k] = <paramref name="c"/>[0]*<paramref name="a"/>[n+k-1]+...+<paramref name="c"/>[k-1]*<paramref name="a"/>[n] である漸化式 <paramref name="a"/>(0-based) の <paramref name="m"/> 項目までを求めます。</para>
+        /// <para>計算量: O(m log m)</para>
+        /// </summary>
+        [凾(256)]
+        public static StaticModInt<T>[] Recurrence<T>(StaticModInt<T>[] a, StaticModInt<T>[] c, int m) where T : struct, IStaticMod
+            => Recurrence((ReadOnlySpan<StaticModInt<T>>)a, c, m);
+
+        /// <summary>
+        /// <para><paramref name="a"/>[n+k] = <paramref name="c"/>[0]*<paramref name="a"/>[n+k-1]+...+<paramref name="c"/>[k-1]*<paramref name="a"/>[n] である漸化式 <paramref name="a"/>(0-based) の <paramref name="m"/> 項目までを求めます。</para>
+        /// <para>計算量: O(m log m)</para>
+        /// </summary>
+        [凾(256)]
+        public static StaticModInt<T>[] Recurrence<T>(Span<StaticModInt<T>> a, Span<StaticModInt<T>> c, int m) where T : struct, IStaticMod
+            => Recurrence((ReadOnlySpan<StaticModInt<T>>)a, c, m);
+
+        /// <summary>
+        /// <para><paramref name="a"/>[n+k] = <paramref name="c"/>[0]*<paramref name="a"/>[n+k-1]+...+<paramref name="c"/>[k-1]*<paramref name="a"/>[n] である漸化式 <paramref name="a"/>(0-based) の <paramref name="m"/> 項目までを求めます。</para>
+        /// <para>計算量: O(m log m)</para>
+        /// </summary>
+        public static StaticModInt<T>[] Recurrence<T>(ReadOnlySpan<StaticModInt<T>> a, ReadOnlySpan<StaticModInt<T>> c, int m) where T : struct, IStaticMod
+        {
+            Contract.Assert(a.Length <= c.Length, reason: "漸化式の係数 c より数列 a の数が多いです");
+            if (m < a.Length) return a[..m].ToArray();
+
+            var Q = new StaticModInt<T>[c.Length + 1];
+            Q[0] = 1;
+            for (int i = 0; i < c.Length; i++) Q[i + 1] = -c[i];
+
+            var f0 = new FormalPowerSeries<T>.Impl(a.ToArray()).Multiply(Q);
+            var f1 = f0.Pre(a.Length).Reverse().LeftShift(m + c.Length - a.Length);
+
+            Q.AsSpan().Reverse();
+            var res = f1.Divide(Q).a;
+            res.AsSpan().Reverse();
+            return res;
+        }
     }
 }
