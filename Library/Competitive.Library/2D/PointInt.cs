@@ -1,4 +1,4 @@
-﻿using AtCoder.Internal;
+using AtCoder.Internal;
 using Kzrnm.Competitive.IO;
 using System;
 using System.Collections.Generic;
@@ -200,5 +200,11 @@ namespace Kzrnm.Competitive
             }
             return Math.Abs(res);
         }
+        /// <summary>
+        /// 2点を通る直線 A*x+B*y+C=0
+        /// </summary>
+        [凾(256)]
+        public (long A, long B, long C) 直線(P other)
+            => (other.y - y, x - other.x, (long)y * (other.x - x) - (long)x * (other.y - y));
     }
 }
