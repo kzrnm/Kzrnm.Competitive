@@ -55,7 +55,7 @@ namespace Kzrnm.Competitive
         }
 
         static StaticModInt<T>[] dws, dys;
-        static readonly LazyMontgomeryModInt<T>[] dw, dy;
+        static readonly MontgomeryModInt<T>[] dw, dy;
 
         /// <summary>
         /// NTT(数論変換)で使えるかどうかを返します。
@@ -75,8 +75,8 @@ namespace Kzrnm.Competitive
             dws = new StaticModInt<T>[level];
             dys = new StaticModInt<T>[level];
             SetWy(level);
-            dw = new LazyMontgomeryModInt<T>[level];
-            dy = new LazyMontgomeryModInt<T>[level];
+            dw = new MontgomeryModInt<T>[level];
+            dy = new MontgomeryModInt<T>[level];
             for (int i = 0; i < dw.Length; i++) dw[i] = dws[i].Value;
             for (int i = 0; i < dy.Length; i++) dy[i] = dys[i].Value;
         }

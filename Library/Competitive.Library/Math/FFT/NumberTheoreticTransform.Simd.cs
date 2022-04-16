@@ -17,21 +17,21 @@ namespace Kzrnm.Competitive
     public static partial class NumberTheoreticTransform<T> where T : struct, IStaticMod
     {
         [凾(256)]
-        static ref Vector128<uint> ToVector128(ref LazyMontgomeryModInt<T> m)
-            => ref Unsafe.As<LazyMontgomeryModInt<T>, Vector128<uint>>(ref m);
+        static ref Vector128<uint> ToVector128(ref MontgomeryModInt<T> m)
+            => ref Unsafe.As<MontgomeryModInt<T>, Vector128<uint>>(ref m);
         [凾(256)]
-        static ref Vector256<uint> ToVector256(ref LazyMontgomeryModInt<T> m)
-            => ref Unsafe.As<LazyMontgomeryModInt<T>, Vector256<uint>>(ref m);
+        static ref Vector256<uint> ToVector256(ref MontgomeryModInt<T> m)
+            => ref Unsafe.As<MontgomeryModInt<T>, Vector256<uint>>(ref m);
         [凾(256)]
         static void NttSimd(Span<StaticModInt<T>> a)
         {
-            var b = new LazyMontgomeryModInt<T>[a.Length];
+            var b = new MontgomeryModInt<T>[a.Length];
             for (int i = 0; i < a.Length; i++) b[i] = a[i].Value;
             NttSimd(b);
             for (int i = 0; i < a.Length; i++) a[i] = StaticModInt<T>.Raw(b[i].Value);
         }
         [凾(256)]
-        static void NttSimd(Span<LazyMontgomeryModInt<T>> a)
+        static void NttSimd(Span<MontgomeryModInt<T>> a)
         {
             int k = TrailingZeroCount(a.Length) & 31;
             if (k == 0) return;
@@ -72,7 +72,7 @@ namespace Kzrnm.Competitive
             }
             int u = 1 << (2 + (k & 1));
             int v = 1 << (k - 2 - (k & 1));
-            LazyMontgomeryModInt<T> one = 1;
+            MontgomeryModInt<T> one = 1;
             var imag = dw[1];
             while (v != 0)
             {
@@ -103,7 +103,7 @@ namespace Kzrnm.Competitive
                     var m0 = Vector128<uint>.Zero;
                     var m1 = Vector128.Create(new T().Mod);
                     var m2 = Vector128.Create(new T().Mod * 2);
-                    var r = Vector128.Create(LazyMontgomeryModInt<T>.r);
+                    var r = Vector128.Create(MontgomeryModInt<T>.r);
                     var Imag = Vector128.Create(imag._v);
                     var xx = one;
                     for (int jh = 0; jh < u;)
@@ -172,7 +172,7 @@ namespace Kzrnm.Competitive
                     var m0 = Vector256<uint>.Zero;
                     var m1 = Vector256.Create(new T().Mod);
                     var m2 = Vector256.Create(new T().Mod * 2);
-                    var r = Vector256.Create(LazyMontgomeryModInt<T>.r);
+                    var r = Vector256.Create(MontgomeryModInt<T>.r);
                     var Imag = Vector256.Create(imag._v);
                     var xx = one;
                     for (int jh = 0; jh < u;)
@@ -243,13 +243,13 @@ namespace Kzrnm.Competitive
         [凾(256)]
         static void INttSimd(Span<StaticModInt<T>> a)
         {
-            var b = new LazyMontgomeryModInt<T>[a.Length];
+            var b = new MontgomeryModInt<T>[a.Length];
             for (int i = 0; i < a.Length; i++) b[i] = a[i].Value;
             INttSimd(b, true);
             for (int i = 0; i < a.Length; i++) a[i] = StaticModInt<T>.Raw(b[i].Value);
         }
         [凾(256)]
-        static void INttSimd(Span<LazyMontgomeryModInt<T>> a, bool normalize)
+        static void INttSimd(Span<MontgomeryModInt<T>> a, bool normalize)
         {
             int k = TrailingZeroCount(a.Length) & 31;
             if (k == 0) return;
@@ -260,7 +260,7 @@ namespace Kzrnm.Competitive
                 a[0] = a[0] + a1;
                 if (normalize)
                 {
-                    var iv2 = new LazyMontgomeryModInt<T>(2).Inv();
+                    var iv2 = new MontgomeryModInt<T>(2).Inv();
                     a[0] *= iv2;
                     a[1] *= iv2;
                 }
@@ -268,7 +268,7 @@ namespace Kzrnm.Competitive
             }
             int u = 1 << (k - 2);
             int v = 1;
-            LazyMontgomeryModInt<T> one = 1, imag = dy[1];
+            MontgomeryModInt<T> one = 1, imag = dy[1];
             while (u != 0)
             {
                 if (v == 1)
@@ -299,7 +299,7 @@ namespace Kzrnm.Competitive
                     var m0 = Vector128<uint>.Zero;
                     var m1 = Vector128.Create(new T().Mod);
                     var m2 = Vector128.Create(new T().Mod * 2);
-                    var r = Vector128.Create(LazyMontgomeryModInt<T>.r);
+                    var r = Vector128.Create(MontgomeryModInt<T>.r);
                     var Imag = Vector128.Create(imag._v);
                     var xx = one;
                     u <<= 2;
@@ -365,7 +365,7 @@ namespace Kzrnm.Competitive
                     var m0 = Vector256<uint>.Zero;
                     var m1 = Vector256.Create(new T().Mod);
                     var m2 = Vector256.Create(new T().Mod * 2);
-                    var r = Vector256.Create(LazyMontgomeryModInt<T>.r);
+                    var r = Vector256.Create(MontgomeryModInt<T>.r);
                     var Imag = Vector256.Create(imag._v);
 
                     var xx = one;
@@ -461,7 +461,7 @@ namespace Kzrnm.Competitive
             }
             if (normalize)
             {
-                var invn = new LazyMontgomeryModInt<T>(a.Length).Inv();
+                var invn = new MontgomeryModInt<T>(a.Length).Inv();
                 for (int i = 0; i < a.Length; i++)
                     a[i] *= invn;
             }
@@ -478,19 +478,19 @@ namespace Kzrnm.Competitive
             var k = InternalBit.CeilPow2(l);
             var M = 1 << k;
 
-            var buf1 = new LazyMontgomeryModInt<T>[M];
-            var buf2 = new LazyMontgomeryModInt<T>[M];
+            var buf1 = new MontgomeryModInt<T>[M];
+            var buf2 = new MontgomeryModInt<T>[M];
 
             for (int i = 0; i < a.Length; i++) buf1[i] = a[i].Value;
             for (int i = 0; i < b.Length; i++) buf2[i] = b[i].Value;
             NttSimd(buf1);
             NttSimd(buf2);
             for (int i = 0; i < buf1.Length; i++)
-                buf1[i]._v = LazyMontgomeryModInt<T>.Reduce((ulong)buf1[i]._v * buf2[i]._v);
+                buf1[i]._v = MontgomeryModInt<T>.Reduce((ulong)buf1[i]._v * buf2[i]._v);
 
             INttSimd(buf1, false);
 
-            var invm = new LazyMontgomeryModInt<T>(M).Inv();
+            var invm = new MontgomeryModInt<T>(M).Inv();
             var res = new StaticModInt<T>[l];
             for (int i = 0; i < res.Length; ++i)
                 res[i] = StaticModInt<T>.Raw((buf1[i] * invm).Value);
