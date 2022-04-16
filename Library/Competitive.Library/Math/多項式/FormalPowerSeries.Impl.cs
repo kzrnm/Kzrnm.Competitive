@@ -210,7 +210,8 @@ namespace Kzrnm.Competitive
             /// </summary>
             [凾(256)]
             public Impl RightShift(int sz)
-                => Set(AsSpan()[Math.Min(sz, Length)..].ToArray());
+                => sz > 0 ? Set(AsSpan()[sz..].ToArray()) : this;
+
 
             /// <summary>
             /// 次数を <paramref name="sz"/> だけ大きくする。
@@ -218,6 +219,8 @@ namespace Kzrnm.Competitive
             [凾(256)]
             public Impl LeftShift(int sz)
             {
+                if (sz == 0)
+                    return this;
                 var arr = new StaticModInt<T>[Length + sz];
                 AsSpan().CopyTo(arr.AsSpan(sz));
                 return Set(arr);

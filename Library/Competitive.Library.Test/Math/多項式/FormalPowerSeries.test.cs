@@ -152,6 +152,48 @@ namespace Kzrnm.Competitive.Testing.MathNS
         }
 
         [Fact]
+        public void RightShift()
+        {
+            RunTest<Mod998244353>(new int[] { 1, 2, 3 }, 0, new int[] { 1, 2, 3 });
+            RunTest<Mod998244353>(new int[] { 1, 2, 3 }, 1, new int[] { 2, 3 });
+            RunTest<Mod998244353>(new int[] { 1, 2, 3 }, 2, new int[] { 3 });
+            RunTest<Mod998244353>(new int[] { 1, 2, 3 }, 3, new int[0]);
+
+            RunTest<Mod1000000007>(new int[] { 1, 2, 3 }, 0, new int[] { 1, 2, 3 });
+            RunTest<Mod1000000007>(new int[] { 1, 2, 3 }, 1, new int[] { 2, 3 });
+            RunTest<Mod1000000007>(new int[] { 1, 2, 3 }, 2, new int[] { 3 });
+            RunTest<Mod1000000007>(new int[] { 1, 2, 3 }, 3, new int[0]);
+
+            static void RunTest<T>(int[] valueArray, int shift, int[] expectedArray) where T : struct, IStaticMod
+            {
+                var fps = new FormalPowerSeries<T>(valueArray);
+                var expected = new FormalPowerSeries<T>(expectedArray);
+
+                (fps >> shift).Coefficients.Should().Equal(expected.Coefficients);
+            }
+        }
+
+        [Fact]
+        public void LeftShift()
+        {
+            RunTest<Mod998244353>(new int[] { 1, 2, 3 }, 0, new int[] { 1, 2, 3 });
+            RunTest<Mod998244353>(new int[] { 1, 2, 3 }, 1, new int[] { 0, 1, 2, 3 });
+            RunTest<Mod998244353>(new int[] { 1, 2, 3 }, 4, new int[] { 0, 0, 0, 0, 1, 2, 3 });
+
+            RunTest<Mod1000000007>(new int[] { 1, 2, 3 }, 0, new int[] { 1, 2, 3 });
+            RunTest<Mod1000000007>(new int[] { 1, 2, 3 }, 1, new int[] { 0, 1, 2, 3 });
+            RunTest<Mod1000000007>(new int[] { 1, 2, 3 }, 4, new int[] { 0, 0, 0, 0, 1, 2, 3 });
+
+            static void RunTest<T>(int[] valueArray, int shift, int[] expectedArray) where T : struct, IStaticMod
+            {
+                var fps = new FormalPowerSeries<T>(valueArray);
+                var expected = new FormalPowerSeries<T>(expectedArray);
+
+                (fps << shift).Coefficients.Should().Equal(expected.Coefficients);
+            }
+        }
+
+        [Fact]
         public void Derivative()
         {
             RunTest<Mod998244353>(new int[] { 3, 5, 10, 17, 4, 6 }, new int[] { 5, 20, 51, 16, 30 });
