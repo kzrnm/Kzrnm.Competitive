@@ -168,12 +168,12 @@ namespace Kzrnm.Competitive.Testing.MathNS
             RunTest<Mod998244353>(new int[] { 5, 20, 51, 16, 30 }, new (int Numerator, int Denominator)[] { (0, 1), (5, 1), (10, 1), (17, 1), (4, 1), (6, 1) });
             RunTest<Mod998244353>(new int[] { 1, 1, 1, 1 }, new (int Numerator, int Denominator)[] { (0, 1), (1, 1), (1, 2), (1, 3), (1, 4) });
             RunTest<Mod998244353>(new int[1] { 3 }, new (int Numerator, int Denominator)[] { (0, 1), (3, 1) });
-            RunTest<Mod998244353>(new int[0], new (int Numerator, int Denominator)[] { (0, 1) });
+            RunTest<Mod998244353>(new int[0], new (int Numerator, int Denominator)[0]);
 
             RunTest<Mod1000000007>(new int[] { 5, 20, 51, 16, 30 }, new (int Numerator, int Denominator)[] { (0, 1), (5, 1), (10, 1), (17, 1), (4, 1), (6, 1) });
             RunTest<Mod1000000007>(new int[] { 1, 1, 1, 1 }, new (int Numerator, int Denominator)[] { (0, 1), (1, 1), (1, 2), (1, 3), (1, 4) });
             RunTest<Mod1000000007>(new int[1] { 3 }, new (int Numerator, int Denominator)[] { (0, 1), (3, 1) });
-            RunTest<Mod1000000007>(new int[0], new (int Numerator, int Denominator)[] { (0, 1) });
+            RunTest<Mod1000000007>(new int[0], new (int Numerator, int Denominator)[0]);
 
             static void RunTest<T>(int[] valueArray, (int Numerator, int Denominator)[] expectedArray) where T : struct, IStaticMod
             {

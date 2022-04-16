@@ -14,7 +14,7 @@ namespace Kzrnm.Competitive
     /// </summary>
     public static partial class NumberTheoreticTransform<T> where T : struct, IStaticMod
     {
-        static readonly StaticModInt<T> pr = BuildPr();
+        internal static readonly StaticModInt<T> pr = BuildPr();
         static StaticModInt<T> BuildPr()
         {
             var op = new T();
@@ -147,13 +147,15 @@ namespace Kzrnm.Competitive
             => Avx2.IsSupported ? MultiplySimd(a, b) : MultiplyLogical(a, b);
 
         [凾(256)]
-        public static void NttDoubling(ref StaticModInt<T>[] a)
+        public static StaticModInt<T>[] NttDoubling(ReadOnlySpan<StaticModInt<T>> a)
         {
-            int M = a.Length;
-            var b = (StaticModInt<T>[])a.Clone();
+            var res = new StaticModInt<T>[2 * a.Length];
+            a.CopyTo(res);
+            var b = res.AsSpan(a.Length);
+            a.CopyTo(b);
             INtt(b);
             var r = StaticModInt<T>.Raw(1);
-            var zeta = pr.Pow((new T().Mod - 1) / ((uint)M << 1));
+            var zeta = pr.Pow((new T().Mod - 1) / ((uint)a.Length << 1));
 
             for (int i = 0; i < b.Length; i++)
             {
@@ -161,8 +163,7 @@ namespace Kzrnm.Competitive
                 r *= zeta;
             }
             Ntt(b);
-            Array.Resize(ref a, 2 * M);
-            b.AsSpan().CopyTo(a.AsSpan(M));
+            return res;
         }
     }
 }

@@ -536,9 +536,7 @@ namespace Kzrnm.Competitive
             [凾(256)]
             public Impl NttDoubling()
             {
-                var arr = AsSpan().ToArray();
-                NumberTheoreticTransform<T>.NttDoubling(ref arr);
-                Set(arr);
+                Set(NumberTheoreticTransform<T>.NttDoubling(AsSpan()));
                 return this;
             }
         }

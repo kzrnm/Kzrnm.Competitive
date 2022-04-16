@@ -1,0 +1,171 @@
+using AtCoder;
+using AtCoder.Internal;
+using System;
+using System.Numerics;
+using System.Runtime.InteropServices;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
+
+// https://nyaannyaan.github.io/library/fps/kitamasa.hpp
+namespace Kzrnm.Competitive
+{
+    /// <summary>
+    /// 線形漸化式
+    /// </summary>
+    public static class LinearRecurrence
+    {
+        /// <summary>
+        /// <para> Bostan-Mori Algorithm で [x^k] P(x) / Q(x) を求めます</para>
+        /// </summary>
+        public static StaticModInt<T> BostanMori<T>(FormalPowerSeries<T> Q, FormalPowerSeries<T> P, long k) where T : struct, IStaticMod
+        {
+            StaticModInt<T> ret = default;
+            if (P.Count >= Q.Count)
+            {
+                var (R, Rm) = P.DivRem(Q);
+                P = Rm;
+                if (k < R.Count) ret += R.Coefficients[k];
+            }
+            if (P.Count == 0) return ret;
+
+            if (NumberTheoreticTransform<T>.CanNtt())
+            {
+                int N = 1 << InternalBit.CeilPow2(Q.Count);
+
+                var prr = new StaticModInt<T>[2 * N];
+                var qrr = new StaticModInt<T>[2 * N];
+                var srr = new StaticModInt<T>[2 * N];
+                var trr = new StaticModInt<T>[2 * N];
+
+                P.Coefficients.AsSpan().CopyTo(prr);
+                Q.Coefficients.AsSpan().CopyTo(qrr);
+
+                NumberTheoreticTransform<T>.Ntt(prr);
+                NumberTheoreticTransform<T>.Ntt(qrr);
+
+
+                var btr = new int[N];
+                for (int i = 0, logn = BitOperations.TrailingZeroCount(N); i < btr.Length; i++)
+                    btr[i] = (btr[i >> 1] >> 1) + ((i & 1) << (logn - 1));
+
+                var dw = NumberTheoreticTransform<T>.pr.Inv()
+                    .Pow((StaticModInt<T>.Mod - 1) / (2L * N));
+
+                while (k != 0)
+                {
+                    var pp = prr.AsSpan();
+                    var qq = qrr.AsSpan();
+                    var ss = srr.AsSpan(0, N);
+                    var tt = trr.AsSpan(0, N);
+
+                    var inv2 = StaticModInt<T>.Raw(2).Inv();
+
+                    // even degree of Q(x)Q(-x)
+                    for (int i = 0; i < tt.Length; i++)
+                        tt[i] = qq[(i << 1) | 0] * qq[(i << 1) | 1];
+
+                    if ((k & 1) != 0)
+                    {
+                        // odd degree of P(x)Q(-x)
+                        foreach (int i in btr)
+                        {
+                            ss[i] = (pp[(i << 1) | 0] * qq[(i << 1) | 1] -
+                                     pp[(i << 1) | 1] * qq[(i << 1) | 0]) * inv2;
+                            inv2 *= dw;
+                        }
+                    }
+                    else
+                    {
+                        // even degree of P(x)Q(-x)
+                        for (int i = 0; i < ss.Length; i++)
+                        {
+                            ss[i] = (pp[(i << 1) | 0] * qq[(i << 1) | 1] +
+                                     pp[(i << 1) | 1] * qq[(i << 1) | 0]) * inv2;
+                        }
+                    }
+                    (prr, srr) = (srr, prr);
+                    (qrr, trr) = (trr, qrr);
+                    if ((k >>= 1) < N) break;
+                    prr = NumberTheoreticTransform<T>.NttDoubling(prr.AsSpan(0, N));
+                    qrr = NumberTheoreticTransform<T>.NttDoubling(qrr.AsSpan(0, N));
+                }
+                var p2 = prr.AsSpan(0, N);
+                var q2 = qrr.AsSpan(0, N).ToArray();
+                NumberTheoreticTransform<T>.INtt(p2);
+                NumberTheoreticTransform<T>.INtt(q2);
+                return ret + new FormalPowerSeries<T>.Impl(q2).Inv().Multiply(p2).a[k];
+            }
+            else
+            {
+                var pp = new StaticModInt<T>[Q.Count - 1];
+                P.Coefficients.AsSpan().CopyTo(pp);
+                var qq = (StaticModInt<T>[])Q.Coefficients.Clone();
+                while (k != 0)
+                {
+                    var Q2 = (StaticModInt<T>[])qq.Clone();
+                    for (int i = 1; i < Q2.Length; i += 2) Q2[i] = -Q2[i];
+
+                    var ss = new FormalPowerSeries<T>.Impl((StaticModInt<T>[])pp.Clone()).Multiply(Q2).AsSpan();
+                    var tt = new FormalPowerSeries<T>.Impl((StaticModInt<T>[])qq.Clone()).Multiply(Q2).AsSpan();
+                    if ((k & 1) != 0)
+                    {
+                        for (int i = 1; i < ss.Length; i += 2) pp[i >> 1] = ss[i];
+                        for (int i = 0; i < tt.Length; i += 2) qq[i >> 1] = tt[i];
+                    }
+                    else
+                    {
+                        for (int i = 0; i < ss.Length; i += 2) pp[i >> 1] = ss[i];
+                        for (int i = 0; i < tt.Length; i += 2) qq[i >> 1] = tt[i];
+                    }
+                    k >>= 1;
+                }
+                return ret + pp[0];
+            }
+        }
+
+        /// <summary>
+        /// <para><paramref name="a"/>[n+k] = <paramref name="c"/>[0]*<paramref name="a"/>[n+k-1]+...+<paramref name="c"/>[k-1]*<paramref name="a"/>[n] である漸化式 <paramref name="a"/>(0-based) の <paramref name="n"/> を求めます。</para>
+        /// <para>計算量: O(k logk logn)</para>
+        /// </summary>
+        [凾(256)]
+        public static StaticModInt<T> Kitamasa<T>(ReadOnlySpan<int> a, ReadOnlySpan<int> c, long n) where T : struct, IStaticMod
+            => Kitamasa(MemoryMarshal.Cast<int, StaticModInt<T>>(a), MemoryMarshal.Cast<int, StaticModInt<T>>(c), n);
+        /// <summary>
+        /// <para><paramref name="a"/>[n+k] = <paramref name="c"/>[0]*<paramref name="a"/>[n+k-1]+...+<paramref name="c"/>[k-1]*<paramref name="a"/>[n] である漸化式 <paramref name="a"/>(0-based) の <paramref name="n"/> を求めます。</para>
+        /// <para>計算量: O(k logk logn)</para>
+        /// </summary>
+        [凾(256)]
+        public static StaticModInt<T> Kitamasa<T>(ReadOnlySpan<uint> a, ReadOnlySpan<uint> c, long n) where T : struct, IStaticMod
+            => Kitamasa(MemoryMarshal.Cast<uint, StaticModInt<T>>(a), MemoryMarshal.Cast<uint, StaticModInt<T>>(c), n);
+
+        /// <summary>
+        /// <para><paramref name="a"/>[n+k] = <paramref name="c"/>[0]*<paramref name="a"/>[n+k-1]+...+<paramref name="c"/>[k-1]*<paramref name="a"/>[n] である漸化式 <paramref name="a"/>(0-based) の <paramref name="n"/> を求めます。</para>
+        /// <para>計算量: O(k logk logn)</para>
+        /// </summary>
+        [凾(256)]
+        public static StaticModInt<T> Kitamasa<T>(StaticModInt<T>[] a, StaticModInt<T>[] c, long n) where T : struct, IStaticMod
+            => Kitamasa((ReadOnlySpan<StaticModInt<T>>)a, c, n);
+
+        /// <summary>
+        /// <para><paramref name="a"/>[n+k] = <paramref name="c"/>[0]*<paramref name="a"/>[n+k-1]+...+<paramref name="c"/>[k-1]*<paramref name="a"/>[n] である漸化式 <paramref name="a"/>(0-based) の <paramref name="n"/> を求めます。</para>
+        /// <para>計算量: O(k logk logn)</para>
+        /// </summary>
+        [凾(256)]
+        public static StaticModInt<T> Kitamasa<T>(Span<StaticModInt<T>> a, Span<StaticModInt<T>> c, long n) where T : struct, IStaticMod
+            => Kitamasa((ReadOnlySpan<StaticModInt<T>>)a, c, n);
+
+        /// <summary>
+        /// <para><paramref name="a"/>[n+k] = <paramref name="c"/>[0]*<paramref name="a"/>[n+k-1]+...+<paramref name="c"/>[k-1]*<paramref name="a"/>[n] である漸化式 <paramref name="a"/>(0-based) の <paramref name="n"/> を求めます。</para>
+        /// <para>計算量: O(k logk logn)</para>
+        /// </summary>
+        public static StaticModInt<T> Kitamasa<T>(ReadOnlySpan<StaticModInt<T>> a, ReadOnlySpan<StaticModInt<T>> c, long n) where T : struct, IStaticMod
+        {
+            Contract.Assert(a.Length == c.Length, reason: "漸化式の係数 c と数列 a の数が違います");
+            if (n < a.Length) return a[(int)n];
+            var Q = new StaticModInt<T>[c.Length + 1];
+            Q[0] = 1;
+            for (int i = 0; i < c.Length; i++) Q[i + 1] = -c[i];
+            var P = new FormalPowerSeries<T>.Impl(a.ToArray()).Multiply(Q).Pre(c.Length);
+            return BostanMori(new FormalPowerSeries<T>(Q), P.ToFps(), n);
+        }
+    }
+}

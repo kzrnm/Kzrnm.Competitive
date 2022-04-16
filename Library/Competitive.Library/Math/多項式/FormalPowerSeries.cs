@@ -63,7 +63,7 @@ namespace Kzrnm.Competitive
         public override string ToString() => string.Join(", ", Coefficients);
         private static ReadOnlySpan<StaticModInt<T>> Shrink(ReadOnlySpan<StaticModInt<T>> polynomial)
         {
-            while (polynomial.Length > 1 && polynomial[^1].Value == 0)
+            while (polynomial.Length > 0 && polynomial[^1].Value == 0)
                 polynomial = polynomial[..^1];
             return polynomial;
 

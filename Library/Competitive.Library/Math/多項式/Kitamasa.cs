@@ -1,4 +1,4 @@
-﻿using AtCoder;
+using AtCoder;
 using AtCoder.Internal;
 using System;
 using System.Runtime.InteropServices;
@@ -6,6 +6,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    [Obsolete("LinearRecurrence の方が速い")]
     public static partial class Kitamasa
     {
         /// <summary>
