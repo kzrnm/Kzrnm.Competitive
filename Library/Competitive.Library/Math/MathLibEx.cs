@@ -1,4 +1,4 @@
-﻿using AtCoder.Operators;
+using AtCoder.Operators;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -21,7 +21,9 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static long Gcd(long a, long b)
         {
-            if (a == 0 || b == 0) return a | b;
+            if (a == 0 || b == 0) return 0;
+            a = Math.Abs(a);
+            b = Math.Abs(b);
             int n = BitOperations.TrailingZeroCount(a);
             int m = BitOperations.TrailingZeroCount(b);
             a >>= n;
