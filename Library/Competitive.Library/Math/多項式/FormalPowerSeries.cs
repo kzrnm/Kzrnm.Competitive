@@ -230,9 +230,9 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public StaticModInt<T> Eval(StaticModInt<T> x)
         {
-            var x_n = x;
-            var res = Coefficients[0];
-            foreach (var c in Coefficients.AsSpan(1))
+            var x_n = StaticModInt<T>.Raw(1);
+            StaticModInt<T> res = 0;
+            foreach (var c in Coefficients)
             {
                 res += c * x_n;
                 x_n *= x;

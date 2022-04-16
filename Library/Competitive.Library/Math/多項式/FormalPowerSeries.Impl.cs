@@ -334,6 +334,8 @@ namespace Kzrnm.Competitive
             {
                 Contract.Assert(Length == 0 || a[0].Value == 0);
                 if (deg < 0) deg = Length;
+                if (deg == 0)
+                    return Set(new StaticModInt<T>[] { StaticModInt<T>.Raw(1) });
                 return NumberTheoreticTransform<T>.CanNtt() ? ExpNtt(deg) : ExpAnyMod(deg);
             }
 
