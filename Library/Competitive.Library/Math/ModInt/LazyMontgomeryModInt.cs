@@ -8,27 +8,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public readonly struct LazyMontgomeryModIntOperator<T> : IArithmeticOperator<LazyMontgomeryModInt<T>>
-        where T : struct, IStaticMod
-    {
-        public LazyMontgomeryModInt<T> MultiplyIdentity => 1;
-        [凾(256)]
-        public LazyMontgomeryModInt<T> Add(LazyMontgomeryModInt<T> x, LazyMontgomeryModInt<T> y) => x + y;
-        [凾(256)]
-        public LazyMontgomeryModInt<T> Subtract(LazyMontgomeryModInt<T> x, LazyMontgomeryModInt<T> y) => x - y;
-        [凾(256)]
-        public LazyMontgomeryModInt<T> Multiply(LazyMontgomeryModInt<T> x, LazyMontgomeryModInt<T> y) => x * y;
-        [凾(256)]
-        public LazyMontgomeryModInt<T> Divide(LazyMontgomeryModInt<T> x, LazyMontgomeryModInt<T> y) => x / y;
-        [凾(256)]
-        LazyMontgomeryModInt<T> IDivisionOperator<LazyMontgomeryModInt<T>>.Modulo(LazyMontgomeryModInt<T> x, LazyMontgomeryModInt<T> y) => throw new NotSupportedException();
-        [凾(256)]
-        public LazyMontgomeryModInt<T> Minus(LazyMontgomeryModInt<T> x) => -x;
-        [凾(256)]
-        public LazyMontgomeryModInt<T> Increment(LazyMontgomeryModInt<T> x) => ++x;
-        [凾(256)]
-        public LazyMontgomeryModInt<T> Decrement(LazyMontgomeryModInt<T> x) => --x;
-    }
     /// <summary>
     /// 奇数オンリーの ModInt
     /// </summary>
