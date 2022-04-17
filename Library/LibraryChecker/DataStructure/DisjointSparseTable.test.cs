@@ -1,4 +1,4 @@
-﻿using Kzrnm.Competitive.IO;
+using Kzrnm.Competitive.IO;
 using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive.DataStructure
@@ -20,6 +20,6 @@ namespace Kzrnm.Competitive.DataStructure
             }
             return null;
         }
-        struct Op : ISparseTableOperator<long> {[MethodImpl(256)] public long Operate(long x, long y) => x + y; }
+        struct Op : ISparseTableOperator<long> { [MethodImpl(256)] public long Operate(long x, long y) => x + y; }
     }
 }

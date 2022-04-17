@@ -1,4 +1,4 @@
-﻿using AtCoder;
+using AtCoder;
 using AtCoder.Operators;
 using FluentAssertions;
 using System;

@@ -1,4 +1,4 @@
-﻿using AtCoder;
+using AtCoder;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive

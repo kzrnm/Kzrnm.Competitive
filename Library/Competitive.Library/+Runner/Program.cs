@@ -1,4 +1,4 @@
-﻿using Kzrnm.Competitive;
+using Kzrnm.Competitive;
 using Kzrnm.Competitive.IO;
 using System.Globalization;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;

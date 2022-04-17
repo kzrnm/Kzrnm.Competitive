@@ -1,4 +1,4 @@
-﻿using AtCoder;
+using AtCoder;
 using AtCoder.Extension;
 using AtCoder.Internal;
 using BenchmarkDotNet.Attributes;

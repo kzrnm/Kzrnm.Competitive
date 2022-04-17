@@ -1,4 +1,4 @@
-﻿using AtCoder;
+using AtCoder;
 using AtCoder.Extension;
 using AtCoder.Operators;
 using System;

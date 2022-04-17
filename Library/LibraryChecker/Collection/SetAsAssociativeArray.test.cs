@@ -1,4 +1,4 @@
-﻿using Kzrnm.Competitive.IO;
+using Kzrnm.Competitive.IO;
 
 namespace Kzrnm.Competitive.Collection
 {

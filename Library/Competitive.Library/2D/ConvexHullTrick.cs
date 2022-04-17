@@ -1,4 +1,4 @@
-﻿//https://tjkendev.github.io/procon-library/cpp/convex_hull_trick/li_chao_tree.html
+//https://tjkendev.github.io/procon-library/cpp/convex_hull_trick/li_chao_tree.html
 using AtCoder;
 using AtCoder.Internal;
 using AtCoder.Operators;

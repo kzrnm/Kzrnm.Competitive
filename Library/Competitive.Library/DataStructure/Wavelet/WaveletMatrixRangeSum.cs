@@ -1,4 +1,4 @@
-﻿// Original: https://ei1333.github.io/library/structure/wavelet/wavelet-matrix.cpp.html
+// Original: https://ei1333.github.io/library/structure/wavelet/wavelet-matrix.cpp.html
 using AtCoder;
 using AtCoder.Extension;
 using AtCoder.Operators;

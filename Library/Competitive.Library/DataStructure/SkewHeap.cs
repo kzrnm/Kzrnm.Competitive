@@ -1,4 +1,4 @@
-﻿// https://ei1333.github.io/library/structure/heap/skew-heap.cpp
+// https://ei1333.github.io/library/structure/heap/skew-heap.cpp
 using AtCoder;
 using System.Collections.Generic;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;

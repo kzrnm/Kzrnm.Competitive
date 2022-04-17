@@ -1,4 +1,4 @@
-﻿using AtCoder.Internal;
+using AtCoder.Internal;
 using AtCoder.Operators;
 using System.ComponentModel;
 using System.Diagnostics;

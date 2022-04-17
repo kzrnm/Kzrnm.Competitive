@@ -1,4 +1,4 @@
-﻿using AtCoder.Operators;
+using AtCoder.Operators;
 using System;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 

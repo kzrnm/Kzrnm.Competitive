@@ -1,4 +1,4 @@
-﻿using AtCoder;
+using AtCoder;
 using FluentAssertions;
 using System;
 using Xunit;

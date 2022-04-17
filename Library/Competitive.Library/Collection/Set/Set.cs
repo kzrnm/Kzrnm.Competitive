@@ -1,4 +1,4 @@
-﻿using AtCoder.Internal;
+using AtCoder.Internal;
 using Kzrnm.Competitive.Internal;
 using System;
 using System.Collections.Generic;

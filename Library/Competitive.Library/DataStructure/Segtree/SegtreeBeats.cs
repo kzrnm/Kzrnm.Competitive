@@ -1,4 +1,4 @@
-﻿// https://rsm9.hatenablog.com/entry/2021/02/01/220408
+// https://rsm9.hatenablog.com/entry/2021/02/01/220408
 using AtCoder;
 using AtCoder.Internal;
 using System;

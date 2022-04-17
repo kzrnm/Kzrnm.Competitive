@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Kzrnm.Competitive.IO;
 
 namespace Kzrnm.Competitive.Graph

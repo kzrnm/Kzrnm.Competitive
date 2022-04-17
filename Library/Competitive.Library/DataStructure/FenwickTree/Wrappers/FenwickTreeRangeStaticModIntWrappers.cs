@@ -1,4 +1,4 @@
-﻿using AtCoder;
+using AtCoder;
 
 namespace Kzrnm.Competitive
 {

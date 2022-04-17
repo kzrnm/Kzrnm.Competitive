@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using AtCoder.Internal;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;

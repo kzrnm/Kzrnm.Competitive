@@ -1,4 +1,4 @@
-﻿using AtCoder;
+using AtCoder;
 using System.Collections.Generic;
 
 namespace Kzrnm.Competitive

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using Kzrnm.Competitive.DataStructure;
 using Xunit;
 

@@ -1,4 +1,4 @@
-﻿#define DynamicConnectivity_TUPLEDIC
+#define DynamicConnectivity_TUPLEDIC
 // https://qiita.com/hotman78/items/78cd3aa50b05a57738d4
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,4 @@
-﻿// https://ei1333.github.io/luzhiled/snippets/structure/link-cut-tree.html
+// https://ei1333.github.io/luzhiled/snippets/structure/link-cut-tree.html
 using AtCoder;
 using AtCoder.Internal;
 using System.Collections.Generic;

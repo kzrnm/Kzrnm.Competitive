@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using System;
 using Xunit;
 using System.Runtime.Intrinsics.X86;
