@@ -1,4 +1,4 @@
-﻿using AtCoder.Operators;
+using AtCoder.Operators;
 using System;
 
 namespace Kzrnm.Competitive
@@ -7,8 +7,10 @@ namespace Kzrnm.Competitive
     {
         /// <summary>
         /// <para><paramref name="from"/> からの最短経路長をダイクストラ法で求める。</para>
-        /// <para>計算量: O( (|E| + |V|) log |V| )</para>
         /// </summary>
+        /// <remarks>
+        /// <para>計算量: O( (|E| + |V|) log |V| )</para>
+        /// </remarks>
         public static T[] Dijkstra<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph, int from)
             where T : struct
             where TOp : struct, INumOperator<T>
