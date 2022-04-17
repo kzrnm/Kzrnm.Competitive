@@ -14,6 +14,9 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// Strassen のアルゴリズムで行列の積を求める。
         /// </summary>
+        /// <remarks>
+        /// <para>計算量: O( N^log_2(7))</para>
+        /// </remarks>
         public static ArrayMatrix<StaticModInt<T>, StaticModIntOperator<T>> Strassen<T>(
             this ArrayMatrix<StaticModInt<T>, StaticModIntOperator<T>> mat1,
             ArrayMatrix<StaticModInt<T>, StaticModIntOperator<T>> mat2) where T : struct, IStaticMod
