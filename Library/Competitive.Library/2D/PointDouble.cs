@@ -1,4 +1,4 @@
-﻿using AtCoder.Internal;
+using AtCoder.Internal;
 using Kzrnm.Competitive.IO;
 using System;
 using System.Collections.Generic;
@@ -208,7 +208,7 @@ namespace Kzrnm.Competitive
         /// P をとおる A*x+B*y=Any の垂線
         /// </summary>
         [凾(256)]
-        public static (double A, double B, double C) 直線の垂線(double a, double b, P p) => (b, -a, b * p.x - a * p.y);
+        public static (double A, double B, double C) 直線の垂線(double a, double b, P p) => (b, -a, a * p.y - b * p.x);
 
         /// <summary>
         /// <paramref name="x"/> での A*x+B*y+C=0 の垂線
@@ -278,16 +278,18 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// <paramref name="a1"/> から <paramref name="b1"/>までの線分と<paramref name="a2"/> から <paramref name="b2"/>までの線分が交差しているか
+        /// <paramref name="a1"/> から <paramref name="b1"/>までの線分と<paramref name="a2"/> から <paramref name="b2"/>までの線分が交差しているかを返します。<paramref name="edge"/> が true なら端点も交差しているとみなします。
         /// </summary>
         [凾(256)]
-        public static bool 線分が交差しているか(P a1, P b1, P a2, P b2)
+        public static bool 線分が交差しているか(P a1, P b1, P a2, P b2, bool edge = false)
         {
             var ta = (a2.x - b2.x) * (a1.y - a2.y) + (a2.y - b2.y) * (a2.x - a1.x);
             var tb = (a2.x - b2.x) * (b1.y - a2.y) + (a2.y - b2.y) * (a2.x - b1.x);
             var tc = (a1.x - b1.x) * (a2.y - a1.y) + (a1.y - b1.y) * (a1.x - a2.x);
             var td = (a1.x - b1.x) * (b2.y - a1.y) + (a1.y - b1.y) * (a1.x - b2.x);
 
+            if(edge)
+                return tc * td <= 0 && ta * tb <= 0;
             return tc * td < 0 && ta * tb < 0;
         }
 

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using System;
 using System.Linq;
 using Xunit;
@@ -158,6 +158,20 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         public void 直線と直線の交点(double a, double b, double c, double u, double v, double w, PointDouble expected)
         {
             PointDouble.直線と直線の交点(a, b, c, u, v, w).Should().Be(expected);
+        }
+
+        public static TheoryData 直線の垂線_Data = new TheoryData<double, double, PointDouble, (double, double, double)>
+        {
+            { 1, 1, new PointDouble(0.5, -1.5), (1, -1, -2) },
+            { 4, 7, new PointDouble(-10, 2), (7, -4, 78) },
+            { 0, 2, new PointDouble(7, 5), (2, 0, -14) },
+            { 2, 0, new PointDouble(7, 5), (0, -2, 10) },
+        };
+        [Theory]
+        [MemberData(nameof(直線の垂線_Data))]
+        public void 直線の垂線(double a, double b, PointDouble p, (double, double, double) expected)
+        {
+            PointDouble.直線の垂線(a, b, p).Should().Be(expected);
         }
 
         public static TheoryData 直線と円の交点_Data = new TheoryData<double, double, double, PointDouble, double, PointDouble[]>
