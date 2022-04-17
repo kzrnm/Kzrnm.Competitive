@@ -1,4 +1,4 @@
-﻿// Original: https://ei1333.github.io/library/structure/wavelet/wavelet-matrix.cpp.html
+// Original: https://ei1333.github.io/library/structure/wavelet/wavelet-matrix.cpp.html
 using AtCoder.Operators;
 using Kzrnm.Competitive.Internal;
 using System;
@@ -12,7 +12,7 @@ namespace Kzrnm.Competitive
     /// <typeparam name="F">点の高さ</typeparam>
     /// <typeparam name="T">重み</typeparam>
     /// <typeparam name="TOp">重みの加算・減算オペレータ</typeparam>
-    public class WaveletMatrix2DWithSums<F, T, TOp> : WaveletMatrix2D<F, T, TOp, SumOp<T, TOp>>
+    public class WaveletMatrix2DWithSums<F, T, TOp> : WaveletMatrix2D<F, T, TOp, WaveletSumOp<T, TOp>>
         where F : IComparable<F>
         where TOp : struct, IAdditionOperator<T>, ISubtractOperator<T>
     {
@@ -25,7 +25,7 @@ namespace Kzrnm.Competitive
     /// <typeparam name="F">点の高さ</typeparam>
     /// <typeparam name="T">重み</typeparam>
     /// <typeparam name="TOp">重みの加算・減算オペレータ</typeparam>
-    public class WaveletMatrixWithSums<F, T, TOp> : WaveletMatrixRangeSum<F, T, TOp, SumOp<T, TOp>>
+    public class WaveletMatrixWithSums<F, T, TOp> : WaveletMatrixRangeSum<F, T, TOp, WaveletSumOp<T, TOp>>
         where F : IComparable<F>
         where TOp : struct, IAdditionOperator<T>, ISubtractOperator<T>
     {
@@ -33,7 +33,7 @@ namespace Kzrnm.Competitive
     }
     namespace Internal
     {
-        public struct SumOp<T, TOp> : IWabeletSumOperator<T>
+        public struct WaveletSumOp<T, TOp> : IWabeletSumOperator<T>
             where TOp : struct, IAdditionOperator<T>, ISubtractOperator<T>
         {
             public Sums<T, TOp> s;

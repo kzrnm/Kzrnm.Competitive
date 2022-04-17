@@ -13,7 +13,7 @@ namespace Kzrnm.Competitive
     /// <typeparam name="F">点の高さ</typeparam>
     /// <typeparam name="T">重み</typeparam>
     /// <typeparam name="TOp">重みの加算・減算オペレータ</typeparam>
-    public class WaveletMatrix2DWithFenwickTree<F, T, TOp> : WaveletMatrix2D<F, T, TOp, FwOp<T, TOp>>
+    public class WaveletMatrix2DWithFenwickTree<F, T, TOp> : WaveletMatrix2D<F, T, TOp, WaveletFwOp<T, TOp>>
         where F : IComparable<F>
         where TOp : struct, IAdditionOperator<T>, ISubtractOperator<T>
     {
@@ -26,7 +26,7 @@ namespace Kzrnm.Competitive
     /// <typeparam name="F">点の高さ</typeparam>
     /// <typeparam name="T">重み</typeparam>
     /// <typeparam name="TOp">重みの加算・減算オペレータ</typeparam>
-    public class WaveletMatrixWithFenwickTree<F, T, TOp> : WaveletMatrixRangeSum<F, T, TOp, FwOp<T, TOp>>
+    public class WaveletMatrixWithFenwickTree<F, T, TOp> : WaveletMatrixRangeSum<F, T, TOp, WaveletFwOp<T, TOp>>
         where F : IComparable<F>
         where TOp : struct, IAdditionOperator<T>, ISubtractOperator<T>
     {
@@ -34,7 +34,7 @@ namespace Kzrnm.Competitive
     }
     namespace Internal
     {
-        public struct FwOp<T, TOp> : IWabeletSumOperator<T>
+        public struct WaveletFwOp<T, TOp> : IWabeletSumOperator<T>
             where TOp : struct, IAdditionOperator<T>, ISubtractOperator<T>
         {
             public FenwickTree<T, TOp> fw;
