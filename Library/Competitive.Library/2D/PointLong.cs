@@ -199,5 +199,34 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public (long A, long B, long C) 直線(P other)
             => (other.y - y, x - other.x, y * (other.x - x) - x * (other.y - y));
+
+        /// <summary>
+        /// <paramref name="a1"/> から <paramref name="b1"/>までの線分と<paramref name="a2"/> から <paramref name="b2"/>までの線分が交差しているかを返します。<paramref name="edge"/> が true なら端点も交差しているとみなします。
+        /// </summary>
+        public static bool 線分が交差しているか(P a1, P b1, P a2, P b2, bool edge = false)
+        {
+            var threshold = edge ? 1 : 0;
+            var (p, q, r) = a1.直線(b1);
+            if (p * a2.x + q * a2.y + r == 0 && p * b2.x + q * b2.y + r == 0)
+            {
+                // 直線状に並んでいる場合
+                var (xa1, xb1, xa2, xb2) = (a1.x, b1.x, a2.x, b2.x);
+                if (xa1 == xb1) (xa1, xb1, xa2, xb2) = (a1.y, b1.y, a2.y, b2.y); // y軸に平行なとき
+
+                if (xa1 > xb1) (xa1, xb1) = (xb1, xa1);
+                if (xa2 > xb2) (xa2, xb2) = (xb2, xa2);
+
+                if (xa1.CompareTo(xb2) >= threshold) return false;
+                if (xa2.CompareTo(xb1) >= threshold) return false;
+                return true;
+            }
+
+            var ta = (a2.x - b2.x) * (a1.y - a2.y) + (a2.y - b2.y) * (a2.x - a1.x);
+            var tb = (a2.x - b2.x) * (b1.y - a2.y) + (a2.y - b2.y) * (a2.x - b1.x);
+            var tc = (a1.x - b1.x) * (a2.y - a1.y) + (a1.y - b1.y) * (a1.x - a2.x);
+            var td = (a1.x - b1.x) * (b2.y - a1.y) + (a1.y - b1.y) * (a1.x - b2.x);
+
+            return Math.Sign(tc) * Math.Sign(td) < threshold && Math.Sign(ta) * Math.Sign(tb) < threshold;
+        }
     }
 }
