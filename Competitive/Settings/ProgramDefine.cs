@@ -1,4 +1,4 @@
-﻿using Kzrnm.Competitive;
+using Kzrnm.Competitive;
 using Kzrnm.Competitive.IO;
 using System;
 using System.Collections.Generic;
@@ -34,7 +34,7 @@ public partial class Program
         }
 #pragma warning restore CS0162 // 到達できないコードが検出されました
         for (; Q > 0; Q--)
-            Calc(cr, cw);
+            Calc();
         cw.Flush();
     }
 }

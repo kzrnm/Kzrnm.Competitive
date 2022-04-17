@@ -18,7 +18,7 @@ internal partial class Program
     {
         int Q = __ManyTestCases ? cr.Int : 1;
         while (--Q >= 0)
-            Calc(cr, cw);
+            Calc();
         cw.Flush();
     }
 }
@@ -29,7 +29,7 @@ partial class Program
 {
 #pragma warning disable
     [凾(256)]
-    Kzrnm.Competitive.ConsoleOutput? Calc(PropertyConsoleReader cr, Utf8ConsoleWriter cw) => null;
+    Kzrnm.Competitive.ConsoleOutput? Calc() => null;
     bool __ManyTestCases = false;
 #pragma warning restore
 }

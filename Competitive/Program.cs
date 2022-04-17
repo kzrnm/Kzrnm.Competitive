@@ -32,7 +32,7 @@ partial class Program
     static void Main()=>new Program(new PropertyConsoleReader(),new Utf8ConsoleWriter()).Run();
     [凾(256)]
 #endif
-    private ConsoleOutput? Calc(PropertyConsoleReader cr, Utf8ConsoleWriter cw)
+    private ConsoleOutput? Calc()
     {
         return null;
     }
