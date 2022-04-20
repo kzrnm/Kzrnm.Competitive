@@ -48,6 +48,13 @@ namespace Kzrnm.Competitive
                 _denominator = 分母 / gcd - 1;
             }
         }
+        private Fraction(long 分子, long 分母, bool _)
+        {
+            _numerator = 分子;
+            _denominator = 分母 - 1;
+        }
+        [凾(256)]
+        public static Fraction Raw(long 分子, long 分母) => new Fraction(分子, 分母, true);
         public override string ToString() => $"{Numerator}/{Denominator}";
         public override bool Equals(object obj) => obj is Fraction f && Equals(f);
         [凾(256)]
@@ -55,7 +62,7 @@ namespace Kzrnm.Competitive
         public override int GetHashCode() => HashCode.Combine(_numerator, _denominator);
 
         [凾(256)]
-        public static implicit operator Fraction(long x) => new Fraction(x, 1);
+        public static implicit operator Fraction(long x) => new Fraction(x, 1, true);
         [凾(256)]
         public int CompareTo(Fraction other) => (Numerator * other.Denominator).CompareTo(other.Numerator * Denominator);
 
