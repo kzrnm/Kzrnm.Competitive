@@ -19,14 +19,14 @@ namespace Kzrnm.Competitive
         [凾(256)] public static Grid<T> Create<T>(ReadOnlySpan<T[]> data, T defaultValue = default) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);
 
         [凾(256)]
-        public static void WriteGrid(this ConsoleWriter cw, Grid<char> grid)
+        public static void WriteGrid(this Utf8ConsoleWriter cw, Grid<char> grid)
         {
             for (int i = 0; i < grid.H; i++)
-                cw.StreamWriter.WriteLine(grid.data.AsSpan(i * grid.W, grid.W));
+                cw.WriteLine(grid.data.AsSpan(i * grid.W, grid.W));
         }
 
         [凾(256)]
-        public static void WriteGrid<T>(this ConsoleWriter cw, Grid<T> grid)
+        public static void WriteGrid<T>(this Utf8ConsoleWriter cw, Grid<T> grid)
         {
             for (int i = 0; i < grid.H; i++)
                 cw.WriteLineJoin(grid.data.AsSpan(i * grid.W, grid.W));
