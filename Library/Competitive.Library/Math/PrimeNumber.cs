@@ -53,10 +53,10 @@ namespace Kzrnm.Competitive
         [凾(256)]
         static bool DivIfMulti(ref long num, long p)
         {
-            Math.DivRem(num, p, out var d);
+            var q = Math.DivRem(num, p, out var d);
             if (d == 0)
             {
-                num /= p;
+                num = q;
                 return true;
             }
             return false;
