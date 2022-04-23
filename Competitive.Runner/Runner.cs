@@ -1,4 +1,4 @@
-﻿using Kzrnm.Competitive.IO;
+using Kzrnm.Competitive.IO;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -28,7 +28,7 @@ namespace Competitive.Runner
         }
 
         static readonly Regex doubleRegex = new Regex(@"^\d+\.\d+$", RegexOptions.IgnoreCase);
-        [Theory(Timeout = 2000)]
+        [Theory(Timeout = 4000)]
         [ClassData(typeof(ResouceSource))]
         public Task FromSource(string input, string output) => Task.Run(() =>
         {
