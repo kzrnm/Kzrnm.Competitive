@@ -1,5 +1,4 @@
 using AtCoder;
-using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
@@ -7,18 +6,16 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// <see cref="long"/> の累積和を求めます。
     /// </summary>
-    public class LongSums : Sums<long, LongOperator>
+    public class LongSums2D : Sums2D<long, LongOperator>
     {
-        public LongSums(long[] arr) : base(arr) { }
-        public LongSums(IList<long> col) : base(col) { }
+        public LongSums2D(long[][] arr) : base(arr) { }
     }
 
     /// <summary>
     /// <see cref="int"/> の累積和を求めます。
     /// </summary>
-    public class IntSums : Sums<int, IntOperator>
+    public class IntSums2D : Sums2D<int, IntOperator>
     {
-        public IntSums(int[] arr) : base(arr) { }
-        public IntSums(IList<int> col) : base(col) { }
+        public IntSums2D(int[][] arr) : base(arr) { }
     }
 }
