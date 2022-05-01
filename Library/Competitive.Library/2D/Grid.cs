@@ -13,6 +13,8 @@ namespace Kzrnm.Competitive
     {
         [凾(256)] public static Grid<char> GridString(this PropertyConsoleReader cr, int H, char defaultValue = default) => Create(cr.Repeat(H).Ascii, defaultValue);
         [凾(256)] public static Grid<int> GridInt(this PropertyConsoleReader cr, int H, int W, int defaultValue = default) => Create(cr.Repeat(H).Select(cr => cr.Repeat(W).Int), defaultValue);
+        [凾(256)] public static Grid<long> GridLong(this PropertyConsoleReader cr, int H, int W, long defaultValue = default) => Create(cr.Repeat(H).Select(cr => cr.Repeat(W).Long), defaultValue);
+        [凾(256)] public static Grid<ulong> GridULong(this PropertyConsoleReader cr, int H, int W, ulong defaultValue = default) => Create(cr.Repeat(H).Select(cr => cr.Repeat(W).ULong), defaultValue);
         [凾(256)] public static Grid<char> Create(string[] data, char defaultValue = default) => new Grid<char>(data.Flatten(), data.Length, data[0].Length, defaultValue);
         [凾(256)] public static Grid<T> Create<T>(T[][] data, T defaultValue = default) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);
         [凾(256)] public static Grid<T> Create<T>(Span<T[]> data, T defaultValue = default) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);
@@ -40,7 +42,7 @@ namespace Kzrnm.Competitive
         public int Size => data.Length;
         public readonly int H;
         public readonly int W;
-        internal readonly T[] data;
+        public readonly T[] data;
         private readonly T defaultValue;
         public Grid(int H, int W, T defaultValue = default) : this(new T[H * W].Fill(defaultValue), H, W, defaultValue) { }
         internal Grid(T[] data, int H, int W, T defaultValue)
