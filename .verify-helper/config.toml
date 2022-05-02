@@ -3,5 +3,5 @@ csproj_template = ".verify-helper/runner.csproj.xml"
 static_embedding = """
 
 // 実行用に埋め込む
-partial class Program{ConsoleOutput? Calc() => null;bool __ManyTestCases = false;}
+partial class Program{Kzrnm.Competitive.ConsoleOutput? Calc() => null;bool __ManyTestCases = false;}
 """
