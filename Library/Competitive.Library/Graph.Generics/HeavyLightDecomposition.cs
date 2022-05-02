@@ -49,8 +49,7 @@ namespace Kzrnm.Competitive
         /// <paramref name="u"/>と<paramref name="v"/>の最小共通祖先を返します。
         /// </summary>
         /// <remarks>
-        /// <para>計算量(初回): O(n)</para>
-        /// <para>計算量(2回目以降): O(1)</para>
+        /// <para>計算量: O(1)</para>
         /// </remarks>
         [凾(256)]
         public int LowestCommonAncestor(int u, int v)
@@ -61,20 +60,6 @@ namespace Kzrnm.Competitive
             var t = down[v] + 1;
             if (t < f) (f, t) = (t, f);
             return lcaTable[f..t].Node;
-        }
-
-        /// <summary>
-        /// <paramref name="u"/>と<paramref name="v"/>の距離(間にあるノード数)を返します。
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量(初回): O(n)</para>
-        /// <para>計算量(2回目以降): O(1)</para>
-        /// </remarks>
-        [凾(256)]
-        public int Distance(int u, int v)
-        {
-            var l = LowestCommonAncestor(u, v);
-            return tree[u].Depth + tree[v].Depth - tree[l].Depth * 2;
         }
 
         /// <summary>
