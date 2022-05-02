@@ -25,7 +25,7 @@ namespace Kzrnm.Competitive
         public static implicit operator O(char v) => cw.WriteLine(v);
         public static implicit operator O(char[] v) => cw.WriteLine((ReadOnlySpan<char>)v);
         public static implicit operator O(string v) => cw.WriteLine((ReadOnlySpan<char>)v);
-        public static implicit operator O(bool v) => cw.WriteLine((ReadOnlySpan<char>)Program.YesNo(v));
+        public static implicit operator O(bool v) => cw.WriteLine((ReadOnlySpan<char>)(v ? "Yes" : "No"));
         public static implicit operator O(Utf8ConsoleWriter _) => default;
     }
 }

@@ -13,7 +13,6 @@ internal partial class Program
         ConsoleOutput.cw = cw = w;
         CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
     }
-    public static string YesNo(bool b) => b ? "Yes" : "No";
     public void Run()
     {
         int Q = __ManyTestCases ? cr.Int : 1;

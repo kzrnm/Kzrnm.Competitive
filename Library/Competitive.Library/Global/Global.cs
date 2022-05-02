@@ -5,6 +5,11 @@ namespace Kzrnm.Competitive
 {
     public static class Global
     {
+        #region BoolOutput
+        [凾(256)] public static string YesNo(bool b) => b ? "Yes" : "No";
+        [凾(256)] public static string TakahashiAoki(bool b) => b ? "Takahashi" : "Aoki";
+        #endregion BoolOutput
+
         #region NewArray
         [凾(256)]
         public static T[] NewArray<T>(int len0, T value) where T : struct => new T[len0].Fill(value);
