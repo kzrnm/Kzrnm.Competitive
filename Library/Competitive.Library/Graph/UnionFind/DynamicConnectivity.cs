@@ -376,7 +376,7 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// 頂点 <paramref name="s"/> と頂点 <paramref name="t"/> を結ぶ辺を追加します。既に追加済みならば false、新たに追加されたならば true を返します。
+        /// 頂点 <paramref name="s"/> と頂点 <paramref name="t"/> を結ぶ辺を追加します。既に同じ木に追加済みならば false、新たに追加されたならば true を返します。
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="s"/>, <paramref name="t"/>&lt;n</para>
