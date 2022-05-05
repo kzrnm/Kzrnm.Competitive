@@ -63,5 +63,32 @@ namespace Kzrnm.Competitive.Testing.MathNS
             }
             factor.Invoking(factor => factor.Factorial(11)).Should().Throw<Exception>();
         }
+
+        [Fact]
+        public void DoubleFactorialOdd()
+        {
+            var factor = new StaticModIntFactor<Mod1000000007>(10);
+            int expected = 1;
+            for (int i = 1; i <= 10; i += 2)
+            {
+                expected *= i;
+                factor.DoubleFactorial(i).Value.Should().Be(expected);
+            }
+            factor.Invoking(factor => factor.Factorial(11)).Should().Throw<Exception>();
+        }
+
+        [Fact]
+        public void DoubleFactorialEven()
+        {
+            var factor = new StaticModIntFactor<Mod1000000007>(10);
+            int expected = 1;
+            factor.DoubleFactorial(0).Value.Should().Be(1);
+            for (int i = 2; i <= 10; i += 2)
+            {
+                expected *= i;
+                factor.DoubleFactorial(i).Value.Should().Be(expected);
+            }
+            factor.Invoking(factor => factor.Factorial(12)).Should().Throw<Exception>();
+        }
     }
 }

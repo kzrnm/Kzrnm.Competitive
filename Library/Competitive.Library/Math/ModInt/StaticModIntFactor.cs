@@ -9,6 +9,23 @@ namespace Kzrnm.Competitive
     public class StaticModIntFactor<T> where T : struct, IStaticMod
     {
         private readonly StaticModInt<T>[] fac, finv;
+        private StaticModInt<T>[] pow2, invPow2;
+        [凾(256)]
+        private void BuildPow2(int size)
+        {
+            // 2の冪乗とその逆数を計算する
+            invPow2 = new StaticModInt<T>[size];
+            pow2 = new StaticModInt<T>[size];
+            pow2[0] = invPow2[0] = StaticModInt<T>.Raw(1);
+            var two = StaticModInt<T>.Raw(2);
+            var invTwo = two.Inv();
+            for (int i = 1; i < invPow2.Length; i++)
+            {
+                pow2[i] = pow2[i - 1] * two;
+                invPow2[i] = invPow2[i - 1] * invTwo;
+            }
+        }
+
         public StaticModIntFactor(int max)
         {
             fac = new StaticModInt<T>[++max];
@@ -55,5 +72,17 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)]
         public StaticModInt<T> FactorialInvers(int n) => finv[n];
+
+
+        /// <summary>
+        /// <paramref name="n"/> の二重階乗
+        /// </summary>
+        [凾(256)]
+        public StaticModInt<T> DoubleFactorial(int n)
+        {
+            if (pow2 == null) BuildPow2(fac.Length);
+            var h = (n + 1) / 2;
+            return (n & 1) != 0 ? fac[n + 1] * finv[h] * invPow2[h] : fac[h] * pow2[h];
+        }
     }
 }
