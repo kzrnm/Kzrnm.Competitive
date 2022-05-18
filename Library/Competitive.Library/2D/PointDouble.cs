@@ -111,6 +111,19 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
+        /// <paramref name="theta"/> だけ回転させた点を返します。
+        /// </summary>
+        /// <param name="theta"></param>
+        /// <returns></returns>
+        [凾(256)]
+        public P Rotate(double theta)
+        {
+            var sin = Math.Sin(theta);
+            var cos = Math.Cos(theta);
+            return new P(cos * x - sin * y, sin * x + cos * y);
+        }
+
+        /// <summary>
         /// 凸包(一番外側の多角形)を求める
         /// </summary>
         [凾(256)]
