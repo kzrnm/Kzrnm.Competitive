@@ -15,21 +15,13 @@ namespace Kzrnm.Competitive
              where TEdge : IGraphEdge
         {
             var statuses = new Status[graph.Length];
-            (int from, List<TEdge> edges) DFS(Stack<(int v, int childIdx)> stack)
+            List<TEdge> DFS(Stack<(int v, int childIdx)> stack)
             {
-                List<TEdge> list = null;
                 while (stack.TryPop(out var v, out var ci))
                 {
                     var children = graph[v].Children;
                     if (ci == 0)
                         statuses[v] = Status.Active;
-                    else if (list != null)
-                    {
-                        list.Add(children[ci - 1]);
-                        if (list[0].To == v)
-                            return (v, list);
-                        continue;
-                    }
 
                     if (ci < children.Length)
                     {
@@ -42,14 +34,17 @@ namespace Kzrnm.Competitive
                                 stack.Push((child, 0));
                                 break;
                             case Status.Active:
-                                list = new List<TEdge> { e };
+                                return new List<TEdge> { e };
+                            default:
+                                stack.Push((v, ci + 1));
                                 break;
                         }
                     }
                     else
                         statuses[v] = Status.Done;
                 }
-                return (-1, null);
+
+                return null;
             }
             for (var i = 0; i < graph.Length; i++)
             {
@@ -57,12 +52,16 @@ namespace Kzrnm.Competitive
                 if (statuses[i] == Status.None)
                 {
                     stack.Push((i, 0));
-                    var (from, res) = DFS(stack);
-                    if (res != null)
-                    {
-                        res.Reverse();
-                        return (from, res.ToArray());
-                    }
+                    if (DFS(stack) is { } list)
+                        while (stack.TryPop(out var v, out var ci))
+                        {
+                            list.Add(graph[v].Children[ci - 1]);
+                            if (list[0].To == v)
+                            {
+                                list.Reverse();
+                                return (v, list.ToArray());
+                            }
+                        }
                     stack.Clear();
                 }
             }

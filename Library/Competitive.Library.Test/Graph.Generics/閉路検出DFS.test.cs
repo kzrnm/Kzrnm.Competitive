@@ -13,6 +13,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(0, 1);
             gb.Add(1, 2);
             gb.Add(2, 3);
+            gb.Add(3, 5);
             gb.Add(3, 4);
             gb.Add(4, 5);
             gb.Add(5, 6);
@@ -33,6 +34,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(0, 1, 1);
             gb.Add(1, 2, 2);
             gb.Add(2, 3, 3);
+            gb.Add(3, 5, 5);
             gb.Add(3, 4, 4);
             gb.Add(4, 5, 5);
             gb.Add(5, 6, 6);
