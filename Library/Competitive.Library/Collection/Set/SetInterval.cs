@@ -392,6 +392,61 @@ namespace Kzrnm.Competitive
         [凾(256)] public (T From, T ToExclusive) ReverseUpperBoundItem<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new UR()).node.Pair;
         #endregion Search
 
+        #region Search<T>
+        [凾(256)] public Node FindNode(T item) => base.FindNode(new C<T>(item));
+        [凾(256)] public bool Contains(T item) => FindNode(item) != null;
+        /// <summary>
+        /// <paramref name="item"/> 以上の最初のノードを返します。
+        /// </summary>
+        [凾(256)] public Node FindNodeLowerBound(T item) => BinarySearch(new C<T>(item), new L()).node;
+        /// <summary>
+        /// <paramref name="item"/> 以上の最初のインデックスを返します。
+        /// </summary>
+        [凾(256)] public int LowerBoundIndex(T item) => BinarySearch(new C<T>(item), new L()).index;
+        /// <summary>
+        /// <paramref name="item"/> 以上の最初の要素を返します。
+        /// </summary>
+        [凾(256)] public (T From, T ToExclusive) LowerBoundItem(T item) => BinarySearch(new C<T>(item), new L()).node.Pair;
+        /// <summary>
+        /// <paramref name="item"/> を超える最初のノードを返します。
+        /// </summary>
+        [凾(256)] public Node FindNodeUpperBound(T item) => BinarySearch(new C<T>(item), new U()).node;
+        /// <summary>
+        /// <paramref name="item"/> を超える最初のインデックスを返します。
+        /// </summary>
+        [凾(256)] public int UpperBoundIndex(T item) => BinarySearch(new C<T>(item), new U()).index;
+        /// <summary>
+        /// <paramref name="item"/> を超える最初の要素を返します。
+        /// </summary>
+        [凾(256)] public (T From, T ToExclusive) UpperBoundItem(T item) => BinarySearch(new C<T>(item), new U()).node.Pair;
+
+        /// <summary>
+        /// <paramref name="item"/> 以下の最後のノードを返します。
+        /// </summary>
+        [凾(256)] public Node FindNodeReverseLowerBound(T item) => BinarySearch(new C<T>(item), new LR()).node;
+        /// <summary>
+        /// <paramref name="item"/> 以下の最後のインデックスを返します。
+        /// </summary>
+        [凾(256)] public int ReverseLowerBoundIndex(T item) => BinarySearch(new C<T>(item), new LR()).index;
+        /// <summary>
+        /// <paramref name="item"/> 以下の最後の要素を返します。
+        /// </summary>
+        [凾(256)] public (T From, T ToExclusive) ReverseLowerBoundItem(T item) => BinarySearch(new C<T>(item), new LR()).node.Pair;
+
+        /// <summary>
+        /// <paramref name="item"/> 未満の最後のノードを返します。
+        /// </summary>
+        [凾(256)] public Node FindNodeReverseUpperBound(T item) => BinarySearch(new C<T>(item), new UR()).node;
+        /// <summary>
+        /// <paramref name="item"/> 未満の最後のインデックスを返します。
+        /// </summary>
+        [凾(256)] public int ReverseUpperBoundIndex(T item) => BinarySearch(new C<T>(item), new UR()).index;
+        /// <summary>
+        /// <paramref name="item"/> 未満の最後の要素を返します。
+        /// </summary>
+        [凾(256)] public (T From, T ToExclusive) ReverseUpperBoundItem(T item) => BinarySearch(new C<T>(item), new UR()).node.Pair;
+        #endregion Search<T>
+
         private class DebugView
         {
             [DebuggerDisplay("[{" + nameof(From) + "}, {" + nameof(ToExclusive) + "})")]
