@@ -14,11 +14,11 @@ namespace Kzrnm.Competitive
     public interface IMoAlgorithmState<T>
     {
         /// <summary>
-        /// [l, r) から [l-1, r) または [l, r+1) を求める。
+        /// [l, r) から [l-1, r) または [l, r+1) を求める。<paramref name="idx"/> = l-1 または r
         /// </summary>
         void Add(int idx);
         /// <summary>
-        /// [l, r) から [l+1, r) または [l, r-1) を求める。
+        /// [l, r) から [l+1, r) または [l, r-1) を求める。<paramref name="idx"/> = l または r-1
         /// </summary>
         void Remove(int idx);
 
@@ -34,19 +34,19 @@ namespace Kzrnm.Competitive
     public interface IMoAlgorithmStateStrict<T>
     {
         /// <summary>
-        /// [l, r) から [l-1, r) を求める。
+        /// [l, r) から [l-1, r) を求める。<paramref name="idx"/> = l-1
         /// </summary>
         void AddLeft(int idx);
         /// <summary>
-        /// [l, r) から [l, r+1) を求める。
+        /// [l, r) から [l, r+1) を求める。<paramref name="idx"/> = r
         /// </summary>
         void AddRight(int idx);
         /// <summary>
-        /// [l, r) から [l+1, r) を求める。
+        /// [l, r) から [l+1, r) を求める。<paramref name="idx"/> = l
         /// </summary>
         void RemoveLeft(int idx);
         /// <summary>
-        /// [l, r) から [l, r-1) を求める。
+        /// [l, r) から [l, r-1) を求める。<paramref name="idx"/> = r-1
         /// </summary>
         void RemoveRight(int idx);
 
@@ -81,7 +81,7 @@ namespace Kzrnm.Competitive
         }
 
         private struct StrictWrapper<T, TSt> : IMoAlgorithmStateStrict<T>
-            where TSt : struct, IMoAlgorithmState<T>
+            where TSt : IMoAlgorithmState<T>
         {
             private TSt st;
             public StrictWrapper(TSt status) { st = status; }
@@ -95,24 +95,24 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// クエリの結果を返す
         /// </summary>
-        /// <param name="st">現在の状態を保持する構造体</param>
+        /// <param name="st">現在の状態</param>
         /// <param name="blockSize">分割するサイズ(デフォルト: √max(toExclusive))</param>
         [凾(256)]
-        public T[] Solve<T, TSt>(TSt st, int blockSize = 0) where TSt : struct, IMoAlgorithmState<T>
+        public T[] Solve<T, TSt>(TSt st, int blockSize = 0) where TSt : IMoAlgorithmState<T>
             => SolveStrict<T, StrictWrapper<T, TSt>>(new StrictWrapper<T, TSt>(st), blockSize);
 
         /// <summary>
         /// クエリの結果を返す
         /// </summary>
-        /// <param name="st">現在の状態を保持する構造体</param>
-        /// <param name="blockSize">分割するサイズ(デフォルト: √max(toExclusive))</param>
+        /// <param name="st">現在の状態</param>
+        /// <param name="blockSize">分割するサイズ(デフォルト: √3 max(toExclusive) / √(2Q))</param>
         [凾(256 | 512)]
-        public T[] SolveStrict<T, TSt>(TSt st, int blockSize = 0) where TSt : struct, IMoAlgorithmStateStrict<T>
+        public T[] SolveStrict<T, TSt>(TSt st, int blockSize = 0) where TSt : IMoAlgorithmStateStrict<T>
         {
             if (builder.Count == 0)
                 return Array.Empty<T>();
             if (blockSize == 0)
-                blockSize = (int)Math.Sqrt(Max);
+                blockSize = 1 + (int)(1.732 * Max / Math.Sqrt(2 * builder.Count));
             var queries = builder.ToArray();
             Array.Sort(queries.Select(t =>
             {

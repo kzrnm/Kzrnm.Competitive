@@ -4,6 +4,9 @@ using System.Numerics;
 
 namespace Kzrnm.Competitive
 {
+    /// <summary>
+    /// 配列のインデックスを 2 進数表記でデバッガのウォッチ式に表示します。
+    /// </summary>
     public class BitDebug
     {
         public BitDebug(Array array)
@@ -23,9 +26,9 @@ namespace Kzrnm.Competitive
                 key = $"{Convert.ToString(index, 2).PadLeft(len, '0')} [{index}]";
                 this.value = value;
             }
-            private readonly string key;
-            private readonly int index;
-            private readonly object value;
+            public readonly string key;
+            public readonly int index;
+            public readonly object value;
         }
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public DebugItem[] Items

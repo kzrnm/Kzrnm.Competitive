@@ -11,3 +11,4 @@ namespace Kzrnm.Competitive
         public StaticModInt<T> Cast(int y) => new StaticModInt<T>(y);
     }
 }
+// @IGNORE
