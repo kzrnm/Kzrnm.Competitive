@@ -1,6 +1,5 @@
 using AtCoder;
 using Kzrnm.Competitive.IO;
-using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive.MathNs
 {
@@ -20,54 +19,38 @@ namespace Kzrnm.Competitive.MathNs
                 int r = cr;
                 mo.AddQuery(l, r);
             }
-            cw.WriteLines(mo.SolveStrict<long, St>(new St(ZahyoCompress.CompressedArray(A))));
+            var a = ZahyoCompress.CompressedArray(A);
+            var fw = new LongFenwickTree(a.Length);
+            long Current = 0;
+            var res = new long[Q];
+            mo.SolveStrict(
+                idx =>
+                {
+                    var v = a[idx];
+                    Current += fw[..v];
+                    fw.Add(v, 1);
+                },
+                idx =>
+                {
+                    var v = a[idx];
+                    Current += fw[(v + 1)..];
+                    fw.Add(v, 1);
+                },
+                idx =>
+                {
+                    var v = a[idx];
+                    Current -= fw[..v];
+                    fw.Add(v, -1);
+                },
+                idx =>
+                {
+                    var v = a[idx];
+                    Current -= fw[(v + 1)..];
+                    fw.Add(v, -1);
+                },
+                idx => res[idx] = Current);
+            cw.WriteLines(res);
             return null;
-        }
-
-        class St : IMoAlgorithmStateStrict<long>
-        {
-            [MethodImpl(256)]
-            public void AddLeft(int idx)
-            {
-                var v = a[idx];
-                Current += fw[..v];
-                fw.Add(v, 1);
-            }
-
-            [MethodImpl(256)]
-            public void AddRight(int idx)
-            {
-                var v = a[idx];
-                Current += fw[(v + 1)..];
-                fw.Add(v, 1);
-            }
-
-            [MethodImpl(256)]
-            public void RemoveLeft(int idx)
-            {
-                var v = a[idx];
-                Current -= fw[..v];
-                fw.Add(v, -1);
-            }
-
-            [MethodImpl(256)]
-            public void RemoveRight(int idx)
-            {
-                var v = a[idx];
-                Current -= fw[(v + 1)..];
-                fw.Add(v, -1);
-            }
-            private readonly int[] a;
-            private readonly LongFenwickTree fw;
-
-            public St(int[] a)
-            {
-                this.a = a;
-                fw = new LongFenwickTree(a.Length);
-                Current = 0;
-            }
-
-            public long Current { get; set; }
         }
     }
 }

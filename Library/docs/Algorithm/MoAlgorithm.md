@@ -16,5 +16,9 @@ $[0, N)$ の区間についての $Q$ 個のクエリを $O( \alpha (N+Q) \sqrt{
 ### 使い方
 
 - `AddQuery(int from, int toExclusive)`: クエリを追加します。
-- `Solve<T, TSt>(TSt st, int blockSize = 0)`: 初期状態 `st` から各クエリの結果を返します。`blockSize` が $0$ なら、$\frac{\sqrt{3}N}{\sqrt{2Q}}$ とします。
-- `SolveStrict<T, TSt>(TSt st, int blockSize = 0)`: 初期状態 `st` から各クエリの結果を返します。`blockSize` が $0$ なら、$\frac{\sqrt{3}N}{\sqrt{2Q}}$ とします。
+- `Solve<T, TSt>(TSt st)`: 初期状態 `st` から各クエリの結果を返します。
+- `SolveStrict<T, TSt>(TSt st)`: 初期状態 `st` から各クエリの結果を返します。
+- `Solve(Action<int> add, Action<int> remove, Action<int> update)`: クエリを適用します。
+- `SolveStrict(Action<int> addLeft, Action<int> addRight, Action<int> removeLeft, Action<int> removeRight, Action<int> update)`: クエリを適用します。
+- `Solve<TOp>(TOp op)`: クエリを適用します。
+- `SolveStrict<TOp>(TOp op)`: クエリを適用します。
