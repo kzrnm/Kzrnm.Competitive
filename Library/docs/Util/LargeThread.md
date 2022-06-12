@@ -1,6 +1,6 @@
 ---
 title: 実行スレッドの調整
-documentation_of: //Library/Competitive.Library/Util/Thread.cs
+documentation_of: //Library/Competitive.Library/Util/LargeThread.cs
 ---
 
 ## 概要
