@@ -1,6 +1,6 @@
 ---
 title: 座標圧縮
-documentation_of: //Library/Competitive.Library/Util/ZahyoCompress.cs
+documentation_of: //Library/Competitive.Library/Algorithm/ZahyoCompress.cs
 ---
 
 ## 概要

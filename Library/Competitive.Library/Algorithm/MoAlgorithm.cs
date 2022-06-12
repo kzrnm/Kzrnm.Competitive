@@ -96,7 +96,7 @@ namespace Kzrnm.Competitive
         /// クエリの結果を返す
         /// </summary>
         /// <param name="st">現在の状態</param>
-        /// <param name="blockSize">分割するサイズ(デフォルト: √max(toExclusive))</param>
+        /// <param name="blockSize">分割するサイズ(デフォルト: √3 max(toExclusive) / √(2Q))</param>
         [凾(256)]
         public T[] Solve<T, TSt>(TSt st, int blockSize = 0) where TSt : IMoAlgorithmState<T>
             => SolveStrict<T, StrictWrapper<T, TSt>>(new StrictWrapper<T, TSt>(st), blockSize);

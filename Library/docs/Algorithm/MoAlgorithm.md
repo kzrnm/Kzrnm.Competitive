@@ -1,6 +1,6 @@
 ---
 title: Mo's algorithm
-documentation_of: //Library/Competitive.Library/Util/MoAlgorithm.cs
+documentation_of: //Library/Competitive.Library/Algorithm/MoAlgorithm.cs
 ---
 
 
