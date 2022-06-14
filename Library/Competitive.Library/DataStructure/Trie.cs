@@ -223,7 +223,7 @@ namespace Kzrnm.Competitive
                         ok = true;
                     }
                     if (len + 1 < span.Length)
-                        trie = trie.children.Get(span[++len]);
+                        trie = trie.children.GetValueOrDefault(span[++len]);
                     else
                     {
                         ++len;

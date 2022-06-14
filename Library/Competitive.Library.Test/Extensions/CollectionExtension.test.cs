@@ -1,6 +1,5 @@
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace Kzrnm.Competitive.Testing.Extensions
@@ -9,19 +8,39 @@ namespace Kzrnm.Competitive.Testing.Extensions
     public class CollectionExtensionTests
     {
         [Fact]
-        public void DicGet()
+        public void CompressCount()
         {
-            var dic = new Dictionary<string, int> {
-                {"foo",1 },
-                {"bar",-1 },
-                {"😀",10 },
-                {"でぃ",0 },
-            };
-            dic.Get("foo").Should().Be(1);
-            dic.Get("bar").Should().Be(-1);
-            dic.Get("😀").Should().Be(10);
-            dic.Get("でぃ").Should().Be(0);
-            dic.Get("invalid").Should().Be(0);
+            Enumerable.Range(0, 6).CompressCount()
+                .Should()
+                .Equal(
+                    (0, 1),
+                    (1, 1),
+                    (2, 1),
+                    (3, 1),
+                    (4, 1),
+                    (5, 1)
+                );
+            new int[] { 1, 1, 2, 2, 3, 3, }.CompressCount()
+                .Should()
+                .Equal(
+                    (1, 2),
+                    (2, 2),
+                    (3, 2)
+                );
+            new int[] { 1, 1, 2, 2, 3, }.CompressCount()
+                .Should()
+                .Equal(
+                    (1, 2),
+                    (2, 2),
+                    (3, 1)
+                );
+            new int[] { 1, 2, 2, 3, 3, }.CompressCount()
+                .Should()
+                .Equal(
+                    (1, 1),
+                    (2, 2),
+                    (3, 2)
+                );
         }
     }
 }

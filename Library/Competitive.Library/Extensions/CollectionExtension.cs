@@ -7,13 +7,6 @@ namespace Kzrnm.Competitive
 {
     public static class __CollectionExtension
     {
-        [凾(256)]
-        public static TValue Get<TKey, TValue>(this IDictionary<TKey, TValue> dic, TKey key)
-        {
-            dic.TryGetValue(key, out var v);
-            return v;
-        }
-
         /// <summary>
         /// 連続する要素をひとまとめにした配列を返す。
         /// </summary>

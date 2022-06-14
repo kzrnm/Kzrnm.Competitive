@@ -21,7 +21,7 @@ namespace Kzrnm.Competitive.Collection
                     dic[k] = v;
                 }
                 else
-                    cw.WriteLine(dic.Get(k));
+                    cw.WriteLine(dic.GetValueOrDefault(k));
             }
             return null;
         }

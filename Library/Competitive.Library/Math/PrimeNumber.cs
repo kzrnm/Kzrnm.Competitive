@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive
             var primeFactors = new Dictionary<long, int>();
             foreach (var p in EnumerateFactor(num))
             {
-                primeFactors[p] = primeFactors.Get(p) + 1;
+                primeFactors[p] = primeFactors.GetValueOrDefault(p) + 1;
             }
             return primeFactors;
         }
@@ -35,7 +35,7 @@ namespace Kzrnm.Competitive
             foreach (var pl in EnumerateFactor(num))
             {
                 var p = (int)pl;
-                primeFactors[p] = primeFactors.Get(p) + 1;
+                primeFactors[p] = primeFactors.GetValueOrDefault(p) + 1;
             }
             return primeFactors;
         }
@@ -68,7 +68,7 @@ namespace Kzrnm.Competitive
             var primeFactors = new Dictionary<int, int>();
             while (num > 1)
             {
-                primeFactors[searches[num]] = primeFactors.Get(searches[num]) + 1;
+                primeFactors[searches[num]] = primeFactors.GetValueOrDefault(searches[num]) + 1;
                 num /= searches[num];
             }
             return primeFactors;
