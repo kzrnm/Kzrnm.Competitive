@@ -19,7 +19,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 1
         /// </summary>
-        private static readonly MontgomeryModInt<T> One = 1;
+        private static readonly MontgomeryModInt<T> _One = 1;
         internal uint _v;
         static uint GetR()
         {
@@ -34,6 +34,9 @@ namespace Kzrnm.Competitive
         /// mod を返します。
         /// </summary>
         public static int Mod => (int)op.Mod;
+
+        public static MontgomeryModInt<T> Zero => default;
+        public static MontgomeryModInt<T> One => _One;
 
         /// <summary>
         /// インスタンスを生成します。

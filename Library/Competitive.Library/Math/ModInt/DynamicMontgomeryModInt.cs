@@ -18,7 +18,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 1
         /// </summary>
-        private static DynamicMontgomeryModInt<T> One;
+        private static DynamicMontgomeryModInt<T> _One;
         internal uint _v;
 
 
@@ -34,9 +34,12 @@ namespace Kzrnm.Competitive
                 _mod = (uint)value;
                 n2 = GetN2(_mod);
                 r = GetR(_mod);
-                One = 1;
+                _One = 1;
             }
         }
+
+        public static DynamicMontgomeryModInt<T> Zero => default;
+        public static DynamicMontgomeryModInt<T> One => _One;
 
         /// <summary>
         /// インスタンスを生成します。
