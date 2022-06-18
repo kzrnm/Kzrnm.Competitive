@@ -13,25 +13,25 @@ namespace Kzrnm.Competitive
         {
             edgeContainer = new EdgeContainer<GraphEdge>(size, isDirected);
         }
-        public static GraphBuilder Create(int count, PropertyConsoleReader cr, int edgeCount, bool isDirected)
+        public static GraphBuilder Create(int count, ConsoleReader cr, int edgeCount, bool isDirected)
         {
             var gb = new GraphBuilder(count, isDirected);
             for (var i = 0; i < edgeCount; i++)
-                gb.Add(cr.Int0, cr.Int0);
+                gb.Add(cr.Int0(), cr.Int0());
             return gb;
         }
-        public static GraphBuilder<int> CreateWithEdgeIndex(int count, PropertyConsoleReader cr, int edgeCount, bool isDirected)
+        public static GraphBuilder<int> CreateWithEdgeIndex(int count, ConsoleReader cr, int edgeCount, bool isDirected)
         {
             var gb = new GraphBuilder<int>(count, isDirected);
             for (var i = 0; i < edgeCount; i++)
-                gb.Add(cr.Int0, cr.Int0, i);
+                gb.Add(cr.Int0(), cr.Int0(), i);
             return gb;
         }
-        public static GraphBuilder CreateTree(int count, PropertyConsoleReader cr)
+        public static GraphBuilder CreateTree(int count, ConsoleReader cr)
         {
             var gb = new GraphBuilder(count, false);
             for (var i = 1; i < count; i++)
-                gb.Add(cr.Int0, cr.Int0);
+                gb.Add(cr.Int0(), cr.Int0());
             return gb;
         }
         [凾(256)]

@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -11,10 +10,10 @@ namespace Kzrnm.Competitive
 {
     public static class Grid
     {
-        [凾(256)] public static Grid<char> GridString(this PropertyConsoleReader cr, int H, char defaultValue = default) => Create(cr.Repeat(H).Ascii, defaultValue);
-        [凾(256)] public static Grid<int> GridInt(this PropertyConsoleReader cr, int H, int W, int defaultValue = default) => Create(cr.Repeat(H).Select(cr => cr.Repeat(W).Int), defaultValue);
-        [凾(256)] public static Grid<long> GridLong(this PropertyConsoleReader cr, int H, int W, long defaultValue = default) => Create(cr.Repeat(H).Select(cr => cr.Repeat(W).Long), defaultValue);
-        [凾(256)] public static Grid<ulong> GridULong(this PropertyConsoleReader cr, int H, int W, ulong defaultValue = default) => Create(cr.Repeat(H).Select(cr => cr.Repeat(W).ULong), defaultValue);
+        [凾(256)] public static Grid<char> GridString(this ConsoleReader cr, int H, char defaultValue = default) => Create(cr.Repeat(H).Ascii(), defaultValue);
+        [凾(256)] public static Grid<int> GridInt(this ConsoleReader cr, int H, int W, int defaultValue = default) => Create(cr.Grid<int>(H, W), defaultValue);
+        [凾(256)] public static Grid<long> GridLong(this ConsoleReader cr, int H, int W, long defaultValue = default) => Create(cr.Grid<long>(H, W), defaultValue);
+        [凾(256)] public static Grid<ulong> GridULong(this ConsoleReader cr, int H, int W, ulong defaultValue = default) => Create(cr.Grid<ulong>(H, W), defaultValue);
         [凾(256)] public static Grid<char> Create(string[] data, char defaultValue = default) => new Grid<char>(data.Flatten(), data.Length, data[0].Length, defaultValue);
         [凾(256)] public static Grid<T> Create<T>(T[][] data, T defaultValue = default) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);
         [凾(256)] public static Grid<T> Create<T>(Span<T[]> data, T defaultValue = default) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);

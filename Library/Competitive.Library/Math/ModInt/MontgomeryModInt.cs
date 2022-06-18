@@ -74,7 +74,7 @@ namespace Kzrnm.Competitive
         public override string ToString() => Value.ToString();
         [凾(256)] void IUtf8ConsoleWriterFormatter.Write(Utf8ConsoleWriter cw) => cw.Write(Value);
         [凾(256)] public static implicit operator ConsoleOutput(MontgomeryModInt<T> m) => m.ToConsoleOutput();
-        [凾(256)] public static implicit operator MontgomeryModInt<T>(PropertyConsoleReader r) => new MontgomeryModInt<T>(r.Long);
+        [凾(256)] public static implicit operator MontgomeryModInt<T>(ConsoleReader r) => new MontgomeryModInt<T>(r.Long());
 
 
 
