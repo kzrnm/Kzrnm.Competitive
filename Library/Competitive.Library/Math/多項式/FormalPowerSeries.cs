@@ -1,7 +1,6 @@
 using AtCoder;
 using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 // https://nyaannyaan.github.io/library/fps/formal-power-series.hpp
@@ -32,7 +31,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         /// <param name="polynomial"><paramref name="polynomial"/>[i] がi次の係数となる多項式</param>
         public FormalPowerSeries(ReadOnlySpan<uint> polynomial)
-            : this(MemoryMarshal.Cast<uint, StaticModInt<T>>(polynomial)) { }
+            : this(polynomial.Select(n => new StaticModInt<T>(n))) { }
 
         /// <summary>
         /// 多項式を生成します。
@@ -42,7 +41,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         /// <param name="polynomial"><paramref name="polynomial"/>[i] がi次の係数となる多項式</param>
         public FormalPowerSeries(ReadOnlySpan<int> polynomial)
-            : this(MemoryMarshal.Cast<int, StaticModInt<T>>(polynomial)) { }
+            : this(polynomial.Select(n => new StaticModInt<T>(n))) { }
 
         /// <summary>
         /// 多項式を生成します。
