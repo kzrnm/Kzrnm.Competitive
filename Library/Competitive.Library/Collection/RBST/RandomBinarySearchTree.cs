@@ -16,6 +16,7 @@ namespace Kzrnm.Competitive
         T Inverse(T v);
     }
 
+    // @title 乱択平衡二分探索木
     // https://nyaannyaan.github.io/library/rbst/rbst-base.hpp
     // https://nyaannyaan.github.io/library/rbst/lazy-reversible-rbst.hpp
     /// <summary>
