@@ -285,9 +285,9 @@ namespace Kzrnm.Competitive
             var xx = p1.x - p2.x;
             var yy = p1.y - p2.y;
             return 直線と円の交点(
-                xx,
-                yy,
-                0.5 * ((r1 - r2) * (r1 + r2) - xx * (p1.x + p2.x) - yy * (p1.y + p2.y)), p1, r1);
+                2 * xx,
+                2 * yy,
+                (r1 - r2) * (r1 + r2) - xx * (p1.x + p2.x) - yy * (p1.y + p2.y), p1, r1);
         }
 
         /// <summary>
