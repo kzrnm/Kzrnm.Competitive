@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace Kzrnm.Competitive.Testing.Util
+namespace Kzrnm.Competitive.Testing.Algorithm
 {
     // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class ZahyoCompressTests

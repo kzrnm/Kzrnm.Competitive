@@ -17,6 +17,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 using static System.Math;
 using static Kzrnm.Competitive.BitOperationsEx;
 using static Kzrnm.Competitive.Global;
+using static Kzrnm.Competitive.IterTools;
 using static Kzrnm.Competitive.MathLibEx;
 using static Kzrnm.Competitive.__BinarySearchEx;
 using static Program;
