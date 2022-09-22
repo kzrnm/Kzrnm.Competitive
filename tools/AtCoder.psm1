@@ -383,7 +383,7 @@ function Restore-Source {
         [Parameter(Mandatory = $false)][string]$url = $null
     )
     if (-not $filePath) {
-        $filePath = $config.Project.ProgramPath
+        $filePath = $config.Project.CombinedPath
     }
 
     if ($id -ge 0) {
