@@ -4,14 +4,14 @@ using Xunit;
 namespace Kzrnm.Competitive.Testing.DataStructure.String
 {
     // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
-    public class LCSTests
+    public class LcsTests
     {
         [Theory]
         [InlineData("fdsayusyhfsda", "fdsayusyhfsda", "fdsayusyhfsda")]
         [InlineData("ababcsd", "bacds", "bacs")]
         public void String(string s, string t, string expected)
         {
-            StringLibEx.LCS(s, t).Should().Equal(expected.ToCharArray());
+            StringLibEx.Lcs(s, t).Should().Equal(expected.ToCharArray());
         }
 
 
@@ -27,12 +27,22 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
                 new[]{2,3,7,6,5,4,1},
                 new[]{2,3,4}
             },
+            {
+                new[]{2,3,7,6,5,4},
+                new[]{1,2,3,4,5,6,7},
+                new[]{2,3,4}
+            },
+            {
+                new[]{1,2,3,4,5,6,7},
+                new[]{2,3,7,6,5,4},
+                new[]{2,3,4}
+            },
         };
         [Theory]
         [MemberData(nameof(Int_Data))]
         public void Int(int[] s, int[] t, int[] expected)
         {
-            StringLibEx.LCS(s, t).Should().Equal(expected);
+            StringLibEx.Lcs(s, t).Should().Equal(expected);
         }
     }
 }
