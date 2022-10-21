@@ -123,7 +123,7 @@ namespace Kzrnm.Competitive
         {
             if (num <= primes[^1])
                 return Contains((int)num);
-            foreach (var p in this)
+            foreach (var p in primes)
                 if (num % p == 0)
                     return false;
             return true;
