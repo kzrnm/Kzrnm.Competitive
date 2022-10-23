@@ -1,5 +1,6 @@
 using AtCoder.Operators;
 using System;
+using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
@@ -13,7 +14,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         public static T[] Dijkstra<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph, int from)
             where T : struct
-            where TOp : struct, INumOperator<T>
+            where TOp : struct, IAdditionOperator<T>, IMinMaxValue<T>, IComparer<T>
             where TNode : IGraphNode<TEdge>
             where TEdge : IWGraphEdge<T>
         {
@@ -38,7 +39,7 @@ namespace Kzrnm.Competitive
                 {
                     var to = e.To;
                     var nextLength = op.Add(len, e.Value);
-                    if (op.GreaterThan(res[to], nextLength))
+                    if (op.Compare(res[to], nextLength) > 0)
                         remains.Enqueue(res[to] = nextLength, to);
                 }
             }

@@ -1,5 +1,6 @@
 using AtCoder.Operators;
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 
 namespace Kzrnm.Competitive
@@ -13,7 +14,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public static (T Distance, ImmutableStack<TEdge> Route)[] DijkstraWithRoute<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph, int from)
             where T : struct
-            where TOp : struct, INumOperator<T>
+            where TOp : struct, IAdditionOperator<T>, IMinMaxValue<T>, IComparer<T>
             where TNode : IGraphNode<TEdge>
             where TEdge : IWGraphEdge<T>
         {
@@ -37,7 +38,7 @@ namespace Kzrnm.Competitive
                 {
                     var to = e.To;
                     var nextLength = op.Add(len, e.Value);
-                    if (op.GreaterThan(res[to].Distance, nextLength))
+                    if (op.Compare(res[to].Distance, nextLength) > 0)
                     {
                         res[to] = (nextLength, res[ix].Route.Push(e));
                         remains.Enqueue(nextLength, to);
