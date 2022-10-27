@@ -56,20 +56,6 @@ namespace Kzrnm.Competitive.Testing.Graph
             wgb.ToTree(root).BfsDescendant().Should().Equal(expected);
         }
 
-        [Theory]
-        [MemberData(nameof(BfsData))]
-        public void Bfs重みなしグラフSkipFirst(int root, int[] expected)
-        {
-            gb.ToTree(root).BfsDescendant(true).Should().Equal(expected[1..]);
-        }
-
-        [Theory]
-        [MemberData(nameof(BfsData))]
-        public void Bfs重み付きグラフSkipFirst(int root, int[] expected)
-        {
-            wgb.ToTree(root).BfsDescendant(true).Should().Equal(expected[1..]);
-        }
-
         public static TheoryData DfsData = new TheoryData<int, int[]>
         {
             { 0, new[] { 0, 1, 3, 7, 4, 2, 6, 5 }},
@@ -94,20 +80,6 @@ namespace Kzrnm.Competitive.Testing.Graph
         public void Dfs重み付きグラフ(int root, int[] expected)
         {
             wgb.ToTree(root).DfsDescendant().Should().Equal(expected);
-        }
-
-        [Theory]
-        [MemberData(nameof(DfsData))]
-        public void Dfs重みなしグラフSkipFirst(int root, int[] expected)
-        {
-            gb.ToTree(root).DfsDescendant(true).Should().Equal(expected[1..]);
-        }
-
-        [Theory]
-        [MemberData(nameof(DfsData))]
-        public void Dfs重み付きグラフSkipFirst(int root, int[] expected)
-        {
-            wgb.ToTree(root).DfsDescendant(true).Should().Equal(expected[1..]);
         }
     }
 }
