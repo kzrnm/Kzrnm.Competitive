@@ -22,7 +22,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public int[] down;
         /// <summary>
-        /// オイラーツアーで出ていくインデックス(=最後に入った子孫要素のインデックスdownと同じ)。
+        /// オイラーツアーで出ていくインデックス(=最後に入った子孫要素のインデックスdown+1)。
         /// </summary>
         public int[] up;
         /// <summary>
