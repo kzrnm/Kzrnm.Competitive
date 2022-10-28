@@ -112,8 +112,8 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <param name="x">子要素を根とする部分木の値</param>
         /// <param name="parent">親</param>
-        /// <param name="childEdge">子への辺</param>
+        /// <param name="edge">子への辺</param>
         /// <returns></returns>
-        T Propagate(T x, int parent, TEdge childEdge);
+        T Propagate(T x, int parent, TEdge edge);
     }
 }
