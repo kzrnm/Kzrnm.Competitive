@@ -190,18 +190,18 @@ namespace Kzrnm.Competitive.Testing.Graph
             int distance = 0;
             while (tree[i].Depth > tree[j].Depth)
             {
-                i = tree[i].Root;
+                i = tree[i].Parent;
                 ++distance;
             }
             while (tree[i].Depth < tree[j].Depth)
             {
-                j = tree[j].Root;
+                j = tree[j].Parent;
                 ++distance;
             }
             while (i != j)
             {
-                i = tree[i].Root;
-                j = tree[j].Root;
+                i = tree[i].Parent;
+                j = tree[j].Parent;
                 distance += 2;
             }
             return (i, distance);

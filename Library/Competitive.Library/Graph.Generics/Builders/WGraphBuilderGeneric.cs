@@ -28,7 +28,7 @@ namespace Kzrnm.Competitive
             ITreeBuildOperator<WTreeGraph<T, TOp, WTreeNode<T, WEdge<T, S>>, WEdge<T, S>>, WTreeNode<T, WEdge<T, S>>, WEdge<T, S>>
         {
             [凾(256)] public WGraph<T, TOp, WGraphNode<T, WEdge<T, S>>, WEdge<T, S>> Graph(WGraphNode<T, WEdge<T, S>>[] nodes, CSR<WEdge<T, S>> edges) => new WGraph<T, TOp, WGraphNode<T, WEdge<T, S>>, WEdge<T, S>>(nodes, edges);
-            [凾(256)] public WGraphNode<T, WEdge<T, S>> Node(int i, WEdge<T, S>[] roots, WEdge<T, S>[] children) => new WGraphNode<T, WEdge<T, S>>(i, roots, children);
+            [凾(256)] public WGraphNode<T, WEdge<T, S>> Node(int i, WEdge<T, S>[] parents, WEdge<T, S>[] children) => new WGraphNode<T, WEdge<T, S>>(i, parents, children);
 
             [凾(256)] public WTreeGraph<T, TOp, WTreeNode<T, WEdge<T, S>>, WEdge<T, S>> Tree(WTreeNode<T, WEdge<T, S>>[] nodes, int root, HeavyLightDecomposition<WTreeNode<T, WEdge<T, S>>, WEdge<T, S>> hl) => new WTreeGraph<T, TOp, WTreeNode<T, WEdge<T, S>>, WEdge<T, S>>(nodes, root, hl);
             [凾(256)]

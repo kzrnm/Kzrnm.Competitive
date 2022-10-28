@@ -164,7 +164,7 @@ namespace Kzrnm.Competitive
             for (int i = 0; i < arr.Length; i++)
             {
                 var n = tree[i];
-                arr[down[i]] = (n.Depth, n.Root.To);
+                arr[down[i]] = (n.Depth, n.Parent.To);
             }
             return new SparseTable<(int Depth, int Node), NodeMinOp>(arr);
         }
@@ -217,7 +217,7 @@ namespace Kzrnm.Competitive
                     else
                     {
                         s.Push((down[nxt[v]], down[v] + 1));
-                        v = tree[nxt[v]].Root.To;
+                        v = tree[nxt[v]].Parent.To;
                     }
                 }
                 return s;
@@ -234,7 +234,7 @@ namespace Kzrnm.Competitive
                 if (st.HasFlag(St.Start))
                     st &= ~St.Start;
                 else
-                    u = hl.tree[nxt[u]].Root.To;
+                    u = hl.tree[nxt[u]].Parent.To;
 
                 // Asc
                 if (nxt[u] != nxt[v])

@@ -25,7 +25,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(2, 6, 6);
             gb.Add(3, 7, 7);
             var tree = gb.ToTree();
-            var lca0 = tree.LowestCommonAncestorWithDataBuilder().Build<int, TOp>(tree.AsArray().Select(n => n.Root.Value).ToArray());
+            var lca0 = tree.LowestCommonAncestorWithDataBuilder().Build<int, TOp>(tree.AsArray().Select(n => n.Parent.Value).ToArray());
             lca0.Lca(0, 0).Should().Be((0, 0)); lca0.Lca(0, 1).Should().Be((0, 1)); lca0.Lca(0, 2).Should().Be((0, 2)); lca0.Lca(0, 3).Should().Be((0, 4));
             lca0.Lca(0, 4).Should().Be((0, 5)); lca0.Lca(0, 5).Should().Be((0, 7)); lca0.Lca(0, 6).Should().Be((0, 8)); lca0.Lca(0, 7).Should().Be((0, 11));
             lca0.Lca(1, 0).Should().Be((0, 1)); lca0.Lca(1, 1).Should().Be((1, 0)); lca0.Lca(1, 2).Should().Be((0, 3)); lca0.Lca(1, 3).Should().Be((1, 3));

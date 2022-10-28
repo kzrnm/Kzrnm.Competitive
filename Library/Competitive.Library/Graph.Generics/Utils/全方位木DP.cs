@@ -15,13 +15,13 @@ namespace Kzrnm.Competitive
         [DebuggerStepThrough]
         public static Impl<TNode, TEdge> Rerooting<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
               where TNode : ITreeNode<TEdge>
-              where TEdge : IGraphEdge, IReversable<TEdge>
+              where TEdge : IGraphEdge
             => new Impl<TNode, TEdge>(tree);
 
 
         public readonly struct Impl<TNode, TEdge>
               where TNode : ITreeNode<TEdge>
-              where TEdge : IGraphEdge, IReversable<TEdge>
+              where TEdge : IGraphEdge
         {
             [DebuggerStepThrough]
             public Impl(ITreeGraph<TNode, TEdge> tree)
@@ -81,7 +81,7 @@ namespace Kzrnm.Competitive
                         {
                             var e = edges[i];
                             var dst = e.To;
-                            stack.Push((dst, op.Propagate(op.Merge(pval, op.Merge(head[i], tail[i + 1])), dst, e.Reversed(cur))));
+                            stack.Push((dst, op.Propagate(op.Merge(pval, op.Merge(head[i], tail[i + 1])), dst, tree[dst].Parent)));
                         }
                     }
                 }

@@ -44,7 +44,7 @@ namespace Kzrnm.Competitive
             while (queue.Count > 0)
             {
                 var cur = queue.Dequeue();
-                foreach (var e in graphArr[cur].Roots)
+                foreach (var e in graphArr[cur].Parents)
                 {
                     var child = e.To;
                     if (res[child].UpdateMin(res[cur] + 1))

@@ -8,19 +8,19 @@ namespace Kzrnm.Competitive
         public readonly struct Event
         {
             public readonly bool isStart;
-            public readonly int root;
+            public readonly int parent;
             public readonly TEdge edge;
-            public Event(int root, TEdge edge, bool isStart)
+            public Event(int parent, TEdge edge, bool isStart)
             {
-                this.root = root;
+                this.parent = parent;
                 this.edge = edge;
                 this.isStart = isStart;
             }
             [凾(256)]
-            public Event Reverse() => new Event(root, edge, !isStart);
+            public Event Reverse() => new Event(parent, edge, !isStart);
             [凾(256)]
-            public (int From, int To) Route() => isStart ? (root, edge.To) : (edge.To, root);
-            public override string ToString() => $"{root}{(isStart ? '→' : '←')}{edge}";
+            public (int From, int To) Route() => isStart ? (parent, edge.To) : (edge.To, parent);
+            public override string ToString() => $"{parent}{(isStart ? '→' : '←')}{edge}";
         }
         /// <summary>
         /// <para>根から各ノードを深さ優先探索するとき、ノードに入る/出るをイベント化したときのインデックスを返す。</para>

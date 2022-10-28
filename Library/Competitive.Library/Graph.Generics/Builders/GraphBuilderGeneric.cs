@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive
             ITreeBuildOperator<TreeGraph<TreeNode<T>, GraphEdge<T>>, TreeNode<T>, GraphEdge<T>>
         {
             [凾(256)] public SimpleGraph<GraphNode<GraphEdge<T>>, GraphEdge<T>> Graph(GraphNode<GraphEdge<T>>[] nodes, CSR<GraphEdge<T>> edges) => new SimpleGraph<GraphNode<GraphEdge<T>>, GraphEdge<T>>(nodes, edges);
-            [凾(256)] public GraphNode<GraphEdge<T>> Node(int i, GraphEdge<T>[] roots, GraphEdge<T>[] children) => new GraphNode<GraphEdge<T>>(i, roots, children);
+            [凾(256)] public GraphNode<GraphEdge<T>> Node(int i, GraphEdge<T>[] parents, GraphEdge<T>[] children) => new GraphNode<GraphEdge<T>>(i, parents, children);
 
             [凾(256)] public TreeGraph<TreeNode<T>, GraphEdge<T>> Tree(TreeNode<T>[] nodes, int root, HeavyLightDecomposition<TreeNode<T>, GraphEdge<T>> hl) => new TreeGraph<TreeNode<T>, GraphEdge<T>>(nodes, root, hl);
             [凾(256)]
@@ -64,16 +64,16 @@ namespace Kzrnm.Competitive
     public class GraphNode<TEdge> : IGraphNode<TEdge>, IEquatable<GraphNode<TEdge>>
         where TEdge : IGraphEdge
     {
-        public GraphNode(int i, TEdge[] roots, TEdge[] children)
+        public GraphNode(int i, TEdge[] parents, TEdge[] children)
         {
             Index = i;
-            Roots = roots;
+            Parents = parents;
             Children = children;
         }
         public int Index { get; }
-        public TEdge[] Roots { get; }
+        public TEdge[] Parents { get; }
         public TEdge[] Children { get; }
-        public bool IsDirected => Roots != Children;
+        public bool IsDirected => Parents != Children;
 
         public override string ToString() => $"children: {string.Join(",", Children)}";
         public override bool Equals(object obj) => obj is GraphNode<TEdge> d && Equals(d);
@@ -82,16 +82,16 @@ namespace Kzrnm.Competitive
     }
     public class TreeNode<T> : ITreeNode<GraphEdge<T>>, IEquatable<TreeNode<T>>
     {
-        public TreeNode(int i, int size, GraphEdge<T> root, int depth, GraphEdge<T>[] children)
+        public TreeNode(int i, int size, GraphEdge<T> parent, int depth, GraphEdge<T>[] children)
         {
             Index = i;
-            Root = root;
+            Parent = parent;
             Children = children;
             Depth = depth;
             Size = size;
         }
         public int Index { get; }
-        public GraphEdge<T> Root { get; }
+        public GraphEdge<T> Parent { get; }
         public GraphEdge<T>[] Children { get; }
         public int Depth { get; }
         public int Size { get; }

@@ -21,10 +21,10 @@ namespace Kzrnm.Competitive
             if (tree.Length == 0) throw new ArgumentException(nameof(tree));
 
             this.tree = tree;
-            var roots = new int[tree.Length];
+            var parents = new int[tree.Length];
             for (int v = 0; v < tree.Length; v++)
-                roots[v] = tree[v].Root.To;
-            doubling = new PathDoubling(roots, tree.Length);
+                parents[v] = tree[v].Parent.To;
+            doubling = new PathDoubling(parents, tree.Length);
         }
 
         /// <summary>

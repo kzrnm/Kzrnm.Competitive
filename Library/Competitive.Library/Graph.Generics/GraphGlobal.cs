@@ -47,7 +47,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 入ってくる辺の向いてる先
         /// </summary>
-        TEdge[] Roots { get; }
+        TEdge[] Parents { get; }
         /// <summary>
         /// 出ている辺の向いてる先
         /// </summary>
@@ -66,7 +66,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 親ノード
         /// </summary>
-        TEdge Root { get; }
+        TEdge Parent { get; }
         /// <summary>
         /// 子ノード
         /// </summary>
@@ -83,7 +83,7 @@ namespace Kzrnm.Competitive
     [IsOperator]
     public interface IGraphBuildOperator<TGraph, TNode, TEdge>
     {
-        TNode Node(int i, TEdge[] roots, TEdge[] children);
+        TNode Node(int i, TEdge[] parents, TEdge[] children);
         TGraph Graph(TNode[] nodes, CSR<TEdge> edges);
     }
     [IsOperator]
@@ -123,20 +123,20 @@ namespace Kzrnm.Competitive
         public bool IsDirected { get; }
         public readonly List<(int from, TEdge edge)> edges;
         public readonly int[] sizes;
-        public readonly int[] rootSizes;
+        public readonly int[] parentSizes;
         public EdgeContainer(int size, bool isDirected)
         {
             Length = size;
             IsDirected = isDirected;
             sizes = new int[size];
-            rootSizes = isDirected ? new int[size] : sizes;
+            parentSizes = isDirected ? new int[size] : sizes;
             edges = new List<(int from, TEdge edge)>(size);
         }
         [凾(256)]
         public void Add(int from, TEdge edge)
         {
             ++sizes[from];
-            ++rootSizes[edge.To];
+            ++parentSizes[edge.To];
             edges.Add((from, edge));
         }
 
@@ -156,17 +156,17 @@ namespace Kzrnm.Competitive
             var res = new TNode[edgeContainer.Length];
             var csr = edgeContainer.ToCSR();
             var counter = new int[res.Length];
-            var rootCounter = edgeContainer.IsDirected ? new int[res.Length] : counter;
+            var parentCounter = edgeContainer.IsDirected ? new int[res.Length] : counter;
             var children = SizeToArray<TEdge>(edgeContainer.sizes);
-            var roots = edgeContainer.IsDirected ? SizeToArray<TEdge>(edgeContainer.rootSizes) : children;
+            var parents = edgeContainer.IsDirected ? SizeToArray<TEdge>(edgeContainer.parentSizes) : children;
             for (int i = 0; i < res.Length; i++)
             {
-                res[i] = op.Node(i, roots[i], children[i]);
+                res[i] = op.Node(i, parents[i], children[i]);
                 foreach (var e in csr.EList.AsSpan(csr.Start[i], csr.Start[i + 1] - csr.Start[i]))
                 {
                     var to = e.To;
                     children[i][counter[i]++] = e;
-                    roots[to][rootCounter[to]++] = e.Reversed(i);
+                    parents[to][parentCounter[to]++] = e.Reversed(i);
                 }
             }
             return op.Graph(res, csr);

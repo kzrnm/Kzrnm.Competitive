@@ -68,7 +68,7 @@ namespace Kzrnm.Competitive
             for (int i = 0; i < graph.Length; i++)
             {
                 var node = graph[i];
-                var inCnt = node.Roots.Length;
+                var inCnt = node.Parents.Length;
                 var outCnt = node.Children.Length;
                 if (inCnt == outCnt)
                     continue;

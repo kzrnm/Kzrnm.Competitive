@@ -22,7 +22,7 @@ namespace Kzrnm.Competitive.Graph
             while (ix >= 0)
             {
                 list.Add(ix);
-                var e = tree[ix].Root;
+                var e = tree[ix].Parent;
                 ix = e.To;
                 sum += e.Value;
             }

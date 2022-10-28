@@ -25,10 +25,10 @@ namespace Kzrnm.Competitive
                 throw new ArgumentException("データと木の長さが異なります", nameof(data));
 
             this.tree = tree;
-            var roots = new int[tree.Length];
+            var parents = new int[tree.Length];
             for (int v = 0; v < tree.Length; v++)
-                roots[v] = tree[v].Root.To;
-            doubling = new PathDoubling<T, TOp>(roots, data, tree.Length, op);
+                parents[v] = tree[v].Parent.To;
+            doubling = new PathDoubling<T, TOp>(parents, data, tree.Length, op);
         }
 
         /// <summary>
