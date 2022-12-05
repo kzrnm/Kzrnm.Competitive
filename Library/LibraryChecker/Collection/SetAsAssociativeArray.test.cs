@@ -3,11 +3,10 @@ using System.Collections.Generic;
 
 namespace Kzrnm.Competitive.Collection
 {
-    public class SetAsAssociativeArrayTest
+    internal class SetAsAssociativeArrayTest : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/associative_array
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/associative_array";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int Q = cr;
             var dic = new SetDictionary<long, long>();

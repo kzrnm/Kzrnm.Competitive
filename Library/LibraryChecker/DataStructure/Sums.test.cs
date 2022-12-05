@@ -2,11 +2,10 @@ using Kzrnm.Competitive.IO;
 
 namespace Kzrnm.Competitive.DataStructure
 {
-    public class SumsTest
+    internal class SumsTest : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/static_range_sum
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/static_range_sum";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int n = cr;
             int q = cr;

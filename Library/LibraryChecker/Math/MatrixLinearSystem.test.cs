@@ -4,11 +4,10 @@ using ModIntOperator = AtCoder.StaticModIntOperator<AtCoder.Mod998244353>;
 
 namespace Kzrnm.Competitive.MathNs
 {
-    public class MatrixLinearSystemTest
+    internal class MatrixLinearSystemTest : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/system_of_linear_equations
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/system_of_linear_equations";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             int M = cr;

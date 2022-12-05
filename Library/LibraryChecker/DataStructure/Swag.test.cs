@@ -5,11 +5,10 @@ using ModInt = AtCoder.StaticModInt<AtCoder.Mod998244353>;
 
 namespace Kzrnm.Competitive.DataStructure
 {
-    public class SwagTest
+    internal class SwagTest : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/queue_operate_all_composite
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/queue_operate_all_composite";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int Q = cr;
             var swag = new Swag<F, Op>();

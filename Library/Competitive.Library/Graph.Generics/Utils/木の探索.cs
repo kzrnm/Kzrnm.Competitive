@@ -17,7 +17,7 @@ namespace Kzrnm.Competitive
             var arr = tree.AsArray();
             var res = new int[arr.Length];
             res[0] = tree.Root;
-            
+
             int tar = 1;
             int cur = 0;
             while ((uint)tar < (uint)res.Length)

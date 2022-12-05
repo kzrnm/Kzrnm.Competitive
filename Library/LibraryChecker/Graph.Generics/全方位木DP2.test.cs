@@ -4,11 +4,10 @@ using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive.Graph.Generics
 {
-    internal class 全方位木DP2
+    internal class 全方位木DP2 : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://yukicoder.me/problems/no/768
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://yukicoder.me/problems/no/768";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             var tree = GraphBuilder.CreateTree(N, cr).ToTree();

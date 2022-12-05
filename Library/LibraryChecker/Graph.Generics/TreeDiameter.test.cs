@@ -3,11 +3,10 @@ using System.Collections.Generic;
 
 namespace Kzrnm.Competitive.Graph
 {
-    public class TreeDiameterTest
+    internal class TreeDiameterTest : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/tree_diameter
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/tree_diameter";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             var gb = new WULongGraphBuilder(N, false);

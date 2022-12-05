@@ -2,11 +2,10 @@ using Kzrnm.Competitive.IO;
 
 namespace Kzrnm.Competitive.Graph
 {
-    public class UnionFindTest
+    internal class UnionFindTest : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/unionfind
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/unionfind";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int n = cr;
             int q = cr;

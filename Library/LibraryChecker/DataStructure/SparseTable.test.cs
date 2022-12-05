@@ -3,11 +3,10 @@ using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive.DataStructure
 {
-    public class SparseTable
+    internal class SparseTable : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/staticrmq
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/staticrmq";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int n = cr;
             int q = cr;

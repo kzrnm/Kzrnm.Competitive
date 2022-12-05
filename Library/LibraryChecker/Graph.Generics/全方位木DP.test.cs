@@ -4,11 +4,10 @@ using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive.Graph.Generics
 {
-    internal class 全方位木DP
+    internal class 全方位木DP : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_5_A
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_5_A";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             var gb = new WLongGraphBuilder(N, false);

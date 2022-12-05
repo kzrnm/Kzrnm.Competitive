@@ -2,11 +2,10 @@ using Kzrnm.Competitive.IO;
 
 namespace Kzrnm.Competitive.DataStructure
 {
-    public class BinaryTrieTest
+    internal class BinaryTrieTest : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/set_xor_min
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/set_xor_min";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             var bt = new BinaryTrie(30);

@@ -2,11 +2,10 @@ using Kzrnm.Competitive.IO;
 
 namespace Kzrnm.Competitive.DataStructure
 {
-    public class WaveletMatrixKthSmallestTest
+    internal class WaveletMatrixKthSmallestTest : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/range_kth_smallest
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/range_kth_smallest";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int n = cr;
             int q = cr;

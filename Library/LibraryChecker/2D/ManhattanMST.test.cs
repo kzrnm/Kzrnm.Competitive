@@ -2,11 +2,10 @@ using Kzrnm.Competitive.IO;
 
 namespace Kzrnm.Competitive.TwoDimensional
 {
-    public class ManhattanMSTTest
+    internal class ManhattanMSTTest : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/manhattanmst
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/manhattanmst";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             var pts = cr.Repeat(N).Select<(long, long)>(cr => (cr, cr));

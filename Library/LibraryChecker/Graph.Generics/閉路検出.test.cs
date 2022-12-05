@@ -3,11 +3,10 @@ using Kzrnm.Competitive.IO;
 
 namespace Kzrnm.Competitive.Graph
 {
-    public class 閉路検出Test
+    internal class 閉路検出Test : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/cycle_detection
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/cycle_detection";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             int M = cr;

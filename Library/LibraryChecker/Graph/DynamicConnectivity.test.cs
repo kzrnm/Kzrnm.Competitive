@@ -4,11 +4,10 @@ using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive.Graph
 {
-    public class DynamicConnectivityTest
+    internal class DynamicConnectivityTest : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/dynamic_graph_vertex_add_component_sum
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/dynamic_graph_vertex_add_component_sum";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int n = cr;
             int k = cr;

@@ -6,11 +6,10 @@ using ModIntOperator = AtCoder.StaticModIntOperator<AtCoder.Mod998244353>;
 
 namespace Kzrnm.Competitive.Graph
 {
-    public class HL分解とAffine変換Test
+    internal class HL分解とAffine変換Test : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/vertex_set_path_composite
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/vertex_set_path_composite";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             int Q = cr;

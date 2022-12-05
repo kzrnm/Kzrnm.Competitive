@@ -3,11 +3,10 @@ using Kzrnm.Competitive.IO;
 
 namespace Kzrnm.Competitive.Graph
 {
-    public class オイラーツアーとFenwickTreeTest
+    internal class オイラーツアーとFenwickTreeTest : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/vertex_add_path_sum
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/vertex_add_path_sum";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             int Q = cr;

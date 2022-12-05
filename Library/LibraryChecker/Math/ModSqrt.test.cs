@@ -5,11 +5,10 @@ using ModIntOperator = AtCoder.StaticModIntOperator<AtCoder.Mod998244353>;
 
 namespace Kzrnm.Competitive.MathNs
 {
-    public class ModSqrtTest
+    internal class ModSqrtTest : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/sqrt_mod
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/sqrt_mod";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             for (int i = 0; i < N; i++)

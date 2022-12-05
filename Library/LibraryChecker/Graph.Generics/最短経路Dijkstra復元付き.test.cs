@@ -3,11 +3,10 @@ using System.Linq;
 
 namespace Kzrnm.Competitive.Graph
 {
-    public class 最短経路Dijkstra復元付きTest
+    internal class 最短経路Dijkstra復元付きTest : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/shortest_path
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/shortest_path";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             int M = cr;

@@ -4,11 +4,10 @@ using System;
 
 namespace Kzrnm.Competitive.TwoDimensional
 {
-    public class PointIntSortTest
+    internal class PointIntSortTest : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/sort_points_by_argument
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/sort_points_by_argument";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             var pts = cr.Repeat(N).Select(cr => new PointInt(cr, cr)).Sort().AsSpan();

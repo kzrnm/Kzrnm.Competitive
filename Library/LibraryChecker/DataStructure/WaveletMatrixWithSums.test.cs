@@ -7,11 +7,10 @@ using System.Linq;
 
 namespace Kzrnm.Competitive.DataStructure
 {
-    public class WaveletMatrixWithSumsTest
+    internal class WaveletMatrixWithSumsTest : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/rectangle_sum
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/rectangle_sum";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             int Q = cr;

@@ -3,11 +3,10 @@ using Kzrnm.Competitive.IO;
 
 namespace Kzrnm.Competitive.MathNs
 {
-    public class MoAlgorithmTest
+    internal class MoAlgorithmTest : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/static_range_inversions_query
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/static_range_inversions_query";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             int Q = cr;

@@ -3,11 +3,10 @@ using Kzrnm.Competitive.IO;
 
 namespace Kzrnm.Competitive.Graph
 {
-    public class HL分解の部分木Test
+    internal class HL分解の部分木Test : BaseSolver
     {
-        static void Main() { using var cw = ConsoleOutput.cw = new Utf8ConsoleWriter(); Solve(new ConsoleReader(), cw); }
-        // verification-helper: PROBLEM https://judge.yosupo.jp/problem/vertex_add_subtree_sum
-        static ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        public override string Url => "https://judge.yosupo.jp/problem/vertex_add_subtree_sum";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
             int Q = cr;
