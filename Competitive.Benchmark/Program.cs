@@ -33,6 +33,7 @@ public class BenchmarkConfig : ManualConfig
         //AddDiagnoser(MemoryDiagnoser.Default);
         AddExporter(BenchmarkDotNet.Exporters.MarkdownExporter.GitHub);
         AddJob(Job.ShortRun.WithToolchain(CsProjCoreToolchain.NetCoreApp31));
+        AddJob(Job.ShortRun.WithToolchain(CsProjCoreToolchain.NetCoreApp70));
     }
 }
 

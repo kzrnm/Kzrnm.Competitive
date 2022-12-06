@@ -1,5 +1,10 @@
 root = true
 
+[*.{csproj,props,targets,config,nuspec}]
+indent_size = 2
+indent_style = space
+
+
 [*.cs]
 charset = utf-8
 

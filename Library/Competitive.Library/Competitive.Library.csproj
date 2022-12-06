@@ -1,64 +1,65 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFrameworks>netcoreapp3.1</TargetFrameworks>
-		<RootNamespace>Kzrnm.Competitive</RootNamespace>
-		<OutputType>Library</OutputType>
-		<LangVersion>8</LangVersion>
-		<NoWarn>1701;1702;CA1034;CA1036;CA1815;CS1591;IDE1006;IDE0034;IDE0044;EMBED0004;EMBED0010</NoWarn>
-		<DefineConstants>$(DefineConstants);ATCODER_CONTRACT</DefineConstants>
-		<Configurations>Debug;Release;Library</Configurations>
+  <PropertyGroup>
+    <TargetFrameworks>net7.0;netcoreapp3.1</TargetFrameworks>
+    <LangVersion Condition="'$(TargetFramework)' == 'netcoreapp3.1'">8</LangVersion>
+    <LangVersion Condition="'$(TargetFramework)' == 'net7.0'">11</LangVersion>
+    <RootNamespace>Kzrnm.Competitive</RootNamespace>
+    <OutputType>Library</OutputType>
+    <NoWarn>1701;1702;CA1034;CA1036;CA1815;CS1591;IDE1006;IDE0034;IDE0044;EMBED0004;EMBED0010</NoWarn>
+    <DefineConstants>$(DefineConstants);ATCODER_CONTRACT</DefineConstants>
+    <Configurations>Debug;Release;Library</Configurations>
 
-		<PackageId>Kzrnm.Competitive</PackageId>
-		<Description>Competitive programming library</Description>
-		<PackageTags>competitive;ac-library-csharp;AtCoder</PackageTags>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageId>Kzrnm.Competitive</PackageId>
+    <Description>Competitive programming library</Description>
+    <PackageTags>competitive;ac-library-csharp;AtCoder</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
-		<Authors>kzrnm</Authors>
-		<RepositoryType>git</RepositoryType>
-		<RepositoryCommit Condition="'$(GIT_COMMIT)' != ''">$(GIT_COMMIT)</RepositoryCommit>
-		<PackageProjectUrl>https://github.com/kzrnm/Kzrnm.Competitive</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/kzrnm/Kzrnm.Competitive</RepositoryUrl>
-		<EmbedUntrackedSources>true</EmbedUntrackedSources>
-		<IncludeSymbols>true</IncludeSymbols>
-		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-	</PropertyGroup>
+    <Authors>kzrnm</Authors>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryCommit Condition="'$(GIT_COMMIT)' != ''">$(GIT_COMMIT)</RepositoryCommit>
+    <PackageProjectUrl>https://github.com/kzrnm/Kzrnm.Competitive</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/kzrnm/Kzrnm.Competitive</RepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
 
-	<PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
-		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-	</PropertyGroup>
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<InternalsVisibleTo Include="Competitive.Library.Test" />
-		<PackageReference Include="ac-library-csharp" Version="1.20.0" />
-		<PackageReference Include="AtCoderAnalyzer" Version="1.20.0">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Competitive.IO" Version="1.0.1" />
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="SourceExpander.Embedder" Version="5.0.0" Condition="'$(Configuration)' != 'Library'">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<!--
+  <ItemGroup>
+    <InternalsVisibleTo Include="Competitive.Library.Test" />
+    <PackageReference Include="ac-library-csharp" Version="2.0.0" />
+    <PackageReference Include="AtCoderAnalyzer" Version="2.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Competitive.IO" Version="1.0.1" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="SourceExpander.Embedder" Version="5.0.0" Condition="'$(Configuration)' != 'Library'">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <!--
 		-->
-	</ItemGroup>
+  </ItemGroup>
 
-	<ItemGroup>
-	  <None Update="Math\Matrix\MatrixProdStrassen.Simd.tt">
-	    <Generator>TextTemplatingFileGenerator</Generator>
-	    <LastGenOutput>MatrixProdStrassen.Simd.cs</LastGenOutput>
-	  </None>
-	  <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-	  <Compile Update="Math\Matrix\MatrixProdStrassen.Simd.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>MatrixProdStrassen.Simd.tt</DependentUpon>
-	  </Compile>
-	</ItemGroup>
+  <ItemGroup>
+    <None Update="Math\Matrix\MatrixProdStrassen.Simd.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MatrixProdStrassen.Simd.cs</LastGenOutput>
+    </None>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+    <Compile Update="Math\Matrix\MatrixProdStrassen.Simd.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MatrixProdStrassen.Simd.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>
