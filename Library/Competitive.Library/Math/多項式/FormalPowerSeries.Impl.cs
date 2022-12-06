@@ -509,19 +509,23 @@ namespace Kzrnm.Competitive
             public Impl Pow(long k, int deg = -1)
             {
                 if (deg < 0) deg = Length;
+                if (k == 0)
+                    return new Impl(new[] { StaticModInt<T>.One });
 
                 var span = AsSpan();
                 for (int i = 0; i < span.Length; i++)
+                {
                     if (span[i].Value != 0)
                     {
-                        if (i * k > deg)
-                            return Set(new StaticModInt<T>[deg]);
                         var rev = span[i].Inv();
                         var right = span[i].Pow(k);
 
                         return Multiply(rev).RightShift(i).Log(deg).Multiply(k).Exp(deg).Multiply(right)
                             .LeftShift((int)(i * k)).Pre(deg);
                     }
+                    if (Math.Max((i + 1) * k, k) > deg)
+                        return Set(new StaticModInt<T>[deg]);
+                }
                 return Set(new StaticModInt<T>[deg]);
             }
 

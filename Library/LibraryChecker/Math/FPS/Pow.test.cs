@@ -10,7 +10,7 @@ namespace Kzrnm.Competitive.MathNs.Fps
         public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
-            int M = cr;
+            long M = cr;
             int[] arr = cr.Repeat(N);
             var pow = new FormalPowerSeries<Mod998244353>(arr).Pow(M).Coefficients;
             Array.Resize(ref pow, N);
