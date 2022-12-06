@@ -86,7 +86,11 @@ jobs:
           solution: ${{ env.WORKFLOW_BUILD_SLN }}
           output-path: verify_files.json
           include: Library/**
-          exclude: Library/LibraryChecker/BaseSolver/BaseSover.cs **/obj/**
+          exclude: |
+            **/obj/**
+            Library/Competitive.Library.Test/SourceExpanderTest.cs
+            Library/LibraryChecker/BaseSolver/BaseSover.cs
+            Library/LibraryChecker/Program.cs
           unittest-result: ${{runner.temp}}/VerifierCsUnitTestResult/*.csv
           problems: ${{runner.temp}}/problems.json
           msbuild-properties: Configuration=Release
