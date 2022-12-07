@@ -10,7 +10,7 @@
     },
     "ConsoleInput": {
       "commandName": "Project",
-      "commandLineArgs": "Kzrnm.Competitive.MathNs.Fps.FormalPowerSeriesPowTest"
+      "commandLineArgs": "-i"
     }
   }
 }

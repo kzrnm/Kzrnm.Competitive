@@ -36,7 +36,7 @@ namespace Kzrnm.Competitive
             XINF = xinf;
             YINF = yinf;
 
-            size = 1 << BitOperationsEx.RoundUpToPowerOf2(Length);
+            size = BitOperationsEx.RoundUpToPowerOf2(Length);
             int n2 = size << 1;
             u = new bool[n2];
             this.xs = new T[n2];
