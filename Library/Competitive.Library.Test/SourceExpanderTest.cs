@@ -14,9 +14,14 @@ namespace Embedding
         public async Task LanguageVersion()
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Global));
+#if NETCOREAPP3_1
+            const string expected = "8.0";
+#elif NET7_0
+            const string expected = "11.0";
+#endif
             embedded.AssemblyMetadatas
                 .Should().ContainKey("SourceExpander.EmbeddedLanguageVersion")
-                .WhoseValue.Should().Be("8.0");
+                .WhoseValue.Should().Be(expected);
         }
 
         [Fact]
@@ -50,4 +55,4 @@ namespace Embedding
         }
     }
 #endif
-}
+        }
