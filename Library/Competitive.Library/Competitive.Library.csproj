@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net7.0;netcoreapp3.1</TargetFrameworks>
@@ -26,6 +26,22 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+    <Compile Remove="**/*.GenericMath.cs" />
+    <Compile Remove="**/*.GenericMath/**" />
+    <None Include="**/*.GenericMath.cs" />
+    <None Include="**/*.GenericMath/**" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp3.1'">
+    <Compile Remove="**/*.NotGenericMath.cs" />
+    <Compile Remove="**/*.NotGenericMath/**" />
+    <None Include="**/*.NotGenericMath.cs" />
+    <None Include="**/*.NotGenericMath/**" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Library'">
+    <SourceExpander_Embedder_Enabled>False</SourceExpander_Embedder_Enabled>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
@@ -42,13 +58,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SourceExpander.Embedder" Version="5.0.0" Condition="'$(Configuration)' != 'Library'">
+    <PackageReference Include="SourceExpander.Embedder" Version="5.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <!--
-		-->
+    -->
   </ItemGroup>
+
 
   <ItemGroup>
     <None Update="Math\Matrix\MatrixProdStrassen.Simd.tt">
@@ -56,6 +73,10 @@
       <LastGenOutput>MatrixProdStrassen.Simd.cs</LastGenOutput>
     </None>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+
+  <ItemGroup>
     <Compile Update="Math\Matrix\MatrixProdStrassen.Simd.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

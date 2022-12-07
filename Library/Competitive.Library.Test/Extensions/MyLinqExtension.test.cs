@@ -6,7 +6,6 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.Extensions
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class MyLinqExtensionTests
     {
         [Fact]
@@ -163,7 +162,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
             ((ReadOnlySpan<int>)span).Select(FuncIndex).ToArray().Should().Equal(Enumerable.Range(0, 10).Select(FuncIndex));
         }
 
-        public static TheoryData Chunk_Data = new TheoryData<IEnumerable<int>, int, int[][]>
+        public static TheoryData Chunk_Data => new TheoryData<IEnumerable<int>, int, int[][]>
         {
             {
                 Enumerable.Range(0, 12),
@@ -201,7 +200,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
                 result[i].Should().Equal(expected[i]);
         }
 
-        public static TheoryData Tupled2_Data = new TheoryData<int[], (int, int)[]>
+        public static TheoryData Tupled2_Data => new TheoryData<int[], (int, int)[]>
         {
             {
                 new int[]{ 1,2,3,4,5,6 },

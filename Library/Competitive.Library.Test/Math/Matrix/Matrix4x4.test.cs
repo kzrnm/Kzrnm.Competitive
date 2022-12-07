@@ -1,22 +1,20 @@
-using AtCoder;
 using FluentAssertions;
 using Xunit;
 
 namespace Kzrnm.Competitive.Testing.MathNS.Matrix
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class Matrix4x4Tests
     {
         [Fact]
         [Trait("Category", "Operator")]
         public void SingleMinus()
         {
-            (-new Matrix4x4<long, LongOperator>(
+            (-new LongMatrix4x4(
                 (1, 2, 3, 4),
                 (5, 6, 7, 8),
                 (9, 10, 11, 12),
                 (13, 14, 15, 16)
-            )).Should().Be(new Matrix4x4<long, LongOperator>(
+            )).Should().Be(new LongMatrix4x4(
                 (-1, -2, -3, -4),
                 (-5, -6, -7, -8),
                 (-9, -10, -11, -12),
@@ -24,17 +22,17 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             ));
         }
 
-        public static TheoryData Add_Data = new TheoryData<Matrix4x4<long, LongOperator>, Matrix4x4<long, LongOperator>, Matrix4x4<long, LongOperator>>
+        public static TheoryData Add_Data => new TheoryData<LongMatrix4x4, LongMatrix4x4, LongMatrix4x4>
         {
             {
-                new Matrix4x4<long, LongOperator>(
+                new LongMatrix4x4(
                     (1, 2, 3, 4),
                     (5, 6, 7, 8),
                     (9, 10, 11, 12),
                     (13, 14, 15, 16)
                 ),
-                Matrix4x4<long, LongOperator>.Identity,
-                new Matrix4x4<long, LongOperator>(
+                LongMatrix4x4.Identity,
+                new LongMatrix4x4(
                     (2, 2, 3, 4),
                     (5, 7, 7, 8),
                     (9, 10, 12, 12),
@@ -42,19 +40,19 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 )
             },
             {
-                new Matrix4x4<long, LongOperator>(
+                new LongMatrix4x4(
                     (1, 2, 3, 4),
                     (5, 6, 7, 8),
                     (9, 10, 11, 12),
                     (13, 14, 15, 16)
                 ),
-                new Matrix4x4<long, LongOperator>(
+                new LongMatrix4x4(
                     (1, -2, 3, 4),
                     (5, -6, 7, 8),
                     (9, -10, 11, 12),
                     (13,-14, -15, -16)
                 ),
-                new Matrix4x4<long, LongOperator>(
+                new LongMatrix4x4(
                     (2, 0, 6, 8),
                     (10, 0, 14, 16),
                     (18, 0, 22, 24),
@@ -66,30 +64,33 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Theory]
         [Trait("Category", "Operator")]
         [MemberData(nameof(Add_Data))]
-        public void Add(Matrix4x4<long, LongOperator> mat1, Matrix4x4<long, LongOperator> mat2, Matrix4x4<long, LongOperator> expected)
+        public void Add(LongMatrix4x4 mat1, LongMatrix4x4 mat2, LongMatrix4x4 expected)
         {
             (mat1 + mat2).Should().Be(expected);
             (mat2 + mat1).Should().Be(expected);
-            default(Matrix4x4<long, LongOperator>.Operator).Add(mat1, mat2).Should().Be(expected);
-            default(Matrix4x4<long, LongOperator>.Operator).Add(mat2, mat1).Should().Be(expected);
+
+#if !NET7_0_OR_GREATER
+            default(LongMatrix4x4.Operator).Add(mat1, mat2).Should().Be(expected);
+            default(LongMatrix4x4.Operator).Add(mat2, mat1).Should().Be(expected);
+#endif
         }
 
-        public static TheoryData Subtract_Data = new TheoryData<Matrix4x4<long, LongOperator>, Matrix4x4<long, LongOperator>, Matrix4x4<long, LongOperator>>
+        public static TheoryData Subtract_Data => new TheoryData<LongMatrix4x4, LongMatrix4x4, LongMatrix4x4>
         {
             {
-                new Matrix4x4<long, LongOperator>(
+                new LongMatrix4x4(
                     (1, 2, 3, 4),
                     (5, 6, 7, 8),
                     (9, 10, 11, 12),
                     (13, 14, 15, 16)
                 ),
-                new Matrix4x4<long, LongOperator>(
+                new LongMatrix4x4(
                     (1, -2, 3, 4),
                     (5, -6, 7, 8),
                     (9, -10, 11, 12),
                     (13,-14, -15, -16)
                 ),
-                new Matrix4x4<long, LongOperator>(
+                new LongMatrix4x4(
                     (0, 4, 0, 0),
                     (0, 12, 0, 0),
                     (0, 20, 0, 0),
@@ -97,14 +98,14 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 )
             },
             {
-                new Matrix4x4<long, LongOperator>(
+                new LongMatrix4x4(
                     (1, 2, 3, 4),
                     (5, 6, 7, 8),
                     (9, 10, 11, 12),
                     (13, 14, 15, 16)
                 ),
-                Matrix4x4<long, LongOperator>.Identity,
-                new Matrix4x4<long, LongOperator>(
+                LongMatrix4x4.Identity,
+                new LongMatrix4x4(
                     (0, 2, 3, 4),
                     (5, 5, 7, 8),
                     (9, 10, 10, 12),
@@ -112,14 +113,14 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 )
             },
             {
-                Matrix4x4<long, LongOperator>.Identity,
-                new Matrix4x4<long, LongOperator>(
+                LongMatrix4x4.Identity,
+                new LongMatrix4x4(
                     (1, 2, 3, 4),
                     (5, 6, 7, 8),
                     (9, 10, 11, 12),
                     (13, 14, 15, 16)
                 ),
-                new Matrix4x4<long, LongOperator>(
+                new LongMatrix4x4(
                     (0, -2, -3, -4),
                     (-5, -5, -7, -8),
                     (-9, -10, -10, -12),
@@ -130,28 +131,30 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Theory]
         [Trait("Category", "Operator")]
         [MemberData(nameof(Subtract_Data))]
-        public void Subtract(Matrix4x4<long, LongOperator> mat1, Matrix4x4<long, LongOperator> mat2, Matrix4x4<long, LongOperator> expected)
+        public void Subtract(LongMatrix4x4 mat1, LongMatrix4x4 mat2, LongMatrix4x4 expected)
         {
             (mat1 - mat2).Should().Be(expected);
-            default(Matrix4x4<long, LongOperator>.Operator).Subtract(mat1, mat2).Should().Be(expected);
+#if !NET7_0_OR_GREATER
+            default(LongMatrix4x4.Operator).Subtract(mat1, mat2).Should().Be(expected);
+#endif
         }
 
-        public static TheoryData Multiply_Data = new TheoryData<Matrix4x4<long, LongOperator>, Matrix4x4<long, LongOperator>, Matrix4x4<long, LongOperator>>
+        public static TheoryData Multiply_Data => new TheoryData<LongMatrix4x4, LongMatrix4x4, LongMatrix4x4>
         {
             {
-                new Matrix4x4<long, LongOperator>(
+                new LongMatrix4x4(
                     (1, 2, 3, 4),
                     (5, 6, 7, 8),
                     (9, 10, 11, 12),
                     (13, 14, 15, 16)
                 ),
-                new Matrix4x4<long, LongOperator>(
+                new LongMatrix4x4(
                     (1, -2, 3, 4),
                     (5, -6, 7, 8),
                     (9, -10, 11, 12),
                     (13,-14, -15, -16)
                 ),
-                new Matrix4x4<long, LongOperator>(
+                new LongMatrix4x4(
                     (90, -100, -10, -8),
                     (202, -228, 14, 24),
                     (314, -356, 38, 56),
@@ -159,14 +162,14 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 )
             },
             {
-                new Matrix4x4<long, LongOperator>(
+                new LongMatrix4x4(
                     (1, 2, 3, 4),
                     (5, 6, 7, 8),
                     (9, 10, 11, 12),
                     (13, 14, 15, 16)
                 ),
-                Matrix4x4<long, LongOperator>.Identity,
-                new Matrix4x4<long, LongOperator>(
+                LongMatrix4x4.Identity,
+                new LongMatrix4x4(
                     (1, 2, 3, 4),
                     (5, 6, 7, 8),
                     (9, 10, 11, 12),
@@ -174,14 +177,14 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 )
             },
             {
-                Matrix4x4<long, LongOperator>.Identity,
-                new Matrix4x4<long, LongOperator>(
+                LongMatrix4x4.Identity,
+                new LongMatrix4x4(
                     (1, 2, 3, 4),
                     (5, 6, 7, 8),
                     (9, 10, 11, 12),
                     (13, 14, 15, 16)
                 ),
-                new Matrix4x4<long, LongOperator>(
+                new LongMatrix4x4(
                     (1, 2, 3, 4),
                     (5, 6, 7, 8),
                     (9, 10, 11, 12),
@@ -193,18 +196,20 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Theory]
         [Trait("Category", "Operator")]
         [MemberData(nameof(Multiply_Data))]
-        public void Multiply(Matrix4x4<long, LongOperator> mat1, Matrix4x4<long, LongOperator> mat2, Matrix4x4<long, LongOperator> expected)
+        public void Multiply(LongMatrix4x4 mat1, LongMatrix4x4 mat2, LongMatrix4x4 expected)
         {
             (mat1 * mat2).Should().Be(expected);
-            default(Matrix4x4<long, LongOperator>.Operator).Multiply(mat1, mat2).Should().Be(expected);
+#if !NET7_0_OR_GREATER
+            default(LongMatrix4x4.Operator).Multiply(mat1, mat2).Should().Be(expected);
+#endif
         }
 
-        public static TheoryData MultiplyScalar_Data = new TheoryData<long, Matrix4x4<long, LongOperator>, Matrix4x4<long, LongOperator>>
+        public static TheoryData MultiplyScalar_Data => new TheoryData<long, LongMatrix4x4, LongMatrix4x4>
         {
             {
                 3,
-                Matrix4x4<long, LongOperator>.Identity,
-                new Matrix4x4<long, LongOperator>(
+                LongMatrix4x4.Identity,
+                new LongMatrix4x4(
                     (3, 0, 0, 0),
                     (0, 3, 0, 0),
                     (0, 0, 3, 0),
@@ -213,13 +218,13 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             },
             {
                 3,
-                new Matrix4x4<long, LongOperator>(
+                new LongMatrix4x4(
                     (1, 2, 3, 4),
                     (5, 6, 7, 8),
                     (9, 10, 11, 12),
                     (13, 14, 15, 16)
                 ),
-                new Matrix4x4<long, LongOperator>(
+                new LongMatrix4x4(
                     (3, 6, 9, 12),
                     (15, 18, 21, 24),
                     (27, 30, 33, 36),
@@ -231,15 +236,15 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Theory]
         [Trait("Category", "Operator")]
         [MemberData(nameof(MultiplyScalar_Data))]
-        public void MultiplyScalar(long a, Matrix4x4<long, LongOperator> mat, Matrix4x4<long, LongOperator> expected)
+        public void MultiplyScalar(long a, LongMatrix4x4 mat, LongMatrix4x4 expected)
         {
-            (a * mat).Should().Be(expected);
+            (mat * a).Should().Be(expected);
         }
 
-        public static TheoryData MultiplyVector_Data = new TheoryData<Matrix4x4<long, LongOperator>, (long, long, long, long), (long, long, long, long)>
+        public static TheoryData MultiplyVector_Data => new TheoryData<LongMatrix4x4, (long, long, long, long), (long, long, long, long)>
         {
             {
-                new Matrix4x4<long, LongOperator>(
+                new LongMatrix4x4(
                     (3, 0, 0, 0),
                     (0, 3, 0, 0),
                     (0, 0, 3, 0),
@@ -249,7 +254,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 (3,6,9,12)
             },
             {
-                new Matrix4x4<long, LongOperator>(
+                new LongMatrix4x4(
                     (1, 2, 3, 4),
                     (5, 6, 7, 8),
                     (9, 10, 11, 12),
@@ -263,7 +268,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Theory]
         [Trait("Category", "Operator")]
         [MemberData(nameof(MultiplyVector_Data))]
-        public void MultiplyVector(Matrix4x4<long, LongOperator> mat, (long v0, long v1, long v2, long v3) vector, (long, long, long, long) expected)
+        public void MultiplyVector(LongMatrix4x4 mat, (long v0, long v1, long v2, long v3) vector, (long, long, long, long) expected)
         {
             (mat * vector).Should().Be(expected);
             mat.Multiply(vector).Should().Be(expected);
@@ -274,18 +279,18 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Normal")]
         public void Pow()
         {
-            var orig = new Matrix4x4<long, LongOperator>(
+            var orig = new LongMatrix4x4(
                     (1, 2, 3, 4),
                     (5, 6, 7, 8),
                     (9, 10, 11, 12),
                     (13, 14, 15, 16)
                 );
-            orig.Pow(3).Should().Be(4 * new Matrix4x4<long, LongOperator>(
+            orig.Pow(3).Should().Be(new LongMatrix4x4(
                     (785, 890, 995, 1100),
                     (1817, 2058, 2299, 2540),
                     (2849, 3226, 3603, 3980),
                     (3881, 4394, 4907, 5420)
-                ));
+                ) * 4);
             var cur = orig;
             for (int i = 1; i < 10; i++)
             {
@@ -298,7 +303,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Normal")]
         public void Determinant()
         {
-            new Matrix4x4<Fraction, FractionOperator>(
+            new FractionMatrix4x4(
                 (10, -9, -12, 6),
                 (7, -12, 11, 15),
                 (1, 0, 2, 9),
@@ -310,21 +315,21 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Normal")]
         public void Inv()
         {
-            var orig = new Matrix4x4<Fraction, FractionOperator>(
+            var orig = new FractionMatrix4x4(
                 (10, -9, -12, 6),
                 (7, -12, 11, 15),
                 (1, 0, 2, 9),
                 (-10, 10, 3, 13)
             );
             var inv = orig.Inv();
-            inv.Should().Be(new Matrix4x4<Fraction, FractionOperator>(
+            inv.Should().Be(new FractionMatrix4x4(
                 (new Fraction(-78, 1187), new Fraction(-397, 3561), new Fraction(1810, 3561), new Fraction(-229, 1187)),
                 (new Fraction(-265, 3561), new Fraction(-1364, 10683), new Fraction(4658, 10683), new Fraction(-428, 3561)),
                 (new Fraction(-84, 1187), new Fraction(29, 3561), new Fraction(397, 3561), new Fraction(-64, 1187)),
                 (new Fraction(82, 3561), new Fraction(113, 10683), new Fraction(319, 10683), new Fraction(119, 3561))
             ));
-            (orig * inv).Should().Be(Matrix4x4<Fraction, FractionOperator>.Identity);
-            (inv * orig).Should().Be(Matrix4x4<Fraction, FractionOperator>.Identity);
+            (orig * inv).Should().Be(FractionMatrix4x4.Identity);
+            (inv * orig).Should().Be(FractionMatrix4x4.Identity);
         }
     }
 }

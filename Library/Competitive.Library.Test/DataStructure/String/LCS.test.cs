@@ -3,7 +3,6 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.DataStructure.String
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class LcsTests
     {
         [Theory]
@@ -15,7 +14,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
         }
 
 
-        public static TheoryData Int_Data = new TheoryData<int[], int[], int[]>
+        public static TheoryData Int_Data => new TheoryData<int[], int[], int[]>
         {
             {
                 new[]{1,2,3,4,5,6,7},

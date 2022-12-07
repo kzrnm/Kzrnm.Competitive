@@ -3,7 +3,6 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.Graph
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class 木の探索Tests
     {
         GraphBuilder gb;
@@ -30,7 +29,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             wgb.Add(3, 7, 7);
         }
 
-        public static TheoryData BfsData = new TheoryData<int, int[]>
+        public static TheoryData BfsData => new TheoryData<int, int[]>
         {
             { 0, new[] { 0, 1, 2, 3, 4, 6, 5, 7 }},
             { 1, new[] { 1, 0, 3, 4, 2, 7, 6, 5 }},
@@ -56,7 +55,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             wgb.ToTree(root).BfsDescendant().Should().Equal(expected);
         }
 
-        public static TheoryData DfsData = new TheoryData<int, int[]>
+        public static TheoryData DfsData => new TheoryData<int, int[]>
         {
             { 0, new[] { 0, 1, 3, 7, 4, 2, 6, 5 }},
             { 1, new[] { 1, 0, 2, 6, 5, 3, 7, 4 }},

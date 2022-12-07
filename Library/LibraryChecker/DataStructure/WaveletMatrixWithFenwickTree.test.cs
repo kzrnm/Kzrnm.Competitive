@@ -38,7 +38,7 @@ namespace Kzrnm.Competitive.DataStructure
             foreach (var (x, y, _, u) in queries)
                 if (u < 0)
                     dic.TryAdd((x, y), 0);
-            var wm = new WaveletMatrix2DWithFenwickTree<int, long, LongOperator>(dic.Keys.Zip(dic.Values).ToArray());
+            var wm = new LongWaveletMatrix2DWithFenwickTree(dic.Keys.Zip(dic.Values).ToArray());
 
             foreach (var (l, d, r, u) in queries)
             {

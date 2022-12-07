@@ -5,14 +5,13 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.MathNS.Matrix
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class ArrayMatrixTests
     {
         [Fact]
         [Trait("Category", "Normal")]
         public void Construct()
         {
-            new ArrayMatrix<int, IntOperator>(new int[][]
+            new IntArrayMatrix(new int[][]
             {
                 new int[]{ 1, 2, 3 },
                 new int[]{ 4, 5, 6 },
@@ -21,7 +20,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 new int[] { 1, 2, 3 },
                 new int[] { 4, 5, 6 },
             });
-            new ArrayMatrix<int, IntOperator>(new int[,]
+            new IntArrayMatrix(new int[,]
             {
                 { 1, 2, 3 },
                 { 4, 5, 6 },
@@ -36,7 +35,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Operator")]
         public void SingleMinus()
         {
-            (-new ArrayMatrix<int, IntOperator>(new int[,]
+            (-new IntArrayMatrix(new int[,]
             {
                 { 1, 2, 3 },
                 { 4, 5, 6 },
@@ -47,51 +46,51 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             });
         }
 
-        public static TheoryData Add_Data = new TheoryData<ArrayMatrix<int, IntOperator>, ArrayMatrix<int, IntOperator>, ArrayMatrix<int, IntOperator>>
+        public static TheoryData Add_Data => new TheoryData<IntArrayMatrix, IntArrayMatrix, IntArrayMatrix>
         {
             {
-                ArrayMatrix<int, IntOperator>.Zero,
-                ArrayMatrix<int, IntOperator>.Identity,
-                ArrayMatrix<int, IntOperator>.Identity
+                IntArrayMatrix.Zero,
+                IntArrayMatrix.Identity,
+                IntArrayMatrix.Identity
             },
             {
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                new IntArrayMatrix(new int[,]
                 {
                     { 1, 2, 3 },
                     { 4, 5, 6 },
                 }),
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                new IntArrayMatrix(new int[,]
                 {
                     { 2, 2, 2 },
                     { 2, 2, 2 },
                 }),
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                new IntArrayMatrix(new int[,]
                 {
                     { 3, 4, 5 },
                     { 6, 7, 8 },
                 })
             },
             {
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                new IntArrayMatrix(new int[,]
                 {
                     { 1, 2 },
                     { 3, 4 },
                 }),
-                ArrayMatrix<int, IntOperator>.Zero,
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                IntArrayMatrix.Zero,
+                new IntArrayMatrix(new int[,]
                 {
                     { 1, 2 },
                     { 3, 4 },
                 })
             },
             {
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                new IntArrayMatrix(new int[,]
                 {
                     { 1, 2 },
                     { 3, 4 },
                 }),
-                ArrayMatrix<int, IntOperator>.Identity,
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                IntArrayMatrix.Identity,
+                new IntArrayMatrix(new int[,]
                 {
                     { 2, 2 },
                     { 3, 5 },
@@ -102,59 +101,61 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Theory]
         [Trait("Category", "Operator")]
         [MemberData(nameof(Add_Data))]
-        public void Add(ArrayMatrix<int, IntOperator> mat1, ArrayMatrix<int, IntOperator> mat2, ArrayMatrix<int, IntOperator> expected)
+        public void Add(IntArrayMatrix mat1, IntArrayMatrix mat2, IntArrayMatrix expected)
         {
             (mat1 + mat2).Value.Should().BeEquivalentTo(expected.Value);
             (mat2 + mat1).Value.Should().BeEquivalentTo(expected.Value);
-            default(ArrayMatrix<int, IntOperator>.Operator).Add(mat1, mat2).Value.Should().BeEquivalentTo(expected.Value);
-            default(ArrayMatrix<int, IntOperator>.Operator).Add(mat2, mat1).Value.Should().BeEquivalentTo(expected.Value);
+#if !NET7_0_OR_GREATER
+            default(IntArrayMatrix.Operator).Add(mat1, mat2).Value.Should().BeEquivalentTo(expected.Value);
+            default(IntArrayMatrix.Operator).Add(mat2, mat1).Value.Should().BeEquivalentTo(expected.Value);
+#endif
         }
 
-        public static TheoryData Subtract_Data = new TheoryData<ArrayMatrix<int, IntOperator>, ArrayMatrix<int, IntOperator>, ArrayMatrix<int, IntOperator>>
+        public static TheoryData Subtract_Data => new TheoryData<IntArrayMatrix, IntArrayMatrix, IntArrayMatrix>
         {
             {
-                ArrayMatrix<int, IntOperator>.Identity,
-                ArrayMatrix<int, IntOperator>.Zero,
-                ArrayMatrix<int, IntOperator>.Identity
+                IntArrayMatrix.Identity,
+                IntArrayMatrix.Zero,
+                IntArrayMatrix.Identity
             },
             {
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                new IntArrayMatrix(new int[,]
                 {
                     { 1, 2, 3 },
                     { 4, 5, 6 },
                 }),
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                new IntArrayMatrix(new int[,]
                 {
                     { 2, 2, 2 },
                     { 2, 2, 2 },
                 }),
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                new IntArrayMatrix(new int[,]
                 {
                     { -1, 0, 1 },
                     { 2, 3, 4 },
                 })
             },
             {
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                new IntArrayMatrix(new int[,]
                 {
                     { 1, 2 },
                     { 3, 4 },
                 }),
-                ArrayMatrix<int, IntOperator>.Zero,
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                IntArrayMatrix.Zero,
+                new IntArrayMatrix(new int[,]
                 {
                     { 1, 2 },
                     { 3, 4 },
                 })
             },
             {
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                new IntArrayMatrix(new int[,]
                 {
                     { 1, 2 },
                     { 3, 4 },
                 }),
-                ArrayMatrix<int, IntOperator>.Identity,
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                IntArrayMatrix.Identity,
+                new IntArrayMatrix(new int[,]
                 {
                     { 0, 2 },
                     { 3, 3 },
@@ -164,58 +165,60 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Theory]
         [Trait("Category", "Operator")]
         [MemberData(nameof(Subtract_Data))]
-        public void Subtract(ArrayMatrix<int, IntOperator> mat1, ArrayMatrix<int, IntOperator> mat2, ArrayMatrix<int, IntOperator> expected)
+        public void Subtract(IntArrayMatrix mat1, IntArrayMatrix mat2, IntArrayMatrix expected)
         {
             (mat1 - mat2).Value.Should().BeEquivalentTo(expected.Value);
-            default(ArrayMatrix<int, IntOperator>.Operator).Subtract(mat1, mat2).Value.Should().BeEquivalentTo(expected.Value);
+#if !NET7_0_OR_GREATER
+            default(IntArrayMatrix.Operator).Subtract(mat1, mat2).Value.Should().BeEquivalentTo(expected.Value);
+#endif
         }
 
-        public static TheoryData Multiply_Data = new TheoryData<ArrayMatrix<int, IntOperator>, ArrayMatrix<int, IntOperator>, ArrayMatrix<int, IntOperator>>
+        public static TheoryData Multiply_Data => new TheoryData<IntArrayMatrix, IntArrayMatrix, IntArrayMatrix>
         {
             {
-                ArrayMatrix<int, IntOperator>.Identity,
-                ArrayMatrix<int, IntOperator>.Zero,
-                ArrayMatrix<int, IntOperator>.Zero
+                IntArrayMatrix.Identity,
+                IntArrayMatrix.Zero,
+                IntArrayMatrix.Zero
             },
             {
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                new IntArrayMatrix(new int[,]
                 {
                     { 1, 2, 3 },
                     { 4, 5, 6 },
                 }),
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                new IntArrayMatrix(new int[,]
                 {
                     { 1, 2 },
                     { 3, 4 },
                     { 5, 6 },
                 }),
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                new IntArrayMatrix(new int[,]
                 {
                     { 22, 28 },
                     { 49, 64 },
                 })
             },
             {
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                new IntArrayMatrix(new int[,]
                 {
                     { 1, 2 },
                     { 3, 4 },
                 }),
-                ArrayMatrix<int, IntOperator>.Zero,
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                IntArrayMatrix.Zero,
+                new IntArrayMatrix(new int[,]
                 {
                     { 0, 0 },
                     { 0, 0 },
                 })
             },
             {
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                new IntArrayMatrix(new int[,]
                 {
                     { 1, 2 },
                     { 3, 4 },
                 }),
-                ArrayMatrix<int, IntOperator>.Identity,
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                IntArrayMatrix.Identity,
+                new IntArrayMatrix(new int[,]
                 {
                     { 1, 2 },
                     { 3, 4 },
@@ -226,43 +229,47 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Theory]
         [Trait("Category", "Operator")]
         [MemberData(nameof(Multiply_Data))]
-        public void Multiply(ArrayMatrix<int, IntOperator> mat1, ArrayMatrix<int, IntOperator> mat2, ArrayMatrix<int, IntOperator> expected)
+        public void Multiply(IntArrayMatrix mat1, IntArrayMatrix mat2, IntArrayMatrix expected)
         {
             (mat1 * mat2).Value.Should().BeEquivalentTo(expected.Value);
-            default(ArrayMatrix<int, IntOperator>.Operator).Multiply(mat1, mat2).Value.Should().BeEquivalentTo(expected.Value);
+#if !NET7_0_OR_GREATER
+            default(IntArrayMatrix.Operator).Multiply(mat1, mat2).Value.Should().BeEquivalentTo(expected.Value);
+#endif
         }
 
         [Theory]
         [Trait("Category", "Operator")]
         [MemberData(nameof(Multiply_Data))]
-        public void MultiplyModInt(ArrayMatrix<int, IntOperator> matInt1, ArrayMatrix<int, IntOperator> matInt2, ArrayMatrix<int, IntOperator> expectedInt)
+        public void MultiplyModInt(IntArrayMatrix matInt1, IntArrayMatrix matInt2, IntArrayMatrix expectedInt)
         {
             var mat1 = Int2ModInt(matInt1);
             var mat2 = Int2ModInt(matInt2);
             var expected = Int2ModInt(expectedInt);
             (mat1 * mat2).Value.Should().BeEquivalentTo(expected.Value);
             mat1.Strassen(mat2).Value.Should().BeEquivalentTo(expected.Value);
-            default(ArrayMatrix<StaticModInt<Mod1000000007>, StaticModIntOperator<Mod1000000007>>.Operator)
+#if !NET7_0_OR_GREATER
+            default(Mod1000000007ArrayMatrix.Operator)
                 .Multiply(mat1, mat2).Value.Should().BeEquivalentTo(expected.Value);
+#endif
         }
-        private static ArrayMatrix<StaticModInt<Mod1000000007>, StaticModIntOperator<Mod1000000007>> Int2ModInt(ArrayMatrix<int, IntOperator> mat)
+        private static Mod1000000007ArrayMatrix Int2ModInt(IntArrayMatrix mat)
             => mat.kind switch
             {
                 ArrayMatrixKind.Normal
                     => new(mat.Value.Select(arr => arr.Select(n => new StaticModInt<Mod1000000007>(n)).ToArray()).ToArray()),
-                _ => new ArrayMatrix<StaticModInt<Mod1000000007>, StaticModIntOperator<Mod1000000007>>(mat.kind),
+                _ => new Mod1000000007ArrayMatrix(mat.kind),
             };
 
-        public static TheoryData MultiplyScalar_Data = new TheoryData<int, ArrayMatrix<int, IntOperator>, ArrayMatrix<int, IntOperator>>
+        public static TheoryData MultiplyScalar_Data => new TheoryData<int, IntArrayMatrix, IntArrayMatrix>
         {
             {
                 2,
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                new IntArrayMatrix(new int[,]
                 {
                     { 1, 2, 3 },
                     { 4, 5, 6 },
                 }),
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                new IntArrayMatrix(new int[,]
                 {
                     { 2, 4, 6 },
                     { 8, 10, 12 },
@@ -270,12 +277,12 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             },
             {
                 3,
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                new IntArrayMatrix(new int[,]
                 {
                     { 1, 2 },
                     { 3, 4 },
                 }),
-                new ArrayMatrix<int, IntOperator>(new int[,]
+                new IntArrayMatrix(new int[,]
                 {
                     { 3, 6 },
                     { 9, 12 },
@@ -286,15 +293,15 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Theory]
         [Trait("Category", "Operator")]
         [MemberData(nameof(MultiplyScalar_Data))]
-        public void MultiplyScalar(int a, ArrayMatrix<int, IntOperator> mat, ArrayMatrix<int, IntOperator> expected)
+        public void MultiplyScalar(int a, IntArrayMatrix mat, IntArrayMatrix expected)
         {
-            (a * mat).Value.Should().BeEquivalentTo(expected.Value);
+            (mat * a).Value.Should().BeEquivalentTo(expected.Value);
         }
 
-        public static TheoryData MultiplyVector_Data = new TheoryData<ArrayMatrix<long, LongOperator>, long[], long[]>
+        public static TheoryData MultiplyVector_Data => new TheoryData<LongArrayMatrix, long[], long[]>
         {
             {
-                new ArrayMatrix<long, LongOperator>(new long[,]{
+                new LongArrayMatrix(new long[,]{
                     {3, 0, 0, 0},
                     {0, 3, 0, 0},
                     {0, 0, 3, 0},
@@ -304,7 +311,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 new long[]{3,6,9,12}
             },
             {
-                new ArrayMatrix<long, LongOperator>(new long[,]{
+                new LongArrayMatrix(new long[,]{
                     {1, 2, 3, 4},
                     {5, 6, 7, 8},
                     {9, 10, 11, 12},
@@ -318,7 +325,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Theory]
         [Trait("Category", "Operator")]
         [MemberData(nameof(MultiplyVector_Data))]
-        public void MultiplyVector(ArrayMatrix<long, LongOperator> mat, long[] vector, long[] expected)
+        public void MultiplyVector(LongArrayMatrix mat, long[] vector, long[] expected)
         {
             (mat * vector).Should().Equal(expected);
             mat.Multiply(vector).Should().Equal(expected);
@@ -328,7 +335,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Normal")]
         public void Pow()
         {
-            var orig = new ArrayMatrix<int, IntOperator>(new int[,]
+            var orig = new IntArrayMatrix(new int[,]
             {
                 { 1, 2 },
                 { 3, 4 },
@@ -346,7 +353,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             }
         }
 
-        public static TheoryData Determinant_Data = new TheoryData<Fraction[,], Fraction>
+        public static TheoryData Determinant_Data => new TheoryData<Fraction[,], Fraction>
         {
             {
                 new Fraction[,]
@@ -393,7 +400,7 @@ new Fraction[,]
         [Trait("Category", "Normal")]
         public void Determinant(Fraction[,] array, Fraction expected)
         {
-            new ArrayMatrix<Fraction, FractionOperator>(array).Determinant().Should().Be(expected);
+            new FractionArrayMatrix(array).Determinant().Should().Be(expected);
         }
 
         [Fact]
@@ -407,7 +414,7 @@ new Fraction[,]
                 {
                     array[i, 0] = array[0, i] = array[i, i] = 1;
                 }
-                new ArrayMatrix<Fraction, FractionOperator>(array).Determinant().Should().Be(-(n - 2));
+                new FractionArrayMatrix(array).Determinant().Should().Be(-(n - 2));
             }
         }
 
@@ -421,14 +428,14 @@ new Fraction[,]
             {
                 array[i, 0] = array[0, i] = array[i, i] = 1;
             }
-            new ArrayMatrix<Fraction, FractionOperator>(array).Determinant().Should().Be(-(n - 2));
+            new FractionArrayMatrix(array).Determinant().Should().Be(-(n - 2));
         }
 
         [Fact]
         [Trait("Category", "Normal")]
         public void Inv()
         {
-            var orig = new ArrayMatrix<Fraction, FractionOperator>(new Fraction[,]
+            var orig = new FractionArrayMatrix(new Fraction[,]
             {
                 {10, -9, -12},
                 {7, -12, 11},
@@ -451,9 +458,9 @@ new Fraction[,]
             (inv * orig).Value.Should().BeEquivalentTo(id);
         }
 
-        public static TheoryData GaussianElimination_Data = new TheoryData<
-            ArrayMatrix<Fraction, FractionOperator>,
-            ArrayMatrix<Fraction, FractionOperator>>
+        public static TheoryData GaussianElimination_Data => new TheoryData<
+            FractionArrayMatrix,
+            FractionArrayMatrix>
         {
             {
                 new(new Fraction[2,3]{
@@ -533,7 +540,7 @@ new Fraction[,]
 
         [Theory]
         [MemberData(nameof(GaussianElimination_Data))]
-        public void GaussianElimination(ArrayMatrix<Fraction, FractionOperator> orig, ArrayMatrix<Fraction, FractionOperator> expected)
+        public void GaussianElimination(FractionArrayMatrix orig, FractionArrayMatrix expected)
         {
             var got = orig.GaussianElimination();
             got.Value.Should().HaveSameCount(expected.Value);
@@ -541,8 +548,8 @@ new Fraction[,]
                 got.Value[i].Should().Equal(expected.Value[i], because: "row {0}", i);
         }
 
-        public static TheoryData LinearSystem_Data = new TheoryData<
-            ArrayMatrix<Fraction, FractionOperator>,
+        public static TheoryData LinearSystem_Data => new TheoryData<
+            FractionArrayMatrix,
             Fraction[],
             Fraction[][]>
         {
@@ -582,7 +589,7 @@ new Fraction[,]
 
         [Theory]
         [MemberData(nameof(LinearSystem_Data))]
-        public void LinearSystem(ArrayMatrix<Fraction, FractionOperator> matrix, Fraction[] vector, Fraction[][] expected)
+        public void LinearSystem(FractionArrayMatrix matrix, Fraction[] vector, Fraction[][] expected)
         {
             var got = matrix.LinearSystem(vector);
             got.Should().HaveSameCount(expected);

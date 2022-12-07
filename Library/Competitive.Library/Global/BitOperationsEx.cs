@@ -135,5 +135,14 @@ namespace Kzrnm.Competitive
             } while (mask != 0);
             return res;
         }
+
+#if NET7_0_OR_GREATER
+        /// <summary>
+        /// <para><paramref name="x"/> 以上で最も小さい2のべき乗を返します。</para>
+        /// </summary>
+        [凾(256)]
+        public static int RoundUpToPowerOf2(int x)
+            => (int)BO.RoundUpToPowerOf2((uint)x);
+#endif
     }
 }

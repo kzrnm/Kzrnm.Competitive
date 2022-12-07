@@ -1,3 +1,4 @@
+#if !NET7_0_OR_GREATER
 using AtCoder.Operators;
 using System;
 using System.Numerics;
@@ -5,6 +6,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+
     public struct BigFractionOperator : INumOperator<BigFraction>, ICompareOperator<BigFraction>
     {
         public BigFraction MinValue => BigInteger.MinusOne << 10000;
@@ -41,3 +43,4 @@ namespace Kzrnm.Competitive
         public BigFraction Decrement(BigFraction x) => throw new NotSupportedException();
     }
 }
+#endif

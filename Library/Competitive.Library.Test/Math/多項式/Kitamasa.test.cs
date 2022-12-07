@@ -7,7 +7,6 @@ using Xunit;
 #pragma warning disable CS0618 // 型またはメンバーが旧型式です
 namespace Kzrnm.Competitive.Testing.MathNS
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class KitamasaTests
     {
         private struct DMod : IDynamicModID { }

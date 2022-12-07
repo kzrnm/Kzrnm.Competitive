@@ -3,7 +3,6 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.Graph
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class 最短経路01BFSTests
     {
         [Fact]

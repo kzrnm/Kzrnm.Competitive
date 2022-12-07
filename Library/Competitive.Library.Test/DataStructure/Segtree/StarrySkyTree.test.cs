@@ -4,7 +4,6 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.DataStructure
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class StarrySkyTreeTests
     {
         const int N = 1000;
@@ -15,7 +14,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 segMax.Apply(i, i + 1, i);
         }
 
-        public static TheoryData QueryMax_Data = new TheoryData<int, int, long>
+        public static TheoryData QueryMax_Data => new TheoryData<int, int, long>
         {
             {0, N, N - 1},
             {0, 420, 419 },

@@ -4,10 +4,9 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.MathNS
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class LagrangeInterpolationTest
     {
-        public static TheoryData Coefficient_Data = new TheoryData<(int, int)[]>
+        public static TheoryData Coefficient_Data => new TheoryData<(int, int)[]>
         {
             new (int, int)[]
             {

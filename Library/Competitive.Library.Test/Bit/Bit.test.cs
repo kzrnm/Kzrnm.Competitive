@@ -5,7 +5,6 @@ using System.Runtime.Intrinsics.X86;
 
 namespace Kzrnm.Competitive.Testing.Bits
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class BitTests
     {
         sealed class OnlyX64TheoryAttribute : TheoryAttribute
@@ -20,7 +19,7 @@ namespace Kzrnm.Competitive.Testing.Bits
         }
 
 
-        public static TheoryData BitStringInt32_Data = new TheoryData<int, int, string>
+        public static TheoryData BitStringInt32_Data => new TheoryData<int, int, string>
         {
             { 0, 0, "0" },
             { 1, 3, "001" },
@@ -41,7 +40,7 @@ namespace Kzrnm.Competitive.Testing.Bits
             num.ToBitString(len).Should().Be(expected);
         }
 
-        public static TheoryData BitStringInt64_Data = new TheoryData<long, int, string>
+        public static TheoryData BitStringInt64_Data => new TheoryData<long, int, string>
         {
             { 0, 0, "0" },
             { 1, 3, "001" },
@@ -62,7 +61,7 @@ namespace Kzrnm.Competitive.Testing.Bits
             num.ToBitString(len).Should().Be(expected);
         }
 
-        public static TheoryData BitStringUInt64_Data = new TheoryData<ulong, int, string>
+        public static TheoryData BitStringUInt64_Data => new TheoryData<ulong, int, string>
         {
             { 0, 0, "0" },
             { 1, 3, "001" },
@@ -91,7 +90,7 @@ namespace Kzrnm.Competitive.Testing.Bits
         }
 
 
-        public static TheoryData BitEnumerateInt32_Data = new TheoryData<int, int[]>
+        public static TheoryData BitEnumerateInt32_Data => new TheoryData<int, int[]>
         {
             { -1, new[]{
                 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -113,7 +112,7 @@ namespace Kzrnm.Competitive.Testing.Bits
             num.Bits().Should().Equal(expected);
         }
 
-        public static TheoryData BitEnumerateUInt32_Data = new TheoryData<uint, int[]>
+        public static TheoryData BitEnumerateUInt32_Data => new TheoryData<uint, int[]>
         {
             { uint.MaxValue, new[]{
                 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -135,7 +134,7 @@ namespace Kzrnm.Competitive.Testing.Bits
             num.Bits().Should().Equal(expected);
         }
 
-        public static TheoryData BitEnumerateInt64_Data = new TheoryData<long, int[]>
+        public static TheoryData BitEnumerateInt64_Data => new TheoryData<long, int[]>
         {
             { -1, new[]{
                 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -160,7 +159,7 @@ namespace Kzrnm.Competitive.Testing.Bits
             num.Bits().Should().Equal(expected);
         }
 
-        public static TheoryData BitEnumerateUInt64_Data = new TheoryData<ulong, int[]>
+        public static TheoryData BitEnumerateUInt64_Data => new TheoryData<ulong, int[]>
         {
             { ulong.MaxValue, new[]{
                 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,

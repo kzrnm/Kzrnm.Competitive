@@ -3,10 +3,9 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.DataStructure.String
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class BMTests
     {
-        public static TheoryData Match_Data = new TheoryData<string, string, int>
+        public static TheoryData Match_Data => new TheoryData<string, string, int>
         {
             { "ab", new string('q',1998)+"ab", 1998 },
             { "abc", "abd", -1 },

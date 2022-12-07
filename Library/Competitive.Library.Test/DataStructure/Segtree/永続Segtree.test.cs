@@ -6,7 +6,6 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.DataStructure
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class 永続SegtreeTests
     {
         [Fact]

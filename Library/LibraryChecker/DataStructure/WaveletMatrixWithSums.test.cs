@@ -24,7 +24,7 @@ namespace Kzrnm.Competitive.DataStructure
                 dic.TryGetValue(tup, out var ww);
                 dic[tup] = ww + w;
             }
-            var wm = new WaveletMatrix2DWithSums<int, long, LongOperator>(dic.Keys.Zip(dic.Values).ToArray());
+            var wm = new LongWaveletMatrix2DWithSums(dic.Keys.Zip(dic.Values).ToArray());
 
             for (int q = 0; q < Q; q++)
             {

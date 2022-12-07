@@ -30,13 +30,9 @@ namespace Kzrnm.Competitive
             }
             return res;
         }
-        /// <summary>
-        /// <paramref name="y"/> 乗した値を返します。
-        /// </summary>
-        [凾(256)]
-        public static BigInteger Pow(this BigInteger x, long y) => MathLibGeneric.Pow<BigInteger, BigIntegerOperator>(x, y);
     }
 
+#if !NET7_0_OR_GREATER
     public readonly struct BigIntegerOperator : INumOperator<BigInteger>, IShiftOperator<BigInteger>
     {
         public BigInteger MinValue => BigInteger.One << 10000;
@@ -74,4 +70,5 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public BigInteger RightShift(BigInteger x, int y) => x >> y;
     }
+#endif
 }
