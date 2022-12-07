@@ -1,6 +1,6 @@
 ---
 title: テスト用の乱数生成
-documentation_of: //Library/Competitive.Library/+Runner/Testing/RandomUtil.cs
+documentation_of: ./RandomUtil.cs
 ---
 
 ## 概要
