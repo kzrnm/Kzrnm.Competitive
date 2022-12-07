@@ -3,7 +3,7 @@ name: Auto release publish
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - Library/Competitive.Library/**
 
