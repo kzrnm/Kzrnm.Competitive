@@ -1,6 +1,6 @@
 ---
 title: マンハッタン距離での最小全域木
-documentation_of: //Library/Competitive.Library/2D/ManhattanMST.cs
+documentation_of: ./ManhattanMST.GenericMath.cs
 ---
 
 ## 概要

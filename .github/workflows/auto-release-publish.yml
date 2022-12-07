@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - Library/Competitive.Library/**
+      - "!**.md"
 
 env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
