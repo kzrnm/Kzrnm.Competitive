@@ -5,7 +5,6 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.Collection
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class SetDictionaryTests
     {
         [Fact]

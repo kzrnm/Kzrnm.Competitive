@@ -5,10 +5,9 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.TwoDimensional
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class PointLongTests
     {
-        public static TheoryData Distance_Data = new TheoryData<PointLong, PointLong, long, double>
+        public static TheoryData Distance_Data => new TheoryData<PointLong, PointLong, long, double>
         {
             { new PointLong(0,0), new PointLong(0,0), 0, 0 },
             { new PointLong(1,1), new PointLong(1,1), 0, 0 },
@@ -62,7 +61,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                         SortedPoints[i], SortedPoints[j], i, j);
         }
 
-        public static TheoryData Inner_Data = new TheoryData<PointLong, PointLong, long>
+        public static TheoryData Inner_Data => new TheoryData<PointLong, PointLong, long>
         {
             { new PointLong(0,0), new PointLong(0,0), 0 },
             { new PointLong(0,1), new PointLong(1,0), 0 },
@@ -77,7 +76,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             p1.Inner(p2).Should().Be(expected);
         }
 
-        public static TheoryData Cross_Data = new TheoryData<PointLong, PointLong, long>
+        public static TheoryData Cross_Data => new TheoryData<PointLong, PointLong, long>
         {
             { new PointLong(0,0), new PointLong(0,0), 0 },
             { new PointLong(0,1), new PointLong(1,0), -1 },
@@ -92,7 +91,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             p1.Cross(p2).Should().Be(expected);
         }
 
-        public static TheoryData Area_Data = new TheoryData<PointLong[], long>
+        public static TheoryData Area_Data => new TheoryData<PointLong[], long>
         {
             {
                 new PointLong[]

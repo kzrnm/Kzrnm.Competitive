@@ -1,17 +1,26 @@
 // https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp
 using AtCoder;
 using AtCoder.Internal;
-using AtCoder.Operators;
 using Kzrnm.Competitive.IO;
 using System;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
+#if NET7_0_OR_GREATER
+using System.Numerics;
+using System.Globalization;
+#else
+using AtCoder.Operators;
+#endif
 
 namespace Kzrnm.Competitive
 {
     /// <summary>
     /// 奇数オンリーの ModInt
     /// </summary>
-    public struct MontgomeryModInt<T> : IUtf8ConsoleWriterFormatter, IEquatable<MontgomeryModInt<T>> where T : struct, IStaticMod
+    public struct MontgomeryModInt<T> : IUtf8ConsoleWriterFormatter, IEquatable<MontgomeryModInt<T>>, IFormattable
+#if NET7_0_OR_GREATER
+        , INumberBase<MontgomeryModInt<T>>
+#endif
+        where T : struct, IStaticMod
     {
         static readonly T op = new T();
         internal static readonly uint n2 = (uint)(((ulong)-op.Mod) % op.Mod);
@@ -168,7 +177,119 @@ namespace Kzrnm.Competitive
         [凾(256)] public static bool operator !=(MontgomeryModInt<T> left, MontgomeryModInt<T> right) => !Equals(left, right);
         [凾(256)] public override int GetHashCode() => (int)_v;
 
+        public string ToString(string format, IFormatProvider formatProvider) => _v.ToString(format, formatProvider);
+#if NET7_0_OR_GREATER
+        static int INumberBase<MontgomeryModInt<T>>.Radix => 2;
+        static MontgomeryModInt<T> IAdditiveIdentity<MontgomeryModInt<T>, MontgomeryModInt<T>>.AdditiveIdentity => default;
+        static MontgomeryModInt<T> IMultiplicativeIdentity<MontgomeryModInt<T>, MontgomeryModInt<T>>.MultiplicativeIdentity => new MontgomeryModInt<T>(1u);
+        static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.Abs(MontgomeryModInt<T> v) => v;
+        static bool INumberBase<MontgomeryModInt<T>>.IsCanonical(MontgomeryModInt<T> v) => true;
+        static bool INumberBase<MontgomeryModInt<T>>.IsComplexNumber(MontgomeryModInt<T> v) => false;
+        static bool INumberBase<MontgomeryModInt<T>>.IsRealNumber(MontgomeryModInt<T> v) => true;
+        static bool INumberBase<MontgomeryModInt<T>>.IsImaginaryNumber(MontgomeryModInt<T> v) => false;
+        static bool INumberBase<MontgomeryModInt<T>>.IsEvenInteger(MontgomeryModInt<T> v) => uint.IsEvenInteger(v._v);
+        static bool INumberBase<MontgomeryModInt<T>>.IsOddInteger(MontgomeryModInt<T> v) => uint.IsOddInteger(v._v);
+        static bool INumberBase<MontgomeryModInt<T>>.IsFinite(MontgomeryModInt<T> v) => true;
+        static bool INumberBase<MontgomeryModInt<T>>.IsInfinity(MontgomeryModInt<T> v) => false;
+        static bool INumberBase<MontgomeryModInt<T>>.IsInteger(MontgomeryModInt<T> v) => true;
+        static bool INumberBase<MontgomeryModInt<T>>.IsPositive(MontgomeryModInt<T> v) => true;
+        static bool INumberBase<MontgomeryModInt<T>>.IsNegative(MontgomeryModInt<T> v) => false;
+        static bool INumberBase<MontgomeryModInt<T>>.IsPositiveInfinity(MontgomeryModInt<T> v) => false;
+        static bool INumberBase<MontgomeryModInt<T>>.IsNegativeInfinity(MontgomeryModInt<T> v) => false;
+        static bool INumberBase<MontgomeryModInt<T>>.IsNormal(MontgomeryModInt<T> v) => v._v != 0;
+        static bool INumberBase<MontgomeryModInt<T>>.IsSubnormal(MontgomeryModInt<T> v) => false;
+        static bool INumberBase<MontgomeryModInt<T>>.IsZero(MontgomeryModInt<T> v) => v._v == 0;
+        static bool INumberBase<MontgomeryModInt<T>>.IsNaN(MontgomeryModInt<T> v) => false;
+        static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.MaxMagnitude(MontgomeryModInt<T> x, MontgomeryModInt<T> y) => new MontgomeryModInt<T>(uint.Max(x._v, y._v));
+        static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.MaxMagnitudeNumber(MontgomeryModInt<T> x, MontgomeryModInt<T> y) => new MontgomeryModInt<T>(uint.Max(x._v, y._v));
+        static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.MinMagnitude(MontgomeryModInt<T> x, MontgomeryModInt<T> y) => new MontgomeryModInt<T>(uint.Min(x._v, y._v));
+        static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.MinMagnitudeNumber(MontgomeryModInt<T> x, MontgomeryModInt<T> y) => new MontgomeryModInt<T>(uint.Min(x._v, y._v));
+        static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider) => long.Parse(s, style, provider);
+        static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.Parse(string s, NumberStyles style, IFormatProvider provider) => long.Parse(s, style, provider);
+        static MontgomeryModInt<T> ISpanParsable<MontgomeryModInt<T>>.Parse(ReadOnlySpan<char> s, IFormatProvider provider) => long.Parse(s, provider);
+        static MontgomeryModInt<T> IParsable<MontgomeryModInt<T>>.Parse(string s, IFormatProvider provider) => long.Parse(s, provider);
+        static bool ISpanParsable<MontgomeryModInt<T>>.TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out MontgomeryModInt<T> result)
+        => TryParse(s, NumberStyles.None, provider, out result);
+        static bool IParsable<MontgomeryModInt<T>>.TryParse(string s, IFormatProvider provider, out MontgomeryModInt<T> result)
+        => TryParse(s, NumberStyles.None, provider, out result);
+        static bool INumberBase<MontgomeryModInt<T>>.TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider, out MontgomeryModInt<T> result)
+        => TryParse(s, style, provider, out result);
+        static bool INumberBase<MontgomeryModInt<T>>.TryParse(string s, NumberStyles style, IFormatProvider provider, out MontgomeryModInt<T> result)
+        => TryParse(s, style, provider, out result);
+        private static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider, out MontgomeryModInt<T> result)
+        {
+            var b = long.TryParse(s, style, provider, out var r);
+            result = r;
+            return b;
+        }
+        bool ISpanFormattable.TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => _v.TryFormat(destination, out charsWritten, format, provider);
 
+
+        static bool INumberBase<MontgomeryModInt<T>>.TryConvertFromChecked<TOther>(TOther v, out MontgomeryModInt<T> r)
+        {
+            if (WrapChecked(v, out long l))
+            {
+                r = new(l);
+                return true;
+            }
+            if (WrapChecked(v, out ulong u))
+            {
+                r = new(u);
+                return true;
+            }
+            r = default;
+            return false;
+        }
+        static bool INumberBase<MontgomeryModInt<T>>.TryConvertFromSaturating<TOther>(TOther v, out MontgomeryModInt<T> r)
+        {
+            if (WrapSaturating(v, out long l))
+            {
+                r = new(l);
+                return true;
+            }
+            if (WrapSaturating(v, out ulong u))
+            {
+                r = new(u);
+                return true;
+            }
+            r = default;
+            return false;
+        }
+        static bool INumberBase<MontgomeryModInt<T>>.TryConvertFromTruncating<TOther>(TOther v, out MontgomeryModInt<T> r)
+        {
+            if (WrapTruncating(v, out long l))
+            {
+                r = new(l);
+                return true;
+            }
+            if (WrapTruncating(v, out ulong u))
+            {
+                r = new(u);
+                return true;
+            }
+            r = default;
+            return false;
+        }
+        static bool INumberBase<MontgomeryModInt<T>>.TryConvertToChecked<TOther>(MontgomeryModInt<T> v, out TOther r) where TOther : default => WrapChecked(v._v, out r);
+        static bool INumberBase<MontgomeryModInt<T>>.TryConvertToSaturating<TOther>(MontgomeryModInt<T> v, out TOther r) where TOther : default => WrapSaturating(v._v, out r);
+        static bool INumberBase<MontgomeryModInt<T>>.TryConvertToTruncating<TOther>(MontgomeryModInt<T> v, out TOther r) where TOther : default => WrapTruncating(v._v, out r);
+
+        [凾(256)]
+        static bool WrapChecked<TFrom, TTo>(TFrom v, out TTo r) where TFrom : INumberBase<TFrom> where TTo : INumberBase<TTo>
+            => typeof(TFrom) == typeof(TTo)
+            ? (r = (TTo)(object)v) is { }
+            : TTo.TryConvertFromChecked(v, out r) || TFrom.TryConvertToChecked(v, out r);
+        [凾(256)]
+        static bool WrapSaturating<TFrom, TTo>(TFrom v, out TTo r) where TFrom : INumberBase<TFrom> where TTo : INumberBase<TTo>
+            => typeof(TFrom) == typeof(TTo)
+            ? (r = (TTo)(object)v) is { }
+            : TTo.TryConvertFromSaturating(v, out r) || TFrom.TryConvertToSaturating(v, out r);
+        [凾(256)]
+        static bool WrapTruncating<TFrom, TTo>(TFrom v, out TTo r) where TFrom : INumberBase<TFrom> where TTo : INumberBase<TTo>
+            => typeof(TFrom) == typeof(TTo)
+            ? (r = (TTo)(object)v) is { }
+            : TTo.TryConvertFromTruncating(v, out r) || TFrom.TryConvertToTruncating(v, out r);
+#else
         public readonly struct Operator : IArithmeticOperator<MontgomeryModInt<T>>
         {
             public MontgomeryModInt<T> MultiplyIdentity => One;
@@ -181,5 +302,6 @@ namespace Kzrnm.Competitive
             [凾(256)] public MontgomeryModInt<T> Increment(MontgomeryModInt<T> x) => ++x;
             [凾(256)] public MontgomeryModInt<T> Decrement(MontgomeryModInt<T> x) => --x;
         }
+#endif
     }
 }

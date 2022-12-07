@@ -2,7 +2,6 @@ using AtCoder;
 using Kzrnm.Competitive.IO;
 using System.Runtime.CompilerServices;
 using ModInt = AtCoder.StaticModInt<AtCoder.Mod998244353>;
-using ModIntOperator = AtCoder.StaticModIntOperator<AtCoder.Mod998244353>;
 
 namespace Kzrnm.Competitive.Graph
 {
@@ -19,14 +18,14 @@ namespace Kzrnm.Competitive.Graph
                 gb.Add(cr, cr);
 
             var tree = gb.ToTree();
-            var seg1 = new Segtree<AffineTransformation<ModInt, ModIntOperator>, Op1>(N);
-            var seg2 = new Segtree<AffineTransformation<ModInt, ModIntOperator>, Op2>(N);
+            var seg1 = new Segtree<Mod998244353AffineTransformation, Op1>(N);
+            var seg2 = new Segtree<Mod998244353AffineTransformation, Op2>(N);
 
             for (int i = 0; i < lines.Length; i++)
             {
                 var a = ModInt.Raw(lines[i].Item1);
                 var b = ModInt.Raw(lines[i].Item2);
-                var f = new AffineTransformation<ModInt, ModIntOperator>(a, b);
+                var f = new Mod998244353AffineTransformation(a, b);
                 var p = tree.HlDecomposition.down[i];
                 seg1[p] = f;
                 seg2[p] = f;
@@ -40,7 +39,7 @@ namespace Kzrnm.Competitive.Graph
                     int p = cr;
                     ModInt c = ModInt.Raw(cr);
                     ModInt d = ModInt.Raw(cr);
-                    var f = new AffineTransformation<ModInt, ModIntOperator>(c, d);
+                    var f = new Mod998244353AffineTransformation(c, d);
                     p = tree.HlDecomposition.down[p];
                     seg1[p] = f;
                     seg2[p] = f;
@@ -69,20 +68,20 @@ namespace Kzrnm.Competitive.Graph
         }
     }
 
-    struct Op1 : ISegtreeOperator<AffineTransformation<ModInt, ModIntOperator>>
+    struct Op1 : ISegtreeOperator<Mod998244353AffineTransformation>
     {
         [MethodImpl(256)]
-        public AffineTransformation<ModInt, ModIntOperator> Operate(AffineTransformation<ModInt, ModIntOperator> x, AffineTransformation<ModInt, ModIntOperator> y)
+        public Mod998244353AffineTransformation Operate(Mod998244353AffineTransformation x, Mod998244353AffineTransformation y)
             => y * x;
-        private readonly static AffineTransformation<ModInt, ModIntOperator> identity = new AffineTransformation<ModInt, ModIntOperator>(1, 0);
-        public AffineTransformation<ModInt, ModIntOperator> Identity => identity;
+        private readonly static Mod998244353AffineTransformation identity = new Mod998244353AffineTransformation(1, 0);
+        public Mod998244353AffineTransformation Identity => identity;
     }
-    struct Op2 : ISegtreeOperator<AffineTransformation<ModInt, ModIntOperator>>
+    struct Op2 : ISegtreeOperator<Mod998244353AffineTransformation>
     {
         [MethodImpl(256)]
-        public AffineTransformation<ModInt, ModIntOperator> Operate(AffineTransformation<ModInt, ModIntOperator> x, AffineTransformation<ModInt, ModIntOperator> y)
+        public Mod998244353AffineTransformation Operate(Mod998244353AffineTransformation x, Mod998244353AffineTransformation y)
             => x * y;
-        private readonly static AffineTransformation<ModInt, ModIntOperator> identity = new AffineTransformation<ModInt, ModIntOperator>(1, 0);
-        public AffineTransformation<ModInt, ModIntOperator> Identity => identity;
+        private readonly static Mod998244353AffineTransformation identity = new Mod998244353AffineTransformation(1, 0);
+        public Mod998244353AffineTransformation Identity => identity;
     }
 }

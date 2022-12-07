@@ -1,3 +1,4 @@
+#if !NET7_0_OR_GREATER
 using AtCoder.Operators;
 using System;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -40,3 +41,4 @@ namespace Kzrnm.Competitive
         public Fraction Decrement(Fraction x) => throw new NotSupportedException();
     }
 }
+#endif

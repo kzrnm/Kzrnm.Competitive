@@ -1,6 +1,5 @@
 using Kzrnm.Competitive.IO;
 using ModInt = AtCoder.StaticModInt<AtCoder.Mod998244353>;
-using ModIntOperator = AtCoder.StaticModIntOperator<AtCoder.Mod998244353>;
 
 namespace Kzrnm.Competitive.MathNs
 {
@@ -11,7 +10,7 @@ namespace Kzrnm.Competitive.MathNs
         {
             int N = cr;
             int M = cr;
-            var mat = new ArrayMatrix<ModInt, ModIntOperator>(cr.Grid(N, M, cr => ModInt.Raw(cr)));
+            var mat = new Mod998244353ArrayMatrix(cr.Grid(N, M, cr => ModInt.Raw(cr)));
 
             var r = mat.LinearSystem(cr.Repeat(N).Select(cr => ModInt.Raw(cr)));
             cw.WriteLine(r.Length - 1);

@@ -5,7 +5,6 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.MathNS
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class NttTests
     {
         static StaticModInt<Mod998244353>[] ConvNative(StaticModInt<Mod998244353>[] a, StaticModInt<Mod998244353>[] b)

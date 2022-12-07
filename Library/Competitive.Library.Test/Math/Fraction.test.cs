@@ -6,12 +6,11 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.MathNS
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class FractionTests
     {
         static IEnumerable<Fraction> RandomFractions(Random rnd)
             => Enumerable.Repeat(rnd, 1000).Select(rnd => new Fraction(rnd.Next(), rnd.Next()));
-        public static TheoryData Construct_Data = new TheoryData<long, long, long, long>
+        public static TheoryData Construct_Data => new TheoryData<long, long, long, long>
         {
             { 16, 4, 4, 1 },
             { 2, 845106, 1, 422553 },
@@ -35,7 +34,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             f.Denominator.Should().Be(分母out);
         }
 
-        public static TheoryData ToString_Data = new TheoryData<Fraction, string>
+        public static TheoryData ToString_Data => new TheoryData<Fraction, string>
         {
             { new Fraction(16, 4), "4/1" },
             { new Fraction(2, 845106), "1/422553" },
@@ -82,7 +81,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             }
         }
 
-        public static TheoryData GreaterThan_Data = new TheoryData<Fraction, Fraction>
+        public static TheoryData GreaterThan_Data => new TheoryData<Fraction, Fraction>
         {
             { new Fraction(3, 1), new Fraction(2, 1) },
             { new Fraction(2, 3), new Fraction(1, 2) },
@@ -112,11 +111,13 @@ namespace Kzrnm.Competitive.Testing.MathNS
             foreach (var f in RandomFractions(new Random(13)))
             {
                 (-f).Should().Be(new Fraction(-f.Numerator, f.Denominator));
+#if !NET7_0_OR_GREATER
                 default(FractionOperator).Minus(f).Should().Be(new Fraction(-f.Numerator, f.Denominator));
+#endif
             }
         }
 
-        public static TheoryData Add_Data = new TheoryData<Fraction, Fraction, Fraction>
+        public static TheoryData Add_Data => new TheoryData<Fraction, Fraction, Fraction>
         {
             { new Fraction(3, 1), new Fraction(2, 1), new Fraction(5, 1) },
             { new Fraction(1, 2), new Fraction(1, 3), new Fraction(5, 6) },
@@ -129,10 +130,12 @@ namespace Kzrnm.Competitive.Testing.MathNS
         public void AddTest(Fraction num1, Fraction num2, Fraction expected)
         {
             (num1 + num2).Should().Be(expected);
+#if !NET7_0_OR_GREATER
             default(FractionOperator).Add(num1, num2).Should().Be(expected);
+#endif
         }
 
-        public static TheoryData Subtract_Data = new TheoryData<Fraction, Fraction, Fraction>
+        public static TheoryData Subtract_Data => new TheoryData<Fraction, Fraction, Fraction>
         {
             { new Fraction(3, 1), new Fraction(2, 1), new Fraction(1, 1) },
             { new Fraction(1, 2), new Fraction(1, 3), new Fraction(1, 6) },
@@ -145,10 +148,12 @@ namespace Kzrnm.Competitive.Testing.MathNS
         public void SubtractTest(Fraction num1, Fraction num2, Fraction expected)
         {
             (num1 - num2).Should().Be(expected);
+#if !NET7_0_OR_GREATER
             default(FractionOperator).Subtract(num1, num2).Should().Be(expected);
+#endif
         }
 
-        public static TheoryData Multiply_Data = new TheoryData<Fraction, Fraction, Fraction>
+        public static TheoryData Multiply_Data => new TheoryData<Fraction, Fraction, Fraction>
         {
             { new Fraction(3, 1), new Fraction(5, 1), new Fraction(15, 1) },
             { new Fraction(1, 2), new Fraction(1, 7), new Fraction(1, 14) },
@@ -161,10 +166,12 @@ namespace Kzrnm.Competitive.Testing.MathNS
         public void MultiplyTest(Fraction num1, Fraction num2, Fraction expected)
         {
             (num1 * num2).Should().Be(expected);
+#if !NET7_0_OR_GREATER
             default(FractionOperator).Multiply(num1, num2).Should().Be(expected);
+#endif
         }
 
-        public static TheoryData Divide_Data = new TheoryData<Fraction, Fraction, Fraction>
+        public static TheoryData Divide_Data => new TheoryData<Fraction, Fraction, Fraction>
         {
             { new Fraction(3, 1), new Fraction(2, 1), new Fraction(3, 2) },
             { new Fraction(1, 2), new Fraction(1, 7), new Fraction(7, 2) },
@@ -177,7 +184,9 @@ namespace Kzrnm.Competitive.Testing.MathNS
         public void DivideTest(Fraction num1, Fraction num2, Fraction expected)
         {
             (num1 / num2).Should().Be(expected);
+#if !NET7_0_OR_GREATER
             default(FractionOperator).Divide(num1, num2).Should().Be(expected);
+#endif
         }
 
         [Fact]

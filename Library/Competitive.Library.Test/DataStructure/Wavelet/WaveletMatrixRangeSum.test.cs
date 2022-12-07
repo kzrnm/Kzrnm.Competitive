@@ -5,7 +5,6 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.DataStructure
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class WaveletMatrix2DTests
     {
         [Fact]
@@ -22,7 +21,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 orig[x, y] += w;
                 pts[i] = ((x, y), w);
             }
-            WaveletMatrix2DWithSums<int, long, LongOperator> matrix = new(pts);
+            LongWaveletMatrix2DWithSums matrix = new(pts);
             for (int l = 0; l < orig.GetLength(0); l++)
                 for (int r = l + 1; r <= orig.GetLength(0); r++)
                     for (int u = 0; u < orig.GetLength(1); u++)
@@ -67,7 +66,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 orig[x, y] += w;
                 pts[i] = ((x, y), w);
             }
-            WaveletMatrix2DWithFenwickTree<int, long, LongOperator> matrix = new(pts);
+            LongWaveletMatrix2DWithFenwickTree matrix = new(pts);
             for (int l = 0; l < orig.GetLength(0); l++)
                 for (int r = l + 1; r <= orig.GetLength(0); r++)
                     for (int u = 0; u < orig.GetLength(1); u++)

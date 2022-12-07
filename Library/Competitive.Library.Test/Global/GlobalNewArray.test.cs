@@ -4,7 +4,6 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.GlobalNS
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class GlobalNewArrayTests
     {
         [Fact]

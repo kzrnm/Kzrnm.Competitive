@@ -4,64 +4,63 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.MathNS
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class PolynomialTests
     {
         [Fact]
         public void Add()
         {
-            (new Polynomial<int, IntOperator>(new int[] { 1, 2, 3 })
-                + new Polynomial<int, IntOperator>(new int[] { 0, 5, 0, 2 }))
+            (new IntPolynomial(new int[] { 1, 2, 3 })
+                + new IntPolynomial(new int[] { 0, 5, 0, 2 }))
                 .Coefficients.Should().Equal(1, 7, 3, 2);
-            (new Polynomial<int, IntOperator>(new int[] { 0, 5, 0, 2 })
-                + new Polynomial<int, IntOperator>(new int[] { 1, 2, 3 }))
+            (new IntPolynomial(new int[] { 0, 5, 0, 2 })
+                + new IntPolynomial(new int[] { 1, 2, 3 }))
                 .Coefficients.Should().Equal(1, 7, 3, 2);
         }
         [Fact]
         public void Subtract()
         {
-            (new Polynomial<int, IntOperator>(new int[] { 1, 2, 3 })
-                - new Polynomial<int, IntOperator>(new int[] { 0, 5, 0, 2 }))
+            (new IntPolynomial(new int[] { 1, 2, 3 })
+                - new IntPolynomial(new int[] { 0, 5, 0, 2 }))
                 .Coefficients.Should().Equal(1, -3, 3, -2);
-            (new Polynomial<int, IntOperator>(new int[] { 0, 5, 0, 2 })
-                - new Polynomial<int, IntOperator>(new int[] { 1, 2, 3 }))
+            (new IntPolynomial(new int[] { 0, 5, 0, 2 })
+                - new IntPolynomial(new int[] { 1, 2, 3 }))
                 .Coefficients.Should().Equal(-1, 3, -3, 2);
         }
         [Fact]
         public void Minus()
         {
-            (-new Polynomial<int, IntOperator>(new int[] { 1, 2, 3 }))
+            (-new IntPolynomial(new int[] { 1, 2, 3 }))
                 .Coefficients.Should().Equal(-1, -2, -3);
-            (-new Polynomial<int, IntOperator>(new int[] { -1, -2, -3 }))
+            (-new IntPolynomial(new int[] { -1, -2, -3 }))
                 .Coefficients.Should().Equal(1, 2, 3);
         }
         [Fact]
         public void Multiply()
         {
-            (new Polynomial<int, IntOperator>(new int[] { 1, 2, 3 })
-                * new Polynomial<int, IntOperator>(new int[] { 0, 5, 0, 2 }))
+            (new IntPolynomial(new int[] { 1, 2, 3 })
+                * new IntPolynomial(new int[] { 0, 5, 0, 2 }))
                 .Coefficients.Should().Equal(0, 5, 10, 17, 4, 6);
-            (new Polynomial<int, IntOperator>(new int[] { 0, 5, 0, 2 })
-                * new Polynomial<int, IntOperator>(new int[] { 1, 2, 3 }))
+            (new IntPolynomial(new int[] { 0, 5, 0, 2 })
+                * new IntPolynomial(new int[] { 1, 2, 3 }))
                 .Coefficients.Should().Equal(0, 5, 10, 17, 4, 6);
         }
         [Fact]
         public void Divide()
         {
-            (new Polynomial<int, IntOperator>(new int[] { 0, 5, 10, 17, 4, 6 })
-                / new Polynomial<int, IntOperator>(new int[] { 0, 5, 0, 2 }))
+            (new IntPolynomial(new int[] { 0, 5, 10, 17, 4, 6 })
+                / new IntPolynomial(new int[] { 0, 5, 0, 2 }))
                 .Coefficients.Should().Equal(1, 2, 3);
-            (new Polynomial<int, IntOperator>(new int[] { 0, 5, 10, 17, 4, 6 })
-                / new Polynomial<int, IntOperator>(new int[] { 1, 2, 3 }))
+            (new IntPolynomial(new int[] { 0, 5, 10, 17, 4, 6 })
+                / new IntPolynomial(new int[] { 1, 2, 3 }))
                 .Coefficients.Should().Equal(0, 5, 0, 2);
-            (new Polynomial<int, IntOperator>(new int[] { 1, 2, 3 })
-                / new Polynomial<int, IntOperator>(new int[] { 0, 5, 10, 17, 4, 6 }))
+            (new IntPolynomial(new int[] { 1, 2, 3 })
+                / new IntPolynomial(new int[] { 0, 5, 10, 17, 4, 6 }))
                 .Coefficients.Should().BeEmpty();
         }
         [Fact]
         public void Derivative()
         {
-            new Polynomial<int, IntOperator>(new int[] { 0, 5, 10, 17, 4, 6 })
+            new IntPolynomial(new int[] { 0, 5, 10, 17, 4, 6 })
                 .Derivative()
                 .Coefficients
                 .Should()
@@ -70,7 +69,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [Fact]
         public void Integrate()
         {
-            new Polynomial<double, DoubleOperator>(new double[] { 0, 5, 10, 17, 4, 6 })
+            new DoublePolynomial(new double[] { 0, 5, 10, 17, 4, 6 })
                 .Integrate()
                 .Coefficients
                 .Should()
@@ -79,17 +78,17 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [Fact]
         public void Eval()
         {
-            new Polynomial<int, IntOperator>(new int[] { 0, 5, 10, 17, 4, 6 })
+            new IntPolynomial(new int[] { 0, 5, 10, 17, 4, 6 })
                 .Eval(1)
                 .Should()
                 .Be(42);
-            new Polynomial<int, IntOperator>(new int[] { 0, 5, 10, 17, 4, 6 })
+            new IntPolynomial(new int[] { 0, 5, 10, 17, 4, 6 })
                 .Eval(2)
                 .Should()
                 .Be(442);
         }
 
-        public static TheoryData LagrangeInterpolation_Data = new TheoryData<(double, double)[]>
+        public static TheoryData LagrangeInterpolation_Data => new TheoryData<(double, double)[]>
         {
             new (double, double)[]
             {
@@ -114,7 +113,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [MemberData(nameof(LagrangeInterpolation_Data))]
         public void LagrangeInterpolation((double x, double y)[] data)
         {
-            var polynomial = Polynomial<double, DoubleOperator>.LagrangeInterpolation(data);
+            var polynomial = DoublePolynomial.LagrangeInterpolation(data);
             polynomial.Coefficients.Should().HaveCount(data.Length);
             foreach (var (x, y) in data)
             {

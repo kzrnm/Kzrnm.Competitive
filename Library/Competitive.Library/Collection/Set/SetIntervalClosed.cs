@@ -1,14 +1,19 @@
 using AtCoder;
-using AtCoder.Operators;
 using Kzrnm.Competitive.Internal;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
+#if NET7_0_OR_GREATER
+using System.Numerics;
+#else
+using AtCoder.Operators;
+#endif
 
 namespace Kzrnm.Competitive
 {
+#if !NET7_0_OR_GREATER
     /// <summary>
     /// 閉区間をSetで保持する
     /// </summary>
@@ -25,12 +30,32 @@ namespace Kzrnm.Competitive
         public SetIntervalClosedInt() : base() { }
         public SetIntervalClosedInt(IEnumerable<(int From, int ToInclusive)> collection) : base(collection) { }
     }
+#endif
 
     /// <summary>
     /// 閉区間をSetで保持する
     /// </summary>
-    [DebuggerTypeProxy(typeof(SetIntervalClosed<,>.DebugView))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
+#if NET7_0_OR_GREATER
+    [DebuggerTypeProxy(typeof(SetIntervalClosed<>.DebugView))]
+    public class SetIntervalClosed<T>
+        : SetBase<(T From, T ToInclusive), SetIntervalClosed<T>.C<T>, SetIntervalClosed<T>.Node, SetIntervalClosed<T>.NodeOperator>
+        where T : IComparable<T>, IIncrementOperators<T>, IDecrementOperators<T>, IMinMaxValue<T>
+    {
+        public SetIntervalClosed() : base(false, new NodeOperator()) { }
+        public SetIntervalClosed(IEnumerable<(T From, T ToInclusive)> collection) : base(false, new NodeOperator(), collection) { }
+
+#pragma warning disable CS8981
+        static class op
+#pragma warning restore CS8981
+        {
+            [凾(256)] public static T Increment(T v) => ++v;
+            [凾(256)] public static T Decrement(T v) => --v;
+            public static T MaxValue => T.MaxValue;
+            public static T MinValue => T.MinValue;
+        }
+#else
+    [DebuggerTypeProxy(typeof(SetIntervalClosed<,>.DebugView))]
     public class SetIntervalClosed<T, TOp>
         : SetBase<(T From, T ToInclusive), SetIntervalClosed<T, TOp>.C<T>, SetIntervalClosed<T, TOp>.Node, SetIntervalClosed<T, TOp>.NodeOperator>
         where T : IComparable<T>
@@ -49,6 +74,7 @@ namespace Kzrnm.Competitive
         }
 
         protected readonly TOp op;
+#endif
 
         protected override ReadOnlySpan<(T From, T ToInclusive)> InitArray(IEnumerable<(T From, T ToInclusive)> collection)
         {
@@ -76,8 +102,6 @@ namespace Kzrnm.Competitive
 
             return resList.ToArray();
         }
-
-        protected readonly TOp comparer;
 
         protected new bool Add((T From, T ToInclusive) item) => Add(item.From, item.ToInclusive);
         public bool Add(T from, T toInclusive)
@@ -137,9 +161,9 @@ namespace Kzrnm.Competitive
                 greatGrandParent = grandParent;
                 grandParent = parent;
                 parent = current;
-                current = (Node)(order < 0 ? current.Left : current.Right);
+                current = (order < 0 ? current.Left : current.Right);
             }
-            Node node = new Node(from, toInclusive, NodeColor.Red);
+            var node = new Node(from, toInclusive, NodeColor.Red);
             if (order >= 0) parent.Right = node;
             else parent.Left = node;
             if (parent.IsRed) InsertionBalance(node, ref parent, grandParent, greatGrandParent);
@@ -339,7 +363,7 @@ namespace Kzrnm.Competitive
             [凾(256)]
             public int Compare((T From, T ToInclusive) x, (T From, T ToInclusive) y) => x.From.CompareTo(y.From);
         }
-        #region Search
+#region Search
         [凾(256)] public new Node FindNode<Tv>(Tv item) where Tv : IComparable<T> => base.FindNode(new C<Tv>(item));
         [凾(256)] public bool Contains<Tv>(Tv item) where Tv : IComparable<T> => FindNode(item) != null;
         /// <summary>
@@ -392,9 +416,9 @@ namespace Kzrnm.Competitive
         /// <paramref name="item"/> 未満の最後の要素を返します。
         /// </summary>
         [凾(256)] public (T From, T ToInclusive) ReverseUpperBoundItem<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new UR()).node.Pair;
-        #endregion Search
+#endregion Search
 
-        #region Search<T>
+#region Search<T>
         [凾(256)] public Node FindNode(T item) => base.FindNode(new C<T>(item));
         [凾(256)] public bool Contains(T item) => FindNode(item) != null;
         /// <summary>
@@ -447,7 +471,7 @@ namespace Kzrnm.Competitive
         /// <paramref name="item"/> 未満の最後の要素を返します。
         /// </summary>
         [凾(256)] public (T From, T ToExclusive) ReverseUpperBoundItem(T item) => BinarySearch(new C<T>(item), new UR()).node.Pair;
-        #endregion Search<T>
+#endregion Search<T>
         private class DebugView
         {
             [DebuggerDisplay("[{" + nameof(From) + "}, {" + nameof(ToInclusive) + "}]")]

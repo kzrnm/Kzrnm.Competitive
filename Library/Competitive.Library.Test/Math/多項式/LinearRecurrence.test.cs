@@ -6,7 +6,6 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.MathNS
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class LinearRecurrenceTest
     {
         private struct DMod : IDynamicModID { }
@@ -82,7 +81,12 @@ namespace Kzrnm.Competitive.Testing.MathNS
 
             static void RunTest<T>(int a0, int a1, long n) where T : struct, IStaticMod
             {
-                var mat = new Matrix2x2<StaticModInt<T>, StaticModIntOperator<T>>(
+#if NET7_0_OR_GREATER
+                Matrix2x2<StaticModInt<T>>
+#else
+                Matrix2x2<StaticModInt<T>, StaticModIntOperator<T>>
+#endif
+                mat = new (
                     (0, 1),
                     (1, 1)
                 );

@@ -6,12 +6,12 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 // https://nyaannyaan.github.io/library/data-structure-2d/2d-segment-tree.hpp
 namespace Kzrnm.Competitive
 {
-    /// <summary>
-    /// <see cref="AtCoder.Segtree{TValue, TOp}"/> を2次元配列上で扱います。
-    /// </summary>
-    public class Segtree2D
-    {
-    }
+    ///// <summary>
+    ///// <see cref="AtCoder.Segtree{TValue, TOp}"/> を2次元配列上で扱います。
+    ///// </summary>
+    //public class Segtree2D
+    //{
+    //}
     /// <summary>
     /// 大きさ H × W の2次元配列に対し、
     /// <list type="bullet">

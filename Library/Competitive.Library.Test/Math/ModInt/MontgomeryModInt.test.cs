@@ -6,7 +6,6 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.MathNS
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class MontgomeryModIntTests
     {
         private static long Gcd(long a, long b)

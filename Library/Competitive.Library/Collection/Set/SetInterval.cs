@@ -1,14 +1,19 @@
 using AtCoder;
-using AtCoder.Operators;
 using Kzrnm.Competitive.Internal;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
+#if NET7_0_OR_GREATER
+using System.Numerics;
+#else
+using AtCoder.Operators;
+#endif
 
 namespace Kzrnm.Competitive
 {
+#if !NET7_0_OR_GREATER
     /// <summary>
     /// 半開区間をSetで保持する
     /// </summary>
@@ -25,12 +30,32 @@ namespace Kzrnm.Competitive
         public SetIntervalInt() : base() { }
         public SetIntervalInt(IEnumerable<(int From, int ToExclusive)> collection) : base(collection) { }
     }
+#endif
 
     /// <summary>
     /// 半開区間をSetで保持する
     /// </summary>
-    [DebuggerTypeProxy(typeof(SetInterval<,>.DebugView))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
+#if NET7_0_OR_GREATER
+    [DebuggerTypeProxy(typeof(SetInterval<>.DebugView))]
+    public class SetInterval<T>
+        : SetBase<(T From, T ToExclusive), SetInterval<T>.C<T>, SetInterval<T>.Node, SetInterval<T>.NodeOperator>
+        where T : IComparable<T>, IIncrementOperators<T>, IDecrementOperators<T>, IMinMaxValue<T>
+    {
+        public SetInterval() : base(false, new NodeOperator()) { }
+        public SetInterval(IEnumerable<(T From, T ToExclusive)> collection) : base(false, new NodeOperator(), collection) { }
+
+#pragma warning disable CS8981
+        static class op
+#pragma warning restore CS8981
+        {
+            [凾(256)] public static T Increment(T v) => ++v;
+            [凾(256)] public static T Decrement(T v) => --v;
+            public static T MaxValue => T.MaxValue;
+            public static T MinValue => T.MinValue;
+        }
+#else
+    [DebuggerTypeProxy(typeof(SetInterval<,>.DebugView))]
     public class SetInterval<T, TOp>
         : SetBase<(T From, T ToExclusive), SetInterval<T, TOp>.C<T>, SetInterval<T, TOp>.Node, SetInterval<T, TOp>.NodeOperator>
         where T : IComparable<T>
@@ -49,6 +74,7 @@ namespace Kzrnm.Competitive
         }
 
         protected readonly TOp op;
+#endif
 
         protected override ReadOnlySpan<(T From, T ToExclusive)> InitArray(IEnumerable<(T From, T ToExclusive)> collection)
         {
@@ -76,7 +102,6 @@ namespace Kzrnm.Competitive
 
             return resList.ToArray();
         }
-
 
         protected new bool Add((T From, T ToExclusive) item) => Add(item.From, item.ToExclusive);
         public bool Add(T from, T toExclusive)
@@ -138,9 +163,9 @@ namespace Kzrnm.Competitive
                 greatGrandParent = grandParent;
                 grandParent = parent;
                 parent = current;
-                current = (Node)(order < 0 ? current.Left : current.Right);
+                current = (order < 0 ? current.Left : current.Right);
             }
-            Node node = new Node(from, toExclusive, NodeColor.Red);
+            var node = new Node(from, toExclusive, NodeColor.Red);
             if (order >= 0) parent.Right = node;
             else parent.Left = node;
             if (parent.IsRed) InsertionBalance(node, ref parent, grandParent, greatGrandParent);

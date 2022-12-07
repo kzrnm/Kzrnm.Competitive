@@ -3,7 +3,6 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.Algorithm
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class IterToolsTest
     {
         public static TheoryData<int[], int[][]> Permutations_Data = new()

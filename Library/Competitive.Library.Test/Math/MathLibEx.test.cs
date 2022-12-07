@@ -4,11 +4,10 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.MathNS
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class MathLibExTests
     {
 
-        public static TheoryData GcdInt_Data = new TheoryData<int, int, int>
+        public static TheoryData GcdInt_Data => new TheoryData<int, int, int>
         {
             { 1, 2, 1 },
             { 2, 845106, 2 },
@@ -23,7 +22,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         {
             MathLibEx.Gcd(num1, num2).Should().Be(expected);
         }
-        public static TheoryData GcdIntParams_Data = new TheoryData<int[], int>
+        public static TheoryData GcdIntParams_Data => new TheoryData<int[], int>
         {
             { new int[]{ 344250, 152325, 450 }, 225 },
             { new int[]{ 344250, 152325, 450, 75 }, 75 },
@@ -41,7 +40,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             MathLibEx.Gcd(nums).Should().Be(expected);
         }
 
-        public static TheoryData GcdLong_Data = new TheoryData<long, long, long>
+        public static TheoryData GcdLong_Data => new TheoryData<long, long, long>
         {
             { 1, 2, 1 },
             { 2, 845106, 2 },
@@ -55,7 +54,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         {
             MathLibEx.Gcd(num1, num2).Should().Be(expected);
         }
-        public static TheoryData GcdLongParams_Data = new TheoryData<long[], long>
+        public static TheoryData GcdLongParams_Data => new TheoryData<long[], long>
         {
             { new long[]{ 230895518700, 230811434700, 1300 }, 100 },
             { new long[]{ 230895518700, 230811434700, 490 }, 70 },
@@ -71,7 +70,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         }
 
 
-        public static TheoryData LcmInt_Data = new TheoryData<int, int, int>
+        public static TheoryData LcmInt_Data => new TheoryData<int, int, int>
         {
             { 1, 2, 2 },
             { 2, 845106, 845106 },
@@ -84,7 +83,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         {
             MathLibEx.Lcm(num1, num2).Should().Be(expected);
         }
-        public static TheoryData LcmIntParams_Data = new TheoryData<int[], int>
+        public static TheoryData LcmIntParams_Data => new TheoryData<int[], int>
         {
             { new int[]{ 44250, 2325, 5, 25 }, 1371750 },
             { new int[]{ 44250, 2325, 5, 25, 3 }, 1371750 },
@@ -98,7 +97,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             MathLibEx.Lcm(nums).Should().Be(expected);
         }
 
-        public static TheoryData LcmLong_Data = new TheoryData<long, long, long>
+        public static TheoryData LcmLong_Data => new TheoryData<long, long, long>
         {
             { 1, 2, 2 },
             { 2, 845106, 845106 },
@@ -111,7 +110,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         {
             MathLibEx.Lcm(num1, num2).Should().Be(expected);
         }
-        public static TheoryData LcmLongParams_Data = new TheoryData<long[], long>
+        public static TheoryData LcmLongParams_Data => new TheoryData<long[], long>
         {
             { new long[]{ 44250, 2325, 5, 25 }, 1371750 },
             { new long[]{ 44250, 2325, 5, 25, 3 }, 1371750 },
@@ -184,7 +183,11 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [Fact]
         public void CombinationTable()
         {
+#if NET7_0_OR_GREATER
+            var c = MathLibEx.CombinationTable<long>(10);
+#else
             var c = MathLibEx.CombinationTable<long, LongOperator>(10);
+#endif
             for (int i = 0; i <= 10; i++)
                 for (int j = 0; j <= i; j++)
                 {

@@ -5,10 +5,9 @@ using Xunit;
 
 namespace Kzrnm.Competitive.Testing.Collection
 {
-    // verification-helper: EXTERNAL_FAILURE_FLAG unittest_failure
     public class SetIntervalClosedTests
     {
-        public static TheoryData Add_Data = new TheoryData<(int from, int to)[], (int from, int to)[]>
+        public static TheoryData Add_Data => new TheoryData<(int from, int to)[], (int from, int to)[]>
         {
             {
                 Array.Empty<(int from, int to)>(),
@@ -374,7 +373,7 @@ namespace Kzrnm.Competitive.Testing.Collection
         }
 
 
-        public static TheoryData Remove_Data = new TheoryData<int, int, bool, (int from, int to)[]>
+        public static TheoryData Remove_Data => new TheoryData<int, int, bool, (int from, int to)[]>
         {
             { 1,9,false,new (int,int)[]{(10, 20),(25, 30),(35, 40),(50, 60) } },
             { 21,24,false,new (int,int)[]{(10, 20),(25, 30),(35, 40),(50, 60) } },
@@ -451,7 +450,7 @@ namespace Kzrnm.Competitive.Testing.Collection
             ((ICollection<(int, int)>)set).Contains((from, to)).Should().Be(isContains);
         }
 
-        public static TheoryData RangeTruncate_Data = new TheoryData<int, int, (int From, int ToInclusive)[]>
+        public static TheoryData RangeTruncate_Data => new TheoryData<int, int, (int From, int ToInclusive)[]>
         {
             {  0, 9, Array.Empty<(int, int)>() },
             { 21, 29, Array.Empty<(int, int)>() },
@@ -474,7 +473,7 @@ namespace Kzrnm.Competitive.Testing.Collection
             set.RangeTruncate(from, to).Should().Equal(expected);
         }
 
-        public static TheoryData RangeAll_Data = new TheoryData<int, int, (int From, int ToInclusive)[]>
+        public static TheoryData RangeAll_Data => new TheoryData<int, int, (int From, int ToInclusive)[]>
         {
             {  0, 9, Array.Empty<(int, int)>() },
             { 21, 29, Array.Empty<(int, int)>() },
