@@ -1,6 +1,6 @@
 ---
 title: 起動クラス
-documentation_of: //Library/Competitive.Library/+Runner/Program.cs
+documentation_of: ./Program.cs
 ---
 
 ## 概要
