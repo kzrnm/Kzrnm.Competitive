@@ -97,6 +97,7 @@ jobs:
           include: Library/**
           exclude: |
             **/obj/**
+            **/Usings.cs
             Library/Competitive.Library.Test/SourceExpanderTest.cs
             Library/LibraryChecker/BaseSolver/BaseSover.cs
             Library/LibraryChecker/Program.cs
