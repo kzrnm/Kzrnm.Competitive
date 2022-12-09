@@ -30,12 +30,14 @@ env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_NOLOGO: true
   NUGET_XMLDOC_MODE: skip
-  WORKFLOW_BUILD_SLN: Library/Competitive.Library.sln
+  WORKFLOW_BUILD_SLN: Competitive.Library.sln
 
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: Library
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-dotnet@v3
@@ -54,6 +56,9 @@ jobs:
 
   setup:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Library
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v3
@@ -76,38 +81,38 @@ jobs:
       - name: Unit test
         run: dotnet test $UNITTEST_CSPROJ --logger "CompetitiveVerifier;OutDirectory=${{runner.temp}}/VerifierCsUnitTestResult" --no-build  -c Release
         env:
-          UNITTEST_CSPROJ: Library/Competitive.Library.Test/Competitive.Library.Test.csproj
+          UNITTEST_CSPROJ: Competitive.Library.Test/Competitive.Library.Test.csproj
 
       - name: Resolve netcoreapp3.1
         run: dotnet run --project $VERIFY_CSPROJ --framework $FRAMEWORK --no-launch-profile --no-build -c Release | tee "${{runner.temp}}/problems-$FRAMEWORK.json"
         env:
-          VERIFY_CSPROJ: Library/LibraryChecker/LibraryChecker.csproj
+          VERIFY_CSPROJ: LibraryChecker/LibraryChecker.csproj
           FRAMEWORK: netcoreapp3.1
       - name: Resolve net7.0
         run: dotnet run --project $VERIFY_CSPROJ --framework $FRAMEWORK --no-launch-profile --no-build -c Release | tee "${{runner.temp}}/problems-$FRAMEWORK.json"
         env:
-          VERIFY_CSPROJ: Library/LibraryChecker/LibraryChecker.csproj
+          VERIFY_CSPROJ: LibraryChecker/LibraryChecker.csproj
           FRAMEWORK: net7.0
 
       - name: cs-resolve
         uses: competitive-verifier/actions/cs-resolve@v1
         with:
+          working-directory: Library
           solution: ${{ env.WORKFLOW_BUILD_SLN }}
-          output-path: verify_files.json
-          include: Library/**
+          output-path: ${{runner.temp}}/verify_files.json
           exclude: |
             **/obj/**
             **/Usings.cs
-            Library/Competitive.Library.Test/SourceExpanderTest.cs
-            Library/LibraryChecker/BaseSolver/BaseSover.cs
-            Library/LibraryChecker/Program.cs
+            Competitive.Library.Test/SourceExpanderTest.cs
+            LibraryChecker/BaseSolver/BaseSover.cs
+            LibraryChecker/Program.cs
           unittest-result: ${{runner.temp}}/VerifierCsUnitTestResult/*.csv
           problems: ${{runner.temp}}/problems-*.json
           msbuild-properties: Configuration=Release
       - name: Upload verify_files.json
         uses: competitive-verifier/actions/upload-verify-artifact@v1
         with:
-          file: verify_files.json
+          file: ${{runner.temp}}/verify_files.json
       - name: Upload binaries
         uses: actions/upload-artifact@v3
         with:
@@ -116,6 +121,9 @@ jobs:
 
   verify:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Library
     needs: [setup]
     env:
       SPLIT_SIZE: 20
@@ -152,6 +160,7 @@ jobs:
       - name: Verify
         uses: competitive-verifier/actions/verify@v1
         with:
+          working-directory: Library
           destination: ${{runner.temp}}/result.json
           split-size: ${{ env.SPLIT_SIZE }}
           split-index: ${{ matrix.index }}
@@ -167,7 +176,12 @@ jobs:
 
   docs-and-check:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Library
     needs: [verify]
+    outputs:
+      upload-pages: ${{steps.upload-pages.outcome == 'success'}}
     steps:
       - uses: actions/checkout@v3
 
@@ -175,6 +189,7 @@ jobs:
         id: all-artifacts
         uses: competitive-verifier/actions/download-verify-artifact@v1
         with:
+          working-directory: Library
           download-all: true
           artifact-root: .artifacts/
 
@@ -200,8 +215,9 @@ jobs:
       - name: Docs
         uses: competitive-verifier/actions/docs@v1
         with:
+          working-directory: Library
           verify-result: ${{ steps.all-artifacts.outputs.artifacts-root }}/Result-*/result.json
-          destination: _jekyll
+          destination: ${{github.workspace}}/_jekyll
           write-summary: true
 
       - name: Build with Jekyll
@@ -210,6 +226,7 @@ jobs:
           source: _jekyll
           destination: _site
       - name: Upload artifact
+        id: upload-pages
         uses: actions/upload-pages-artifact@v1
         with:
           path: _site
@@ -219,7 +236,7 @@ jobs:
         with:
           verify-result: ${{ steps.all-artifacts.outputs.artifacts-root }}/Result-*/result.json
   deploy:
-    if: (success() || failure()) && github.ref == 'refs/heads/main'
+    if: always() && github.ref == 'refs/heads/main' && needs.docs-and-check.upload-pages == 'true'
     needs: docs-and-check
     environment:
       name: github-pages

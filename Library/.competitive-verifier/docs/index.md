@@ -5,7 +5,8 @@
 
 C# での競技プログラミング用のライブラリ・実行環境を整備したリポジトリです。
 
-本家の `oj-verify` は C# に対応していないので [改造版](https://github.com/kzrnm/verification-helper) を使用しています。
+
+[competitive-verifier](https://github.com/competitive-verifier/competitive-verifier) で生成しています。
 
 ## 動作環境
 
