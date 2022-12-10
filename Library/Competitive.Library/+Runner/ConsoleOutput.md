@@ -1,6 +1,6 @@
 ---
 title: 出力用のラッパー
-documentation_of: //Library/Competitive.Library/+Runner/ConsoleOutput.cs
+documentation_of: ./ConsoleOutput.cs
 ---
 
 ## 概要

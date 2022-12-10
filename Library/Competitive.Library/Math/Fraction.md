@@ -1,6 +1,6 @@
 ---
 title: 有理数型
-documentation_of: //Library/Competitive.Library/Math/Fraction.cs
+documentation_of: ./Fraction.cs
 ---
 
 ## 概要

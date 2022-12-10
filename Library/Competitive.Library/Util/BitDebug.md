@@ -1,6 +1,6 @@
 ---
 title: デバッグ用の2進数表記
-documentation_of: //Library/Competitive.Library/Util/BitDebug.cs
+documentation_of: ./BitDebug.cs
 ---
 
 ## 概要

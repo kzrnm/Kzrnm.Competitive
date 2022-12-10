@@ -1,6 +1,6 @@
 ---
 title: ビット操作
-documentation_of: //Library/Competitive.Library/Bit/Bit.cs
+documentation_of: ./Bit.cs
 ---
 
 ## 概要
