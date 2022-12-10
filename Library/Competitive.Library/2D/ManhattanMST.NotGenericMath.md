@@ -1,6 +1,6 @@
 ---
-title: マンハッタン距離での最小全域木
-documentation_of: ./ManhattanMST.GenericMath.cs
+title: マンハッタン距離での最小全域木(.NET Core 3.1)
+documentation_of: ./ManhattanMST.NotGenericMath.cs
 ---
 
 ## 概要
