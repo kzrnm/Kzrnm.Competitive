@@ -9,17 +9,8 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive
 {
     using Kd = ArrayMatrixKind;
-    public readonly struct ArrayMatrix<T>
-        : IAdditionOperators<ArrayMatrix<T>, ArrayMatrix<T>, ArrayMatrix<T>>
-        , IAdditiveIdentity<ArrayMatrix<T>, ArrayMatrix<T>>
-        , IMultiplicativeIdentity<ArrayMatrix<T>, ArrayMatrix<T>>
-        , IMultiplyOperators<ArrayMatrix<T>, ArrayMatrix<T>, ArrayMatrix<T>>
+    public readonly struct ArrayMatrix<T> : Internal.IMatrixOperator<ArrayMatrix<T>>
         , IMultiplyOperators<ArrayMatrix<T>, T, ArrayMatrix<T>>
-        , ISubtractionOperators<ArrayMatrix<T>, ArrayMatrix<T>, ArrayMatrix<T>>
-        , IUnaryPlusOperators<ArrayMatrix<T>, ArrayMatrix<T>>
-        , IUnaryNegationOperators<ArrayMatrix<T>, ArrayMatrix<T>>
-        , IEquatable<ArrayMatrix<T>>
-        , IEqualityOperators<ArrayMatrix<T>, ArrayMatrix<T>, bool>
         where T : INumberBase<T>
     {
         public T this[int row, int col] => Value[row][col];

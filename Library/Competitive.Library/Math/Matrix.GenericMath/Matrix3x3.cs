@@ -4,17 +4,8 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public readonly struct Matrix3x3<T>
-        : IAdditionOperators<Matrix3x3<T>, Matrix3x3<T>, Matrix3x3<T>>
-        , IAdditiveIdentity<Matrix3x3<T>, Matrix3x3<T>>
-        , IMultiplicativeIdentity<Matrix3x3<T>, Matrix3x3<T>>
-        , IMultiplyOperators<Matrix3x3<T>, Matrix3x3<T>, Matrix3x3<T>>
+    public readonly struct Matrix3x3<T> : Internal.IMatrixOperator<Matrix3x3<T>>
         , IMultiplyOperators<Matrix3x3<T>, T, Matrix3x3<T>>
-        , ISubtractionOperators<Matrix3x3<T>, Matrix3x3<T>, Matrix3x3<T>>
-        , IUnaryPlusOperators<Matrix3x3<T>, Matrix3x3<T>>
-        , IUnaryNegationOperators<Matrix3x3<T>, Matrix3x3<T>>
-        , IEquatable<Matrix3x3<T>>
-        , IEqualityOperators<Matrix3x3<T>, Matrix3x3<T>, bool>
         where T : INumberBase<T>
     {
         public readonly (T Col0, T Col1, T Col2) Row0;

@@ -6,13 +6,16 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    internal interface IAffineOperator<T> : IEquatable<T>
+        , IMultiplyOperators<T, T, T>
+        , IMultiplicativeIdentity<T, T>
+        where T: IAffineOperator<T>
+    { }
     /// <summary>
     /// アフィン変換. Ax+b の形で表される式を保持する。
     /// </summary>
     [DebuggerDisplay(nameof(a) + " * x + " + nameof(b))]
-    public readonly struct AffineTransformation<T> : IEquatable<AffineTransformation<T>>
-        , IMultiplyOperators<AffineTransformation<T>, AffineTransformation<T>, AffineTransformation<T>>
-        , IMultiplicativeIdentity<AffineTransformation<T>, AffineTransformation<T>>
+    public readonly struct AffineTransformation<T> : IAffineOperator<AffineTransformation<T>>
         where T : struct
         , IAdditionOperators<T, T, T>
         , IMultiplyOperators<T, T, T>
