@@ -1,13 +1,16 @@
 root = true
 
+[*]
+charset = utf-8
+
 [*.{csproj,props,targets,config,nuspec}]
 indent_size = 2
 indent_style = space
 
-[*]
-charset = utf-8
+[**.csx]
+dotnet_analyzer_diagnostic.severity = none
+dotnet_diagnostic.CS7021.severity = none
 
 [*.cs]
-charset = utf-8
 # IDE0090: 'new(...)' を使用する
 dotnet_diagnostic.IDE0090.severity = silent
