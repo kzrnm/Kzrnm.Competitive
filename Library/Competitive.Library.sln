@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Competitive.Library", "Comp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Competitive.Library.Test", "Competitive.Library.Test\Competitive.Library.Test.csproj", "{3A69D84F-CCF6-4A37-B047-41C6AE9CE79B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryChecker", "LibraryChecker\LibraryChecker.csproj", "{0E88E81F-A07B-4336-A3A4-7BF00E35D19B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryChecker", "Checker\Checker.csproj", "{0E88E81F-A07B-4336-A3A4-7BF00E35D19B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Competitive.Benchmark", "..\Competitive.Benchmark\Competitive.Benchmark.csproj", "{03D41CA3-57BF-4EE3-B1BB-AD427B08D962}"
 EndProject

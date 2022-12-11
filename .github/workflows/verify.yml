@@ -86,12 +86,12 @@ jobs:
       - name: Resolve netcoreapp3.1
         run: dotnet run --project $VERIFY_CSPROJ --framework $FRAMEWORK --no-launch-profile --no-build -c Release | tee "${{runner.temp}}/problems-$FRAMEWORK.json"
         env:
-          VERIFY_CSPROJ: LibraryChecker/LibraryChecker.csproj
+          VERIFY_CSPROJ: Checker/Checker.csproj
           FRAMEWORK: netcoreapp3.1
       - name: Resolve net7.0
         run: dotnet run --project $VERIFY_CSPROJ --framework $FRAMEWORK --no-launch-profile --no-build -c Release | tee "${{runner.temp}}/problems-$FRAMEWORK.json"
         env:
-          VERIFY_CSPROJ: LibraryChecker/LibraryChecker.csproj
+          VERIFY_CSPROJ: Checker/Checker.csproj
           FRAMEWORK: net7.0
 
       - name: cs-resolve
@@ -104,8 +104,8 @@ jobs:
             **/obj/**
             **/Usings.cs
             Competitive.Library.Test/SourceExpanderTest.cs
-            LibraryChecker/BaseSolver/BaseSover.cs
-            LibraryChecker/Program.cs
+            Checker/BaseSolver/BaseSover.cs
+            Checker/Program.cs
           unittest-result: ${{runner.temp}}/VerifierCsUnitTestResult/*.csv
           problems: ${{runner.temp}}/problems-*.json
           msbuild-properties: Configuration=Release
@@ -117,7 +117,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: binary-${{github.sha}}
-          path: Library/LibraryChecker/bin/Release
+          path: Library/Checker/bin/Release
 
   verify:
     runs-on: ubuntu-latest
@@ -155,7 +155,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: binary-${{github.sha}}
-          path: Library/LibraryChecker/bin/Release
+          path: Library/Checker/bin/Release
 
       - name: Verify
         uses: competitive-verifier/actions/verify@v1
