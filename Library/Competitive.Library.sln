@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Competitive.Library", "Comp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Competitive.Library.Test", "Competitive.Library.Test\Competitive.Library.Test.csproj", "{3A69D84F-CCF6-4A37-B047-41C6AE9CE79B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryChecker", "Checker\Checker.csproj", "{0E88E81F-A07B-4336-A3A4-7BF00E35D19B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Checker", "Checker\Checker.csproj", "{0E88E81F-A07B-4336-A3A4-7BF00E35D19B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Competitive.Benchmark", "..\Competitive.Benchmark\Competitive.Benchmark.csproj", "{03D41CA3-57BF-4EE3-B1BB-AD427B08D962}"
 EndProject
@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		..\.editorconfig = ..\.editorconfig
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B33879E8-4DFF-4758-854D-E767148F6BCA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +52,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3A69D84F-CCF6-4A37-B047-41C6AE9CE79B} = {B33879E8-4DFF-4758-854D-E767148F6BCA}
+		{0E88E81F-A07B-4336-A3A4-7BF00E35D19B} = {B33879E8-4DFF-4758-854D-E767148F6BCA}
+		{03D41CA3-57BF-4EE3-B1BB-AD427B08D962} = {B33879E8-4DFF-4758-854D-E767148F6BCA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {169D5CFF-76E2-479A-9376-F692952C62BC}
