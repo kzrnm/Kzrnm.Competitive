@@ -43,6 +43,7 @@ public class Benchmark
 {
     private readonly Random rnd = new Random(42);
     const int MAX_N = 1 << 20;
+#if VARIABLE_N
     [Params(new object[]
     {
         1<<5,
@@ -53,11 +54,15 @@ public class Benchmark
         //1 << 20,
     })]
     public int N;
+#else
+    public const int N = 1 << 15;
+#endif
 
+    public int[] array;
     [GlobalSetup]
     public void Setup()
     {
-        var array = new int[N];
+        array = new int[N];
         rnd.NextBytes(MemoryMarshal.Cast<int, byte>(array));
     }
 
