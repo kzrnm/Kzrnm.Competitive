@@ -104,7 +104,7 @@ jobs:
             **/obj/**
             **/Usings.cs
             Competitive.Library.Test/SourceExpanderTest.cs
-            Checker/BaseSolver/BaseSover.cs
+            Checker/BaseSover.cs
             Checker/Program.cs
           unittest-result: ${{runner.temp}}/VerifierCsUnitTestResult/*.csv
           problems: ${{runner.temp}}/problems-*.json
