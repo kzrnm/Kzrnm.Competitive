@@ -1,5 +1,4 @@
 using FluentAssertions;
-using Xunit;
 
 namespace Kzrnm.Competitive.Testing.MathNS
 {

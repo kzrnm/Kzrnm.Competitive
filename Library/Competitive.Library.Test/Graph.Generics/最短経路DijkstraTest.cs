@@ -2,7 +2,6 @@ using FluentAssertions;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Xunit;
 
 namespace Kzrnm.Competitive.Testing.Graph
 {

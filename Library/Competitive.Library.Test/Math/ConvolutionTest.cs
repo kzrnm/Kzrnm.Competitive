@@ -3,7 +3,6 @@ using FluentAssertions;
 using System;
 using System.Linq;
 using System.Numerics;
-using Xunit;
 
 namespace Kzrnm.Competitive.Testing.MathNS
 {

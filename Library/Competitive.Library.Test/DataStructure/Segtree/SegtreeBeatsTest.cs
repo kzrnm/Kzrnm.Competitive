@@ -1,5 +1,4 @@
 using FluentAssertions;
-using Xunit;
 using static System.Math;
 
 namespace Kzrnm.Competitive.Testing.DataStructure

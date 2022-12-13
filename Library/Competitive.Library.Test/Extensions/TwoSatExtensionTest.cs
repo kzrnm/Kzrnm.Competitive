@@ -1,6 +1,5 @@
 using AtCoder;
 using FluentAssertions;
-using Xunit;
 
 namespace Kzrnm.Competitive.Testing.Extensions
 {

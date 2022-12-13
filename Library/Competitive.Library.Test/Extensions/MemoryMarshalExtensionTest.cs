@@ -2,7 +2,6 @@ using AtCoder;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;
-using Xunit;
 
 namespace Kzrnm.Competitive.Testing.Extensions
 {

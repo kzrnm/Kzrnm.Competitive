@@ -1,3 +1,4 @@
+global using Xunit;
 #if NET7_0_OR_GREATER
 global using LongFenwickTree = AtCoder.FenwickTree<long>;
 global using DoubleAffineTransformation = Kzrnm.Competitive.AffineTransformation<double>;

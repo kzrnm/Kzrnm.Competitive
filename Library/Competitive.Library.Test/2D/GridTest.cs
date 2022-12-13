@@ -1,6 +1,5 @@
 using FluentAssertions;
 using System;
-using Xunit;
 
 namespace Kzrnm.Competitive.Testing.TwoDimensional
 {

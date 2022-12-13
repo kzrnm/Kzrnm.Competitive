@@ -1,6 +1,5 @@
 using FluentAssertions;
 using Kzrnm.Competitive.DataStructure;
-using Xunit;
 
 namespace Kzrnm.Competitive.Testing.DataStructure
 {

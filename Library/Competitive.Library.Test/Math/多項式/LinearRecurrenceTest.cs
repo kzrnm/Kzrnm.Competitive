@@ -2,7 +2,6 @@ using AtCoder;
 using FluentAssertions;
 using System;
 using System.Runtime.InteropServices;
-using Xunit;
 
 namespace Kzrnm.Competitive.Testing.MathNS
 {

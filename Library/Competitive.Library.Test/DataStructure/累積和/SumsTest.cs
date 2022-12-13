@@ -3,7 +3,6 @@ using AtCoder.Operators;
 using FluentAssertions;
 using System;
 using System.Linq;
-using Xunit;
 
 namespace Kzrnm.Competitive.Testing.DataStructure
 {
