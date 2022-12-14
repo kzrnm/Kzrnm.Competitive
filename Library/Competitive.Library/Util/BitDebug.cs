@@ -27,9 +27,9 @@ namespace Kzrnm.Competitive
                 this.value = value;
             }
             [DebuggerBrowsable(Never)]
-            string key;
+            internal string key;
             [DebuggerBrowsable(RootHidden)]
-            object value;
+            internal object value;
         }
         [DebuggerBrowsable(RootHidden)]
         public DebugItem[] Items
