@@ -6,7 +6,7 @@
     },
     "WithInput": {
       "commandName": "Project",
-      "commandLineArgs": "Kzrnm.Competitive.MathNs.Fps.FormalPowerSeriesPowTest < Z:\\source\\workspace\\Competitive\\library-checker-problems\\math\\pow_of_formal_power_series\\in\\lower_deg_zero_07.in"
+      "commandLineArgs": "Kzrnm.Competitive.Graph.UnionFindTest < $(ProjectDir)\\Properties\\example_00.in"
     },
     "ConsoleInput": {
       "commandName": "Project",
