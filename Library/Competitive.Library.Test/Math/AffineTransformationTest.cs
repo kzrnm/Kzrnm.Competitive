@@ -1,5 +1,4 @@
 using AtCoder;
-using FluentAssertions;
 
 namespace Kzrnm.Competitive.Testing.MathNS
 {

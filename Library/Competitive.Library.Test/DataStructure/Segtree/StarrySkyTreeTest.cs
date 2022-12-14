@@ -1,4 +1,3 @@
-using FluentAssertions;
 using Kzrnm.Competitive.DataStructure;
 
 namespace Kzrnm.Competitive.Testing.DataStructure

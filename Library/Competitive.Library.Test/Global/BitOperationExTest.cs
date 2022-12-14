@@ -1,4 +1,3 @@
-using FluentAssertions;
 
 namespace Kzrnm.Competitive.Testing.GlobalNS
 {

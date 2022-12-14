@@ -1,4 +1,3 @@
-using FluentAssertions;
 using System;
 using System.Runtime.Intrinsics.X86;
 

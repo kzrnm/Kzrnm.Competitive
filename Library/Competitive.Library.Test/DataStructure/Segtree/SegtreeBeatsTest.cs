@@ -1,4 +1,3 @@
-using FluentAssertions;
 using static System.Math;
 
 namespace Kzrnm.Competitive.Testing.DataStructure

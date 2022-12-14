@@ -1,4 +1,3 @@
-using FluentAssertions;
 using System.Linq;
 
 namespace Kzrnm.Competitive.Testing.Extensions
