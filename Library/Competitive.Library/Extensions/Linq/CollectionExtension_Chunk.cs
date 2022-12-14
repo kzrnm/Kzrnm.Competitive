@@ -6,6 +6,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE Chunk
     public static class __CollectionExtension_Chunk
     {
         /// <summary>

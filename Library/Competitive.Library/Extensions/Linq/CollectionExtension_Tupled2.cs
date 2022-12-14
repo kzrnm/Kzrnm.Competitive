@@ -3,6 +3,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE (T, T)[] への変換
     public static class __CollectionExtension_Tupled2
     {
         /// <summary>

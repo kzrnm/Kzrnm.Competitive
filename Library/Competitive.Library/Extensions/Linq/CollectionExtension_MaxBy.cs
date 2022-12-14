@@ -4,6 +4,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE MaxBy
     public static class __CollectionExtension_MaxBy
     {
         [凾(256)]
