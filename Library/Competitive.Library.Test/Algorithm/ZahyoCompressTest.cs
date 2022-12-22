@@ -26,7 +26,7 @@ namespace Kzrnm.Competitive.Testing.Algorithm
             c.Original.Should().Equal('c', 'e', 'm', 'o', 'p', 'r', 's');
             c.Replace("compress").Should().Equal(0, 3, 2, 4, 5, 1, 6, 6);
 
-            c.Compress(new ReverseComparerClass<char>());
+            c.Compress(new ReverseComparerStruct<char>());
             c.NewTable.Should().Equal(new Dictionary<char, int>
             {
                 { 'c',6 },
