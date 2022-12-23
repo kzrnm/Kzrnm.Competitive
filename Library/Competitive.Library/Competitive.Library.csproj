@@ -48,8 +48,8 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="Competitive.Library.Test" />
-    <PackageReference Include="ac-library-csharp" Version="2.0.0" />
-    <PackageReference Include="AtCoderAnalyzer" Version="2.0.0">
+    <PackageReference Include="ac-library-csharp" Version="2.0.1" />
+    <PackageReference Include="AtCoderAnalyzer" Version="2.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
