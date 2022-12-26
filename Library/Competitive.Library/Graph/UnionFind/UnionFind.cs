@@ -100,10 +100,27 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <para>計算量: O(n)</para>
         /// <returns>「一つの連結成分の頂点番号のリスト」のリスト。</returns>
-        public int[][] Groups()
+        [凾(256)]
+        public int[][] Groups() => GroupsAndIds().Groups;
+
+        /// <summary>
+        /// グラフを連結成分に分け、そのIDを返します。
+        /// </summary>
+        /// <para>計算量: O(n)</para>
+        /// <returns>頂点番号に対応する連結成分のID。</returns>
+        [凾(256)]
+        public int[] GroupIds() => GroupsAndIds().GroupIds;
+
+        /// <summary>
+        /// グラフを連結成分に分け、その情報を返します。
+        /// </summary>
+        /// <para>計算量: O(n)</para>
+        /// <returns>「一つの連結成分の頂点番号のリスト」のリスト, 頂点番号に対応する連結成分のID。</returns>
+        public (int[][] Groups, int[] GroupIds) GroupsAndIds()
         {
-            int[] leaderBuf = new int[_n];
-            int[] id = new int[_n];
+            var leaderBuf = new int[_n];
+            var id = new int[_n];
+            var gr = new int[_n];
             var resultList = new List<int[]>(_n);
             for (int i = 0; i < leaderBuf.Length; i++)
             {
@@ -115,14 +132,15 @@ namespace Kzrnm.Competitive
                 }
             }
             var result = resultList.ToArray();
-            int[] ind = new int[result.Length];
+            var ind = new int[result.Length];
             for (int i = 0; i < leaderBuf.Length; i++)
             {
                 var leaderID = id[leaderBuf[i]];
+                gr[i] = leaderID;
                 result[leaderID][ind[leaderID]] = i;
                 ind[leaderID]++;
             }
-            return result;
+            return (result, gr);
         }
         private class DebugView
         {
