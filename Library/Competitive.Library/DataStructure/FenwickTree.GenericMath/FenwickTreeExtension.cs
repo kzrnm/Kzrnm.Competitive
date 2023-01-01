@@ -20,7 +20,7 @@ namespace Kzrnm.Competitive
         {
             if (v < T.AdditiveIdentity) return 0;
             int x = 0;
-            for (int k = 1 << BitOperationsEx.MSB(fw.data.Length - 1); k > 0; k >>= 1)
+            for (int k = 1 << BitOperations.Log2((uint)fw.data.Length - 1); k > 0; k >>= 1)
             {
                 var nx = x + k;
                 if (nx < fw.data.Length && fw.data[nx] < v)
@@ -45,7 +45,7 @@ namespace Kzrnm.Competitive
         {
             if (v < T.AdditiveIdentity) return 0;
             int x = 0;
-            for (int k = 1 << BitOperationsEx.MSB(fw.data.Length - 1); k > 0; k >>= 1)
+            for (int k = 1 << BitOperations.Log2((uint)fw.data.Length - 1); k > 0; k >>= 1)
             {
                 var nx = x + k;
                 if (nx < fw.data.Length && fw.data[nx] <= v)

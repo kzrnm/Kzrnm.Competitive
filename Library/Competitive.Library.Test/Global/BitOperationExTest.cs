@@ -14,8 +14,8 @@ namespace Kzrnm.Competitive.Testing.GlobalNS
         public void BitOperationInt32(int input, int popCount, int msb, int lsb)
         {
             BitOperationsEx.PopCount(input).Should().Be(popCount);
-            BitOperationsEx.MSB(input).Should().Be(msb);
-            BitOperationsEx.LSB(input).Should().Be(lsb);
+            BitOperationsEx.Msb(input).Should().Be(msb);
+            BitOperationsEx.Lsb(input).Should().Be(lsb);
         }
 
         [Theory]
@@ -27,8 +27,8 @@ namespace Kzrnm.Competitive.Testing.GlobalNS
         public void BitOperationInt64(long input, int popCount, int msb, int lsb)
         {
             BitOperationsEx.PopCount(input).Should().Be(popCount);
-            BitOperationsEx.MSB(input).Should().Be(msb);
-            BitOperationsEx.LSB(input).Should().Be(lsb);
+            BitOperationsEx.Msb(input).Should().Be(msb);
+            BitOperationsEx.Lsb(input).Should().Be(lsb);
         }
 
         [Theory]

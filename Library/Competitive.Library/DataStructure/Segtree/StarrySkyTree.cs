@@ -1,6 +1,7 @@
 using AtCoder;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.DataStructure
@@ -19,7 +20,7 @@ namespace Kzrnm.Competitive.DataStructure
         public StarrySkyTree(int size)
         {
             Length = size;
-            rootLength = 1 << (BitOperationsEx.MSB(size - 1) + 1);
+            rootLength = 1 << (BitOperations.Log2((uint)size - 1) + 1);
             lazy = new T[(rootLength << 1) - 1];
             data = new T[(rootLength << 1) - 1];
             Array.Fill(lazy, op.Identity);

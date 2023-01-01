@@ -31,42 +31,42 @@ namespace Kzrnm.Competitive
         /// <paramref name="x"/> の最上位ビット
         /// </summary>
         [凾(256)]
-        public static int MSB(uint x) => BO.Log2(x);
+        public static int Msb(uint x) => BO.Log2(x);
         /// <summary>
         /// <paramref name="x"/> の最上位ビット
         /// </summary>
         [凾(256)]
-        public static int MSB(ulong x) => BO.Log2(x);
+        public static int Msb(ulong x) => BO.Log2(x);
         /// <summary>
         /// <paramref name="x"/> の最上位ビット
         /// </summary>
         [凾(256)]
-        public static int MSB(int x) => BO.Log2((uint)x);
+        public static int Msb(int x) => BO.Log2((uint)x);
         /// <summary>
         /// <paramref name="x"/> の最上位ビット
         /// </summary>
         [凾(256)]
-        public static int MSB(long x) => BO.Log2((ulong)x);
+        public static int Msb(long x) => BO.Log2((ulong)x);
         /// <summary>
         /// <paramref name="x"/> の最下位ビット
         /// </summary>
         [凾(256)]
-        public static int LSB(uint x) => BO.TrailingZeroCount(x);
+        public static int Lsb(uint x) => BO.TrailingZeroCount(x);
         /// <summary>
         /// <paramref name="x"/> の最下位ビット
         /// </summary>
         [凾(256)]
-        public static int LSB(ulong x) => BO.TrailingZeroCount(x);
+        public static int Lsb(ulong x) => BO.TrailingZeroCount(x);
         /// <summary>
         /// <paramref name="x"/> の最下位ビット
         /// </summary>
         [凾(256)]
-        public static int LSB(int x) => BO.TrailingZeroCount((uint)x);
+        public static int Lsb(int x) => BO.TrailingZeroCount((uint)x);
         /// <summary>
         /// <paramref name="x"/> の最下位ビット
         /// </summary>
         [凾(256)]
-        public static int LSB(long x) => BO.TrailingZeroCount((ulong)x);
+        public static int Lsb(long x) => BO.TrailingZeroCount((ulong)x);
 
         /// <summary>
         /// <para><paramref name="x"/> を <paramref name="mask"/> に移す</para>
