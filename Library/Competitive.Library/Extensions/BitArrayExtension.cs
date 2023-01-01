@@ -85,18 +85,46 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// フラグの立っている最下位インデックス。すべて false のときは未定義
+        /// フラグの立っている最下位インデックス
         /// </summary>
         [凾(256)]
-        public static int LeadingZeroCount(this BitArray b)
+        public static int Lsb(this BitArray b)
         {
             var arr = b.GetArray().AsSpan();
             var brr = MemoryMarshal.Cast<int, ulong>(arr);
             for (int i = 0; i < brr.Length; i++)
                 if (brr[i] != 0)
-                    return Math.Min(b.Length, BitOperations.LeadingZeroCount(brr[i]) + i * 64);
+                    return Math.Min(b.Length, BitOperations.TrailingZeroCount(brr[i]) + i * 64);
             if ((arr.Length & 1) != 0)
-                return Math.Min(b.Length, BitOperations.LeadingZeroCount((uint)arr[^1]) + brr.Length * 64);
+                return Math.Min(b.Length, BitOperations.TrailingZeroCount((uint)arr[^1]) + brr.Length * 64);
+            return b.Length;
+        }
+
+        /// <summary>
+        /// フラグの立っている最上位インデックス
+        /// </summary>
+        [凾(256)]
+        public static int Msb(this BitArray b)
+        {
+            var arr = b.GetArray().AsSpan();
+            var rem = b.Length & 31;
+            var m = (uint)arr[^1] & ((1u << rem) - 1);
+            if (rem == 0)
+                m = (uint)arr[^1];
+            if (m != 0)
+                return BitOperations.Log2(m) + 32 * (arr.Length - 1);
+            arr = arr[..^1];
+
+            if ((arr.Length & 1) != 0)
+            {
+                m = (uint)arr[^1];
+                if (m != 0)
+                    return BitOperations.Log2(m) + 32 * (arr.Length - 1);
+            }
+            var brr = MemoryMarshal.Cast<int, ulong>(arr);
+            for (int i = brr.Length - 1; i >= 0; i--)
+                if (brr[i] != 0)
+                    return Math.Min(b.Length, BitOperations.Log2(brr[i]) + i * 64);
             return b.Length;
         }
     }

@@ -149,33 +149,41 @@ namespace Kzrnm.Competitive.Testing.Extensions
             }
         }
 
-        public static TheoryData LeadingZeroCount_Data = new TheoryData<BitArray, int>
+        public static readonly object[][] Bits_Data = new[]
         {
-            {
-                new BitArray(
-                    Enumerable.Repeat(false,16).Concat(
-                        Enumerable.Repeat(true,2)
-                    ).ToArray()
-                ), 16
-            },
-            {
-                new BitArray(
-                    Enumerable.Repeat(false,16).Concat(
-                        Enumerable.Repeat(true,2)
-                    ).Concat(
-                        Enumerable.Repeat(false,2)
-                    ).Concat(
-                        Enumerable.Repeat(true,2)
-                    ).ToArray()
-                ), 16
-            },
-        };
+            20,
+            32,
+            32*2,
+            32*3,
+        }.SelectMany(
+            n => Enumerable.Range(-5, 11).Select(i => new object[] { n + i })).ToArray();
 
         [Theory]
-        [MemberData(nameof(LeadingZeroCount_Data))]
-        public void LeadingZeroCount(BitArray b, int lsb)
+        [MemberData(nameof(Bits_Data))]
+        public void Lsb(int len)
         {
-            b.LeadingZeroCount().Should().Be(lsb);
+            var b = new BitArray(Enumerable.Repeat(false, len).Concat(Enumerable.Repeat(true, 2)).ToArray());
+            b.Lsb().Should().Be(len);
+
+            b = new BitArray(Enumerable.Repeat(false, len).Concat(Enumerable.Repeat(true, 2)).Concat(Enumerable.Repeat(false, 2)).ToArray());
+            b.Lsb().Should().Be(len);
+
+            b = new BitArray(Enumerable.Repeat(false, len).Prepend(true).ToArray());
+            b.Lsb().Should().Be(0);
+        }
+
+        [Theory]
+        [MemberData(nameof(Bits_Data))]
+        public void Msb(int len)
+        {
+            var b = new BitArray(Enumerable.Repeat(false, len).Concat(Enumerable.Repeat(true, 1)).ToArray());
+            b.Msb().Should().Be(len);
+
+            b = new BitArray(Enumerable.Repeat(false, len).Concat(Enumerable.Repeat(true, 1)).Concat(Enumerable.Repeat(false, 2)).ToArray());
+            b.Msb().Should().Be(len);
+
+            b = new BitArray(Enumerable.Repeat(false, len).Prepend(true).ToArray());
+            b.Msb().Should().Be(0);
         }
     }
 }
