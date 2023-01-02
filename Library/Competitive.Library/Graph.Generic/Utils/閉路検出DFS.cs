@@ -3,6 +3,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE 閉路検出
     public static class 閉路検出DFS
     {
         enum Status { None, Active, Done }
@@ -51,11 +52,12 @@ namespace Kzrnm.Competitive
 
                 return null;
             }
+            var stack = new Stack<(int v, int childIdx, int prev)>();
             for (var i = 0; i < g.Length; i++)
             {
-                var stack = new Stack<(int v, int childIdx, int prev)>();
                 if (statuses[i] == Status.None)
                 {
+                    stack.Clear();
                     stack.Push((i, 0, -1));
                     if (DFS(stack) is { } list)
                         while (stack.TryPop(out var tuple))
@@ -68,7 +70,6 @@ namespace Kzrnm.Competitive
                                 return (v, list.ToArray());
                             }
                         }
-                    stack.Clear();
                 }
             }
             return (-1, null);
