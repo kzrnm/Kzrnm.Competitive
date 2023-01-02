@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - "Library/**"
-      - ".competitive-verifier/docs/**"
   pull_request:
     types: [opened, synchronize]
     paths:
@@ -162,6 +161,7 @@ jobs:
         uses: competitive-verifier/actions/verify@v1
         with:
           working-directory: Library
+          prev-result: .competitive-verifier/prev-result.json
           destination: ${{runner.temp}}/result.json
           split-size: ${{ env.SPLIT_SIZE }}
           split-index: ${{ matrix.index }}
