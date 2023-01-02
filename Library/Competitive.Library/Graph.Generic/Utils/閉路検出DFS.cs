@@ -14,12 +14,14 @@ namespace Kzrnm.Competitive
              where TNode : IGraphNode<TEdge>
              where TEdge : IGraphEdge
         {
-            var statuses = new Status[graph.Length];
-            List<TEdge> DFS(Stack<(int v, int childIdx)> stack)
+            var g = graph.AsArray();
+            var statuses = new Status[g.Length];
+            List<TEdge> DFS(Stack<(int v, int childIdx, int prev)> stack)
             {
-                while (stack.TryPop(out var v, out var ci))
+                while (stack.TryPop(out var tuple))
                 {
-                    var children = graph[v].Children;
+                    var (v, ci, prev) = tuple;
+                    var children = g[v].Children;
                     if (ci == 0)
                         statuses[v] = Status.Active;
 
@@ -27,16 +29,19 @@ namespace Kzrnm.Competitive
                     {
                         var e = children[ci];
                         var child = e.To;
+
                         switch (statuses[child])
                         {
                             case Status.None:
-                                stack.Push((v, ci + 1));
-                                stack.Push((child, 0));
+                                stack.Push((v, ci + 1, prev));
+                                stack.Push((child, 0, v));
                                 break;
                             case Status.Active:
+                                if (!g[v].IsDirected && child == prev)
+                                    goto default;
                                 return new List<TEdge> { e };
                             default:
-                                stack.Push((v, ci + 1));
+                                stack.Push((v, ci + 1, prev));
                                 break;
                         }
                     }
@@ -46,16 +51,17 @@ namespace Kzrnm.Competitive
 
                 return null;
             }
-            for (var i = 0; i < graph.Length; i++)
+            for (var i = 0; i < g.Length; i++)
             {
-                var stack = new Stack<(int v, int childIdx)>();
+                var stack = new Stack<(int v, int childIdx, int prev)>();
                 if (statuses[i] == Status.None)
                 {
-                    stack.Push((i, 0));
+                    stack.Push((i, 0, -1));
                     if (DFS(stack) is { } list)
-                        while (stack.TryPop(out var v, out var ci))
+                        while (stack.TryPop(out var tuple))
                         {
-                            list.Add(graph[v].Children[ci - 1]);
+                            var (v, ci, _) = tuple;
+                            list.Add(g[v].Children[ci - 1]);
                             if (list[0].To == v)
                             {
                                 list.Reverse();
