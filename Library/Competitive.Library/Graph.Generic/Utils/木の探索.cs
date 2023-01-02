@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -40,6 +39,18 @@ namespace Kzrnm.Competitive
             var res = new int[down.Length];
             for (int i = 0; i < res.Length; i++)
                 res[down[i]] = i;
+            return res;
+        }
+        /// <summary>
+        /// 木を深い順に深さ優先探索するときに訪れる順序に並んだインデックスを返す
+        /// </summary>
+        [凾(256)]
+        public static int[] DfsDescendantLeaf<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
+               where TNode : ITreeNode<TEdge>
+               where TEdge : IGraphEdge
+        {
+            var res = tree.DfsDescendant();
+            res.AsSpan().Reverse();
             return res;
         }
     }
