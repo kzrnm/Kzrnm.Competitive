@@ -78,5 +78,31 @@ namespace Kzrnm.Competitive.Testing.Graph
         {
             wgb.ToTree(root).DfsDescendant().Should().Equal(expected);
         }
+
+        public static TheoryData DfsLeafData => new TheoryData<int, int[]>
+        {
+            { 0, new[] { 5, 6, 2, 4, 7, 3, 1, 0}},
+            { 1, new[] { 4, 7, 3, 5, 6, 2, 0, 1 }},
+            { 2, new[] { 6, 5, 4, 7, 3, 1, 0, 2 }},
+            { 3, new[] { 7, 4, 5, 6, 2, 0, 1, 3 }},
+            { 4, new[] { 7, 3, 5, 6, 2, 0, 1, 4 }},
+            { 5, new[] { 6, 4, 7, 3, 1, 0, 2, 5 }},
+            { 6, new[] { 5, 4, 7, 3, 1, 0, 2, 6 }},
+            { 7, new[] { 4, 5, 6, 2, 0, 1, 3, 7 }},
+        };
+
+        [Theory]
+        [MemberData(nameof(DfsLeafData))]
+        public void DfsLeaf重みなしグラフ(int root, int[] expected)
+        {
+            gb.ToTree(root).DfsDescendantLeaf().Should().Equal(expected);
+        }
+
+        [Theory]
+        [MemberData(nameof(DfsLeafData))]
+        public void DfsLeaf重み付きグラフ(int root, int[] expected)
+        {
+            wgb.ToTree(root).DfsDescendantLeaf().Should().Equal(expected);
+        }
     }
 }
