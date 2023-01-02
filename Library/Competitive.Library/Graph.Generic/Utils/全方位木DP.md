@@ -13,6 +13,6 @@ documentation_of: ./全方位木DP.cs
 
 ### 図解
 
-![説明画像]({{ "rerooting.png" | absolute_url }})
+![説明画像]({{ "rerooting.svg" | absolute_url }})
 
 部分木の根を含むような含まないような微妙な状態をマージしていく。

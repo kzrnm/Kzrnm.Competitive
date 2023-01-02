@@ -1,0 +1,63 @@
+<svg width="600" height="300" viewBox="0, 0, 600, 300"
+	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink">
+	<style>
+path,ellipse{
+  fill: none;
+  stroke-width:3px;
+}
+text{
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.hd{
+  font-size: 24px;
+  font-weight: bold;
+}
+.ln{
+  stroke:#88F;
+}
+.rd{
+stroke: #F00;
+}
+.gr{
+stroke: #0B3;
+}
+	</style>
+	<defs>
+		<circle id="nd" r="20" fill="#FFF" stroke="#000" stroke-width="3px" />
+		<g id="lf">
+			<use xlink:href="#nd"/>
+			<text font-size="22px">Id</text>
+		</g>
+	</defs>
+	<text x="150" y="275" class="hd">Merge</text>
+	<text x="450" y="275" class="hd">Propagate</text>
+
+	<g id="tr">
+		<path d="M150 30 L150 90" class="ln"/>
+		<path d="M150 30 L70 90" class="ln"/>
+		<path d="M150 30 L230 90" class="ln"/>
+		<path d="M150 90 L150 160" class="ln"/>
+		<path d="M70 90 L60 160" class="ln"/>
+		<path d="M230 90 L240 160" class="ln"/>
+		<path d="M60 160 L60 230" class="ln"/>
+		<path d="M60 160 L120 230" class="ln"/>
+		<path d="M240 160 L240 230" class="ln"/>
+		<use x="150" y="30" xlink:href="#nd"/>
+		<use x="150" y="90" xlink:href="#nd"/>
+		<use x="70" y="90" xlink:href="#nd"/>
+		<use x="230" y="90" xlink:href="#nd"/>
+		<use x="150" y="160" xlink:href="#lf"/>
+		<use x="60" y="160" xlink:href="#nd"/>
+		<use x="240" y="160" xlink:href="#nd"/>
+		<use x="120" y="230" xlink:href="#lf"/>
+		<use x="60" y="230" xlink:href="#lf"/>
+		<use x="240" y="230" xlink:href="#lf"/>
+	</g>
+	<use x="300" xlink:href="#tr"/>
+	<path class="rd" d="M116 255 C175 250 170 208 175 177 C186 35 150 82 160 56 C170 40 177 38 171 18 C162 2 140 0 130 8 L58 66 C32 96 32 106 32 140 C32 270 28 255 100 255 Z"/>
+	<path class="rd" d="M420 255 C446 255 452 230 438 213 L400 173 C390 161 390 148 390 132 L395 90 C396 78 384 64 369 66 C334 74 329 116 332 146 L332 218 C331 235 329 255 354 255 Z" />
+	<path class="gr" d="M189 71 C202 86 209 101 210 116 L212 239 C212 261 265 261 265 239 L265 135 C265 3 148 20 172 53 Z"></path>
+	<ellipse class="gr" transform="rotate(-38,411,59)" cx="411" cy="59" rx="27" ry="12"></ellipse>
+</svg>
