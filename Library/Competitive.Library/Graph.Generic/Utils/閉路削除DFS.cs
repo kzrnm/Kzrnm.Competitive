@@ -19,14 +19,16 @@ namespace Kzrnm.Competitive
             var es = new List<(int from, TEdge edge)>();
             var g = graph.AsArray();
             var statuses = new Status[g.Length];
+            var prevs = new int[g.Length];
+            prevs.AsSpan().Fill(-1);
             var depths = new int[g.Length];
             var rs = new int[g.Length];
             rs.AsSpan().Fill(-1);
-            void DFS(Stack<(int v, int childIdx, int prev)> stack)
+            void DFS(Stack<(int v, int childIdx)> stack)
             {
                 while (stack.TryPop(out var tuple))
                 {
-                    var (v, ci, prev) = tuple;
+                    var (v, ci) = tuple;
 
                     if (v < 0)
                     {
@@ -37,7 +39,7 @@ namespace Kzrnm.Competitive
                             rs[v] = nr;
                         if (nr < 0)
                             es.Add((v, e));
-                        stack.Push((v, ci + 1, prev));
+                        stack.Push((v, ci + 1));
                         continue;
                     }
 
@@ -56,19 +58,20 @@ namespace Kzrnm.Competitive
                         switch (statuses[child])
                         {
                             case Status.None:
-                                stack.Push((~v, ci, prev));
-                                stack.Push((child, 0, v));
+                                stack.Push((~v, ci));
+                                stack.Push((child, 0));
+                                prevs[child] = v;
                                 break;
                             case Status.Active:
-                                if (!g[v].IsDirected && child == prev) { } // 戻る辺はスキップ
+                                if (!g[v].IsDirected && child == prevs[v]) { } // 戻る辺はスキップ
                                 else if (depths[v] < depths[child]) { } // 既に探索済みのときもスキップ
                                 else if (rs[v] < 0 || depths[rs[v]] > depths[child])
                                     rs[v] = child;
-                                stack.Push((v, ci + 1, prev));
+                                stack.Push((v, ci + 1));
                                 break;
                             default:
                                 if (rs[v] < 0) es.Add((v, e));
-                                stack.Push((v, ci + 1, prev));
+                                stack.Push((v, ci + 1));
                                 break;
                         }
                     }
@@ -79,13 +82,13 @@ namespace Kzrnm.Competitive
                     }
                 }
             }
-            var stack = new Stack<(int v, int childIdx, int prev)>();
+            var stack = new Stack<(int v, int childIdx)>();
             for (var i = 0; i < g.Length; i++)
             {
                 if (statuses[i] == Status.None)
                 {
                     stack.Clear();
-                    stack.Push((i, 0, -1));
+                    stack.Push((i, 0));
                     DFS(stack);
                 }
             }
