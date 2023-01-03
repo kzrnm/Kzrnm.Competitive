@@ -120,6 +120,21 @@
                 }
             ],
             "newest": true
+        },
+        "Checker/Math/FPS/PowTest.cs": {
+            "verifications": [
+                {
+                    "status": "success",
+                    "elapsed": 16.589722,
+                    "last_execution_time": "2023-01-03T14:50:04.324799+09:00"
+                },
+                {
+                    "status": "success",
+                    "elapsed": 18.734872,
+                    "last_execution_time": "2023-01-03T14:50:04.324799+09:00"
+                }
+            ],
+            "newest": true
         }
     }
 }
