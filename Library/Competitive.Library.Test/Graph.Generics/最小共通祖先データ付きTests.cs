@@ -73,6 +73,15 @@ namespace Kzrnm.Competitive.Testing.Graph
             lca0.ChildOfLca(6, 4).Should().Be((2, 1)); lca0.ChildOfLca(6, 5).Should().Be((6, 5)); lca0.ChildOfLca(6, 6).Should().Be((6, 6)); lca0.ChildOfLca(6, 7).Should().Be((2, 1));
             lca0.ChildOfLca(7, 0).Should().Be((1, 0)); lca0.ChildOfLca(7, 1).Should().Be((3, 1)); lca0.ChildOfLca(7, 2).Should().Be((1, 2)); lca0.ChildOfLca(7, 3).Should().Be((7, 3));
             lca0.ChildOfLca(7, 4).Should().Be((3, 4)); lca0.ChildOfLca(7, 5).Should().Be((1, 2)); lca0.ChildOfLca(7, 6).Should().Be((1, 2)); lca0.ChildOfLca(7, 7).Should().Be((7, 7));
+
+            lca0.Ascend(0, 0).Should().Be((0, 0)); lca0.Ascend(0, 1).Should().Be((-1, 0));
+            lca0.Ascend(1, 0).Should().Be((1, 0)); lca0.Ascend(1, 1).Should().Be((0, 1)); lca0.Ascend(1, 2).Should().Be((-1, 0));
+            lca0.Ascend(2, 0).Should().Be((2, 0)); lca0.Ascend(2, 1).Should().Be((0, 2)); lca0.Ascend(2, 2).Should().Be((-1, 0));
+            lca0.Ascend(3, 0).Should().Be((3, 0)); lca0.Ascend(3, 1).Should().Be((1, 3)); lca0.Ascend(3, 2).Should().Be((0, 4)); lca0.Ascend(3, 3).Should().Be((-1, 0));
+            lca0.Ascend(4, 0).Should().Be((4, 0)); lca0.Ascend(4, 1).Should().Be((1, 4)); lca0.Ascend(4, 2).Should().Be((0, 5)); lca0.Ascend(4, 3).Should().Be((-1, 0));
+            lca0.Ascend(5, 0).Should().Be((5, 0)); lca0.Ascend(5, 1).Should().Be((2, 5)); lca0.Ascend(5, 2).Should().Be((0, 7)); lca0.Ascend(5, 3).Should().Be((-1, 0));
+            lca0.Ascend(6, 0).Should().Be((6, 0)); lca0.Ascend(6, 1).Should().Be((2, 6)); lca0.Ascend(6, 2).Should().Be((0, 8)); lca0.Ascend(6, 3).Should().Be((-1, 0));
+            lca0.Ascend(7, 0).Should().Be((7, 0)); lca0.Ascend(7, 1).Should().Be((3, 7)); lca0.Ascend(7, 2).Should().Be((1, 10)); lca0.Ascend(7, 3).Should().Be((0, 11)); lca0.Ascend(7, 4).Should().Be((-1, 0));
         }
     }
 }

@@ -118,6 +118,17 @@ namespace Kzrnm.Competitive
             var lca = Lca(u, v).Index;
             return tree[u].Depth + tree[v].Depth - 2 * tree[lca].Depth;
         }
+
+        /// <summary>
+        /// 頂点 <paramref name="v"/> から <paramref name="up"/> だけ根に向かった頂点とその経路の値を返します。根を通り過ぎる場合は -1 を返します。
+        /// </summary>
+        [凾(256)]
+        public (int Index, T Data) Ascend(int v, int up)
+        {
+            if (up <= tree[v].Depth)
+                return doubling.Move(v, up);
+            return (-1, doubling.op.Identity);
+        }
     }
 
     public static class LowestCommonAncestorWithDataExt
