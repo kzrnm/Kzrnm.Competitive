@@ -584,6 +584,19 @@ new Fraction[,]
                 new Fraction[2] { 1, 3 },
                 new Fraction[0][]
             },
+            {
+                new(new Fraction[2,2]{
+                    { 0,0 },
+                    { 0,0 },
+                }),
+                new Fraction[2] { 0, 0 },
+                new Fraction[][]
+                {
+                    new Fraction[]{ 0, 0 },
+                    new Fraction[]{ 1, 0 },
+                    new Fraction[]{ 0, 1 },
+                }
+            },
         };
 
         [Theory]

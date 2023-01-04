@@ -296,13 +296,24 @@ namespace Kzrnm.Competitive
 
             // 解があるかチェック
             // a×0+b×0+c×0..+z×0≠0 になっていたら解無し
-            if (idxs[^1] == w)
-                return Array.Empty<BitArray>();
             for (int i = r; i < impl.Length; i++)
             {
                 if (impl[i][^1])
                     return Array.Empty<BitArray>();
             }
+            if (idxs.IsEmpty)
+            {
+                var eres = new BitArray[w + 1];
+                eres[0] = new BitArray(w);
+                for (int i = 1; i < eres.Length; i++)
+                {
+                    eres[i] = new BitArray(w);
+                    eres[i][i - 1] = true;
+                }
+                return eres;
+            }
+            if (idxs[^1] == w)
+                return Array.Empty<BitArray>();
 
             var used = new HashSet<int>(Enumerable.Range(0, w));
             var lst = new List<BitArray>(w);

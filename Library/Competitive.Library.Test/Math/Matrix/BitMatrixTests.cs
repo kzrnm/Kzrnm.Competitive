@@ -488,6 +488,21 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     new BitArray(new[]{ false, false, true, }),
                 }
             },
+            {
+                BitMatrix.Parse(new[]
+                {
+                    "000",
+                    "000",
+                }),
+                new[] { false, false, },
+                new[]
+                {
+                    new BitArray(new[]{ false, false, false, }),
+                    new BitArray(new[]{ true, false, false, }),
+                    new BitArray(new[]{ false, true, false, }),
+                    new BitArray(new[]{ false, false, true, }),
+                }
+            },
         };
 
         [Theory]

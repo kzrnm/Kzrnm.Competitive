@@ -1,5 +1,6 @@
 using AtCoder.Internal;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -384,13 +385,24 @@ namespace Kzrnm.Competitive
 
             // 解があるかチェック
             // a×0+b×0+c×0..+z×0≠0 になっていたら解無し
-            if (idxs[^1] == w)
-                return Array.Empty<T[]>();
             for (int i = r; i < impl.Length; i++)
             {
                 if (!EqualityComparer<T>.Default.Equals(impl[i][^1], default))
                     return Array.Empty<T[]>();
             }
+            if (idxs.IsEmpty)
+            {
+                var eres = new T[w + 1][];
+                eres[0] = Enumerable.Repeat(T.AdditiveIdentity, w).ToArray();
+                for (int i = 1; i < eres.Length; i++)
+                {
+                    eres[i] = Enumerable.Repeat(T.AdditiveIdentity, w).ToArray();
+                    eres[i][i - 1] = T.MultiplicativeIdentity;
+                }
+                return eres;
+            }
+            if (idxs[^1] == w)
+                return Array.Empty<T[]>();
 
             var used = new HashSet<int>(Enumerable.Range(0, w));
             var lst = new List<T[]>(w);

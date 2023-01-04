@@ -384,13 +384,24 @@ namespace Kzrnm.Competitive
 
             // 解があるかチェック
             // a×0+b×0+c×0..+z×0≠0 になっていたら解無し
-            if (idxs[^1] == w)
-                return Array.Empty<T[]>();
             for (int i = r; i < impl.Length; i++)
             {
                 if (!EqualityComparer<T>.Default.Equals(impl[i][^1], default))
                     return Array.Empty<T[]>();
             }
+            if (idxs.IsEmpty)
+            {
+                var eres = new T[w + 1][];
+                eres[0] = new T[w];
+                for (int i = 1; i < eres.Length; i++)
+                {
+                    eres[i] = new T[w];
+                    eres[i][i - 1] = op.MultiplyIdentity;
+                }
+                return eres;
+            }
+            if (idxs[^1] == w)
+                return Array.Empty<T[]>();
 
             var used = new HashSet<int>(Enumerable.Range(0, w));
             var lst = new List<T[]>(w);
