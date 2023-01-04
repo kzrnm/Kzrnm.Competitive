@@ -8,7 +8,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using Kd = ArrayMatrixKind;
+    using Kd = Internal.ArrayMatrixKind;
     public readonly struct ArrayMatrix<T, TOp>
         where T : IEquatable<T>
         where TOp : struct, IArithmeticOperator<T>
@@ -469,11 +469,5 @@ namespace Kzrnm.Competitive
             [凾(256)]
             public ArrayMatrix<T, TOp> Modulo(ArrayMatrix<T, TOp> x, ArrayMatrix<T, TOp> y) => throw new NotSupportedException();
         }
-    }
-    internal enum ArrayMatrixKind
-    {
-        Zero,
-        Identity,
-        Normal,
     }
 }

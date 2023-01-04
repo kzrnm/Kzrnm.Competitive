@@ -8,7 +8,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using Kd = ArrayMatrixKind;
+    using Kd = Internal.ArrayMatrixKind;
     public readonly struct ArrayMatrix<T> : Internal.IMatrixOperator<ArrayMatrix<T>>
         , IMultiplyOperators<ArrayMatrix<T>, T, ArrayMatrix<T>>
         where T : INumberBase<T>
@@ -449,11 +449,5 @@ namespace Kzrnm.Competitive
         public static bool operator ==(ArrayMatrix<T> left, ArrayMatrix<T> right) => left.Equals(right);
         [凾(256)]
         public static bool operator !=(ArrayMatrix<T> left, ArrayMatrix<T> right) => !(left == right);
-    }
-    internal enum ArrayMatrixKind
-    {
-        Zero,
-        Identity,
-        Normal,
     }
 }

@@ -7,6 +7,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    using Kd = Internal.ArrayMatrixKind;
     public static partial class __MatrixProdStrassen
     {
         private const int B = 1 << 7;
@@ -21,7 +22,7 @@ namespace Kzrnm.Competitive
             this ArrayMatrix<StaticModInt<T>, StaticModIntOperator<T>> mat1,
             ArrayMatrix<StaticModInt<T>, StaticModIntOperator<T>> mat2) where T : struct, IStaticMod
         {
-            if (mat1.kind != ArrayMatrixKind.Normal || mat2.kind != ArrayMatrixKind.Normal)
+            if (mat1.kind != Kd.Normal || mat2.kind != Kd.Normal)
                 return mat1 * mat2;
 
             var impl = new Impl<T>(Math.Max(Math.Max(mat1.Value.Length, mat2.Value.Length), Math.Max(mat1.Value[0].Length, mat2.Value[0].Length)));

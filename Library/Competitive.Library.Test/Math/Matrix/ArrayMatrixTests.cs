@@ -1,5 +1,6 @@
 using AtCoder;
 using System.Linq;
+using Kzrnm.Competitive.Internal;
 
 namespace Kzrnm.Competitive.Testing.MathNS.Matrix
 {
