@@ -20,13 +20,8 @@ namespace Kzrnm.Competitive
         : Internal.IMatrixOperator<BitMatrix>
 #endif
     {
-        public bool this[int row, int col]
-        {
-            get => Value[row][col];
-            set => Value[row][col] = value;
-        }
-
-        internal readonly BitArray[] Value;
+        public bool this[int row, int col] => Value[row][col];
+        public readonly BitArray[] Value;
 
         public static readonly BitMatrix Zero = new BitMatrix(Kd.Zero);
         public static readonly BitMatrix Identity = new BitMatrix(Kd.Identity);
