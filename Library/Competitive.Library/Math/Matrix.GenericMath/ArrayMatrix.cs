@@ -324,7 +324,6 @@ namespace Kzrnm.Competitive
             var idx = new List<int>(arr.Length);
             int r = 0;
             int width = arr[0].Length;
-            int ys = isReduced ? 0 : r + 1;
             for (int x = 0; x < width && r < arr.Length; x++)
             {
                 if (!SearchNonZero(arr, r, x))
@@ -336,7 +335,7 @@ namespace Kzrnm.Competitive
                     for (int i = x + 1; i < arrR.Length; i++)
                         arrR[i] *= inv;
                 }
-                for (int y = ys; y < arr.Length; y++)
+                for (int y = isReduced ? 0 : r + 1; y < arr.Length; y++)
                 {
                     var arrY = arr[y];
                     if (y == r || EqualityComparer<T>.Default.Equals(arrY[x], default))
@@ -436,7 +435,7 @@ namespace Kzrnm.Competitive
             if (a.Length != b.Length) return false;
             for (int i = 0; i < a.Length; i++)
             {
-                if (!a.AsSpan().SequenceEqual(b)) return false;
+                if (!a[i].AsSpan().SequenceEqual(b[i])) return false;
             }
             return true;
         }

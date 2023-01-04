@@ -10,6 +10,7 @@ namespace Kzrnm.Competitive
 {
     using Kd = ArrayMatrixKind;
     public readonly struct ArrayMatrix<T, TOp>
+        where T : IEquatable<T>
         where TOp : struct, IArithmeticOperator<T>
     {
         public T this[int row, int col] => Value[row][col];
@@ -323,7 +324,6 @@ namespace Kzrnm.Competitive
             var idx = new List<int>(arr.Length);
             int r = 0;
             int width = arr[0].Length;
-            int ys = isReduced ? 0 : r + 1;
             for (int x = 0; x < width && r < arr.Length; x++)
             {
                 if (!SearchNonZero(arr, r, x))
@@ -335,7 +335,7 @@ namespace Kzrnm.Competitive
                     for (int i = x + 1; i < arrR.Length; i++)
                         arrR[i] = op.Multiply(inv, arrR[i]);
                 }
-                for (int y = ys; y < arr.Length; y++)
+                for (int y = isReduced ? 0 : r + 1; y < arr.Length; y++)
                 {
                     var arrY = arr[y];
                     if (y == r || EqualityComparer<T>.Default.Equals(arrY[x], default))
@@ -423,6 +423,30 @@ namespace Kzrnm.Competitive
             }
             return lst.ToArray();
         }
+
+        [凾(256)]
+        public override bool Equals(object obj) => obj is ArrayMatrix<T, TOp> x && Equals(x);
+        [凾(256)]
+        public bool Equals(ArrayMatrix<T, TOp> other) => kind == other.kind && (kind != Kd.Normal || EqualsMat(Value, other.Value));
+        private static bool EqualsMat(T[][] a, T[][] b)
+        {
+            if (a.Length != b.Length) return false;
+            for (int i = 0; i < a.Length; i++)
+            {
+                if (!a[i].AsSpan().SequenceEqual(b[i])) return false;
+            }
+            return true;
+        }
+        [凾(256)]
+        public override int GetHashCode() => kind switch
+        {
+            Kd.Normal => HashCode.Combine(kind, Value.Length, Value[0][0], Value[0][^1], Value[^1][0], Value[^1][^1]),
+            _ => HashCode.Combine(kind),
+        };
+        [凾(256)]
+        public static bool operator ==(ArrayMatrix<T, TOp> left, ArrayMatrix<T, TOp> right) => left.Equals(right);
+        [凾(256)]
+        public static bool operator !=(ArrayMatrix<T, TOp> left, ArrayMatrix<T, TOp> right) => !(left == right);
         public struct Operator : IArithmeticOperator<ArrayMatrix<T, TOp>>
         {
             public ArrayMatrix<T, TOp> MultiplyIdentity => Identity;
