@@ -21,6 +21,7 @@ using static Kzrnm.Competitive.IterTools;
 using static Kzrnm.Competitive.MathLibEx;
 using static Kzrnm.Competitive.__BinarySearchEx;
 using static Program;
+using BitArray = System.Collections.BitArray;
 #endregion
 using ModInt = AtCoder.StaticModInt<AtCoder.Mod998244353>;
 using ModIntOperator = AtCoder.StaticModIntOperator<AtCoder.Mod998244353>;
