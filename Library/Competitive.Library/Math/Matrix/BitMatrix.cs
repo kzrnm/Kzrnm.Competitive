@@ -1,11 +1,13 @@
 using AtCoder.Internal;
-using AtCoder.Operators;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
+#if !NET7_0_OR_GREATER
+using AtCoder.Operators;
+#endif
 
 namespace Kzrnm.Competitive
 {
