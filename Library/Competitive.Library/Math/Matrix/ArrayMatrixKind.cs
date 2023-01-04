@@ -1,6 +1,6 @@
 namespace Kzrnm.Competitive.Internal
 {
-    internal enum ArrayMatrixKind
+    public enum ArrayMatrixKind
     {
         Zero,
         Identity,
