@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Kzrnm.Competitive.MathNs
 {
-    public class BitOrMatrixTest : BaseSolver
+    internal class BitOrMatrixTest : BaseSolver
     {
         public override string Url => "https://yukicoder.me/problems/no/1340";
         public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
