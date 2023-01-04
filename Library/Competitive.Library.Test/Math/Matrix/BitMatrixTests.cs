@@ -472,7 +472,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "110",
                 }),
                 new[] { true, true, true, },
-                null
+                new BitArray[0]
             },
             {
                 BitMatrix.Parse(new[]
@@ -495,16 +495,9 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         public void LinearSystem(BitMatrix matrix, bool[] vector, BitArray[] expected)
         {
             var got = matrix.LinearSystem(vector);
-            if (expected == null)
-            {
-                got.Should().BeNull();
-            }
-            else
-            {
-                got.Should().HaveSameCount(expected);
-                for (int i = 0; i < got.Length; i++)
-                    got[i].Should().BeEquivalentTo(expected[i], because: "got[{0}]", i);
-            }
+            got.Should().HaveSameCount(expected);
+            for (int i = 0; i < got.Length; i++)
+                got[i].Should().BeEquivalentTo(expected[i], because: "got[{0}]", i);
         }
     }
 }

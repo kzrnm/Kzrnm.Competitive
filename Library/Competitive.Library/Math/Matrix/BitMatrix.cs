@@ -277,7 +277,7 @@ namespace Kzrnm.Competitive
         /// <list type="bullet">
         /// <item><description>最初の配列: 特殊解</description></item>
         /// <item><description>2番目以降の配列: 解空間の基底ベクトル</description></item>
-        /// <item><description>ただし解無しのときはnullを返す</description></item>
+        /// <item><description>ただし解無しのときは空配列を返す</description></item>
         /// </list>
         /// </returns>
         public BitArray[] LinearSystem(bool[] vector)
@@ -297,11 +297,11 @@ namespace Kzrnm.Competitive
             // 解があるかチェック
             // a×0+b×0+c×0..+z×0≠0 になっていたら解無し
             if (idxs[^1] == w)
-                return null;
+                return Array.Empty<BitArray>();
             for (int i = r; i < impl.Length; i++)
             {
                 if (impl[i][^1])
-                    return null;
+                    return Array.Empty<BitArray>();
             }
 
             var used = new HashSet<int>(Enumerable.Range(0, w));
