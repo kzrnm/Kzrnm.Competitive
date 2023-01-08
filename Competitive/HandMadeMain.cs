@@ -1,4 +1,5 @@
-﻿using Kzrnm.Competitive.IO;
+using Kzrnm.Competitive.IO;
+using Kzrnm.Competitive.Testing;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,7 +29,17 @@ namespace Competitive.Runner
     // Utilメソッド
     static partial class HandMadeMain
     {
-        static int[] RandomArray(int length, int min, int maxExclusive) { var arr = new int[length]; for (int i = 0; i < arr.Length; i++) arr[i] = rnd.Next(min, maxExclusive); return arr; }
+        static int[] RandomArray(int length, int min, int maxExclusive) => rnd.NextIntArray(length, min, maxExclusive);
+        static MyStringBuilder BuildEdges(MyStringBuilder sb, int max, int count)
+        {
+            ++max;
+            for (int i = 0; i < count; i++)
+            {
+                var (a, b) = rnd.NextInt2(1, max);
+                sb.Add(a, b);
+            }
+            return sb;
+        }
         static MyStringBuilder BuildRandomTree(MyStringBuilder sb, int size)
         {
             sb.Add(size);

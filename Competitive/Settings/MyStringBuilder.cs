@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
@@ -55,7 +55,7 @@ namespace Competitive.Runner
 
                 return minValue;
             }
-            this.Add(Int64Random(minValue, maxValue).ToString());
+            Add(Int64Random(minValue, maxValue).ToString());
             return this;
         }
         public MyStringBuilder Clear() { sb.Clear(); return this; }
