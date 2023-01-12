@@ -44,6 +44,7 @@ namespace Kzrnm.Competitive
         public readonly T[] data;
         private readonly T defaultValue;
         public Grid(int H, int W, T defaultValue = default) : this(new T[H * W].Fill(defaultValue), H, W, defaultValue) { }
+        public Grid(Grid<T> other) : this((T[])other.data.Clone(), other.H, other.W, other.defaultValue) { }
         internal Grid(T[] data, int H, int W, T defaultValue)
         {
             this.H = H;
@@ -85,6 +86,9 @@ namespace Kzrnm.Competitive
                 return ref DefaultValueReference();
             }
         }
+
+        public Grid<T> Clone() => new Grid<T>(this);
+
         private static string ToStringNoSplit(Grid<char> grid)
         {
             var H = grid.H;

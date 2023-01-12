@@ -322,5 +322,30 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             grid.Moves(3, 1).Should().Equal((3, 0), (2, 1), (3, 2));
             grid.Moves(3, 2).Should().Equal((3, 1), (2, 2));
         }
+
+        [Fact]
+        public void Clone()
+        {
+            var grid = Grid.Create(new[]
+            {
+                new[]{ 1,2,3 },
+                new[]{ 4,5,6 },
+                new[]{ 7,8,9 },
+                new[]{ 10,11,12 },
+            }, -1);
+            var clone = grid.Clone();
+
+            grid.data.Should().Equal(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+            clone.data.Should().Equal(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+            grid[-1].Should().Be(-1);
+            clone[-1].Should().Be(-1);
+
+            grid[0, 0] = 100;
+            grid[1, 0] = 200;
+            grid.data.Should().Equal(100, 2, 3, 200, 5, 6, 7, 8, 9, 10, 11, 12);
+            clone.data.Should().Equal(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+            grid[-1].Should().Be(-1);
+            clone[-1].Should().Be(-1);
+        }
     }
 }
