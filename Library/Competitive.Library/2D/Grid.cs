@@ -34,7 +34,7 @@ namespace Kzrnm.Competitive
         }
     }
 
-    [DebuggerDisplay("{ToStringSplit()})")]
+    [DebuggerDisplay("{ToStringSplit(),raw}")]
     [DebuggerTypeProxy(typeof(Grid<>.DebugView))]
     public class Grid<T>
     {
