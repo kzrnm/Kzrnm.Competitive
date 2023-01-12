@@ -11,6 +11,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE スライド演算(SWAG: Slide Window Aggrigation)
     /// <summary>
     /// Slide Window Aggrigation: モノイドの範囲演算を移動しながら求める。計算量: O(N)
     /// </summary>
