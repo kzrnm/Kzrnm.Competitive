@@ -17,12 +17,9 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             s.Invoking(s => s[-1..3]).Should().Throw<ContractAssertException>();
             s.Invoking(s => s[0..4]).Should().Throw<ContractAssertException>();
             for (var i = 0; i < 5; i++)
-                s.Invoking(s => s[0..0]).Should().Throw<ContractAssertException>();
+                s.Invoking(s => s[i..i]).Should().Throw<ContractAssertException>();
             s.Invoking(s => s.Prod(-1, 3)).Should().Throw<ContractAssertException>();
             s.Invoking(s => s.Prod(0, 4)).Should().Throw<ContractAssertException>();
-            for (var i = 0; i < 5; i++)
-                s.Invoking(s => s.Prod(0, 0)).Should().Throw<ContractAssertException>();
-
 
             for (var i = 0; i < 3; i++)
                 for (var j = i + 1; j <= 3; j++)

@@ -42,7 +42,7 @@ namespace Kzrnm.Competitive
         public readonly int H;
         public readonly int W;
         public readonly T[] data;
-        private readonly T defaultValue;
+        internal readonly T defaultValue;
         public Grid(int H, int W, T defaultValue = default) : this(new T[H * W].Fill(defaultValue), H, W, defaultValue) { }
         public Grid(Grid<T> other) : this((T[])other.data.Clone(), other.H, other.W, other.defaultValue) { }
         internal Grid(T[] data, int H, int W, T defaultValue)
