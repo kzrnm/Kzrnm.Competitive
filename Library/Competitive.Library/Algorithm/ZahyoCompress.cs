@@ -90,6 +90,8 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public ZahyoCompress<T> Compress(IComparer<T> comparer)
         {
+            if (typeof(T) == typeof(string))
+                comparer ??= (IComparer<T>)(object)StringComparer.Ordinal;
             if (lastCompressVesion == version
                 && (comparer == lastComparer || comparer.Equals(lastComparer)))
                 return this;
