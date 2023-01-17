@@ -21,7 +21,8 @@ namespace Kzrnm.Competitive
         public static T Gcd<T>(T a, T b)
             where T : IBinaryInteger<T>
         {
-            if (T.IsZero(a) || T.IsZero(b)) return T.Zero;
+            if (T.IsZero(a)) return b;
+            if (T.IsZero(b)) return a;
             a = T.Abs(a);
             b = T.Abs(b);
             var n = int.CreateChecked(T.TrailingZeroCount(a));
@@ -61,7 +62,8 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static long Gcd(long a, long b)
         {
-            if (a == 0 || b == 0) return 0;
+            if (a == 0) return b;
+            if (b == 0) return a;
             a = Math.Abs(a);
             b = Math.Abs(b);
             int n = BitOperations.TrailingZeroCount(a);
