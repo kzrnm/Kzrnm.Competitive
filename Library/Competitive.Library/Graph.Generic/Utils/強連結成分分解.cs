@@ -13,7 +13,7 @@ namespace Kzrnm.Competitive
         /// <para>強連結成分の ID はトポロジカルソートされています。異なる強連結成分の頂点 u, v について、u から v に到達できる時、u の ID は v の ID よりも小さくなります。</para>
         /// <para>計算量: 追加された辺の本数を m として O(n+m)</para>
         /// </remarks>
-        public static (int groupNum, int[] ids) SCCIDs<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
+        public static (int groupNum, int[] ids) SccIds<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
             where TNode : IGraphNode<TEdge>
             where TEdge : IGraphEdge
         {
@@ -117,7 +117,7 @@ namespace Kzrnm.Competitive
             where TNode : IGraphNode<TEdge>
             where TEdge : IGraphEdge
         {
-            var (groupNum, ids) = SCCIDs(graph);
+            var (groupNum, ids) = SccIds(graph);
             var groups = new int[groupNum][];
             var counts = new int[groupNum];
             var seen = new int[groupNum];
