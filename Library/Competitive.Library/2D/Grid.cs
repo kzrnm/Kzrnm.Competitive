@@ -86,7 +86,7 @@ namespace Kzrnm.Competitive
                 return ref DefaultValueReference();
             }
         }
-
+        public Span<T> RowSpan(int h) => (uint)h < (uint)H ? data.AsSpan(h * W, W) : default;
         public Grid<T> Clone() => new Grid<T>(this);
 
         private static string ToStringNoSplit(Grid<char> grid)
