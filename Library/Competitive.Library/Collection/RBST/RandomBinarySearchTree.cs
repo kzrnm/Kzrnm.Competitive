@@ -8,6 +8,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    [IsOperator]
     public interface IRandomBinarySearchTreeOperator<T, F> : ILazySegtreeOperator<T, F>
     {
         /// <summary>
@@ -16,7 +17,7 @@ namespace Kzrnm.Competitive
         T Inverse(T v);
     }
 
-    // @title 乱択平衡二分探索木
+    // competitive-verifier: TITLE 乱択平衡二分探索木
     // https://nyaannyaan.github.io/library/rbst/rbst-base.hpp
     // https://nyaannyaan.github.io/library/rbst/lazy-reversible-rbst.hpp
     /// <summary>
