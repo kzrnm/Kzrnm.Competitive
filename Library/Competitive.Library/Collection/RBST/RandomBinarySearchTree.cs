@@ -47,7 +47,7 @@ namespace Kzrnm.Competitive
         where TOp : struct, IRandomBinarySearchTreeOperator<T, F>
     {
         private static TOp op => new TOp();
-        internal class Node
+        public class Node
         {
             public Node Left, Right;
             public T Key, Sum;
@@ -65,7 +65,7 @@ namespace Kzrnm.Competitive
             }
         }
 
-        private Node root;
+        public Node root;
         public int Count => root?.cnt ?? 0;
 
         public T AllProd => Sum(root);
@@ -96,7 +96,7 @@ namespace Kzrnm.Competitive
         /// <remarks>
         /// <para>計算量: O(log n)</para>
         /// </remarks>
-        internal static Node Merge(Node l, Node r)
+        public static Node Merge(Node l, Node r)
         {
             if (l == null) return r;
             if (r == null) return l;
@@ -121,7 +121,7 @@ namespace Kzrnm.Competitive
         /// <remarks>
         /// <para>計算量: O(log n)</para>
         /// </remarks>
-        internal static (Node Left, Node Right) Split(Node t, int k)
+        public static (Node Left, Node Right) Split(Node t, int k)
         {
             if (t == null) return (null, null);
             Push(t);
