@@ -42,7 +42,7 @@ namespace Kzrnm.Competitive.Testing
         }
 
         /// <summary>
-        /// [<paramref name="minValue"/>, <paramref name="maxValue"/>) かつ a != b を満たす値 a, b を返します。
+        /// [<paramref name="minValue"/>, <paramref name="maxValue"/>) かつ a &lt; b を満たす値 a, b を返します。
         /// </summary>
         public static (int, int) NextInt2(this Random rnd, int minValue, int maxValue)
         {
