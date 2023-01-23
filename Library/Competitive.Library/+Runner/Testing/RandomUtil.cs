@@ -64,22 +64,15 @@ namespace Kzrnm.Competitive.Testing
         {
             var r = maxValue - minValue;
             Contract.Assert(n <= r);
-            HashSet<int> hs;
-            if (2 * n > r)
+            var list = new List<int>(Enumerable.Range(minValue, r));
+            for (int i = 0; i < n; i++)
             {
-                // 追加するほうが多い場合
-                hs = new HashSet<int>(Enumerable.Range(minValue, r));
-                while (hs.Count > n)
-                    hs.Remove(rnd.Next(minValue, maxValue));
+                var ri = rnd.Next(list.Count);
+                list[ri] = list[^1];
+                list.RemoveAt(list.Count - 1);
             }
-            else
-            {
-                // 追加するほうが少ない場合
-                hs = new HashSet<int>(n);
-                while (hs.Count < n)
-                    hs.Add(rnd.Next(minValue, maxValue));
-            }
-            return hs.ToArray();
+            list.Sort();
+            return list.ToArray();
         }
 
         /// <summary>
