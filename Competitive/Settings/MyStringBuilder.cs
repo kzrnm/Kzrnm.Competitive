@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Competitive.Runner
@@ -15,6 +16,16 @@ namespace Competitive.Runner
         public MyStringBuilder Add(string s) { sb.AppendLine(s); return this; }
         public MyStringBuilder Add(params object[] objs) { sb.AppendLine(string.Join(" ", objs)); return this; }
         public MyStringBuilder Add<T>(IEnumerable<T> objs) { sb.AppendLine(string.Join(" ", objs)); return this; }
+        public MyStringBuilder Add<T>(T objs) where T : ITuple
+        {
+            for (int i = 0; i < objs.Length; i++)
+            {
+                if (i > 0) sb.Append(' ');
+                sb.Append(objs[i].ToString());
+            }
+            sb.AppendLine();
+            return this;
+        }
         public MyStringBuilder AddRandom(long minValue, long maxValue)
         {
             // Originai is .NET runtime
