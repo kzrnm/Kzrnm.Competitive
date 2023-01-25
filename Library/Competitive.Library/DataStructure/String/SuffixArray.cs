@@ -9,30 +9,18 @@ namespace Kzrnm.Competitive
     {
         [凾(256)]
         public static SuffixArray Create(string str)
-        {
-            var sa = StringLib.SuffixArray(str);
-            var lcp = StringLib.LCPArray(str, sa);
-            return new SuffixArray(sa, lcp);
-        }
+            => Create((ReadOnlySpan<char>)str);
+        [凾(256)]
+        public static SuffixArray Create<T>(Span<T> str)
+            => Create((ReadOnlySpan<T>)str);
+        [凾(256)]
+        public static SuffixArray Create<T>(T[] str)
+            => Create((ReadOnlySpan<T>)str);
         [凾(256)]
         public static SuffixArray Create<T>(ReadOnlySpan<T> str)
         {
             var sa = StringLib.SuffixArray(str);
-            var lcp = StringLib.LCPArray(str, sa);
-            return new SuffixArray(sa, lcp);
-        }
-        [凾(256)]
-        public static SuffixArray Create<T>(Span<T> str)
-        {
-            var sa = StringLib.SuffixArray(str);
-            var lcp = StringLib.LCPArray(str, sa);
-            return new SuffixArray(sa, lcp);
-        }
-        [凾(256)]
-        public static SuffixArray Create<T>(T[] str)
-        {
-            var sa = StringLib.SuffixArray(str);
-            var lcp = StringLib.LCPArray(str, sa);
+            var lcp = StringLib.LcpArray(str, sa);
             return new SuffixArray(sa, lcp);
         }
 

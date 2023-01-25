@@ -46,7 +46,7 @@ namespace Kzrnm.Competitive
             IGraphBuildOperator<SimpleGraph<GraphNode, GraphEdge>, GraphNode, GraphEdge>,
             ITreeBuildOperator<TreeGraph<TreeNode, GraphEdge>, TreeNode, GraphEdge>
         {
-            [凾(256)] public SimpleGraph<GraphNode, GraphEdge> Graph(GraphNode[] nodes, CSR<GraphEdge> edges) => new SimpleGraph<GraphNode, GraphEdge>(nodes, edges);
+            [凾(256)] public SimpleGraph<GraphNode, GraphEdge> Graph(GraphNode[] nodes, Csr<GraphEdge> edges) => new SimpleGraph<GraphNode, GraphEdge>(nodes, edges);
             [凾(256)] public GraphNode Node(int i, GraphEdge[] parents, GraphEdge[] children) => new GraphNode(i, parents, children);
 
             [凾(256)] public TreeGraph<TreeNode, GraphEdge> Tree(TreeNode[] nodes, int root, HeavyLightDecomposition<TreeNode, GraphEdge> hl) => new TreeGraph<TreeNode, GraphEdge>(nodes, root, hl);

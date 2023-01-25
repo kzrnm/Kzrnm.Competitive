@@ -26,7 +26,7 @@ namespace Kzrnm.Competitive
             IGraphBuildOperator<WGraph<T, WGraphNode<T, WEdge<T>>, WEdge<T>>, WGraphNode<T, WEdge<T>>, WEdge<T>>,
             ITreeBuildOperator<WTreeGraph<T, WTreeNode<T, WEdge<T>>, WEdge<T>>, WTreeNode<T, WEdge<T>>, WEdge<T>>
         {
-            [凾(256)] public WGraph<T, WGraphNode<T, WEdge<T>>, WEdge<T>> Graph(WGraphNode<T, WEdge<T>>[] nodes, CSR<WEdge<T>> edges) => new WGraph<T, WGraphNode<T, WEdge<T>>, WEdge<T>>(nodes, edges);
+            [凾(256)] public WGraph<T, WGraphNode<T, WEdge<T>>, WEdge<T>> Graph(WGraphNode<T, WEdge<T>>[] nodes, Csr<WEdge<T>> edges) => new WGraph<T, WGraphNode<T, WEdge<T>>, WEdge<T>>(nodes, edges);
             [凾(256)] public WGraphNode<T, WEdge<T>> Node(int i, WEdge<T>[] parents, WEdge<T>[] children) => new WGraphNode<T, WEdge<T>>(i, parents, children);
             [凾(256)] public WTreeGraph<T, WTreeNode<T, WEdge<T>>, WEdge<T>> Tree(WTreeNode<T, WEdge<T>>[] nodes, int root, HeavyLightDecomposition<WTreeNode<T, WEdge<T>>, WEdge<T>> hl) => new WTreeGraph<T, WTreeNode<T, WEdge<T>>, WEdge<T>>(nodes, root, hl);
             [凾(256)]

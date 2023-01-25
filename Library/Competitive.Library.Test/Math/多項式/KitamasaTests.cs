@@ -7,7 +7,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
 {
     public class KitamasaTests
     {
-        private struct DMod : IDynamicModID { }
+        private struct DMod : IDynamicModIntId { }
         private static uint[] NativeDp(ReadOnlySpan<uint> a, ReadOnlySpan<uint> c, int mod)
         {
             DynamicModInt<DMod>.Mod = mod;

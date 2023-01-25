@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive
             where TEdge : IWGraphEdge<T>
         {
             var graphArr = graph.AsArray();
-            var uf = new DSU(graphArr.Length);
+            var uf = new Dsu(graphArr.Length);
             var edges = new List<(int from, TEdge edge)>();
             foreach (var node in graphArr)
                 foreach (var e in node.Children)
@@ -69,7 +69,7 @@ namespace Kzrnm.Competitive
             where TEdge : IGraphEdge
         {
             var graphArr = graph.AsArray();
-            var uf = new DSU(graphArr.Length);
+            var uf = new Dsu(graphArr.Length);
             var edges = new List<(int from, TEdge edge)>();
             foreach (var node in graphArr)
                 foreach (var e in node.Children)

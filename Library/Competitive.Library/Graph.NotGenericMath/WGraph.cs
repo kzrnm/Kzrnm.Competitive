@@ -10,14 +10,14 @@ namespace Kzrnm.Competitive
         where TNode : IGraphNode<TEdge>
         where TEdge : IWGraphEdge<T>
     {
-        public CSR<TEdge> Edges { get; }
+        public Csr<TEdge> Edges { get; }
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         internal TNode[] Nodes { get; }
         [凾(256)]
         public TNode[] AsArray() => Nodes;
         public TNode this[int index] { [凾(256)] get => Nodes[index]; }
         public int Length => Nodes.Length;
-        public WGraph(TNode[] array, CSR<TEdge> edges)
+        public WGraph(TNode[] array, Csr<TEdge> edges)
         {
             Nodes = array;
             Edges = edges;

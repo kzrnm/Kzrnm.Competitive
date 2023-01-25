@@ -23,7 +23,11 @@ namespace Kzrnm.Competitive
             var primeFactors = new Dictionary<long, int>();
             foreach (var p in EnumerateFactor(num))
             {
+#if NET7_0_OR_GREATER
+                ++primeFactors.GetValueRefOrAddDefault(p);
+#else
                 primeFactors[p] = primeFactors.GetValueOrDefault(p) + 1;
+#endif
             }
             return primeFactors;
         }
@@ -35,7 +39,11 @@ namespace Kzrnm.Competitive
             foreach (var pl in EnumerateFactor(num))
             {
                 var p = (int)pl;
+#if NET7_0_OR_GREATER
+                ++primeFactors.GetValueRefOrAddDefault(p);
+#else
                 primeFactors[p] = primeFactors.GetValueOrDefault(p) + 1;
+#endif
             }
             return primeFactors;
         }

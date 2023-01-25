@@ -40,16 +40,16 @@ namespace Kzrnm.Competitive.Testing.Extensions
                 ((ReadOnlySpan<StaticModInt<Mod1000000007>>)array).Cast<StaticModInt<Mod1000000007>, uint>().ToArray().Should().Equal(expected);
             }
             {
-                DynamicModInt<DynamicModID0>.Mod = 1000000007;
-                var array = new DynamicModInt<DynamicModID0>[4]
+                DynamicModInt<DynamicModIntId0>.Mod = 1000000007;
+                var array = new DynamicModInt<DynamicModIntId0>[4]
                 {
                     -1,1000000007,1,2,
                 };
                 var expected = new uint[4] {
                     1000000006,0,1,2
                 };
-                ((Span<DynamicModInt<DynamicModID0>>)array).Cast<DynamicModInt<DynamicModID0>, uint>().ToArray().Should().Equal(expected);
-                ((ReadOnlySpan<DynamicModInt<DynamicModID0>>)array).Cast<DynamicModInt<DynamicModID0>, uint>().ToArray().Should().Equal(expected);
+                ((Span<DynamicModInt<DynamicModIntId0>>)array).Cast<DynamicModInt<DynamicModIntId0>, uint>().ToArray().Should().Equal(expected);
+                ((ReadOnlySpan<DynamicModInt<DynamicModIntId0>>)array).Cast<DynamicModInt<DynamicModIntId0>, uint>().ToArray().Should().Equal(expected);
             }
         }
 

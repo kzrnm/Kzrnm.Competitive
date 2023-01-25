@@ -84,7 +84,7 @@ namespace Kzrnm.Competitive
     public interface IGraphBuildOperator<TGraph, TNode, TEdge>
     {
         TNode Node(int i, TEdge[] parents, TEdge[] children);
-        TGraph Graph(TNode[] nodes, CSR<TEdge> edges);
+        TGraph Graph(TNode[] nodes, Csr<TEdge> edges);
     }
     [IsOperator]
     public interface ITreeBuildOperator<TTree, TNode, TEdge>
@@ -99,7 +99,7 @@ namespace Kzrnm.Competitive
         where TNode : IGraphNode<TEdge>
         where TEdge : IGraphEdge
     {
-        CSR<TEdge> Edges { get; }
+        Csr<TEdge> Edges { get; }
         TNode[] AsArray();
         TNode this[int index] { get; }
         int Length { get; }
@@ -141,7 +141,7 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        public CSR<TEdge> ToCSR() => new CSR<TEdge>(Length, edges);
+        public Csr<TEdge> ToCsr() => new Csr<TEdge>(Length, edges);
     }
     internal static class GraphBuilderLogic
     {
@@ -154,7 +154,7 @@ namespace Kzrnm.Competitive
         {
             var op = new TOp();
             var res = new TNode[edgeContainer.Length];
-            var csr = edgeContainer.ToCSR();
+            var csr = edgeContainer.ToCsr();
             var counter = new int[res.Length];
             var parentCounter = edgeContainer.IsDirected ? new int[res.Length] : counter;
             var children = SizeToArray<TEdge>(edgeContainer.sizes);

@@ -6,7 +6,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
 {
     public class LinearRecurrenceTest
     {
-        private struct DMod : IDynamicModID { }
+        private struct DMod : IDynamicModIntId { }
         private static StaticModInt<T>[] NativeDp<T>(Span<StaticModInt<T>> a, Span<StaticModInt<T>> c) where T : struct, IStaticMod
         {
             var res = new StaticModInt<T>[1000];

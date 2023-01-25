@@ -140,7 +140,7 @@ namespace Kzrnm.Competitive
              where TMod : struct, IStaticMod
         {
             var mod = new TMod().Mod;
-            if (new TMod().IsPrime && a.Length + b.Length - 1 <= (1 << InternalBit.BSF(mod - 1)))
+            if (new TMod().IsPrime && a.Length + b.Length - 1 <= (1 << InternalBit.Bsf(mod - 1)))
             {
                 // ACL で解けるならOK
                 return MathLib.Convolution(a, b);
@@ -164,7 +164,7 @@ namespace Kzrnm.Competitive
         public static uint[] Convolution<TMod>(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b)
              where TMod : struct, IStaticMod
         {
-            if (new TMod().IsPrime && a.Length + b.Length - 1 <= (1 << InternalBit.BSF(new TMod().Mod - 1)))
+            if (new TMod().IsPrime && a.Length + b.Length - 1 <= (1 << InternalBit.Bsf(new TMod().Mod - 1)))
             {
                 // ACL で解けるならOK
                 return MathLib.Convolution<TMod>(a, b);
