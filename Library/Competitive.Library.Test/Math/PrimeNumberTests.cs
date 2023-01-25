@@ -4,6 +4,8 @@ namespace Kzrnm.Competitive.Testing.MathNS
 {
     public class PrimeNumberTests
     {
+        static PrimeNumber primes = new((int)1e7);
+
         [Fact]
         public void PrimeTest()
         {
@@ -16,42 +18,106 @@ namespace Kzrnm.Competitive.Testing.MathNS
             new PrimeNumber(20).Should().Equal(new[] { 2, 3, 5, 7, 11, 13, 17, 19 });
         }
 
-        [Fact]
-        public void PrimeFactoringTest()
+
+        public static TheoryData PrimeFactoringInt_Data => new TheoryData<int, Dictionary<int, int>>
         {
-            var pr = new PrimeNumber((int)1e7);
-            pr.PrimeFactoring(1 << 16).Should().Equal(new Dictionary<int, int>
             {
-                { 2, 16 },
-            });
-            pr.PrimeFactoring(2 * 3 * 5).Should().Equal(new Dictionary<int, int>
+                1,
+                new Dictionary<int, int> { }
+            },
             {
-                { 2, 1 },
-                { 3, 1 },
-                { 5, 1 },
-            });
-            pr.PrimeFactoring(99991).Should().Equal(new Dictionary<int, int>
+                1 << 16,
+                new Dictionary<int, int> {
+                    { 2, 16 },
+                }
+            },
             {
-                { 99991, 1 },
-            });
-            pr.PrimeFactoring(2147483647).Should().Equal(new Dictionary<int, int>
+                2 * 3 * 5,
+                new Dictionary<int, int> {
+                    { 2, 1 },
+                    { 3, 1 },
+                    { 5, 1 },
+                }
+            },
             {
-                { 2147483647, 1 },
-            });
-            pr.PrimeFactoring(132147483703).Should().Equal(new Dictionary<long, int>
+                99991,
+                new Dictionary<int, int> {
+                    { 99991, 1 },
+                }
+            },
             {
-                { 132147483703, 1 },
-            });
-            pr.PrimeFactoring(903906555552).Should().Equal(new Dictionary<long, int>
+                2147483647,
+                new Dictionary<int, int> {
+                    { 2147483647, 1 },
+                }
+            },
             {
-                { 2, 5 },
-                { 3, 8 },
-                { 7, 1 },
-                { 11, 2 },
-                { 13, 1 },
-                { 17, 1 },
-                { 23, 1 },
-            });
+                2095133040, //高度合成数
+                new Dictionary<int, int> {
+                    { 2, 4 },
+                    { 3, 4 },
+                    { 5, 1 },
+                    { 7, 1 },
+                    { 11, 1 },
+                    { 13, 1 },
+                    { 17, 1 },
+                    { 19, 1 },
+                }
+            },
+        };
+
+        [Theory]
+        [MemberData(nameof(PrimeFactoringInt_Data))]
+        public void PrimeFactoringInt(int num, Dictionary<int, int> expected)
+        {
+            primes.PrimeFactoring(num).Should().Equal(expected);
+        }
+
+        public static TheoryData PrimeFactoringLong_Data => new TheoryData<long, Dictionary<long, int>>
+        {
+            {
+                1,
+                new Dictionary<long, int> { }
+            },
+            {
+                903906555552,
+                new Dictionary<long, int> {
+                    { 2, 5 },
+                    { 3, 8 },
+                    { 7, 1 },
+                    { 11, 2 },
+                    { 13, 1 },
+                    { 17, 1 },
+                    { 23, 1 },
+                }
+            },
+            {
+                132147483703,
+                new Dictionary<long, int> {
+                    { 132147483703, 1 },
+                }
+            },
+            {
+                963761198400, //高度合成数
+                new Dictionary<long, int> {
+                    { 2, 6 },
+                    { 3, 4 },
+                    { 5, 2 },
+                    { 7, 1 },
+                    { 11, 1 },
+                    { 13, 1 },
+                    { 17, 1 },
+                    { 19, 1 },
+                    { 23, 1 },
+                }
+            },
+        };
+
+        [Theory]
+        [MemberData(nameof(PrimeFactoringLong_Data))]
+        public void PrimeFactoringLong(long num, Dictionary<long, int> expected)
+        {
+            primes.PrimeFactoring(num).Should().Equal(expected);
         }
 
         [Fact]

@@ -210,9 +210,9 @@ namespace Kzrnm.Competitive
             var two = T.One + T.One;
             for (T i = two; ; i++)
             {
-                var (d, amari) = T.DivRem(n, i);
+                var (d, am) = T.DivRem(n, i);
                 if (i > d) break;
-                if (T.IsZero(amari))
+                if (T.IsZero(am))
                 {
                     left.Add(i);
                     if (i != d)
@@ -238,11 +238,11 @@ namespace Kzrnm.Competitive
             left.Add(1);
             right.Add(n);
 
-            for (int i = 2, d = Math.DivRem(n, i, out int amari);
+            for (int i = 2, d = Math.DivRem(n, i, out var am);
                 i <= d;
-                i++, d = Math.DivRem(n, i, out amari))
+                i++, d = Math.DivRem(n, i, out am))
             {
-                if (amari == 0)
+                if (am == 0)
                 {
                     left.Add(i);
                     if (i != d)
@@ -268,11 +268,11 @@ namespace Kzrnm.Competitive
             left.Add(1);
             right.Add(n);
 
-            for (long i = 2, d = Math.DivRem(n, i, out long amari);
+            for (long i = 2, d = Math.DivRem(n, i, out var am);
                 i <= d;
-                i++, d = Math.DivRem(n, i, out amari))
+                i++, d = Math.DivRem(n, i, out am))
             {
-                if (amari == 0)
+                if (am == 0)
                 {
                     left.Add(i);
                     if (i != d)
@@ -283,6 +283,114 @@ namespace Kzrnm.Competitive
             var res = new long[left.Count + right.Count];
             left.CopyTo(res, 0);
             right.CopyTo(res, left.Count);
+            return res;
+        }
+#endif
+
+#if NET7_0_OR_GREATER
+        /// <summary>
+        /// <paramref name="n"/> を素因数分解します。
+        /// </summary>
+        public static Dictionary<T, int> PrimeFactoring<T>(T n)
+            where T : IBinaryInteger<T>
+        {
+            var res = new Dictionary<T, int>();
+            if (n <= T.One)
+                return res;
+
+            var two = T.One + T.One;
+            var t = int.CreateChecked(T.TrailingZeroCount(n));
+            if (t > 0)
+            {
+                res[two] = t;
+                n >>= t;
+            }
+
+            for (T i = two + T.One; i * i <= n; i += two)
+            {
+                int c = 0;
+
+                while (DivRem(n, i) is var (d, am) && T.IsZero(am))
+                {
+                    n = d;
+                    ++c;
+                }
+                if (c > 0)
+                    res[i] = c;
+            }
+            if (n > T.One)
+                res[n] = 1;
+            return res;
+        }
+        [凾(256)]
+        static (T Div, T Remainder) DivRem<T>(T a, T b)
+            where T : IBinaryInteger<T>
+        {
+            var div = a / b;
+            return (div, a - div * b);
+        }
+#else
+        /// <summary>
+        /// <paramref name="n"/> を素因数分解します。
+        /// </summary>
+        public static Dictionary<int, int> PrimeFactoring(int n)
+        {
+            var res = new Dictionary<int, int>();
+            if (n <= 1)
+                return res;
+
+            int t = BitOperations.TrailingZeroCount(n);
+            if (t > 0)
+            {
+                res[2] = t;
+                n >>= t;
+            }
+
+            for (int i = 3; i * i <= n; i += 2)
+            {
+                int c = 0;
+                while (Math.DivRem(n, i, out var am) is var d && am == 0)
+                {
+                    n = d;
+                    ++c;
+                }
+                if (c > 0)
+                    res[i] = c;
+            }
+            if (n > 1)
+                res[n] = 1;
+            return res;
+        }
+
+        /// <summary>
+        /// <paramref name="n"/> を素因数分解します。
+        /// </summary>
+        public static Dictionary<long, int> PrimeFactoring(long n)
+        {
+            var res = new Dictionary<long, int>();
+            if (n <= 1)
+                return res;
+
+            int t = BitOperations.TrailingZeroCount(n);
+            if (t > 0)
+            {
+                res[2] = t;
+                n >>= t;
+            }
+
+            for (long i = 3; i * i <= n; i += 2)
+            {
+                int c = 0;
+                while (Math.DivRem(n, i, out var am) is var d && am == 0)
+                {
+                    n = d;
+                    ++c;
+                }
+                if (c > 0)
+                    res[i] = c;
+            }
+            if (n > 1)
+                res[n] = 1;
             return res;
         }
 #endif

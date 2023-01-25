@@ -1,4 +1,6 @@
 using AtCoder;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kzrnm.Competitive.Testing.MathNS
 {
@@ -124,18 +126,50 @@ namespace Kzrnm.Competitive.Testing.MathNS
             MathLibEx.Lcm(nums).Should().Be(expected);
         }
 
-        [Fact]
-        public void DivisorInt()
+
+        public static TheoryData DivisorInt_Data => new TheoryData<int, int[]>
         {
-            MathLibEx.Divisor(1).Should().Equal(new int[] { 1 });
-            MathLibEx.Divisor(1000000007).Should().Equal(new int[] { 1, 1000000007 });
-            MathLibEx.Divisor(49).Should().Equal(new int[] { 1, 7, 49 });
-            MathLibEx.Divisor(720).Should().Equal(new int[] {
-                1, 2, 3, 4, 5, 6, 8, 9, 10,
-                12, 15, 16, 18, 20, 24, 30,
-                36, 40, 45, 48, 60, 72, 80,
-                90, 120, 144, 180, 240, 360, 720
-            });
+            {
+                1,
+                new [] { 1 }
+            },
+            {
+                1 << 16,
+                Enumerable.Range(0, 17).Select(i => 1 << i).ToArray()
+            },
+            {
+                49,
+                new [] { 1, 7, 49, }
+            },
+            {
+                2 * 3 * 5,
+                new [] { 1, 2, 3, 5, 6, 10, 15, 30, }
+            },
+            {
+                720,
+                new [] {
+                    1, 2, 3, 4, 5, 6, 8, 9, 10,
+                    12, 15, 16, 18, 20, 24, 30,
+                    36, 40, 45, 48, 60, 72, 80,
+                    90, 120, 144, 180, 240, 360, 720
+                }
+            },
+            {
+                2147483647,
+                new [] { 1, 2147483647, }
+            },
+        };
+
+        [Theory]
+        [MemberData(nameof(DivisorInt_Data))]
+        public void DivisorInt(int num, int[] expected)
+        {
+            MathLibEx.Divisor(num).Should().Equal(expected);
+        }
+
+        [Fact]
+        public void DivisorIntLarge()
+        {
             MathLibEx.Divisor(6480).Should()
                 .StartWith(new int[] { 1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 27, 30, 36, 40, 45, 48, 54, 60, 72, 80, 81 })
                 .And
@@ -144,7 +178,6 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 .HaveCount(50);
 
             MathLibEx.Divisor(2095133040).Should().HaveCount(1600); //高度合成数
-
         }
         [Fact]
         public void DivisorLong()
@@ -160,6 +193,107 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 128100283921 });
             MathLibEx.Divisor(132147483703).Should().Equal(new long[] { 1, 132147483703 });
             MathLibEx.Divisor(963761198400).Should().HaveCount(6720); //高度合成数
+        }
+
+        public static TheoryData PrimeFactoringInt_Data => new TheoryData<int, Dictionary<int, int>>
+        {
+            {
+                1,
+                new Dictionary<int, int> { }
+            },
+            {
+                1 << 16,
+                new Dictionary<int, int> {
+                    { 2, 16 },
+                }
+            },
+            {
+                2 * 3 * 5,
+                new Dictionary<int, int> {
+                    { 2, 1 },
+                    { 3, 1 },
+                    { 5, 1 },
+                }
+            },
+            {
+                99991,
+                new Dictionary<int, int> {
+                    { 99991, 1 },
+                }
+            },
+            {
+                2147483647,
+                new Dictionary<int, int> {
+                    { 2147483647, 1 },
+                }
+            },
+            {
+                2095133040, //高度合成数
+                new Dictionary<int, int> {
+                    { 2, 4 },
+                    { 3, 4 },
+                    { 5, 1 },
+                    { 7, 1 },
+                    { 11, 1 },
+                    { 13, 1 },
+                    { 17, 1 },
+                    { 19, 1 },
+                }
+            },
+        };
+
+        [Theory]
+        [MemberData(nameof(PrimeFactoringInt_Data))]
+        public void PrimeFactoringInt(int num, Dictionary<int, int> expected)
+        {
+            MathLibEx.PrimeFactoring(num).Should().Equal(expected);
+        }
+
+        public static TheoryData PrimeFactoringLong_Data => new TheoryData<long, Dictionary<long, int>>
+        {
+            {
+                1,
+                new Dictionary<long, int> { }
+            },
+            {
+                903906555552,
+                new Dictionary<long, int> {
+                    { 2, 5 },
+                    { 3, 8 },
+                    { 7, 1 },
+                    { 11, 2 },
+                    { 13, 1 },
+                    { 17, 1 },
+                    { 23, 1 },
+                }
+            },
+            {
+                132147483703,
+                new Dictionary<long, int> {
+                    { 132147483703, 1 },
+                }
+            },
+            {
+                963761198400, //高度合成数
+                new Dictionary<long, int> {
+                    { 2, 6 },
+                    { 3, 4 },
+                    { 5, 2 },
+                    { 7, 1 },
+                    { 11, 1 },
+                    { 13, 1 },
+                    { 17, 1 },
+                    { 19, 1 },
+                    { 23, 1 },
+                }
+            },
+        };
+
+        [Theory]
+        [MemberData(nameof(PrimeFactoringLong_Data))]
+        public void PrimeFactoringLong(long num, Dictionary<long, int> expected)
+        {
+            MathLibEx.PrimeFactoring(num).Should().Equal(expected);
         }
 
         [Fact]
