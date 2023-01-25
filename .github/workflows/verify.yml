@@ -154,6 +154,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-verify-results-
 
+      - name: Set up competitive-verifier
+        if: steps.restore-cached-results.outputs.cache-hit == 'true'
+        uses: competitive-verifier/actions/setup@v1
+        with:
+          python-version: "3.9"
+          cache-pip: true
       - name: Merge results
         if: steps.restore-cached-results.outputs.cache-hit == 'true'
         uses: competitive-verifier/actions/merge-result@v1
