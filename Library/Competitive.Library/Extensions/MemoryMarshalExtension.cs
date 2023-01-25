@@ -10,15 +10,15 @@ namespace Kzrnm.Competitive
 {
     public static class __MemoryMarshalExtension
     {
-#pragma warning disable CS0649
-        private class ArrayVal<T> { public T[] arr; }
-#pragma warning restore CS0649
         [凾(256)]
         public static Span<T> AsSpan<T>(this List<T> list, int start = 0)
 #if NET7_0_OR_GREATER
             => CollectionsMarshal.AsSpan(list)[start..];
 #else
             => Unsafe.As<ArrayVal<T>>(list).arr.AsSpan(start, list.Count - start);
+#pragma warning disable CS0649
+        private class ArrayVal<T> { public T[] arr; }
+#pragma warning restore CS0649
 #endif
 
 #if NET7_0_OR_GREATER
