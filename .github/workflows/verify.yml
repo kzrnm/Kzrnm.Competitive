@@ -244,14 +244,6 @@ jobs:
           python-version: "3.9"
           cache-pip: true
 
-      - name: Docs
-        uses: competitive-verifier/actions/docs@v1
-        with:
-          working-directory: Library
-          verify-result: ${{ steps.all-artifacts.outputs.artifacts-root }}/Result-*/result.json
-          destination: ${{github.workspace}}/_jekyll
-          write-summary: true
-
       - name: Move results
         run: |
           mkdir -p .competitive-verifier/cached-result
@@ -263,6 +255,14 @@ jobs:
           id: save-cached-results
           path: Library/.competitive-verifier/cached-result
           key: ${{ runner.os }}-verify-results-${{ hashFiles('Library/**/*.cs') }}
+
+      - name: Docs
+        uses: competitive-verifier/actions/docs@v1
+        with:
+          working-directory: Library
+          verify-result: .competitive-verifier/cached-result/Result-*/result.json
+          destination: ${{github.workspace}}/_jekyll
+          write-summary: true
 
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
@@ -278,7 +278,7 @@ jobs:
       - name: Check
         uses: competitive-verifier/actions/check@v1
         with:
-          verify-result: ${{ steps.all-artifacts.outputs.artifacts-root }}/Result-*/result.json
+          verify-result: Library/.competitive-verifier/cached-result/Result-*/result.json
   deploy:
     if: always() && github.ref == 'refs/heads/main' && needs.docs-and-check.outputs.upload-pages == 'true'
     needs: docs-and-check
