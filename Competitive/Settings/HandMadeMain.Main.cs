@@ -1,4 +1,4 @@
-﻿using Kzrnm.Competitive.IO;
+using Kzrnm.Competitive.IO;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -59,7 +59,7 @@ namespace Competitive.Runner
                     !string.IsNullOrWhiteSpace(fileInput))
                     sb.Add(fileInput);
 
-                Trace.Listeners.Add(new TextWriterTraceListener(Console.Error));
+                Trace.Listeners.Add(new TraceListener(Console.Error));
                 if (IsNotWhiteSpace(sb.sb))
                 {
                     reader = new PropertyConsoleReader(new MemoryStream(utf8.GetBytes(sb.ToString())), Encoding.UTF8);
@@ -151,24 +151,6 @@ namespace Competitive.Runner
             using var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
             using var sr = new StreamReader(stream);
             return sr.ReadToEnd().Trim();
-        }
-        static T[] Shuffle<T>(T[] arr)
-        {
-            for (int n = arr.Length - 1; n >= 0; n--)
-            {
-                int k = rnd.Next(n + 1);
-                (arr[k], arr[n]) = (arr[n], arr[k]);
-            }
-            return arr;
-        }
-        static (int, int) Next2(int min, int max, bool sameOk = false, bool sorted = false)
-        {
-            var a = rnd.Next(min, max);
-            var b = rnd.Next(min, max);
-            while (sameOk || a == b) b = rnd.Next(min, max);
-            if (sorted && a > b)
-                (a, b) = (b, a);
-            return (a, b);
         }
         static string CurrentPath([CallerFilePath] string path = "") => path;
     }
