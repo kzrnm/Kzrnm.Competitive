@@ -149,30 +149,15 @@ jobs:
         uses: actions/cache/restore@v3
         id: restore-cached-results
         with:
-          path: Library/.competitive-verifier/cached-result
-          key: ${{ runner.os }}-verify-results-${{ hashFiles('Library/**/*.cs') }}
+          path: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
+          key: ${{ runner.os }}-verify-result-${{ hashFiles('Library/**/*.cs') }}
           restore-keys: |
-            ${{ runner.os }}-verify-results-
+            ${{ runner.os }}-verify-result-
 
-      - name: Set up competitive-verifier
-        if: steps.restore-cached-results.outputs.cache-hit == 'true'
-        uses: competitive-verifier/actions/setup@v1
-        with:
-          python-version: "3.9"
-          cache-pip: true
-      - name: Merge results
-        if: steps.restore-cached-results.outputs.cache-hit == 'true'
-        uses: competitive-verifier/actions/merge-result@v1
-        with:
-          working-directory: Library/.competitive-verifier
-          result-files: |
-            prev-result.json
-            cached-result/Result-*/result.json
-          output-path: prev-result-merged.json
       - name: Copy result
-        if: steps.restore-cached-results.outputs.cache-hit != 'true'
+        if: steps.restore-cached-results.outputs.cache-hit == 'true'
         working-directory: Library/.competitive-verifier
-        run: cp prev-result.json prev-result-merged.json
+        run: cp ${{github.workspace}}/Library/.competitive-verifier/merged-result.json prev-result.json
 
       - name: Set up competitive-verifier
         uses: competitive-verifier/actions/setup@v1
@@ -198,7 +183,7 @@ jobs:
         uses: competitive-verifier/actions/verify@v1
         with:
           working-directory: Library
-          prev-result: .competitive-verifier/prev-result-merged.json
+          prev-result: .competitive-verifier/prev-result.json
           destination: ${{runner.temp}}/result.json
           split-size: ${{ env.SPLIT_SIZE }}
           split-index: ${{ matrix.index }}
@@ -252,23 +237,23 @@ jobs:
           python-version: "3.9"
           cache-pip: true
 
-      - name: Move results
-        run: |
-          mkdir -p .competitive-verifier/cached-result
-          mv ${{ steps.all-artifacts.outputs.artifacts-root }}/Result-* .competitive-verifier/cached-result
-
+      - name: Merge results
+        uses: competitive-verifier/actions/merge-result@v1
+        with:
+          working-directory: Library/.competitive-verifier
+          result-files: ${{ steps.all-artifacts.outputs.artifacts-root }}/Result-*/result.json
+          output-path: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
       - name: Save cached results
         uses: actions/cache/save@v3
-        id: save-cached-results
         with:
-          path: Library/.competitive-verifier/cached-result
-          key: ${{ runner.os }}-verify-results-${{ hashFiles('Library/**/*.cs') }}
+          path: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
+          key: ${{ runner.os }}-verify-result-${{ hashFiles('Library/**/*.cs') }}
 
       - name: Docs
         uses: competitive-verifier/actions/docs@v1
         with:
           working-directory: Library
-          verify-result: .competitive-verifier/cached-result/Result-*/result.json
+          verify-result: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
           destination: ${{github.workspace}}/_jekyll
           write-summary: true
 
@@ -286,7 +271,7 @@ jobs:
       - name: Check
         uses: competitive-verifier/actions/check@v1
         with:
-          verify-result: Library/.competitive-verifier/cached-result/Result-*/result.json
+          verify-result: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
   deploy:
     if: always() && github.ref == 'refs/heads/main' && needs.docs-and-check.outputs.upload-pages == 'true'
     needs: docs-and-check
