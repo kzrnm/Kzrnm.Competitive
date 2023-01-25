@@ -147,8 +147,8 @@ jobs:
 
       - name: Restore cached results
         uses: actions/cache/restore@v3
+        id: restore-cached-results
         with:
-          id: restore-cached-results
           path: Library/.competitive-verifier/cached-result
           key: ${{ runner.os }}-verify-results-${{ hashFiles('Library/**/*.cs') }}
           restore-keys: |
@@ -251,10 +251,10 @@ jobs:
           mkdir -p .competitive-verifier/cached-result
           mv ${{ steps.all-artifacts.outputs.artifacts-root }}/Result-* .competitive-verifier/cached-result
 
-      - name: Restore cached results
+      - name: Save cached results
         uses: actions/cache/save@v3
+        id: save-cached-results
         with:
-          id: save-cached-results
           path: Library/.competitive-verifier/cached-result
           key: ${{ runner.os }}-verify-results-${{ hashFiles('Library/**/*.cs') }}
 
