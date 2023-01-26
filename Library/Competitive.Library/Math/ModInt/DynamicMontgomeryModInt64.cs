@@ -234,11 +234,6 @@ namespace Kzrnm.Competitive
                 r = new(l);
                 return true;
             }
-            if (WrapChecked(v, out ulong u))
-            {
-                r = new(u);
-                return true;
-            }
             r = default;
             return false;
         }
@@ -247,11 +242,6 @@ namespace Kzrnm.Competitive
             if (WrapSaturating(v, out long l))
             {
                 r = new(l);
-                return true;
-            }
-            if (WrapSaturating(v, out ulong u))
-            {
-                r = new(u);
                 return true;
             }
             r = default;
@@ -264,17 +254,12 @@ namespace Kzrnm.Competitive
                 r = new(l);
                 return true;
             }
-            if (WrapTruncating(v, out ulong u))
-            {
-                r = new(u);
-                return true;
-            }
             r = default;
             return false;
         }
-        static bool INumberBase<DynamicMontgomeryModInt64<T>>.TryConvertToChecked<TOther>(DynamicMontgomeryModInt64<T> v, out TOther r) where TOther : default => WrapChecked(v._v, out r);
-        static bool INumberBase<DynamicMontgomeryModInt64<T>>.TryConvertToSaturating<TOther>(DynamicMontgomeryModInt64<T> v, out TOther r) where TOther : default => WrapSaturating(v._v, out r);
-        static bool INumberBase<DynamicMontgomeryModInt64<T>>.TryConvertToTruncating<TOther>(DynamicMontgomeryModInt64<T> v, out TOther r) where TOther : default => WrapTruncating(v._v, out r);
+        static bool INumberBase<DynamicMontgomeryModInt64<T>>.TryConvertToChecked<TOther>(DynamicMontgomeryModInt64<T> v, out TOther r) where TOther : default => WrapChecked(v.Value, out r);
+        static bool INumberBase<DynamicMontgomeryModInt64<T>>.TryConvertToSaturating<TOther>(DynamicMontgomeryModInt64<T> v, out TOther r) where TOther : default => WrapSaturating(v.Value, out r);
+        static bool INumberBase<DynamicMontgomeryModInt64<T>>.TryConvertToTruncating<TOther>(DynamicMontgomeryModInt64<T> v, out TOther r) where TOther : default => WrapTruncating(v.Value, out r);
 
         [凾(256)]
         static bool WrapChecked<TFrom, TTo>(TFrom v, out TTo r) where TFrom : INumberBase<TFrom> where TTo : INumberBase<TTo>

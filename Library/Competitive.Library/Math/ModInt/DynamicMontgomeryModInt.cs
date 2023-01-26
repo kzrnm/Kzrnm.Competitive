@@ -272,9 +272,9 @@ namespace Kzrnm.Competitive
             r = default;
             return false;
         }
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.TryConvertToChecked<TOther>(DynamicMontgomeryModInt<T> v, out TOther r) where TOther : default => WrapChecked(v._v, out r);
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.TryConvertToSaturating<TOther>(DynamicMontgomeryModInt<T> v, out TOther r) where TOther : default => WrapSaturating(v._v, out r);
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.TryConvertToTruncating<TOther>(DynamicMontgomeryModInt<T> v, out TOther r) where TOther : default => WrapTruncating(v._v, out r);
+        static bool INumberBase<DynamicMontgomeryModInt<T>>.TryConvertToChecked<TOther>(DynamicMontgomeryModInt<T> v, out TOther r) where TOther : default => WrapChecked(v.Value, out r);
+        static bool INumberBase<DynamicMontgomeryModInt<T>>.TryConvertToSaturating<TOther>(DynamicMontgomeryModInt<T> v, out TOther r) where TOther : default => WrapSaturating(v.Value, out r);
+        static bool INumberBase<DynamicMontgomeryModInt<T>>.TryConvertToTruncating<TOther>(DynamicMontgomeryModInt<T> v, out TOther r) where TOther : default => WrapTruncating(v.Value, out r);
 
         [凾(256)]
         static bool WrapChecked<TFrom, TTo>(TFrom v, out TTo r) where TFrom : INumberBase<TFrom> where TTo : INumberBase<TTo>

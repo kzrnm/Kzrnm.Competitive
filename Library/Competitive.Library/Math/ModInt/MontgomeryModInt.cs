@@ -270,9 +270,9 @@ namespace Kzrnm.Competitive
             r = default;
             return false;
         }
-        static bool INumberBase<MontgomeryModInt<T>>.TryConvertToChecked<TOther>(MontgomeryModInt<T> v, out TOther r) where TOther : default => WrapChecked(v._v, out r);
-        static bool INumberBase<MontgomeryModInt<T>>.TryConvertToSaturating<TOther>(MontgomeryModInt<T> v, out TOther r) where TOther : default => WrapSaturating(v._v, out r);
-        static bool INumberBase<MontgomeryModInt<T>>.TryConvertToTruncating<TOther>(MontgomeryModInt<T> v, out TOther r) where TOther : default => WrapTruncating(v._v, out r);
+        static bool INumberBase<MontgomeryModInt<T>>.TryConvertToChecked<TOther>(MontgomeryModInt<T> v, out TOther r) where TOther : default => WrapChecked(v.Value, out r);
+        static bool INumberBase<MontgomeryModInt<T>>.TryConvertToSaturating<TOther>(MontgomeryModInt<T> v, out TOther r) where TOther : default => WrapSaturating(v.Value, out r);
+        static bool INumberBase<MontgomeryModInt<T>>.TryConvertToTruncating<TOther>(MontgomeryModInt<T> v, out TOther r) where TOther : default => WrapTruncating(v.Value, out r);
 
         [凾(256)]
         static bool WrapChecked<TFrom, TTo>(TFrom v, out TTo r) where TFrom : INumberBase<TFrom> where TTo : INumberBase<TTo>
