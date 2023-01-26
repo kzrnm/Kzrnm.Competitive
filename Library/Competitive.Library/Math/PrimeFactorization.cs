@@ -10,10 +10,10 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// O(N^1/4) の高速な素因数分解を行います。
     /// </summary>
-    public abstract class PrimeFactorization : PrimeFactorization<PrimeId.ModId>
+    public abstract class PrimeFactorization : PrimeFactorization<Internal.PrimeId.ModId>
     {
     }
-    namespace PrimeId { public struct ModId { } }
+    namespace Internal.PrimeId { public struct ModId { } }
 
 
     /// <summary>
