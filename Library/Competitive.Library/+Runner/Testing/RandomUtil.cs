@@ -105,5 +105,25 @@ namespace Kzrnm.Competitive.Testing
             rnd.NextBytes(bytes);
             return MemoryMarshal.AsRef<uint>(bytes);
         }
+
+        /// <summary>
+        /// [0, <see cref="long.MaxValue"/>] の値を返します。
+        /// </summary>
+        public static long NextLong(this Random rnd)
+        {
+            Span<byte> bytes = stackalloc byte[8];
+            rnd.NextBytes(bytes);
+            return MemoryMarshal.AsRef<long>(bytes) & long.MaxValue;
+        }
+
+        /// <summary>
+        /// [0, <paramref name="maxValue"/>] の値を返します。
+        /// </summary>
+        public static long NextLong(this Random rnd, long maxValue)
+        {
+            Span<byte> bytes = stackalloc byte[8];
+            rnd.NextBytes(bytes);
+            return (MemoryMarshal.AsRef<long>(bytes) & long.MaxValue) % maxValue;
+        }
     }
 }
