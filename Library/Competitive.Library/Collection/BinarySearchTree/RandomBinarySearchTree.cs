@@ -10,36 +10,18 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    [IsOperator]
-    public interface IRandomBinarySearchTreeOperator<T, F> : ILazySegtreeOperator<T, F>
-    {
-        /// <summary>
-        /// <paramref name="v"/> を左右反転します。
-        /// </summary>
-        T Inverse(T v);
-    }
-
     // competitive-verifier: TITLE 乱択平衡二分探索木
     // https://nyaannyaan.github.io/library/rbst/rbst-base.hpp
     // https://nyaannyaan.github.io/library/rbst/lazy-reversible-rbst.hpp
     /// <summary>
     /// 乱択平衡二分探索木
     /// </summary>
-    public class RandomBinarySearchTree<T> : RandomBinarySearchTree<T, T, RandomBinarySearchTree<T>.EmptyOp>
+    public class RandomBinarySearchTree<T> : RandomBinarySearchTree<T, T, Internal.SingleRbstOp<T>>
     {
         public RandomBinarySearchTree() { }
         public RandomBinarySearchTree(IEnumerable<T> v) : base(v.ToArray()) { }
         public RandomBinarySearchTree(T[] v) : base(v.AsSpan()) { }
         public RandomBinarySearchTree(ReadOnlySpan<T> v) : base(v) { }
-        public struct EmptyOp : IRandomBinarySearchTreeOperator<T, T>
-        {
-            public T Identity => default;
-            public T FIdentity => default;
-            [凾(256)] public T Composition(T nf, T cf) => nf;
-            [凾(256)] public T Inverse(T v) => v;
-            [凾(256)] public T Mapping(T f, T x) => x;
-            [凾(256)] public T Operate(T x, T y) => x;
-        }
     }
 
     // https://nyaannyaan.github.io/library/rbst/rbst-base.hpp
@@ -48,9 +30,31 @@ namespace Kzrnm.Competitive
     /// 乱択平衡二分探索木
     /// </summary>
     public class RandomBinarySearchTree<T, F, TOp> : IEnumerable<T>
-        where TOp : struct, IRandomBinarySearchTreeOperator<T, F>
+        where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
         private static TOp op => new TOp();
+        public RandomBinarySearchTree() { }
+        public RandomBinarySearchTree(IEnumerable<T> v) : this(v.ToArray()) { }
+        public RandomBinarySearchTree(T[] v) : this(v.AsSpan()) { }
+        public RandomBinarySearchTree(ReadOnlySpan<T> v)
+        {
+            root = Build(v);
+        }
+        private static Node Build(ReadOnlySpan<T> v)
+        {
+            switch (v.Length)
+            {
+                case 0: return null;
+                case 1: return new Node(v[0]);
+            }
+            int m = v.Length / 2;
+            return Update(new Node(v[m])
+            {
+                Left = Build(v[..m]),
+                Right = Build(v[(m + 1)..])
+            });
+        }
+
         public class Node
         {
             public Node Left, Right;
@@ -74,27 +78,6 @@ namespace Kzrnm.Competitive
 
         public T AllProd => Sum(root);
 
-        public RandomBinarySearchTree() { }
-        public RandomBinarySearchTree(IEnumerable<T> v) : this(v.ToArray()) { }
-        public RandomBinarySearchTree(T[] v) : this(v.AsSpan()) { }
-        public RandomBinarySearchTree(ReadOnlySpan<T> v)
-        {
-            root = Build(v);
-        }
-        private static Node Build(ReadOnlySpan<T> v)
-        {
-            switch (v.Length)
-            {
-                case 0: return null;
-                case 1: return new Node(v[0]);
-            }
-            int m = v.Length / 2;
-            return Update(new Node(v[m])
-            {
-                Left = Build(v[..m]),
-                Right = Build(v[(m + 1)..])
-            });
-        }
 
         /// <summary>
         /// <paramref name="l"/>, <paramref name="r"/> をマージして新たに出来た木を返します。

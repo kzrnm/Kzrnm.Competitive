@@ -1,8 +1,9 @@
 using System;
+using System.Linq;
 
 namespace Kzrnm.Competitive.Testing.Collection
 {
-    public class RandomBinarySearchTreeTests
+    public class LazyReversibleSplayTreeTests
     {
         private readonly struct Starry : IReversibleBinarySearchTreeOperator<int, int>
         {
@@ -20,7 +21,7 @@ namespace Kzrnm.Competitive.Testing.Collection
         [Fact]
         public void Zero()
         {
-            new RandomBinarySearchTree<int, int, Starry>().AllProd.Should().Be(-1_000_000_000);
+            new LazyReversibleSplayTree<int, int, Starry>().AllProd.Should().Be(-1_000_000_000);
         }
 
         [Fact]
@@ -33,7 +34,7 @@ namespace Kzrnm.Competitive.Testing.Collection
                 {
                     p[i] = (i * i + 100) % 31;
                 }
-                var tree = new RandomBinarySearchTree<int, int, Starry>(p);
+                var tree = new LazyReversibleSplayTree<int, int, Starry>(p);
                 for (int l = 0; l <= n; l++)
                 {
                     for (int r = l; r <= n; r++)
@@ -55,7 +56,7 @@ namespace Kzrnm.Competitive.Testing.Collection
         [Fact]
         public void Usage()
         {
-            var tree = new RandomBinarySearchTree<int, int, Starry>(new int[10]);
+            var tree = new LazyReversibleSplayTree<int, int, Starry>(new int[10]);
             tree.AllProd.Should().Be(0);
             tree.Should().Equal(new[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
             tree.Apply(0, 3, 5);
@@ -66,6 +67,58 @@ namespace Kzrnm.Competitive.Testing.Collection
             tree.Should().Equal(new[] { 5, 5, -5, 0, 0, 0, 0, 0, 0, 0 });
             tree.Prod(2, 3).Should().Be(tree[2..3]).And.Be(-5);
             tree.Prod(2, 4).Should().Be(tree[2..4]).And.Be(0);
+        }
+
+        [Fact]
+        public void Reverse()
+        {
+            const int N = 8;
+            var tree = new LazyReversibleSplayTree<int>(Enumerable.Range(0, N));
+            for (int i = 0; i < N; i++)
+                tree[i].Should().Be(i);
+            tree.Reverse(2, 5);
+            var expected = new[] { 0, 1, 4, 3, 2, 5, 6, 7 };
+            tree.Should().Equal(expected);
+            for (int i = 0; i < N; i++)
+                tree[i].Should().Be(expected[i]);
+        }
+
+        [Fact]
+        public void InsertAndReverse()
+        {
+            const int N = 8;
+            var list = Enumerable.Range(0, N).ToList();
+            var tree = new LazyReversibleSplayTree<int>(list);
+            void Insert(int index, int value)
+            {
+                tree.Insert(index, value);
+                list.Insert(index, value);
+                Test();
+            }
+            void Test()
+            {
+                tree.Should().Equal(list);
+                for (int i = 0; i < N; i++)
+                    tree[i].Should().Be(list[i]);
+            }
+
+            for (int i = 0; i < N; i++)
+                tree[i].Should().Be(list[i]);
+
+            tree.Add(-1);
+            list.Add(-1);
+            Test();
+
+            Insert(2, -2);
+            Insert(0, -5);
+            Insert(N, 111);
+
+            tree.Reverse(2, 5);
+            list.AsSpan()[2..5].Reverse();
+
+            Insert(2, -12);
+            Insert(0, -15);
+            Insert(N, 1111);
         }
     }
 }
