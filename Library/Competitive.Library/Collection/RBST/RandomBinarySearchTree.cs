@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -71,6 +72,8 @@ namespace Kzrnm.Competitive
         public T AllProd => Sum(root);
 
         public RandomBinarySearchTree() { }
+        public RandomBinarySearchTree(IEnumerable<T> v) : this(v.ToArray()) { }
+        public RandomBinarySearchTree(T[] v) : this(v.AsSpan()) { }
         public RandomBinarySearchTree(ReadOnlySpan<T> v)
         {
             root = Build(v);
