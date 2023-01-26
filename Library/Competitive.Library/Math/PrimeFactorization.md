@@ -25,6 +25,7 @@ Job=ShortRun  IterationCount=3  LaunchCount=1
 WarmupCount=3  
 
 ```
+
 |             Method |     Toolchain |           Mean |          Error |        StdDev |
 |------------------- |-------------- |---------------:|---------------:|--------------:|
 |  NaiveFactorizeInt |      .NET 7.0 |       806.1 ns |       393.3 ns |      21.56 ns |
