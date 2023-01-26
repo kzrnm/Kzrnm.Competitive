@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 #if !NET7_0_OR_GREATER
@@ -200,90 +201,98 @@ namespace Kzrnm.Competitive
         public static T[] Divisor<T>(T n)
             where T : IBinaryInteger<T>
         {
+            if (T.IsZero(n)) return Array.Empty<T>();
             if (n <= T.One) return new T[] { T.One };
 
-            var left = new List<T>();
-            var right = new List<T>();
-            left.Add(T.One);
-            right.Add(n);
-
-            var two = T.One + T.One;
-            for (T i = two; ; i++)
+            var pairs = PrimeFactoring(n).ToArray();
+            var list = new List<T>();
+            var st = new Stack<(int pi, T x, int pc)>();
+            st.Push((0, T.One, ~pairs[0].Value));
+            while (st.TryPop(out var tup))
             {
-                var (d, am) = T.DivRem(n, i);
-                if (i > d) break;
-                if (T.IsZero(am))
+                var (pi, x, pc) = tup;
+                if (pc < 0)
                 {
-                    left.Add(i);
-                    if (i != d)
-                        right.Add(d);
+                    st.Push((pi, x, ~pc));
+                    if (++pi < pairs.Length)
+                        st.Push((pi, x, ~pairs[pi].Value));
+                    else
+                        list.Add(x);
+                }
+                else if (pc > 0)
+                {
+                    st.Push((pi, x * pairs[pi].Key, ~--pc));
                 }
             }
-            right.Reverse();
-            var res = new T[left.Count + right.Count];
-            left.CopyTo(res, 0);
-            right.CopyTo(res, left.Count);
-            return res;
+
+            list.Sort();
+            return list.ToArray();
         }
 #else
         /// <summary>
         /// <paramref name="n"/> の約数を返します。
         /// </summary>
-        public static int[] Divisor(int n)
+        public static long[] Divisor(long n)
         {
-            if (n <= 1) return new int[] { 1 };
+            if (n <= 0) return Array.Empty<long>();
+            if (n <= 1) return new long[] { 1 };
 
-            var left = new List<int>();
-            var right = new List<int>();
-            left.Add(1);
-            right.Add(n);
-
-            for (int i = 2, d = Math.DivRem(n, i, out var am);
-                i <= d;
-                i++, d = Math.DivRem(n, i, out am))
+            var pairs = PrimeFactoring(n).ToArray();
+            var list = new List<long>();
+            var st = new Stack<(int pi, long x, int pc)>();
+            st.Push((0, 1, ~pairs[0].Value));
+            while (st.TryPop(out var tup))
             {
-                if (am == 0)
+                var (pi, x, pc) = tup;
+                if (pc < 0)
                 {
-                    left.Add(i);
-                    if (i != d)
-                        right.Add(d);
+                    st.Push((pi, x, ~pc));
+                    if (++pi < pairs.Length)
+                        st.Push((pi, x, ~pairs[pi].Value));
+                    else
+                        list.Add(x);
+                }
+                else if (pc > 0)
+                {
+                    st.Push((pi, x * pairs[pi].Key, ~--pc));
                 }
             }
-            right.Reverse();
-            var res = new int[left.Count + right.Count];
-            left.CopyTo(res, 0);
-            right.CopyTo(res, left.Count);
-            return res;
+
+            list.Sort();
+            return list.ToArray();
         }
 
         /// <summary>
         /// <paramref name="n"/> の約数を返します。
         /// </summary>
-        public static long[] Divisor(long n)
+        public static int[] Divisor(int n)
         {
-            if (n <= 1) return new long[] { 1 };
+            if (n <= 0) return Array.Empty<int>();
+            if (n <= 1) return new int[] { 1 };
 
-            var left = new List<long>();
-            var right = new List<long>();
-            left.Add(1);
-            right.Add(n);
-
-            for (long i = 2, d = Math.DivRem(n, i, out var am);
-                i <= d;
-                i++, d = Math.DivRem(n, i, out am))
+            var pairs = PrimeFactoring(n).ToArray();
+            var list = new List<int>();
+            var st = new Stack<(int pi, int x, int pc)>();
+            st.Push((0, 1, ~pairs[0].Value));
+            while (st.TryPop(out var tup))
             {
-                if (am == 0)
+                var (pi, x, pc) = tup;
+                if (pc < 0)
                 {
-                    left.Add(i);
-                    if (i != d)
-                        right.Add(d);
+                    st.Push((pi, x, ~pc));
+                    if (++pi < pairs.Length)
+                        st.Push((pi, x, ~pairs[pi].Value));
+                    else
+                        list.Add(x);
+                }
+                else if (pc > 0)
+                {
+                    st.Push((pi, x * pairs[pi].Key, ~--pc));
                 }
             }
-            right.Reverse();
-            var res = new long[left.Count + right.Count];
-            left.CopyTo(res, 0);
-            right.CopyTo(res, left.Count);
-            return res;
+
+            list.Sort();
+            return list.ToArray();
         }
 #endif
 
