@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -294,11 +295,15 @@ namespace Kzrnm.Competitive
         [凾(256)]
         private static ulong Random()
         {
-            x_ ^= x_ << 7;
-            x_ ^= x_ >> 9;
-            return x_ & 0xFFFFFFFFul;
+            Span<byte> b = stackalloc byte[8];
+            rnd.NextBytes(b);
+            return MemoryMarshal.Cast<byte, ulong>(b)[0];
         }
-        private static ulong x_ = 88172645463325252UL;
+#if NET7_0_OR_GREATER
+        private static Random rnd = System.Random.Shared;
+#else
+        private static Random rnd = new Random();
+#endif
 
         public Enumerator GetEnumerator() => new Enumerator(this);
         IEnumerator<T> IEnumerable<T>.GetEnumerator() => GetEnumerator();
