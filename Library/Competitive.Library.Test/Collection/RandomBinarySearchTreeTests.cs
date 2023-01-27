@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace Kzrnm.Competitive.Testing.Collection
 {
@@ -66,6 +67,16 @@ namespace Kzrnm.Competitive.Testing.Collection
             tree.Should().Equal(new[] { 5, 5, -5, 0, 0, 0, 0, 0, 0, 0 });
             tree.Prod(2, 3).Should().Be(tree[2..3]).And.Be(-5);
             tree.Prod(2, 4).Should().Be(tree[2..4]).And.Be(0);
+        }
+
+        [Fact]
+        public void Reverse()
+        {
+            const int N = 8;
+            var tree = new RandomBinarySearchTree<int>(Enumerable.Range(0, N));
+            tree.Reverse(2, 5);
+            var expected = new[] { 0, 1, 4, 3, 2, 5, 6, 7 };
+            tree.Should().Equal(expected);
         }
     }
 }

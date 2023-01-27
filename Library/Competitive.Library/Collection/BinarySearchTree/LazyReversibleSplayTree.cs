@@ -125,12 +125,11 @@ namespace Kzrnm.Competitive
             }
         }
         [凾(256)]
-        public static Node PushFront(Node t, T v)
+        public static void PushFront(ref Node t, T v)
         {
             if (t == null)
             {
                 t = new Node(v);
-                return t;
             }
             else
             {
@@ -140,17 +139,16 @@ namespace Kzrnm.Competitive
                 z.Parent = cur;
                 cur.Left = z;
                 Splay(z);
-                return z;
+                t = z;
             }
         }
 
         [凾(256)]
-        public static Node PushBack(Node t, T v)
+        public static void PushBack(ref Node t, T v)
         {
             if (t == null)
             {
                 t = new Node(v);
-                return t;
             }
             else
             {
@@ -160,7 +158,7 @@ namespace Kzrnm.Competitive
                 z.Parent = cur;
                 cur.Right = z;
                 Splay(z);
-                return z;
+                t = z;
             }
         }
         [凾(256)]
@@ -221,9 +219,13 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static Node Merge(Node l, Node r)
         {
-            if (l == null && r == null) return null;
-            if (l == null) { Splay(r); return r; }
-            if (r == null) { Splay(l); return l; }
+            if (l == null || r == null)
+            {
+                var t = l ?? r;
+                if (t != null)
+                    Splay(t);
+                return t;
+            }
 
             Splay(l); Splay(r);
             l = GetRight(l);
@@ -234,24 +236,24 @@ namespace Kzrnm.Competitive
             return l;
         }
         [凾(256)]
-        public static Node Insert(Node t, int k, T v)
+        public static void Insert(ref Node t, int k, T v)
         {
             Splay(t);
             var (x1, x2) = Split(t, k);
-            return Merge(x1, Merge(new Node(v), x2));
+            t = Merge(x1, Merge(new Node(v), x2));
         }
         [凾(256)]
-        public static Node Erase(Node t, int k)
+        public static void Erase(ref Node t, int k)
         {
             Splay(t);
             var (x1, x2) = Split(t, k);
             var (_, y2) = Split(x2, 1);
-            return Merge(x1, y2);
+            t = Merge(x1, y2);
         }
         [凾(256)]
         public static T Query(ref Node t, int a, int b)
         {
-            if (a >= b)
+            if (a == b)
                 return op.Identity;
             Splay(t);
             var (x1, x2) = Split(t, a);
@@ -364,46 +366,48 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        public static void SetElement(Node t, int k, T x)
+        public static void SetElement(ref Node t, int k, T x)
         {
-            t = ElementAt(t, k);
+            t = ElementAt(ref t, k);
             t.Key = x;
             Splay(t);
         }
 
-        public static Node ElementAt(Node t, int k)
+        public static Node ElementAt(ref Node t, int k)
         {
             Splay(t);
-            return SubElementAt(t, k);
+            return t = SubElementAt(t, k);
         }
-        public static Node SubElementAt(Node t, int k)
+        private static Node SubElementAt(Node t, int k)
         {
             Push(t);
             if (k < Size(t.Left))
                 return SubElementAt(t.Left, k);
 
             else if (k == Size(t.Left))
+            {
+                Splay(t);
                 return t;
+            }
             else
                 return SubElementAt(t.Right, k - Size(t.Left) - 1);
         }
 
         [凾(256)]
-        protected static Node SetPropagate(Node t, int a, int b, F pp)
+        protected static void SetPropagate(ref Node t, int a, int b, F pp)
         {
             Splay(t);
             var (x1, x2) = Split(t, a);
             var (y1, y2) = Split(x2, b - a);
             SetPropagate(y1, pp);
-            return Merge(x1, Merge(y1, y2));
+            t = Merge(x1, Merge(y1, y2));
         }
         [凾(256)]
-        protected static Node SetPropagate(Node t, F pp)
+        protected static void SetPropagate(Node t, F pp)
         {
             Splay(t);
             Propagate(t, pp);
             Push(t);
-            return t;
         }
 
 
@@ -415,26 +419,26 @@ namespace Kzrnm.Competitive
         public T this[int index]
         {
             [凾(256)]
-            get => ElementAt(root, index).Key;
+            get => ElementAt(ref root, index).Key;
             [凾(256)]
-            set => SetElement(root, index, value);
+            set => SetElement(ref root, index, value);
         }
         [凾(256)]
-        public void Add(T item) => root = PushBack(root, item);
+        public void Add(T item) => PushBack(ref root, item);
         [凾(256)]
         public void Insert(int index, T item)
         {
             if (index == 0)
-                root = PushFront(root, item);
+                PushFront(ref root, item);
             else
-                root = Insert(root, index, item);
+                Insert(ref root, index, item);
         }
         public int IndexOf(T item) => throw new NotImplementedException();
 
         [凾(256)]
         public void RemoveAt(int index)
         {
-            root = Erase(root, index);
+            Erase(ref root, index);
         }
 
         [凾(256)]
@@ -453,7 +457,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public void Apply(int l, int r, F f)
         {
-            root = SetPropagate(root, l, r, f);
+            SetPropagate(ref root, l, r, f);
         }
 
         /// <summary>
@@ -506,31 +510,28 @@ namespace Kzrnm.Competitive
         bool ICollection<T>.Remove(T item)
             => throw new NotImplementedException();
 
-        public ValueEnumerator GetEnumerator()
-            => new ValueEnumerator(this);
+        public Enumerator GetEnumerator()
+            => new Enumerator(this);
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
             => GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator()
             => GetEnumerator();
 
-
-
-        public struct Enumerator : IEnumerator<Node>
+        public struct Enumerator : IEnumerator<T>
         {
             internal readonly LazyReversibleSplayTree<T, F, TOp> tree;
             readonly Deque<Node> stack;
             Node current;
 
             readonly bool reverse;
-            internal Enumerator(LazyReversibleSplayTree<T, F, TOp> set) : this(set, false, null) { }
-            internal Enumerator(LazyReversibleSplayTree<T, F, TOp> set, bool reverse, Node startNode)
+            internal Enumerator(LazyReversibleSplayTree<T, F, TOp> tree) : this(tree, false) { }
+            internal Enumerator(LazyReversibleSplayTree<T, F, TOp> tree, bool reverse)
             {
-                tree = set;
-                stack = new Deque<Node>(2 * Log2(((ICollection<T>)tree).Count + 1));
+                this.tree = tree;
+                stack = new Deque<Node>(2 * Log2(this.tree.Count + 1));
                 current = null;
                 this.reverse = reverse;
-                if (startNode == null) IntializeAll();
-                else Intialize(startNode);
+                IntializeAll();
             }
             [凾(256)]
             void IntializeAll()
@@ -538,68 +539,17 @@ namespace Kzrnm.Competitive
                 var node = tree.root;
                 while (node != null)
                 {
+                    Push(node);
+                    Update(node);
                     var next = reverse ? node.Right : node.Left;
                     stack.AddLast(node);
                     node = next;
                 }
             }
-            [凾(256)]
-            void Intialize(Node startNode)
-            {
-                if (startNode == null)
-                    throw new InvalidOperationException(nameof(startNode) + "is null");
-                current = null;
-                if (reverse)
-                    InitializeReverse(startNode);
-                else
-                    InitializeNormal(startNode);
-            }
-            [凾(256)]
-            void InitializeNormal(Node node)
-            {
-                while (node != null)
-                {
-                    while (node != null)
-                    {
-                        stack.AddFirst(node);
-                        var parent = node.Parent;
-                        if (parent == null || parent.Right == node) { node = parent; break; }
-                        node = parent;
-                    }
-                    while (node != null)
-                    {
-                        var parent = node.Parent;
-                        if (parent == null || parent.Left == node) { node = parent; break; }
-                        node = parent;
-                    }
-                }
-            }
-            [凾(256)]
-            void InitializeReverse(Node node)
-            {
-                while (node != null)
-                {
-                    while (node != null)
-                    {
-                        stack.AddFirst(node);
-                        var parent = node.Parent;
-                        if (parent == null || parent.Left == node) { node = parent; break; }
-                        node = parent;
-                    }
-                    while (node != null)
-                    {
-                        var parent = node.Parent;
-                        if (parent == null || parent.Right == node) { node = parent; break; }
-                        node = parent;
-                    }
-                }
-            }
 
             [凾(256)]
             static int Log2(int num) => BitOperations.Log2((uint)num) + 1;
-            public Node Current => current;
-            [凾(256)]
-            internal T CurrentValue() => current.Key;
+            public T Current => current.Key;
 
             [凾(256)]
             public bool MoveNext()
@@ -613,6 +563,8 @@ namespace Kzrnm.Competitive
                 var node = reverse ? current.Left : current.Right;
                 while (node != null)
                 {
+                    Push(node);
+                    Update(node);
                     var next = reverse ? node.Right : node.Left;
                     stack.AddLast(node);
                     node = next;
@@ -624,26 +576,5 @@ namespace Kzrnm.Competitive
             public void Dispose() { }
             public void Reset() => throw new NotSupportedException();
         }
-        public struct ValueEnumerator : IEnumerator<T>
-        {
-            private Enumerator inner;
-            internal ValueEnumerator(LazyReversibleSplayTree<T, F, TOp> set)
-            {
-                inner = new Enumerator(set);
-            }
-            internal ValueEnumerator(LazyReversibleSplayTree<T, F, TOp> set, bool reverse, Node startNode)
-            {
-                inner = new Enumerator(set, reverse, startNode);
-            }
-
-            public T Current => inner.CurrentValue();
-            object IEnumerator.Current => Current;
-
-            public void Dispose() { }
-            [凾(256)]
-            public bool MoveNext() => inner.MoveNext();
-            public void Reset() => throw new NotSupportedException();
-        }
-
     }
 }

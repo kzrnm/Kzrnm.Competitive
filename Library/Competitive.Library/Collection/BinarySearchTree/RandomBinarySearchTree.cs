@@ -313,8 +313,10 @@ namespace Kzrnm.Competitive
                 var node = tree.root;
                 while (node != null)
                 {
+                    Push(node);
+                    Update(node);
                     var next = reverse ? node.Right : node.Left;
-                    stack.AddLast(Update(node));
+                    stack.AddLast(node);
                     node = next;
                 }
             }
@@ -335,8 +337,10 @@ namespace Kzrnm.Competitive
                 var node = reverse ? current.Left : current.Right;
                 while (node != null)
                 {
+                    Push(node);
+                    Update(node);
                     var next = reverse ? node.Right : node.Left;
-                    stack.AddLast(Update(node));
+                    stack.AddLast(node);
                     node = next;
                 }
                 return true;
