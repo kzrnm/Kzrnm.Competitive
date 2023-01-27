@@ -13,8 +13,7 @@ namespace Kzrnm.Competitive.Testing.Collection
             public int Composition(int f, int g) => f + g;
 
             public int Inverse(int v) => v;
-            public int Mapping(int f, int x) => f + x;
-
+            public int Mapping(int f, int x, int size) => f + x;
             public int Operate(int x, int y) => Math.Max(x, y);
         }
 
@@ -81,6 +80,17 @@ namespace Kzrnm.Competitive.Testing.Collection
             tree.Should().Equal(expected);
             for (int i = 0; i < N; i++)
                 tree[i].Should().Be(expected[i]);
+
+
+            var rnd = new Random(227);
+            for (int q = 0; q < 100; q++)
+            {
+                int l = rnd.Next(N);
+                int r = rnd.Next(l + 1, N + 1);
+                tree.Reverse(l, r);
+                expected.AsSpan()[l..r].Reverse();
+                tree.Should().Equal(expected);
+            }
         }
 
         [Fact]

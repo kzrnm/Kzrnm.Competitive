@@ -11,65 +11,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.Internal
 {
-    public interface ISetOperator<T, TCmp, Node> : IComparer<T>
-    {
-        Node Create(T item, NodeColor color);
-        T GetValue(Node node);
-        TCmp GetCompareKey(T item);
-    }
-    public enum NodeColor : byte
-    {
-        Black,
-        Red
-    }
-    enum TreeRotation : byte
-    {
-        Left = 1,
-        Right = 2,
-        RightLeft = 3,
-        LeftRight = 4,
-    }
-
-    #region ISetBinarySearchOperator
-    [IsOperator]
-    public interface ISetBinarySearchOperator
-    {
-        /// <summary>
-        /// 左側を返す
-        /// </summary>
-        bool ReturnLeft { get; }
-
-        /// <summary>
-        /// 左側に潜る
-        /// </summary>
-        bool IntoLeft(int order);
-    }
-    public struct L : ISetBinarySearchOperator
-    {
-        public bool ReturnLeft => false;
-        [凾(256)]
-        public bool IntoLeft(int order) => order <= 0;
-    }
-    public struct U : ISetBinarySearchOperator
-    {
-        public bool ReturnLeft => false;
-        [凾(256)]
-        public bool IntoLeft(int order) => order < 0;
-    }
-    public struct LR : ISetBinarySearchOperator
-    {
-        public bool ReturnLeft => true;
-        [凾(256)]
-        public bool IntoLeft(int order) => order < 0;
-    }
-    public struct UR : ISetBinarySearchOperator
-    {
-        public bool ReturnLeft => true;
-        [凾(256)]
-        public bool IntoLeft(int order) => order <= 0;
-    }
-    #endregion ISetBinarySearchOperator
-
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public abstract class SetBase<T, TCmp, Node, TOp> : ICollection, ICollection<T>, IReadOnlyCollection<T>

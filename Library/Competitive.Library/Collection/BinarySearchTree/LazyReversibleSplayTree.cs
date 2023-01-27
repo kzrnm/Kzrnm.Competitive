@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 遅延伝搬反転可能Splay木
     /// </summary>
-    public class LazyReversibleSplayTree<T> : LazyReversibleSplayTree<T, T, Internal.SingleRbstOp<T>>
+    public class LazyReversibleSplayTree<T> : LazyReversibleSplayTree<T, T, Internal.Bbst.SingleRbstOp<T>>
     {
         public LazyReversibleSplayTree() { }
         public LazyReversibleSplayTree(IEnumerable<T> v) : base(v.ToArray()) { }
@@ -54,7 +54,7 @@ namespace Kzrnm.Competitive
             );
         }
 
-        [DebuggerDisplay("Key = {" + nameof(Key) + "}, Sum = {" + nameof(Sum) + "}, Lazy = {" + nameof(Lazy) + "}")]
+        [DebuggerDisplay("Size = {" + nameof(cnt) + "}, Key = {" + nameof(Key) + "}, Sum = {" + nameof(Sum) + "}, Lazy = {" + nameof(Lazy) + "}")]
         public class Node
         {
             public Node Left, Right, Parent;
@@ -324,9 +324,9 @@ namespace Kzrnm.Competitive
         [凾(256)]
         static void Propagate(Node t, F x)
         {
-            t.Lazy = op.Composition(t.Lazy, x);
-            t.Key = op.Mapping(x, t.Key);
-            t.Sum = op.Mapping(x, t.Sum);
+            t.Lazy = op.Composition(x, t.Lazy);
+            t.Key = op.Mapping(x, t.Key, Size(t));
+            t.Sum = op.Mapping(x, t.Sum, Size(t));
         }
         [凾(256)]
         private static void RotateR(Node t)

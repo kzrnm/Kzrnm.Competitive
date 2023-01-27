@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 乱択平衡二分探索木
     /// </summary>
-    public class RandomBinarySearchTree<T> : RandomBinarySearchTree<T, T, Internal.SingleRbstOp<T>>
+    public class RandomBinarySearchTree<T> : RandomBinarySearchTree<T, T, Internal.Bbst.SingleRbstOp<T>>
     {
         public RandomBinarySearchTree() { }
         public RandomBinarySearchTree(IEnumerable<T> v) : base(v.ToArray()) { }
@@ -218,8 +218,8 @@ namespace Kzrnm.Competitive
         private static void Propagate(Node t, F f)
         {
             t.Lazy = op.Composition(f, t.Lazy);
-            t.Key = op.Mapping(f, t.Key);
-            t.Sum = op.Mapping(f, t.Sum);
+            t.Key = op.Mapping(f, t.Key, Size(t));
+            t.Sum = op.Mapping(f, t.Sum, Size(t));
         }
 
         /// <summary>
