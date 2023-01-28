@@ -1,4 +1,5 @@
 using AtCoder;
+using System.Collections.Generic;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -14,24 +15,18 @@ namespace Kzrnm.Competitive
     }
     namespace Internal.Bbst
     {
-        public interface BbstNode<T, F, TNode> where TNode : IBbstNode<T, F, TNode>
+        public interface IBbstNode<T, TNode> where TNode : IBbstNode<T, TNode>
         {
             TNode Left { set; get; }
             TNode Right { set; get; }
             T Key { set; get; }
             T Sum { set; get; }
-            F Lazy { set; get; }
             int Size { set; get; }
-            bool IsReverse { set; get; }
         }
-        public interface IBbstNode<T, F, TNode> where TNode : IBbstNode<T, F, TNode>
+        public interface ILazyBbstNode<T, F, TNode> : IBbstNode<T, TNode>
+            where TNode : ILazyBbstNode<T, F, TNode>
         {
-            TNode Left { set; get; }
-            TNode Right { set; get; }
-            T Key { set; get; }
-            T Sum { set; get; }
             F Lazy { set; get; }
-            int Size { set; get; }
             bool IsReverse { set; get; }
         }
         /// <summary>
@@ -64,13 +59,19 @@ namespace Kzrnm.Competitive
         /// ノード操作の実装
         /// </summary>
         [IsOperator]
-        public interface IBbstImplOperator<T, F, TNode> : IBbstImplOperator<TNode>, ICopyOperator<TNode>
+        public interface IBbstImplOperator<T, TNode> : IBbstImplOperator<TNode>, ICopyOperator<TNode>
         {
             /// <summary>
             /// 要素 <paramref name="v"/> のみを持つ部分木を作成します。
             /// </summary>
             TNode Create(T v);
-
+        }
+        /// <summary>
+        /// ノード操作の実装
+        /// </summary>
+        [IsOperator]
+        public interface ILazyBbstImplOperator<T, TNode> : IBbstImplOperator<T, TNode>
+        {
             /// <summary>
             /// <paramref name="t"/> の子に遅延伝搬させます。
             /// </summary>
@@ -78,14 +79,14 @@ namespace Kzrnm.Competitive
             [凾(256)]
             TNode Propagate(ref TNode t);
         }
-        public struct SingleRbstOp<T> : IReversibleBinarySearchTreeOperator<T, T>
+        public struct SingleBbstOp<T> : IReversibleBinarySearchTreeOperator<T, T>, ISegtreeOperator<T>
         {
             public T Identity => default;
             public T FIdentity => default;
-            [凾(256)] public T Composition(T nf, T cf) => nf;
+            [凾(256)] public T Composition(T nf, T cf) => FIdentity;
             [凾(256)] public T Inverse(T v) => v;
             [凾(256)] public T Mapping(T f, T x, int size) => x;
-            [凾(256)] public T Operate(T x, T y) => x;
+            [凾(256)] public T Operate(T x, T y) => EqualityComparer<T>.Default.Equals(x,default)?y:x;
         }
     }
 }

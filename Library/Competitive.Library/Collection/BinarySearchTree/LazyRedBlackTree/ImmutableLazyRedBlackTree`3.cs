@@ -10,7 +10,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 永続遅延伝搬赤黒木
+    // competitive-verifier: TITLE 永続遅延伝搬反転可能赤黒木
     // https://ei1333.github.io/library/structure/bbst/lazy-red-black-tree.hpp
 
     /// <summary>

@@ -4,7 +4,7 @@ using Kzrnm.Competitive;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
 {
-    public class RandomBinarySearchTreeTests
+    public class LazyRandomBinarySearchTreeTests
     {
         private readonly struct Starry : IReversibleBinarySearchTreeOperator<int, int>
         {
@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
         [Fact]
         public void Zero()
         {
-            new RandomBinarySearchTree<int, int, Starry>().AllProd.Should().Be(-1_000_000_000);
+            new LazyRandomBinarySearchTree<int, int, Starry>().AllProd.Should().Be(-1_000_000_000);
         }
 
         [Fact]
@@ -36,7 +36,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
                 {
                     p[i] = (i * i + 100) % 31;
                 }
-                var tree = new RandomBinarySearchTree<int, int, Starry>(p);
+                var tree = new LazyRandomBinarySearchTree<int, int, Starry>(p);
                 for (int l = 0; l <= n; l++)
                 {
                     for (int r = l; r <= n; r++)
@@ -58,7 +58,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
         [Fact]
         public void Usage()
         {
-            var tree = new RandomBinarySearchTree<int, int, Starry>(new int[10]);
+            var tree = new LazyRandomBinarySearchTree<int, int, Starry>(new int[10]);
             tree.AllProd.Should().Be(0);
             tree.Should().Equal(new[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
             tree.Apply(0, 3, 5);
@@ -75,7 +75,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
         public void Reverse()
         {
             const int N = 8;
-            var tree = new RandomBinarySearchTree<int>(Enumerable.Range(0, N));
+            var tree = new LazyRandomBinarySearchTree<int>(Enumerable.Range(0, N));
             tree.Reverse(2, 5);
             var expected = new[] { 0, 1, 4, 3, 2, 5, 6, 7 };
             tree.Should().Equal(expected);

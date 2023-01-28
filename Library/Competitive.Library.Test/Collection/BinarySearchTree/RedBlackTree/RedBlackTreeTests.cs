@@ -1,28 +1,23 @@
+using AtCoder;
+using Kzrnm.Competitive;
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Kzrnm.Competitive;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
 {
-    public class LazyRedBlackTreeTests
+    public class RedBlackTreeTests
     {
-        private readonly struct Starry : IReversibleBinarySearchTreeOperator<int, int>
+        private readonly struct Starry : ISegtreeOperator<int>
         {
-            public int Identity => -1_000_000_000;
-            public int FIdentity => 0;
-
-            public int Composition(int f, int g) => f + g;
-
-            public int Inverse(int v) => v;
-            public int Mapping(int f, int x, int size) => f + x;
-            public int Operate(int x, int y) => Math.Max(x, y);
+            public int Identity => 0;
+            public int Operate(int x, int y) => x + y;
         }
 
         [Fact]
         public void Zero()
         {
-            new LazyRedBlackTree<int, int, Starry>().AllProd.Should().Be(-1_000_000_000);
+            new RedBlackTree<int, Starry>().AllProd.Should().Be(0);
         }
 
         [Fact]
@@ -32,94 +27,60 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
             {
                 var p = new int[n];
                 for (int i = 0; i < n; i++)
-                {
                     p[i] = (i * i + 100) % 31;
-                }
-                var tree = new LazyRedBlackTree<int, int, Starry>(p);
-                for (int l = 0; l <= n; l++)
+                var tree = new RedBlackTree<int, Starry>(p);
+                var expected = new Segtree<int, Starry>(p);
+
+                void Test()
                 {
-                    for (int r = l; r <= n; r++)
+                    for (int l = 0; l <= n; l++)
+                        for (int r = l; r <= n; r++)
+                            tree.Prod(l, r).Should().Be(tree[l..r]).And.Be(expected[l..r]);
+                    for (int i = 0; i < n; i++)
                     {
-                        int e = -1_000_000_000;
-                        for (int i = l; i < r; i++)
-                        {
-                            e = Math.Max(e, p[i]);
-                        }
-                        tree.Prod(l, r).Should().Be(tree[l..r]).And.Be(e);
+                        tree[i..(i + 1)].Should().Be(expected[i]);
+                        tree[i].Should().Be(expected[i]);
                     }
                 }
                 tree.Should().Equal(p);
+                Test();
+
+
                 for (int i = 0; i < n; i++)
-                    tree[i..(i + 1)].Should().Be(p[i]);
+                {
+                    var x = ((i << 5) + (i >> 2) + (i << 3) + i % 3) % 51;
+                    tree[i] = expected[i] = x;
+                }
+                Test();
             }
         }
 
         [Fact]
         public void Usage()
         {
-            var tree = new LazyRedBlackTree<int, int, Starry>(new int[10]);
+            var tree = new RedBlackTree<int, Starry>(new int[10]);
             tree.AllProd.Should().Be(0);
             tree.Should().Equal(new[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-            tree.Apply(0, 3, 5);
+            tree[0] = tree[1] = tree[2] = 5;
             tree.Should().Equal(new[] { 5, 5, 5, 0, 0, 0, 0, 0, 0, 0 });
             tree.Prod(0, 1).Should().Be(5);
-            tree.AllProd.Should().Be(5);
-            tree.Apply(2, 3, -10);
-            tree.Should().Equal(new[] { 5, 5, -5, 0, 0, 0, 0, 0, 0, 0 });
-            tree.Prod(2, 3).Should().Be(tree[2..3]).And.Be(-5);
-            tree.Prod(2, 4).Should().Be(tree[2..4]).And.Be(0);
+            tree.Prod(0, 2).Should().Be(10);
+            tree.Prod(0, 3).Should().Be(15);
+            tree.Prod(1, 2).Should().Be(5);
+            tree.Prod(1, 3).Should().Be(10);
+            tree.Prod(2, 3).Should().Be(5);
+            tree.AllProd.Should().Be(15);
         }
 
         [Fact]
-        public void Reverse()
-        {
-            const int N = 8;
-            var tree = new LazyRedBlackTree<int>(Enumerable.Range(0, N));
-            for (int i = 0; i < N; i++)
-                tree[i].Should().Be(i);
-            tree.Reverse(2, 5);
-            var expected = new[] { 0, 1, 4, 3, 2, 5, 6, 7 };
-            tree.Reverse();
-            expected.AsSpan().Reverse();
-
-            void Test()
-            {
-                tree.Should().Equal(expected);
-                for (int i = 0; i < N; i++)
-                    tree[i].Should().Be(expected[i]);
-            }
-            void Reverse(int l, int r)
-            {
-                tree.Reverse(l, r);
-                expected.AsSpan()[l..r].Reverse();
-            }
-
-            Test();
-
-            var rnd = new Random(227);
-            for (int q = 0; q < 100; q++)
-            {
-                int l = rnd.Next(N);
-                int r = rnd.Next(l + 1, N + 1);
-                Reverse(l, r);
-                Test();
-            }
-        }
-
-        [Fact]
-        public void InsertAndReverse()
+        public void Insert()
         {
             var list = Enumerable.Range(0, 8).ToList();
-            var tree = new LazyRedBlackTree<int>(list);
+            var tree = new RedBlackTree<int>(list);
             void Insert(int index, int value)
             {
                 tree.Insert(index, value);
                 list.Insert(index, value);
-            }
-            void Reverse(int l, int r)
-            {
-                tree.Reverse(l, r);
-                list.AsSpan()[l..r].Reverse();
             }
             void Test()
             {
@@ -139,9 +100,6 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
             Insert(list.Count, 111);
             Test();
 
-            Reverse(2, 5);
-            Test();
-
             Insert(2, -12);
             Test();
             Insert(0, -15);
@@ -152,10 +110,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
             for (int q = 0; q < 100; q++)
             {
                 int l = rnd.Next(list.Count);
-                if (rnd.Next(2) == 0)
-                    Reverse(l, rnd.Next(l, list.Count) + 1);
-                else
-                    Insert(l, rnd.Next(list.Count) - 100);
+                Insert(l, rnd.Next(list.Count) - 100);
                 Test();
             }
         }
@@ -164,7 +119,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
         public void AddAndSetValue()
         {
             var list = Enumerable.Range(0, 8).ToList();
-            var tree = new LazyRedBlackTree<int>(list);
+            var tree = new RedBlackTree<int>(list);
             void Add(int value)
             {
                 tree.Add(value);
@@ -193,7 +148,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
             {
                 int l = rnd.Next(list.Count);
                 if (rnd.Next(2) == 0)
-                    SetValue(l, rnd.Next(1000000));
+                    SetValue(l, rnd.Next(100000));
                 else
                     Add(rnd.Next(1000000));
                 Test();
@@ -204,7 +159,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
         public void AddRange()
         {
             var list = Enumerable.Range(0, 8).ToList();
-            var tree = new LazyRedBlackTree<int>(list);
+            var tree = new RedBlackTree<int>(list);
             void AddRange(params int[] values)
             {
                 tree.AddRange(values);
@@ -237,7 +192,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
         public void InsertRange()
         {
             var list = Enumerable.Range(0, 8).ToList();
-            var tree = new LazyRedBlackTree<int>(list);
+            var tree = new RedBlackTree<int>(list);
             void InsertRange(int index, params int[] values)
             {
                 tree.InsertRange(index, values);
@@ -271,7 +226,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
         public void RemoveAt()
         {
             var list = Enumerable.Range(0, 1000).ToList();
-            var tree = new LazyRedBlackTree<int>(list);
+            var tree = new RedBlackTree<int>(list);
             void RemoveAt(int index)
             {
                 tree.RemoveAt(index);
@@ -285,7 +240,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
             }
 
             var rnd = new Random(227);
-            for (int q = 0; q < 1000; q++)
+            for (int q = 0; q < 100; q++)
             {
                 var l = rnd.Next(list.Count);
                 RemoveAt(l);
@@ -297,7 +252,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
         public void RemoveRange()
         {
             var list = Enumerable.Range(0, 100).ToList();
-            var tree = new LazyRedBlackTree<int>(list);
+            var tree = new RedBlackTree<int>(list);
             void AddRange(params int[] values)
             {
                 tree.AddRange(values);
@@ -316,7 +271,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
             }
 
             var rnd = new Random(227);
-            for (int q = 0; q < 1000; q++)
+            for (int q = 0; q < 100; q++)
             {
                 if (list.Count <= 50)
                     AddRange(Enumerable.Range(0, 200).ToArray());

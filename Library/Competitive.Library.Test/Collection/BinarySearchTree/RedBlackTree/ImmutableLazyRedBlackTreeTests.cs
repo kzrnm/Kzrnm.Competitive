@@ -1,8 +1,8 @@
+using Kzrnm.Competitive;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using Kzrnm.Competitive;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
 {
@@ -33,25 +33,41 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
             {
                 var p = new int[n];
                 for (int i = 0; i < n; i++)
-                {
                     p[i] = (i * i + 100) % 31;
-                }
                 var tree = new ImmutableLazyRedBlackTree<int, int, Starry>(p);
-                for (int l = 0; l <= n; l++)
+                var expected = new SLazySegtree<int, int, Starry>(p);
+
+                void Test()
                 {
-                    for (int r = l; r <= n; r++)
+                    for (int l = 0; l <= n; l++)
+                        for (int r = l; r <= n; r++)
+                            tree.Prod(l, r).Should().Be(tree[l..r]).And.Be(expected[l..r]);
+                    for (int i = 0; i < n; i++)
                     {
-                        int e = -1_000_000_000;
-                        for (int i = l; i < r; i++)
-                        {
-                            e = Math.Max(e, p[i]);
-                        }
-                        tree.Prod(l, r).Should().Be(tree[l..r]).And.Be(e);
+                        tree[i..(i + 1)].Should().Be(expected[i]);
+                        tree[i].Should().Be(expected[i]);
                     }
                 }
                 tree.Should().Equal(p);
+                Test();
+
+
                 for (int i = 0; i < n; i++)
-                    tree[i..(i + 1)].Should().Be(p[i]);
+                {
+                    var x = ((i << 5) + (i >> 2) + (i << 3) + i % 3) % 51;
+                    tree = tree.SetItem(i, x);
+                    expected[i] = x;
+                }
+                Test();
+
+                for (int l = 0; l < n; l++)
+                    for (int r = l; r <= n; r++)
+                    {
+                        var x = ((l << 5) + (l >> 2) + (r << 3) + r % 3) % 51;
+                        tree = tree.Apply(l, r, x);
+                        expected.Apply(l, r, x);
+                    }
+                Test();
             }
         }
 

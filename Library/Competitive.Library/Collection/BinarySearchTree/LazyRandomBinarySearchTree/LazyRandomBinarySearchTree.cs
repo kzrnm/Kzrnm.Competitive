@@ -17,12 +17,12 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 乱択平衡二分探索木
     /// </summary>
-    public class RandomBinarySearchTree<T> : RandomBinarySearchTree<T, T, Internal.Bbst.SingleRbstOp<T>>
+    public class LazyRandomBinarySearchTree<T> : LazyRandomBinarySearchTree<T, T, Internal.Bbst.SingleBbstOp<T>>
     {
-        public RandomBinarySearchTree() { }
-        public RandomBinarySearchTree(IEnumerable<T> v) : base(v.ToArray()) { }
-        public RandomBinarySearchTree(T[] v) : base(v.AsSpan()) { }
-        public RandomBinarySearchTree(ReadOnlySpan<T> v) : base(v) { }
+        public LazyRandomBinarySearchTree() { }
+        public LazyRandomBinarySearchTree(IEnumerable<T> v) : base(v.ToArray()) { }
+        public LazyRandomBinarySearchTree(T[] v) : base(v.AsSpan()) { }
+        public LazyRandomBinarySearchTree(ReadOnlySpan<T> v) : base(v) { }
     }
 
     // https://nyaannyaan.github.io/library/rbst/rbst-base.hpp
@@ -30,14 +30,14 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 乱択平衡二分探索木
     /// </summary>
-    public class RandomBinarySearchTree<T, F, TOp> : IEnumerable<T>
+    public class LazyRandomBinarySearchTree<T, F, TOp> : IEnumerable<T>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
         private static TOp op => new TOp();
-        public RandomBinarySearchTree() { }
-        public RandomBinarySearchTree(IEnumerable<T> v) : this(v.ToArray()) { }
-        public RandomBinarySearchTree(T[] v) : this(v.AsSpan()) { }
-        public RandomBinarySearchTree(ReadOnlySpan<T> v)
+        public LazyRandomBinarySearchTree() { }
+        public LazyRandomBinarySearchTree(IEnumerable<T> v) : this(v.ToArray()) { }
+        public LazyRandomBinarySearchTree(T[] v) : this(v.AsSpan()) { }
+        public LazyRandomBinarySearchTree(ReadOnlySpan<T> v)
         {
             root = Build(v);
         }
@@ -295,13 +295,13 @@ namespace Kzrnm.Competitive
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         public struct Enumerator : IEnumerator<T>
         {
-            internal readonly RandomBinarySearchTree<T, F, TOp> tree;
+            internal readonly LazyRandomBinarySearchTree<T, F, TOp> tree;
             readonly Deque<Node> stack;
             Node current;
 
             readonly bool reverse;
-            internal Enumerator(RandomBinarySearchTree<T, F, TOp> tree) : this(tree, false) { }
-            internal Enumerator(RandomBinarySearchTree<T, F, TOp> tree, bool reverse)
+            internal Enumerator(LazyRandomBinarySearchTree<T, F, TOp> tree) : this(tree, false) { }
+            internal Enumerator(LazyRandomBinarySearchTree<T, F, TOp> tree, bool reverse)
             {
                 this.tree = tree;
                 stack = new Deque<Node>(2 * Log2(this.tree.Count + 1));
@@ -354,3 +354,5 @@ namespace Kzrnm.Competitive
         }
     }
 }
+
+

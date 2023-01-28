@@ -1,4 +1,4 @@
-using AtCoder.Internal;
+using AtCoder;
 using Kzrnm.Competitive.Internal.Bbst;
 using System;
 using System.Collections;
@@ -10,119 +10,109 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 永続反転可能赤黒木
+    // competitive-verifier: TITLE 永続赤黒木(範囲取得)
     // https://ei1333.github.io/library/structure/bbst/lazy-red-black-tree.hpp
+
     /// <summary>
-    /// 永続反転可能赤黒木
+    /// 永続赤黒木
     /// </summary>
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class ImmutableLazyRedBlackTree<T> : IImmutableList<T>
+    public class ImmutableRedBlackTree<T, TOp> : IImmutableList<T>
+        where TOp : struct, ISegtreeOperator<T>
     {
-        private static LazyReversibleBinarySearchTreeNodeOperator<T, T, SingleBbstOp<T>, LazyRedBlackTreeNode<T, T>, LazyRedBlackTreeNodeOperator<T, T, SingleBbstOp<T>, TCp>> rb => default;
+        private static BinarySearchTreeNodeOperator<T, TOp, RedBlackTreeNode<T>, RedBlackTreeNodeOperator<T, TOp, TCp>> rb => default;
 
-        private LazyRedBlackTreeNode<T, T> root;
+        private RedBlackTreeNode<T> root;
 
-        public static ImmutableLazyRedBlackTree<T> Empty { get; } = new ImmutableLazyRedBlackTree<T>();
-        protected ImmutableLazyRedBlackTree() { }
+        public static ImmutableRedBlackTree<T, TOp> Empty { get; } = new ImmutableRedBlackTree<T, TOp>();
+        protected ImmutableRedBlackTree() { }
 
-        private ImmutableLazyRedBlackTree(LazyRedBlackTreeNode<T, T> root) { this.root = root; }
-        public ImmutableLazyRedBlackTree(IEnumerable<T> v) : this(v.ToArray()) { }
-        public ImmutableLazyRedBlackTree(T[] v) : this(v.AsSpan()) { }
-        public ImmutableLazyRedBlackTree(ReadOnlySpan<T> v) : this(rb.im.Build(v)) { }
+        private ImmutableRedBlackTree(RedBlackTreeNode<T> root) { this.root = root; }
+        public ImmutableRedBlackTree(IEnumerable<T> v) : this(v.ToArray()) { }
+        public ImmutableRedBlackTree(T[] v) : this(v.AsSpan()) { }
+        public ImmutableRedBlackTree(ReadOnlySpan<T> v) : this(rb.im.Build(v)) { }
+
+        [凾(256)] public T Prod(int l, int r) => rb.Prod(ref root, l, r);
+        [凾(256)] public T Slice(int l, int length) => Prod(l, l + length);
         public T AllProd => rb.Sum(root);
         public int Count => rb.Size(root);
         public T this[int index] => rb.im.GetValue(ref root, index);
 
         [凾(256)]
-        public ImmutableLazyRedBlackTree<T> Add(T item)
+        public ImmutableRedBlackTree<T, TOp> Add(T item)
         {
             var t = root;
             rb.AddLast(ref t, item);
-            return new ImmutableLazyRedBlackTree<T>(t);
+            return new ImmutableRedBlackTree<T, TOp>(t);
         }
         IImmutableList<T> IImmutableList<T>.Add(T value) => Add(value);
 
         [凾(256)]
-        public ImmutableLazyRedBlackTree<T> AddRange(IEnumerable<T> items)
+        public ImmutableRedBlackTree<T, TOp> AddRange(IEnumerable<T> items)
         {
             var t = rb.im.Merge(root, rb.im.Build(items.ToArray()));
-            return new ImmutableLazyRedBlackTree<T>(t);
+            return new ImmutableRedBlackTree<T, TOp>(t);
         }
         IImmutableList<T> IImmutableList<T>.AddRange(IEnumerable<T> items)
             => AddRange(items);
 
 
         [凾(256)]
-        public ImmutableLazyRedBlackTree<T> Clear() => Empty;
+        public ImmutableRedBlackTree<T, TOp> Clear() => Empty;
         IImmutableList<T> IImmutableList<T>.Clear() => Empty;
 
         [凾(256)]
-        public ImmutableLazyRedBlackTree<T> Insert(int index, T item)
+        public ImmutableRedBlackTree<T, TOp> Insert(int index, T item)
         {
             var t = root;
             rb.Insert(ref t, index, item);
-            return new ImmutableLazyRedBlackTree<T>(t);
+            return new ImmutableRedBlackTree<T, TOp>(t);
         }
         IImmutableList<T> IImmutableList<T>.Insert(int index, T element)
             => Insert(index, element);
 
         [凾(256)]
-        public ImmutableLazyRedBlackTree<T> InsertRange(int index, IEnumerable<T> items)
+        public ImmutableRedBlackTree<T, TOp> InsertRange(int index, IEnumerable<T> items)
         {
             var t = root;
             var (t1, t2) = rb.im.Split(t, index);
-            t = rb.Merge3(t1, rb.im.Build(items.ToArray()), t2);
-            return new ImmutableLazyRedBlackTree<T>(t);
+            rb.Merge3(t1, rb.im.Build(items.ToArray()), t2);
+            return new ImmutableRedBlackTree<T, TOp>(t);
         }
         IImmutableList<T> IImmutableList<T>.InsertRange(int index, IEnumerable<T> items)
             => InsertRange(index, items);
 
 
         [凾(256)]
-        public ImmutableLazyRedBlackTree<T> RemoveAt(int index)
+        public ImmutableRedBlackTree<T, TOp> RemoveAt(int index)
         {
             var t = root;
             rb.Erase(ref t, index);
-            return new ImmutableLazyRedBlackTree<T>(t);
+            return new ImmutableRedBlackTree<T, TOp>(t);
         }
         IImmutableList<T> IImmutableList<T>.RemoveAt(int index)
             => RemoveAt(index);
 
         [凾(256)]
-        public ImmutableLazyRedBlackTree<T> RemoveRange(int index, int count)
+        public ImmutableRedBlackTree<T, TOp> RemoveRange(int index, int count)
         {
             var t = root;
             var (t1, _, t3) = rb.Split3(t, index, index + count);
-            return new ImmutableLazyRedBlackTree<T>(rb.im.Merge(t1, t3));
+            return new ImmutableRedBlackTree<T, TOp>(rb.im.Merge(t1, t3));
         }
         IImmutableList<T> IImmutableList<T>.RemoveRange(int index, int count)
             => RemoveRange(index, count);
 
         [凾(256)]
-        public ImmutableLazyRedBlackTree<T> SetItem(int index, T value)
+        public ImmutableRedBlackTree<T, TOp> SetItem(int index, T value)
         {
             var t = root;
             rb.im.SetValue(ref t, index, value);
-            return new ImmutableLazyRedBlackTree<T>(t);
+            return new ImmutableRedBlackTree<T, TOp>(t);
         }
         IImmutableList<T> IImmutableList<T>.SetItem(int index, T value)
             => SetItem(index, value);
 
-        [凾(256)]
-        public ImmutableLazyRedBlackTree<T> Reverse()
-        {
-            var t = root;
-            rb.Reverse(ref t, 0, Count);
-            return new ImmutableLazyRedBlackTree<T>(t);
-        }
-
-        [凾(256)]
-        public ImmutableLazyRedBlackTree<T> Reverse(int l, int r)
-        {
-            var t = root;
-            rb.Reverse(ref t, l, r);
-            return new ImmutableLazyRedBlackTree<T>(t);
-        }
         [凾(256)]
         public void CopyTo(T[] array, int arrayIndex)
         {
@@ -157,17 +147,17 @@ namespace Kzrnm.Competitive
 
 
         [凾(256)]
-        public LazyRedBlackTreeEnumerator<T, T, SingleBbstOp<T>, LazyRedBlackTreeNodeOperator<T, T, SingleBbstOp<T>, TCp>> GetEnumerator()
+        public RedBlackTreeEnumerator<T, TOp, RedBlackTreeNodeOperator<T, TOp, TCp>> GetEnumerator()
             => rb.im.GetEnumerator(root);
         [凾(256)]
         IEnumerator<T> IEnumerable<T>.GetEnumerator() => GetEnumerator();
         [凾(256)]
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public struct TCp : ICopyOperator<LazyRedBlackTreeNode<T, T>>
+        public struct TCp : ICopyOperator<RedBlackTreeNode<T>>
         {
             [凾(256)]
-            public LazyRedBlackTreeNode<T, T> Copy(LazyRedBlackTreeNode<T, T> t) => new LazyRedBlackTreeNode<T, T>(t.Key, t.Lazy)
+            public RedBlackTreeNode<T> Copy(RedBlackTreeNode<T> t) => new RedBlackTreeNode<T>(t.Key)
             {
                 Level = t.Level,
                 Color = t.Color,
@@ -175,7 +165,6 @@ namespace Kzrnm.Competitive
                 Right = t.Right,
                 Sum = t.Sum,
                 Size = t.Size,
-                IsReverse = t.IsReverse,
             };
         }
     }

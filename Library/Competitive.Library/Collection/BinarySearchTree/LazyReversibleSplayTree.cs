@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 遅延伝搬反転可能Splay木
     /// </summary>
-    public class LazyReversibleSplayTree<T> : LazyReversibleSplayTree<T, T, Internal.Bbst.SingleRbstOp<T>>
+    public class LazyReversibleSplayTree<T> : LazyReversibleSplayTree<T, T, Internal.Bbst.SingleBbstOp<T>>
     {
         public LazyReversibleSplayTree() { }
         public LazyReversibleSplayTree(IEnumerable<T> v) : base(v.ToArray()) { }

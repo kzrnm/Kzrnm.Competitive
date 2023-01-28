@@ -1,3 +1,4 @@
+using AtCoder;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,42 +7,38 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive.Internal.Bbst
 {
     using static NodeColor;
-    public class LazyRedBlackTreeNode<T, F> : ILazyBbstNode<T, F, LazyRedBlackTreeNode<T, F>>
+    public class RedBlackTreeNode<T> : IBbstNode<T, RedBlackTreeNode<T>>
     {
-        internal LazyRedBlackTreeNode<T, F> left;
-        internal LazyRedBlackTreeNode<T, F> right;
-        public LazyRedBlackTreeNode<T, F> Left { get => left; set => left = value; }
-        public LazyRedBlackTreeNode<T, F> Right { get => right; set => right = value; }
+        internal RedBlackTreeNode<T> left;
+        internal RedBlackTreeNode<T> right;
+        public RedBlackTreeNode<T> Left { get => left; set => left = value; }
+        public RedBlackTreeNode<T> Right { get => right; set => right = value; }
         public T Key { get; set; }
         public T Sum { get; set; }
-        public F Lazy { get; set; }
         public int Size { get; set; }
-        public bool IsReverse { get; set; }
         public bool IsLeaf => Left == null;
 
         public int Level;
         public NodeColor Color;
 
-        public LazyRedBlackTreeNode(T v, F f)
+        public RedBlackTreeNode(T v)
         {
             Color = Black;
             Size = 1;
             Key = Sum = v;
-            Lazy = f;
         }
-        public LazyRedBlackTreeNode(LazyRedBlackTreeNode<T, F> l, LazyRedBlackTreeNode<T, F> r, T v, F f)
+        public RedBlackTreeNode(RedBlackTreeNode<T> l, RedBlackTreeNode<T> r, T v)
         {
             Left = l;
             Right = r;
             Color = Red;
             Size = 1;
             Key = Sum = v;
-            Lazy = f;
         }
         public override string ToString()
         {
             if (IsLeaf)
-                return $"Key = {Key}, Sum = {Sum}, Lazy = {Lazy}";
+                return $"Key = {Key}, Sum = {Sum}";
             return $"Size = {Size}";
         }
     }
@@ -49,32 +46,31 @@ namespace Kzrnm.Competitive.Internal.Bbst
     /// 反転可能遅延伝搬赤黒木のオペレータ
     /// </summary>
     /// <typeparam name="T">モノイド</typeparam>
-    /// <typeparam name="F">作用素</typeparam>
     /// <typeparam name="TOp">モノイドの操作</typeparam>
     /// <typeparam name="TCp">コピー操作の実装</typeparam>
-    public struct LazyRedBlackTreeNodeOperator<T, F, TOp, TCp> : ILazyBbstImplOperator<T, LazyRedBlackTreeNode<T, F>>
-        where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
-        where TCp : struct, ICopyOperator<LazyRedBlackTreeNode<T, F>>
+    public struct RedBlackTreeNodeOperator<T, TOp, TCp> : IBbstImplOperator<T, RedBlackTreeNode<T>>
+        where TOp : struct, ISegtreeOperator<T>
+        where TCp : struct, ICopyOperator<RedBlackTreeNode<T>>
     {
         public static TOp op => default;
-        public static LazyReversibleBinarySearchTreeNodeOperator<T, F, TOp, LazyRedBlackTreeNode<T, F>, LazyRedBlackTreeNodeOperator<T, F, TOp, TCp>> np => default;
+        public static BinarySearchTreeNodeOperator<T, TOp, RedBlackTreeNode<T>, RedBlackTreeNodeOperator<T, TOp, TCp>> np => default;
 
         [凾(256)]
-        public LazyRedBlackTreeNode<T, F> Copy(LazyRedBlackTreeNode<T, F> t)
+        public RedBlackTreeNode<T> Copy(RedBlackTreeNode<T> t)
             => new TCp().Copy(t);
 
         [凾(256)]
-        public LazyRedBlackTreeNode<T, F> Create(T v)
-            => new LazyRedBlackTreeNode<T, F>(v, op.FIdentity);
+        public RedBlackTreeNode<T> Create(T v)
+            => new RedBlackTreeNode<T>(v);
         [凾(256)]
-        public LazyRedBlackTreeNode<T, F> Create(LazyRedBlackTreeNode<T, F> l, LazyRedBlackTreeNode<T, F> r)
+        public RedBlackTreeNode<T> Create(RedBlackTreeNode<T> l, RedBlackTreeNode<T> r)
         {
-            var t = new LazyRedBlackTreeNode<T, F>(l, r, op.Identity, op.FIdentity);
+            var t = new RedBlackTreeNode<T>(l, r, op.Identity);
             return Update(t);
         }
 
         [凾(256)]
-        public LazyRedBlackTreeNode<T, F> Merge(LazyRedBlackTreeNode<T, F> l, LazyRedBlackTreeNode<T, F> r)
+        public RedBlackTreeNode<T> Merge(RedBlackTreeNode<T> l, RedBlackTreeNode<T> r)
         {
             if (l == null || r == null) return l ?? r;
             var c = SubMerge(l, r);
@@ -83,11 +79,11 @@ namespace Kzrnm.Competitive.Internal.Bbst
         }
 
         [凾(256)]
-        LazyRedBlackTreeNode<T, F> SubMerge(LazyRedBlackTreeNode<T, F> l, LazyRedBlackTreeNode<T, F> r)
+        RedBlackTreeNode<T> SubMerge(RedBlackTreeNode<T> l, RedBlackTreeNode<T> r)
         {
             if (l.Level < r.Level)
             {
-                r = Propagate(ref r);
+                r = np.im.Copy(r);
                 var c = (r.Left = SubMerge(l, r.Left));
                 if (r.Color == Black && c.Color == Red && c.Left?.Color == Red)
                 {
@@ -101,7 +97,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
             }
             if (l.Level > r.Level)
             {
-                l = Propagate(ref l);
+                l = np.im.Copy(l);
                 var c = (l.Right = SubMerge(l.Right, r));
                 if (l.Color == Black && c.Color == Red && c.Right?.Color == Red)
                 {
@@ -116,20 +112,20 @@ namespace Kzrnm.Competitive.Internal.Bbst
             return Create(l, r);
         }
         [凾(256)]
-        LazyRedBlackTreeNode<T, F> RotateRight(LazyRedBlackTreeNode<T, F> t)
+        RedBlackTreeNode<T> RotateRight(RedBlackTreeNode<T> t)
         {
-            t = Propagate(ref t);
-            var s = Propagate(ref t.left);
+            t = np.im.Copy(t);
+            var s = np.im.Copy(t.left);
             t.Left = s.Right;
             s.Right = t;
             Update(t);
             return Update(s);
         }
         [凾(256)]
-        LazyRedBlackTreeNode<T, F> RotateLeft(LazyRedBlackTreeNode<T, F> t)
+        RedBlackTreeNode<T> RotateLeft(RedBlackTreeNode<T> t)
         {
-            t = Propagate(ref t);
-            var s = Propagate(ref t.right);
+            t = np.im.Copy(t);
+            var s = np.im.Copy(t.right);
             t.Right = s.Left;
             s.Left = t;
             Update(t);
@@ -138,10 +134,10 @@ namespace Kzrnm.Competitive.Internal.Bbst
 
 
         [凾(256)]
-        public (LazyRedBlackTreeNode<T, F>, LazyRedBlackTreeNode<T, F>) Split(LazyRedBlackTreeNode<T, F> t, int p)
+        public (RedBlackTreeNode<T>, RedBlackTreeNode<T>) Split(RedBlackTreeNode<T> t, int p)
         {
             if (t == null) return (null, null);
-            t = Propagate(ref t);
+            t = np.im.Copy(t);
             if (p == 0) return (null, t);
             if (p >= t.Size) return (t, null);
             var l = t.Left;
@@ -160,54 +156,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
         }
 
         [凾(256)]
-        public LazyRedBlackTreeNode<T, F> Propagate(ref LazyRedBlackTreeNode<T, F> t)
-        {
-            t = Copy(t);
-            var lazy = !EqualityComparer<F>.Default.Equals(t.Lazy, op.FIdentity);
-            var rev = t.IsReverse;
-
-            if (lazy || rev)
-            {
-                if (t.Left != null)
-                    t.Left = Copy(t.Left);
-                if (t.Right != null)
-                    t.Right = Copy(t.Right);
-            }
-            if (lazy)
-            {
-                if (t.IsLeaf)
-                {
-                    t.Key = op.Mapping(t.Lazy, t.Key, t.Size);
-                }
-                else
-                {
-                    if (t.Left != null)
-                    {
-                        t.Left.Lazy = op.Composition(t.Lazy, t.Left.Lazy);
-                        t.Left.Sum = op.Mapping(t.Lazy, t.Left.Sum, t.Left.Size);
-                    }
-                    if (t.Right != null)
-                    {
-                        t.Right.Lazy = op.Composition(t.Lazy, t.Right.Lazy);
-                        t.Right.Sum = op.Mapping(t.Lazy, t.Right.Sum, t.Right.Size);
-                    }
-                }
-                t.Lazy = op.FIdentity;
-            }
-            if (rev)
-            {
-                if (t.Left != null)
-                    np.Toggle(t.Left);
-                if (t.Right != null)
-                    np.Toggle(t.Right);
-                t.IsReverse = false;
-            }
-
-            return Update(t);
-        }
-
-        [凾(256)]
-        static LazyRedBlackTreeNode<T, F> Update(LazyRedBlackTreeNode<T, F> t)
+        static RedBlackTreeNode<T> Update(RedBlackTreeNode<T> t)
         {
             t.Size = np.Size(t.Left) + np.Size(t.Right) + (t.IsLeaf ? 1 : 0);
             t.Level = t.IsLeaf ? 0 : (t.Left.Level + (t.Left.Color == Black ? 1 : 0));
@@ -216,7 +165,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
         }
 
         [凾(256)]
-        public LazyRedBlackTreeNode<T, F> Build(ReadOnlySpan<T> vs)
+        public RedBlackTreeNode<T> Build(ReadOnlySpan<T> vs)
         {
             switch (vs.Length)
             {
@@ -232,9 +181,9 @@ namespace Kzrnm.Competitive.Internal.Bbst
         }
 
         [凾(256)]
-        public void SetValue(ref LazyRedBlackTreeNode<T, F> t, int k, T x)
+        public void SetValue(ref RedBlackTreeNode<T> t, int k, T x)
         {
-            t = Propagate(ref t);
+            t = np.im.Copy(t);
             if (t.IsLeaf)
             {
                 t.Key = t.Sum = x;
@@ -248,9 +197,8 @@ namespace Kzrnm.Competitive.Internal.Bbst
         }
 
         [凾(256)]
-        public T GetValue(ref LazyRedBlackTreeNode<T, F> t, int k)
+        public T GetValue(ref RedBlackTreeNode<T> t, int k)
         {
-            t = Propagate(ref t);
             if (t.IsLeaf)
                 return t.Key;
             if (k < np.Size(t.Left))
@@ -260,22 +208,22 @@ namespace Kzrnm.Competitive.Internal.Bbst
         }
 
         [凾(256)]
-        public LazyRedBlackTreeEnumerator<T, F, TOp, LazyRedBlackTreeNodeOperator<T, F, TOp, TCp>> GetEnumerator(LazyRedBlackTreeNode<T, F> t)
-            => new LazyRedBlackTreeEnumerator<T, F, TOp, LazyRedBlackTreeNodeOperator<T, F, TOp, TCp>>(t);
+        public RedBlackTreeEnumerator<T, TOp, RedBlackTreeNodeOperator<T, TOp, TCp>> GetEnumerator(RedBlackTreeNode<T> t)
+            => new RedBlackTreeEnumerator<T, TOp, RedBlackTreeNodeOperator<T, TOp, TCp>>(t);
     }
-    public struct LazyRedBlackTreeEnumerator<T, F, TOp, TRb> : IEnumerator<T>
-        where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
-        where TRb : struct, ILazyBbstImplOperator<T, LazyRedBlackTreeNode<T, F>>
+    public struct RedBlackTreeEnumerator<T, TOp, TRb> : IEnumerator<T>
+        where TOp : struct, ISegtreeOperator<T>
+        where TRb : struct, IBbstImplOperator<T, RedBlackTreeNode<T>>
     {
         static TRb rb => default;
         T cur;
-        Stack<LazyRedBlackTreeNode<T, F>> stack;
-        public LazyRedBlackTreeEnumerator(LazyRedBlackTreeNode<T, F> t)
+        Stack<RedBlackTreeNode<T>> stack;
+        public RedBlackTreeEnumerator(RedBlackTreeNode<T> t)
         {
             cur = default;
-            stack = new Stack<LazyRedBlackTreeNode<T, F>>();
+            stack = new Stack<RedBlackTreeNode<T>>();
             if (t != null)
-                stack.Push(rb.Propagate(ref t));
+                stack.Push(t);
         }
 
         public T Current => cur;
@@ -285,7 +233,6 @@ namespace Kzrnm.Competitive.Internal.Bbst
         {
             while (stack.TryPop(out var t))
             {
-                rb.Propagate(ref t);
                 if (t.IsLeaf)
                 {
                     cur = t.Key;
