@@ -28,7 +28,6 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 遅延伝搬反転可能Splay木
     /// </summary>
-    [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class LazyReversibleSplayTree<T, F, TOp> : IList<T>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
@@ -78,8 +77,7 @@ namespace Kzrnm.Competitive
         public Node root;
         public int Count => Size(root);
         public T AllProd => Sum(root);
-
-        bool ICollection<T>.IsReadOnly { get; }
+        bool ICollection<T>.IsReadOnly => false;
 
         [凾(256)] public static int Size(Node n) => n?.cnt ?? 0;
         [凾(256)] public static T Sum(Node n) => n != null ? n.Sum : op.Identity;
@@ -105,16 +103,8 @@ namespace Kzrnm.Competitive
                     Push(t);
                     if (r.Left == q)
                     {
-                        if (q.Left == t)
-                        {
-                            RotateR(q);
-                            RotateR(t);
-                        }
-                        else
-                        {
-                            RotateL(t);
-                            RotateR(t);
-                        }
+                        if (q.Left == t) { RotateR(q); RotateR(t); }
+                        else { RotateL(t); RotateR(t); }
                     }
                     else
                     {

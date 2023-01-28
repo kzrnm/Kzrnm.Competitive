@@ -60,6 +60,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
         public void Reverse(ref Node t, int a, int b)
         {
             var (x, y1, y2) = Split3(t, a, b);
+            y1 = im.Copy(y1);
             Toggle(y1);
             t = Merge3(x, y1, y2);
         }
@@ -68,6 +69,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
         public void Apply(ref Node t, int l, int r, F f)
         {
             var (x, y1, y2) = Split3(t, l, r);
+            y1 = im.Copy(y1);
             y1.Lazy = op.Composition(f, y1.Lazy);
             im.Propagate(ref y1);
             t = Merge3(x, y1, y2);

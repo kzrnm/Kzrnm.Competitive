@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -55,6 +56,7 @@ namespace Kzrnm.Competitive
             });
         }
 
+        [DebuggerDisplay("Size = {" + nameof(cnt) + "}, Key = {" + nameof(Key) + "}, Sum = {" + nameof(Sum) + "}, Lazy = {" + nameof(Lazy) + "}")]
         public class Node
         {
             public Node Left, Right;
@@ -278,9 +280,9 @@ namespace Kzrnm.Competitive
         [凾(256)]
         private static ulong Random()
         {
-            Span<byte> b = stackalloc byte[8];
-            rnd.NextBytes(b);
-            return MemoryMarshal.Cast<byte, ulong>(b)[0];
+            Span<ulong> b = stackalloc ulong[1];
+            rnd.NextBytes(MemoryMarshal.AsBytes(b));
+            return b[0];
         }
 #if NET7_0_OR_GREATER
         private static Random rnd = System.Random.Shared;
