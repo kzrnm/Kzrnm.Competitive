@@ -7,6 +7,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive.Internal.Bbst
 {
     using static NodeColor;
+    // competitive-verifier: TITLE 赤黒木(Operator)
     public class RedBlackTreeNode<T> : IBbstNode<T, RedBlackTreeNode<T>>
     {
         internal RedBlackTreeNode<T> left;
@@ -43,7 +44,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
         }
     }
     /// <summary>
-    /// 反転可能遅延伝搬赤黒木のオペレータ
+    /// 赤黒木のオペレータ
     /// </summary>
     /// <typeparam name="T">モノイド</typeparam>
     /// <typeparam name="TOp">モノイドの操作</typeparam>
@@ -208,14 +209,12 @@ namespace Kzrnm.Competitive.Internal.Bbst
         }
 
         [凾(256)]
-        public RedBlackTreeEnumerator<T, TOp, RedBlackTreeNodeOperator<T, TOp, TCp>> GetEnumerator(RedBlackTreeNode<T> t)
-            => new RedBlackTreeEnumerator<T, TOp, RedBlackTreeNodeOperator<T, TOp, TCp>>(t);
+        public RedBlackTreeEnumerator<T, TOp> GetEnumerator(RedBlackTreeNode<T> t)
+            => new RedBlackTreeEnumerator<T, TOp>(t);
     }
-    public struct RedBlackTreeEnumerator<T, TOp, TRb> : IEnumerator<T>
+    public struct RedBlackTreeEnumerator<T, TOp> : IEnumerator<T>
         where TOp : struct, ISegtreeOperator<T>
-        where TRb : struct, IBbstImplOperator<T, RedBlackTreeNode<T>>
     {
-        static TRb rb => default;
         T cur;
         Stack<RedBlackTreeNode<T>> stack;
         public RedBlackTreeEnumerator(RedBlackTreeNode<T> t)

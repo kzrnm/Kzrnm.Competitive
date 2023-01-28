@@ -6,6 +6,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive.Internal.Bbst
 {
     using static NodeColor;
+    // competitive-verifier: TITLE 遅延伝搬反転可能赤黒木(Operator)
     public class LazyRedBlackTreeNode<T, F> : ILazyBbstNode<T, F, LazyRedBlackTreeNode<T, F>>
     {
         internal LazyRedBlackTreeNode<T, F> left;
@@ -57,7 +58,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
         where TCp : struct, ICopyOperator<LazyRedBlackTreeNode<T, F>>
     {
         public static TOp op => default;
-        public static LazyReversibleBinarySearchTreeNodeOperator<T, F, TOp, LazyRedBlackTreeNode<T, F>, LazyRedBlackTreeNodeOperator<T, F, TOp, TCp>> np => default;
+        public static LazyBinarySearchTreeNodeOperator<T, F, TOp, LazyRedBlackTreeNode<T, F>, LazyRedBlackTreeNodeOperator<T, F, TOp, TCp>> np => default;
 
         [凾(256)]
         public LazyRedBlackTreeNode<T, F> Copy(LazyRedBlackTreeNode<T, F> t)
@@ -177,7 +178,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
             {
                 if (t.IsLeaf)
                 {
-                    t.Key = op.Mapping(t.Lazy, t.Key, t.Size);
+                    t.Key = op.Mapping(t.Lazy, t.Key, 1);
                 }
                 else
                 {

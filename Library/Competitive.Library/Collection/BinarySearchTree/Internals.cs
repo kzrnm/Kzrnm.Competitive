@@ -1,10 +1,10 @@
 using AtCoder;
+using System;
 using System.Collections.Generic;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-
     [IsOperator]
     public interface IReversibleBinarySearchTreeOperator<T, F> : ISLazySegtreeOperator<T, F>
     {
@@ -86,7 +86,7 @@ namespace Kzrnm.Competitive
             [凾(256)] public T Composition(T nf, T cf) => FIdentity;
             [凾(256)] public T Inverse(T v) => v;
             [凾(256)] public T Mapping(T f, T x, int size) => x;
-            [凾(256)] public T Operate(T x, T y) => EqualityComparer<T>.Default.Equals(x,default)?y:x;
+            [凾(256)] public T Operate(T x, T y) => EqualityComparer<T>.Default.Equals(x, default) ? y : x;
         }
     }
 }

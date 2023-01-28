@@ -9,35 +9,35 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 赤黒木
-    // https://ei1333.github.io/library/structure/bbst/lazy-red-black-tree.hpp
+    // competitive-verifier: TITLE 乱択平衡二分探索木
+    // https://ei1333.github.io/library/structure/bbst/randomized-binary-search-tree-lazy.hpp
     /// <summary>
-    /// 赤黒木
+    /// 乱択平衡二分探索木
     /// </summary>
-    public class RedBlackTree<T> : RedBlackTree<T, SingleBbstOp<T>>
+    public class RandomBinarySearchTree<T> : RandomBinarySearchTree<T, SingleBbstOp<T>>
     {
-        public RedBlackTree() { }
-        public RedBlackTree(IEnumerable<T> v) : base(v.ToArray()) { }
-        public RedBlackTree(T[] v) : base(v.AsSpan()) { }
-        public RedBlackTree(ReadOnlySpan<T> v) : base(v) { }
+        public RandomBinarySearchTree() { }
+        public RandomBinarySearchTree(IEnumerable<T> v) : base(v.ToArray()) { }
+        public RandomBinarySearchTree(T[] v) : base(v.AsSpan()) { }
+        public RandomBinarySearchTree(ReadOnlySpan<T> v) : base(v) { }
     }
 
     /// <summary>
-    /// 赤黒木
+    /// 乱択平衡二分探索木
     /// </summary>
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class RedBlackTree<T, TOp> : IBinarySearchTree<T>
+    public class RandomBinarySearchTree<T, TOp> : IBinarySearchTree<T>
         where TOp : struct, ISegtreeOperator<T>
     {
-        private static BinarySearchTreeNodeOperator<T, TOp, RedBlackTreeNode<T>, RedBlackTreeNodeOperator<T, TOp, TCp>> rb => default;
+        private static BinarySearchTreeNodeOperator<T, TOp, RandomBinarySearchTreeNode<T>, RandomBinarySearchTreeNodeOperator<T, TOp>> rb => default;
 
-        private RedBlackTreeNode<T> root;
+        private RandomBinarySearchTreeNode<T> root;
 
-        private RedBlackTree(RedBlackTreeNode<T> root) { this.root = root; }
-        public RedBlackTree() { }
-        public RedBlackTree(IEnumerable<T> v) : this(v.ToArray()) { }
-        public RedBlackTree(T[] v) : this(v.AsSpan()) { }
-        public RedBlackTree(ReadOnlySpan<T> v) : this(rb.im.Build(v)) { }
+        private RandomBinarySearchTree(RandomBinarySearchTreeNode<T> root) { this.root = root; }
+        public RandomBinarySearchTree() { }
+        public RandomBinarySearchTree(IEnumerable<T> v) : this(v.ToArray()) { }
+        public RandomBinarySearchTree(T[] v) : this(v.AsSpan()) { }
+        public RandomBinarySearchTree(ReadOnlySpan<T> v) : this(rb.im.Build(v)) { }
 
         public T this[int index]
         {
@@ -101,17 +101,17 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        public RedBlackTreeEnumerator<T, TOp> GetEnumerator()
+        public RandomBinarySearchTreeEnumerator<T, TOp> GetEnumerator()
             => rb.im.GetEnumerator(root);
         [凾(256)]
         IEnumerator<T> IEnumerable<T>.GetEnumerator() => GetEnumerator();
         [凾(256)]
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public struct TCp : ICopyOperator<RedBlackTreeNode<T>>
+        public struct TCp : ICopyOperator<RandomBinarySearchTreeNode<T>>
         {
             [凾(256)]
-            public RedBlackTreeNode<T> Copy(RedBlackTreeNode<T> t) => t;
+            public RandomBinarySearchTreeNode<T> Copy(RandomBinarySearchTreeNode<T> t) => t;
         }
     }
 }

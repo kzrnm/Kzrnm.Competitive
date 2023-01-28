@@ -10,7 +10,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
     /// <typeparam name="TOp">モノイドの操作</typeparam>
     /// <typeparam name="Node">ノード</typeparam>
     /// <typeparam name="TImpl">ノードのMerge, Split</typeparam>
-    public struct LazyReversibleBinarySearchTreeNodeOperator<T, F, TOp, Node, TImpl>
+    public struct LazyBinarySearchTreeNodeOperator<T, F, TOp, Node, TImpl>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
         where Node : ILazyBbstNode<T, F, Node>
         where TImpl : struct, ILazyBbstImplOperator<T, Node>
