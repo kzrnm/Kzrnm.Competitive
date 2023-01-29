@@ -116,10 +116,6 @@ namespace Kzrnm.Competitive
                 array[arrayIndex++] = v;
         }
 
-        bool ICollection<T>.Contains(T item) { throw new NotSupportedException(); }
-        int IList<T>.IndexOf(T item) { throw new NotSupportedException(); }
-        bool ICollection<T>.Remove(T item) { throw new NotSupportedException(); }
-
         [凾(256)]
         public LazyRandomBinarySearchTreeEnumerator<T, F, TOp, LazyRandomBinarySearchTreeNodeOperator<T, F, TOp>> GetEnumerator()
             => rb.im.GetEnumerator(root);

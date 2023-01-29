@@ -117,10 +117,6 @@ namespace Kzrnm.Competitive
                 array[arrayIndex++] = v;
         }
 
-        bool ICollection<T>.Contains(T item) { throw new NotSupportedException(); }
-        int IList<T>.IndexOf(T item) { throw new NotSupportedException(); }
-        bool ICollection<T>.Remove(T item) { throw new NotSupportedException(); }
-
         [凾(256)]
         public LazyRedBlackTreeEnumerator<T, F, TOp, LazyRedBlackTreeNodeOperator<T, F, TOp, TCp>> GetEnumerator()
             => rb.im.GetEnumerator(root);
