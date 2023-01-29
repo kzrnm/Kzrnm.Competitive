@@ -1,5 +1,5 @@
 using AtCoder;
-using AtCoder.Internal;
+using Kzrnm.Competitive.Internal.Bbst;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,32 +11,32 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 遅延伝搬反転可能Splay木
+    // competitive-verifier: TITLE 遅延伝搬反転可能 Splay 木
     // https://ei1333.github.io/library/structure/bbst/lazy-reversible-splay-tree.hpp
     /// <summary>
-    /// 遅延伝搬反転可能Splay木
+    /// 遅延伝搬反転可能 Splay 木
     /// </summary>
-    public class LazyReversibleSplayTree<T> : LazyReversibleSplayTree<T, T, Internal.Bbst.SingleBbstOp<T>>
+    public class LazySplayTree<T> : LazySplayTree<T, T, SingleBbstOp<T>>
     {
-        public LazyReversibleSplayTree() { }
-        public LazyReversibleSplayTree(IEnumerable<T> v) : base(v.ToArray()) { }
-        public LazyReversibleSplayTree(T[] v) : base(v.AsSpan()) { }
-        public LazyReversibleSplayTree(ReadOnlySpan<T> v) : base(v) { }
+        public LazySplayTree() { }
+        public LazySplayTree(IEnumerable<T> v) : base(v.ToArray()) { }
+        public LazySplayTree(T[] v) : base(v.AsSpan()) { }
+        public LazySplayTree(ReadOnlySpan<T> v) : base(v) { }
     }
 
     // https://ei1333.github.io/library/structure/bbst/lazy-reversible-splay-tree.hpp
     /// <summary>
-    /// 遅延伝搬反転可能Splay木
+    /// 遅延伝搬反転可能 Splay 木
     /// </summary>
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class LazyReversibleSplayTree<T, F, TOp> : IList<T>
+    public class LazySplayTree<T, F, TOp> : ILazyBinarySearchTree<T, F>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
         private static TOp op => new TOp();
-        public LazyReversibleSplayTree() { }
-        public LazyReversibleSplayTree(IEnumerable<T> v) : this(v.ToArray()) { }
-        public LazyReversibleSplayTree(T[] v) : this(v.AsSpan()) { }
-        public LazyReversibleSplayTree(ReadOnlySpan<T> v)
+        public LazySplayTree() { }
+        public LazySplayTree(IEnumerable<T> v) : this(v.ToArray()) { }
+        public LazySplayTree(T[] v) : this(v.AsSpan()) { }
+        public LazySplayTree(ReadOnlySpan<T> v)
         {
             root = Build(v);
         }
@@ -90,17 +90,14 @@ namespace Kzrnm.Competitive
                 var q = t.Parent;
                 if (q.IsRoot)
                 {
-                    Push(q);
-                    Push(t);
+                    Push(q); Push(t);
                     if (q.Left == t) RotateR(t);
                     else RotateL(t);
                 }
                 else
                 {
                     var r = q.Parent;
-                    Push(r);
-                    Push(q);
-                    Push(t);
+                    Push(r); Push(q); Push(t);
                     if (r.Left == q)
                     {
                         if (q.Left == t) { RotateR(q); RotateR(t); }
@@ -271,7 +268,7 @@ namespace Kzrnm.Competitive
             if (t.Left != null)
             {
                 t.cnt += t.Left.cnt;
-                t.Sum = op.Operate(t.Left.Sum, t.Sum);
+                t.Sum = op.Operate(t.Sum, t.Left.Sum);
             }
             if (t.Right != null)
             {
@@ -301,13 +298,23 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static Node GetLeft(Node t)
         {
-            while (t.Left != null) t = t.Left;
+            Push(t);
+            while (t.Left != null)
+            {
+                Push(t);
+                t = t.Left;
+            }
             return t;
         }
         [凾(256)]
         public static Node GetRight(Node t)
         {
-            while (t.Right != null) t = t.Right;
+            Push(t);
+            while (t.Right != null)
+            {
+                Push(t);
+                t = t.Right;
+            }
             return t;
         }
 
@@ -315,7 +322,7 @@ namespace Kzrnm.Competitive
         static void Propagate(Node t, F x)
         {
             t.Lazy = op.Composition(x, t.Lazy);
-            t.Key = op.Mapping(x, t.Key, Size(t));
+            t.Key = op.Mapping(x, t.Key, 1);
             t.Sum = op.Mapping(x, t.Sum, Size(t));
         }
         [凾(256)]
@@ -447,6 +454,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public void Apply(int l, int r, F f)
         {
+            if (l >= r) return;
             SetPropagate(ref root, l, r, f);
         }
 
@@ -482,10 +490,10 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public void Reverse(int l, int r)
         {
-            var (xl, xr) = Split(root, l);
-            var (yl, yr) = Split(xr, r - l);
-            Reverse(yl);
-            root = Merge(xl, Merge(yl, yr));
+            var (x1, x2) = Split(root, l);
+            var (y1, y2) = Split(x2, r - l);
+            Reverse(y1);
+            root = Merge(x1, Merge(y1, y2));
         }
 
         bool ICollection<T>.Contains(T item)
@@ -507,15 +515,34 @@ namespace Kzrnm.Competitive
         IEnumerator IEnumerable.GetEnumerator()
             => GetEnumerator();
 
+        public void AddRange(IEnumerable<T> items)
+        {
+            var newItems = Build(items.ToArray());
+            root = Merge(root, newItems);
+        }
+
+        public void InsertRange(int index, IEnumerable<T> items)
+        {
+            var newItems = Build(items.ToArray());
+            var (x, y) = Split(root, index);
+            root = Merge(x, Merge(newItems, y));
+        }
+
+        public void RemoveRange(int index, int count)
+        {
+            var (x, _, y) = Split3(root, index, index + count);
+            root = Merge(x, y);
+        }
+
         public struct Enumerator : IEnumerator<T>
         {
-            internal readonly LazyReversibleSplayTree<T, F, TOp> tree;
+            internal readonly LazySplayTree<T, F, TOp> tree;
             readonly Deque<Node> stack;
             Node current;
 
             readonly bool reverse;
-            internal Enumerator(LazyReversibleSplayTree<T, F, TOp> tree) : this(tree, false) { }
-            internal Enumerator(LazyReversibleSplayTree<T, F, TOp> tree, bool reverse)
+            internal Enumerator(LazySplayTree<T, F, TOp> tree) : this(tree, false) { }
+            internal Enumerator(LazySplayTree<T, F, TOp> tree, bool reverse)
             {
                 this.tree = tree;
                 stack = new Deque<Node>(2 * Log2(this.tree.Count + 1));
