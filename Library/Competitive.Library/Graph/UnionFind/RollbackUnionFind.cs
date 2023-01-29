@@ -6,20 +6,32 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE ロールバック可能な UnionFind
+    // https://nyaannyaan.github.io/library/data-structure/rollback-union-find.hpp
+    /// <summary>
+    /// ロールバック可能なUnionFind
+    /// </summary>
     [DebuggerTypeProxy(typeof(DebugView))]
     [DebuggerDisplay("Count = {" + nameof(_parentOrSize) + "." + nameof(Array.Length) + "}")]
-    public class UnionFind
+    public class RollbackUnionFind
     {
         internal readonly int[] _parentOrSize;
+        internal readonly SimpleList<(int, int)> history = new SimpleList<(int, int)>();
+        internal int snapVersion;
 
         /// <summary>
-        /// <see cref="UnionFind"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺のグラフとして初期化します。
+        /// マージされた回数
+        /// </summary>
+        public int Version => history.Count >> 1;
+
+        /// <summary>
+        /// <see cref="RollbackUnionFind"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺のグラフとして初期化します。
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
         /// <para>計算量: O(<paramref name="n"/>)</para>
         /// </remarks>
-        public UnionFind(int n)
+        public RollbackUnionFind(int n)
         {
             _parentOrSize = new int[n];
             _parentOrSize.AsSpan().Fill(-1);
@@ -30,7 +42,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="a"/>, <paramref name="b"/>&lt;n</para>
-        /// <para>計算量: ならしO(a(n))</para>
+        /// <para>計算量: O(log n)</para>
         /// </remarks>
         [凾(256)]
         public bool Merge(int a, int b)
@@ -38,6 +50,8 @@ namespace Kzrnm.Competitive
             Contract.Assert(0 <= a && a < _parentOrSize.Length);
             Contract.Assert(0 <= b && b < _parentOrSize.Length);
             int x = Leader(a), y = Leader(b);
+            history.Add((x, _parentOrSize[x]));
+            history.Add((y, _parentOrSize[y]));
             if (x == y) return false;
             if (_parentOrSize[x] > _parentOrSize[y]) (x, y) = (y, x);
             _parentOrSize[x] += _parentOrSize[y];
@@ -50,7 +64,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="a"/>, <paramref name="b"/>&lt;n</para>
-        /// <para>計算量: ならしO(a(n))</para>
+        /// <para>計算量: O(log n)</para>
         /// </remarks>
         [凾(256)]
         public bool Same(int a, int b)
@@ -65,17 +79,13 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="a"/>&lt;n</para>
-        /// <para>計算量: ならしO(a(n))</para>
+        /// <para>計算量: O(log n)</para>
         /// </remarks>
         [凾(256)]
         public int Leader(int a)
         {
             if (_parentOrSize[a] < 0) return a;
-            while (0 <= _parentOrSize[_parentOrSize[a]])
-            {
-                (a, _parentOrSize[a]) = (_parentOrSize[a], _parentOrSize[_parentOrSize[a]]);
-            }
-            return _parentOrSize[a];
+            return Leader(_parentOrSize[a]);
         }
 
 
@@ -84,7 +94,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="a"/>&lt;n</para>
-        /// <para>計算量: ならしO(a(n))</para>
+        /// <para>計算量: O(log n)</para>
         /// </remarks>
         [凾(256)]
         public int Size(int a)
@@ -94,9 +104,53 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
+        /// 直前のマージを取り消します。
+        /// </summary>
+        /// <remarks>
+        /// <para>計算量: O(1)</para>
+        /// </remarks>
+        [凾(256)]
+        public void Undo()
+        {
+            var (x, px) = history[^1];
+            var (y, py) = history[^2];
+            history.RemoveLast(2);
+            _parentOrSize[x] = px;
+            _parentOrSize[y] = py;
+        }
+
+        /// <summary>
+        /// ロールバック先のスナップショットを取得します。
+        /// </summary>
+        /// <remarks>
+        /// <para>計算量: O(1)</para>
+        /// </remarks>
+        [凾(256)]
+        public void Snapshot()
+        {
+            snapVersion = Version;
+        }
+
+        /// <summary>
+        /// <paramref name="version"/> までロールバックします。<paramref name="version"/> が負のときはスナップショットまでロールバックします。
+        /// </summary>
+        /// <remarks>
+        /// <para>計算量: O(1)</para>
+        /// </remarks>
+        [凾(256)]
+        public void Rollback(int version = -1)
+        {
+            if (version < 0) version = snapVersion;
+            version <<= 1;
+            Contract.Assert(version <= history.Count);
+            while (version < history.Count)
+                Undo();
+        }
+
+        /// <summary>
         /// グラフを連結成分に分け、その情報を返します。
         /// </summary>
-        /// <para>計算量: O(n)</para>
+        /// <para>計算量: O(n log n)</para>
         /// <returns>「一つの連結成分の頂点番号のリスト」のリスト。</returns>
         [凾(256)]
         public int[][] Groups() => GroupsAndIds().Groups;
@@ -104,7 +158,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// グラフを連結成分に分け、そのIDを返します。
         /// </summary>
-        /// <para>計算量: O(n)</para>
+        /// <para>計算量: O(n log n)</para>
         /// <returns>頂点番号に対応する連結成分のID。</returns>
         [凾(256)]
         public int[] GroupIds() => GroupsAndIds().GroupIds;
@@ -112,7 +166,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// グラフを連結成分に分け、その情報を返します。
         /// </summary>
-        /// <para>計算量: O(n)</para>
+        /// <para>計算量: O(n log n)</para>
         /// <returns>「一つの連結成分の頂点番号のリスト」のリスト, 頂点番号に対応する連結成分のID。</returns>
         public (int[][] Groups, int[] GroupIds) GroupsAndIds()
         {
@@ -142,8 +196,8 @@ namespace Kzrnm.Competitive
         }
         private class DebugView
         {
-            private readonly UnionFind uf;
-            public DebugView(UnionFind uf)
+            private readonly RollbackUnionFind uf;
+            public DebugView(RollbackUnionFind uf)
             {
                 this.uf = uf ?? throw new ArgumentNullException(nameof(uf));
             }

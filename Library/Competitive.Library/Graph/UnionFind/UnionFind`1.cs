@@ -7,10 +7,9 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive
 {
     [DebuggerTypeProxy(typeof(UnionFind<>.DebugView))]
-    [DebuggerDisplay("Count = {" + nameof(_n) + "}")]
+    [DebuggerDisplay("Count = {" + nameof(_parentOrSize) + "." + nameof(Array.Length) + "}")]
     public class UnionFind<T>
     {
-        internal readonly int _n;
         internal readonly int[] _parentOrSize;
         internal readonly T[] _datas;
         internal readonly Func<T, T, T> _mergeDataFunc;
@@ -26,10 +25,9 @@ namespace Kzrnm.Competitive
         /// <param name="mergeFunc">頂点の持つ値のマージを行う関数</param>
         public UnionFind(T[] datas, Func<T, T, T> mergeFunc)
         {
-            _n = datas.Length;
             _datas = (T[])datas.Clone();
             _mergeDataFunc = mergeFunc;
-            _parentOrSize = new int[_n];
+            _parentOrSize = new int[_datas.Length];
             _parentOrSize.AsSpan().Fill(-1);
         }
 
@@ -43,11 +41,11 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public bool Merge(int a, int b)
         {
-            Contract.Assert(0 <= a && a < _n);
-            Contract.Assert(0 <= b && b < _n);
+            Contract.Assert(0 <= a && a < _parentOrSize.Length);
+            Contract.Assert(0 <= b && b < _parentOrSize.Length);
             int x = Leader(a), y = Leader(b);
             if (x == y) return false;
-            if (-_parentOrSize[x] < -_parentOrSize[y]) (x, y) = (y, x);
+            if (_parentOrSize[x] > _parentOrSize[y]) (x, y) = (y, x);
             _parentOrSize[x] += _parentOrSize[y];
             _parentOrSize[y] = x;
             _datas[x] = _mergeDataFunc(_datas[x], _datas[y]);
@@ -64,8 +62,8 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public bool Same(int a, int b)
         {
-            Contract.Assert(0 <= a && a < _n);
-            Contract.Assert(0 <= b && b < _n);
+            Contract.Assert(0 <= a && a < _parentOrSize.Length);
+            Contract.Assert(0 <= b && b < _parentOrSize.Length);
             return Leader(a) == Leader(b);
         }
 
@@ -98,7 +96,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public int Size(int a)
         {
-            Contract.Assert(0 <= a && a < _n);
+            Contract.Assert(0 <= a && a < _parentOrSize.Length);
             return -_parentOrSize[Leader(a)];
         }
 
@@ -112,7 +110,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public T Data(int a)
         {
-            Contract.Assert(0 <= a && a < _n);
+            Contract.Assert(0 <= a && a < _parentOrSize.Length);
             return _datas[Leader(a)];
         }
 
@@ -140,10 +138,10 @@ namespace Kzrnm.Competitive
         /// <returns>「一つの連結成分の頂点番号のリスト」のリスト, 頂点番号に対応する連結成分のID。</returns>
         public (int[][] Groups, int[] GroupIds) GroupsAndIds()
         {
-            var leaderBuf = new int[_n];
-            var id = new int[_n];
-            var gr = new int[_n];
-            var resultList = new List<int[]>(_n);
+            var leaderBuf = new int[_parentOrSize.Length];
+            var id = new int[_parentOrSize.Length];
+            var gr = new int[_parentOrSize.Length];
+            var resultList = new List<int[]>(_parentOrSize.Length);
             for (int i = 0; i < leaderBuf.Length; i++)
             {
                 leaderBuf[i] = Leader(i);

@@ -1,6 +1,6 @@
+using AtCoder.Internal;
 using System;
 using System.Collections.Generic;
-using AtCoder.Internal;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -11,7 +11,6 @@ namespace Kzrnm.Competitive
     public class PartiallyPersistentUnionFind
     {
         public int Version { private set; get; }
-        internal readonly int _n;
         internal readonly int[] _parentOrRank;
         /// <summary>
         /// 親がいつ更新されたか
@@ -27,7 +26,6 @@ namespace Kzrnm.Competitive
         /// </summary>
         public PartiallyPersistentUnionFind(int n)
         {
-            _n = n;
             _parentOrRank = new int[n];
             _updatedVersion = new int[n];
             _num = new List<(int ver, int size)>[n];
@@ -78,8 +76,8 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public bool Same(int a, int b, int t)
         {
-            Contract.Assert(0 <= a && a < _n);
-            Contract.Assert(0 <= b && b < _n);
+            Contract.Assert(0 <= a && a < _parentOrRank.Length);
+            Contract.Assert(0 <= b && b < _parentOrRank.Length);
             return Leader(a, t) == Leader(b, t);
         }
 
@@ -109,7 +107,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public int Size(int a, int t)
         {
-            Contract.Assert(0 <= a && a < _n);
+            Contract.Assert(0 <= a && a < _parentOrRank.Length);
             a = Leader(a, t);
 
             var num = _num[a].AsSpan();

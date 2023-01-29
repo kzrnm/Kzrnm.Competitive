@@ -11,7 +11,6 @@ namespace Kzrnm.Competitive
     public class WeightedUnionFind<T, TOp> where TOp : struct, IAdditionOperator<T>, ISubtractOperator<T>, IUnaryNumOperator<T>
     {
         private static TOp op = default;
-        internal readonly int _n;
         internal readonly int[] _parentOrSize;
         /// <summary>
         /// 親との重みの差分
@@ -27,7 +26,6 @@ namespace Kzrnm.Competitive
         /// </remarks>
         public WeightedUnionFind(int n)
         {
-            _n = n;
             _parentOrSize = new int[n];
             _weightDiff = new T[n];
             for (int i = 0; i < _parentOrSize.Length; i++) _parentOrSize[i] = -1;
@@ -43,14 +41,14 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public bool Merge(int a, int b, T w)
         {
-            Contract.Assert(0 <= a && a < _n);
-            Contract.Assert(0 <= b && b < _n);
+            Contract.Assert(0 <= a && a < _parentOrSize.Length);
+            Contract.Assert(0 <= b && b < _parentOrSize.Length);
             int x = Leader(a), y = Leader(b);
             if (x == y)
                 return EqualityComparer<T>.Default.Equals(WeightDiff(a, b), w);
 
             w = op.Add(w, op.Subtract(Weight(a), Weight(b)));
-            if (-_parentOrSize[x] < -_parentOrSize[y])
+            if (_parentOrSize[x] > _parentOrSize[y])
             {
                 (x, y) = (y, x);
                 w = op.Minus(w);
@@ -71,8 +69,8 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public bool Same(int a, int b)
         {
-            Contract.Assert(0 <= a && a < _n);
-            Contract.Assert(0 <= b && b < _n);
+            Contract.Assert(0 <= a && a < _parentOrSize.Length);
+            Contract.Assert(0 <= b && b < _parentOrSize.Length);
             return Leader(a) == Leader(b);
         }
 
@@ -126,7 +124,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public int Size(int a)
         {
-            Contract.Assert(0 <= a && a < _n);
+            Contract.Assert(0 <= a && a < _parentOrSize.Length);
             return -_parentOrSize[Leader(a)];
         }
 
@@ -153,10 +151,10 @@ namespace Kzrnm.Competitive
         /// <returns>「一つの連結成分の頂点番号のリスト」のリスト, 頂点番号に対応する連結成分のID。</returns>
         public (int[][] Groups, int[] GroupIds) GroupsAndIds()
         {
-            var leaderBuf = new int[_n];
-            var id = new int[_n];
-            var gr = new int[_n];
-            var resultList = new List<int[]>(_n);
+            var leaderBuf = new int[_parentOrSize.Length];
+            var id = new int[_parentOrSize.Length];
+            var gr = new int[_parentOrSize.Length];
+            var resultList = new List<int[]>(_parentOrSize.Length);
             for (int i = 0; i < leaderBuf.Length; i++)
             {
                 leaderBuf[i] = Leader(i);
