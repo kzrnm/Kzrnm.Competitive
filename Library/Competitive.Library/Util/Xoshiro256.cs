@@ -12,6 +12,10 @@ namespace Kzrnm.Competitive
         ulong s0, s1, s2, s3;
         public Xoshiro256() : this(new Random()) { }
         public Xoshiro256(int seed) : this(new Random(seed)) { }
+        public Xoshiro256(ulong t0, ulong t1, ulong t2, ulong t3)
+        {
+            s0 = t0; s1 = t1; s2 = t2; s3 = t3;
+        }
         private Xoshiro256(Random rnd)
         {
             Span<ulong> vs = stackalloc ulong[4];

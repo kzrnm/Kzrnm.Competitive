@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -22,6 +23,8 @@ namespace Kzrnm.Competitive
     public abstract class PrimeFactorization<ModId>
         where ModId : struct
     {
+        // 競技プログラミングではほぼ関係ないが並列実行するなら ModId を共用しないほうがよいので差し替えられるようにしておく
+
         /// <summary>
         /// <paramref name="n"/> が素数であるかどうかを判定します。
         /// </summary>
@@ -165,16 +168,6 @@ namespace Kzrnm.Competitive
         }
 #endif
 
-        [凾(256)]
-        static long NextInt64(Random rnd)
-        {
-            long a = rnd.Next(1 << 22);
-            long b = rnd.Next(1 << 21);
-            long c = rnd.Next(1 << 20);
-
-            return (a << 41) | (b << 20) | c;
-        }
-
         /// <summary>
         /// ポラード・ロー法 で <paramref name="n"/> の素因数を返します。
         /// </summary>
@@ -185,47 +178,23 @@ namespace Kzrnm.Competitive
             if (IsPrime(n))
                 return n;
 
-            var rnd =
-#if NET7_0_OR_GREATER
-                Random.Shared;
-#else
-                new Random();
-#endif
             var one = DynamicMontgomeryModInt64<ModId>.One;
-            var R = one;
-            DynamicMontgomeryModInt64<ModId> F(DynamicMontgomeryModInt64<ModId> x) => x * x + R;
-            while (true)
+            Debug.Assert(DynamicMontgomeryModInt64<ModId>.Mod == n);
+            //DynamicMontgomeryModInt64<ModId> F(DynamicMontgomeryModInt64<ModId> x) => x * x + R;
+            for (int st = 1; ; ++st)
             {
-                var x = one;
-                var y = one;
-                var ys = one;
-                var q = one;
-#if NET7_0_OR_GREATER
-                R = rnd.NextInt64(2, n);
-                y = rnd.NextInt64(2, n);
-#else
-                R = NextInt64(rnd) / (n - 2) + 2;
-                y = NextInt64(rnd) / (n - 2) + 2;
-#endif
-                long g = 1;
-                const int m = 128;
-                for (int r = 1; g == 1; r <<= 1)
+                DynamicMontgomeryModInt64<ModId> x = st;
+                var y = x * x + one;
+                while (true)
                 {
-                    x = y;
-                    for (int i = 0; i < r; ++i) y = F(y);
-                    for (int k = 0; g == 1 && k < r; k += m)
-                    {
-                        ys = y;
-                        for (int i = 0; i < m && i < r - k; ++i)
-                            q *= x - (y = F(y));
-                        g = MathLibEx.Gcd(q.Value, n);
-                    }
+                    var d = (y - x).Value;
+                    if (d == 0) break;
+                    var p = MathLibEx.Gcd(d, n);
+                    if (p != 1) return p;
+                    x = x * x + one;
+                    y = y * y + one;
+                    y = y * y + one;
                 }
-                if (g == n)
-                    do
-                        g = MathLibEx.Gcd((x - (ys = F(ys))).Value, n);
-                    while (g == 1);
-                if (g != n) return g;
             }
         }
 
@@ -239,47 +208,23 @@ namespace Kzrnm.Competitive
             if (IsPrime(n))
                 return n;
 
-            var rnd =
-#if NET7_0_OR_GREATER
-                Random.Shared;
-#else
-                new Random();
-#endif
             var one = DynamicMontgomeryModInt<ModId>.One;
-            var R = one;
-            DynamicMontgomeryModInt<ModId> F(DynamicMontgomeryModInt<ModId> x) => x * x + R;
-            while (true)
+            Debug.Assert(DynamicMontgomeryModInt<ModId>.Mod == n);
+            //DynamicMontgomeryModInt<ModId> F(DynamicMontgomeryModInt<ModId> x) => x * x + R;
+            for (int st = 1; ; ++st)
             {
-                var x = one;
-                var y = one;
-                var ys = one;
-                var q = one;
-#if NET7_0_OR_GREATER
-                R = rnd.NextInt64(2, n);
-                y = rnd.NextInt64(2, n);
-#else
-                R = NextInt64(rnd) / (n - 2) + 2;
-                y = NextInt64(rnd) / (n - 2) + 2;
-#endif
-                int g = 1;
-                const int m = 128;
-                for (int r = 1; g == 1; r <<= 1)
+                DynamicMontgomeryModInt<ModId> x = st;
+                var y = x * x + one;
+                while (true)
                 {
-                    x = y;
-                    for (int i = 0; i < r; ++i) y = F(y);
-                    for (int k = 0; g == 1 && k < r; k += m)
-                    {
-                        ys = y;
-                        for (int i = 0; i < m && i < r - k; ++i)
-                            q *= x - (y = F(y));
-                        g = MathLibEx.Gcd(q.Value, n);
-                    }
+                    var d = (y - x).Value;
+                    if (d == 0) break;
+                    var p = MathLibEx.Gcd(d, n);
+                    if (p != 1) return p;
+                    x = x * x + one;
+                    y = y * y + one;
+                    y = y * y + one;
                 }
-                if (g == n)
-                    do
-                        g = MathLibEx.Gcd((x - (ys = F(ys))).Value, n);
-                    while (g == 1);
-                if (g != n) return g;
             }
         }
 
@@ -383,9 +328,7 @@ namespace Kzrnm.Competitive
         {
             var res = new Dictionary<long, int>();
             foreach (var x in EnumerateFactors(n))
-            {
                 res[x] = res.GetValueOrDefault(x) + 1;
-            }
             return res;
         }
 
