@@ -34,7 +34,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static BoyerMoore<char> Create(string pattern) => new BoyerMoore<char>(pattern);
     }
-    public ref struct BoyerMoore<T>
+    public readonly ref struct BoyerMoore<T>
     {
         readonly ReadOnlySpan<T> pattern;
         readonly Dictionary<T, int> table;
@@ -80,7 +80,7 @@ namespace Kzrnm.Competitive
 
                 // 不一致の場合、ずらし表を参照し i を進める
                 // ただし、今比較した位置より後の位置とする
-                var shift1 = table.ContainsKey(pattern[p]) ? table[pattern[p]] : pattern.Length;
+                var shift1 = table.TryGetValue(pattern[p], out int value) ? value : pattern.Length;
                 var shift2 = pattern.Length - p; // 比較を開始した地点の1つ後ろの文字
                 i += Math.Max(shift1, shift2);
             }
