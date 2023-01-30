@@ -5,9 +5,9 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 internal partial class Program
 {
-    public PropertyConsoleReader cr;
+    public ConsoleReader cr;
     public Utf8ConsoleWriter cw;
-    public Program(PropertyConsoleReader r, Utf8ConsoleWriter w)
+    public Program(ConsoleReader r, Utf8ConsoleWriter w)
     {
         cr = r;
         ConsoleOutput.cw = cw = w;
@@ -15,7 +15,7 @@ internal partial class Program
     }
     public void Run()
     {
-        int Q = __ManyTestCases ? cr.Int : 1;
+        int Q = __ManyTestCases ? cr : 1;
         while (--Q >= 0)
             Calc();
         cw.Flush();

@@ -138,10 +138,10 @@ class ATArray2 {
     }
 
     [string]ToInit() {
-        return "$($this.name) = cr.Repeat($($this.length1)).Select(cr => cr.Repeat($($this.length2)).Int);"
+        return "$($this.name) = cr.Repeat($($this.length1)).Select(cr => cr.Repeat($($this.length2)).Int());"
     }
     [string]ToDefineInit() {
-        return "var $($this.name) = cr.Repeat($($this.length1)).Select(cr => cr.Repeat($($this.length2)).Int);"
+        return "var $($this.name) = cr.Repeat($($this.length1)).Select(cr => cr.Repeat($($this.length2)).Int());"
     }
     [string]ToDefine() {
         return "int[][] $($this.name);"
@@ -156,7 +156,7 @@ class ATGrid {
         return "grid = cr.Repeat($($this.length));"
     }
     [string]ToDefineInit() {
-        return "var grid = cr.Repeat($($this.length)).Ascii;"
+        return "var grid = cr.Repeat($($this.length)).Ascii();"
     }
     [string]ToDefine() {
         return "string[] grid;"
@@ -427,12 +427,25 @@ function submit {
     }
 }
 
+function Restore-MainProgram {
+    $prog = "$PSScriptRoot/../Competitive/Program.cs"
+    git update-index --no-assume-unchanged $prog
+    git restore $prog
+}
+function Add-MainProgram {
+    $prog = "$PSScriptRoot/../Competitive/Program.cs"
+    git add $prog
+    git update-index --assume-unchanged $prog
+}
+
 Export-ModuleMember  -Function @(
     "streak",
     "ParseAtCoder",
     "Get-Source",
     "Remove-Source",
     "Restore-Source",
+    "Restore-MainProgram",
+    "Add-MainProgram",
     "submit-streak",
     "submit"
 ) -Alias "at"
