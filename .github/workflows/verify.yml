@@ -156,7 +156,7 @@ jobs:
             ${{ runner.os }}-verify-result-
 
       - name: Copy result
-        if: steps.restore-cached-results.outputs.cache-hit == 'true'
+        if: steps.restore-cached-results.outputs.cache-matched-key != ''
         working-directory: Library/.competitive-verifier
         run: cp ${{github.workspace}}/Library/.competitive-verifier/merged-result.json prev-result.json
 
