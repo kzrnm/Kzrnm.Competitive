@@ -14,11 +14,24 @@ namespace Kzrnm.Competitive
             where TNode : IGraphNode<TEdge>
             where TEdge : IWGraphEdge<T>
         {
-            var graphArr = graph.AsArray();
             var two = T.MultiplicativeIdentity + T.MultiplicativeIdentity;
-            var INF = T.MaxValue / two;
+            var inf = T.MaxValue / two;
+            return BellmanFord(graph, from, inf);
+        }
+        /// <summary>
+        /// <para><paramref name="from"/> からの最短経路長をベルマン・フォード法で求める。負の長さにも使える</para>
+        /// <para>たどり着けないときは <paramref name="inf"/> を返す。</para>
+        /// <para>制約: 最短経路長が <paramref name="inf"/> 未満である</para>
+        /// <para>計算量: O(|V|・|E|)</para>
+        /// </summary>
+        public static T[] BellmanFord<T, TNode, TEdge>(this IWGraph<T, TNode, TEdge> graph, int from, T inf)
+            where T : IIncrementOperators<T>, IAdditionOperators<T, T, T>, IComparable<T>
+            where TNode : IGraphNode<TEdge>
+            where TEdge : IWGraphEdge<T>
+        {
+            var graphArr = graph.AsArray();
             var res = new T[graphArr.Length];
-            Array.Fill(res, INF);
+            Array.Fill(res, inf);
             res[from] = default;
 
             for (int i = 1; i <= graphArr.Length; i++)
