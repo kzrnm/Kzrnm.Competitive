@@ -1,4 +1,5 @@
 using AtCoder;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -126,7 +127,6 @@ namespace Kzrnm.Competitive.Testing.MathNS
             MathLibEx.Lcm(nums).Should().Be(expected);
         }
 
-
         public static TheoryData DivisorInt_Data => new TheoryData<int, int[]>
         {
             {
@@ -247,6 +247,35 @@ namespace Kzrnm.Competitive.Testing.MathNS
         public void PrimeFactoringInt(int num, Dictionary<int, int> expected)
         {
             MathLibEx.PrimeFactoring(num).Should().Equal(expected);
+        }
+
+        public static IEnumerable<object[]> PrimeFactoringIntStress_Data()
+        {
+            return Inner().Select(i => new object[] { i });
+            static IEnumerable<int> Inner()
+            {
+                for (int i = 0; i < 100; i++)
+                    yield return int.MaxValue - i;
+                for (int i = 1; i <= 100; i++)
+                    yield return i;
+                var sq = (int)Math.Sqrt(int.MaxValue);
+                for (int i = -50; i <= 50; i++)
+                    yield return sq + i;
+
+                var rnd = new Xoshiro256(227);
+                for (int i = 1; i <= 100; i++)
+                    yield return (int)(rnd.NextUInt64() >> 33);
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(PrimeFactoringIntStress_Data))]
+        public void PrimeFactoringIntStress(int num)
+        {
+            long x = 1;
+            foreach (var (p, c) in MathLibEx.PrimeFactoring(num))
+                x *= ((long)p).Pow(c);
+            x.Should().Be(num);
         }
 
         public static TheoryData PrimeFactoringLong_Data => new TheoryData<long, Dictionary<long, int>>

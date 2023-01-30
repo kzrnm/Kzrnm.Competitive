@@ -314,23 +314,48 @@ namespace Kzrnm.Competitive
                 res[two] = t;
                 n >>= t;
             }
-
-            for (T i = two + T.One; i * i <= n; i += two)
             {
-                int c = 0;
-
-                while (DivRem(n, i) is var (d, am) && T.IsZero(am))
-                {
-                    n = d;
-                    ++c;
-                }
+                int c;
+                var three = two + T.One;
+                (n, c) = Divide(n, three);
                 if (c > 0)
-                    res[i] = c;
+                    res[three] = c;
+
+                var five = three + two;
+                (n, c) = Divide(n, five);
+                if (c > 0)
+                    res[five] = c;
+            }
+            for (long i = 7; i * i <= long.CreateChecked(n); i += 2)
+            {
+                for (int p = 0; p < 4; p++, i += 2)
+                {
+                    int c;
+                    // 10x + (7,9,1,3)
+                    var ii = T.CreateSaturating(i);
+                    (n, c) = Divide(n, ii);
+                    if (c > 0)
+                        res[ii] = c;
+                }
             }
             if (n > T.One)
                 res[n] = 1;
             return res;
         }
+
+        [凾(256)]
+        static (T Divided, int Count) Divide<T>(T n, T i)
+            where T : IBinaryInteger<T>
+        {
+            int c = 0;
+            while (DivRem(n, i) is var (d, am) && T.IsZero(am))
+            {
+                n = d;
+                ++c;
+            }
+            return (n, c);
+        }
+
         [凾(256)]
         static (T Div, T Remainder) DivRem<T>(T a, T b)
             where T : IBinaryInteger<T>
@@ -354,17 +379,27 @@ namespace Kzrnm.Competitive
                 res[2] = t;
                 n >>= t;
             }
-
-            for (int i = 3; i * i <= n; i += 2)
             {
-                int c = 0;
-                while (Math.DivRem(n, i, out var am) is var d && am == 0)
-                {
-                    n = d;
-                    ++c;
-                }
+                int c;
+                (n, c) = Divide(n, 3);
                 if (c > 0)
-                    res[i] = c;
+                    res[3] = c;
+
+                (n, c) = Divide(n, 5);
+                if (c > 0)
+                    res[5] = c;
+            }
+            for (long i = 7; i * i <= n; i += 2)
+            {
+                for (int p = 0; p < 4; p++, i += 2)
+                {
+                    int c;
+                    var ii = (int)i;
+                    // 10x + (7,9,1,3)
+                    (n, c) = Divide(n, ii);
+                    if (c > 0)
+                        res[ii] = c;
+                }
             }
             if (n > 1)
                 res[n] = 1;
@@ -387,20 +422,53 @@ namespace Kzrnm.Competitive
                 n >>= t;
             }
 
-            for (long i = 3; i * i <= n; i += 2)
             {
-                int c = 0;
-                while (Math.DivRem(n, i, out var am) is var d && am == 0)
-                {
-                    n = d;
-                    ++c;
-                }
+                int c;
+                (n, c) = Divide(n, 3);
                 if (c > 0)
-                    res[i] = c;
+                    res[3] = c;
+
+                (n, c) = Divide(n, 5);
+                if (c > 0)
+                    res[5] = c;
+            }
+            for (long i = 7; i * i <= n; i += 2)
+            {
+                for (int p = 0; p < 4; p++, i += 2)
+                {
+                    int c;
+                    // 10x + (7,9,1,3)
+                    (n, c) = Divide(n, i);
+                    if (c > 0)
+                        res[i] = c;
+                }
             }
             if (n > 1)
                 res[n] = 1;
             return res;
+        }
+
+        [凾(256)]
+        static (int Divided, int Count) Divide(int n, int i)
+        {
+            int c = 0;
+            while (Math.DivRem(n, i, out var am) is var d && am == 0)
+            {
+                n = d;
+                ++c;
+            }
+            return (n, c);
+        }
+        [凾(256)]
+        static (long Divided, int Count) Divide(long n, long i)
+        {
+            int c = 0;
+            while (Math.DivRem(n, i, out var am) is var d && am == 0)
+            {
+                n = d;
+                ++c;
+            }
+            return (n, c);
         }
 #endif
 
