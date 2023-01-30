@@ -368,7 +368,7 @@ function streak {
 }
 
 function Get-Source {
-    . "$($config.SqliteCommand)" -separator ' ' "$AtCoderStreakPath\data.sqlite" 'SELECT substr(\"    \" || id, -4, 4),taskUrl,priority FROM program ORDER BY priority, id DESC;'
+    . "$($config.SqliteCommand)" -separator ' ' "$AtCoderStreakPath\data.sqlite" 'SELECT substr("    " || id, -4, 4),taskUrl,priority FROM program ORDER BY priority, id DESC;'
 }
 function Remove-Source {
     param (
