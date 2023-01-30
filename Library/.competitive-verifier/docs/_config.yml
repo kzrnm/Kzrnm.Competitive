@@ -1,1 +1,7 @@
 highlightjs-style: vs
+exclude:
+  - Checker/BaseSolver.cs
+  - Library/Competitive.Library.Test/BinarySearchTree/BinarySearchTreeTestsBase.cs
+  - Library/Competitive.Library.Test/BinarySearchTree/ImmutableBinarySearchTreeTestsBase.cs
+  - Library/Competitive.Library.Test/BinarySearchTree/ImmutableLazyBinarySearchTreeTestsBase.cs
+  - Library/Competitive.Library.Test/BinarySearchTree/LazyBinarySearchTreeTestsBase.cs
