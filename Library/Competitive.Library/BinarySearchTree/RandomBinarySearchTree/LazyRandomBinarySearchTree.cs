@@ -28,11 +28,11 @@ namespace Kzrnm.Competitive
     public class LazyRandomBinarySearchTree<T, F, TOp> : ILazyBinarySearchTree<T, F>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
-        private static LazyBinarySearchTreeNodeOperator<T, F, TOp, LazyRandomBinarySearchTreeNode<T, F>, LazyRandomBinarySearchTreeNodeOperator<T, F, TOp>> rb => default;
+        public static LazyBinarySearchTreeNodeOperator<T, F, TOp, LazyRandomBinarySearchTreeNode<T, F>, LazyRandomBinarySearchTreeNodeOperator<T, F, TOp>> rb => default;
 
-        private LazyRandomBinarySearchTreeNode<T, F> root;
+        public LazyRandomBinarySearchTreeNode<T, F> root;
 
-        private LazyRandomBinarySearchTree(LazyRandomBinarySearchTreeNode<T, F> root) { this.root = root; }
+        public LazyRandomBinarySearchTree(LazyRandomBinarySearchTreeNode<T, F> root) { this.root = root; }
         public LazyRandomBinarySearchTree() { }
         public LazyRandomBinarySearchTree(IEnumerable<T> v) : this(v.ToArray()) { }
         public LazyRandomBinarySearchTree(T[] v) : this(v.AsSpan()) { }

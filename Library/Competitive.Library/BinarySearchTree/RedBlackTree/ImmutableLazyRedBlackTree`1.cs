@@ -16,14 +16,14 @@ namespace Kzrnm.Competitive
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class ImmutableLazyRedBlackTree<T> : IImmutableLazyBinarySearchTree<T, T, ImmutableLazyRedBlackTree<T>>
     {
-        private static LazyBinarySearchTreeNodeOperator<T, T, SingleBbstOp<T>, LazyRedBlackTreeNode<T, T>, LazyRedBlackTreeNodeOperator<T, T, SingleBbstOp<T>, TCp>> rb => default;
+        public static LazyBinarySearchTreeNodeOperator<T, T, SingleBbstOp<T>, LazyRedBlackTreeNode<T, T>, LazyRedBlackTreeNodeOperator<T, T, SingleBbstOp<T>, TCp>> rb => default;
 
-        private LazyRedBlackTreeNode<T, T> root;
+        public LazyRedBlackTreeNode<T, T> root;
 
         public static ImmutableLazyRedBlackTree<T> Empty { get; } = new ImmutableLazyRedBlackTree<T>();
         protected ImmutableLazyRedBlackTree() { }
 
-        private ImmutableLazyRedBlackTree(LazyRedBlackTreeNode<T, T> root) { this.root = root; }
+        public ImmutableLazyRedBlackTree(LazyRedBlackTreeNode<T, T> root) { this.root = root; }
         public ImmutableLazyRedBlackTree(IEnumerable<T> v) : this(v.ToArray()) { }
         public ImmutableLazyRedBlackTree(T[] v) : this(v.AsSpan()) { }
         public ImmutableLazyRedBlackTree(ReadOnlySpan<T> v) : this(rb.im.Build(v)) { }

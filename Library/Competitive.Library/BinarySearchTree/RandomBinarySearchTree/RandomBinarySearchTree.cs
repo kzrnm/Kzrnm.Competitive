@@ -1,3 +1,4 @@
+using AtCoder;
 using Kzrnm.Competitive.Internal.Bbst;
 using System;
 using System.Collections;
@@ -8,36 +9,35 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 遅延伝搬反転可能赤黒木
-    // https://ei1333.github.io/library/structure/bbst/lazy-red-black-tree.hpp
-
+    // competitive-verifier: TITLE 乱択平衡二分探索木
+    // https://ei1333.github.io/library/structure/bbst/randomized-binary-search-tree-lazy.hpp
     /// <summary>
-    /// 遅延伝搬反転可能赤黒木
+    /// 乱択平衡二分探索木
     /// </summary>
-    public class LazyRedBlackTree<T> : LazyRedBlackTree<T, T, SingleBbstOp<T>>
+    public class RandomBinarySearchTree<T> : RandomBinarySearchTree<T, SingleBbstOp<T>>
     {
-        public LazyRedBlackTree() { }
-        public LazyRedBlackTree(IEnumerable<T> v) : base(v.ToArray()) { }
-        public LazyRedBlackTree(T[] v) : base(v.AsSpan()) { }
-        public LazyRedBlackTree(ReadOnlySpan<T> v) : base(v) { }
+        public RandomBinarySearchTree() { }
+        public RandomBinarySearchTree(IEnumerable<T> v) : base(v.ToArray()) { }
+        public RandomBinarySearchTree(T[] v) : base(v.AsSpan()) { }
+        public RandomBinarySearchTree(ReadOnlySpan<T> v) : base(v) { }
     }
 
     /// <summary>
-    /// 遅延伝搬反転可能赤黒木
+    /// 乱択平衡二分探索木
     /// </summary>
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class LazyRedBlackTree<T, F, TOp> : ILazyBinarySearchTree<T, F>
-        where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
+    public class RandomBinarySearchTree<T, TOp> : IBinarySearchTree<T>
+        where TOp : struct, ISegtreeOperator<T>
     {
-        private static LazyBinarySearchTreeNodeOperator<T, F, TOp, LazyRedBlackTreeNode<T, F>, LazyRedBlackTreeNodeOperator<T, F, TOp, TCp>> rb => default;
+        public static BinarySearchTreeNodeOperator<T, TOp, RandomBinarySearchTreeNode<T>, RandomBinarySearchTreeNodeOperator<T, TOp>> rb => default;
 
-        private LazyRedBlackTreeNode<T, F> root;
+        public RandomBinarySearchTreeNode<T> root;
 
-        private LazyRedBlackTree(LazyRedBlackTreeNode<T, F> root) { this.root = root; }
-        public LazyRedBlackTree() { }
-        public LazyRedBlackTree(IEnumerable<T> v) : this(v.ToArray()) { }
-        public LazyRedBlackTree(T[] v) : this(v.AsSpan()) { }
-        public LazyRedBlackTree(ReadOnlySpan<T> v) : this(rb.im.Build(v)) { }
+        public RandomBinarySearchTree(RandomBinarySearchTreeNode<T> root) { this.root = root; }
+        public RandomBinarySearchTree() { }
+        public RandomBinarySearchTree(IEnumerable<T> v) : this(v.ToArray()) { }
+        public RandomBinarySearchTree(T[] v) : this(v.AsSpan()) { }
+        public RandomBinarySearchTree(ReadOnlySpan<T> v) : this(rb.im.Build(v)) { }
 
         public T this[int index]
         {
@@ -51,12 +51,6 @@ namespace Kzrnm.Competitive
         public T AllProd => rb.Sum(root);
         public int Count => rb.Size(root);
         bool ICollection<T>.IsReadOnly => false;
-
-        [凾(256)]
-        public void Apply(int l, int r, F f)
-        {
-            rb.Apply(ref root, l, r, f);
-        }
 
         [凾(256)]
         public void Add(T item)
@@ -92,17 +86,6 @@ namespace Kzrnm.Competitive
             var (t1, _, t3) = rb.Split3(root, index, index + count);
             root = rb.im.Merge(t1, t3);
         }
-        [凾(256)]
-        public void Reverse()
-        {
-            rb.Reverse(ref root, 0, Count);
-        }
-
-        [凾(256)]
-        public void Reverse(int l, int r)
-        {
-            rb.Reverse(ref root, l, r);
-        }
 
         [凾(256)]
         public void Clear()
@@ -118,18 +101,17 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        public LazyRedBlackTreeEnumerator<T, F, TOp, LazyRedBlackTreeNodeOperator<T, F, TOp, TCp>> GetEnumerator()
+        public RandomBinarySearchTreeEnumerator<T, TOp> GetEnumerator()
             => rb.im.GetEnumerator(root);
         [凾(256)]
         IEnumerator<T> IEnumerable<T>.GetEnumerator() => GetEnumerator();
         [凾(256)]
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public struct TCp : ICopyOperator<LazyRedBlackTreeNode<T, F>>
+        public struct TCp : ICopyOperator<RandomBinarySearchTreeNode<T>>
         {
             [凾(256)]
-            public LazyRedBlackTreeNode<T, F> Copy(LazyRedBlackTreeNode<T, F> t) => t;
+            public RandomBinarySearchTreeNode<T> Copy(RandomBinarySearchTreeNode<T> t) => t;
         }
-
     }
 }

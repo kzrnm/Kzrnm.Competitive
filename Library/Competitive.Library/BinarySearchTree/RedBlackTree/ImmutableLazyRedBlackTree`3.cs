@@ -19,14 +19,14 @@ namespace Kzrnm.Competitive
     public class ImmutableLazyRedBlackTree<T, F, TOp> : IImmutableLazyBinarySearchTree<T, F, ImmutableLazyRedBlackTree<T, F, TOp>>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
-        private static LazyBinarySearchTreeNodeOperator<T, F, TOp, LazyRedBlackTreeNode<T, F>, LazyRedBlackTreeNodeOperator<T, F, TOp, TCp>> rb => default;
+        public static LazyBinarySearchTreeNodeOperator<T, F, TOp, LazyRedBlackTreeNode<T, F>, LazyRedBlackTreeNodeOperator<T, F, TOp, TCp>> rb => default;
 
-        private LazyRedBlackTreeNode<T, F> root;
+        public LazyRedBlackTreeNode<T, F> root;
 
         public static ImmutableLazyRedBlackTree<T, F, TOp> Empty { get; } = new ImmutableLazyRedBlackTree<T, F, TOp>();
         protected ImmutableLazyRedBlackTree() { }
 
-        private ImmutableLazyRedBlackTree(LazyRedBlackTreeNode<T, F> root) { this.root = root; }
+        public ImmutableLazyRedBlackTree(LazyRedBlackTreeNode<T, F> root) { this.root = root; }
         public ImmutableLazyRedBlackTree(IEnumerable<T> v) : this(v.ToArray()) { }
         public ImmutableLazyRedBlackTree(T[] v) : this(v.AsSpan()) { }
         public ImmutableLazyRedBlackTree(ReadOnlySpan<T> v) : this(rb.im.Build(v)) { }
