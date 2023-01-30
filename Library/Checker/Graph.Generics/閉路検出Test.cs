@@ -14,7 +14,7 @@ namespace Kzrnm.Competitive.Graph
             for (var i = 0; i < M; i++)
                 gb.Add(cr, cr, i);
             var graph = gb.ToGraph();
-            var edges = graph.GetCycleDFS().edges;
+            var edges = graph.GetCycleDfs().edges;
             if (edges == null)
                 return -1;
             cw.WriteLine(edges.Length);

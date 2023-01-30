@@ -1,7 +1,7 @@
 
 namespace Kzrnm.Competitive.Testing.Graph
 {
-    public class 最小全域木BFSTests
+    public class 最小全域木BfsTests
     {
         [Fact]
         public void 重みなしグラフ()
@@ -17,7 +17,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 3);
             gb.Add(4, 0);
             var graph = gb.ToGraph();
-            graph.MinimumSpanningTreeBFS().Should().Equal(
+            graph.MinimumSpanningTreeBfs().Should().Equal(
                 (0, new GraphEdge(1)),
                 (0, new GraphEdge(2)),
                 (0, new GraphEdge(3)),
@@ -37,7 +37,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 3, 6);
             gb.Add(4, 0, 1);
             var graph = gb.ToGraph();
-            graph.MinimumSpanningTreeBFS().Should().Equal(
+            graph.MinimumSpanningTreeBfs().Should().Equal(
                 (0, new WEdge<int>(1, 1)),
                 (0, new WEdge<int>(2, 10)),
                 (0, new WEdge<int>(3, 30)),

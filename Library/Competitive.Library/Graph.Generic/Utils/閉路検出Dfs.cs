@@ -4,51 +4,30 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 閉路削除
-    public static class 閉路削除DFS
+    // competitive-verifier: TITLE 閉路検出
+    public static class 閉路検出Dfs
     {
         enum Status { None, Active, Done }
         /// <summary>
-        /// 閉路に使わない辺を抽出して返します。
+        /// 閉路があれば返す。なければ(-1, null)
         /// </summary>
         [凾(256)]
-        public static (int from, TEdge edges)[] RemoveCycle<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
+        public static (int from, TEdge[] edges) GetCycleDfs<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
              where TNode : IGraphNode<TEdge>
              where TEdge : IGraphEdge
         {
-            var es = new List<(int from, TEdge edge)>();
             var g = graph.AsArray();
             var statuses = new Status[g.Length];
             var prevs = new int[g.Length];
             prevs.AsSpan().Fill(-1);
-            var depths = new int[g.Length];
-            var rs = new int[g.Length];
-            rs.AsSpan().Fill(-1);
-            void DFS(Stack<(int v, int childIdx)> stack)
+            List<TEdge> Dfs(Stack<(int v, int childIdx)> stack)
             {
                 while (stack.TryPop(out var tuple))
                 {
                     var (v, ci) = tuple;
-
-                    if (v < 0)
-                    {
-                        v = ~v;
-                        var e = g[v].Children[ci];
-                        var nr = rs[e.To];
-                        if (rs[v] < 0 || nr >= 0 && depths[rs[v]] > depths[nr])
-                            rs[v] = nr;
-                        if (nr < 0)
-                            es.Add((v, e));
-                        stack.Push((v, ci + 1));
-                        continue;
-                    }
-
                     var children = g[v].Children;
                     if (ci == 0)
-                    {
                         statuses[v] = Status.Active;
-                        depths[v] = stack.Count;
-                    }
 
                     if (ci < children.Length)
                     {
@@ -58,29 +37,24 @@ namespace Kzrnm.Competitive
                         switch (statuses[child])
                         {
                             case Status.None:
-                                stack.Push((~v, ci));
+                                stack.Push((v, ci + 1));
                                 stack.Push((child, 0));
                                 prevs[child] = v;
                                 break;
                             case Status.Active:
-                                if (!g[v].IsDirected && child == prevs[v]) { } // 戻る辺はスキップ
-                                else if (depths[v] < depths[child]) { } // 既に探索済みのときもスキップ
-                                else if (rs[v] < 0 || depths[rs[v]] > depths[child])
-                                    rs[v] = child;
-                                stack.Push((v, ci + 1));
-                                break;
+                                if (!g[v].IsDirected && child == prevs[v]) // 戻る辺はスキップ
+                                    goto default;
+                                return new List<TEdge> { e };
                             default:
-                                if (rs[v] < 0) es.Add((v, e));
                                 stack.Push((v, ci + 1));
                                 break;
                         }
                     }
                     else
-                    {
-                        if (rs[v] == v) rs[v] = -1;
                         statuses[v] = Status.Done;
-                    }
                 }
+
+                return null;
             }
             var stack = new Stack<(int v, int childIdx)>();
             for (var i = 0; i < g.Length; i++)
@@ -89,10 +63,20 @@ namespace Kzrnm.Competitive
                 {
                     stack.Clear();
                     stack.Push((i, 0));
-                    DFS(stack);
+                    if (Dfs(stack) is { } list)
+                        while (stack.TryPop(out var tuple))
+                        {
+                            var (v, ci) = tuple;
+                            list.Add(g[v].Children[ci - 1]);
+                            if (list[0].To == v)
+                            {
+                                list.Reverse();
+                                return (v, list.ToArray());
+                            }
+                        }
                 }
             }
-            return es.ToArray();
+            return (-1, null);
         }
     }
 }

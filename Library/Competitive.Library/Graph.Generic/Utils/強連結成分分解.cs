@@ -31,7 +31,7 @@ namespace Kzrnm.Competitive
             {
                 if (ord[i] == -1)
                 {
-                    DFS(i);
+                    Dfs(i);
                 }
             }
 
@@ -43,7 +43,7 @@ namespace Kzrnm.Competitive
 
             return (groupNum, ids);
 
-            void DFS(int v)
+            void Dfs(int v)
             {
                 var stack = new Stack<(int v, int childIndex, bool childOk)>();
                 stack.Push((v, g.Start[v], false));

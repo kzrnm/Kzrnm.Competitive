@@ -2,12 +2,12 @@ using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
-    public static class 最短経路BFS
+    public static class 最短経路Bfs
     {
         /// <summary>
-        /// <paramref name="from"/> からの最短経路長をBFSで求める。到達判定にも有用
+        /// <paramref name="from"/> からの最短経路長をBfsで求める。到達判定にも有用
         /// </summary>
-        public static uint[] ShortestPathBFS<TNode, TEdge>(this IGraph<TNode, TEdge> graph, int from)
+        public static uint[] ShortestPathBfs<TNode, TEdge>(this IGraph<TNode, TEdge> graph, int from)
             where TNode : IGraphNode<TEdge>
             where TEdge : IGraphEdge
         {
@@ -29,9 +29,9 @@ namespace Kzrnm.Competitive
             return res;
         }
         /// <summary>
-        /// <paramref name="from"/> から逆方向の最短経路長をBFSで求める。到達判定にも有用
+        /// <paramref name="from"/> から逆方向の最短経路長をBfsで求める。到達判定にも有用
         /// </summary>
-        public static uint[] ShortestPathBFSReverse<TNode, TEdge>(this IGraph<TNode, TEdge> graph, int from)
+        public static uint[] ShortestPathBfsReverse<TNode, TEdge>(this IGraph<TNode, TEdge> graph, int from)
             where TNode : IGraphNode<TEdge>
             where TEdge : IGraphEdge
         {

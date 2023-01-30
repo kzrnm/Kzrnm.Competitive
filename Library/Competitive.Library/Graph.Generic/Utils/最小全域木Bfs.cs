@@ -2,12 +2,12 @@ using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
-    public static class 最小全域木BFS
+    public static class 最小全域木Bfs
     {
         /// <summary>
-        /// 最小全域木をBFSで求める。長さを持たないグラフ用
+        /// 最小全域木をBfsで求める。長さを持たないグラフ用
         /// </summary>
-        public static (int from, TEdge edge)[] MinimumSpanningTreeBFS<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
+        public static (int from, TEdge edge)[] MinimumSpanningTreeBfs<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
             where TNode : IGraphNode<TEdge>
             where TEdge : IGraphEdge
         {

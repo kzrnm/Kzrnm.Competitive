@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
-    public static class 最短経路01BFS
+    public static class 最短経路01Bfs
     {
         /// <summary>
         /// <para><paramref name="from"/> からの最短経路長を01-BSFで求める。</para>
         /// <para>計算量: O(|E| + |V|)</para>
         /// </summary>
-        public static T[] ShortestPath01BFS<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph, int from)
+        public static T[] ShortestPath01Bfs<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph, int from)
             where T : struct
             where TOp : struct, INumOperator<T>
             where TNode : IGraphNode<TEdge>

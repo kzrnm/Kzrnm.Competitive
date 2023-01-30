@@ -1,7 +1,7 @@
 
 namespace Kzrnm.Competitive.Testing.Graph
 {
-    public class 閉路削除DFSTests
+    public class 閉路検出DfsTests
     {
         [Fact]
         public void 重みなしグラフ()
@@ -16,14 +16,12 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(5, 6);
             gb.Add(4, 7);
             gb.Add(7, 3);
-            var es = gb.ToGraph().RemoveCycle();
-            es.Should().BeEquivalentTo(new (int, GraphEdge)[] {
-                (4, new(5)),
-                (3, new(5)),
-                (5, new(6)),
-                (2, new(3)),
-                (1, new(2)),
-                (0, new(1)),
+            var (from, edges) = gb.ToGraph().GetCycleDfs();
+            from.Should().Be(3);
+            edges.Should().Equal(new GraphEdge[] {
+                new GraphEdge(4),
+                new GraphEdge(7),
+                new GraphEdge(3),
             });
         }
         [Fact]
@@ -39,14 +37,12 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(5, 6, 6);
             gb.Add(4, 7, 7);
             gb.Add(7, 3, 8);
-            var es = gb.ToGraph().RemoveCycle();
-            es.Should().BeEquivalentTo(new (int, WEdge<int>)[] {
-                (4, new(5, 5)),
-                (3, new(5, 5)),
-                (5, new(6, 6)),
-                (2, new(3, 3)),
-                (1, new(2, 2)),
-                (0, new(1, 1)),
+            var (from, edges) = gb.ToGraph().GetCycleDfs();
+            from.Should().Be(3);
+            edges.Should().Equal(new WEdge<int>[] {
+                new WEdge<int>(4, 4),
+                new WEdge<int>(7, 7),
+                new WEdge<int>(3, 8),
             });
         }
         [Fact]
@@ -61,13 +57,12 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 5);
             gb.Add(5, 6);
             gb.Add(4, 7);
-            var es = gb.ToGraph().RemoveCycle();
-            es.Should().BeEquivalentTo(new (int, GraphEdge)[] {
-                (4, new(7)),
-                (5, new(6)),
-                (2, new(3)),
-                (1, new(2)),
-                (0, new(1)),
+            var (from, edges) = gb.ToGraph().GetCycleDfs();
+            from.Should().Be(3);
+            edges.Should().Equal(new GraphEdge[] {
+                new GraphEdge(5),
+                new GraphEdge(4),
+                new GraphEdge(3),
             });
         }
     }
