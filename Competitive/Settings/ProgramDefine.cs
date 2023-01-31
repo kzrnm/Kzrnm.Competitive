@@ -10,11 +10,11 @@ using System.Text;
 public partial class Program
 {
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    public ConsoleReader cr;
+    public PropertyConsoleReader cr;
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     public Utf8ConsoleWriter cw;
-    public Program(ConsoleReader r, Utf8ConsoleWriter w)
+    public Program(PropertyConsoleReader r, Utf8ConsoleWriter w)
     {
         cr = r;
         ConsoleOutput.cw = cw = w;

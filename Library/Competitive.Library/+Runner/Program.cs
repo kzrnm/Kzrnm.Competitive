@@ -5,9 +5,9 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 internal partial class Program
 {
-    public ConsoleReader cr;
+    public PropertyConsoleReader cr;
     public Utf8ConsoleWriter cw;
-    public Program(ConsoleReader r, Utf8ConsoleWriter w)
+    public Program(PropertyConsoleReader r, Utf8ConsoleWriter w)
     {
         cr = r;
         ConsoleOutput.cw = cw = w;

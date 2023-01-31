@@ -44,12 +44,12 @@ namespace Competitive.Runner
             Console.InputEncoding = utf8;
             Console.OutputEncoding = utf8;
             Stopwatch stopwatch = null;
-            ConsoleReader reader;
+            PropertyConsoleReader reader;
             var writer = new Utf8ConsoleWriter(Console.OpenStandardOutput());
 
             if (args.Length > 0)
             {
-                reader = new ConsoleReader(new FileStream(args[0], FileMode.Open), utf8);
+                reader = new PropertyConsoleReader(new FileStream(args[0], FileMode.Open), utf8);
             }
             else
             {
@@ -62,11 +62,11 @@ namespace Competitive.Runner
                 Trace.Listeners.Add(new TraceListener(Console.Error));
                 if (IsNotWhiteSpace(sb.sb))
                 {
-                    reader = new ConsoleReader(new MemoryStream(utf8.GetBytes(sb.ToString())), Encoding.UTF8);
+                    reader = new PropertyConsoleReader(new MemoryStream(utf8.GetBytes(sb.ToString())), Encoding.UTF8);
                     stopwatch = new Stopwatch();
                 }
                 else
-                    reader = new ConsoleReader();
+                    reader = new PropertyConsoleReader();
             }
 
             using (new StopwatchWrapper(stopwatch))
