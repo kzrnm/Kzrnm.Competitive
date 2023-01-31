@@ -6,6 +6,7 @@ namespace Kzrnm.Competitive.MathNs
     internal class PrimeFactorizationTest : BaseSolver
     {
         public override string Url => "https://judge.yosupo.jp/problem/factorize";
+        public override double? Tle => 10;
         public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int Q = cr;

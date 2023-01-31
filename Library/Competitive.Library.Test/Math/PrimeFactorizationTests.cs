@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Kzrnm.Competitive.Testing.MathNS
 {
@@ -21,7 +20,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 })
                 {
                     var x = start + i;
-                    PrimeFactorization.IsPrime(x).Should().Be(p.IsPrime(x));
+                    PrimeFactorization.IsPrime(x).Should().Be(p.IsPrime(x), "Value: {0}", x);
                 }
             }
             PrimeFactorization.IsPrime(200560490131).Should().Be(true);
@@ -243,43 +242,50 @@ namespace Kzrnm.Competitive.Testing.MathNS
         {
             var rnd = new Random(227);
             for (int q = 0; q < 10; q++)
-            {
                 yield return new object[] { rnd.NextLong() % (1L << 45) };
-            }
         }
 
         [Theory]
         [MemberData(nameof(StressDivisor_Data))]
         public void StressDivisor(long n)
         {
-            PrimeFactorization.Divisor(n).Should().Equal(Naive(n));
+            PrimeFactorization.Divisor(n).Should().Equal(NaiveDivisor(n));
+        }
 
-            static long[] Naive(long n)
+        [Fact]
+        public void SmallDivisor()
+        {
+            for (int i = 1; i < 257 * 257 + 50; i++)
+                PrimeFactorization.Divisor(i).Should()
+                    .Equal(NaiveDivisor(i).Select(n => checked((int)n)), "Value: {0}", i);
+        }
+
+
+        static long[] NaiveDivisor(long n)
+        {
+            if (n <= 1) return new long[] { 1 };
+
+            var left = new List<long>();
+            var right = new List<long>();
+            left.Add(1);
+            right.Add(n);
+
+            for (long i = 2, d = Math.DivRem(n, i, out var am);
+                i <= d;
+                i++, d = Math.DivRem(n, i, out am))
             {
-                if (n <= 1) return new long[] { 1 };
-
-                var left = new List<long>();
-                var right = new List<long>();
-                left.Add(1);
-                right.Add(n);
-
-                for (long i = 2, d = Math.DivRem(n, i, out var am);
-                    i <= d;
-                    i++, d = Math.DivRem(n, i, out am))
+                if (am == 0)
                 {
-                    if (am == 0)
-                    {
-                        left.Add(i);
-                        if (i != d)
-                            right.Add(d);
-                    }
+                    left.Add(i);
+                    if (i != d)
+                        right.Add(d);
                 }
-                right.Reverse();
-                var res = new long[left.Count + right.Count];
-                left.CopyTo(res, 0);
-                right.CopyTo(res, left.Count);
-                return res;
             }
+            right.Reverse();
+            var res = new long[left.Count + right.Count];
+            left.CopyTo(res, 0);
+            right.CopyTo(res, left.Count);
+            return res;
         }
     }
 }

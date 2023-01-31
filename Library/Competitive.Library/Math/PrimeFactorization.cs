@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -26,16 +27,43 @@ namespace Kzrnm.Competitive
         // 競技プログラミングではほぼ関係ないが並列実行するなら ModId を共用しないほうがよいので差し替えられるようにしておく
 
         /// <summary>
+        /// 素因数分解の結果をキャッシュするかどうかを設定します。default: <see langword="true"/>
+        /// </summary>
+        public static bool CacheEnabled { set; get; }
+
+        /// <summary>
+        /// 257 未満の素数。ReadOnlySpan&lt;byte&gt; に直接代入するとアロケーションが発生しない。
+        /// </summary>
+        /// <returns></returns>
+        static ReadOnlySpan<byte> SmallPrimes() => new byte[]
+        {
+            2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73,
+            79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163,
+            167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251
+        };
+
+        /// <summary>
         /// <paramref name="n"/> が素数であるかどうかを判定します。
         /// </summary>
         [凾(256)]
         public static bool IsPrime(long n)
         {
-            if (n <= 7)
+            static bool Naive(int n)
             {
-                if (n <= 1) return false;
-                return n == 2 || (n & 1) != 0;
+                if ((n & 1) == 0)
+                    return n == 2;
+                if (n == 1) return false;
+                if (n == 3) return true;
+                foreach (int p in SmallPrimes()[1..])
+                {
+                    if (p * p > n)
+                        break;
+                    if (n % p == 0)
+                        return false;
+                }
+                return true;
             }
+            if (n < 257 * 257L) return Naive((int)n);
             if ((n & 1) == 0) return false;
 
 #if NET7_0_OR_GREATER
@@ -230,33 +258,87 @@ namespace Kzrnm.Competitive
             }
         }
 
-        public static IEnumerable<long> EnumerateFactors(long n)
-        {
-            if (n <= 1) yield break;
-            long p;
+        private static Dictionary<long, long[]> cachedFactors;
 
-            if (n < (1L << 30))
+        /// <summary>
+        /// <paramref name="n"/> の素因数を順不同で列挙します。
+        /// </summary>
+        public static long[] EnumerateFactors(long n)
+        {
+            // 普通の用途なら「とりあえず小さい素数で試し割り」のほうが良さそう
+            // 競技プログラミング用途だと大きい素数の積が決め打ちで渡されがちなので確実に割り切れる 257×257 未満のときを特別扱いする
+            return Inner(n) switch { long[] a => a, var e => e.ToArray() };
+
+
+            static IEnumerable<long> Inner(long n)
             {
-                int ni = (int)n;
-                if (DynamicMontgomeryModInt<ModId>.Mod != ni)
-                    DynamicMontgomeryModInt<ModId>.Mod = ni;
-                p = PollardRhoSmall((int)n);
+                if (CacheEnabled)
+                {
+                    var cache = cachedFactors ??= new Dictionary<long, long[]>();
+                    if (cache.TryGetValue(n, out var r))
+                        return r;
+
+                    return cache[n] = n < 257 * 257L ? Naive((int)n) : PollardRho(n).ToArray();
+                }
+                return n < 257 * 257L ? Naive((int)n) : PollardRho(n);
             }
-            else
+            static long[] Naive(int n)
             {
-                if (DynamicMontgomeryModInt64<ModId>.Mod != n)
-                    DynamicMontgomeryModInt64<ModId>.Mod = n;
-                p = PollardRhoLarge(n);
+                var buf = ArrayPool<long>.Shared.Rent(16);
+                try
+                {
+                    int ix = BitOperations.TrailingZeroCount(n);
+                    n >>= ix;
+                    buf.AsSpan(0, ix).Fill(2);
+                    foreach (int p in SmallPrimes()[1..])
+                    {
+                        if (p * p > n)
+                            break;
+                        while (Math.DivRem(n, p, out var am) is var d && am == 0)
+                        {
+                            n = d;
+                            buf[ix++] = p;
+                        }
+                    }
+                    if (n > 1)
+                        buf[ix++] = n;
+                    return buf.AsSpan(0, ix).ToArray();
+                }
+                finally
+                {
+                    ArrayPool<long>.Shared.Return(buf);
+                }
+
             }
-            if (p == n)
+            static IEnumerable<long> PollardRho(long n)
             {
-                yield return p;
-                yield break;
+                if (n <= 1) yield break;
+                long p;
+                if (n < (1L << 30))
+                {
+                    int ni = (int)n;
+                    if (DynamicMontgomeryModInt<ModId>.Mod != ni)
+                        DynamicMontgomeryModInt<ModId>.Mod = ni;
+                    p = PollardRhoSmall((int)n);
+                }
+                else
+                {
+                    if (DynamicMontgomeryModInt64<ModId>.Mod != n)
+                        DynamicMontgomeryModInt64<ModId>.Mod = n;
+                    p = PollardRhoLarge(n);
+                }
+                if (p == n)
+                {
+                    yield return p;
+                }
+                else
+                {
+                    foreach (var v in Inner(p))
+                        yield return v;
+                    foreach (var v in Inner(n / p))
+                        yield return v;
+                }
             }
-            foreach (var v in EnumerateFactors(p))
-                yield return v;
-            foreach (var v in EnumerateFactors(n / p))
-                yield return v;
         }
 
 #if NET7_0_OR_GREATER
