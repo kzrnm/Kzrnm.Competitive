@@ -178,22 +178,23 @@ namespace Kzrnm.Competitive
             if (IsPrime(n))
                 return n;
 
-            var one = DynamicMontgomeryModInt64<ModId>.One;
             Debug.Assert(DynamicMontgomeryModInt64<ModId>.Mod == n);
+            //var one = DynamicMontgomeryModInt64<ModId>.One;
             //DynamicMontgomeryModInt64<ModId> F(DynamicMontgomeryModInt64<ModId> x) => x * x + R;
-            for (int st = 1; ; ++st)
+            for (DynamicMontgomeryModInt64<ModId> st = 1; ; ++st)
             {
-                DynamicMontgomeryModInt64<ModId> x = st;
-                var y = x * x + one;
-                while (true)
+                var x = st;
+                var y = x * x + st;
+                uint t = 100000;
+                while (--t > 0)
                 {
                     var d = (y - x).Value;
                     if (d == 0) break;
                     var p = MathLibEx.Gcd(d, n);
                     if (p != 1) return p;
-                    x = x * x + one;
-                    y = y * y + one;
-                    y = y * y + one;
+                    x = x * x + st;
+                    y = y * y + st;
+                    y = y * y + st;
                 }
             }
         }
@@ -208,22 +209,23 @@ namespace Kzrnm.Competitive
             if (IsPrime(n))
                 return n;
 
-            var one = DynamicMontgomeryModInt<ModId>.One;
             Debug.Assert(DynamicMontgomeryModInt<ModId>.Mod == n);
+            //var one = DynamicMontgomeryModInt<ModId>.One;
             //DynamicMontgomeryModInt<ModId> F(DynamicMontgomeryModInt<ModId> x) => x * x + R;
-            for (int st = 1; ; ++st)
+            for (DynamicMontgomeryModInt<ModId> st = 1; ; ++st)
             {
-                DynamicMontgomeryModInt<ModId> x = st;
-                var y = x * x + one;
-                while (true)
+                var x = st;
+                var y = x * x + st;
+                uint t = 100000;
+                while (--t > 0)
                 {
                     var d = (y - x).Value;
                     if (d == 0) break;
                     var p = MathLibEx.Gcd(d, n);
                     if (p != 1) return p;
-                    x = x * x + one;
-                    y = y * y + one;
-                    y = y * y + one;
+                    x = x * x + st;
+                    y = y * y + st;
+                    y = y * y + st;
                 }
             }
         }
