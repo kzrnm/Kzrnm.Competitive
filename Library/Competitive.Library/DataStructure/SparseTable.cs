@@ -60,7 +60,7 @@ namespace Kzrnm.Competitive
             }
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
             private readonly string key;
-            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
             private readonly TValue value;
         }
         private class DebugView
