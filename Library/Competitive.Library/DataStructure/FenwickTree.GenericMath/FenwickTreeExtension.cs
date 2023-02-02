@@ -5,10 +5,10 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public static class FenwickTreeExtension
+    public static class __FenwickTreeExtension
     {
         /// <summary>
-        /// <paramref name="fw"/>.Sum(0, i) の値が <paramref name="v"/> 以上となる最小のインデックス i を取得します。
+        /// <paramref name="fw"/>.Sum(0, i) の値が <paramref name="v"/> 以上となる最小のインデックス i を取得します。<paramref name="fw"/>.Sum(0, fw.Length) でも条件を満たさなければ fw.Length + 1 を返します。
         /// </summary>
         /// <remarks>
         /// <para>制約: <paramref name="fw"/> の値が非負。</para>
@@ -18,22 +18,23 @@ namespace Kzrnm.Competitive
         public static int LowerBound<T>(this FenwickTree<T> fw, T v)
             where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>, IAdditiveIdentity<T, T>, IComparisonOperators<T, T, bool>
         {
-            if (v < T.AdditiveIdentity) return 0;
+            if (v <= T.AdditiveIdentity) return 0;
             int x = 0;
-            for (int k = 1 << BitOperations.Log2((uint)fw.data.Length - 1); k > 0; k >>= 1)
+            var data = fw.data;
+            for (int k = 1 << BitOperations.Log2((uint)data.Length + 1); k > 0; k >>= 1)
             {
                 var nx = x + k;
-                if (nx < fw.data.Length && fw.data[nx] < v)
+                if (nx < data.Length && data[nx] < v)
                 {
                     x = nx;
-                    v -= fw.data[nx];
+                    v -= data[nx];
                 }
             }
-            return x;
+            return x + 1;
         }
 
         /// <summary>
-        /// <paramref name="fw"/>.Sum(0, i) の値が <paramref name="v"/> より大きくなる最小のインデックス i を取得します。
+        /// <paramref name="fw"/>.Sum(0, i) の値が <paramref name="v"/> より大きくなる最小のインデックス i を取得します。<paramref name="fw"/>.Sum(0, fw.Length) でも条件を満たさなければ fw.Length + 1 を返します。
         /// </summary>
         /// <remarks>
         /// <para>制約: <paramref name="fw"/> の値が非負。</para>
@@ -45,20 +46,21 @@ namespace Kzrnm.Competitive
         {
             if (v < T.AdditiveIdentity) return 0;
             int x = 0;
-            for (int k = 1 << BitOperations.Log2((uint)fw.data.Length - 1); k > 0; k >>= 1)
+            var data = fw.data;
+            for (int k = 1 << BitOperations.Log2((uint)data.Length + 1); k > 0; k >>= 1)
             {
                 var nx = x + k;
-                if (nx < fw.data.Length && fw.data[nx] <= v)
+                if (nx < data.Length && data[nx] <= v)
                 {
                     x = nx;
-                    v -= fw.data[nx];
+                    v -= data[nx];
                 }
             }
-            return x;
+            return x + 1;
         }
 
         /// <summary>
-        /// <c>(<paramref name="fw"/>[i..(i+1)], <paramref name="fw"/>[..(i+1)])</c> の配列にして返す。
+        /// <c>(<paramref name="fw"/>[i..(i+1)], <paramref name="fw"/>[..(i+1)])</c> のタプルを配列にして返します。
         /// </summary>
         /// <returns></returns>
         [凾(256)]
