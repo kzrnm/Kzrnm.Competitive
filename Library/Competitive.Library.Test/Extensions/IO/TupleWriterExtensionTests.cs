@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Kzrnm.Competitive.Testing.IO
 {
-    public class TupleWriterExtensionTest
+    public class TupleWriterExtensionTests
     {
         private class Utf8Wrapper
         {
