@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive
     public class DisjointSparseTable<TValue, TOp> where TOp : struct, ISparseTableOperator<TValue>
     {
         private static TOp op = default;
-        private readonly TValue[][] st;
+        protected readonly TValue[][] st;
         public int Length { get; }
         public DisjointSparseTable(TValue[] array)
         {
