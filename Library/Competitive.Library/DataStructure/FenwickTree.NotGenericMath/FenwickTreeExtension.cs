@@ -6,7 +6,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public static class FenwickTreeExtension
+    public static class __FenwickTreeExtension
     {
         /// <summary>
         /// <paramref name="fw"/>.Sum(0, i) の値が <paramref name="v"/> 以上となる最小のインデックス i を取得します。
@@ -22,10 +22,11 @@ namespace Kzrnm.Competitive
             var op = new TOp();
             if (op.LessThanOrEqual(v, default)) return 0;
             int x = 0;
-            for (int k = 1 << BitOperations.Log2((uint)fw.data.Length - 1); k > 0; k >>= 1)
+            var data = fw.data;
+            for (int k = 1 << BitOperations.Log2((uint)data.Length + 1); k > 0; k >>= 1)
             {
                 var nx = x + k;
-                if (nx < fw.data.Length && op.LessThan(fw.data[nx], v))
+                if (nx < data.Length && op.LessThan(fw.data[nx], v))
                 {
                     x = nx;
                     v = op.Subtract(v, fw.data[nx]);
@@ -48,10 +49,11 @@ namespace Kzrnm.Competitive
             var op = new TOp();
             if (op.LessThanOrEqual(v, default)) return 0;
             int x = 0;
-            for (int k = 1 << BitOperations.Log2((uint)fw.data.Length - 1); k > 0; k >>= 1)
+            var data = fw.data;
+            for (int k = 1 << BitOperations.Log2((uint)data.Length + 1); k > 0; k >>= 1)
             {
                 var nx = x + k;
-                if (nx < fw.data.Length && op.LessThanOrEqual(fw.data[nx], v))
+                if (nx < data.Length && op.LessThanOrEqual(fw.data[nx], v))
                 {
                     x = nx;
                     v = op.Subtract(v, fw.data[nx]);
