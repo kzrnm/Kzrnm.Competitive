@@ -1,5 +1,4 @@
 using AtCoder;
-using Kzrnm.Competitive.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +19,14 @@ namespace Kzrnm.Competitive
         public MoAlgorithm()
         {
             builder = new List<(int From, int ToExclusive, int Index)>();
+        }
+        /// <summary>
+        /// 平方分割でオフラインクエリを計算する
+        /// </summary>
+        public MoAlgorithm(IEnumerable<(int From, int ToExclusive)> queries) : this()
+        {
+            foreach (var (f, t) in queries)
+                AddQuery(f, t);
         }
 
         /// <summary>
