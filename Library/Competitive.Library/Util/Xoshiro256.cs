@@ -46,5 +46,25 @@ namespace Kzrnm.Competitive
 
             return result;
         }
+
+        /// <summary>
+        /// [0, <paramref name="max"/>) の乱数を返します。
+        /// </summary>
+        [凾(256)]
+        public ulong NextUInt64(ulong max)
+        {
+            if (max <= 1) return 0;
+            var lzc = 63 ^ BitOperations.Log2(max - 1);
+            ulong r;
+            while ((r = NextUInt64() >> lzc) >= max) { }
+            return r;
+        }
+
+        /// <summary>
+        /// [<paramref name="min"/>, <paramref name="max"/>) の乱数を返します。
+        /// </summary>
+        [凾(256)]
+        public ulong NextUInt64(ulong min, ulong max)
+            => NextUInt64(max - min) + min;        
     }
 }

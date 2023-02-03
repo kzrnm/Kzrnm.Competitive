@@ -6,7 +6,7 @@ namespace Kzrnm.Competitive
 {
     public class RollingHash
     {
-        static readonly Random rnd = new Random();
+        internal static readonly Xoshiro256 rnd = new Xoshiro256();
         public struct Hash : IEquatable<Hash>
         {
             public ulong a;
@@ -38,7 +38,7 @@ namespace Kzrnm.Competitive
 
         public class RollingHashUInt64 /* https://webbibouroku.com/Blog/Article/cs-rollinghash */
         {
-            static readonly uint B = (uint)rnd.Next(129, int.MaxValue);
+            static readonly uint B = (uint)rnd.NextUInt64(129, int.MaxValue);
             public readonly ulong[] pow;
             public readonly ulong[] hash;
             public int Length { get; }
@@ -66,7 +66,7 @@ namespace Kzrnm.Competitive
             const ulong MASK31 = (1UL << 31) - 1;
             const ulong MOD = (1UL << 61) - 1;
             const ulong POSITIVIZER = MOD * ((1UL << 3) - 1);
-            static readonly uint Base = (uint)rnd.Next(129, int.MaxValue);
+            static readonly uint Base = (uint)rnd.NextUInt64(129, int.MaxValue);
             static readonly ulong[] powMemo = new ulong[MAX_LENGTH + 1];
             static RollingHashFast()
             {
