@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -40,6 +41,7 @@ namespace Competitive.Runner
                     Console.WriteLine("expandedCode is null.");
                 return;
             }
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             var utf8 = new UTF8Encoding(false);
             Console.InputEncoding = utf8;
             Console.OutputEncoding = utf8;
