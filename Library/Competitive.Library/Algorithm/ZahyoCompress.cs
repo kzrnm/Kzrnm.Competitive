@@ -110,12 +110,17 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// 座標圧縮後のインデックスを取得する
+        /// 座標圧縮後の要素数
+        /// </summary>
+        public int Count => Original.Length;
+
+        /// <summary>
+        /// 座標圧縮後のインデックス
         /// </summary>
         public Dictionary<T, int> NewTable { private set; get; }
 
         /// <summary>
-        /// インデックスに対応する元の値を保持する
+        /// インデックスに対応する元の値
         /// </summary>
         public T[] Original { private set; get; }
 
@@ -128,13 +133,13 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// 座標圧縮後の値に置換した配列を取得する
+        /// 座標圧縮後の値に置換した配列を返します
         /// </summary>
         [凾(256)]
         public int[] Replace(T[] orig) => Replace((ReadOnlySpan<T>)orig);
 
         /// <summary>
-        /// 座標圧縮後の値に置換した配列を取得する
+        /// 座標圧縮後の値に置換した配列を返します
         /// </summary>
         [凾(256)]
         public int[] Replace(ReadOnlySpan<T> orig)
