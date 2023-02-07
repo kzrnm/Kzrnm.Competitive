@@ -90,6 +90,115 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             p1.Cross(p2).Should().Be(expected);
         }
 
+        public static TheoryData Area_Data => new TheoryData<PointDouble[], double>
+        {
+            {
+                new PointDouble[]
+                {
+                    new(1,1),
+                    new(2,2),
+                    new(1,3),
+                    new(-1,1),
+                },
+                6
+            },
+            {
+                new PointDouble[]
+                {
+                    new(-1,1),
+                    new(1,3),
+                    new(2,2),
+                    new(1,1),
+                },
+                6
+            },
+            {
+                new PointDouble[]
+                {
+                    new(1.1,0.51),
+                    new(1.95,6.4423),
+                    new(4.341,1.2265),
+                    new(4.5,4),
+                },
+                9.7425693
+            },
+        };
+
+        [Theory]
+        [MemberData(nameof(Area_Data))]
+        public void Area(PointDouble[] points, double expected)
+        {
+            PointDouble.Area2(points).Should().Be(expected);
+            PointDouble.Area(points).Should().Be(expected / 2.0);
+        }
+
+        [Fact]
+        public void ConvexHull1()
+        {
+            var points = new PointDouble[]
+            {
+                (100000000, 100000000),
+                ( 80000000,  90000000),
+                ( 10000000, -10000000),
+                (100000000,  80000000),
+                ( 40000000,  20000000),
+                ( 80000000,  60000000),
+                ( 40000000,  80000000),
+                ( 10000000,  50000000),
+                (110000000, 100000000),
+                ( 60000000,  80000000),
+                ( 80000000,  80000000),
+                (-10000000,  50000000),
+            };
+            PointDouble.ConvexHull(points)
+                .Select(i => points[i])
+                .Should().Equal(
+                    (10000000, -10000000),
+                    (40000000, 20000000),
+                    (80000000, 60000000),
+                    (100000000, 80000000),
+                    (110000000, 100000000),
+                    (100000000, 100000000),
+                    (40000000, 80000000),
+                    (-10000000, 50000000)
+                );
+        }
+
+        [Fact]
+        public void ConvexHull2()
+        {
+            var points = new PointDouble[]
+            {
+                (10, 10),
+                ( 8,  9),
+                ( 8,  8),
+                (10,  8),
+                ( 0,  0),
+                ( 4,  0),
+                ( 8,  6),
+                ( 1,  5),
+                ( 6,  8),
+                (11, 10),
+                ( 1,  8),
+                (-6,  6),
+                (-4,  4),
+                (-1,  1)
+            };
+            PointDouble.ConvexHull(points)
+                .Select(i => points[i])
+                .Should().Equal(
+                    (0, 0),
+                    (4, 0),
+                    (10, 8),
+                    (11, 10),
+                    (10, 10),
+                    (1, 8),
+                    (-6, 6),
+                    (-4, 4),
+                    (-1, 1)
+                );
+        }
+
         public static TheoryData 外心_Data => new TheoryData<PointDouble, PointDouble, PointDouble, PointDouble>
         {
             { new PointDouble(0,0), new PointDouble(1,0), new PointDouble(0,1), new PointDouble(0.5000000000000001,0.5000000000000001) },
@@ -198,126 +307,87 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             PointDouble.円の交点(p1, r1, p2, r2).Should().BeEquivalentTo(expected);
         }
 
-        public static TheoryData 線分が交差しているか_Data => new TheoryData<PointDouble, PointDouble, PointDouble, PointDouble, bool>
+        public static TheoryData 線分が交差しているか_Data => new TheoryData<PointDouble, PointDouble, PointDouble, PointDouble, int>
         {
-            { new PointDouble(-1, -1), new PointDouble(1, 1), new PointDouble(-1, 0), new PointDouble(0, 0.001), false },
-            { new PointDouble(-1, -1), new PointDouble(1, 1), new PointDouble(-1, 0), new PointDouble(0, -0.001), true },
+            { new (-1, -1), new (1, 1), new (-1, 0), new (0, 0.001), -1 },
+            { new (-1, -1), new (1, 1), new (-1, 0), new (0, -0.001), 1 },
+            { new (-1, -1), new (1, 1), new (-1, 0), new (0, 0), 0 },
+
+            { new (-1, -1), new (1, 1), new (2, 2), new (3, 3), -1 },
+            { new (-1, -1), new (1, 1), new (0, 0), new (3, 3), 1 },
+            { new (-1, -1), new (1, 1), new (1, 1), new (3, 3), 0 },
+
+            { new (-1, -1), new (-1, 1), new (-1, 2), new (-1, 3), -1 },
+            { new (-1, -1), new (-1, 1), new (-1, 0), new (-1, 3), 1 },
+            { new (-1, -1), new (-1, 1), new (-1, 1), new (-1, 3), 0 },
+
+            { new (-1, 1), new (1, 1), new (2, 1), new (3, 1), -1 },
+            { new (-1, 1), new (1, 1), new (0, 1), new (3, 1), 1 },
+            { new (-1, 1), new (1, 1), new (1, 1), new (3, 1), 0 },
         };
         [Theory]
         [MemberData(nameof(線分が交差しているか_Data))]
-        public void 線分が交差しているか(PointDouble a1, PointDouble b1, PointDouble a2, PointDouble b2, bool expected)
+        public void 線分が交差しているか(PointDouble a1, PointDouble b1, PointDouble a2, PointDouble b2, int expected)
         {
             PointDouble.線分が交差しているか(a1, b1, a2, b2).Should().Be(expected);
+            PointDouble.線分が交差しているか(b1, a1, a2, b2).Should().Be(expected);
+            PointDouble.線分が交差しているか(a1, b1, b2, a2).Should().Be(expected);
+            PointDouble.線分が交差しているか(b1, a1, b2, a2).Should().Be(expected);
+
+            PointDouble.線分が交差しているか(a2, b2, a1, b1).Should().Be(expected);
+            PointDouble.線分が交差しているか(b2, a2, a1, b1).Should().Be(expected);
+            PointDouble.線分が交差しているか(a2, b2, b1, a1).Should().Be(expected);
+            PointDouble.線分が交差しているか(b2, a2, b1, a1).Should().Be(expected);
         }
 
-        public static TheoryData Area_Data => new TheoryData<PointDouble[], double>
+        public static TheoryData 三角形に分割_Data => new TheoryData<PointDouble[], (PointDouble, PointDouble, PointDouble)[]>
         {
             {
-                new PointDouble[]
-                {
-                    new(1,1),
-                    new(2,2),
-                    new(1,3),
-                    new(-1,1),
-                },
-                6
+                new PointDouble[0],
+                new (PointDouble, PointDouble, PointDouble)[0]
             },
             {
-                new PointDouble[]
-                {
-                    new(-1,1),
-                    new(1,3),
-                    new(2,2),
-                    new(1,1),
-                },
-                6
+                new PointDouble[1],
+                new (PointDouble, PointDouble, PointDouble)[0]
             },
             {
-                new PointDouble[]
+                new PointDouble[2],
+                new (PointDouble, PointDouble, PointDouble)[0]
+            },
+            {
+                new PointDouble[3]
                 {
-                    new(1.1,0.51),
-                    new(1.95,6.4423),
-                    new(4.341,1.2265),
-                    new(4.5,4),
+                    new (0, 1),
+                    new (0, 0),
+                    new (1, 1),
                 },
-                9.7425693
+                new (PointDouble, PointDouble, PointDouble)[]
+                {
+                    (new (0, 0), new (0, 1), new (1, 1)),
+                }
+            },
+            {
+                new PointDouble[5]
+                {
+                    new (0, 0),
+                    new (10, 0),
+                    new (5, 5),
+                    new (10, 10),
+                    new (0, 10),
+                },
+                new (PointDouble, PointDouble, PointDouble)[]
+                {
+                    (new (10, 0), new (0, 0), new (0, 10)),
+                    (new (10, 0), new (0, 10), new (10, 10)),
+                    (new (5, 5), new (10, 0), new (10, 10)),
+                }
             },
         };
-
         [Theory]
-        [MemberData(nameof(Area_Data))]
-        public void Area(PointDouble[] points, double expected)
+        [MemberData(nameof(三角形に分割_Data))]
+        public void 三角形に分割(PointDouble[] s, (PointDouble, PointDouble, PointDouble)[] expected)
         {
-            PointDouble.Area2(points).Should().Be(expected);
-            PointDouble.Area(points).Should().Be(expected / 2.0);
-        }
-
-
-        [Fact]
-        public void ConvexHull1()
-        {
-            var points = new PointDouble[]
-            {
-                (100000000, 100000000),
-                ( 80000000,  90000000),
-                ( 10000000, -10000000),
-                (100000000,  80000000),
-                ( 40000000,  20000000),
-                ( 80000000,  60000000),
-                ( 40000000,  80000000),
-                ( 10000000,  50000000),
-                (110000000, 100000000),
-                ( 60000000,  80000000),
-                ( 80000000,  80000000),
-                (-10000000,  50000000),
-            };
-            PointDouble.ConvexHull(points)
-                .Select(i => points[i])
-                .Should().Equal(
-                    (10000000, -10000000),
-                    (40000000, 20000000),
-                    (80000000, 60000000),
-                    (100000000, 80000000),
-                    (110000000, 100000000),
-                    (100000000, 100000000),
-                    (40000000, 80000000),
-                    (-10000000, 50000000)
-                );
-        }
-
-        [Fact]
-        public void ConvexHull2()
-        {
-            var points = new PointDouble[]
-            {
-                (10, 10),
-                ( 8,  9),
-                ( 8,  8),
-                (10,  8),
-                ( 0,  0),
-                ( 4,  0),
-                ( 8,  6),
-                ( 1,  5),
-                ( 6,  8),
-                (11, 10),
-                ( 1,  8),
-                (-6,  6),
-                (-4,  4),
-                (-1,  1)
-            };
-            PointDouble.ConvexHull(points)
-                .Select(i => points[i])
-                .Should().Equal(
-                    (0, 0),
-                    (4, 0),
-                    (10, 8),
-                    (11, 10),
-                    (10, 10),
-                    (1, 8),
-                    (-6, 6),
-                    (-4, 4),
-                    (-1, 1)
-                );
+            PointDouble.三角形に分割(s).Should().Equal(expected);
         }
     }
 }

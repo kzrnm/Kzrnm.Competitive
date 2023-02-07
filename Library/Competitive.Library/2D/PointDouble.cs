@@ -188,6 +188,29 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
+        /// 多角形の面積を求める
+        /// </summary>
+        [凾(256)]
+        public static double Area(ReadOnlySpan<P> points) => Area2(points) / 2.0;
+
+        /// <summary>
+        /// 多角形の面積×2を求める
+        /// </summary>
+        [凾(256)]
+        public static double Area2(ReadOnlySpan<P> points)
+        {
+            Contract.Assert(points.Length >= 3);
+            double res = (points[^1].x - points[0].x) * (points[^1].y + points[0].y);
+            for (int i = 1; i < points.Length; i++)
+            {
+                var p1 = points[i - 1];
+                var p2 = points[i];
+                res += (p1.x - p2.x) * (p1.y + p2.y);
+            }
+            return Math.Abs(res);
+        }
+
+        /// <summary>
         /// 3点の外心(外接円の中心=3点と等距離な点)を求める。3点が直線上にあるときはNaNとなる
         /// </summary>
         public static P 外心(P a, P b, P c)
@@ -302,12 +325,12 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// <paramref name="a1"/> から <paramref name="b1"/>までの線分と<paramref name="a2"/> から <paramref name="b2"/>までの線分が交差しているかを返します。<paramref name="edge"/> が true なら端点も交差しているとみなします。
+        /// <para><paramref name="a1"/> から <paramref name="b1"/>までの線分と<paramref name="a2"/> から <paramref name="b2"/>までの線分が交差しているかを返します。</para>
+        /// <para>端点で交差していれば 0, 端点以外で交差していれば 1, 交差していなければ -1 を返します。</para>
         /// </summary>
         [凾(256)]
-        public static bool 線分が交差しているか(P a1, P b1, P a2, P b2, bool edge = false)
+        public static int 線分が交差しているか(P a1, P b1, P a2, P b2)
         {
-            var threshold = edge ? 1 : 0;
             var (p, q, r) = a1.直線(b1);
             if (p * a2.x + q * a2.y + r == 0 && p * b2.x + q * b2.y + r == 0)
             {
@@ -318,9 +341,9 @@ namespace Kzrnm.Competitive
                 if (xa1 > xb1) (xa1, xb1) = (xb1, xa1);
                 if (xa2 > xb2) (xa2, xb2) = (xb2, xa2);
 
-                if (xa1.CompareTo(xb2) >= threshold) return false;
-                if (xa2.CompareTo(xb1) >= threshold) return false;
-                return true;
+                if (xa1 > xb2 || xa2 > xb1) return -1;
+                if (xa1 == xb2 || xa2 == xb1) return 0;
+                return 1;
             }
 
             var ta = (a2.x - b2.x) * (a1.y - a2.y) + (a2.y - b2.y) * (a2.x - a1.x);
@@ -328,30 +351,35 @@ namespace Kzrnm.Competitive
             var tc = (a1.x - b1.x) * (a2.y - a1.y) + (a1.y - b1.y) * (a1.x - a2.x);
             var td = (a1.x - b1.x) * (b2.y - a1.y) + (a1.y - b1.y) * (a1.x - b2.x);
 
-            return Math.Sign(tc) * Math.Sign(td) < threshold && Math.Sign(ta) * Math.Sign(tb) < threshold;
+            return -Math.Max(Math.Sign(tc) * Math.Sign(td), Math.Sign(ta) * Math.Sign(tb));
         }
 
         /// <summary>
-        /// 多角形の面積を求める
+        /// 多角形 <paramref name="s"/> を三角形に分割します。
         /// </summary>
-        [凾(256)]
-        public static double Area(ReadOnlySpan<P> points) => Area2(points) / 2.0;
-
-        /// <summary>
-        /// 多角形の面積×2を求める
-        /// </summary>
-        [凾(256)]
-        public static double Area2(ReadOnlySpan<P> points)
+        public static (P, P, P)[] 三角形に分割(ReadOnlySpan<P> s)
         {
-            Contract.Assert(points.Length >= 3);
-            double res = (points[^1].x - points[0].x) * (points[^1].y + points[0].y);
-            for (int i = 1; i < points.Length; i++)
+            if (s.Length < 3) return Array.Empty<(P, P, P)>();
+
+            var ret = new (P, P, P)[s.Length - 2];
+            int a = 0;
+            int b = s.Length - 1;
+
+            for (int i = 0; i < ret.Length; i++)
             {
-                var p1 = points[i - 1];
-                var p2 = points[i];
-                res += (p1.x - p2.x) * (p1.y + p2.y);
+                if ((i & 1) != 0)
+                {
+                    var p = s[b];
+                    ret[i] = (s[a], p, s[--b]);
+                }
+                else
+                {
+                    var p = s[a];
+                    ret[i] = (s[++a], p, s[b]);
+                }
             }
-            return Math.Abs(res);
+
+            return ret;
         }
     }
 }
