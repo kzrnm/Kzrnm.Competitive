@@ -6,37 +6,17 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
         [Theory]
         [InlineData("fdsayusyhfsda", "fdsayusyhfsda", "fdsayusyhfsda")]
         [InlineData("ababcsd", "bacds", "bacs")]
+        [InlineData("bacds", "ababcsd", "bacd")]
         public void String(string s, string t, string expected)
         {
             StringLibEx.Lcs(s, t).Should().Equal(expected.ToCharArray());
         }
 
-
-        public static TheoryData Int_Data => new TheoryData<int[], int[], int[]>
-        {
-            {
-                new[]{1,2,3,4,5,6,7},
-                new[]{1,2,3,4,5,6,7},
-                new[]{1,2,3,4,5,6,7}
-            },
-            {
-                new[]{1,2,3,4,5,6,7},
-                new[]{2,3,7,6,5,4,1},
-                new[]{2,3,4}
-            },
-            {
-                new[]{2,3,7,6,5,4},
-                new[]{1,2,3,4,5,6,7},
-                new[]{2,3,4}
-            },
-            {
-                new[]{1,2,3,4,5,6,7},
-                new[]{2,3,7,6,5,4},
-                new[]{2,3,4}
-            },
-        };
         [Theory]
-        [MemberData(nameof(Int_Data))]
+        [InlineData(new[] { 1, 2, 3, 4, 5, 6, 7 }, new[] { 1, 2, 3, 4, 5, 6, 7 }, new[] { 1, 2, 3, 4, 5, 6, 7 })]
+        [InlineData(new[] { 1, 2, 3, 4, 5, 6, 7 }, new[] { 2, 3, 7, 6, 5, 4, 1 }, new[] { 2, 3, 4 })]
+        [InlineData(new[] { 2, 3, 7, 6, 5, 4 }, new[] { 1, 2, 3, 4, 5, 6, 7 }, new[] { 2, 3, 7 })]
+        [InlineData(new[] { 1, 2, 3, 4, 5, 6, 7 }, new[] { 2, 3, 7, 6, 5, 4 }, new[] { 2, 3, 4 })]
         public void Int(int[] s, int[] t, int[] expected)
         {
             StringLibEx.Lcs(s, t).Should().Equal(expected);
