@@ -138,10 +138,10 @@ class ATArray2 {
     }
 
     [string]ToInit() {
-        return "$($this.name) = cr.Repeat($($this.length1)).Select(cr => cr.Repeat($($this.length2)).Int());"
+        return "$($this.name) = cr.Repeat($($this.length1)).Select(cr => cr.Repeat($($this.length2)).Int);"
     }
     [string]ToDefineInit() {
-        return "var $($this.name) = cr.Repeat($($this.length1)).Select(cr => cr.Repeat($($this.length2)).Int());"
+        return "var $($this.name) = cr.Repeat($($this.length1)).Select(cr => cr.Repeat($($this.length2)).Int);"
     }
     [string]ToDefine() {
         return "int[][] $($this.name);"
@@ -156,7 +156,7 @@ class ATGrid {
         return "grid = cr.Repeat($($this.length));"
     }
     [string]ToDefineInit() {
-        return "var grid = cr.Repeat($($this.length)).Ascii();"
+        return "var grid = cr.Repeat($($this.length)).Ascii;"
     }
     [string]ToDefine() {
         return "string[] grid;"
