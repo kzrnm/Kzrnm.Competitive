@@ -4,11 +4,17 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
+#if NET7_0_OR_GREATER
+using System.Numerics;
+#endif
 
 namespace Kzrnm.Competitive
 {
     using P = PointInt;
     public readonly struct PointInt : IEquatable<P>, IComparable<P>, IUtf8ConsoleWriterFormatter
+#if NET7_0_OR_GREATER
+        , IAdditionOperators<P, P, P>, ISubtractionOperators<P, P, P>, IUnaryPlusOperators<P, P>, IUnaryNegationOperators<P, P>
+#endif
     {
         public readonly int x;
         public readonly int y;
@@ -56,6 +62,11 @@ namespace Kzrnm.Competitive
 
         [凾(256)]
         public static P operator -(P a, P b) => new P(a.x - b.x, a.y - b.y);
+
+        [凾(256)]
+        public static P operator +(P a) => a;
+        [凾(256)]
+        public static P operator -(P a) => new P(-a.x, -a.y);
 
         /// <summary>
         /// <para>Atan2 の値で比較する(偏角ソート)。</para>
