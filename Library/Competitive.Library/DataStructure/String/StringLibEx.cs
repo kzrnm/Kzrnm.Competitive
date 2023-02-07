@@ -26,6 +26,7 @@ namespace Kzrnm.Competitive
         {
             if (s.Length < t.Length) return Lcs(t, s);
 
+            // dp[i][j] := s[..i] と t[..j] の LCS 長
             var dp = new int[s.Length + 1][];
             dp[0] = new int[s.Length + 1];
             int i, j;
@@ -41,11 +42,11 @@ namespace Kzrnm.Competitive
                         nrr[j + 1] = Math.Max(crr[j + 1], nrr[j]);
                 }
             }
-            var list = LCSSearch(dp, s, s.Length, t.Length);
+            var list = LcsSearch(dp, s, s.Length, t.Length);
             list.Reverse();
             return list.ToArray();
 
-            static List<T> LCSSearch(int[][] dp, ReadOnlySpan<T> s, int i, int j)
+            static List<T> LcsSearch(int[][] dp, ReadOnlySpan<T> s, int i, int j)
             {
                 var list = new List<T>();
                 while (i > 0 && j > 0)
