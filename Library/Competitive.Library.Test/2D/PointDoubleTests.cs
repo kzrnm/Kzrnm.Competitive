@@ -296,6 +296,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         public static TheoryData 円の交点_Data => new TheoryData<PointDouble, double, PointDouble, double, PointDouble[]>
         {
             { new PointDouble(-1, 0), 0.8, new PointDouble(1, 0), 1, Array.Empty<PointDouble>() },
+            { new PointDouble(-1, -1), 10, new PointDouble(1, 2), 1, Array.Empty<PointDouble>() },
             { new PointDouble(-1, 0), 1, new PointDouble(1, 0), 1, new PointDouble[]{ new PointDouble(0, 0) } },
             { new PointDouble(-1, 0), 1.2, new PointDouble(1, 0), 1.2, new PointDouble[]{ new PointDouble(0, 0.6633249580710799), new PointDouble(0, -0.6633249580710799) } },
             { new PointDouble(0, 0), 1, new PointDouble(1, 1), 1, new PointDouble[]{ new PointDouble(0, 1), new PointDouble(1, 0) } },
