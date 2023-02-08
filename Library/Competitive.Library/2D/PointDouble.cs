@@ -29,8 +29,16 @@ namespace Kzrnm.Competitive
         public void Deconstruct(out double v1, out double v2) { v1 = x; v2 = y; }
         [凾(256)]
         public static implicit operator P((double x, double y) tuple) => new P(tuple.x, tuple.y);
+
+        /// <summary>
+        /// <paramref name="other"/> との距離
+        /// </summary>
         [凾(256)]
         public double Distance(P other) => Math.Sqrt(Distance2(other));
+
+        /// <summary>
+        /// <paramref name="other"/> との距離の 2 乗
+        /// </summary>
         [凾(256)]
         public double Distance2(P other)
         {
@@ -311,7 +319,7 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// P1 を中心とする半径 r1 の円とP2 を中心とする半径 r2 の円の交点
+        /// <paramref name="p1"/> を中心とする半径 <paramref name="r1"/> の円と <paramref name="p2"/> を中心とする半径 <paramref name="r2"/> の円の交点
         /// </summary>
         [凾(256)]
         public static P[] 円の交点(P p1, double r1, P p2, double r2)
@@ -325,7 +333,31 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// <para><paramref name="a1"/> から <paramref name="b1"/>までの線分と<paramref name="a2"/> から <paramref name="b2"/>までの線分が交差しているかを返します。</para>
+        /// <paramref name="p1"/> を中心とする半径 <paramref name="r1"/> の円と <paramref name="p2"/> を中心とする半径 <paramref name="r2"/> の円の位置関係
+        /// </summary>
+        [凾(256)]
+        public static CirclePosition 円の位置関係(P p1, double r1, P p2, double r2)
+        {
+            var rd = r2 - r1;
+            var rp = r2 + r1;
+
+            rd *= rd;
+            rp *= rp;
+            var d = p1.Distance2(p2);
+
+            if (d < rd)
+                return CirclePosition.Inner;
+            if (d == rd)
+                return CirclePosition.Inscribed;
+            if (d > rp)
+                return CirclePosition.Separated;
+            if (d == rp)
+                return CirclePosition.Circumscribed;
+            return CirclePosition.Intersected;
+        }
+
+        /// <summary>
+        /// <para><paramref name="a1"/> から <paramref name="b1"/> までの線分と <paramref name="a2"/> から <paramref name="b2"/> までの線分が交差しているかを返します。</para>
         /// <para>端点で交差していれば 0, 端点以外で交差していれば 1, 交差していなければ -1 を返します。</para>
         /// </summary>
         [凾(256)]

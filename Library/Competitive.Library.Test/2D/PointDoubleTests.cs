@@ -295,17 +295,34 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
 
         public static TheoryData 円の交点_Data => new TheoryData<PointDouble, double, PointDouble, double, PointDouble[]>
         {
-            { new (-1, 0), 0.8, new (1, 0), 1, Array.Empty<PointDouble>() },
             { new (-1, -1), 10, new (1, 2), 1, Array.Empty<PointDouble>() },
-            { new (-1, 0), 1, new (1, 0), 1, new PointDouble[]{ new (0, 0) } },
+            { new (5, 0), 5, new (1, 0), 1, new PointDouble[]{ new (0, 0) } },
             { new (-1, 0), 1.2, new (1, 0), 1.2, new PointDouble[]{ new (0, 0.6633249580710799), new (0, -0.6633249580710799) } },
             { new (0, 0), 1, new (1, 1), 1, new PointDouble[]{ new (0, 1), new (1, 0) } },
+            { new (-1, 0), 1, new (1, 0), 1, new PointDouble[]{ new (0, 0) } },
+            { new (-1, 0), 0.8, new (1, 0), 1, Array.Empty<PointDouble>() },
         };
         [Theory]
         [MemberData(nameof(円の交点_Data))]
         public void 円の交点(PointDouble p1, double r1, PointDouble p2, double r2, PointDouble[] expected)
         {
             PointDouble.円の交点(p1, r1, p2, r2).Should().BeEquivalentTo(expected);
+        }
+
+        public static TheoryData 円の位置関係_Data => new TheoryData<PointDouble, double, PointDouble, double, CirclePosition>
+        {
+            { new (-1, -1), 10, new (1, 2), 1, CirclePosition.Inner },
+            { new (5, 0), 5, new (1, 0), 1, CirclePosition.Inscribed },
+            { new (-1, 0), 1.2, new (1, 0), 1.2, CirclePosition.Intersected },
+            { new (0, 0), 1, new (1, 1), 1, CirclePosition.Intersected },
+            { new (-1, 0), 1, new (1, 0), 1, CirclePosition.Circumscribed },
+            { new (-1, 0), 0.8, new (1, 0), 1, CirclePosition.Separated },
+        };
+        [Theory]
+        [MemberData(nameof(円の位置関係_Data))]
+        public void 円の位置関係(PointDouble p1, double r1, PointDouble p2, double r2, CirclePosition expected)
+        {
+            PointDouble.円の位置関係(p1, r1, p2, r2).Should().Be(expected);
         }
 
         public static TheoryData 線分が交差しているか_Data => new TheoryData<PointDouble, PointDouble, PointDouble, PointDouble, int>

@@ -32,9 +32,15 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static implicit operator P((int x, int y) tuple) => new P(tuple.x, tuple.y);
 
+        /// <summary>
+        /// <paramref name="other"/> との距離
+        /// </summary>
         [凾(256)]
         public double Distance(P other) => Math.Sqrt(Distance2(other));
 
+        /// <summary>
+        /// <paramref name="other"/> との距離の 2 乗
+        /// </summary>
         [凾(256)]
         public long Distance2(P other)
         {
