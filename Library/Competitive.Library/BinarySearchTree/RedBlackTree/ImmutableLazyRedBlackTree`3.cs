@@ -71,6 +71,20 @@ namespace Kzrnm.Competitive
             return new ImmutableLazyRedBlackTree<T, F, TOp>(rb.Merge3(t1, rb.im.Build(items.ToArray()), t2));
         }
 
+        [凾(256)]
+        public ImmutableLazyRedBlackTree<T, F, TOp> AddRange(ImmutableLazyRedBlackTree<T, F, TOp> other)
+        {
+            var t = rb.im.Merge(root, other.root);
+            return new ImmutableLazyRedBlackTree<T, F, TOp>(t);
+        }
+        [凾(256)]
+        public ImmutableLazyRedBlackTree<T, F, TOp> InsertRange(int index, ImmutableLazyRedBlackTree<T, F, TOp> other)
+        {
+            var t = root;
+            var (t1, t2) = rb.im.Split(t, index);
+            rb.Merge3(t1, other.root, t2);
+            return new ImmutableLazyRedBlackTree<T, F, TOp>(t);
+        }
 
         [凾(256)]
         public ImmutableLazyRedBlackTree<T, F, TOp> RemoveAt(int index)
