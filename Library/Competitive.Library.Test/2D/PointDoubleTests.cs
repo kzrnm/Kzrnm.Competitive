@@ -7,12 +7,12 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
     {
         public static TheoryData Distance_Data => new TheoryData<PointDouble, PointDouble, double, double>
         {
-            { new PointDouble(0,0), new PointDouble(0,0), 0, 0 },
-            { new PointDouble(1,1), new PointDouble(1,1), 0, 0 },
-            { new PointDouble(0,0), new PointDouble(1,1), 2, Math.Sqrt(2) },
-            { new PointDouble(0,0), new PointDouble(-1,-1), 2, Math.Sqrt(2) },
-            { new PointDouble(-1,-2), new PointDouble(3,5), 65, Math.Sqrt(65) },
-            { new PointDouble(1.2,-3.33), new PointDouble(-.5,1.7), 28.190900000000003, Math.Sqrt(28.190900000000003) },
+            { new (0,0), new (0,0), 0, 0 },
+            { new (1,1), new (1,1), 0, 0 },
+            { new (0,0), new (1,1), 2, Math.Sqrt(2) },
+            { new (0,0), new (-1,-1), 2, Math.Sqrt(2) },
+            { new (-1,-2), new (3,5), 65, Math.Sqrt(65) },
+            { new (1.2,-3.33), new (-.5,1.7), 28.190900000000003, Math.Sqrt(28.190900000000003) },
         };
         [Theory]
         [MemberData(nameof(Distance_Data))]
@@ -62,11 +62,11 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
 
         public static TheoryData Inner_Data => new TheoryData<PointDouble, PointDouble, long>
         {
-            { new PointDouble(0,0), new PointDouble(0,0), 0 },
-            { new PointDouble(0,1), new PointDouble(1,0), 0 },
-            { new PointDouble(5,1), new PointDouble(-2,10), 0 },
-            { new PointDouble(10,0), new PointDouble(-2,10), -20 },
-            { new PointDouble(5,3), new PointDouble(-2,-7), -31 },
+            { new (0,0), new (0,0), 0 },
+            { new (0,1), new (1,0), 0 },
+            { new (5,1), new (-2,10), 0 },
+            { new (10,0), new (-2,10), -20 },
+            { new (5,3), new (-2,-7), -31 },
         };
         [Theory]
         [MemberData(nameof(Inner_Data))]
@@ -77,11 +77,11 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
 
         public static TheoryData Cross_Data => new TheoryData<PointDouble, PointDouble, long>
         {
-            { new PointDouble(0,0), new PointDouble(0,0), 0 },
-            { new PointDouble(0,1), new PointDouble(1,0), -1 },
-            { new PointDouble(5,1), new PointDouble(-2,10), 52 },
-            { new PointDouble(10,0), new PointDouble(-2,10), 100 },
-            { new PointDouble(5,3), new PointDouble(-2,-7), -29 },
+            { new (0,0), new (0,0), 0 },
+            { new (0,1), new (1,0), -1 },
+            { new (5,1), new (-2,10), 52 },
+            { new (10,0), new (-2,10), 100 },
+            { new (5,3), new (-2,-7), -29 },
         };
         [Theory]
         [MemberData(nameof(Cross_Data))]
@@ -201,8 +201,8 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
 
         public static TheoryData 外心_Data => new TheoryData<PointDouble, PointDouble, PointDouble, PointDouble>
         {
-            { new PointDouble(0,0), new PointDouble(1,0), new PointDouble(0,1), new PointDouble(0.5000000000000001,0.5000000000000001) },
-            { new PointDouble(-11,4), new PointDouble(-0.2,60), new PointDouble(62,-10), new PointDouble(30.86367239101717, 24.967720324589546) },
+            { new (0,0), new (1,0), new (0,1), new (0.5000000000000001,0.5000000000000001) },
+            { new (-11,4), new (-0.2,60), new (62,-10), new (30.86367239101717, 24.967720324589546) },
         };
         [Theory]
         [MemberData(nameof(外心_Data))]
@@ -213,11 +213,11 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
 
         public static TheoryData 直線との距離_Data => new TheoryData<PointDouble, double, double, double, double>
         {
-            { new PointDouble(0,0), 1, 1, -1, 0.7071067811865475 },
-            { new PointDouble(0,0), -1, -1, 2, 1.414213562373095 },
-            { new PointDouble(1,0), -1, -1, 2, 0.7071067811865475 },
-            { new PointDouble(-1,0), -1, -1, 2, 2.1213203435596424 },
-            { new PointDouble(1,1), -1, -1, 2, 0 },
+            { new (0,0), 1, 1, -1, 0.7071067811865475 },
+            { new (0,0), -1, -1, 2, 1.414213562373095 },
+            { new (1,0), -1, -1, 2, 0.7071067811865475 },
+            { new (-1,0), -1, -1, 2, 2.1213203435596424 },
+            { new (1,1), -1, -1, 2, 0 },
         };
         [Theory]
         [MemberData(nameof(直線との距離_Data))]
@@ -228,10 +228,10 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
 
         public static TheoryData 直線_Data => new TheoryData<PointDouble, PointDouble, (double, double, double)>
         {
-            { new PointDouble(0,0), new PointDouble(1,1), (1, -1, 0) },
-            { new PointDouble(1,0), new PointDouble(1,1), (1, 0, -1) },
-            { new PointDouble(0,1), new PointDouble(1,1), (0, -1, 1) },
-            { new PointDouble(-1,10), new PointDouble(10,2), (-8, -11, 102) },
+            { new (0,0), new (1,1), (1, -1, 0) },
+            { new (1,0), new (1,1), (1, 0, -1) },
+            { new (0,1), new (1,1), (0, -1, 1) },
+            { new (-1,10), new (10,2), (-8, -11, 102) },
         };
         [Theory]
         [MemberData(nameof(直線_Data))]
@@ -242,10 +242,10 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
 
         public static TheoryData 垂直二等分線_Data => new TheoryData<PointDouble, PointDouble, (double, double, double)>
         {
-            { new PointDouble(0,0), new PointDouble(1,1), (-1, -1, 1) },
-            { new PointDouble(1,0), new PointDouble(1,1), (0, -1, 0.5) },
-            { new PointDouble(0,1), new PointDouble(1,1), (-1, 0, 0.5) },
-            { new PointDouble(-1,10), new PointDouble(10,2), (-11, 8, 1.5) },
+            { new (0,0), new (1,1), (-1, -1, 1) },
+            { new (1,0), new (1,1), (0, -1, 0.5) },
+            { new (0,1), new (1,1), (-1, 0, 0.5) },
+            { new (-1,10), new (10,2), (-11, 8, 1.5) },
         };
         [Theory]
         [MemberData(nameof(垂直二等分線_Data))]
@@ -256,8 +256,8 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
 
         public static TheoryData 直線と直線の交点_Data => new TheoryData<double, double, double, double, double, double, PointDouble>
         {
-            { 1, 1, 1, -1, 1, 2, new PointDouble(0.5, -1.5) },
-            { -1, 5, .5, -7, 7, 5.8, new PointDouble(0.9107142857142857, 0.08214285714285714) },
+            { 1, 1, 1, -1, 1, 2, new (0.5, -1.5) },
+            { -1, 5, .5, -7, 7, 5.8, new (0.9107142857142857, 0.08214285714285714) },
         };
         [Theory]
         [MemberData(nameof(直線と直線の交点_Data))]
@@ -268,10 +268,10 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
 
         public static TheoryData 直線の垂線_Data => new TheoryData<double, double, PointDouble, (double, double, double)>
         {
-            { 1, 1, new PointDouble(0.5, -1.5), (1, -1, -2) },
-            { 4, 7, new PointDouble(-10, 2), (7, -4, 78) },
-            { 0, 2, new PointDouble(7, 5), (2, 0, -14) },
-            { 2, 0, new PointDouble(7, 5), (0, -2, 10) },
+            { 1, 1, new (0.5, -1.5), (1, -1, -2) },
+            { 4, 7, new (-10, 2), (7, -4, 78) },
+            { 0, 2, new (7, 5), (2, 0, -14) },
+            { 2, 0, new (7, 5), (0, -2, 10) },
         };
         [Theory]
         [MemberData(nameof(直線の垂線_Data))]
@@ -282,9 +282,9 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
 
         public static TheoryData 直線と円の交点_Data => new TheoryData<double, double, double, PointDouble, double, PointDouble[]>
         {
-            { 1, -1, 1, new PointDouble(0, 0), 0.1, Array.Empty<PointDouble>() },
-            { 0, -1, 1, new PointDouble(0, 0), 1, new PointDouble[]{ new PointDouble(0, 1) } },
-            { 1, -1, 1, new PointDouble(0, 0), 1, new PointDouble[]{ new PointDouble(-1, 0), new PointDouble(0, 1) } },
+            { 1, -1, 1, new (0, 0), 0.1, Array.Empty<PointDouble>() },
+            { 0, -1, 1, new (0, 0), 1, new PointDouble[]{ new (0, 1) } },
+            { 1, -1, 1, new (0, 0), 1, new PointDouble[]{ new (-1, 0), new (0, 1) } },
         };
         [Theory]
         [MemberData(nameof(直線と円の交点_Data))]
@@ -295,11 +295,11 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
 
         public static TheoryData 円の交点_Data => new TheoryData<PointDouble, double, PointDouble, double, PointDouble[]>
         {
-            { new PointDouble(-1, 0), 0.8, new PointDouble(1, 0), 1, Array.Empty<PointDouble>() },
-            { new PointDouble(-1, -1), 10, new PointDouble(1, 2), 1, Array.Empty<PointDouble>() },
-            { new PointDouble(-1, 0), 1, new PointDouble(1, 0), 1, new PointDouble[]{ new PointDouble(0, 0) } },
-            { new PointDouble(-1, 0), 1.2, new PointDouble(1, 0), 1.2, new PointDouble[]{ new PointDouble(0, 0.6633249580710799), new PointDouble(0, -0.6633249580710799) } },
-            { new PointDouble(0, 0), 1, new PointDouble(1, 1), 1, new PointDouble[]{ new PointDouble(0, 1), new PointDouble(1, 0) } },
+            { new (-1, 0), 0.8, new (1, 0), 1, Array.Empty<PointDouble>() },
+            { new (-1, -1), 10, new (1, 2), 1, Array.Empty<PointDouble>() },
+            { new (-1, 0), 1, new (1, 0), 1, new PointDouble[]{ new (0, 0) } },
+            { new (-1, 0), 1.2, new (1, 0), 1.2, new PointDouble[]{ new (0, 0.6633249580710799), new (0, -0.6633249580710799) } },
+            { new (0, 0), 1, new (1, 1), 1, new PointDouble[]{ new (0, 1), new (1, 0) } },
         };
         [Theory]
         [MemberData(nameof(円の交点_Data))]
