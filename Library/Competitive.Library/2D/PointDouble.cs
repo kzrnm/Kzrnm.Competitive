@@ -357,6 +357,21 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
+        /// <para><paramref name="p1"/> を中心とする半径 <paramref name="r1"/> の円と <paramref name="p2"/> を中心とする半径 <paramref name="r2"/> の円の距離</para>
+        /// <para>交差していれば 0 を返します。</para>
+        /// </summary>
+        [凾(256)]
+        public static double 円の距離(P p1, double r1, P p2, double r2)
+        {
+            return 円の位置関係(p1, r1, p2, r2) switch
+            {
+                CirclePosition.Inner => Math.Abs(r1 - r2) - p1.Distance(p2),
+                CirclePosition.Separated => p1.Distance(p2) - r1 - r2,
+                _ => 0,
+            };
+        }
+
+        /// <summary>
         /// <para><paramref name="a1"/> から <paramref name="b1"/> までの線分と <paramref name="a2"/> から <paramref name="b2"/> までの線分が交差しているかを返します。</para>
         /// <para>端点で交差していれば 0, 端点以外で交差していれば 1, 交差していなければ -1 を返します。</para>
         /// </summary>

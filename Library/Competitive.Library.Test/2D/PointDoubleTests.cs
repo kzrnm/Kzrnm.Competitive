@@ -325,6 +325,22 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             PointDouble.円の位置関係(p1, r1, p2, r2).Should().Be(expected);
         }
 
+        public static TheoryData 円の距離_Data => new TheoryData<PointDouble, double, PointDouble, double, double>
+        {
+            { new (-1, -1), 10, new (1, 2), 1, 5.39444872453601 },
+            { new (5, 0), 5, new (1, 0), 1, 0 },
+            { new (-1, 0), 1.2, new (1, 0), 1.2, 0 },
+            { new (0, 0), 1, new (1, 1), 1, 0 },
+            { new (-1, 0), 1, new (1, 0), 1, 0 },
+            { new (-1, 0), 0.8, new (1, 0), 1, 0.2 },
+        };
+        [Theory]
+        [MemberData(nameof(円の距離_Data))]
+        public void 円の距離(PointDouble p1, double r1, PointDouble p2, double r2, double expected)
+        {
+            PointDouble.円の距離(p1, r1, p2, r2).Should().BeApproximately(expected, 1e-9);
+        }
+
         public static TheoryData 線分が交差しているか_Data => new TheoryData<PointDouble, PointDouble, PointDouble, PointDouble, int>
         {
             { new (-1, -1), new (1, 1), new (-1, 0), new (0, 0.001), -1 },
