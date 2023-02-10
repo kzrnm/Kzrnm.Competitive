@@ -31,7 +31,7 @@ partial class Program
 {
     const bool __ManyTestCases = false;
 #if !LOCAL_RUNNING
-    static void Main()=>new Program(new ConsoleReader(), new Utf8ConsoleWriter()).Run();
+    static void Main()=>new Program(new PropertyConsoleReader(), new Utf8ConsoleWriter()).Run();
     [凾(256)]
 #endif
     private ConsoleOutput? Calc()
