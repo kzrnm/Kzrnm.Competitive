@@ -1,12 +1,5 @@
 using AtCoder;
-using AtCoder.Internal;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Numerics;
-using System.Runtime.CompilerServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.Internal
@@ -32,29 +25,28 @@ namespace Kzrnm.Competitive.Internal
         /// </summary>
         bool IntoLeft(int order);
     }
-    public struct L : ISetBinarySearchOperator
+    public struct SetLower : ISetBinarySearchOperator
     {
         public bool ReturnLeft => false;
         [凾(256)]
         public bool IntoLeft(int order) => order <= 0;
     }
-    public struct U : ISetBinarySearchOperator
+    public struct SetUpper : ISetBinarySearchOperator
     {
         public bool ReturnLeft => false;
         [凾(256)]
         public bool IntoLeft(int order) => order < 0;
     }
-    public struct LR : ISetBinarySearchOperator
+    public struct SetLowerRev : ISetBinarySearchOperator
     {
         public bool ReturnLeft => true;
         [凾(256)]
         public bool IntoLeft(int order) => order < 0;
     }
-    public struct UR : ISetBinarySearchOperator
+    public struct SetUpperRev : ISetBinarySearchOperator
     {
         public bool ReturnLeft => true;
         [凾(256)]
         public bool IntoLeft(int order) => order <= 0;
     }
-
 }

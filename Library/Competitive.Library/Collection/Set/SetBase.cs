@@ -245,64 +245,64 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// <paramref name="item"/> 以上の最初のノードを返します。
         /// </summary>
         [凾(256)]
-        public Node FindNodeLowerBound(T item) => BinarySearch<L>(item).node;
+        public Node FindNodeLowerBound(T item) => BinarySearch<SetLower>(item).node;
         /// <summary>
         /// <paramref name="item"/> 以上の最初のインデックスを返します。
         /// </summary>
         [凾(256)]
-        public int LowerBoundIndex(T item) => BinarySearch<L>(item).index;
+        public int LowerBoundIndex(T item) => BinarySearch<SetLower>(item).index;
         /// <summary>
         /// <paramref name="item"/> 以上の最初の要素を返します。
         /// </summary>
         [凾(256)]
-        public T LowerBoundItem(T item) => op.GetValue(BinarySearch<L>(item).node);
+        public T LowerBoundItem(T item) => op.GetValue(BinarySearch<SetLower>(item).node);
         /// <summary>
         /// <paramref name="item"/> を超える最初のノードを返します。
         /// </summary>
         [凾(256)]
-        public Node FindNodeUpperBound(T item) => BinarySearch<U>(item).node;
+        public Node FindNodeUpperBound(T item) => BinarySearch<SetUpper>(item).node;
         /// <summary>
         /// <paramref name="item"/> を超える最初のインデックスを返します。
         /// </summary>
         [凾(256)]
-        public int UpperBoundIndex(T item) => BinarySearch<U>(item).index;
+        public int UpperBoundIndex(T item) => BinarySearch<SetUpper>(item).index;
         /// <summary>
         /// <paramref name="item"/> を超える最初の要素を返します。
         /// </summary>
         [凾(256)]
-        public T UpperBoundItem(T item) => op.GetValue(BinarySearch<U>(item).node);
+        public T UpperBoundItem(T item) => op.GetValue(BinarySearch<SetUpper>(item).node);
 
         /// <summary>
         /// <paramref name="item"/> 以下の最後のノードを返します。
         /// </summary>
         [凾(256)]
-        public Node FindNodeReverseLowerBound(T item) => BinarySearch<LR>(item).node;
+        public Node FindNodeReverseLowerBound(T item) => BinarySearch<SetLowerRev>(item).node;
         /// <summary>
         /// <paramref name="item"/> 以下の最後のインデックスを返します。
         /// </summary>
         [凾(256)]
-        public int ReverseLowerBoundIndex(T item) => BinarySearch<LR>(item).index;
+        public int ReverseLowerBoundIndex(T item) => BinarySearch<SetLowerRev>(item).index;
         /// <summary>
         /// <paramref name="item"/> 以下の最後の要素を返します。
         /// </summary>
         [凾(256)]
-        public T ReverseLowerBoundItem(T item) => op.GetValue(BinarySearch<LR>(item).node);
+        public T ReverseLowerBoundItem(T item) => op.GetValue(BinarySearch<SetLowerRev>(item).node);
 
         /// <summary>
         /// <paramref name="item"/> 未満の最後のノードを返します。
         /// </summary>
         [凾(256)]
-        public Node FindNodeReverseUpperBound(T item) => BinarySearch<UR>(item).node;
+        public Node FindNodeReverseUpperBound(T item) => BinarySearch<SetUpperRev>(item).node;
         /// <summary>
         /// <paramref name="item"/> 未満の最後のインデックスを返します。
         /// </summary>
         [凾(256)]
-        public int ReverseUpperBoundIndex(T item) => BinarySearch<UR>(item).index;
+        public int ReverseUpperBoundIndex(T item) => BinarySearch<SetUpperRev>(item).index;
         /// <summary>
         /// <paramref name="item"/> 未満の最後の要素を返します。
         /// </summary>
         [凾(256)]
-        public T ReverseUpperBoundItem(T item) => op.GetValue(BinarySearch<UR>(item).node);
+        public T ReverseUpperBoundItem(T item) => op.GetValue(BinarySearch<SetUpperRev>(item).node);
         #endregion Search
 
         #region Enumerate

@@ -85,7 +85,7 @@ namespace Kzrnm.Competitive
         public bool ContainsKey(TKey key) => FindNode(new C(comparer, key)) != null;
         bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> pair)
         {
-            var node = BinarySearch(new C(comparer, pair.Key), new L()).node; // LowerBound
+            var node = BinarySearch(new C(comparer, pair.Key), new SetLower()).node; // LowerBound
             if (node == null) return false;
             var e = new Enumerator(this, false, node);
             while (e.MoveNext())
@@ -152,53 +152,53 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="item"/> 以上の最初のノードを返します。
         /// </summary>
-        [凾(256)] public Node FindNodeLowerBound(TKey item) => BinarySearch(new C(comparer, item), new L()).node;
+        [凾(256)] public Node FindNodeLowerBound(TKey item) => BinarySearch(new C(comparer, item), new SetLower()).node;
         /// <summary>
         /// <paramref name="item"/> 以上の最初のインデックスを返します。
         /// </summary>
-        [凾(256)] public int LowerBoundIndex(TKey item) => BinarySearch(new C(comparer, item), new L()).index;
+        [凾(256)] public int LowerBoundIndex(TKey item) => BinarySearch(new C(comparer, item), new SetLower()).index;
         /// <summary>
         /// <paramref name="item"/> 以上の最初の要素を返します。
         /// </summary>
-        [凾(256)] public KeyValuePair<TKey, TValue> LowerBoundItem(TKey item) => BinarySearch(new C(comparer, item), new L()).node.Pair;
+        [凾(256)] public KeyValuePair<TKey, TValue> LowerBoundItem(TKey item) => BinarySearch(new C(comparer, item), new SetLower()).node.Pair;
         /// <summary>
         /// <paramref name="item"/> を超える最初のノードを返します。
         /// </summary>
-        [凾(256)] public Node FindNodeUpperBound(TKey item) => BinarySearch(new C(comparer, item), new U()).node;
+        [凾(256)] public Node FindNodeUpperBound(TKey item) => BinarySearch(new C(comparer, item), new SetUpper()).node;
         /// <summary>
         /// <paramref name="item"/> を超える最初のインデックスを返します。
         /// </summary>
-        [凾(256)] public int UpperBoundIndex(TKey item) => BinarySearch(new C(comparer, item), new U()).index;
+        [凾(256)] public int UpperBoundIndex(TKey item) => BinarySearch(new C(comparer, item), new SetUpper()).index;
         /// <summary>
         /// <paramref name="item"/> を超える最初の要素を返します。
         /// </summary>
-        [凾(256)] public KeyValuePair<TKey, TValue> UpperBoundItem(TKey item) => BinarySearch(new C(comparer, item), new U()).node.Pair;
+        [凾(256)] public KeyValuePair<TKey, TValue> UpperBoundItem(TKey item) => BinarySearch(new C(comparer, item), new SetUpper()).node.Pair;
 
         /// <summary>
         /// <paramref name="item"/> 以下の最後のノードを返します。
         /// </summary>
-        [凾(256)] public Node FindNodeReverseLowerBound(TKey item) => BinarySearch(new C(comparer, item), new LR()).node;
+        [凾(256)] public Node FindNodeReverseLowerBound(TKey item) => BinarySearch(new C(comparer, item), new SetLowerRev()).node;
         /// <summary>
         /// <paramref name="item"/> 以下の最後のインデックスを返します。
         /// </summary>
-        [凾(256)] public int ReverseLowerBoundIndex(TKey item) => BinarySearch(new C(comparer, item), new LR()).index;
+        [凾(256)] public int ReverseLowerBoundIndex(TKey item) => BinarySearch(new C(comparer, item), new SetLowerRev()).index;
         /// <summary>
         /// <paramref name="item"/> 以下の最後の要素を返します。
         /// </summary>
-        [凾(256)] public KeyValuePair<TKey, TValue> ReverseLowerBoundItem(TKey item) => BinarySearch(new C(comparer, item), new LR()).node.Pair;
+        [凾(256)] public KeyValuePair<TKey, TValue> ReverseLowerBoundItem(TKey item) => BinarySearch(new C(comparer, item), new SetLowerRev()).node.Pair;
 
         /// <summary>
         /// <paramref name="item"/> 未満の最後のノードを返します。
         /// </summary>
-        [凾(256)] public Node FindNodeReverseUpperBound(TKey item) => BinarySearch(new C(comparer, item), new UR()).node;
+        [凾(256)] public Node FindNodeReverseUpperBound(TKey item) => BinarySearch(new C(comparer, item), new SetUpperRev()).node;
         /// <summary>
         /// <paramref name="item"/> 未満の最後のインデックスを返します。
         /// </summary>
-        [凾(256)] public int ReverseUpperBoundIndex(TKey item) => BinarySearch(new C(comparer, item), new UR()).index;
+        [凾(256)] public int ReverseUpperBoundIndex(TKey item) => BinarySearch(new C(comparer, item), new SetUpperRev()).index;
         /// <summary>
         /// <paramref name="item"/> 未満の最後の要素を返します。
         /// </summary>
-        [凾(256)] public KeyValuePair<TKey, TValue> ReverseUpperBoundItem(TKey item) => BinarySearch(new C(comparer, item), new UR()).node.Pair;
+        [凾(256)] public KeyValuePair<TKey, TValue> ReverseUpperBoundItem(TKey item) => BinarySearch(new C(comparer, item), new SetUpperRev()).node.Pair;
         #endregion Search
 
         private class DebugView
