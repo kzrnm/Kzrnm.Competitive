@@ -2,24 +2,18 @@ using namespace System.Collections.Generic;
 if (-not (Test-Path "$PSScriptRoot/config.json")) {
     throw "Requied: $PSScriptRoot/config.json"
 }
-$config = (Get-Content "$PSScriptRoot/config.json" | ConvertFrom-Json)
-$AtCoderStreakPath = $config.AtCoderStreakPath
-function loadingDll {
-    $dllPath = "$PSScriptRoot\DLL"
-    if (-not (Test-Path "$dllPath\AngleSharp.dll")) {
-        $guid = [guid]::NewGuid().Guid
-        $angleSharpNupkg = "$env:TMP/AngleSharp.$guid.nupkg"
-        Invoke-WebRequest "https://www.nuget.org/api/v2/package/AngleSharp/0.16.0" -OutFile $angleSharpNupkg
-        $angleSharpDir = "$env:TMP/AngleSharp.$guid"
-        mkdir $angleSharpDir, "$dllPath\" -Force
-        Expand-Archive $angleSharpNupkg -DestinationPath $angleSharpDir
-        Copy-Item "$angleSharpDir/lib/netstandard2.0/*.dll" -Destination "$dllPath\"
-    }
 
-    Add-Type -Path "$dllPath\AngleSharp.dll"
+
+$config = (Get-Content "$PSScriptRoot/config.json" | ConvertFrom-Json)
+
+function loadingDll {
     Add-Type -AssemblyName System.Windows.Forms
+    Add-Type -Path "$($config.AtCoderStreakPath)/AtCoderStreak.dll"
+    Add-Type -Path "$($config.AtCoderStreakPath)/AngleSharp.dll"
 }
 loadingDll
+$streak = [AtCoderStreak.Program]::GetDefault()
+
 
 #region Parse AtCoder
 function Get-Parsed-AtCoder {
@@ -361,7 +355,7 @@ function streak {
         if (-not $Url) {
             throw "url is Empty"
         }
-        & "$AtCoderStreakPath\AtCoderStreak.exe" add -u $Url -l "$langId" -f $filePath -p "$priority"
+        $streak.AddInternal($Url, "$langId", $filePath, $priority) | Out-Null
     }
     else {
         throw "$filePath doesn't Exist"
@@ -369,13 +363,11 @@ function streak {
 }
 
 function Get-Source {
-    . "$($config.SqliteCommand)" -separator ' ' "$AtCoderStreakPath\data.sqlite" 'SELECT substr("    " || id, -4, 4),taskUrl,priority FROM program ORDER BY priority, id DESC;'
+    $streak.GetSources() | Sort-Object @{Expression = "priority"; Descending = $false }, @{Expression = "id"; Descending = $true }
 }
 function Remove-Source {
-    param (
-        [Parameter(Mandatory = $true, Position = 0)][int]$id
-    )
-    . "$($config.SqliteCommand)" "$AtCoderStreakPath\data.sqlite" ('DELETE from program where id = ' + $id + ';')
+    $ids = [int[]]$args
+    $streak.DeleteInternal($ids)
 }
 function Restore-Source {
     param (
@@ -388,7 +380,7 @@ function Restore-Source {
     }
 
     if ($id -ge 0) {
-        & "$AtCoderStreakPath\AtCoderStreak.exe" restore $id -f $filePath
+        $saved = $streak.RestoreInternal($id, $null)
     }
     else {
         if (-not $url) {
@@ -397,13 +389,20 @@ function Restore-Source {
         if (-not $url) {
             throw "url and id is Empty"
         }
-        & "$AtCoderStreakPath\AtCoderStreak.exe" restore -u $url -f $filePath
+        
+        $saved = $streak.RestoreInternal(-1, $url)
+    }
+    if ($saved) {
+        $saved.SourceCode | Out-File -FilePath $filePath -NoNewline
+    }
+    else {
+        throw "Not found"
     }
 }
 
 function submit-streak {
     # 6並列
-    & "$AtCoderStreakPath\AtCoderStreak.exe" submit -f -p 6 -c "$($config.CookieFile)"
+    $streak.SubmitInternal([AtCoderStreak.Service.SourceOrder]::None, $true, 6, $config.CookieFile).Result | Out-Null
 }
 
 function submit {
@@ -418,11 +417,13 @@ function submit {
     }
     if (-not $url) {
         $url = $lastAtCoderUrl
+        Write-Host -ForegroundColor DarkGreen "[Submit]: $url"
     }
     if (-not $url) {
         throw "url is Empty"
     }
-    & "$AtCoderStreakPath\AtCoderStreak.exe" submitfile -l "$langId" -u "$url" -f $filePath -c "$($config.CookieFile)"
+    
+    $streak.SubmitFileInternal((Get-Content -Raw $filePath), $url, "$langId", "$($config.CookieFile)").Result | Out-Null
     if (-not $SilentResult) {
         Start-Process ($url -replace 'tasks/.*', 'submissions/me')
     }
