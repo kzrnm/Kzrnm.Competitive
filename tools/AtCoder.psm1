@@ -363,8 +363,19 @@ function streak {
 }
 
 function Get-Source {
-    $streak.GetSources() | Sort-Object @{Expression = "priority"; Descending = $false }, @{Expression = "id"; Descending = $true }
+    param (
+        [Parameter(Mandatory = $false)][switch]$PathThru
+    )
+    $result = $streak.GetSources() | Sort-Object @{Expression = "priority"; Descending = $false }, @{Expression = "id"; Descending = $true }
+
+    if ($PathThru) {
+        return $result
+    }
+    else {
+        $result | Select-Object -ExcludeProperty SourceCode
+    }
 }
+
 function Remove-Source {
     $ids = [int[]]$args
     $streak.DeleteInternal($ids)
