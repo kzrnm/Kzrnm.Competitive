@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
-    <LangVersion>8</LangVersion>
+    <TargetFrameworks>net7.0</TargetFrameworks>
+    <LangVersion>11</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <ApplicationIcon />
@@ -21,6 +21,15 @@
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
     <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <CompilerVisibleProperty Include="AtCoderAnalyzer_UseMethodImplNumeric" />
+    <CompilerVisibleProperty Include="SourceExpander_Generator_IgnoreAssemblies" />
+  </ItemGroup>
+  <PropertyGroup>
+    <SourceExpander_Generator_IgnoreAssemblies>ac-library-csharp</SourceExpander_Generator_IgnoreAssemblies>
+    <AtCoderAnalyzer_UseMethodImplNumeric>True</AtCoderAnalyzer_UseMethodImplNumeric>
+  </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' != 'Release'">
     <Exec Command="dotnet $(TargetPath) expand $(ExpandArgs)" />
@@ -34,24 +43,16 @@
     <PackageReference Include="TextCopy" Version="6.1.0" />
     <PackageReference Include="AtCoderAnalyzer" Version="3.0.0-pre8">
       <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <IncludeAssets>runtime;build;native;contentfiles;analyzers;buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="SourceExpander.Core" Version="5.2.0" />
     <PackageReference Include="SourceExpander.Generator" Version="5.2.0">
       <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <IncludeAssets>runtime;build;native;contentfiles;analyzers;buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Library\Competitive.Library\Competitive.Library.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <CompilerVisibleProperty Include="AtCoderAnalyzer_UseMethodImplNumeric" />
-  </ItemGroup>
-  <PropertyGroup>
-    <AtCoderAnalyzer_UseMethodImplNumeric>True</AtCoderAnalyzer_UseMethodImplNumeric>
-  </PropertyGroup>
-
 </Project>
