@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -12,16 +13,18 @@ namespace Kzrnm.Competitive
     {
         private readonly T[] impl;
         public int Length => impl.Length - 1;
-        public Sums(T[] arr, T defaultValue = default)
+        public Sums(ReadOnlySpan<T> span, T defaultValue = default)
         {
-            impl = new T[arr.Length + 1];
+            impl = new T[span.Length + 1];
             impl[0] = defaultValue;
-            for (var i = 0; i < arr.Length; i++)
-                impl[i + 1] = impl[i] + arr[i];
+            for (var i = 0; i < span.Length; i++)
+                impl[i + 1] = impl[i] + span[i];
         }
-        public Sums(IList<T> collection)
+        public Sums(T[] arr, T defaultValue = default) : this(arr.AsSpan(), defaultValue) { }
+        public Sums(IList<T> collection, T defaultValue = default)
         {
             impl = new T[collection.Count + 1];
+            impl[0] = defaultValue;
             for (var i = 0; i < collection.Count; i++)
                 impl[i + 1] = impl[i] + collection[i];
         }
