@@ -1,4 +1,5 @@
 using AtCoder.Internal;
+using Kzrnm.Competitive.IO;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -13,6 +14,27 @@ namespace Kzrnm.Competitive
         public WGraphBuilder(int size, bool isDirected)
         {
             edgeContainer = new EdgeContainer<WEdge<T>>(size, isDirected);
+        }
+        public static WGraphBuilder<T> Create(int count, ConsoleReader cr, int edgeCount, bool isDirected)
+        {
+            var gb = new WGraphBuilder<T>(count, isDirected);
+            for (var i = 0; i < edgeCount; i++)
+                gb.Add(cr.Int0(), cr.Int0(), cr.Read<T>());
+            return gb;
+        }
+        public static WGraphBuilder<T, int> CreateWithEdgeIndex(int count, ConsoleReader cr, int edgeCount, bool isDirected)
+        {
+            var gb = new WGraphBuilder<T, int>(count, isDirected);
+            for (var i = 0; i < edgeCount; i++)
+                gb.Add(cr.Int0(), cr.Int0(), cr.Read<T>(), i);
+            return gb;
+        }
+        public static WGraphBuilder<T> CreateTree(int count, ConsoleReader cr)
+        {
+            var gb = new WGraphBuilder<T>(count, false);
+            for (var i = 1; i < count; i++)
+                gb.Add(cr.Int0(), cr.Int0(), cr.Read<T>());
+            return gb;
         }
         [凾(256)]
         public void Add(int from, int to, T value) => edgeContainer.Add(from, new WEdge<T>(to, value));
