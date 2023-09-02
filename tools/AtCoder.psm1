@@ -3,7 +3,7 @@ if (-not (Test-Path "$PSScriptRoot/config.json")) {
     throw "Requied: $PSScriptRoot/config.json"
 }
 
-
+$defaultLangId = 5042 # AOT じゃない方は 5003
 $config = (Get-Content "$PSScriptRoot/config.json" | ConvertFrom-Json)
 
 function loadingDll {
@@ -341,7 +341,7 @@ function streak {
     param (
         [string]$Url,
         [Parameter(Mandatory = $false)][System.IO.FileInfo]$File,
-        [Parameter(Mandatory = $false)][int]$langId = 4010,
+        [Parameter(Mandatory = $false)][int]$langId = $defaultLangId, # AOT じゃない方は 5003
         [Parameter(Mandatory = $false)][int]$priority = 0
     )
     if (-not $File.Exists) {
@@ -422,7 +422,7 @@ function submit {
     param (
         [string]$url,
         [string]$filePath,
-        [int]$langId = 4010,
+        [int]$langId = $defaultLangId,
         [switch]$SilentResult
     )
     if (-not $filePath) {
