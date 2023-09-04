@@ -99,6 +99,73 @@ namespace Kzrnm.Competitive.Testing.Extensions
 
 
         [Fact]
+        public void GroupIndex()
+        {
+            var grouped = new[] {
+                StringComparison.OrdinalIgnoreCase,
+                StringComparison.OrdinalIgnoreCase,
+                StringComparison.InvariantCulture,
+                StringComparison.InvariantCultureIgnoreCase,
+                StringComparison.CurrentCulture,
+                StringComparison.CurrentCulture,
+                StringComparison.CurrentCulture,
+                StringComparison.OrdinalIgnoreCase,
+                StringComparison.Ordinal,
+                StringComparison.OrdinalIgnoreCase,
+                StringComparison.InvariantCulture,
+            }.GroupIndex().ToArray();
+
+            grouped.Should().HaveCount(5);
+
+            grouped[0].Key.Should().Be(StringComparison.OrdinalIgnoreCase);
+            grouped[0].Should().Equal(new int[] { 0, 1, 7, 9 });
+
+            grouped[1].Key.Should().Be(StringComparison.InvariantCulture);
+            grouped[1].Should().Equal(new int[] { 2, 10 });
+
+            grouped[2].Key.Should().Be(StringComparison.InvariantCultureIgnoreCase);
+            grouped[2].Should().Equal(new int[] { 3 });
+
+            grouped[3].Key.Should().Be(StringComparison.CurrentCulture);
+            grouped[3].Should().Equal(new int[] { 4, 5, 6 });
+
+            grouped[4].Key.Should().Be(StringComparison.Ordinal);
+            grouped[4].Should().Equal(new int[] { 8 });
+        }
+
+        [Fact]
+        public void GroupIndexFunc()
+        {
+            var grouped = new long[] {
+                43,24,8373,4,98,7,43,28,9470,71,431,45,23014,345,23614,1503,7,3401434,120,42314,3123
+            }.GroupIndex(i => i % 7).ToArray();
+
+            grouped.Should().HaveCount(7);
+
+            grouped[0].Key.Should().Be(1);
+            grouped[0].Should().Equal(new int[] { 0, 2, 6, 9, 17, 18, 20 });
+
+            grouped[1].Key.Should().Be(3);
+            grouped[1].Should().Equal(new int[] { 1, 11, 14 });
+
+            grouped[2].Key.Should().Be(4);
+            grouped[2].Should().Equal(new int[] { 3, 10 });
+
+            grouped[3].Key.Should().Be(0);
+            grouped[3].Should().Equal(new int[] { 4, 5, 7, 16 });
+
+            grouped[4].Key.Should().Be(6);
+            grouped[4].Should().Equal(new int[] { 8, 19 });
+
+            grouped[5].Key.Should().Be(5);
+            grouped[5].Should().Equal(new int[] { 12, 15 });
+
+            grouped[6].Key.Should().Be(2);
+            grouped[6].Should().Equal(new int[] { 13 });
+        }
+
+
+        [Fact]
         public void Flatten()
         {
             new[] { "abc", "def", "012", "345", "678" }.Flatten()

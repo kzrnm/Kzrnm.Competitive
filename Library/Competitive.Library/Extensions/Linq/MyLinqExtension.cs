@@ -6,7 +6,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive
 {
     // competitive-verifier: TITLE Linq 便利メソッド
-    public static class MyLinqExtension
+    public static class __CollectionExtension_MyLinq
     {
         /// <summary>
         /// インデックスをつける
@@ -31,5 +31,18 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)]
         public static Dictionary<TKey, int> GroupCount<TKey>(this IEnumerable<TKey> source) => source.GroupCount(i => i);
+
+        /// <summary>
+        /// 要素をグループ化し、インデックスを保持します。
+        /// </summary>
+        [凾(256)]
+        public static IEnumerable<IGrouping<TKey, int>> GroupIndex<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+            => source.Indexed().GroupBy(t => keySelector(t.Value), t => t.Index);
+        /// <summary>
+        /// 要素をグループ化し、インデックスを保持します。
+        /// </summary>
+        [凾(256)]
+        public static IEnumerable<IGrouping<TKey, int>> GroupIndex<TKey>(this IEnumerable<TKey> source)
+            => source.Indexed().GroupBy(t => t.Value, t => t.Index);
     }
 }
