@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
@@ -13,7 +14,7 @@ namespace Kzrnm.Competitive
         {
             var graphArr = graph.AsArray();
             var res = new uint[graphArr.Length];
-            System.Array.Fill(res, uint.MaxValue);
+            Array.Fill(res, uint.MaxValue);
             var queue = new Queue<int>();
             queue.Enqueue(from);
             res[from] = 0;
@@ -37,7 +38,7 @@ namespace Kzrnm.Competitive
         {
             var graphArr = graph.AsArray();
             var res = new uint[graphArr.Length];
-            System.Array.Fill(res, uint.MaxValue);
+            Array.Fill(res, uint.MaxValue);
             var queue = new Queue<int>();
             queue.Enqueue(from);
             res[from] = 0;
