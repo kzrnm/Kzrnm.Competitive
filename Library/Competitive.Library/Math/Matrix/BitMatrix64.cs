@@ -15,7 +15,7 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// Mod2 の行列。+: xor *: and
     /// </summary>
-    public struct BitMatrix64
+    public readonly struct BitMatrix64
 #if NET7_0_OR_GREATER
         : Internal.IMatrixOperator<BitMatrix64>
 #endif
