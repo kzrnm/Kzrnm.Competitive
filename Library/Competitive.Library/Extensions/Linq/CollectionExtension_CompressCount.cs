@@ -1,11 +1,10 @@
+using AtCoder.Internal;
 using System;
 using System.Collections.Generic;
-using AtCoder.Internal;
-using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public static class __CollectionExtension
+    public static class __CollectionExtension_CompressCount
     {
         /// <summary>
         /// 連続する要素をひとまとめにした配列を返す。
