@@ -6,7 +6,7 @@ namespace Kzrnm.Competitive
     public static class 木の探索
     {
         /// <summary>
-        /// 木を幅優先探索するときに訪れる順序に並んだインデックスを返す
+        /// 木を幅優先探索するときに訪れる順序に並んだインデックスを返します。
         /// </summary>
         [凾(256)]
         public static int[] BfsDescendant<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
@@ -28,7 +28,7 @@ namespace Kzrnm.Competitive
             return res;
         }
         /// <summary>
-        /// 木を深さ優先探索するときに訪れる順序に並んだインデックスを返す
+        /// 木を深さ優先探索するときに訪れる順序に並んだインデックスを返します。
         /// </summary>
         [凾(256)]
         public static int[] DfsDescendant<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
@@ -37,12 +37,12 @@ namespace Kzrnm.Competitive
         {
             var down = tree.HlDecomposition.down;
             var res = new int[down.Length];
-            for (int i = 0; i < res.Length; i++)
+            for (int i = 0; i < down.Length; i++)
                 res[down[i]] = i;
             return res;
         }
         /// <summary>
-        /// 木を深い順に深さ優先探索するときに訪れる順序に並んだインデックスを返す
+        /// 木を深い順に深さ優先探索するときに訪れる順序に並んだインデックスを返します。
         /// </summary>
         [凾(256)]
         public static int[] DfsDescendantLeaf<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
