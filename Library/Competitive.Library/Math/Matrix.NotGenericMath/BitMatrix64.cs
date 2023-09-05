@@ -5,9 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
-#if !NET7_0_OR_GREATER
 using AtCoder.Operators;
-#endif
 
 namespace Kzrnm.Competitive
 {
@@ -16,9 +14,6 @@ namespace Kzrnm.Competitive
     /// Mod2 の行列。+: xor *: and
     /// </summary>
     public readonly struct BitMatrix64
-#if NET7_0_OR_GREATER
-        : Internal.IMatrixOperator<BitMatrix64>
-#endif
     {
         public bool this[int row, int col] => ((Value[row] >> col) & 1) != 0;
         public readonly ulong[] Value;
@@ -49,22 +44,15 @@ namespace Kzrnm.Competitive
                     res |= 1ul << i;
             return res;
         }
-        private static BitMatrix64 ThrowNotSupportResponse() => throw new NotSupportedException();
+        static BitMatrix64 ThrowNotSupportResponse() => throw new NotSupportedException();
 
         /// <summary>
         /// 零行列かどうかを返します。
         /// </summary>
         public bool IsZero => kind is Kd.Zero;
-        private static ulong[] NormalZeroMatrix(int row)
-        {
-            var arr = new ulong[row];
-            for (int i = 0; i < arr.Length; i++)
-                arr[i] = 0;
-            return arr;
-        }
-        private static ulong[] CloneArray(ulong[] arr) => arr.ToArray();
+        static ulong[] CloneArray(ulong[] arr) => arr.ToArray();
 
-        private BitMatrix64 AddIdentity()
+        BitMatrix64 AddIdentity()
         {
             var arr = CloneArray(Value);
             for (int i = arr.Length - 1; i >= 0; i--)
@@ -142,7 +130,7 @@ namespace Kzrnm.Competitive
             {
                 Kd.Zero => y.kind switch
                 {
-                    Kd.Normal => new BitMatrix64(NormalZeroMatrix(y.Value.Length)),
+                    Kd.Normal => new BitMatrix64(new ulong[y.Value.Length]),
                     _ => Zero,
                 },
                 Kd.Identity => y.kind switch
@@ -153,7 +141,7 @@ namespace Kzrnm.Competitive
                 },
                 _ => y.kind switch
                 {
-                    Kd.Zero => new BitMatrix64(NormalZeroMatrix(x.Value.Length)),
+                    Kd.Zero => new BitMatrix64(new ulong[x.Value.Length]),
                     Kd.Identity => x,
                     _ => x.Multiply(y),
                 },
@@ -178,7 +166,7 @@ namespace Kzrnm.Competitive
             var val = Value;
             var res = 0ul;
             for (int i = 0; i < val.Length; i++)
-                res = (ulong)(BitOperations.PopCount(val[i] & vector) & 1) << i;
+                res |= (ulong)(BitOperations.PopCount(val[i] & vector) & 1) << i;
 
             return res;
         }
@@ -285,7 +273,6 @@ namespace Kzrnm.Competitive
 
         }
 
-#if !NET7_0_OR_GREATER
         /// <summary>
         /// <paramref name="y"/> 乗した行列を返す。
         /// </summary>
@@ -313,6 +300,5 @@ namespace Kzrnm.Competitive
             [凾(256)]
             public BitMatrix64 Modulo(BitMatrix64 x, BitMatrix64 y) => throw new NotSupportedException();
         }
-#endif
     }
 }

@@ -23,6 +23,7 @@ global using IntSums = Kzrnm.Competitive.Sums<int>;
 global using LongSums = Kzrnm.Competitive.Sums<long>;
 global using IntSums2D = Kzrnm.Competitive.Sums2D<int>;
 global using LongSums2D = Kzrnm.Competitive.Sums2D<long>;
+global using BitMatrix64 = Kzrnm.Competitive.BitMatrix<ulong>;
 global using LongWaveletMatrix2DWithFenwickTree = Kzrnm.Competitive.WaveletMatrix2DWithFenwickTree<int, long>;
 global using LongWaveletMatrix2DWithSums = Kzrnm.Competitive.WaveletMatrix2DWithSums<int, long>;
 global using LongWaveletMatrixWithFenwickTree = Kzrnm.Competitive.WaveletMatrixWithFenwickTree<int, long>;
