@@ -41,6 +41,17 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     0b0101010101010101010101010101010101010101010101010101010101010101,
                 })
             },
+            {
+                """
+                11001
+                10010
+                """,
+                new BitMatrix64(new ulong[]
+                {
+                    0b11001,
+                    0b10010,
+                })
+            },
         };
         [Theory]
         [Trait("Category", "Normal")]
@@ -252,7 +263,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
 #endif
         }
 
-        public static TheoryData MultiplyVector_Data => new TheoryData<BitMatrix64, bool[], ulong>
+        public static TheoryData MultiplyVector_Data => new TheoryData<BitMatrix64, bool[], ulong, ulong>
         {
             {
                 BitMatrix64.Parse(new[]
@@ -261,44 +272,6 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "010",
                 }),
                 new[]{ true, false, true},
-                0b0ul
-            },
-            {
-                BitMatrix64.Parse(new[]
-                {
-                    "101",
-                    "010",
-                }),
-                new[]{ true, true, true},
-                0b10ul
-            },
-            {
-                BitMatrix64.Parse(new[]
-                {
-                    "101",
-                    "010",
-                }),
-                new[]{ false, true, true},
-                0b11ul
-            },
-        };
-
-        [Theory]
-        [Trait("Category", "Operator")]
-        [MemberData(nameof(MultiplyVector_Data))]
-        public void MultiplyVector(BitMatrix64 mat, bool[] vector, ulong expected)
-        {
-            (mat * vector).Should().Be(expected);
-        }
-
-        public static TheoryData MultiplyVectorNumber_Data => new TheoryData<BitMatrix64, ulong, ulong>
-        {
-            {
-                BitMatrix64.Parse(new[]
-                {
-                    "101",
-                    "010",
-                }),
                 0b101ul,
                 0b0ul
             },
@@ -308,8 +281,9 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "101",
                     "010",
                 }),
+                new[]{ true, true, true},
                 0b111ul,
-                0b10ul
+                0b01ul
             },
             {
                 BitMatrix64.Parse(new[]
@@ -317,17 +291,29 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "101",
                     "010",
                 }),
-                0b011ul,
+                new[]{ false, true, true},
+                0b110ul,
                 0b11ul
+            },
+            {
+                BitMatrix64.Parse(
+                    Enumerable.Repeat(new string('0', 64), 64)
+                    .Select((s, i) => s.Remove(i, 1).Insert(i, "1"))
+                    .ToArray()
+                ),
+                new[] { true, false, false, true, false, true, false, false, true, true, false, true, false, true, true, true, true, true, false, true, false, false, false, false, true, true, true, false, true, false, true, true, false, false, false, false, true, false, true, false, true, false, true, true, false, true, false, false, true, true, true, false, false, true, false, true, false, true, false, true, false, false, true, true },
+                0b1100101010100111001011010101000011010111000010111110101100101001ul,
+                0b1100101010100111001011010101000011010111000010111110101100101001ul
             },
         };
 
         [Theory]
         [Trait("Category", "Operator")]
-        [MemberData(nameof(MultiplyVectorNumber_Data))]
-        public void MultiplyVectorNumber(BitMatrix64 mat, ulong vector, ulong expected)
+        [MemberData(nameof(MultiplyVector_Data))]
+        public void MultiplyVector(BitMatrix64 mat, bool[] vector, ulong vectorArray, ulong expected)
         {
             (mat * vector).Should().Be(expected);
+            (mat * vectorArray).Should().Be(expected);
         }
 
         [Fact]

@@ -166,7 +166,7 @@ namespace Kzrnm.Competitive
             var val = Value;
             var res = 0ul;
             for (int i = 0; i < val.Length; i++)
-                res |= (ulong)(BitOperations.PopCount(val[i] & vector) & 1) << i;
+                res |= (ulong)(BitOperations.PopCount(val[i] & vector) & 1) << (val.Length - i - 1);
 
             return res;
         }

@@ -1,5 +1,6 @@
 #if NET7_0_OR_GREATER
 using System;
+using System.Linq;
 using BitMatrix128 = Kzrnm.Competitive.BitMatrix<System.UInt128>;
 
 namespace Kzrnm.Competitive.Testing.MathNS.Matrix
@@ -43,6 +44,17 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     new UInt128(0b1010101010101010101010101010101010101010101010101010101010101010,0b1010101010101010101010101010101010101010101010101010101010101010),
                     new UInt128(0b0101010101010101010101010101010101010101010101010101010101010101,0b0101010101010101010101010101010101010101010101010101010101010101),
                     new UInt128(0b0100000000000000000000000000000000000000000000000000000000000000,0b1),
+                })
+            },
+            {
+                """
+                11001
+                10010
+                """,
+                new BitMatrix128(new UInt128[]
+                {
+                    0b11001,
+                    0b10010,
                 })
             },
         };
@@ -248,7 +260,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat1 * mat2).Should().BeEquivalentTo(expected);
         }
 
-        public static TheoryData MultiplyVector_Data => new TheoryData<BitMatrix128, bool[], UInt128>
+        public static TheoryData MultiplyVector_Data => new TheoryData<BitMatrix128, bool[], UInt128, UInt128>
         {
             {
                 BitMatrix128.Parse(new[]
@@ -257,44 +269,6 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "010",
                 }),
                 new[]{ true, false, true},
-                0b0ul
-            },
-            {
-                BitMatrix128.Parse(new[]
-                {
-                    "101",
-                    "010",
-                }),
-                new[]{ true, true, true},
-                0b10ul
-            },
-            {
-                BitMatrix128.Parse(new[]
-                {
-                    "101",
-                    "010",
-                }),
-                new[]{ false, true, true},
-                0b11ul
-            },
-        };
-
-        [Theory]
-        [Trait("Category", "Operator")]
-        [MemberData(nameof(MultiplyVector_Data))]
-        public void MultiplyVector(BitMatrix128 mat, bool[] vector, UInt128 expected)
-        {
-            (mat * vector).Should().Be(expected);
-        }
-
-        public static TheoryData MultiplyVectorNumber_Data => new TheoryData<BitMatrix128, UInt128, UInt128>
-        {
-            {
-                BitMatrix128.Parse(new[]
-                {
-                    "101",
-                    "010",
-                }),
                 0b101ul,
                 0b0ul
             },
@@ -304,8 +278,9 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "101",
                     "010",
                 }),
+                new[]{ true, true, true},
                 0b111ul,
-                0b10ul
+                0b01ul
             },
             {
                 BitMatrix128.Parse(new[]
@@ -313,17 +288,29 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "101",
                     "010",
                 }),
-                0b011ul,
+                new[]{ false, true, true},
+                0b110ul,
                 0b11ul
+            },
+            {
+                BitMatrix128.Parse(
+                    Enumerable.Repeat(new string('0', 128), 128)
+                    .Select((s, i) => s.Remove(i, 1).Insert(i, "1"))
+                    .ToArray()
+                ),
+                new[] { true, false, false, true, false, true, false, false, true, true, false, true, false, true, true, true, true, true, false, true, false, false, false, false, true, true, true, false, true, false, true, true, false, false, false, false, true, false, true, false, true, false, true, true, false, true, false, false, true, true, true, false, false, true, false, true, false, true, false, true, false, false, true, true, true, false, true, false, true, false, true, false, true, false, true, false, true, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, false, true, false, false, false, false, true, false, true, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, false, true },
+                new UInt128(0b1001010101010101010101101000010010101010101010101011010101010101ul, 0b1100101010100111001011010101000011010111000010111110101100101001ul),
+                new UInt128(0b1001010101010101010101101000010010101010101010101011010101010101ul, 0b1100101010100111001011010101000011010111000010111110101100101001ul)
             },
         };
 
         [Theory]
         [Trait("Category", "Operator")]
-        [MemberData(nameof(MultiplyVectorNumber_Data))]
-        public void MultiplyVectorNumber(BitMatrix128 mat, UInt128 vector, UInt128 expected)
+        [MemberData(nameof(MultiplyVector_Data))]
+        public void MultiplyVector(BitMatrix128 mat, bool[] vector, UInt128 vectorArray, UInt128 expected)
         {
             (mat * vector).Should().Be(expected);
+            (mat * vectorArray).Should().Be(expected);
         }
 
         [Fact]

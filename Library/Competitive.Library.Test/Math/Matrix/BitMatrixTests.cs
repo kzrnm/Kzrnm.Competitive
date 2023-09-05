@@ -28,6 +28,51 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             });
         }
 
+        public static TheoryData Parse_Data => new TheoryData<string, BitMatrix>
+        {
+            {
+                """
+                10001
+                00110
+                """,
+                new BitMatrix(new BitArray[]
+                {
+                    new BitArray(new[]{ true, false, false, false, true }),
+                    new BitArray(new[]{ false, false, true, true, false }),
+                })
+            },
+            {
+                """
+                10101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010
+                01010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101
+                01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001
+                """,
+                new BitMatrix(new BitArray[]
+                {
+                    new BitArray((int[])(object)new uint[]{ 0b01010101010101010101010101010101, 0b01010101010101010101010101010101,0b01010101010101010101010101010101,0b01010101010101010101010101010101,}),
+                    new BitArray((int[])(object)new uint[]{ 0b10101010101010101010101010101010, 0b10101010101010101010101010101010,0b10101010101010101010101010101010,0b10101010101010101010101010101010,}),
+                    new BitArray((int[])(object)new uint[]{ 0b10, 0, 0, 0b10000000000000000000000000000000, }),
+                })
+            },
+            {
+                $"""
+                {new string('0', 130)}
+                {new string('1', 130)}
+                """,
+                new BitMatrix(new BitArray[]
+                {
+                    new BitArray(130, false),
+                    new BitArray(130, true),
+                })
+            },
+        };
+        [Theory]
+        [Trait("Category", "Normal")]
+        [MemberData(nameof(Parse_Data))]
+        public void Parse(string text, BitMatrix mat)
+        {
+            BitMatrix.Parse(text.Split('\n')).Should().BeEquivalentTo(mat);
+        }
 
         public static TheoryData String_Data => new TheoryData<BitMatrix, string>
         {

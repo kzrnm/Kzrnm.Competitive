@@ -15,7 +15,7 @@ namespace Kzrnm.Competitive
     /// Mod2 の行列。+: xor *: and
     /// </summary>
     public readonly struct BitMatrix<T> : Internal.IMatrixOperator<BitMatrix<T>>
-        where T : struct, IBinaryInteger<T>
+        where T : unmanaged, IBinaryInteger<T>
     {
         public bool this[int row, int col] => (uint.CreateTruncating(Value[row] >> col) & 1) != 0;
         public readonly T[] Value;
@@ -173,7 +173,7 @@ namespace Kzrnm.Competitive
             var val = Value;
             var res = default(T);
             for (int i = 0; i < val.Length; i++)
-                res |= (T.PopCount(val[i] & vector) & T.One) << i;
+                res |= (T.PopCount(val[i] & vector) & T.One) << (val.Length - i - 1);
 
             return res;
         }
@@ -298,10 +298,6 @@ namespace Kzrnm.Competitive
 
             static T ParseRow(string row)
             {
-                if (row.Length < 64)
-                {
-                    return T.CreateTruncating(Convert.ToUInt64(row, 2));
-                }
                 var span = row.AsSpan().Trim();
                 var res = T.Zero;
 
