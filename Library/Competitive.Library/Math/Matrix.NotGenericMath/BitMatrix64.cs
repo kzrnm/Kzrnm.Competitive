@@ -1,11 +1,11 @@
 using AtCoder.Internal;
+using AtCoder.Operators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
-using AtCoder.Operators;
 
 namespace Kzrnm.Competitive
 {
@@ -56,7 +56,7 @@ namespace Kzrnm.Competitive
         {
             var arr = CloneArray(Value);
             for (int i = arr.Length - 1; i >= 0; i--)
-                arr[i] ^= 1ul << (arr.Length - i - 1);
+                arr[i] ^= 1ul << i;
             return new BitMatrix64(arr);
         }
         private BitMatrix64 Add(BitMatrix64 other)
@@ -166,7 +166,7 @@ namespace Kzrnm.Competitive
             var val = Value;
             var res = 0ul;
             for (int i = 0; i < val.Length; i++)
-                res |= (ulong)(BitOperations.PopCount(val[i] & vector) & 1) << (val.Length - i - 1);
+                res |= (ulong)(BitOperations.PopCount(val[i] & vector) & 1) << i;
 
             return res;
         }
@@ -196,14 +196,13 @@ namespace Kzrnm.Competitive
             const int width = 64;
             for (int x = 0; x < width && r < arr.Length; x++)
             {
-                var xx = x ^ 63;
                 if (!SearchNonZero(arr, r, x))
                     continue;
                 var arrR = arr[r];
                 for (int y = isReduced ? 0 : r + 1; y < arr.Length; y++)
                 {
                     var arrY = arr[y];
-                    if (y == r || ((arrY >> xx) & 1) == 0)
+                    if (y == r || ((arrY >> x) & 1) == 0)
                         continue;
                     arr[y] ^= arrR;
                 }
@@ -218,7 +217,6 @@ namespace Kzrnm.Competitive
         /// <returns>0 ではない行が見つかったかどうか</returns>
         private static bool SearchNonZero(ulong[] mat, int r, int x)
         {
-            x ^= 63;
             for (int y = r; y < mat.Length; y++)
                 if (((mat[y] >> x) & 1) != 0)
                 {
@@ -226,6 +224,98 @@ namespace Kzrnm.Competitive
                     return true;
                 }
             return false;
+        }
+
+        /// <summary>
+        /// <para>連立一次方程式 <see langword="this"/>・X=<paramref name="vector"/> を満たす ベクトル X を求める。</para>
+        /// <para>最上位ビットは計算で使うのでベクトルは 64 より小さくなければならない。</para>
+        /// </summary>
+        /// <returns>
+        /// <list type="bullet">
+        /// <item><description>最初の配列: 特殊解</description></item>
+        /// <item><description>2番目以降の配列: 解空間の基底ベクトル</description></item>
+        /// <item><description>ただし解無しのときは空配列を返す</description></item>
+        /// </list>
+        /// </returns>
+        public ulong[] LinearSystem(ulong vector, int width = 0)
+        {
+            if (width == 0)
+            {
+                int log2 = 0;
+                foreach (var v in Value)
+                {
+                    var s = BitOperations.Log2(v);
+                    if (log2 < s) log2 = s;
+                }
+                {
+                    var s = BitOperations.Log2(vector);
+                    if (log2 < s) log2 = s;
+                }
+                width = log2 + 1;
+            }
+
+            var impl = (ulong[])Value.Clone();
+            int shift = width;
+            {
+                var last = 1ul << shift;
+                for (int i = 0; i < impl.Length; i++)
+                {
+                    Contract.Assert((impl[i] >> shift) == 0);
+                    if (((vector >> i) & 1) != 0)
+                        impl[i] |= last;
+                }
+            }
+
+            var idxs = GaussianEliminationImpl(impl, false).AsSpan();
+            var r = idxs.Length;
+            int w = width;
+
+            // 解があるかチェック
+            // a×0+b×0+c×0..+z×0≠0 になっていたら解無し
+            for (int i = r; i < impl.Length; i++)
+            {
+                if (((impl[i] >> shift) & 1) != 0)
+                    return Array.Empty<ulong>();
+            }
+            if (idxs.IsEmpty)
+            {
+                var eres = new ulong[w + 1];
+                for (int i = 1; i < eres.Length; i++)
+                {
+                    eres[i] = 1ul << (i - 1);
+                }
+                return eres;
+            }
+            if (idxs[^1] == shift)
+                return Array.Empty<ulong>();
+
+            var used = new HashSet<int>(Enumerable.Range(0, w));
+            var lst = new List<ulong>(w);
+            {
+                var v = 0ul;
+                for (int y = idxs.Length - 1; y >= 0; y--)
+                {
+                    int f = idxs[y];
+                    used.Remove(f);
+                    v |= (impl[y] >> shift) << f;
+                    for (int x = f + 1; x < w; x++)
+                        v ^= (((v & impl[y]) >> x) & 1ul) << f;
+                }
+                lst.Add(v);
+            }
+
+            foreach (var s in used)
+            {
+                var v = 1ul << s;
+                for (int y = idxs.Length - 1; y >= 0; y--)
+                {
+                    int f = idxs[y];
+                    for (int x = f + 1; x < w; x++)
+                        v ^= (((v & impl[y]) >> x) & 1ul) << f;
+                }
+                lst.Add(v);
+            }
+            return lst.ToArray();
         }
 
         [凾(256)]
@@ -252,7 +342,9 @@ namespace Kzrnm.Competitive
             var sb = new StringBuilder(Value.Length * (64 + 2));
             foreach (var row in Value)
             {
-                sb.Append(Convert.ToString((long)row, 2).PadLeft(64, '0')).Append('\n');
+                var chars = Convert.ToString((long)row, 2).ToCharArray();
+                Array.Reverse(chars);
+                sb.Append(chars).Append('0', 64 - chars.Length).Append('\n');
             }
             return sb.Remove(sb.Length - 1, 1).ToString();
         }
@@ -269,8 +361,12 @@ namespace Kzrnm.Competitive
             }
             return new BitMatrix64(arr);
 
-            static ulong ParseRow(string row) => Convert.ToUInt64(row, 2);
-
+            static ulong ParseRow(string row)
+            {
+                var arr = row.ToCharArray().AsSpan().Trim();
+                arr.Reverse();
+                return Convert.ToUInt64(new string(arr), 2);
+            }
         }
 
         /// <summary>
@@ -278,7 +374,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public BitMatrix64 Pow(long y) => MathLibGeneric.Pow<BitMatrix64, Operator>(this, y);
 
-        public struct Operator : IArithmeticOperator<BitMatrix64>
+        public readonly struct Operator : IArithmeticOperator<BitMatrix64>
         {
             public BitMatrix64 MultiplyIdentity => Identity;
 
