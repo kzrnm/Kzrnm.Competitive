@@ -1,22 +1,12 @@
 using System;
-using System.Runtime.Intrinsics.X86;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace Kzrnm.Competitive.Testing.Bits
 {
     public class BitTests
     {
-        sealed class OnlyX64TheoryAttribute : TheoryAttribute
-        {
-            public OnlyX64TheoryAttribute()
-            {
-                if (!Bmi1.X64.IsSupported)
-                {
-                    Skip = "Not Support Bmi1.X64";
-                }
-            }
-        }
-
-
         public static TheoryData BitStringInt32_Data => new TheoryData<int, int, string>
         {
             { 0, 0, "0" },
@@ -33,7 +23,7 @@ namespace Kzrnm.Competitive.Testing.Bits
         [Theory]
         [MemberData(nameof(BitStringInt32_Data))]
         [Trait("Category", "BitString")]
-        public void BitStringInt32Test(int num, int len, string expected)
+        public void BitStringInt32(int num, int len, string expected)
         {
             num.ToBitString(len).Should().Be(expected);
         }
@@ -54,7 +44,7 @@ namespace Kzrnm.Competitive.Testing.Bits
         [Theory]
         [MemberData(nameof(BitStringInt64_Data))]
         [Trait("Category", "BitString")]
-        public void BitStringInt64Test(long num, int len, string expected)
+        public void BitStringInt64(long num, int len, string expected)
         {
             num.ToBitString(len).Should().Be(expected);
         }
@@ -73,20 +63,51 @@ namespace Kzrnm.Competitive.Testing.Bits
         [Theory]
         [MemberData(nameof(BitStringUInt64_Data))]
         [Trait("Category", "BitString")]
-        public void BitStringUInt64Test(ulong num, int len, string expected)
+        public void BitStringUInt64(ulong num, int len, string expected)
         {
             num.ToBitString(len).Should().Be(expected);
         }
 
         [Fact]
         [Trait("Category", "BitString")]
-        public void BitStringDefaultTest()
+        public void BitStringDefault()
         {
             0.ToBitString().Should().Be(new string('0', 32));
             0L.ToBitString().Should().Be(new string('0', 64));
             0UL.ToBitString().Should().Be(new string('0', 64));
         }
 
+        public static IEnumerable<(uint, int[])> BitEnumerateByte_Data()
+        {
+            var s = new int[8];
+            for (s[0] = 0; s[0] < 2; s[0]++)
+                for (s[1] = 0; s[1] < 2; s[1]++)
+                    for (s[2] = 0; s[2] < 2; s[2]++)
+                        for (s[3] = 0; s[3] < 2; s[3]++)
+                            for (s[4] = 0; s[4] < 2; s[4]++)
+                                for (s[5] = 0; s[5] < 2; s[5]++)
+                                    for (s[6] = 0; s[6] < 2; s[6]++)
+                                        for (s[7] = 0; s[7] < 2; s[7]++)
+                                        {
+                                            uint num = 0;
+                                            var lst = new List<int>(8);
+                                            for (int i = 0; i < s.Length; i++)
+                                                if (s[i] != 0)
+                                                {
+                                                    num |= 1u << i;
+                                                    lst.Add(i);
+                                                }
+                                            yield return (num, lst.ToArray());
+                                        }
+        }
+        [Theory]
+        [TupleMemberData(nameof(BitEnumerateByte_Data))]
+        [Trait("Category", "BitEnumerate")]
+        public void BitEnumerateByte(uint num, int[] expected)
+        {
+            num.Bits().Should().Equal(expected);
+            num.Bits().ToArray().Should().Equal(expected);
+        }
 
         public static TheoryData BitEnumerateInt32_Data => new TheoryData<int, int[]>
         {
@@ -102,12 +123,13 @@ namespace Kzrnm.Competitive.Testing.Bits
             { 1 << 20, new[]{ 20 } },
             { 0, Array.Empty<int>() },
         };
-        [OnlyX64Theory]
+        [Theory]
         [MemberData(nameof(BitEnumerateInt32_Data))]
         [Trait("Category", "BitEnumerate")]
-        public void BitEnumerateInt32Test(int num, int[] expected)
+        public void BitEnumerateInt32(int num, int[] expected)
         {
             num.Bits().Should().Equal(expected);
+            num.Bits().ToArray().Should().Equal(expected);
         }
 
         public static TheoryData BitEnumerateUInt32_Data => new TheoryData<uint, int[]>
@@ -124,12 +146,13 @@ namespace Kzrnm.Competitive.Testing.Bits
             { 1 << 20, new[]{ 20 } },
             { 0, Array.Empty<int>() },
         };
-        [OnlyX64Theory]
+        [Theory]
         [MemberData(nameof(BitEnumerateUInt32_Data))]
         [Trait("Category", "BitEnumerate")]
-        public void BitEnumerateUInt32Test(uint num, int[] expected)
+        public void BitEnumerateUInt32(uint num, int[] expected)
         {
             num.Bits().Should().Equal(expected);
+            num.Bits().ToArray().Should().Equal(expected);
         }
 
         public static TheoryData BitEnumerateInt64_Data => new TheoryData<long, int[]>
@@ -149,12 +172,13 @@ namespace Kzrnm.Competitive.Testing.Bits
             { 1L << 20, new[]{ 20 } },
             { 0, Array.Empty<int>() },
         };
-        [OnlyX64Theory]
+        [Theory]
         [MemberData(nameof(BitEnumerateInt64_Data))]
         [Trait("Category", "BitEnumerate")]
-        public void BitEnumerateInt64Test(long num, int[] expected)
+        public void BitEnumerateInt64(long num, int[] expected)
         {
             num.Bits().Should().Equal(expected);
+            num.Bits().ToArray().Should().Equal(expected);
         }
 
         public static TheoryData BitEnumerateUInt64_Data => new TheoryData<ulong, int[]>
@@ -174,12 +198,38 @@ namespace Kzrnm.Competitive.Testing.Bits
             { 1L << 20, new[]{ 20 } },
             { 0, Array.Empty<int>() },
         };
-        [OnlyX64Theory]
+        [Theory]
         [MemberData(nameof(BitEnumerateUInt64_Data))]
         [Trait("Category", "BitEnumerate")]
-        public void BitEnumerateUInt64Test(ulong num, int[] expected)
+        public void BitEnumerateUInt64(ulong num, int[] expected)
         {
             num.Bits().Should().Equal(expected);
+            num.Bits().ToArray().Should().Equal(expected);
+        }
+
+        [Fact]
+        [Trait("Category", "BitEnumerate")]
+        public void BitEnumerateUInt64Random()
+        {
+            var rnd = new Random(227);
+            var array = new ulong[2000];
+            rnd.NextBytes(MemoryMarshal.AsBytes(array.AsSpan()));
+            var zeroBinary = new string('0', 64);
+            foreach (var value in array)
+            {
+                var binary = System.Convert.ToString((long)value, 2).PadLeft(64, '0').ToCharArray();
+                Array.Reverse(binary);
+                foreach (var b in value.Bits())
+                {
+                    binary[b].Should().Be('1');
+                    binary[b] = '0';
+                }
+
+                new string(binary).Should().Be(zeroBinary);
+
+                value.Bits().ToArray()
+                    .Should().Equal(value.Bits().Cast<int>().ToArray());
+            }
         }
     }
 }
