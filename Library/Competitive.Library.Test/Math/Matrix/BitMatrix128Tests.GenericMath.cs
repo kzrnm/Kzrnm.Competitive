@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 using System;
 using System.Linq;
 using BitMatrix128 = Kzrnm.Competitive.BitMatrix<System.UInt128>;
@@ -440,4 +439,3 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         }
     }
 }
-#endif

@@ -21,6 +21,7 @@ dotnet add package SourceExpander
 ### LICENSE の例外
 
 - `Competitive.Library/Collection/Set`
+- `Competitive.Library/Number.GenericMath`
 
 上記については、MIT license で公開されている .NET のコードを元にしているので競技プログラミング用途でも MIT license としてください。
 [SourceExpander](https://github.com/kzrnm/SourceExpander) で埋め込む場合はライセンス表記が `string` として残るので確実です。
