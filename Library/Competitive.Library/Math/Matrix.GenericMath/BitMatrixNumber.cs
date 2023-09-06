@@ -232,6 +232,31 @@ namespace Kzrnm.Competitive
                 }
             return false;
         }
+        /// <summary>
+        /// <para>連立一次方程式 <see langword="this"/>・X=<paramref name="vector"/> を満たす ベクトル X を求める。</para>
+        /// <para>最上位ビットは計算で使うのでベクトルは <see cref="Unsafe.SizeOf{T}"/> より小さくなければならない。</para>
+        /// </summary>
+        /// <returns>
+        /// <list type="bullet">
+        /// <item><description>最初の配列: 特殊解</description></item>
+        /// <item><description>2番目以降の配列: 解空間の基底ベクトル</description></item>
+        /// <item><description>ただし解無しのときは空配列を返す</description></item>
+        /// </list>
+        /// </returns>
+        public T[] LinearSystem(T vector)
+        {
+            int log2 = 0;
+            foreach (var v in Value)
+            {
+                var s = int.CreateTruncating(T.Log2(v));
+                if (log2 < s) log2 = s;
+            }
+            {
+                var s = int.CreateTruncating(T.Log2(vector));
+                if (log2 < s) log2 = s;
+            }
+            return LinearSystem(vector, log2 + 1);
+        }
 
         /// <summary>
         /// <para>連立一次方程式 <see langword="this"/>・X=<paramref name="vector"/> を満たす ベクトル X を求める。</para>
@@ -244,30 +269,15 @@ namespace Kzrnm.Competitive
         /// <item><description>ただし解無しのときは空配列を返す</description></item>
         /// </list>
         /// </returns>
-        public T[] LinearSystem(T vector, int width = 0)
+        public T[] LinearSystem(T vector, int width)
         {
-            if (width == 0)
-            {
-                int log2 = 0;
-                foreach (var v in Value)
-                {
-                    var s = int.CreateTruncating(T.Log2(v));
-                    if (log2 < s) log2 = s;
-                }
-                {
-                    var s = int.CreateTruncating(T.Log2(vector));
-                    if (log2 < s) log2 = s;
-                }
-                width = log2 + 1;
-            }
-
+            Contract.Assert(width < BitSize());
             var impl = (T[])Value.Clone();
-            int shift = width;
             {
-                var last = T.One << shift;
+                var last = T.One << width;
                 for (int i = 0; i < impl.Length; i++)
                 {
-                    Contract.Assert(T.IsZero(impl[i] >> shift));
+                    Contract.Assert(T.IsZero(impl[i] >> width));
                     if (T.IsOddInteger(vector >> i))
                         impl[i] |= last;
                 }
@@ -281,7 +291,7 @@ namespace Kzrnm.Competitive
             // a×0+b×0+c×0..+z×0≠0 になっていたら解無し
             for (int i = r; i < impl.Length; i++)
             {
-                if (T.IsOddInteger(impl[i] >> shift))
+                if (T.IsOddInteger(impl[i] >> width))
                     return Array.Empty<T>();
             }
             if (idxs.IsEmpty)
@@ -293,7 +303,7 @@ namespace Kzrnm.Competitive
                 }
                 return eres;
             }
-            if (idxs[^1] == shift)
+            if (idxs[^1] == width)
                 return Array.Empty<T>();
 
             var used = new HashSet<int>(Enumerable.Range(0, w));
@@ -304,7 +314,7 @@ namespace Kzrnm.Competitive
                 {
                     int f = idxs[y];
                     used.Remove(f);
-                    v |= (impl[y] >> shift) << f;
+                    v |= (impl[y] >> width) << f;
                     for (int x = f + 1; x < w; x++)
                         v ^= (((v & impl[y]) >> x) & T.One) << f;
                 }

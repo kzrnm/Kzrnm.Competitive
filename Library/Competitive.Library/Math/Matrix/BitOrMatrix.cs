@@ -219,21 +219,37 @@ namespace Kzrnm.Competitive
         public static BitOrMatrix Parse(string[] rows)
         {
             var arr = new BitArray[rows.Length];
-            arr[0] = ParseRow(rows[0].AsSpan().Trim());
-            for (int i = 1; i < arr.Length; i++)
+            for (int i = 0; i < arr.Length; i++)
             {
-                arr[i] = ParseRow(rows[i].AsSpan().Trim());
-                if (arr[i].Length != arr[i - 1].Length) throw new FormatException("Row length are diffrent.");
+                arr[i] = ParseRow(rows[i]);
+                if (i > 0 && arr[i].Length != arr[i - 1].Length)
+                    throw new FormatException("Row length are diffrent.");
             }
             return new BitOrMatrix(arr);
 
-            static BitArray ParseRow(ReadOnlySpan<char> row)
+            static BitArray ParseRow(string row)
             {
-                row = row.Trim();
-                var b = new BitArray(row.Length);
-                for (int i = 0; i < row.Length; i++)
-                    b[i] = row[i] != '0';
-                return b;
+                var span = row.ToCharArray().AsSpan().Trim();
+                span.Reverse();
+                var length = span.Length;
+                var nums = new int[(span.Length + 31) / 32];
+
+                for (int i = 0; i < nums.Length; i++)
+                {
+                    if (span.Length < 32)
+                    {
+                        nums[i] = Convert.ToInt32(new string(span), 2);
+                        break;
+                    }
+                    else
+                    {
+                        nums[i] = Convert.ToInt32(new string(span[^32..]), 2);
+                        span = span[..^32];
+                    }
+                }
+
+                var res = new BitArray(nums) { Length = length };
+                return res;
             }
         }
 
