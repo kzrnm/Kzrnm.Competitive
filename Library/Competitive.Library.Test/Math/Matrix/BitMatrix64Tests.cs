@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 
 namespace Kzrnm.Competitive.Testing.MathNS.Matrix
@@ -37,8 +38,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 """,
                 new BitMatrix64(new ulong[]
                 {
-                    0b1010101010101010101010101010101010101010101010101010101010101010,
                     0b0101010101010101010101010101010101010101010101010101010101010101,
+                    0b1010101010101010101010101010101010101010101010101010101010101010,
                 })
             },
             {
@@ -48,8 +49,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 """,
                 new BitMatrix64(new ulong[]
                 {
-                    0b11001,
-                    0b10010,
+                    0b10011,
+                    0b01001,
                 })
             },
         };
@@ -72,10 +73,10 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     new[] {  true,  true,  true },
                 }),
                 $$$"""
-                {{{"101".PadLeft(64, '0')}}}
-                {{{"000".PadLeft(64, '0')}}}
-                {{{"100".PadLeft(64, '0')}}}
-                {{{"111".PadLeft(64, '0')}}}
+                {{{"101".PadRight(64, '0')}}}
+                {{{"000".PadRight(64, '0')}}}
+                {{{"001".PadRight(64, '0')}}}
+                {{{"111".PadRight(64, '0')}}}
                 """.Replace("\r\n", "\n")
             },
             {
@@ -83,14 +84,21 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 {
                     new[] {  false },
                 }),
-                "0".PadLeft(64, '0')
+                "0".PadRight(64, '0')
             },
             {
                 new BitMatrix64(new[]
                 {
                     new[] {  true },
                 }),
-                "1".PadLeft(64, '0')
+                "1".PadRight(64, '0')
+            },
+            {
+                new BitMatrix64(new[]
+                {
+                    0b1100111ul,
+                }),
+                "1110011000000000000000000000000000000000000000000000000000000000"
             },
         };
         [Theory]
@@ -115,10 +123,10 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             });
             var expected = BitMatrix64.Parse(new[]
             {
-                "010".PadLeft(64, '1'),
-                "111".PadLeft(64, '1'),
-                "110".PadLeft(64, '1'),
-                "000".PadLeft(64, '1'),
+                "010".PadRight(64, '1'),
+                "111".PadRight(64, '1'),
+                "110".PadRight(64, '1'),
+                "000".PadRight(64, '1'),
             });
             (-mat).Should().BeEquivalentTo(expected);
             (~mat).Should().BeEquivalentTo(expected);
@@ -283,7 +291,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 }),
                 new[]{ true, true, true},
                 0b111ul,
-                0b01ul
+                0b10ul
             },
             {
                 BitMatrix64.Parse(new[]
@@ -344,25 +352,25 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 {
                     "001",
                     "100",
-                    "110",
-                }),
-                BitMatrix64.Parse(new[]
-                {
-                    "011",
-                    "111",
                     "010",
                 }),
                 BitMatrix64.Parse(new[]
                 {
-                    "110",
-                    "001",
+                    "111",
+                    "011",
                     "101",
                 }),
                 BitMatrix64.Parse(new[]
                 {
+                    "001",
                     "010",
-                    "011",
                     "100",
+                }),
+                BitMatrix64.Parse(new[]
+                {
+                    "111",
+                    "101",
+                    "011",
                 }),
             };
             var cur = orig;
@@ -440,6 +448,83 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         {
             var got = orig.GaussianElimination(isReduced);
             got.Should().BeEquivalentTo(expected);
+        }
+
+        public static TheoryData LinearSystem_Data => new TheoryData<BitMatrix64, ulong, ulong[]>
+        {
+            {
+                BitMatrix64.Parse(new[]
+                {
+                    "100",
+                    "010",
+                    "111",
+                }),
+                0b111ul,
+                new[]
+                {
+                    0b111ul
+                }
+            },
+            {
+                BitMatrix64.Parse(new[]
+                {
+                    "100",
+                    "010",
+                    "101",
+                }),
+                0b111ul,
+                new[]
+                {
+                    0b011ul
+                }
+            },
+            {
+                BitMatrix64.Parse(new[]
+                {
+                    "100",
+                    "010",
+                    "110",
+                }),
+                0b111ul,
+                new ulong[0]
+            },
+            {
+                BitMatrix64.Parse(new[]
+                {
+                    "100",
+                    "010",
+                    "110",
+                }),
+                0b110,
+                new[]
+                {
+                    0b010ul,
+                    0b100ul,
+                }
+            },
+            {
+                BitMatrix64.Parse(new[]
+                {
+                    "000",
+                    "000",
+                }),
+                0ul,
+                new[]
+                {
+                    0ul,
+                    1ul,
+                }
+            },
+        };
+
+        [Theory]
+        [MemberData(nameof(LinearSystem_Data))]
+        public void LinearSystem(BitMatrix64 matrix, ulong vector, ulong[] expected)
+        {
+            var got = matrix.LinearSystem(vector);
+            got.Should().HaveSameCount(expected);
+            for (int i = 0; i < got.Length; i++)
+                got[i].Should().Be(expected[i], because: "got[{0}]", i);
         }
     }
 }

@@ -40,9 +40,9 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 """,
                 new BitMatrix128(new UInt128[]
                 {
-                    new UInt128(0b1010101010101010101010101010101010101010101010101010101010101010,0b1010101010101010101010101010101010101010101010101010101010101010),
                     new UInt128(0b0101010101010101010101010101010101010101010101010101010101010101,0b0101010101010101010101010101010101010101010101010101010101010101),
-                    new UInt128(0b0100000000000000000000000000000000000000000000000000000000000000,0b1),
+                    new UInt128(0b1010101010101010101010101010101010101010101010101010101010101010,0b1010101010101010101010101010101010101010101010101010101010101010),
+                    new UInt128(0b1000000000000000000000000000000000000000000000000000000000000000,0b10),
                 })
             },
             {
@@ -52,8 +52,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 """,
                 new BitMatrix128(new UInt128[]
                 {
-                    0b11001,
-                    0b10010,
+                    0b10011,
+                    0b01001,
                 })
             },
         };
@@ -76,10 +76,10 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     new[] {  true,  true,  true },
                 }),
                 $$$"""
-                {{{"101".PadLeft(128, '0')}}}
-                {{{"000".PadLeft(128, '0')}}}
-                {{{"100".PadLeft(128, '0')}}}
-                {{{"111".PadLeft(128, '0')}}}
+                {{{"101".PadRight(128, '0')}}}
+                {{{"000".PadRight(128, '0')}}}
+                {{{"001".PadRight(128, '0')}}}
+                {{{"111".PadRight(128, '0')}}}
                 """.Replace("\r\n", "\n")
             },
             {
@@ -87,14 +87,21 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 {
                     new[] {  false },
                 }),
-                "0".PadLeft(128, '0')
+                "0".PadRight(128, '0')
             },
             {
                 new BitMatrix128(new[]
                 {
                     new[] {  true },
                 }),
-                "1".PadLeft(128, '0')
+                "1".PadRight(128, '0')
+            },
+            {
+                new BitMatrix128(new[]
+                {
+                    new UInt128(0b101, 0b1100111),
+                }),
+                "11100110000000000000000000000000000000000000000000000000000000001010000000000000000000000000000000000000000000000000000000000000"
             },
         };
         [Theory]
@@ -119,10 +126,10 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             });
             var expected = BitMatrix128.Parse(new[]
             {
-                "010".PadLeft(128, '1'),
-                "111".PadLeft(128, '1'),
-                "110".PadLeft(128, '1'),
-                "000".PadLeft(128, '1'),
+                "010".PadRight(128, '1'),
+                "111".PadRight(128, '1'),
+                "110".PadRight(128, '1'),
+                "000".PadRight(128, '1'),
             });
             (-mat).Should().BeEquivalentTo(expected);
             (~mat).Should().BeEquivalentTo(expected);
@@ -279,7 +286,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 }),
                 new[]{ true, true, true},
                 0b111ul,
-                0b01ul
+                0b10ul
             },
             {
                 BitMatrix128.Parse(new[]
@@ -340,25 +347,25 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 {
                     "001",
                     "100",
-                    "110",
-                }),
-                BitMatrix128.Parse(new[]
-                {
-                    "011",
-                    "111",
                     "010",
                 }),
                 BitMatrix128.Parse(new[]
                 {
-                    "110",
-                    "001",
+                    "111",
+                    "011",
                     "101",
                 }),
                 BitMatrix128.Parse(new[]
                 {
+                    "001",
                     "010",
-                    "011",
                     "100",
+                }),
+                BitMatrix128.Parse(new[]
+                {
+                    "111",
+                    "101",
+                    "011",
                 }),
             };
             var cur = orig;
