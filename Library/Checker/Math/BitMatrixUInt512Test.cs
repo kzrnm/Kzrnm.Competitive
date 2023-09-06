@@ -22,26 +22,25 @@ namespace Kzrnm.Competitive.MathNs
             int M = cr;
             int X = cr;
             int[] A = cr.Repeat(N);
-            var bits = new List<BitArray>();
+            var bits = new List<UInt512>();
             for (int b = 0; b < 31; b++)
             {
-                var bb = new BitArray(N);
+                var bb = new UInt512();
                 for (int i = 0; i < A.Length; i++)
-                    bb[i] = A[i].On(b);
+                    if (A[i].On(b))
+                        bb |= UInt512.One << i;
                 bits.Add(bb);
             }
-            var xb = Enumerable.Repeat(false, 31).ToList();
-            foreach (var b in X.Bits()) xb[b] = true;
-            while (--M >= 0)
+            var xb = (UInt512)X;
+            for (int b = 0; b < M; b++)
             {
-                xb.Add(cr.Int() != 0);
+                xb |= (UInt512)cr.Int() << (b + 31);
                 int l = cr.Int0();
                 int r = cr.Int();
-                var bb = new bool[N];
-                bb.AsSpan()[l..r].Fill(true);
-                bits.Add(new BitArray(bb));
+                var bb = (UInt512.One << (r - l)) - 1;
+                bits.Add(bb << l);
             }
-            var len = new BitMatrix<UInt512>(bits.ToArray()).LinearSystem(xb.ToArray()).Length - 1;
+            var len = new BitMatrix<UInt512>(bits.ToArray()).LinearSystem(xb, width: N).Length - 1;
             return len < 0 ? 0 : StaticModInt<Mod1000000007>.Raw(2).Pow(len).Value;
         }
     }

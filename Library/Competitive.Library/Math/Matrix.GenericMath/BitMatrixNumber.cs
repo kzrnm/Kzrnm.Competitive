@@ -1,6 +1,7 @@
 using AtCoder.Internal;
 using System;
 using System.Buffers;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -34,7 +35,6 @@ namespace Kzrnm.Competitive
 
         public BitMatrix(T[] value)
         {
-
             Value = value;
             kind = Kd.Normal;
         }
@@ -62,8 +62,8 @@ namespace Kzrnm.Competitive
         BitMatrix<T> AddIdentity()
         {
             var arr = CloneArray(Value);
-            for (int i = arr.Length - 1; i >= 0; i--)
-                arr[i] ^= T.One << (arr.Length - i - 1);
+            for (int i = 0; i < arr.Length; i++)
+                arr[i] ^= T.One << i;
             return new BitMatrix<T>(arr);
         }
         BitMatrix<T> Add(BitMatrix<T> other)
@@ -173,7 +173,7 @@ namespace Kzrnm.Competitive
             var val = Value;
             var res = default(T);
             for (int i = 0; i < val.Length; i++)
-                res |= (T.PopCount(val[i] & vector) & T.One) << (val.Length - i - 1);
+                res |= (T.PopCount(val[i] & vector) & T.One) << i;
 
             return res;
         }
@@ -203,14 +203,13 @@ namespace Kzrnm.Competitive
             int width = BitSize();
             for (int x = 0; x < width && r < arr.Length; x++)
             {
-                var xx = width - x - 1;
                 if (!SearchNonZero(arr, r, x))
                     continue;
                 var arrR = arr[r];
                 for (int y = isReduced ? 0 : r + 1; y < arr.Length; y++)
                 {
                     var arrY = arr[y];
-                    if (y == r || (uint.CreateTruncating(arrY >> xx) & 1) == 0)
+                    if (y == r || (uint.CreateTruncating(arrY >> x) & 1) == 0)
                         continue;
                     arr[y] ^= arrR;
                 }
@@ -225,7 +224,6 @@ namespace Kzrnm.Competitive
         /// <returns>0 ではない行が見つかったかどうか</returns>
         private static bool SearchNonZero(T[] mat, int r, int x)
         {
-            x = BitSize() - x - 1;
             for (int y = r; y < mat.Length; y++)
                 if ((uint.CreateTruncating(mat[y] >> x) & 1) != 0)
                 {
@@ -233,6 +231,98 @@ namespace Kzrnm.Competitive
                     return true;
                 }
             return false;
+        }
+
+        /// <summary>
+        /// <para>連立一次方程式 <see langword="this"/>・X=<paramref name="vector"/> を満たす ベクトル X を求める。</para>
+        /// <para>最上位ビットは計算で使うのでベクトルは <see cref="Unsafe.SizeOf{T}"/> より小さくなければならない。</para>
+        /// </summary>
+        /// <returns>
+        /// <list type="bullet">
+        /// <item><description>最初の配列: 特殊解</description></item>
+        /// <item><description>2番目以降の配列: 解空間の基底ベクトル</description></item>
+        /// <item><description>ただし解無しのときは空配列を返す</description></item>
+        /// </list>
+        /// </returns>
+        public T[] LinearSystem(T vector, int width = 0)
+        {
+            if (width == 0)
+            {
+                int log2 = 0;
+                foreach (var v in Value)
+                {
+                    var s = int.CreateTruncating(T.Log2(v));
+                    if (log2 < s) log2 = s;
+                }
+                {
+                    var s = int.CreateTruncating(T.Log2(vector));
+                    if (log2 < s) log2 = s;
+                }
+                width = log2 + 1;
+            }
+
+            var impl = (T[])Value.Clone();
+            int shift = width;
+            {
+                var last = T.One << shift;
+                for (int i = 0; i < impl.Length; i++)
+                {
+                    Contract.Assert(T.IsZero(impl[i] >> shift));
+                    if (T.IsOddInteger(vector >> i))
+                        impl[i] |= last;
+                }
+            }
+
+            var idxs = GaussianEliminationImpl(impl, false).AsSpan();
+            var r = idxs.Length;
+            int w = width;
+
+            // 解があるかチェック
+            // a×0+b×0+c×0..+z×0≠0 になっていたら解無し
+            for (int i = r; i < impl.Length; i++)
+            {
+                if (T.IsOddInteger(impl[i] >> shift))
+                    return Array.Empty<T>();
+            }
+            if (idxs.IsEmpty)
+            {
+                var eres = new T[w + 1];
+                for (int i = 1; i < eres.Length; i++)
+                {
+                    eres[i] = T.One << (i - 1);
+                }
+                return eres;
+            }
+            if (idxs[^1] == shift)
+                return Array.Empty<T>();
+
+            var used = new HashSet<int>(Enumerable.Range(0, w));
+            var lst = new List<T>(w);
+            {
+                var v = default(T);
+                for (int y = idxs.Length - 1; y >= 0; y--)
+                {
+                    int f = idxs[y];
+                    used.Remove(f);
+                    v |= (impl[y] >> shift) << f;
+                    for (int x = f + 1; x < w; x++)
+                        v ^= (((v & impl[y]) >> x) & T.One) << f;
+                }
+                lst.Add(v);
+            }
+
+            foreach (var s in used)
+            {
+                var v = T.One << s;
+                for (int y = idxs.Length - 1; y >= 0; y--)
+                {
+                    int f = idxs[y];
+                    for (int x = f + 1; x < w; x++)
+                        v ^= (((v & impl[y]) >> x) & T.One) << f;
+                }
+                lst.Add(v);
+            }
+            return lst.ToArray();
         }
 
         [凾(256)]
@@ -257,30 +347,24 @@ namespace Kzrnm.Competitive
         {
             if (kind != Kd.Normal) return kind.ToString();
             var bitSize = BitSize();
-            var sb = new StringBuilder(Value.Length * (64 + 2));
-
+            var sb = new StringBuilder(Value.Length * (bitSize + 2));
             var charsSize = (bitSize + 63) / 64;
-            var cache = ArrayPool<string>.Shared.Rent(charsSize);
+
             foreach (var row in Value)
             {
                 // TODO: .NET 8 か 9 以降では 2 進数の Parse/Format ができるようになりそう
                 // https://github.com/dotnet/runtime/issues/83619
-
-                var inner = new StringBuilder(cache.Length * 64 + bitSize);
-                inner.Append('0', bitSize);
-
                 var v = row;
                 for (int i = 0; i < charsSize; i++)
                 {
-                    cache[i] = Convert.ToString(long.CreateTruncating(v), 2);
+                    var chars = Convert.ToString(long.CreateTruncating(v), 2).ToCharArray();
+                    Array.Reverse(chars);
+                    sb.Append(chars).Append('0', 64 - chars.Length);
                     v >>= 64;
                 }
-                for (int i = charsSize - 1; i >= 0; i--)
-                    inner.Append(cache[i]);
 
-                sb.Append(inner, inner.Length - bitSize, bitSize).Append('\n');
+                sb.Append('\n');
             }
-            ArrayPool<string>.Shared.Return(cache);
             return sb.Remove(sb.Length - 1, 1).ToString();
         }
         /// <summary>
@@ -289,8 +373,7 @@ namespace Kzrnm.Competitive
         public static BitMatrix<T> Parse(string[] rows)
         {
             var arr = new T[rows.Length];
-            arr[0] = ParseRow(rows[0]);
-            for (int i = 1; i < arr.Length; i++)
+            for (int i = 0; i < arr.Length; i++)
             {
                 arr[i] = ParseRow(rows[i]);
             }
@@ -298,7 +381,8 @@ namespace Kzrnm.Competitive
 
             static T ParseRow(string row)
             {
-                var span = row.AsSpan().Trim();
+                var span = row.ToCharArray().AsSpan().Trim();
+                span.Reverse();
                 var res = T.Zero;
 
                 var reminder = span.Length & 63; // % 64
