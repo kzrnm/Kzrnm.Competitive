@@ -12,6 +12,7 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics;
+using System.Text;
 using System.Text.RegularExpressions;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 using static System.Math;
@@ -31,7 +32,7 @@ partial class Program
 {
     const bool __ManyTestCases = false;
 #if !LOCAL_RUNNING
-    static void Main()=>new Program(new PropertyConsoleReader(), new Utf8ConsoleWriter()).Run();
+    static void Main() => new Program(new(), new()).Run();
     [凾(256)]
 #endif
     private ConsoleOutput? Calc()
