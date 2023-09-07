@@ -8,6 +8,7 @@ namespace Kzrnm.Competitive.Testing.Graph
         {
             var gb = new WIntGraphBuilder(5, true);
             gb.Add(0, 1, 1);
+            gb.Add(1, 1, 1);
             gb.Add(0, 2, 10);
             gb.Add(0, 3, 30);
             gb.Add(0, 4, 40);

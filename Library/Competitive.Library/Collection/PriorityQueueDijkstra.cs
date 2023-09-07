@@ -67,10 +67,13 @@ namespace Kzrnm.Competitive
         {
             indexes[values[0]] = -1;
             var res = KeyValuePair.Create(keys[0], values[0]);
-            keys[0] = keys[--Count];
-            values[0] = values[Count];
-            indexes[values[0]] = 0;
-            UpdateDown(0);
+            if (--Count > 0)
+            {
+                keys[0] = keys[Count];
+                values[0] = values[Count];
+                indexes[values[0]] = 0;
+                UpdateDown(0);
+            }
             return res;
         }
         [凾(256)]

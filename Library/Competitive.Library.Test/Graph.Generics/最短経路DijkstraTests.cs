@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -6,6 +7,34 @@ namespace Kzrnm.Competitive.Testing.Graph
 {
     public class 最短経路DijkstraTests
     {
+        [Fact]
+        public void Random()
+        {
+            var rnd = new Random(227);
+            for (int n = 0; n < 100; n++)
+            {
+                var size = rnd.Next(10, 60);
+                var gb = new WIntGraphBuilder(size, true);
+                for (int i = 0; i < size; i++)
+                    for (int j = 0; j < size; j++)
+                    {
+                        if (rnd.Next(100) < 80)
+                            gb.Add(i, j, rnd.Next(10000));
+                    }
+                var graph = gb.ToGraph();
+                var expecteds = graph.WarshallFloyd();
+                for (int i = 0; i < expecteds.Length; i++)
+                    for (int j = 0; j < expecteds[i].Length; j++)
+                        if (expecteds[i][j] == int.MaxValue / 2)
+                            expecteds[i][j] = int.MaxValue;
+
+                for (int i = 0; i < size; i++)
+                {
+                    graph.Dijkstra(i).Should().Equal(expecteds[i]);
+                }
+            }
+        }
+
         [Fact]
         public void Int()
         {

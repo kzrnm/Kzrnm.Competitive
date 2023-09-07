@@ -35,9 +35,9 @@ namespace Kzrnm.Competitive
             {
                 res[i] = new T[graphArr.Length];
                 Array.Fill(res[i], inf);
-                res[i][i] = default;
                 foreach (var e in graphArr[i].Children)
                     res[i][e.To] = e.Value;
+                res[i][i] = default;
             }
             for (var k = 0; k < graphArr.Length; k++)
                 for (var i = 0; i < graphArr.Length; i++)
