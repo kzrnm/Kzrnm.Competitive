@@ -363,7 +363,7 @@ namespace Kzrnm.Competitive
             [凾(256)]
             public int Compare((T From, T ToInclusive) x, (T From, T ToInclusive) y) => x.From.CompareTo(y.From);
         }
-#region Search
+        #region Search
         [凾(256)] public new Node FindNode<Tv>(Tv item) where Tv : IComparable<T> => base.FindNode(new C<Tv>(item));
         [凾(256)] public bool Contains<Tv>(Tv item) where Tv : IComparable<T> => FindNode(item) != null;
         /// <summary>
@@ -416,9 +416,9 @@ namespace Kzrnm.Competitive
         /// <paramref name="item"/> 未満の最後の要素を返します。
         /// </summary>
         [凾(256)] public (T From, T ToInclusive) ReverseUpperBoundItem<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new SetUpperRev()).node.Pair;
-#endregion Search
+        #endregion Search
 
-#region Search<T>
+        #region Search<T>
         [凾(256)] public Node FindNode(T item) => base.FindNode(new C<T>(item));
         [凾(256)] public bool Contains(T item) => FindNode(item) != null;
         /// <summary>
@@ -471,7 +471,7 @@ namespace Kzrnm.Competitive
         /// <paramref name="item"/> 未満の最後の要素を返します。
         /// </summary>
         [凾(256)] public (T From, T ToExclusive) ReverseUpperBoundItem(T item) => BinarySearch(new C<T>(item), new SetUpperRev()).node.Pair;
-#endregion Search<T>
+        #endregion Search<T>
         private class DebugView
         {
             [DebuggerDisplay("[{" + nameof(From) + "}, {" + nameof(ToInclusive) + "}]")]

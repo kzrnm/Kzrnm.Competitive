@@ -84,7 +84,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
 #else
                 Matrix2x2<StaticModInt<T>, StaticModIntOperator<T>>
 #endif
-                mat = new (
+                mat = new(
                     (0, 1),
                     (1, 1)
                 );

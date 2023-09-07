@@ -1,7 +1,5 @@
 using AtCoder;
 using Kzrnm.Competitive.IO;
-using ModInt = AtCoder.StaticModInt<AtCoder.Mod998244353>;
-using ModIntOperator = AtCoder.StaticModIntOperator<AtCoder.Mod998244353>;
 
 namespace Kzrnm.Competitive.MathNs
 {

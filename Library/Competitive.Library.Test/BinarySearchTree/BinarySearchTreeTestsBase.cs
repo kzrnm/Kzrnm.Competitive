@@ -230,7 +230,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
         [Fact]
         public void RemoveAt()
         {
-            foreach(var list in new[]
+            foreach (var list in new[]
             {
                 Enumerable.Range(0, 500).ToList(),
                 Enumerable.Range(0, 80).ToList(),

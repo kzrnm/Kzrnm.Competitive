@@ -65,6 +65,6 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)]
         public ulong NextUInt64(ulong min, ulong max)
-            => NextUInt64(max - min) + min;        
+            => NextUInt64(max - min) + min;
     }
 }

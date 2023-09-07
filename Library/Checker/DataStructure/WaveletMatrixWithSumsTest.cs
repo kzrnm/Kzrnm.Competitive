@@ -1,7 +1,4 @@
-using AtCoder;
-using AtCoder.Extension;
 using Kzrnm.Competitive.IO;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

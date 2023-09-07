@@ -86,7 +86,7 @@ namespace Kzrnm.Competitive.Testing.IO
                     (5, "Green", 'g', 0.25m),
                     (7, "White", 'w', 0.3m),
                 };
-                cw.WriteTuples<int, string, char,decimal>(arr.AsSpan());
+                cw.WriteTuples<int, string, char, decimal>(arr.AsSpan());
                 cw.WriteTuples(arr.AsEnumerable().Reverse());
             }
             utf8Wrapper.Read().Should().Be("""

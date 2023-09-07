@@ -14,3 +14,6 @@ dotnet_diagnostic.CS7021.severity = none
 [*.cs]
 # IDE0090: 'new(...)' を使用する
 dotnet_diagnostic.IDE0090.severity = silent
+
+# 有効にすると dotnet format で未使用の using を消せる
+# dotnet_diagnostic.IDE0005.severity = warning

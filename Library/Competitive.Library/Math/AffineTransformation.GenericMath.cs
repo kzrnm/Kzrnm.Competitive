@@ -9,7 +9,7 @@ namespace Kzrnm.Competitive
     internal interface IAffineOperator<T> : IEquatable<T>
         , IMultiplyOperators<T, T, T>
         , IMultiplicativeIdentity<T, T>
-        where T: IAffineOperator<T>
+        where T : IAffineOperator<T>
     { }
     /// <summary>
     /// アフィン変換. Ax+b の形で表される式を保持する。

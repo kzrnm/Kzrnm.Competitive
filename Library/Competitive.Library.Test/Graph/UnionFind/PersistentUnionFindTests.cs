@@ -1,6 +1,3 @@
-using System;
-
-
 namespace Kzrnm.Competitive.Testing.Graph
 {
     public class PersistentUnionFindTests

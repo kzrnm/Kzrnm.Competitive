@@ -1,5 +1,3 @@
-using AtCoder;
-
 namespace Kzrnm.Competitive.Testing.MathNS
 {
     public class PolynomialTests

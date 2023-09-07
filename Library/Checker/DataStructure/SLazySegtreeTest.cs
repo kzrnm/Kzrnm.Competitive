@@ -1,5 +1,4 @@
 using Kzrnm.Competitive.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive.DataStructure

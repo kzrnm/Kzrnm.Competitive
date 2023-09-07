@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Linq;
 
 namespace Kzrnm.Competitive.Testing.MathNS.Matrix
