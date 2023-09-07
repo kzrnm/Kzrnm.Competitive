@@ -1,4 +1,3 @@
-using Kzrnm.Competitive.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,14 +6,17 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive
 {
     // competitive-verifier: TITLE Chunk
+#if !NET7_0_OR_GREATER
     public static class __CollectionExtension_Chunk
     {
         /// <summary>
         /// コレクションの要素をいくつかの要素ごとに分割したバッファーにする。最後の要素は数が足りない可能性あり
         /// </summary>
         [凾(256)]
-        public static ChunkBuffer<T> Chunk<T>(this IEnumerable<T> collection, int bufferSize) => new ChunkBuffer<T>(collection, bufferSize);
+        public static Internal.ChunkBuffer<T> Chunk<T>(this IEnumerable<T> collection, int bufferSize)
+            => new Internal.ChunkBuffer<T>(collection, bufferSize);
     }
+#endif
     namespace Internal
     {
         public class ChunkBuffer<T> : IEnumerable<T[]>
