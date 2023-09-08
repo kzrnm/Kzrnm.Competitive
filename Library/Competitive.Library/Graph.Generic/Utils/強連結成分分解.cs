@@ -116,6 +116,20 @@ namespace Kzrnm.Competitive
         public static int[][] Scc<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
             where TNode : IGraphNode<TEdge>
             where TEdge : IGraphEdge
+            => SccGroupsAndIds(graph).groups;
+
+        /// <summary>
+        /// 強連結成分ごとに ID を割り振り、各頂点の所属する強連結成分の ID が記録された配列と「頂点のリスト」のリストを取得します。
+        /// </summary>
+        /// <remarks>
+        /// <para>- 全ての頂点がちょうど1つずつ、どれかのリストに含まれます。</para>
+        /// <para>- 内側のリストと強連結成分が一対一に対応します。リスト内での頂点の順序は未定義です。</para>
+        /// <para>- リストはトポロジカルソートされています。異なる強連結成分の頂点 u, v について、u から v に到達できる時、u の属するリストは v の属するリストよりも前です。</para>
+        /// <para>計算量: 追加された辺の本数を m として O(n+m)</para>
+        /// </remarks>
+        public static (int[][] groups, int[] ids) SccGroupsAndIds<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
+            where TNode : IGraphNode<TEdge>
+            where TEdge : IGraphEdge
         {
             var (groupNum, ids) = SccIds(graph);
             var groups = new int[groupNum][];
@@ -131,7 +145,7 @@ namespace Kzrnm.Competitive
             for (int i = 0; i < ids.Length; i++)
                 groups[ids[i]][seen[ids[i]]++] = i;
 
-            return groups;
+            return (groups, ids);
         }
     }
 }
