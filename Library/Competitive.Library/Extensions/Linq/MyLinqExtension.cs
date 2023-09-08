@@ -20,7 +20,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)]
         public static IEnumerable<int> WhereBy<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
-              => source.Select((v, i) => (i, v)).Where(t => predicate(t.v)).Select(t => t.i);
+              => source.Indexed().Where(t => predicate(t.Value)).Select(t => t.Index);
         /// <summary>
         /// 要素の個数を返します。
         /// </summary>
