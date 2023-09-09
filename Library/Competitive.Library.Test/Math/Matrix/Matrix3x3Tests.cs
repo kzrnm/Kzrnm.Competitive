@@ -4,6 +4,15 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
     public class Matrix3x3Tests
     {
         [Fact]
+        public void Property()
+        {
+            var mat = new LongMatrix3x3((1, 2, 3), (4, 5, 6), (7, 8, 9));
+            mat.Row0.Should().Be((1, 2, 3));
+            mat.Row1.Should().Be((4, 5, 6));
+            mat.Row2.Should().Be((7, 8, 9));
+        }
+
+        [Fact]
         [Trait("Category", "Operator")]
         public void SingleMinus()
         {
@@ -26,7 +35,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     (5, 6, 7),
                     (9, 10, 11)
                 ),
-                LongMatrix3x3.Identity,
+                LongMatrix3x3.MultiplicativeIdentity,
                 new LongMatrix3x3(
                     (2, 2, 3),
                     (5, 7, 7),
@@ -90,7 +99,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     (5, 6, 7),
                     (9, 10, 11)
                 ),
-                LongMatrix3x3.Identity,
+                LongMatrix3x3.MultiplicativeIdentity,
                 new LongMatrix3x3(
                     (0, 2, 3),
                     (5, 5, 7),
@@ -98,7 +107,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 )
             },
             {
-                LongMatrix3x3.Identity,
+                LongMatrix3x3.MultiplicativeIdentity,
                 new LongMatrix3x3(
                     (1, 2, 3),
                     (5, 6, 7),
@@ -147,7 +156,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     (5, 6, 7),
                     (9, 10, 11)
                 ),
-                LongMatrix3x3.Identity,
+                LongMatrix3x3.MultiplicativeIdentity,
                 new LongMatrix3x3(
                     (1, 2, 3),
                     (5, 6, 7),
@@ -155,7 +164,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 )
             },
             {
-                LongMatrix3x3.Identity,
+                LongMatrix3x3.MultiplicativeIdentity,
                 new LongMatrix3x3(
                     (1, 2, 3),
                     (5, 6, 7),
@@ -184,7 +193,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         {
             {
                 3,
-                LongMatrix3x3.Identity,
+                LongMatrix3x3.MultiplicativeIdentity,
                 new LongMatrix3x3(
                     (3, 0, 0),
                     (0, 3, 0),
@@ -294,8 +303,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 (new Fraction(-131, 319), new Fraction(-90, 319), new Fraction(-194, 319)),
                 (new Fraction(-50, 319), new Fraction(-10, 319), new Fraction(-57, 319))
             ));
-            (orig * inv).Should().Be(FractionMatrix3x3.Identity);
-            (inv * orig).Should().Be(FractionMatrix3x3.Identity);
+            (orig * inv).Should().Be(FractionMatrix3x3.MultiplicativeIdentity);
+            (inv * orig).Should().Be(FractionMatrix3x3.MultiplicativeIdentity);
         }
     }
 }

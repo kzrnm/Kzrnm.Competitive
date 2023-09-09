@@ -4,6 +4,14 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
     public class Matrix2x2Tests
     {
         [Fact]
+        public void Property()
+        {
+            var mat = new LongMatrix2x2((1, 2), (3, 4));
+            mat.Row0.Should().Be((1, 2));
+            mat.Row1.Should().Be((3, 4));
+        }
+
+        [Fact]
         [Trait("Category", "Operator")]
         public void SingleMinus()
         {
@@ -23,7 +31,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     (1, 2),
                     (5, 6)
                 ),
-                LongMatrix2x2.Identity,
+                LongMatrix2x2.MultiplicativeIdentity,
                 new LongMatrix2x2(
                     (2, 2),
                     (5, 7)
@@ -79,14 +87,14 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     (1, 2),
                     (5, 6)
                 ),
-                LongMatrix2x2.Identity,
+                LongMatrix2x2.MultiplicativeIdentity,
                 new LongMatrix2x2(
                     (0, 2),
                     (5, 5)
                 )
             },
             {
-                LongMatrix2x2.Identity,
+                LongMatrix2x2.MultiplicativeIdentity,
                 new LongMatrix2x2(
                     (1, 2),
                     (5, 6)
@@ -129,14 +137,14 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     (1, 2),
                     (5, 6)
                 ),
-                LongMatrix2x2.Identity,
+                LongMatrix2x2.MultiplicativeIdentity,
                 new LongMatrix2x2(
                     (1, 2),
                     (5, 6)
                 )
             },
             {
-                LongMatrix2x2.Identity,
+                LongMatrix2x2.MultiplicativeIdentity,
                 new LongMatrix2x2(
                     (1, 2),
                     (5, 6)
@@ -163,7 +171,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         {
             {
                 3,
-                LongMatrix2x2.Identity,
+                LongMatrix2x2.MultiplicativeIdentity,
                 new LongMatrix2x2(
                     (3, 0),
                     (0, 3)
@@ -263,8 +271,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 (12, -9),
                 (7, -10)
             ) * new Fraction(1, 57));
-            (orig * inv).Should().Be(FractionMatrix2x2.Identity);
-            (inv * orig).Should().Be(FractionMatrix2x2.Identity);
+            (orig * inv).Should().Be(FractionMatrix2x2.MultiplicativeIdentity);
+            (inv * orig).Should().Be(FractionMatrix2x2.MultiplicativeIdentity);
         }
     }
 }
