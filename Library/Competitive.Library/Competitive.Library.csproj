@@ -68,15 +68,29 @@
 
 
   <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+    <None Update="Math\Matrix.GenericMath\Matrix5x5.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Matrix5x5.cs</LastGenOutput>
+    </None>
+    <Compile Update="Math\Matrix.GenericMath\Matrix5x5.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Matrix5x5.tt</DependentUpon>
+    </Compile>
+    <None Update="Math\Matrix.GenericMath\Matrix6x6.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Matrix6x6.cs</LastGenOutput>
+    </None>
+    <Compile Update="Math\Matrix.GenericMath\Matrix6x6.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Matrix6x6.tt</DependentUpon>
+    </Compile>
     <None Update="Math\Matrix\MatrixProdStrassen.Simd.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MatrixProdStrassen.Simd.cs</LastGenOutput>
     </None>
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-
-
-  <ItemGroup>
     <Compile Update="Math\Matrix\MatrixProdStrassen.Simd.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
