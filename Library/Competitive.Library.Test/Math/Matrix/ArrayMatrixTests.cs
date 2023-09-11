@@ -14,7 +14,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             {
                 new int[]{ 1, 2, 3 },
                 new int[]{ 4, 5, 6 },
-            }).Value.Should().BeEquivalentTo(new int[][]
+            }).ToArray().Should().BeEquivalentTo(new int[][]
             {
                 new int[] { 1, 2, 3 },
                 new int[] { 4, 5, 6 },
@@ -23,11 +23,41 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             {
                 { 1, 2, 3 },
                 { 4, 5, 6 },
-            }).Value.Should().BeEquivalentTo(new int[][]
+            }).ToArray().Should().BeEquivalentTo(new int[][]
             {
                 new int[] { 1, 2, 3 },
                 new int[] { 4, 5, 6 },
             });
+        }
+
+        [Fact]
+        [Trait("Category", "Normal")]
+        public void Equal()
+        {
+            new IntArrayMatrix(new int[][]
+            {
+                new int[]{ 1, 2, 3 },
+                new int[]{ 4, 5, 6 },
+            }).Should().Be(new IntArrayMatrix(new int[,]
+            {
+                { 1, 2, 3 },
+                { 4, 5, 6 },
+            }));
+            new IntArrayMatrix(new int[][]
+            {
+                new int[]{ 1, 2, 3 },
+                new int[]{ 4, 5, 6 },
+            }).Should().Be(new IntArrayMatrix(new int[] { 1, 2, 3, 4, 5, 6 }, 2, 3));
+            new IntArrayMatrix(new int[][]
+            {
+                new int[]{ 1, 2, },
+                new int[]{ 3, 4, },
+                new int[]{ 5, 6, },
+            }).Should().NotBe(new IntArrayMatrix(new int[,]
+            {
+                { 1, 2, 3 },
+                { 4, 5, 6 },
+            }));
         }
 
         [Fact]
@@ -38,7 +68,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             {
                 { 1, 2, 3 },
                 { 4, 5, 6 },
-            })).Value.Should().BeEquivalentTo(new int[][]
+            })).ToArray().Should().BeEquivalentTo(new int[][]
             {
                 new int[] { -1, -2, -3 },
                 new int[] { -4, -5, -6 },
@@ -102,11 +132,11 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(Add_Data))]
         public void Add(IntArrayMatrix mat1, IntArrayMatrix mat2, IntArrayMatrix expected)
         {
-            (mat1 + mat2).Value.Should().BeEquivalentTo(expected.Value);
-            (mat2 + mat1).Value.Should().BeEquivalentTo(expected.Value);
+            (mat1 + mat2).Should().Be(expected);
+            (mat2 + mat1).Should().Be(expected);
 #if !NET7_0_OR_GREATER
-            default(IntArrayMatrix.Operator).Add(mat1, mat2).Value.Should().BeEquivalentTo(expected.Value);
-            default(IntArrayMatrix.Operator).Add(mat2, mat1).Value.Should().BeEquivalentTo(expected.Value);
+            default(IntArrayMatrix.Operator).Add(mat1, mat2).Should().Be(expected);
+            default(IntArrayMatrix.Operator).Add(mat2, mat1).Should().Be(expected);
 #endif
         }
 
@@ -160,15 +190,41 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     { 3, 3 },
                 })
             },
+            {
+                IntArrayMatrix.Zero,
+                new IntArrayMatrix(new int[,]
+                {
+                    { 1, 2 },
+                    { 3, 4 },
+                }),
+                new IntArrayMatrix(new int[,]
+                {
+                    { -1, -2 },
+                    { -3, -4 },
+                })
+            },
+            {
+                IntArrayMatrix.Identity,
+                new IntArrayMatrix(new int[,]
+                {
+                    { 1, 2 },
+                    { 3, 4 },
+                }),
+                new IntArrayMatrix(new int[,]
+                {
+                    { 0,  -2 },
+                    { -3, -3 },
+                })
+            },
         };
         [Theory]
         [Trait("Category", "Operator")]
         [MemberData(nameof(Subtract_Data))]
         public void Subtract(IntArrayMatrix mat1, IntArrayMatrix mat2, IntArrayMatrix expected)
         {
-            (mat1 - mat2).Value.Should().BeEquivalentTo(expected.Value);
+            (mat1 - mat2).Should().Be(expected);
 #if !NET7_0_OR_GREATER
-            default(IntArrayMatrix.Operator).Subtract(mat1, mat2).Value.Should().BeEquivalentTo(expected.Value);
+            default(IntArrayMatrix.Operator).Subtract(mat1, mat2).Should().Be(expected);
 #endif
         }
 
@@ -230,9 +286,9 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(Multiply_Data))]
         public void Multiply(IntArrayMatrix mat1, IntArrayMatrix mat2, IntArrayMatrix expected)
         {
-            (mat1 * mat2).Value.Should().BeEquivalentTo(expected.Value);
+            (mat1 * mat2).Should().Be(expected);
 #if !NET7_0_OR_GREATER
-            default(IntArrayMatrix.Operator).Multiply(mat1, mat2).Value.Should().BeEquivalentTo(expected.Value);
+            default(IntArrayMatrix.Operator).Multiply(mat1, mat2).Should().Be(expected);
 #endif
         }
 
@@ -244,18 +300,18 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             var mat1 = Int2ModInt(matInt1);
             var mat2 = Int2ModInt(matInt2);
             var expected = Int2ModInt(expectedInt);
-            (mat1 * mat2).Value.Should().BeEquivalentTo(expected.Value);
-            mat1.Strassen(mat2).Value.Should().BeEquivalentTo(expected.Value);
+            (mat1 * mat2).Should().Be(expected);
+            mat1.Strassen(mat2).Should().Be(expected);
 #if !NET7_0_OR_GREATER
             default(Mod1000000007ArrayMatrix.Operator)
-                .Multiply(mat1, mat2).Value.Should().BeEquivalentTo(expected.Value);
+                .Multiply(mat1, mat2).Should().Be(expected);
 #endif
         }
         private static Mod1000000007ArrayMatrix Int2ModInt(IntArrayMatrix mat)
             => mat.kind switch
             {
                 ArrayMatrixKind.Normal
-                    => new(mat.Value.Select(arr => arr.Select(n => new StaticModInt<Mod1000000007>(n)).ToArray()).ToArray()),
+                    => new(mat.ToArray().Select(arr => arr.Select(n => new StaticModInt<Mod1000000007>(n)).ToArray()).ToArray()),
                 _ => new Mod1000000007ArrayMatrix(mat.kind),
             };
 
@@ -294,7 +350,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(MultiplyScalar_Data))]
         public void MultiplyScalar(int a, IntArrayMatrix mat, IntArrayMatrix expected)
         {
-            (mat * a).Value.Should().BeEquivalentTo(expected.Value);
+            (mat * a).Should().BeEquivalentTo(expected);
         }
 
         public static TheoryData MultiplyVector_Data => new TheoryData<LongArrayMatrix, long[], long[]>
@@ -339,7 +395,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 { 1, 2 },
                 { 3, 4 },
             });
-            orig.Pow(5).Value.Should().BeEquivalentTo(new int[][]
+            orig.Pow(5).ToArray().Should().BeEquivalentTo(new int[][]
             {
                 new[]{ 1069, 1558},
                 new[]{ 2337, 3406 },
@@ -347,7 +403,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             var cur = orig;
             for (int i = 1; i < 10; i++)
             {
-                orig.Pow(i).Value.Should().BeEquivalentTo(cur.Value);
+                orig.Pow(i).Should().BeEquivalentTo(cur);
                 cur *= orig;
             }
         }
@@ -441,7 +497,7 @@ new Fraction[,]
                 {-10, 10, 3}
             });
             var inv = orig.Inv();
-            inv.Value.Should().BeEquivalentTo(new Fraction[][]
+            inv.ToArray().Should().BeEquivalentTo(new Fraction[][]
             {
                 new[]{ new Fraction(-146,319), new Fraction(-93,319), new Fraction(-243,319)},
                 new[]{ new Fraction(-131,319), new Fraction(-90,319), new Fraction(-194,319)},
@@ -453,8 +509,8 @@ new Fraction[,]
                 new Fraction[]{0,1,0},
                 new Fraction[]{0,0,1},
             };
-            (orig * inv).Value.Should().BeEquivalentTo(id);
-            (inv * orig).Value.Should().BeEquivalentTo(id);
+            (orig * inv).ToArray().Should().BeEquivalentTo(id);
+            (inv * orig).ToArray().Should().BeEquivalentTo(id);
         }
 
         public static TheoryData GaussianElimination_Data => new TheoryData<
@@ -542,9 +598,7 @@ new Fraction[,]
         public void GaussianElimination(FractionArrayMatrix orig, FractionArrayMatrix expected)
         {
             var got = orig.GaussianElimination();
-            got.Value.Should().HaveSameCount(expected.Value);
-            for (int i = 0; i < got.Value.Length; i++)
-                got.Value[i].Should().Equal(expected.Value[i], because: "row {0}", i);
+            got.Should().Be(expected);
         }
 
         public static TheoryData LinearSystem_Data => new TheoryData<

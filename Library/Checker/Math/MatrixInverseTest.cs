@@ -9,11 +9,11 @@ namespace Kzrnm.Competitive.MathNs
         public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
-            var mat = new Mod998244353ArrayMatrix(cr.Grid(N, N, cr => ModInt.Raw(cr))).Inv();
+            var mat = new Mod998244353ArrayMatrix(cr.Repeat(N * N).Select(cr => ModInt.Raw(cr)), N, N).Inv();
             if (mat.IsZero)
                 cw.WriteLine(-1);
             else
-                cw.WriteGrid(mat.Value);
+                cw.WriteGrid(mat);
             return null;
         }
     }

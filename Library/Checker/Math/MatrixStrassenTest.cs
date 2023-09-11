@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive.MathNs
             var mat2 = new Mod998244353ArrayMatrix(
                 cr.Repeat(M).Select(cr => cr.Repeat(K).Select(cr => ModInt.Raw(cr))));
 
-            cw.WriteGrid(mat1.Strassen(mat2).Value);
+            cw.WriteGrid(mat1.Strassen(mat2));
             return null;
         }
     }

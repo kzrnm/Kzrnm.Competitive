@@ -25,9 +25,8 @@ namespace Kzrnm.Competitive
             if (mat1.kind != Kd.Normal || mat2.kind != Kd.Normal)
                 return mat1 * mat2;
 
-            var impl = new Impl<T>(Math.Max(Math.Max(mat1.Value.Length, mat2.Value.Length), Math.Max(mat1.Value[0].Length, mat2.Value[0].Length)));
-            var rt = impl.Strassen(mat1.Value, mat2.Value);
-            return new ArrayMatrix<StaticModInt<T>, StaticModIntOperator<T>>(rt);
+            var impl = new Impl<T>(Math.Max(Math.Max(mat1.Height, mat2.Height), Math.Max(mat1.Width, mat2.Width)));
+            return impl.Strassen(mat1, mat2);
         }
         public readonly partial struct Impl<T> where T : struct, IStaticMod
         {
@@ -38,13 +37,13 @@ namespace Kzrnm.Competitive
                 S = Math.Max(1 << InternalBit.CeilPow2(length), B);
                 S8 = S / 8;
             }
-            public StaticModInt<T>[][] Strassen(StaticModInt<T>[][] mat1, StaticModInt<T>[][] mat2)
+            public ArrayMatrix<StaticModInt<T>, StaticModIntOperator<T>> Strassen(ArrayMatrix<StaticModInt<T>, StaticModIntOperator<T>> mat1, ArrayMatrix<StaticModInt<T>, StaticModIntOperator<T>> mat2)
             {
                 Contract.Assert(new T().Mod % 2 == 1);
-                Contract.Assert(mat1.Length <= S);
-                Contract.Assert(mat2.Length <= S);
-                Contract.Assert(mat1[0].Length <= S);
-                Contract.Assert(mat2[0].Length <= S);
+                Contract.Assert(mat1.Height <= S);
+                Contract.Assert(mat2.Height <= S);
+                Contract.Assert(mat1.Width <= S);
+                Contract.Assert(mat2.Width <= S);
                 var a = ToVectorize(mat1);
                 var b = ToVectorize(mat2);
                 var c = new VectorizedStaticModInt<T>[S8 * S];
@@ -62,21 +61,20 @@ namespace Kzrnm.Competitive
 
                 for (int i = 0; i < S * S8; i++) u[i] = u[i].Mtoi();
                 PlaceRev(S, 0, 0, u.AsSpan(), c);
-                return ToMatrix(c, mat1.Length, mat2[0].Length);
+                return ToMatrix(c, mat1.Height, mat2.Width);
             }
             [凾(256)]
-            private StaticModInt<T>[][] ToMatrix(VectorizedStaticModInt<T>[] c, int len0, int len1)
+            private ArrayMatrix<StaticModInt<T>, StaticModIntOperator<T>> ToMatrix(VectorizedStaticModInt<T>[] c, int h, int w)
             {
-                Debug.Assert(len0 * len1 <= c.Length * 8);
-                var rt = new StaticModInt<T>[len0][];
-                for (int i = 0; i < rt.Length; i++)
+                Debug.Assert(h * w <= c.Length * 8);
+                var rt = new StaticModInt<T>[h * w];
+                for (int i = 0; i < h; i++)
                 {
-                    var row = rt[i] = new StaticModInt<T>[len1];
                     var src = MemoryMarshal.Cast<VectorizedStaticModInt<T>, uint>(c.AsSpan(S8 * i));
-                    var dst = MemoryMarshal.Cast<StaticModInt<T>, uint>(row);
+                    var dst = MemoryMarshal.Cast<StaticModInt<T>, uint>(rt.AsSpan(i * w, w));
                     src[..dst.Length].CopyTo(dst);
                 }
-                return rt;
+                return new ArrayMatrix<StaticModInt<T>, StaticModIntOperator<T>>(rt, h, w);
             }
             [凾(256 | 512)]
             private void StrassenImpl(int N,
@@ -140,12 +138,14 @@ namespace Kzrnm.Competitive
             }
 
             [凾(256 | 512)]
-            private VectorizedStaticModInt<T>[] ToVectorize(StaticModInt<T>[][] v)
+            private VectorizedStaticModInt<T>[] ToVectorize(ArrayMatrix<StaticModInt<T>, StaticModIntOperator<T>> m)
             {
+                var v = m.Value;
+                var w = m.Width;
                 var rt = new VectorizedStaticModInt<T>[S8 * S];
-                for (int i = 0; i < v.Length; i++)
+                for (int i = m.Height - 1; i >= 0; i--)
                 {
-                    MemoryMarshal.Cast<StaticModInt<T>, uint>(v[i]).CopyTo(
+                    MemoryMarshal.Cast<StaticModInt<T>, uint>(v.AsSpan(i * w, w)).CopyTo(
                     MemoryMarshal.Cast<VectorizedStaticModInt<T>, uint>(rt.AsSpan(i * S8)));
                 }
                 return rt;
