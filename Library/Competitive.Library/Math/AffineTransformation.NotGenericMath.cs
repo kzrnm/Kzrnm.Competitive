@@ -9,7 +9,7 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// アフィン変換. Ax+b の形で表される式を保持する。
     /// </summary>
-    [DebuggerDisplay(nameof(a) + " * x + " + nameof(b))]
+    [DebuggerDisplay("{" + nameof(a) + "} x + {" + nameof(b) + "}")]
     public readonly struct AffineTransformation<T, TOp> : IEquatable<AffineTransformation<T, TOp>> where TOp : struct, IAdditionOperator<T>, IMultiplicationOperator<T>, IUnaryNumOperator<T>
     {
         private static TOp op => new TOp();
