@@ -68,7 +68,7 @@ namespace Kzrnm.Competitive
         /// <param name="u">パスの始点</param>
         /// <param name="v">パスの終点</param>
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
-        /// <param name="f">クエリ関数。Segtree などの範囲演算をさせると良い。</param>
+        /// <param name="f">クエリ関数。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</param>
         /// <remarks>
         /// <para>計算量(<paramref name="f"/> を O(1), 木のノード数を n とするとき): O(n)</para>
         /// </remarks>
@@ -82,7 +82,7 @@ namespace Kzrnm.Competitive
         /// <param name="u">パスの始点</param>
         /// <param name="v">パスの終点</param>
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
-        /// <param name="f">クエリ関数オペレータ。Segtree などの範囲演算をさせると良い。</param>
+        /// <param name="f">クエリ関数オペレータ。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</param>
         /// <remarks>
         /// <para>計算量(<paramref name="f"/> を O(1), 木のノード数を n とするとき): O(n)</para>
         /// </remarks>
@@ -100,7 +100,7 @@ namespace Kzrnm.Competitive
         /// <param name="u">パスの始点</param>
         /// <param name="v">パスの終点</param>
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
-        /// <param name="f">クエリ関数オペレータ。Segtree などの範囲演算をさせると良い。</param>
+        /// <param name="f">クエリ関数オペレータ。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</param>
         /// <remarks>
         /// <para>計算量(<paramref name="f"/> を O(1), 木のノード数を n とするとき): O(n)</para>
         /// </remarks>
@@ -118,7 +118,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <param name="u">部分木の根</param>
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
-        /// <param name="f">クエリ関数。Segtree などの範囲演算をさせると良い。</param>
+        /// <param name="f">クエリ関数。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</param>
         /// <remarks>
         /// <para>計算量(<paramref name="f"/> を O(1) とするとき): O(1)</para>
         /// </remarks>
@@ -131,7 +131,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <param name="u">部分木の根</param>
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
-        /// <param name="f">クエリ関数オペレータ。Segtree などの範囲演算をさせると良い。</param>
+        /// <param name="f">クエリ関数オペレータ。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</param>
         /// <remarks>
         /// <para>計算量(<paramref name="f"/> を O(1) とするとき): O(1)</para>
         /// </remarks>
@@ -145,7 +145,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <param name="u">部分木の根</param>
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
-        /// <param name="f">クエリ関数オペレータ。Segtree などの範囲演算をさせると良い。</param>
+        /// <param name="f">クエリ関数オペレータ。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</param>
         /// <remarks>
         /// <para>計算量(<paramref name="f"/> を O(1) とするとき): O(1)</para>
         /// </remarks>
