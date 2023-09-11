@@ -1,9 +1,9 @@
-﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ assembly name="System.Core" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
-<#@ output extension=".cs" #>
+<#@ output extension=".cs" encoding="utf-8" #>
 <#
 Func<int, int, string> INIT_X = (x, y) => $"Vector256<ulong> prod02{x}{y} = default;Vector256<ulong> prod13{x}{y} = default;";
 Func<int, string> INIT_Y = (y) => $"Vector256<uint> T{y} = t[(j + y) * B + k + l];var T13{y} = Avx2.Shuffle(T{y}, 0xF5);";

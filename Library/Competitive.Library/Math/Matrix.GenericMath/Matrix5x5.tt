@@ -2,7 +2,7 @@
 <#@ assembly name="System.Core" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
-<#@ output extension=".cs" #>
+<#@ output extension=".cs" encoding="utf-8" #>
 <#
 const int size = 5;
 string matrixNameNonGeneric = $"Matrix{size}x{size}";
