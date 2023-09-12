@@ -13,7 +13,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public static (T Distance, ImmutableStack<TEdge> Route)[] DijkstraWithRoute<T, TOp, TNode, TEdge>(this IWGraph<T, TOp, TNode, TEdge> graph, int from)
             where T : struct, IComparable<T>
-            where TOp : struct, IAdditionOperator<T>, IMinMaxValue<T>
+            where TOp : struct, IAdditionOperator<T>, IMinMaxValueOperator<T>
             where TNode : IGraphNode<TEdge>
             where TEdge : IWGraphEdge<T>
         {

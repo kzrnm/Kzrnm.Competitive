@@ -59,7 +59,7 @@ namespace Kzrnm.Competitive
     public class SetInterval<T, TOp>
         : SetBase<(T From, T ToExclusive), SetInterval<T, TOp>.C<T>, SetInterval<T, TOp>.Node, SetInterval<T, TOp>.NodeOperator>
         where T : IComparable<T>
-        where TOp : struct, IUnaryNumOperator<T>, IMinMaxValue<T>
+        where TOp : struct, IUnaryNumOperator<T>, IMinMaxValueOperator<T>
     {
         public SetInterval() : this(new TOp()) { }
         public SetInterval(IEnumerable<(T From, T ToExclusive)> collection) : this(collection, new TOp()) { }

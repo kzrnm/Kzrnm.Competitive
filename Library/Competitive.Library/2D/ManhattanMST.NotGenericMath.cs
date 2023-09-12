@@ -30,7 +30,7 @@ namespace Kzrnm.Competitive
             where TOp : struct
             , IAdditionOperator<T>
             , ISubtractOperator<T>
-            , IMinMaxValue<T>
+            , IMinMaxValueOperator<T>
             , IUnaryNumOperator<T>
             , ICompareOperator<T>
         {
