@@ -28,7 +28,7 @@ namespace Kzrnm.Competitive.DataStructure
             return null;
         }
     }
-    struct LazySegtreeSolverOp : ISLazySegtreeOperator<uint, (uint b, uint c)>
+    readonly struct LazySegtreeSolverOp : ISLazySegtreeOperator<uint, (uint b, uint c)>
     {
         const uint MOD = 998244353;
 

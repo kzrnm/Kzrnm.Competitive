@@ -20,7 +20,7 @@ namespace Kzrnm.Competitive.DataStructure
             }
             return null;
         }
-        struct Op : ISparseTableOperator<int>
+        readonly struct Op : ISparseTableOperator<int>
         {
             [MethodImpl(256)]
             public int Operate(int x, int y) => System.Math.Min(x, y);

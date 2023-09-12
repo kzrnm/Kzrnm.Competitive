@@ -16,14 +16,15 @@ namespace Kzrnm.Competitive.DataStructure
                 int l = cr;
                 int r = cr;
                 int x = cr;
-                var res1 = wm.Rank(x, r) - wm.Rank(x, l);
+                var res0 = wm.Rank(l, r, x);
+                var res1 = wm.Rank(r, x) - wm.Rank(l, x);
                 var res2 = wm.RangeFreq(l, r, x, x + 1);
-                if (res1 != res2) Throw(res1, res2);
+                if (res0 != res1 || res1 != res2) Throw(res0, res1, res2);
                 cw.WriteLine(res1);
             }
             return null;
         }
-        static void Throw(int res1, int res2) => throw new System.Exception($"Result failed. res1 = {res1}, res2 = {res2}");
+        static void Throw(int res0, int res1, int res2) => throw new System.Exception($"Result failed. res0 = {res0}, res1 = {res1}, res2 = {res2}");
         /*
          * 実は二分探索の方が高速
         static ConsoleOutput? Solve2(ConsoleReader cr, Utf8ConsoleWriter cw)

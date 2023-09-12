@@ -11,7 +11,7 @@ namespace Kzrnm.Competitive.DataStructure
         public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int Q = cr;
-            var swag = new Swag<F, Op>();
+            var swag = new Swag<Mod998244353AffineTransformation, Op>();
             for (int q = 0; q < Q; q++)
             {
                 int t = cr;
@@ -19,39 +19,21 @@ namespace Kzrnm.Competitive.DataStructure
                 {
                     int a = cr;
                     int b = cr;
-                    swag.Push(new F(ModInt.Raw(a), ModInt.Raw(b)));
+                    swag.Push(new Mod998244353AffineTransformation(ModInt.Raw(a), ModInt.Raw(b)));
                 }
                 else if (t == 1)
                     swag.Pop();
                 else
-                    cw.WriteLine(swag.AllProd.Apply(cr).Value);
+                    cw.WriteLine(swag.AllProd.Apply(cr.Int()).Value);
             }
             return null;
         }
-        readonly struct F
-        {
-            public static readonly F Identity = new F(ModInt.Raw(1), default);
-            public readonly ModInt a;
-            public readonly ModInt b;
-            public F(ModInt a, ModInt b)
-            {
-                this.a = a;
-                this.b = b;
-            }
-            public ModInt Apply(int x) => a * ModInt.Raw(x) + b;
-        }
-        struct Op : ISegtreeOperator<F>
+        readonly struct Op : ISegtreeOperator<Mod998244353AffineTransformation>
         {
             [MethodImpl(256)]
-            public F Operate(F x, F y)
-            {
-                var a = x.a;
-                var b = x.b;
-                var c = y.a;
-                var d = y.b;
-                return new F(c * a, c * b + d);
-            }
-            public F Identity => F.Identity;
+            public Mod998244353AffineTransformation Operate(Mod998244353AffineTransformation x, Mod998244353AffineTransformation y) => x * y;
+
+            public Mod998244353AffineTransformation Identity => new Mod998244353AffineTransformation(ModInt.One, ModInt.Zero);
         }
     }
 }

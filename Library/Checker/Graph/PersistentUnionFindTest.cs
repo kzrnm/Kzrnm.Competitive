@@ -9,20 +9,22 @@ namespace Kzrnm.Competitive.Graph
         {
             int N = cr;
             int Q = cr;
-
-            var ufs = new PersistentUnionFind[Q];
-            ufs[^1] = new PersistentUnionFind(N);
-
+            var G = new PersistentUnionFind[Q + 1];
+            G[^1] = new PersistentUnionFind(N);
             for (int i = 0; i < Q; i++)
             {
-                int t = cr;
+                int ty = cr;
                 int k = cr;
                 int u = cr;
                 int v = cr;
-                if (t == 0)
-                    ufs[i] = ufs.Get(k).Merge(u, v);
+                if (ty == 0)
+                {
+                    G[i] = G.Get(k).Merge(u, v);
+                }
                 else
-                    cw.WriteLine(ufs.Get(k).Same(u, v) ? "1" : "0");
+                {
+                    cw.WriteLine(G.Get(k).Same(u, v) ? 1 : 0);
+                }
             }
             return null;
         }
