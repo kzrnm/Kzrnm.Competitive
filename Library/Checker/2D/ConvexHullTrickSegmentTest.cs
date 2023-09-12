@@ -9,54 +9,39 @@ namespace Kzrnm.Competitive.TwoDimensional
         {
             int N = cr;
             int Q = cr;
-            var lines = cr.Repeat(N).Select<(long l, long r, long a, long b)>(cr => (cr, cr, cr, cr));
-            var queries = cr.Repeat(Q).Select(ToQuery);
+
+            (int l, int r, int a, long b)[] lines = cr.Repeat(N).Select<(int l, int r, int a, long b)>(cr => (cr, cr, cr, cr));
+            (int t, int l, int r, int a, long b)[] queries = cr.Repeat(Q).Select<(int t, int l, int r, int a, long b)>(cr =>
+            {
+                int t = cr;
+                if (t == 0)
+                    return (0, cr, cr, cr, cr);
+                return (1, cr, 0, 0, 0);
+            });
             var zc = new ZahyoCompress<long>();
-            foreach ((long l, long r, long a, long b) in lines)
+            foreach ((int l, int r, int a, long b) in lines)
             {
                 zc.Add(l);
                 zc.Add(r);
             }
-            foreach ((long l, long r, long a, long b) in queries)
+            foreach ((int t, int l, int r, int a, long b) in queries)
             {
                 zc.Add(l);
                 zc.Add(r);
             }
-            zc.Add(INF);
             zc.Compress();
-            var ch = new LongMinConvexHullTrick(zc.Original, 1 + (long)1e9, INF);
-            foreach ((long l, long r, long a, long b) in lines)
+            var ch = new LongMinConvexHullTrick(zc.Original);
+            foreach ((int l, int r, int a, long b) in lines)
                 ch.AddSegmentLine(a, b, zc.NewTable[l], zc.NewTable[r]);
-            foreach ((long l, long r, long a, long b) in queries)
+
+            foreach ((int t, int l, int r, int a, long b) in queries)
             {
-                if (r == INF)
-                {
-                    var res = ch.Query(zc.NewTable[l]);
-                    if (res == INF)
-                        cw.WriteLine("INFINITY");
-                    else
-                        cw.WriteLine(res);
-                }
-                else
+                if (t == 0)
                     ch.AddSegmentLine(a, b, zc.NewTable[l], zc.NewTable[r]);
+                else
+                    _ = ch.Query(zc.NewTable[l]) switch { long.MaxValue => cw.WriteLine("INFINITY"), var v => cw.WriteLine(v) };
             }
             return null;
-        }
-        const long INF = (long)7e18;
-        static (long l, long r, long a, long b) ToQuery(ConsoleReader cr)
-        {
-            int t = cr;
-            long l = cr;
-            long r = INF;
-            long a = INF;
-            long b = INF;
-            if (t == 0)
-            {
-                r = cr;
-                a = cr;
-                b = cr;
-            }
-            return (l, r, a, b);
         }
     }
 }
