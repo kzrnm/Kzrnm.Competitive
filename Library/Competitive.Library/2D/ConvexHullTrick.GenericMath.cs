@@ -169,7 +169,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 使用する <paramref name="xs"/> の値を初期化します。<paramref name="xs"/> はソート済みであること。
         /// </summary>
-        public LongMinConvexHullTrick(long[] xs) : this(xs, (long)1e9, (long)1e18) { }
+        public LongMinConvexHullTrick(long[] xs) : this(xs, xs[^1] + 1, long.MaxValue) { }
         /// <summary>
         /// 使用する <paramref name="xs"/> の値を初期化します。<paramref name="xs"/> はソート済みであること。
         /// </summary>
@@ -184,7 +184,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 使用する <paramref name="xs"/> の値を初期化します。<paramref name="xs"/> はソート済みであること。
         /// </summary>
-        public LongMaxConvexHullTrick(long[] xs) : this(xs, (long)1e9, -(long)1e18) { }
+        public LongMaxConvexHullTrick(long[] xs) : this(xs, xs[^1] + 1, long.MinValue) { }
         /// <summary>
         /// 使用する <paramref name="xs"/> の値を初期化します。<paramref name="xs"/> はソート済みであること。
         /// </summary>
