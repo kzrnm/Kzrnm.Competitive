@@ -66,6 +66,17 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
+        /// <para>区間 [<paramref name="l"/>, <paramref name="r"/>) に含まれる <paramref name="x"/> の個数を返す。</para>
+        /// </summary>
+        /// <remarks>
+        /// <para>計算量: O(log(V))</para>
+        /// <para>  V は最大値。</para>
+        /// </remarks>
+        [凾(256)]
+        public int Rank(int l, int r, T x)
+            => pos.TryGetValue(x, out var p) ? mat.Rank(l, r, p) : 0;
+
+        /// <summary>
         /// <para>区間 [0, <paramref name="r"/>) に含まれる <paramref name="x"/> の個数を返す。</para>
         /// </summary>
         /// <remarks>
@@ -73,8 +84,8 @@ namespace Kzrnm.Competitive
         /// <para>  V は最大値。</para>
         /// </remarks>
         [凾(256)]
-        public int Rank(T x, int r)
-            => pos.TryGetValue(x, out var p) ? mat.Rank(p, r) : 0;
+        public int Rank(int r, T x)
+            => pos.TryGetValue(x, out var p) ? mat.Rank(r, p) : 0;
 
         /// <summary>
         /// <para>区間 [<paramref name="l"/>, <paramref name="r"/>) に含まれる要素のうち <paramref name="k"/> 番目(0-indexed) に小さいものを返す</para>
@@ -237,6 +248,17 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
+        /// <para>区間 [<paramref name="l"/>, <paramref name="r"/>) に含まれる <paramref name="x"/> の個数を返す。</para>
+        /// </summary>
+        /// <remarks>
+        /// <para>計算量: O(log(V))</para>
+        /// <para>  V は最大値。</para>
+        /// </remarks>
+        [凾(256)]
+        public int Rank(int l, int r, int x)
+            => Rank(r, x) - Rank(l, x);
+
+        /// <summary>
         /// <para>区間 [0, <paramref name="r"/>) に含まれる <paramref name="x"/> の個数を返す。</para>
         /// </summary>
         /// <remarks>
@@ -244,7 +266,7 @@ namespace Kzrnm.Competitive
         /// <para>  V は最大値。</para>
         /// </remarks>
         [凾(256)]
-        public int Rank(int x, int r)
+        public int Rank(int r, int x)
         {
             int l = 0;
             for (int level = matrix.Length - 1; level >= 0; level--)

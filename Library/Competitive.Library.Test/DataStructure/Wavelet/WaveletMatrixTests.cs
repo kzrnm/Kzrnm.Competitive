@@ -31,7 +31,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         [Fact]
         public void Rank()
         {
-            static int Native(long x, int r)
+            static int Native(int r, long x)
             {
                 int cnt = 0;
                 for (int i = 0; i < r; i++)
@@ -45,7 +45,9 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             {
                 for (int r = 0; r <= orig.Length; r++)
                 {
-                    matrix.Rank(x, r).Should().Be(Native(x, r));
+                    matrix.Rank(r, x).Should().Be(Native(r, x));
+                    for (int l = 0; l < r; l++)
+                        matrix.Rank(l, r, x).Should().Be(Native(r, x) - Native(l, x));
                 }
             }
         }
