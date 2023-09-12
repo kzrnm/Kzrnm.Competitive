@@ -29,7 +29,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 素因数分解の結果をキャッシュするかどうかを設定します。default: <see langword="true"/>
         /// </summary>
-        public static bool CacheEnabled { set; get; }
+        public static bool CacheEnabled { set; get; } = true;
 
         /// <summary>
         /// 257 未満の素数。ReadOnlySpan&lt;byte&gt; に直接代入するとアロケーションが発生しない。
@@ -308,7 +308,6 @@ namespace Kzrnm.Competitive
                 {
                     ArrayPool<long>.Shared.Return(buf);
                 }
-
             }
             static IEnumerable<long> PollardRho(long n)
             {
