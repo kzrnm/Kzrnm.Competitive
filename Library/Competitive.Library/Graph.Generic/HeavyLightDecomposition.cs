@@ -26,7 +26,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public int[] up;
         /// <summary>
-        /// HL分解 して次に見る要素
+        /// 自身を含むオイラーツアーのインデックスが連続になっている祖先要素のうち最も根に近い要素
         /// </summary>
         public int[] nxt;
         public HeavyLightDecomposition(TNode[] tree, int[] nxt, int[] down, int[] up)
@@ -70,7 +70,7 @@ namespace Kzrnm.Competitive
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
         /// <param name="f">クエリ関数。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</param>
         /// <remarks>
-        /// <para>計算量(<paramref name="f"/> を O(1), 木のノード数を n とするとき): O(n)</para>
+        /// <para>計算量(<paramref name="f"/> を O(F), 木のノード数を n とするとき): O(F log n)</para>
         /// </remarks>
         [凾(256)]
         public void PathQuery(int u, int v, bool vertex, Action<int, int> f)
@@ -84,7 +84,7 @@ namespace Kzrnm.Competitive
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
         /// <param name="f">クエリ関数オペレータ。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</param>
         /// <remarks>
-        /// <para>計算量(<paramref name="f"/> を O(1), 木のノード数を n とするとき): O(n)</para>
+        /// <para>計算量(<paramref name="f"/> を O(F), 木のノード数を n とするとき): O(F log n)</para>
         /// </remarks>
         [凾(256)]
         public void PathQuery<TOp>(int u, int v, bool vertex, TOp f)
@@ -102,7 +102,7 @@ namespace Kzrnm.Competitive
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
         /// <param name="f">クエリ関数オペレータ。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</param>
         /// <remarks>
-        /// <para>計算量(<paramref name="f"/> を O(1), 木のノード数を n とするとき): O(n)</para>
+        /// <para>計算量(<paramref name="f"/> を O(F), 木のノード数を n とするとき): O(log n)</para>
         /// </remarks>
         [凾(256)]
         public void PathQuery<TOp>(int u, int v, bool vertex, ref TOp f)
@@ -120,7 +120,7 @@ namespace Kzrnm.Competitive
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
         /// <param name="f">クエリ関数。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</param>
         /// <remarks>
-        /// <para>計算量(<paramref name="f"/> を O(1) とするとき): O(1)</para>
+        /// <para>計算量(<paramref name="f"/> を O(F) とするとき): O(F)</para>
         /// </remarks>
         [凾(256)]
         public void SubtreeQuery(int u, bool vertex, Action<int, int> f)
@@ -133,7 +133,7 @@ namespace Kzrnm.Competitive
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
         /// <param name="f">クエリ関数オペレータ。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</param>
         /// <remarks>
-        /// <para>計算量(<paramref name="f"/> を O(1) とするとき): O(1)</para>
+        /// <para>計算量(<paramref name="f"/> を O(F) とするとき): O(F)</para>
         /// </remarks>
         [凾(256)]
         public void SubtreeQuery<TOp>(int u, bool vertex, TOp f)
@@ -147,7 +147,7 @@ namespace Kzrnm.Competitive
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
         /// <param name="f">クエリ関数オペレータ。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</param>
         /// <remarks>
-        /// <para>計算量(<paramref name="f"/> を O(1) とするとき): O(1)</para>
+        /// <para>計算量(<paramref name="f"/> を O(F) とするとき): O(F)</para>
         /// </remarks>
         [凾(256)]
         public void SubtreeQuery<TOp>(int u, bool vertex, ref TOp f)

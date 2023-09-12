@@ -26,11 +26,11 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 一次の係数
         /// </summary>
-        private readonly T a;
+        public readonly T a;
         /// <summary>
         /// 定数項
         /// </summary>
-        private readonly T b;
+        public readonly T b;
 
         public static AffineTransformation<T> MultiplicativeIdentity => new AffineTransformation<T>(T.MultiplicativeIdentity, T.AdditiveIdentity);
 

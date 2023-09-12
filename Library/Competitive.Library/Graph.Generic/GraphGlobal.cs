@@ -202,24 +202,29 @@ namespace Kzrnm.Competitive
             while (stack.TryPop(out var cur, out var ci))
             {
                 var es = edges[cur];
+                var cs = children[cur];
                 if (--ci >= 0)
                 {
                     // まず一つ前の子をチェック
                     var tp = es[ci].To;
                     sz[cur] += sz[tp];
                     // HL分解のため最大の子を先頭に出しておく
-                    if (sz[tp] > sz[es[0].To])
-                        (children[cur][0], children[cur][ci]) = (children[cur][ci], children[cur][0]);
+                    if (sz[tp] > sz[cs[0].To])
+                        (cs[0], cs[ci]) = (cs[ci], cs[0]);
                 }
                 if (++ci < children[cur].Length)
                 {
                     var to = es[ci].To;
                     if (parent[cur] == to)
                     {
+#if NET7_0_OR_GREATER
+                        (es[ci], es[^1]) = (es[^1], es[ci]);
+#else
                         // 親は末尾に置く
                         // Roslyn のバグがあるっぽいので参照を取り出してからswap https://github.com/dotnet/roslyn/issues/58472
                         var b = es.Length - 1;
                         (es[ci], es[b]) = (es[b], es[ci]);
+#endif
                         to = es[ci].To;
                     }
                     stack.Push((cur, ci + 1));
