@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
+    /// <summary>
+    /// <para>Cartesian tree: 最も小さい値を根として、左右それぞれで根の次に大きいものを子とする二分木</para>
+    /// <para>https://en.wikipedia.org/wiki/Cartesian_tree</para>
+    /// </summary>
     public static class CartesianTree
     {
         /// <summary>

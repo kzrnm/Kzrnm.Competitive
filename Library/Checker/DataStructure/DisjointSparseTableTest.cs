@@ -10,15 +10,20 @@ namespace Kzrnm.Competitive.DataStructure
         {
             int N = cr;
             int Q = cr;
-            var st = new DisjointSparseTable<long, Op>(cr.Repeat(N));
-            for (int i = 0; i < Q; i++)
+            var a = cr.Repeat(N).Long();
+            var st = new DisjointSparseTable<long, Op>(a);
+            while (--Q >= 0)
             {
-                int l = cr;
-                int r = cr;
-                cw.WriteLine(st[l..r]);
+                int u = cr;
+                int v = cr;
+                cw.WriteLine(st[u..v]);
             }
             return null;
         }
-        struct Op : ISparseTableOperator<long> { [MethodImpl(256)] public long Operate(long x, long y) => x + y; }
+        readonly struct Op : ISparseTableOperator<long>
+        {
+            [MethodImpl(256)]
+            public long Operate(long x, long y) => x + y;
+        }
     }
 }

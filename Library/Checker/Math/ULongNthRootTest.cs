@@ -8,7 +8,7 @@ namespace Kzrnm.Competitive.MathNs
         public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int Q = cr;
-            for (int q = 0; q < Q; q++)
+            while (--Q >= 0)
             {
                 ulong a = cr;
                 int k = cr;

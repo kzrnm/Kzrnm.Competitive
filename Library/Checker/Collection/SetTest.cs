@@ -16,19 +16,14 @@ namespace Kzrnm.Competitive.Collection
             {
                 int t = cr;
                 int k = cr;
-                switch (t)
+                _ = t switch
                 {
-                    case 0:
-                        set.Add(k); break;
-                    case 1:
-                        set.Remove(k); break;
-                    case 2:
-                        cw.WriteLine(set.FindNode(k) is null ? 0 : 1); break;
-                    case 3:
-                        cw.WriteLine(set.FindNodeLowerBound(k)?.Value ?? -1); break;
-                    default:
-                        cw.WriteLine(set.FindNodeReverseLowerBound(k)?.Value ?? -1); break;
-                }
+                    0 => set.Add(k),
+                    1 => set.Remove(k),
+                    2 => cw.WriteLine(set.FindNode(k) is null ? 0 : 1),
+                    3 => cw.WriteLine(set.FindNodeLowerBound(k)?.Value ?? -1),
+                    _ => (object)cw.WriteLine(set.FindNodeReverseLowerBound(k)?.Value ?? -1),
+                };
             }
             return null;
         }

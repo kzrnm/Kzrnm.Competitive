@@ -7,20 +7,21 @@ namespace Kzrnm.Competitive.DataStructure
         public override string Url => "https://judge.yosupo.jp/problem/persistent_queue";
         public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
-            int q = cr;
-            var queues = new RealTimeQueue<int>[q];
-            for (int i = 0; i < q; i++)
+            int Q = cr;
+            var S = new RealTimeQueue<uint>[Q + 1];
+            S[^1] = RealTimeQueue<uint>.Empty;
+            for (int i = 0; i < Q; i++)
             {
-                var type = cr.Int();
-                var t = cr.Int();
-                var prev = (uint)t < (uint)queues.Length ? queues[t] : RealTimeQueue<int>.Empty;
-                if (type == 0)
+                int ty = cr;
+                int t = cr;
+                if (ty == 0)
                 {
-                    queues[i] = prev.Enqueue(cr.Int());
+                    uint x = cr;
+                    S[i] = S.Get(t).Enqueue(x);
                 }
                 else
                 {
-                    queues[i] = prev.Dequeue(out var v);
+                    S[i] = S.Get(t).Dequeue(out var v);
                     cw.WriteLine(v);
                 }
             }

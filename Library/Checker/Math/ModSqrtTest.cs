@@ -8,8 +8,8 @@ namespace Kzrnm.Competitive.MathNs
         public override string Url => "https://judge.yosupo.jp/problem/sqrt_mod";
         public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
-            int N = cr;
-            for (int i = 0; i < N; i++)
+            int Q = cr;
+            while (--Q >= 0)
             {
                 int y = cr;
                 int p = cr;
