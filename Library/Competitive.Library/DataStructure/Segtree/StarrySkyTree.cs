@@ -1,12 +1,13 @@
 using AtCoder;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.DataStructure
 {
-    [System.Diagnostics.DebuggerTypeProxy(typeof(StarrySkyTree<,>.DebugView))]
+    [DebuggerTypeProxy(typeof(StarrySkyTree<,>.DebugView))]
     public class StarrySkyTree<T, TOp>
         where T : struct
         where TOp : struct, ILazySegtreeOperator<T, T>
@@ -56,7 +57,7 @@ namespace Kzrnm.Competitive.DataStructure
         }
 
 
-        [System.Diagnostics.DebuggerDisplay("{" + nameof(value) + "}", Name = "{" + nameof(key) + ",nq}")]
+        [DebuggerDisplay("{" + nameof(value) + "}", Name = "{" + nameof(key) + ",nq}")]
         struct KeyValuePairs
         {
             readonly string key;
@@ -76,7 +77,7 @@ namespace Kzrnm.Competitive.DataStructure
                 this.tree = tree;
             }
 
-            [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)]
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
             public KeyValuePairs[] Tree
             {
                 get

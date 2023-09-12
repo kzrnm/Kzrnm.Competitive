@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
-
 namespace Kzrnm.Competitive
 {
     [DebuggerTypeProxy(typeof(Trie<,>.DebugView))]
@@ -240,6 +239,9 @@ namespace Kzrnm.Competitive
             }
         }
 
+#if !LIBRARY
+        [SourceExpander.NotEmbeddingSource]
+#endif
         [DebuggerDisplay("{" + nameof(value) + "}", Name = "{" + nameof(key) + ",nq}")]
         private struct DebugItem
         {
@@ -253,6 +255,9 @@ namespace Kzrnm.Competitive
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
             private readonly TValue value;
         }
+#if !LIBRARY
+        [SourceExpander.NotEmbeddingSource]
+#endif
         private class DebugView
         {
             private readonly Trie<TKey, TValue> trie;

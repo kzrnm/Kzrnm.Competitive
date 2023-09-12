@@ -106,6 +106,9 @@ namespace Kzrnm.Competitive
                 return impl.Prod(lh, rh, lw, rw);
             }
         }
+#if !LIBRARY
+        [SourceExpander.NotEmbeddingSource]
+#endif
         private class DebugView
         {
             private readonly SparseTable2D<TValue, TOp> st;

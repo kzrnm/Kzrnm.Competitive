@@ -201,6 +201,9 @@ namespace Kzrnm.Competitive
         [凾(256)] public KeyValuePair<TKey, TValue> ReverseUpperBoundItem(TKey item) => BinarySearch(new C(comparer, item), new SetUpperRev()).node.Pair;
         #endregion Search
 
+#if !LIBRARY
+        [SourceExpander.NotEmbeddingSource]
+#endif
         private class DebugView
         {
             private readonly IEnumerable<KeyValuePair<TKey, TValue>> collection;

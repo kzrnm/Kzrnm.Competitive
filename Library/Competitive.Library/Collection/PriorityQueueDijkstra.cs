@@ -123,6 +123,9 @@ namespace Kzrnm.Competitive
         public ReadOnlySpan<T> UnorderdKeys() => keys.AsSpan(0, Count);
         [EditorBrowsable(EditorBrowsableState.Never)]
         public ReadOnlySpan<int> UnorderdValues() => values.AsSpan(0, Count);
+#if !LIBRARY
+        [SourceExpander.NotEmbeddingSource]
+#endif
         private class DebugView
         {
             private readonly PriorityQueueDijkstra<T> pq;

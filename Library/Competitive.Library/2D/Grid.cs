@@ -247,6 +247,9 @@ namespace Kzrnm.Competitive
                 return string.Join(", ", line);
             }
         }
+#if !LIBRARY
+        [SourceExpander.NotEmbeddingSource]
+#endif
         private class DebugView
         {
             private readonly Grid<T> grid;

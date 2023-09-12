@@ -6,7 +6,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    [DebuggerTypeProxy(typeof(DebugView))]
     [DebuggerDisplay("Count = {" + nameof(_parentOrSize) + "." + nameof(Array.Length) + "}")]
     public class UnionFind
     {
@@ -139,16 +138,6 @@ namespace Kzrnm.Competitive
                 ind[leaderID]++;
             }
             return (result, gr);
-        }
-        private class DebugView
-        {
-            private readonly UnionFind uf;
-            public DebugView(UnionFind uf)
-            {
-                this.uf = uf ?? throw new ArgumentNullException(nameof(uf));
-            }
-            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            public int[][] Groups => uf.Groups();
         }
     }
 }

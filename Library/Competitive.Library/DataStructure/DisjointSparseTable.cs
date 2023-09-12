@@ -64,22 +64,29 @@ namespace Kzrnm.Competitive
             return op.Operate(st[h][l], st[h][r]);
         }
 
-        [DebuggerDisplay("{" + nameof(value) + "}", Name = "{" + nameof(key) + ",nq}")]
-        private struct DebugItem
+#if !LIBRARY
+        [SourceExpander.NotEmbeddingSource]
+#endif
+        [DebuggerDisplay("{" + nameof(Value) + "}", Name = "{" + nameof(Key) + ",nq}")]
+        private readonly struct DebugItem
         {
             public DebugItem(int l, int r, TValue value)
             {
-                if (r - l == 1)
-                    key = $"[{l}]";
-                else
-                    key = $"[{l}-{r})";
-                this.value = value;
+                L = l;
+                R = r;
+                Value = value;
             }
-            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            private readonly string key;
-            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            private readonly TValue value;
+            [DebuggerBrowsable(0)]
+            public int L { get; }
+            [DebuggerBrowsable(0)]
+            public int R { get; }
+            [DebuggerBrowsable(0)]
+            public string Key => R - L == 1 ? $"[{L}]" : $"[{L}-{R})";
+            public TValue Value { get; }
         }
+#if !LIBRARY
+        [SourceExpander.NotEmbeddingSource]
+#endif
         private class DebugView
         {
             private readonly DisjointSparseTable<TValue, TOp> st;

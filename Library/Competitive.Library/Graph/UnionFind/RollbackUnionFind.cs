@@ -11,7 +11,6 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// ロールバック可能なUnionFind
     /// </summary>
-    [DebuggerTypeProxy(typeof(DebugView))]
     [DebuggerDisplay("Count = {" + nameof(_parentOrSize) + "." + nameof(Array.Length) + "}")]
     public class RollbackUnionFind
     {
@@ -193,16 +192,6 @@ namespace Kzrnm.Competitive
                 ind[leaderID]++;
             }
             return (result, gr);
-        }
-        private class DebugView
-        {
-            private readonly RollbackUnionFind uf;
-            public DebugView(RollbackUnionFind uf)
-            {
-                this.uf = uf ?? throw new ArgumentNullException(nameof(uf));
-            }
-            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            public int[][] Groups => uf.Groups();
         }
     }
 }

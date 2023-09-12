@@ -391,24 +391,31 @@ namespace Kzrnm.Competitive
             return 0;
         }
 
-
-        [DebuggerDisplay("Value = {" + nameof(value) + "}, Lazy = {" + nameof(lazy) + "}", Name = "{" + nameof(key) + ",nq}")]
-        private struct DebugItem
+#if !LIBRARY
+        [SourceExpander.NotEmbeddingSource]
+#endif
+        [DebuggerDisplay("Value = {" + nameof(Value) + "}, Lazy = {" + nameof(Lazy) + "}", Name = "{" + nameof(Key) + ",nq}")]
+        internal readonly struct DebugItem
         {
             public DebugItem(int l, int r, TValue value, F lazy)
             {
-                if (r - l == 1)
-                    key = $"[{l}]";
-                else
-                    key = $"[{l}-{r})";
-                this.value = value;
-                this.lazy = lazy;
+                L = l;
+                R = r;
+                Value = value;
+                Lazy = lazy;
             }
-            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            private readonly string key;
-            private readonly TValue value;
-            private readonly F lazy;
+            [DebuggerBrowsable(0)]
+            public int L { get; }
+            [DebuggerBrowsable(0)]
+            public int R { get; }
+            [DebuggerBrowsable(0)]
+            public string Key => R - L == 1 ? $"[{L}]" : $"[{L}-{R})";
+            public TValue Value { get; }
+            public F Lazy { get; }
         }
+#if !LIBRARY
+        [SourceExpander.NotEmbeddingSource]
+#endif
         private class DebugView
         {
             private readonly SegtreeBeats<TValue, F, TOp> segtree;
