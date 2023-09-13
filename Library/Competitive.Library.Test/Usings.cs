@@ -3,6 +3,7 @@ global using FluentAssertions;
 #if NET7_0_OR_GREATER
 global using LongFenwickTree = AtCoder.FenwickTree<long>;
 global using DoubleAffineTransformation = Kzrnm.Competitive.AffineTransformation<double>;
+global using Mod998244353AffineTransformation = Kzrnm.Competitive.AffineTransformation<AtCoder.StaticModInt<AtCoder.Mod998244353>>;
 global using Mod1000000007ArrayMatrix = Kzrnm.Competitive.ArrayMatrix<AtCoder.StaticModInt<AtCoder.Mod1000000007>>;
 global using IntArrayMatrix = Kzrnm.Competitive.ArrayMatrix<int>;
 global using FractionArrayMatrix = Kzrnm.Competitive.ArrayMatrix<Kzrnm.Competitive.Fraction>;
@@ -33,6 +34,7 @@ global using WIntGraphBuilder = Kzrnm.Competitive.WGraphBuilder<int>;
 global using WLongGraphBuilder = Kzrnm.Competitive.WGraphBuilder<long>;
 #else
 global using DoubleAffineTransformation = Kzrnm.Competitive.AffineTransformation<double, AtCoder.DoubleOperator>;
+global using Mod998244353AffineTransformation = Kzrnm.Competitive.AffineTransformation<AtCoder.StaticModInt<AtCoder.Mod998244353>, AtCoder.StaticModIntOperator<AtCoder.Mod998244353>>;
 global using Mod1000000007ArrayMatrix = Kzrnm.Competitive.ArrayMatrix<AtCoder.StaticModInt<AtCoder.Mod1000000007>, AtCoder.StaticModIntOperator<AtCoder.Mod1000000007>>;
 global using IntArrayMatrix = Kzrnm.Competitive.ArrayMatrix<int, AtCoder.IntOperator>;
 global using FractionArrayMatrix = Kzrnm.Competitive.ArrayMatrix<Kzrnm.Competitive.Fraction, Kzrnm.Competitive.FractionOperator>;

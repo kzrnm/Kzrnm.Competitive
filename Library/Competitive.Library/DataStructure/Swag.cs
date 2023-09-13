@@ -1,12 +1,14 @@
 /*
  * Original
- * https://github.com/kmyk/library-checker-problems/blob/47ba6600eb6dc445ce742de511ca69cb6fc749b1/datastructure/queue_operate_all_composite/sol/correct.cpp
+ * https://github.com/yosupo06/library-checker-problems/blob/b2d2c050026820706dea6c9f18b8275a0fb0cada/datastructure/queue_operate_all_composite/sol/correct.cpp
  * 
  * Apache License Version 2.0
  * https://github.com/yosupo06/library-checker-problems
  */
 using AtCoder;
 using AtCoder.Internal;
+using System;
+using System.Diagnostics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -15,18 +17,30 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// Slide Window Aggrigation: モノイドの範囲演算を移動しながら求める。計算量: O(N)
     /// </summary>
+    [DebuggerDisplay("AllProd = {" + nameof(AllProd) + "}")]
     public class Swag<T, TOp> where TOp : struct, ISegtreeOperator<T>
     {
-        private static TOp op = default;
+        /*
+         * frontSize = 4 のときの構造
+         * ---------frontSize---------
+         * | d[0] | d[1] | d[2] | d[3] |---d[4..]---|
+         *                                 back1
+         * 
+         *  i < frontSize: d[i] は d[i..frontSize] の総積を保持する
+         * frontSize <= i: d[i] は元の値を保持する。
+         * 
+         * back は d[frontSize..] の総積
+         */
+        private static TOp op => default;
         private int frontSize = 0;
         private T back = op.Identity;
-        private readonly Deque<T> data;
+        private readonly Deque<T> d;
         /// <summary>
         /// Slide Window Aggrigation: モノイドの範囲演算を移動しながら求める。計算量: O(N)
         /// </summary>
         public Swag()
         {
-            data = new Deque<T>();
+            d = new Deque<T>();
         }
         /// <summary>
         /// Slide Window Aggrigation: モノイドの範囲演算を移動しながら求める。計算量: O(N)
@@ -34,38 +48,66 @@ namespace Kzrnm.Competitive
         /// <param name="capacity">内部で保持する <see cref="Deque{T}"/> の初期サイズ</param>
         public Swag(int capacity)
         {
-            data = new Deque<T>(capacity);
+            d = new Deque<T>(capacity);
         }
+
+        /// <summary>
+        /// Slide Window Aggrigation: モノイドの範囲演算を移動しながら求める。計算量: O(N)
+        /// </summary>
+        /// <param name="initial">あらかじめ追加されているモノイド</param>
+        public Swag(ReadOnlySpan<T> initial)
+        {
+            d = new Deque<T>(initial.Length) { tail = initial.Length };
+            initial.CopyTo(d.data);
+            foreach (var x in initial)
+                back = op.Operate(back, x);
+        }
+
+        /// <summary>
+        /// 保持しているモノイドの数を返します。
+        /// </summary>
+        public int Count => d.Count;
+
         /// <summary>
         /// 末尾にモノイドを追加します。
         /// </summary>
+        /// <remarks>
+        /// <para>計算量: O(1)</para>
+        /// </remarks>
         public void Push(T x)
         {
-            data.AddLast(x);
+            d.AddLast(x);
             back = op.Operate(back, x);
         }
 
         /// <summary>
         /// 先頭のモノイドを削除します。
         /// </summary>
+        /// <remarks>
+        /// <para>計算量: O(1)</para>
+        /// </remarks>
         public void Pop()
         {
-            Contract.Assert(data.Count > 0, "data is empty.");
-            data.PopFirst();
+            Contract.Assert(d.Count > 0, "data is empty.");
+            d.PopFirst();
             if (--frontSize < 0)
             {
-                for (int i = data.Count - 2; i >= 0; i--)
+                for (int i = d.Count - 2; i >= 0; i--)
                 {
-                    data[i] = op.Operate(data[i], data[i + 1]);
+                    d[i] = op.Operate(d[i], d[i + 1]);
                 }
-                frontSize = data.Count;
+                frontSize = d.Count;
                 back = op.Identity;
             }
         }
         /// <summary>
         /// モノイドをマージした結果を返します。
         /// </summary>
-        public T AllProd { [凾(256)] get => frontSize > 0 ? op.Operate(data.First, back) : back; }
+        /// <remarks>
+        /// <para>op(d[0], op(d[1], op(...)))</para>
+        /// <para>計算量: O(1)</para>
+        /// </remarks>
+        public T AllProd => frontSize > 0 ? op.Operate(d.First, back) : back;
 
         /// <summary>
         /// 格納されたモノイドをすべて削除します
@@ -75,7 +117,7 @@ namespace Kzrnm.Competitive
         {
             frontSize = 0;
             back = op.Identity;
-            data.Clear();
+            d.Clear();
         }
     }
 }

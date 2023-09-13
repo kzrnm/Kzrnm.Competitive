@@ -1,94 +1,95 @@
 using AtCoder;
 using AtCoder.Internal;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kzrnm.Competitive.Testing.DataStructure
 {
     public class SwagTests
     {
-        public struct SlideMinOp : ISegtreeOperator<int>
+        Random rnd = new(227);
+        Mod998244353AffineTransformation RandomAffine(Random rnd) => new(rnd.Next(), rnd.Next());
+        int RandomInt32(Random rnd) => rnd.Next();
+
+        [Fact] public void AffineTransformation() => new Inner<Mod998244353AffineTransformation, AffineTransformationOp>(rnd).RandomTest(RandomAffine);
+        [Fact] public void SlideMin() => new Inner<int, SlideMinOp>(rnd).RandomTest(RandomInt32);
+        [Fact] public void SlideMax() => new Inner<int, SlideMaxOp>(rnd).RandomTest(RandomInt32);
+
+        record Inner<T, TOp>(Random Rnd) where TOp : struct, ISegtreeOperator<T>
+        {
+            public void RandomTest(Func<Random, T> nextProvider)
+            {
+                var op = new TOp();
+                var swag = new Swag<T, TOp>();
+                var deque = new Deque<T>();
+
+
+                swag.AllProd.Should().Be(op.Identity);
+                swag.Invoking(swag => swag.Pop()).Should()
+                    .ThrowExactly<ContractAssertException>()
+                    .WithMessage("data is empty.");
+
+                for (int i = 0; i < 200; i++)
+                {
+                    var next = nextProvider(Rnd);
+                    deque.AddLast(next); swag.Push(next);
+                    swag.AllProd.Should().Be(deque.Aggregate(op.Operate));
+                }
+
+                for (int i = 1; i < 200; i++)
+                {
+                    deque.PopFirst(); swag.Pop();
+                    swag.AllProd.Should().Be(deque.Aggregate(op.Operate));
+                }
+
+                deque.PopFirst(); swag.Pop();
+                swag.AllProd.Should().Be(op.Identity);
+                swag.Invoking(swag => swag.Pop()).Should()
+                    .ThrowExactly<ContractAssertException>()
+                    .WithMessage("data is empty.");
+
+                for (int i = 0; i < 200; i++)
+                {
+                    var next = nextProvider(Rnd);
+                    deque.AddLast(next); swag.Push(next);
+                }
+                RandomInitial(deque, nextProvider);
+            }
+            void RandomInitial(Deque<T> deque, Func<Random, T> nextProvider)
+            {
+                var op = new TOp();
+                var swag = new Swag<T, TOp>(deque.ToArray());
+                swag.AllProd.Should().Be(deque.Aggregate(op.Operate));
+
+                for (int i = 0; i < 2000; i++)
+                {
+                    if (deque.Count > 0 && Rnd.Next(2) != 0)
+                    {
+                        deque.PopFirst(); swag.Pop();
+                        swag.AllProd.Should().Be(deque.Aggregate(op.Operate));
+                    }
+                    else
+                    {
+                        var next = nextProvider(Rnd);
+                        deque.AddLast(next); swag.Push(next);
+                        swag.AllProd.Should().Be(deque.Aggregate(op.Operate));
+                    }
+                }
+            }
+        }
+        readonly struct AffineTransformationOp : ISegtreeOperator<Mod998244353AffineTransformation>
+        {
+            public Mod998244353AffineTransformation Operate(Mod998244353AffineTransformation x, Mod998244353AffineTransformation y)
+                => x * y;
+            public Mod998244353AffineTransformation Identity => new(StaticModInt<Mod998244353>.One, default);
+        }
+        readonly struct SlideMinOp : ISegtreeOperator<int>
         {
             public int Identity => int.MaxValue;
             public int Operate(int x, int y) => Math.Min(x, y);
         }
-        [Fact]
-        public void SlideMin()
-        {
-            var swag = new Swag<int, SlideMinOp>();
-            swag.Push(4);
-            swag.AllProd.Should().Be(4);
-            swag.Push(1);
-            swag.AllProd.Should().Be(1);
-            swag.Push(4);
-            swag.AllProd.Should().Be(1);
-            swag.Push(6);
-            swag.AllProd.Should().Be(1);
-            swag.Pop();
-            swag.AllProd.Should().Be(1);
-            swag.Push(2);
-            swag.AllProd.Should().Be(1);
-            swag.Pop();
-            swag.AllProd.Should().Be(2);
-            swag.Push(3);
-            swag.AllProd.Should().Be(2);
-            swag.Pop();
-            swag.AllProd.Should().Be(2);
-            swag.Pop();
-            swag.AllProd.Should().Be(2);
-            swag.Pop();
-            swag.AllProd.Should().Be(3);
-            swag.Push(9);
-            swag.AllProd.Should().Be(3);
-            swag.Push(7);
-            swag.AllProd.Should().Be(3);
-            swag.Pop();
-            swag.AllProd.Should().Be(7);
-            swag.Pop();
-            swag.AllProd.Should().Be(7);
-            swag.Pop();
-            swag.AllProd.Should().Be(int.MaxValue);
-            swag.Invoking(swag => swag.Pop()).Should()
-                .ThrowExactly<ContractAssertException>()
-                .WithMessage("data is empty.");
-
-            swag = new Swag<int, SlideMinOp>();
-            swag.Push(4);
-            swag.AllProd.Should().Be(4);
-            swag.Push(1);
-            swag.AllProd.Should().Be(1);
-            swag.Push(4);
-            swag.AllProd.Should().Be(1);
-            swag.Push(6);
-            swag.AllProd.Should().Be(1);
-            swag.Push(2);
-            swag.AllProd.Should().Be(1);
-            swag.Push(3);
-            swag.AllProd.Should().Be(1);
-            swag.Push(9);
-            swag.AllProd.Should().Be(1);
-            swag.Push(7);
-            swag.AllProd.Should().Be(1);
-            swag.Pop();
-            swag.AllProd.Should().Be(1);
-            swag.Pop();
-            swag.AllProd.Should().Be(2);
-            swag.Pop();
-            swag.AllProd.Should().Be(2);
-            swag.Pop();
-            swag.AllProd.Should().Be(2);
-            swag.Pop();
-            swag.AllProd.Should().Be(3);
-            swag.Pop();
-            swag.AllProd.Should().Be(7);
-            swag.Pop();
-            swag.AllProd.Should().Be(7);
-            swag.Pop();
-            swag.AllProd.Should().Be(int.MaxValue);
-            swag.Invoking(swag => swag.Pop()).Should()
-                .ThrowExactly<ContractAssertException>()
-                .WithMessage("data is empty.");
-        }
-        public struct SlideMaxOp : ISegtreeOperator<int>
+        readonly struct SlideMaxOp : ISegtreeOperator<int>
         {
             public int Identity => int.MinValue;
             public int Operate(int x, int y) => Math.Max(x, y);
