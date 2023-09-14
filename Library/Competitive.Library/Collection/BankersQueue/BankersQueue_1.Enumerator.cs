@@ -53,7 +53,9 @@ namespace Kzrnm.Competitive
             /// </summary>
             public T Current
             {
+#pragma warning disable IDE0251 // メンバーを 'readonly' にする
                 get
+#pragma warning restore IDE0251 // メンバーを 'readonly' にする
                 {
                     if (_remainingForwardsStack == null)
                     {

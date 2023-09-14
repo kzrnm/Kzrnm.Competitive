@@ -10,7 +10,6 @@ namespace Kzrnm.Competitive
     /// <para>冪等半群に対する区間クエリを, 前計算 O(nlogn), クエリ O(1) で処理する</para>
     /// <para>冪等: 操作を何回行っても集合が等しければ等しくなる性質(最小値・最大値など)</para>
     /// </summary>
-
     [DebuggerDisplay(nameof(Length) + " = {" + nameof(Length) + "}")]
     [DebuggerTypeProxy(typeof(SparseTable<,>.DebugView))]
     public class SparseTable<TValue, TOp> where TOp : struct, ISparseTableOperator<TValue>

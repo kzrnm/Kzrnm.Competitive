@@ -25,6 +25,8 @@ namespace Kzrnm.Competitive
          * ---------frontSize---------
          * | d[0] | d[1] | d[2] | d[3] |---d[4..]---|
          *                                 back1
+         * ------d[0]の保持する総積------
+         *         --d[1]の保持する総積--
          * 
          *  i < frontSize: d[i] は d[i..frontSize] の総積を保持する
          * frontSize <= i: d[i] は元の値を保持する。

@@ -7,7 +7,6 @@ namespace Kzrnm.Competitive
 {
     public static class PriorityQueue
     {
-
         [凾(256)]
         public static PriorityQueueOp<T, DefaultComparerStruct<T>> Create<T>()
             where T : IComparable<T>
@@ -70,7 +69,7 @@ namespace Kzrnm.Competitive
 
 
         [凾(256)]
-        public static bool TryDequeue<TKey, T, TKOp>(this PriorityQueueOp<TKey, (T, T), TKOp> pq, out TKey key, out T Item1, out T Item2) where TKOp : IComparer<TKey>
+        public static bool TryDequeue<TKey, T1, T2, TKOp>(this PriorityQueueOp<TKey, (T1, T2), TKOp> pq, out TKey key, out T1 Item1, out T2 Item2) where TKOp : IComparer<TKey>
         {
             var result = pq.TryDequeue(out key, out var tuple);
             (Item1, Item2) = tuple;
