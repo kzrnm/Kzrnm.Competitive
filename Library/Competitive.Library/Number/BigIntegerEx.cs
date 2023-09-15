@@ -1,17 +1,22 @@
-using AtCoder.Operators;
 using System;
 using System.Numerics;
+#if !NET7_0_OR_GREATER
+using AtCoder.Operators;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
+#endif
 
 namespace Kzrnm.Competitive
 {
 #pragma warning disable IDE0057
     public static class BigIntegerEx
     {
-        public static BigInteger ParseBigInteger(ReadOnlySpan<char> s)
+#if NET7_0_OR_GREATER
+        [Obsolete("公式実装が分割統治法で N (logN)^2 になっている", UrlFormat = "https://devblogs.microsoft.com/dotnet/performance_improvements_in_net_7/#primitive-types-and-numerics")]
+#endif
+        public static BigInteger Parse(ReadOnlySpan<char> s)
         {
-            /* 自前実装の方が速い */
-            if (s[0] == '-') return -ParseBigInteger(s[1..]);
+            /* .NET 6 までなら自前実装の方が速い */
+            if (s[0] == '-') return -Parse(s[1..]);
             BigInteger res;
             if (s.Length % 9 == 0)
                 res = 0;

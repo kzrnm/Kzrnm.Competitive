@@ -1,3 +1,4 @@
+#pragma warning disable SYSLIB1045, IDE0251
 using Kzrnm.Competitive.IO;
 using System;
 using System.Collections;
@@ -31,7 +32,6 @@ namespace Competitive.Runner
                 static string ReplaceMethodImpl(string code)
                 {
                     if (code is null) return null;
-
                     return Regex.Replace(code, @"\[(MI|MethodImpl)\(((MethodImplOptions\.)?AggressiveInlining|256)", "[凾(256");
                 }
 #endif
