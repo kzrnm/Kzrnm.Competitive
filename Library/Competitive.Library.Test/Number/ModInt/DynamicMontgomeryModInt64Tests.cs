@@ -7,7 +7,7 @@ using LargeInteger = System.UInt128;
 using LargeInteger = System.Numerics.BigInteger;
 #endif
 
-namespace Kzrnm.Competitive.Testing.MathNS
+namespace Kzrnm.Competitive.Testing.Number
 {
     public class DynamicMontgomeryModInt64Tests
     {

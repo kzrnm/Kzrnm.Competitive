@@ -1,7 +1,7 @@
 using System;
 using System.Numerics;
 
-namespace Kzrnm.Competitive.Testing.MathNS
+namespace Kzrnm.Competitive.Testing.Number
 {
     public class BigIntegerTests
     {

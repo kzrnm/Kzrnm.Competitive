@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Kzrnm.Competitive.Testing.MathNS
+namespace Kzrnm.Competitive.Testing.Number
 {
     public class FractionTests
     {

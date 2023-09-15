@@ -1,7 +1,7 @@
 using AtCoder;
 using System;
 
-namespace Kzrnm.Competitive.Testing.MathNS
+namespace Kzrnm.Competitive.Testing.Number
 {
     public class StaticModIntFactorTests
     {

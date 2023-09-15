@@ -1,7 +1,7 @@
 using AtCoder;
 using Kzrnm.Competitive.IO;
 
-namespace Kzrnm.Competitive.MathNs
+namespace Kzrnm.Competitive.Number
 {
     internal class ModSqrtTest : BaseSolver
     {
