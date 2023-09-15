@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive.Testing.Number
 #if NET7_0_OR_GREATER
         [Obsolete("For test")]
 #endif
-        public void ParseBigInteger(string input)
+        public void Parse(string input)
         {
             BigIntegerEx.Parse(input).Should().Be(BigInteger.Parse(input));
         }

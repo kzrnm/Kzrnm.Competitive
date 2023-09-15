@@ -37,12 +37,12 @@ namespace Kzrnm.Competitive.Testing.Number
             }
         }
 
-        struct Mod6221 : IStaticMod
+        readonly struct Mod6221 : IStaticMod
         {
             public bool IsPrime => true;
             public uint Mod => 6221;
         }
-        struct Mod1097 : IStaticMod
+        readonly struct Mod1097 : IStaticMod
         {
             public bool IsPrime => true;
             public uint Mod => 1097;

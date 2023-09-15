@@ -136,10 +136,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 // Although this is a lazy-init pattern, no lock is required because
                 // this instance is immutable otherwise, and a double-assignment from multiple
                 // threads is harmless.
-                if (_backwardsReversed == null)
-                {
-                    _backwardsReversed = Reverse(_backwards);
-                }
+                _backwardsReversed ??= Reverse(_backwards);
 
                 Debug.Assert(_backwardsReversed != null);
                 return _backwardsReversed;
