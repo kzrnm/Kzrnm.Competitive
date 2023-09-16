@@ -40,6 +40,7 @@
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Library'">
+    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
     <SourceExpander_Embedder_Enabled>False</SourceExpander_Embedder_Enabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">

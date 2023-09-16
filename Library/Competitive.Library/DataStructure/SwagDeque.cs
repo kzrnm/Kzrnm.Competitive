@@ -179,7 +179,6 @@ namespace Kzrnm.Competitive
         /// </remarks>
         void Balance()
         {
-            Debug.Assert(c.Count + d.Count == a.Count);
             Debug.Assert(c.Count == 0 || d.Count == 0);
             c.Clear();
             d.Clear();

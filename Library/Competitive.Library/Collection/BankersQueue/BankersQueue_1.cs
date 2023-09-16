@@ -268,7 +268,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 
         BankersQueue<T> Normalize(bool force = false)
         {
-            if (this.IsEmpty)
+            if (_forwardsSize == 0 && _backwardsSize == 0)
             {
                 return Empty;
             }
