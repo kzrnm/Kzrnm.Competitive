@@ -3,12 +3,26 @@ using Kzrnm.Competitive.IO;
 
 namespace Kzrnm.Competitive.Number
 {
-    internal class BigIntegerAdditionTest : BaseSolver
+    internal class BigIntegerDecimalAdditionTest : BaseSolver
     {
         public override string Url => "https://judge.yosupo.jp/problem/addition_of_big_integers";
         public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
-            return (BigIntegerDecimal.Parse(cr.AsciiChars()) + BigIntegerDecimal.Parse(cr.AsciiChars())).ToString();
+            int Q = cr;
+            while (--Q >= 0)
+                cw.WriteLine(BigIntegerDecimal.Parse(cr.AsciiChars()) + BigIntegerDecimal.Parse(cr.AsciiChars()));
+            return null;
+        }
+    }
+    internal class BigIntegerDecimalMultiplicationTest : BaseSolver
+    {
+        public override string Url => "https://judge.yosupo.jp/problem/multiplication_of_big_integers";
+        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        {
+            int Q = cr;
+            while (--Q >= 0)
+                cw.WriteLine(BigIntegerDecimal.Parse(cr.AsciiChars()) * BigIntegerDecimal.Parse(cr.AsciiChars()));
+            return null;
         }
     }
     //internal class BigIntegerDivisionTest : BaseSolver
