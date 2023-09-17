@@ -599,6 +599,38 @@ namespace Kzrnm.Competitive.Testing.Number
             }
         }
 
+
+        [Fact]
+        public void MultiplyBoundary()
+        {
+            var orig = new BigInteger[]
+            {
+                BigInteger.Parse(string.Concat(Enumerable.Repeat("123456789", 70))),
+                BigInteger.Parse(string.Concat(Enumerable.Repeat("123456789", 71))),
+                BigInteger.Parse(string.Concat(Enumerable.Repeat("123456789", 139))),
+                BigInteger.Parse(string.Concat(Enumerable.Repeat("123456789", 140))),
+                BigInteger.Parse(string.Concat(Enumerable.Repeat("123456789", 141))),
+                BigInteger.Parse(string.Concat(Enumerable.Repeat("999999999", 70))),
+                BigInteger.Parse(string.Concat(Enumerable.Repeat("999999999", 71))),
+                BigInteger.Parse(string.Concat(Enumerable.Repeat("999999999", 139))),
+                BigInteger.Parse(string.Concat(Enumerable.Repeat("999999999", 140))),
+                BigInteger.Parse(string.Concat(Enumerable.Repeat("999999999", 141))),
+            };
+            Array.Sort(orig);
+            var bigs = orig.Select(ConvertToDecimal).ToArray();
+
+            for (int i = 0; i < bigs.Length; i++)
+            {
+                (bigs[i] * bigs[i]).ToString().Should().Be((orig[i] * orig[i]).ToString());
+                for (int j = i + 1; j < bigs.Length; j++)
+                {
+                    var expected = (orig[i] * orig[j]).ToString();
+                    (bigs[i] * bigs[j]).ToString().Should().Be(expected);
+                    (bigs[j] * bigs[i]).ToString().Should().Be(expected);
+                }
+            }
+        }
+
         [Fact]
         public void Divide()
         {
