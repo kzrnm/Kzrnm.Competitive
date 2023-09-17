@@ -251,6 +251,273 @@ namespace Kzrnm.Competitive
 
             if (right.Length < MultiplyThreshold)
             {
+                Naive(left, right, bits);
+            }
+            else if (left.Length - right.Length < 2)
+            {
+                MultiplyNearLength(left, right, bits);
+            }
+            else
+            {
+                // Based on the Toom-Cook multiplication we split left/right
+                // into two smaller values, doing recursive multiplication.
+                // The special form of this multiplication, where we
+                // split both operands into two operands, is also known
+                // as the Karatsuba algorithm...
+
+                // https://en.wikipedia.org/wiki/Toom-Cook_multiplication
+                // https://en.wikipedia.org/wiki/Karatsuba_algorithm
+
+                // Say we want to compute z = a * b ...
+
+                // ... we need to determine our new length (just the half)
+                int n = left.Length >> 1;
+                if (right.Length <= n + 1)
+                {
+                    // ... split left like a = (a_1 << n) + a_0
+                    ReadOnlySpan<uint> leftLow = left.Slice(0, n);
+                    ReadOnlySpan<uint> leftHigh = left.Slice(n);
+
+                    // ... split right like b = (b_1 << n) + b_0
+                    ReadOnlySpan<uint> rightLow;
+                    uint rightHigh;
+                    if (n < right.Length)
+                    {
+                        Debug.Assert(right.Length == n + 1);
+                        rightLow = right.Slice(0, n);
+                        rightHigh = right[n];
+                    }
+                    else
+                    {
+                        rightLow = right;
+                        rightHigh = 0;
+                    }
+
+                    // ... prepare our result array (to reuse its memory)
+                    Span<uint> bitsLow = bits.Slice(0, n + rightLow.Length);
+                    Span<uint> bitsHigh = bits.Slice(n);
+
+                    int carryLength = rightLow.Length;
+                    uint[] carryFromPool = null;
+                    Span<uint> carry = ((uint)carryLength <= StackAllocThreshold ?
+                                      stackalloc uint[StackAllocThreshold]
+                                      : carryFromPool = ArrayPool<uint>.Shared.Rent(carryLength)).Slice(0, carryLength);
+
+                    // ... compute low
+                    Multiply(leftLow, rightLow, bitsLow);
+                    Span<uint> carryOrig = bits.Slice(n, rightLow.Length);
+                    carryOrig.CopyTo(carry);
+                    carryOrig.Clear();
+
+                    if (rightHigh != 0)
+                    {
+                        // ... compute high
+                        Multiply(leftHigh, rightLow, bitsHigh.Slice(0, leftHigh.Length + n));
+
+                        int upperRightLength = left.Length + 1;
+                        uint[] upperRightFromPool = null;
+                        Span<uint> upperRight = ((uint)upperRightLength <= StackAllocThreshold ?
+                                          stackalloc uint[StackAllocThreshold]
+                                          : upperRightFromPool = ArrayPool<uint>.Shared.Rent(upperRightLength)).Slice(0, upperRightLength);
+                        upperRight.Clear();
+
+                        Multiply(left, rightHigh, upperRight);
+
+                        AddSelf(bitsHigh, upperRight);
+
+                        if (upperRightFromPool != null)
+                            ArrayPool<uint>.Shared.Return(upperRightFromPool);
+                    }
+                    else
+                    {
+                        // ... compute high
+                        Multiply(leftHigh, rightLow, bitsHigh);
+                    }
+
+                    AddSelf(bitsHigh, carry);
+
+                    if (carryFromPool != null)
+                        ArrayPool<uint>.Shared.Return(carryFromPool);
+                }
+                else
+                {
+                    int n2 = n << 1;
+
+                    Debug.Assert(left.Length > right.Length);
+
+                    // ... split left like a = (a_1 << n) + a_0
+                    ReadOnlySpan<uint> leftLow = left.Slice(0, n);
+                    ReadOnlySpan<uint> leftHigh = left.Slice(n);
+
+                    // ... split right like b = (b_1 << n) + b_0
+                    ReadOnlySpan<uint> rightLow = right.Slice(0, n);
+                    ReadOnlySpan<uint> rightHigh = right.Slice(n);
+
+                    // ... prepare our result array (to reuse its memory)
+                    Span<uint> bitsLow = bits.Slice(0, n2);
+                    Span<uint> bitsHigh = bits.Slice(n2);
+
+                    // ... compute z_0 = a_0 * b_0 (multiply again)
+                    Multiply(rightLow, leftLow, bitsLow);
+
+                    // ... compute z_2 = a_1 * b_1 (multiply again)
+                    Multiply(leftHigh, rightHigh, bitsHigh);
+
+                    int leftFoldLength = leftHigh.Length + 1;
+                    uint[] leftFoldFromPool = null;
+                    Span<uint> leftFold = ((uint)leftFoldLength <= StackAllocThreshold ?
+                                          stackalloc uint[StackAllocThreshold]
+                                          : leftFoldFromPool = ArrayPool<uint>.Shared.Rent(leftFoldLength)).Slice(0, leftFoldLength);
+                    leftFold.Clear();
+
+                    int rightFoldLength = n + 1;
+                    uint[] rightFoldFromPool = null;
+                    Span<uint> rightFold = ((uint)rightFoldLength <= StackAllocThreshold ?
+                                           stackalloc uint[StackAllocThreshold]
+                                           : rightFoldFromPool = ArrayPool<uint>.Shared.Rent(rightFoldLength)).Slice(0, rightFoldLength);
+                    rightFold.Clear();
+
+                    int coreLength = leftFoldLength + rightFoldLength;
+                    uint[] coreFromPool = null;
+                    Span<uint> core = ((uint)coreLength <= StackAllocThreshold ?
+                                      stackalloc uint[StackAllocThreshold]
+                                      : coreFromPool = ArrayPool<uint>.Shared.Rent(coreLength)).Slice(0, coreLength);
+                    core.Clear();
+
+                    Debug.Assert(bits.Length - n >= core.Length);
+                    Debug.Assert(rightLow.Length >= rightHigh.Length);
+
+                    // ... compute z_a = a_1 + a_0 (call it fold...)
+                    Add(leftHigh, leftLow, leftFold);
+
+                    // ... compute z_b = b_1 + b_0 (call it fold...)
+                    Add(rightLow, rightHigh, rightFold);
+
+                    // ... compute z_1 = z_a * z_b - z_0 - z_2
+                    Multiply(leftFold, rightFold, core);
+
+                    if (leftFoldFromPool != null)
+                        ArrayPool<uint>.Shared.Return(leftFoldFromPool);
+
+                    if (rightFoldFromPool != null)
+                        ArrayPool<uint>.Shared.Return(rightFoldFromPool);
+
+                    if (bitsHigh.Length < bitsLow.Length)
+                        SubtractCore(bitsLow, bitsHigh, core);
+                    else
+                        SubtractCore(bitsHigh, bitsLow, core);
+
+                    // ... and finally merge the result! :-)
+                    AddSelf(bits.Slice(n), core);
+
+                    if (coreFromPool != null)
+                        ArrayPool<uint>.Shared.Return(coreFromPool);
+                }
+            }
+
+            static void MultiplyNearLength(ReadOnlySpan<uint> left, ReadOnlySpan<uint> right, Span<uint> bits)
+            {
+                Debug.Assert(left.Length - right.Length < 2);
+                Debug.Assert(bits.Length == left.Length + right.Length);
+
+                // Executes different algorithms for computing z = a * b
+                // based on the actual length of b. If b is "small" enough
+                // we stick to the classic "grammar-school" method; for the
+                // rest we switch to implementations with less complexity
+                // albeit more overhead (which needs to pay off!).
+
+                // NOTE: useful thresholds needs some "empirical" testing,
+                // which are smaller in DEBUG mode for testing purpose.
+
+                if (right.Length < MultiplyThreshold)
+                {
+                    Naive(left, right, bits);
+                }
+                else
+                {
+                    // Based on the Toom-Cook multiplication we split left/right
+                    // into two smaller values, doing recursive multiplication.
+                    // The special form of this multiplication, where we
+                    // split both operands into two operands, is also known
+                    // as the Karatsuba algorithm...
+
+                    // https://en.wikipedia.org/wiki/Toom-Cook_multiplication
+                    // https://en.wikipedia.org/wiki/Karatsuba_algorithm
+
+                    // Say we want to compute z = a * b ...
+
+                    // ... we need to determine our new length (just the half)
+                    int n = right.Length >> 1;
+                    int n2 = n << 1;
+
+                    // ... split left like a = (a_1 << n) + a_0
+                    ReadOnlySpan<uint> leftLow = left.Slice(0, n);
+                    ReadOnlySpan<uint> leftHigh = left.Slice(n);
+
+                    // ... split right like b = (b_1 << n) + b_0
+                    ReadOnlySpan<uint> rightLow = right.Slice(0, n);
+                    ReadOnlySpan<uint> rightHigh = right.Slice(n);
+
+                    // ... prepare our result array (to reuse its memory)
+                    Span<uint> bitsLow = bits.Slice(0, n2);
+                    Span<uint> bitsHigh = bits.Slice(n2);
+
+                    // ... compute z_0 = a_0 * b_0 (multiply again)
+                    MultiplyNearLength(leftLow, rightLow, bitsLow);
+
+                    // ... compute z_2 = a_1 * b_1 (multiply again)
+                    MultiplyNearLength(leftHigh, rightHigh, bitsHigh);
+
+                    int leftFoldLength = leftHigh.Length + 1;
+                    uint[] leftFoldFromPool = null;
+                    Span<uint> leftFold = ((uint)leftFoldLength <= StackAllocThreshold ?
+                                          stackalloc uint[StackAllocThreshold]
+                                          : leftFoldFromPool = ArrayPool<uint>.Shared.Rent(leftFoldLength)).Slice(0, leftFoldLength);
+                    leftFold.Clear();
+
+                    int rightFoldLength = rightHigh.Length + 1;
+                    uint[] rightFoldFromPool = null;
+                    Span<uint> rightFold = ((uint)rightFoldLength <= StackAllocThreshold ?
+                                           stackalloc uint[StackAllocThreshold]
+                                           : rightFoldFromPool = ArrayPool<uint>.Shared.Rent(rightFoldLength)).Slice(0, rightFoldLength);
+                    rightFold.Clear();
+
+                    int coreLength = leftFoldLength + rightFoldLength;
+                    uint[] coreFromPool = null;
+                    Span<uint> core = ((uint)coreLength <= StackAllocThreshold ?
+                                      stackalloc uint[StackAllocThreshold]
+                                      : coreFromPool = ArrayPool<uint>.Shared.Rent(coreLength)).Slice(0, coreLength);
+                    core.Clear();
+
+                    // ... compute z_a = a_1 + a_0 (call it fold...)
+                    Add(leftHigh, leftLow, leftFold);
+
+                    // ... compute z_b = b_1 + b_0 (call it fold...)
+                    Add(rightHigh, rightLow, rightFold);
+
+                    // ... compute z_1 = z_a * z_b - z_0 - z_2
+                    MultiplyNearLength(leftFold, rightFold, core);
+
+                    if (leftFoldFromPool != null)
+                        ArrayPool<uint>.Shared.Return(leftFoldFromPool);
+
+                    if (rightFoldFromPool != null)
+                        ArrayPool<uint>.Shared.Return(rightFoldFromPool);
+
+                    SubtractCore(bitsHigh, bitsLow, core);
+
+                    // ... and finally merge the result! :-)
+                    AddSelf(bits.Slice(n), core);
+
+                    if (coreFromPool != null)
+                        ArrayPool<uint>.Shared.Return(coreFromPool);
+                }
+            }
+            static void Naive(ReadOnlySpan<uint> left, ReadOnlySpan<uint> right, Span<uint> bits)
+            {
+                Debug.Assert(left.Length >= right.Length);
+                Debug.Assert(bits.Length == left.Length + right.Length);
+
                 // Switching to managed references helps eliminating
                 // index bounds check...
                 ref uint resultPtr = ref MemoryMarshal.GetReference(bits);
@@ -277,85 +544,6 @@ namespace Kzrnm.Competitive
                         Unsafe.Add(ref resultPtr, i + left.Length) = rem;
                     }
                 }
-            }
-            else
-            {
-                // Based on the Toom-Cook multiplication we split left/right
-                // into two smaller values, doing recursive multiplication.
-                // The special form of this multiplication, where we
-                // split both operands into two operands, is also known
-                // as the Karatsuba algorithm...
-
-                // https://en.wikipedia.org/wiki/Toom-Cook_multiplication
-                // https://en.wikipedia.org/wiki/Karatsuba_algorithm
-
-                // Say we want to compute z = a * b ...
-
-                // ... we need to determine our new length (just the half)
-                int n = right.Length >> 1;
-                int n2 = n << 1;
-
-                // ... split left like a = (a_1 << n) + a_0
-                ReadOnlySpan<uint> leftLow = left[..n];
-                ReadOnlySpan<uint> leftHigh = left[n..];
-
-                // ... split right like b = (b_1 << n) + b_0
-                ReadOnlySpan<uint> rightLow = right[..n];
-                ReadOnlySpan<uint> rightHigh = right[n..];
-
-                // ... prepare our result array (to reuse its memory)
-                Span<uint> bitsLow = bits[..n2];
-                Span<uint> bitsHigh = bits[n2..];
-
-                // ... compute z_0 = a_0 * b_0 (multiply again)
-                Multiply(leftLow, rightLow, bitsLow);
-
-                // ... compute z_2 = a_1 * b_1 (multiply again)
-                Multiply(leftHigh, rightHigh, bitsHigh);
-
-                int leftFoldLength = leftHigh.Length + 1;
-                uint[] leftFoldFromPool = null;
-                Span<uint> leftFold = ((uint)leftFoldLength <= StackAllocThreshold ?
-                                      stackalloc uint[StackAllocThreshold]
-                                      : leftFoldFromPool = ArrayPool<uint>.Shared.Rent(leftFoldLength))[..leftFoldLength];
-                leftFold.Clear();
-
-                int rightFoldLength = rightHigh.Length + 1;
-                uint[] rightFoldFromPool = null;
-                Span<uint> rightFold = ((uint)rightFoldLength <= StackAllocThreshold ?
-                                       stackalloc uint[StackAllocThreshold]
-                                       : rightFoldFromPool = ArrayPool<uint>.Shared.Rent(rightFoldLength))[..rightFoldLength];
-                rightFold.Clear();
-
-                int coreLength = leftFoldLength + rightFoldLength;
-                uint[] coreFromPool = null;
-                Span<uint> core = ((uint)coreLength <= StackAllocThreshold ?
-                                  stackalloc uint[StackAllocThreshold]
-                                  : coreFromPool = ArrayPool<uint>.Shared.Rent(coreLength))[..coreLength];
-                core.Clear();
-
-                // ... compute z_a = a_1 + a_0 (call it fold...)
-                Add(leftHigh, leftLow, leftFold);
-
-                // ... compute z_b = b_1 + b_0 (call it fold...)
-                Add(rightHigh, rightLow, rightFold);
-
-                // ... compute z_1 = z_a * z_b - z_0 - z_2
-                Multiply(leftFold, rightFold, core);
-
-                if (leftFoldFromPool != null)
-                    ArrayPool<uint>.Shared.Return(leftFoldFromPool);
-
-                if (rightFoldFromPool != null)
-                    ArrayPool<uint>.Shared.Return(rightFoldFromPool);
-
-                SubtractCore(bitsHigh, bitsLow, core);
-
-                // ... and finally merge the result! :-)
-                AddSelf(bits[n..], core);
-
-                if (coreFromPool != null)
-                    ArrayPool<uint>.Shared.Return(coreFromPool);
             }
         }
 

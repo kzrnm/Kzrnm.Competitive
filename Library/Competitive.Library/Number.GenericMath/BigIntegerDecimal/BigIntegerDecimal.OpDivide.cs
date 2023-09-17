@@ -3,6 +3,8 @@
 using System;
 using System.Buffers;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -404,10 +406,11 @@ namespace Kzrnm.Competitive
             // Repairs the dividend, if the last subtract was too much
 
             ulong carry = 0UL;
+            ref uint leftPtr = ref MemoryMarshal.GetReference(left);
 
             for (int i = 0; i < right.Length; i++)
             {
-                ref uint leftElement = ref left[i];
+                ref uint leftElement = ref Unsafe.Add(ref leftPtr, i);
                 ulong digit = (leftElement + carry) + right[i];
                 carry = DivRemBase(digit, out var rem);
                 leftElement = rem;
@@ -424,6 +427,7 @@ namespace Kzrnm.Competitive
             // Combines a subtract and a multiply operation, which is naturally
             // more efficient than multiplying and then subtracting...
 
+            ref uint leftPtr = ref MemoryMarshal.GetReference(left);
             ulong carry = 0UL;
 
             for (int i = 0; i < right.Length; i++)
@@ -432,7 +436,7 @@ namespace Kzrnm.Competitive
                 carry = DivRemBase(carry, out var rem);
                 uint digit = rem;
 
-                ref uint leftElement = ref left[i];
+                ref uint leftElement = ref Unsafe.Add(ref leftPtr, i);
                 if (leftElement < digit)
                 {
                     ++carry;
