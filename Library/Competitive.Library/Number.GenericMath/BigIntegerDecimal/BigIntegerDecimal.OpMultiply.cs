@@ -292,70 +292,105 @@ namespace Kzrnm.Competitive
                 // Say we want to compute z = a * b ...
 
                 // ... we need to determine our new length (just the half)
-                int n = right.Length >> 1;
-                int n2 = n << 1;
+                int n = (left.Length + 1) >> 1;
+                if (right.Length <= n)
+                {
+                    // ... split left like a = (a_1 << n) + a_0
+                    ReadOnlySpan<uint> leftLow = left[..n];
+                    ReadOnlySpan<uint> leftHigh = left[n..];
 
-                // ... split left like a = (a_1 << n) + a_0
-                ReadOnlySpan<uint> leftLow = left[..n];
-                ReadOnlySpan<uint> leftHigh = left[n..];
+                    // ... prepare our result array (to reuse its memory)
+                    Span<uint> bitsHigh = bits[n..];
 
-                // ... split right like b = (b_1 << n) + b_0
-                ReadOnlySpan<uint> rightLow = right[..n];
-                ReadOnlySpan<uint> rightHigh = right[n..];
 
-                // ... prepare our result array (to reuse its memory)
-                Span<uint> bitsLow = bits[..n2];
-                Span<uint> bitsHigh = bits[n2..];
-
-                // ... compute z_0 = a_0 * b_0 (multiply again)
-                Multiply(leftLow, rightLow, bitsLow);
-
-                // ... compute z_2 = a_1 * b_1 (multiply again)
-                Multiply(leftHigh, rightHigh, bitsHigh);
-
-                int leftFoldLength = leftHigh.Length + 1;
-                uint[] leftFoldFromPool = null;
-                Span<uint> leftFold = ((uint)leftFoldLength <= StackAllocThreshold ?
+                    int lowerLength = n + right.Length;
+                    uint[] lowerFromPool = null;
+                    Span<uint> lower = ((uint)lowerLength <= StackAllocThreshold ?
                                       stackalloc uint[StackAllocThreshold]
-                                      : leftFoldFromPool = ArrayPool<uint>.Shared.Rent(leftFoldLength))[..leftFoldLength];
-                leftFold.Clear();
+                                      : lowerFromPool = ArrayPool<uint>.Shared.Rent(lowerLength))[..lowerLength];
+                    lower.Clear();
 
-                int rightFoldLength = rightHigh.Length + 1;
-                uint[] rightFoldFromPool = null;
-                Span<uint> rightFold = ((uint)rightFoldLength <= StackAllocThreshold ?
-                                       stackalloc uint[StackAllocThreshold]
-                                       : rightFoldFromPool = ArrayPool<uint>.Shared.Rent(rightFoldLength))[..rightFoldLength];
-                rightFold.Clear();
+                    // ... compute low
+                    Multiply(leftLow, right, lower);
 
-                int coreLength = leftFoldLength + rightFoldLength;
-                uint[] coreFromPool = null;
-                Span<uint> core = ((uint)coreLength <= StackAllocThreshold ?
-                                  stackalloc uint[StackAllocThreshold]
-                                  : coreFromPool = ArrayPool<uint>.Shared.Rent(coreLength))[..coreLength];
-                core.Clear();
+                    // ... compute high
+                    if (leftHigh.Length < right.Length)
+                        Multiply(right, leftHigh, bitsHigh);
+                    else
+                        Multiply(leftHigh, right, bitsHigh);
 
-                // ... compute z_a = a_1 + a_0 (call it fold...)
-                Add(leftHigh, leftLow, leftFold);
+                    AddSelf(bits, lower);
 
-                // ... compute z_b = b_1 + b_0 (call it fold...)
-                Add(rightHigh, rightLow, rightFold);
+                    if (lowerFromPool != null)
+                        ArrayPool<uint>.Shared.Return(lowerFromPool);
+                }
+                else
+                {
+                    int n2 = n << 1;
 
-                // ... compute z_1 = z_a * z_b - z_0 - z_2
-                Multiply(leftFold, rightFold, core);
+                    // ... split left like a = (a_1 << n) + a_0
+                    ReadOnlySpan<uint> leftLow = left[..n];
+                    ReadOnlySpan<uint> leftHigh = left[n..];
 
-                if (leftFoldFromPool != null)
-                    ArrayPool<uint>.Shared.Return(leftFoldFromPool);
+                    // ... split right like b = (b_1 << n) + b_0
+                    ReadOnlySpan<uint> rightLow = right[..n];
+                    ReadOnlySpan<uint> rightHigh = right[n..];
 
-                if (rightFoldFromPool != null)
-                    ArrayPool<uint>.Shared.Return(rightFoldFromPool);
+                    // ... prepare our result array (to reuse its memory)
+                    Span<uint> bitsLow = bits[..n2];
+                    Span<uint> bitsHigh = bits[n2..];
 
-                SubtractCore(bitsHigh, bitsLow, core);
+                    // ... compute z_0 = a_0 * b_0 (multiply again)
+                    Multiply(leftLow, rightLow, bitsLow);
 
-                // ... and finally merge the result! :-)
-                AddSelf(bits[n..], core);
+                    // ... compute z_2 = a_1 * b_1 (multiply again)
+                    Multiply(leftHigh, rightHigh, bitsHigh);
 
-                if (coreFromPool != null)
-                    ArrayPool<uint>.Shared.Return(coreFromPool);
+                    int leftFoldLength = n + 1;
+                    uint[] leftFoldFromPool = null;
+                    Span<uint> leftFold = ((uint)leftFoldLength <= StackAllocThreshold ?
+                                          stackalloc uint[StackAllocThreshold]
+                                          : leftFoldFromPool = ArrayPool<uint>.Shared.Rent(leftFoldLength))[..leftFoldLength];
+                    leftFold.Clear();
+
+                    int rightFoldLength = n + 1;
+                    uint[] rightFoldFromPool = null;
+                    Span<uint> rightFold = ((uint)rightFoldLength <= StackAllocThreshold ?
+                                           stackalloc uint[StackAllocThreshold]
+                                           : rightFoldFromPool = ArrayPool<uint>.Shared.Rent(rightFoldLength))[..rightFoldLength];
+                    rightFold.Clear();
+
+                    int coreLength = leftFoldLength + rightFoldLength;
+                    uint[] coreFromPool = null;
+                    Span<uint> core = ((uint)coreLength <= StackAllocThreshold ?
+                                      stackalloc uint[StackAllocThreshold]
+                                      : coreFromPool = ArrayPool<uint>.Shared.Rent(coreLength))[..coreLength];
+                    core.Clear();
+
+                    // ... compute z_a = a_1 + a_0 (call it fold...)
+                    Add(leftLow, leftHigh, leftFold);
+
+                    // ... compute z_b = b_1 + b_0 (call it fold...)
+                    Add(rightLow, rightHigh, rightFold);
+
+                    // ... compute z_1 = z_a * z_b - z_0 - z_2
+                    Multiply(leftFold, rightFold, core);
+
+                    if (leftFoldFromPool != null)
+                        ArrayPool<uint>.Shared.Return(leftFoldFromPool);
+
+                    if (rightFoldFromPool != null)
+                        ArrayPool<uint>.Shared.Return(rightFoldFromPool);
+
+                    SubtractCore(bitsLow, bitsHigh, core);
+
+                    // ... and finally merge the result! :-)
+                    Debug.Assert(bits[n..].Length >= ActualLength(core));
+                    AddSelf(bits[n..], core[..ActualLength(core)]);
+
+                    if (coreFromPool != null)
+                        ArrayPool<uint>.Shared.Return(coreFromPool);
+                }
             }
         }
 
