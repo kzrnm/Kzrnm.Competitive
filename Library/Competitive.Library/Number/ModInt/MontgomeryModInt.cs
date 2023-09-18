@@ -16,6 +16,7 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 奇数オンリーの ModInt
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "気にしない")]
     public struct MontgomeryModInt<T> : IUtf8ConsoleWriterFormatter, IEquatable<MontgomeryModInt<T>>, IFormattable
 #if NET7_0_OR_GREATER
         , INumberBase<MontgomeryModInt<T>>
@@ -66,7 +67,10 @@ namespace Kzrnm.Competitive
             _v = a;
         }
 
+        [凾(256)] public static implicit operator MontgomeryModInt<T>(ulong value) => new MontgomeryModInt<T>(value);
+        [凾(256)] public static implicit operator MontgomeryModInt<T>(uint value) => new MontgomeryModInt<T>((ulong)value);
         [凾(256)] public static implicit operator MontgomeryModInt<T>(long value) => new MontgomeryModInt<T>(value);
+        [凾(256)] public static implicit operator MontgomeryModInt<T>(int value) => new MontgomeryModInt<T>(value);
 
         /// <summary>
         /// 格納されている値を返します。
@@ -87,7 +91,7 @@ namespace Kzrnm.Competitive
 
 
 
-        [凾(256)] internal static uint Reduce(ulong b) => (uint)((b + (ulong)((uint)b * (uint)-r) * op.Mod) >> 32);
+        [凾(256)] internal static uint Reduce(ulong b) => (uint)((b + (ulong)((uint)b * (uint)-(int)r) * op.Mod) >> 32);
 
 
 
@@ -116,7 +120,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static MontgomeryModInt<T> operator -(MontgomeryModInt<T> a)
         {
-            uint r = (uint)-a._v;
+            uint r = (uint)-(int)a._v;
             if ((int)r < 0) r += 2 * op.Mod;
             return new MontgomeryModInt<T>(r);
         }
@@ -126,7 +130,7 @@ namespace Kzrnm.Competitive
         public static MontgomeryModInt<T> operator --(MontgomeryModInt<T> a) => a - 1;
 
 
-
+#if !NET7_0_OR_GREATER
         /// <summary>
         /// 自身を x として、x^<paramref name="n"/> を返します。
         /// </summary>
@@ -152,6 +156,7 @@ namespace Kzrnm.Competitive
 
             return r;
         }
+#endif
 
         /// <summary>
         /// 自身を x として、 xy≡1 なる y を返します。
@@ -160,7 +165,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: gcd(x, mod) = 1</para>
         /// </remarks>
         [凾(256)]
-        public MontgomeryModInt<T> Inv() => Pow(op.Mod - 2);
+        public MontgomeryModInt<T> Inv() => this.Pow(op.Mod - 2);
 
         [凾(256)] public override bool Equals(object obj) => obj is MontgomeryModInt<T> m && Equals(m);
         [凾(256)]
@@ -181,7 +186,7 @@ namespace Kzrnm.Competitive
 #if NET7_0_OR_GREATER
         static int INumberBase<MontgomeryModInt<T>>.Radix => 2;
         static MontgomeryModInt<T> IAdditiveIdentity<MontgomeryModInt<T>, MontgomeryModInt<T>>.AdditiveIdentity => default;
-        static MontgomeryModInt<T> IMultiplicativeIdentity<MontgomeryModInt<T>, MontgomeryModInt<T>>.MultiplicativeIdentity => new MontgomeryModInt<T>(1u);
+        static MontgomeryModInt<T> IMultiplicativeIdentity<MontgomeryModInt<T>, MontgomeryModInt<T>>.MultiplicativeIdentity => _One;
         static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.Abs(MontgomeryModInt<T> v) => v;
         static bool INumberBase<MontgomeryModInt<T>>.IsCanonical(MontgomeryModInt<T> v) => true;
         static bool INumberBase<MontgomeryModInt<T>>.IsComplexNumber(MontgomeryModInt<T> v) => false;

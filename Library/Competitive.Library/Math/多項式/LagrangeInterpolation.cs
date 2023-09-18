@@ -18,13 +18,13 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(N^2)</para>
         /// </remarks>
         [凾(512)]
-        public static FormalPowerSeries<T> Coefficient<T>((StaticModInt<T> x, StaticModInt<T> y)[] plots) where T : struct, IStaticMod
+        public static FormalPowerSeries<T> Coefficient<T>((MontgomeryModInt<T> x, MontgomeryModInt<T> y)[] plots) where T : struct, IStaticMod
         {
             int k = plots.Length - 1;
 
-            var f = new StaticModInt<T>[k + 1];
-            var dp = new StaticModInt<T>[k + 2];
-            dp[0] = StaticModInt<T>.Raw(1);
+            var f = new MontgomeryModInt<T>[k + 1];
+            var dp = new MontgomeryModInt<T>[k + 2];
+            dp[0] = MontgomeryModInt<T>.One;
             for (int j = 0; j <= k; j++)
             {
                 var x = plots[j].x;
@@ -36,7 +36,7 @@ namespace Kzrnm.Competitive
             for (int i = 0; i <= k; i++)
             {
                 var (xi, yi) = plots[i];
-                var d = StaticModInt<T>.Raw(1);
+                var d = MontgomeryModInt<T>.One;
                 for (int j = 0; j <= k; j++)
                     if (i != j)
                         d *= xi - plots[j].x;
@@ -49,8 +49,8 @@ namespace Kzrnm.Competitive
                 }
                 else
                 {
-                    var inv = StaticModInt<T>.Raw(1) / -xi;
-                    StaticModInt<T> pre = default;
+                    var inv = MontgomeryModInt<T>.One / -xi;
+                    MontgomeryModInt<T> pre = default;
                     for (int j = 0; j <= k; j++)
                     {
                         var cur = (dp[j] - pre) * inv;
@@ -72,14 +72,14 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(N)</para>
         /// </remarks>
         [凾(512)]
-        public static StaticModInt<T> Eval<T>(StaticModInt<T>[] y, long x, StaticModIntFactor<T> combination = null) where T : struct, IStaticMod
+        public static MontgomeryModInt<T> Eval<T>(MontgomeryModInt<T>[] y, long x, MontgomeryModIntFactor<T> combination = null) where T : struct, IStaticMod
         {
-            combination ??= new StaticModIntFactor<T>(y.Length);
+            combination ??= new MontgomeryModIntFactor<T>(y.Length);
             if (x < y.Length) return y[(int)x];
-            var ret = default(StaticModInt<T>);
-            var dp = new StaticModInt<T>[y.Length];
-            var pd = new StaticModInt<T>[y.Length];
-            pd[^1] = dp[0] = StaticModInt<T>.Raw(1);
+            var ret = default(MontgomeryModInt<T>);
+            var dp = new MontgomeryModInt<T>[y.Length];
+            var pd = new MontgomeryModInt<T>[y.Length];
+            pd[^1] = dp[0] = MontgomeryModInt<T>.One;
 
             for (int i = 0; i + 1 < dp.Length; i++) dp[i + 1] = dp[i] * (x - i);
             for (int i = pd.Length - 1; i > 0; i--) pd[i - 1] = pd[i] * (x - i);

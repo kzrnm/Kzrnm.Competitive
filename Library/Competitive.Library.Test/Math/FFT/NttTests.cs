@@ -5,10 +5,10 @@ namespace Kzrnm.Competitive.Testing.MathNS
 {
     public class NttTests
     {
-        static StaticModInt<Mod998244353>[] ConvNative(StaticModInt<Mod998244353>[] a, StaticModInt<Mod998244353>[] b)
+        static MontgomeryModInt<Mod998244353>[] ConvNative(MontgomeryModInt<Mod998244353>[] a, MontgomeryModInt<Mod998244353>[] b)
         {
             int n = a.Length, m = b.Length;
-            var c = new StaticModInt<Mod998244353>[n + m - 1];
+            var c = new MontgomeryModInt<Mod998244353>[n + m - 1];
             for (int i = 0; i < n; i++)
             {
                 for (int j = 0; j < m; j++)
@@ -26,9 +26,9 @@ namespace Kzrnm.Competitive.Testing.MathNS
         public void Ntt(int n)
         {
             var rnd = new Random(42);
-            var a = new StaticModInt<Mod998244353>[n];
+            var a = new MontgomeryModInt<Mod998244353>[n];
             for (int i = 0; i < n; i++) a[i] = rnd.NextUInt();
-            var b = (StaticModInt<Mod998244353>[])a.Clone();
+            var b = (MontgomeryModInt<Mod998244353>[])a.Clone();
             NumberTheoreticTransform<Mod998244353>.Ntt(a);
             NumberTheoreticTransform<Mod998244353>.NttLogical(b);
             a.Should().Equal(b);
@@ -41,9 +41,9 @@ namespace Kzrnm.Competitive.Testing.MathNS
         public void INtt(int n)
         {
             var rnd = new Random(42);
-            var a = new StaticModInt<Mod998244353>[n];
+            var a = new MontgomeryModInt<Mod998244353>[n];
             for (int i = 0; i < n; i++) a[i] = rnd.NextUInt();
-            var b = (StaticModInt<Mod998244353>[])a.Clone();
+            var b = (MontgomeryModInt<Mod998244353>[])a.Clone();
             NumberTheoreticTransform<Mod998244353>.INtt(a);
             NumberTheoreticTransform<Mod998244353>.INttLogical(b);
             a.Should().Equal(b);
@@ -54,8 +54,8 @@ namespace Kzrnm.Competitive.Testing.MathNS
         {
             var rnd = new Random(42);
             int n = 123, m = 234;
-            var a = new StaticModInt<Mod998244353>[n];
-            var b = new StaticModInt<Mod998244353>[m];
+            var a = new MontgomeryModInt<Mod998244353>[n];
+            var b = new MontgomeryModInt<Mod998244353>[m];
             for (int i = 0; i < n; i++) a[i] = rnd.NextUInt();
             for (int i = 0; i < m; i++) b[i] = rnd.NextUInt();
             var expected = ConvNative(a, b);

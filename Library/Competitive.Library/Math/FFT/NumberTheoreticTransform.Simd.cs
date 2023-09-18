@@ -1,6 +1,7 @@
 using AtCoder;
 using AtCoder.Internal;
 using System;
+using System.Buffers;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics;
@@ -22,14 +23,6 @@ namespace Kzrnm.Competitive
         [凾(256)]
         static ref Vector256<uint> ToVector256(ref MontgomeryModInt<T> m)
             => ref Unsafe.As<MontgomeryModInt<T>, Vector256<uint>>(ref m);
-        [凾(256)]
-        static void NttSimd(Span<StaticModInt<T>> a)
-        {
-            var b = new MontgomeryModInt<T>[a.Length];
-            for (int i = 0; i < a.Length; i++) b[i] = a[i].Value;
-            NttSimd(b);
-            for (int i = 0; i < a.Length; i++) a[i] = StaticModInt<T>.Raw(b[i].Value);
-        }
         [凾(256)]
         static void NttSimd(Span<MontgomeryModInt<T>> a)
         {
@@ -241,15 +234,7 @@ namespace Kzrnm.Competitive
             }
         }
         [凾(256)]
-        static void INttSimd(Span<StaticModInt<T>> a)
-        {
-            var b = new MontgomeryModInt<T>[a.Length];
-            for (int i = 0; i < a.Length; i++) b[i] = a[i].Value;
-            INttSimd(b, true);
-            for (int i = 0; i < a.Length; i++) a[i] = StaticModInt<T>.Raw(b[i].Value);
-        }
-        [凾(256)]
-        static void INttSimd(Span<MontgomeryModInt<T>> a, bool normalize)
+        static void INttSimd(Span<MontgomeryModInt<T>> a, bool normalize = true)
         {
             int k = TrailingZeroCount(a.Length) & 31;
             if (k == 0) return;
@@ -468,33 +453,45 @@ namespace Kzrnm.Competitive
         }
 
         [凾(512)]
-        static StaticModInt<T>[] MultiplySimd(ReadOnlySpan<StaticModInt<T>> a, ReadOnlySpan<StaticModInt<T>> b)
+        static MontgomeryModInt<T>[] MultiplySimd(ReadOnlySpan<MontgomeryModInt<T>> a, ReadOnlySpan<MontgomeryModInt<T>> b)
         {
             if (Math.Min(a.Length, b.Length) <= 60)
                 return MultiplyNative(a, b);
 
-            int l = a.Length + b.Length - 1;
+            int len = a.Length + b.Length - 1;
 
-            var k = InternalBit.CeilPow2(l);
+            var k = InternalBit.CeilPow2(len);
             var M = 1 << k;
 
-            var buf1 = new MontgomeryModInt<T>[M];
-            var buf2 = new MontgomeryModInt<T>[M];
+            MontgomeryModInt<T>[] buf1Pool, buf2Pool;
+            var buf1 = (buf1Pool = ArrayPool<MontgomeryModInt<T>>.Shared.Rent(M)).AsSpan(0, M);
+            var buf2 = (buf2Pool = ArrayPool<MontgomeryModInt<T>>.Shared.Rent(M)).AsSpan(0, M);
+            try
+            {
+                a.CopyTo(buf1);
+                b.CopyTo(buf2);
+                buf1[a.Length..].Clear();
+                buf2[b.Length..].Clear();
 
-            for (int i = 0; i < a.Length; i++) buf1[i] = a[i].Value;
-            for (int i = 0; i < b.Length; i++) buf2[i] = b[i].Value;
-            NttSimd(buf1);
-            NttSimd(buf2);
-            for (int i = 0; i < buf1.Length; i++)
-                buf1[i]._v = MontgomeryModInt<T>.Reduce((ulong)buf1[i]._v * buf2[i]._v);
+                NttSimd(buf1);
+                NttSimd(buf2);
+                for (int i = 0; i < buf1.Length; i++)
+                    buf1[i]._v = MontgomeryModInt<T>.Reduce((ulong)buf1[i]._v * buf2[i]._v);
 
-            INttSimd(buf1, false);
+                INttSimd(buf1, false);
 
-            var invm = new MontgomeryModInt<T>(M).Inv();
-            var res = new StaticModInt<T>[l];
-            for (int i = 0; i < res.Length; ++i)
-                res[i] = StaticModInt<T>.Raw((buf1[i] * invm).Value);
-            return res;
+                var invm = new MontgomeryModInt<T>(M).Inv();
+                buf1 = buf1[..len];
+
+                for (int i = 0; i < buf1.Length; ++i)
+                    buf1[i] *= invm;
+                return buf1.ToArray();
+            }
+            finally
+            {
+                ArrayPool<MontgomeryModInt<T>>.Shared.Return(buf1Pool);
+                ArrayPool<MontgomeryModInt<T>>.Shared.Return(buf2Pool);
+            }
         }
     }
 }

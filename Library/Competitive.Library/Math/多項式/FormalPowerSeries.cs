@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive
         /// 多項式の係数
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-        public readonly StaticModInt<T>[] Coefficients;
+        public readonly MontgomeryModInt<T>[] Coefficients;
 
         /// <summary>
         /// 多項式の次数
@@ -31,7 +31,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         /// <param name="polynomial"><paramref name="polynomial"/>[i] がi次の係数となる多項式</param>
         public FormalPowerSeries(ReadOnlySpan<uint> polynomial)
-            : this(polynomial.Select(n => new StaticModInt<T>(n))) { }
+            : this(Shrink(polynomial.Select(n => new MontgomeryModInt<T>((ulong)n)))) { }
 
         /// <summary>
         /// 多項式を生成します。
@@ -41,26 +41,31 @@ namespace Kzrnm.Competitive
         /// </remarks>
         /// <param name="polynomial"><paramref name="polynomial"/>[i] がi次の係数となる多項式</param>
         public FormalPowerSeries(ReadOnlySpan<int> polynomial)
-            : this(polynomial.Select(n => new StaticModInt<T>(n))) { }
+            : this(Shrink(polynomial.Select(n => new MontgomeryModInt<T>(n)))) { }
 
         /// <summary>
         /// 多項式を生成します。
         /// </summary>
         /// <param name="polynomial"><paramref name="polynomial"/>[i] がi次の係数となる多項式</param>
         public FormalPowerSeries(ReadOnlySpan<StaticModInt<T>> polynomial)
-            : this(Shrink(polynomial).ToArray(), true) { }
+            : this(Shrink(polynomial.Select(n => new MontgomeryModInt<T>((ulong)n.Value)))) { }
+
         /// <summary>
         /// 多項式を生成します。
         /// </summary>
-        public FormalPowerSeries(StaticModInt<T>[] polynomial, bool newArray)
+        /// <param name="polynomial"><paramref name="polynomial"/>[i] がi次の係数となる多項式</param>
+        public FormalPowerSeries(ReadOnlySpan<MontgomeryModInt<T>> polynomial)
+            : this(Shrink(polynomial).ToArray()) { }
+
+        /// <summary>
+        /// 多項式を生成します。
+        /// </summary>
+        private FormalPowerSeries(MontgomeryModInt<T>[] polynomial)
         {
-            if (newArray)
-                Coefficients = (StaticModInt<T>[])polynomial.Clone();
-            else
-                Coefficients = polynomial;
+            Coefficients = polynomial;
         }
         public override string ToString() => string.Join(", ", Coefficients);
-        private static ReadOnlySpan<StaticModInt<T>> Shrink(ReadOnlySpan<StaticModInt<T>> polynomial)
+        private static ReadOnlySpan<MontgomeryModInt<T>> Shrink(ReadOnlySpan<MontgomeryModInt<T>> polynomial)
         {
             while (polynomial.Length > 0 && polynomial[^1].Value == 0)
                 polynomial = polynomial[..^1];
@@ -90,7 +95,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(N)</para>
         /// </remarks>
         [凾(256)]
-        public static FormalPowerSeries<T> operator +(FormalPowerSeries<T> lhs, ReadOnlySpan<StaticModInt<T>> rhs)
+        public static FormalPowerSeries<T> operator +(FormalPowerSeries<T> lhs, ReadOnlySpan<MontgomeryModInt<T>> rhs)
         {
             if (rhs.Length == 0) return lhs;
             if (lhs.Coefficients.Length == 0) return new FormalPowerSeries<T>(rhs);
@@ -120,7 +125,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(N)</para>
         /// </remarks>
         [凾(256)]
-        public static FormalPowerSeries<T> operator -(FormalPowerSeries<T> lhs, ReadOnlySpan<StaticModInt<T>> rhs)
+        public static FormalPowerSeries<T> operator -(FormalPowerSeries<T> lhs, ReadOnlySpan<MontgomeryModInt<T>> rhs)
         {
             if (rhs.Length == 0) return lhs;
             if (lhs.Coefficients.Length == 0) return new Impl(rhs.ToArray()).Minus().ToFps();
@@ -149,7 +154,7 @@ namespace Kzrnm.Competitive
             => new Impl(lhs).Multiply(rhs.Coefficients).ToFps();
 
         [凾(256)]
-        public static FormalPowerSeries<T> operator *(StaticModInt<T> lhs, FormalPowerSeries<T> rhs)
+        public static FormalPowerSeries<T> operator *(MontgomeryModInt<T> lhs, FormalPowerSeries<T> rhs)
             => new Impl(rhs).Multiply(lhs).ToFps();
         #endregion Multiply
 
@@ -227,10 +232,10 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(N)</para>
         /// </remarks>
         [凾(256)]
-        public StaticModInt<T> Eval(StaticModInt<T> x)
+        public MontgomeryModInt<T> Eval(MontgomeryModInt<T> x)
         {
-            var x_n = StaticModInt<T>.Raw(1);
-            StaticModInt<T> res = 0;
+            var x_n = MontgomeryModInt<T>.One;
+            MontgomeryModInt<T> res = 0;
             foreach (var c in Coefficients)
             {
                 res += c * x_n;

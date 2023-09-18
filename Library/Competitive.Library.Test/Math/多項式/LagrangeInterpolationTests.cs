@@ -34,7 +34,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
 
             static void RunTest<T>((int x, int y)[] plots) where T : struct, IStaticMod
             {
-                var modPlots = new (StaticModInt<T> x, StaticModInt<T> y)[plots.Length];
+                var modPlots = new (MontgomeryModInt<T> x, MontgomeryModInt<T> y)[plots.Length];
                 for (int i = 0; i < plots.Length; i++)
                     modPlots[i] = (plots[i].x, plots[i].y);
 
@@ -58,8 +58,8 @@ namespace Kzrnm.Competitive.Testing.MathNS
 
             static void RunTest<T>(int[] y, long x) where T : struct, IStaticMod
             {
-                var modY = new StaticModInt<T>[y.Length];
-                var modPlots = new (StaticModInt<T> x, StaticModInt<T> y)[y.Length];
+                var modY = new MontgomeryModInt<T>[y.Length];
+                var modPlots = new (MontgomeryModInt<T> x, MontgomeryModInt<T> y)[y.Length];
                 for (int i = 0; i < y.Length; i++)
                 {
                     modY[i] = y[i];

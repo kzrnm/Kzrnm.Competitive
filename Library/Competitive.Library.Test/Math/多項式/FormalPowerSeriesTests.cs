@@ -6,6 +6,18 @@ namespace Kzrnm.Competitive.Testing.MathNS
 {
     public class FormalPowerSeriesTest
     {
+        private readonly struct Mod1000000007 : IStaticMod
+        {
+            public uint Mod => 1000000007;
+            public bool IsPrime => true;
+        }
+
+        private readonly struct Mod998244353 : IStaticMod
+        {
+            public uint Mod => 998244353;
+            public bool IsPrime => true;
+        }
+
         [Fact]
         public void Add()
         {
@@ -205,7 +217,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             {
                 var fps = new FormalPowerSeries<T>(valueArray);
                 fps.Derivative().Coefficients.Should()
-                    .Equal(expectedArray.Select(t => new StaticModInt<T>(t)).ToArray());
+                    .Equal(expectedArray.Select(t => new MontgomeryModInt<T>(t)).ToArray());
             }
         }
 
@@ -226,7 +238,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             {
                 var fps = new FormalPowerSeries<T>(valueArray);
                 fps.Integrate().Coefficients.Should()
-                    .Equal(expectedArray.Select(t => new StaticModInt<T>(t.Numerator) / t.Denominator).ToArray());
+                    .Equal(expectedArray.Select(t => new MontgomeryModInt<T>(t.Numerator) / t.Denominator).ToArray());
             }
         }
 
@@ -243,7 +255,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             RunTest<Mod1000000007>(new int[] { 5, 20, 51, 16, 30 }, 9, 212810);
             RunTest<Mod1000000007>(new int[0], 9, 0);
 
-            static void RunTest<T>(int[] fpsArray, StaticModInt<T> x, StaticModInt<T> expected) where T : struct, IStaticMod
+            static void RunTest<T>(int[] fpsArray, MontgomeryModInt<T> x, MontgomeryModInt<T> expected) where T : struct, IStaticMod
             {
                 var fps = new FormalPowerSeries<T>(fpsArray);
                 fps.Eval(x).Should().Be(expected);

@@ -14,7 +14,7 @@ namespace Kzrnm.Competitive
     public static partial class NumberTheoreticTransform<T> where T : struct, IStaticMod
     {
         [凾(512)]
-        static void Fft4(Span<StaticModInt<T>> a, int k)
+        static void Fft4(Span<MontgomeryModInt<T>> a, int k)
         {
             if (a.Length <= 1) return;
             if (k == 1)
@@ -36,7 +36,7 @@ namespace Kzrnm.Competitive
             }
             int u = 1 << (2 + (k & 1));
             int v = 1 << (k - 2 - (k & 1));
-            var one = StaticModInt<T>.Raw(1);
+            var one = MontgomeryModInt<T>.One;
             var imag = dws[1];
             while (v != 0)
             {
@@ -48,9 +48,9 @@ namespace Kzrnm.Competitive
                     int j3 = j2 + v;
                     for (; j0 < v; ++j0, ++j1, ++j2, ++j3)
                     {
-                        StaticModInt<T> t0 = a[j0], t1 = a[j1], t2 = a[j2], t3 = a[j3];
-                        StaticModInt<T> t0p2 = t0 + t2, t1p3 = t1 + t3;
-                        StaticModInt<T> t0m2 = t0 - t2, t1m3 = (t1 - t3) * imag;
+                        MontgomeryModInt<T> t0 = a[j0], t1 = a[j1], t2 = a[j2], t3 = a[j3];
+                        MontgomeryModInt<T> t0p2 = t0 + t2, t1p3 = t1 + t3;
+                        MontgomeryModInt<T> t0m2 = t0 - t2, t1m3 = (t1 - t3) * imag;
                         a[j0] = t0p2 + t1p3;
                         a[j1] = t0p2 - t1p3;
                         a[j2] = t0m2 + t1m3;
@@ -68,10 +68,10 @@ namespace Kzrnm.Competitive
                     int j2 = je + v;
                     for (; j0 < je; ++j0, ++j2)
                     {
-                        StaticModInt<T> t0 = a[j0], t1 = a[j0 + v] * xx, t2 = a[j2] * ww,
+                        MontgomeryModInt<T> t0 = a[j0], t1 = a[j0 + v] * xx, t2 = a[j2] * ww,
                                          t3 = a[j2 + v] * wx;
-                        StaticModInt<T> t0p2 = t0 + t2, t1p3 = t1 + t3;
-                        StaticModInt<T> t0m2 = t0 - t2, t1m3 = (t1 - t3) * imag;
+                        MontgomeryModInt<T> t0p2 = t0 + t2, t1p3 = t1 + t3;
+                        MontgomeryModInt<T> t0m2 = t0 - t2, t1m3 = (t1 - t3) * imag;
                         a[j0] = t0p2 + t1p3;
                         a[j0 + v] = t0p2 - t1p3;
                         a[j2] = t0m2 + t1m3;
@@ -85,7 +85,7 @@ namespace Kzrnm.Competitive
         }
 
         [凾(512)]
-        static void IFft4(Span<StaticModInt<T>> a, int k)
+        static void IFft4(Span<MontgomeryModInt<T>> a, int k)
         {
             if (a.Length <= 1) return;
             if (k == 1)
@@ -97,7 +97,7 @@ namespace Kzrnm.Competitive
             }
             int u = 1 << (k - 2);
             int v = 1;
-            var one = StaticModInt<T>.Raw(1);
+            var one = MontgomeryModInt<T>.One;
             var imag = dys[1];
             while (u != 0)
             {
@@ -109,9 +109,9 @@ namespace Kzrnm.Competitive
                     int j3 = j2 + v;
                     for (; j0 < v; ++j0, ++j1, ++j2, ++j3)
                     {
-                        StaticModInt<T> t0 = a[j0], t1 = a[j1], t2 = a[j2], t3 = a[j3];
-                        StaticModInt<T> t0p1 = t0 + t1, t2p3 = t2 + t3;
-                        StaticModInt<T> t0m1 = t0 - t1, t2m3 = (t2 - t3) * imag;
+                        MontgomeryModInt<T> t0 = a[j0], t1 = a[j1], t2 = a[j2], t3 = a[j3];
+                        MontgomeryModInt<T> t0p1 = t0 + t1, t2p3 = t2 + t3;
+                        MontgomeryModInt<T> t0m1 = t0 - t1, t2m3 = (t2 - t3) * imag;
                         a[j0] = t0p1 + t2p3;
                         a[j2] = t0p1 - t2p3;
                         a[j1] = t0m1 + t2m3;
@@ -130,9 +130,9 @@ namespace Kzrnm.Competitive
                     int j2 = je + v;
                     for (; j0 < je; ++j0, ++j2)
                     {
-                        StaticModInt<T> t0 = a[j0], t1 = a[j0 + v], t2 = a[j2], t3 = a[j2 + v];
-                        StaticModInt<T> t0p1 = t0 + t1, t2p3 = t2 + t3;
-                        StaticModInt<T> t0m1 = (t0 - t1) * xx, t2m3 = (t2 - t3) * yy;
+                        MontgomeryModInt<T> t0 = a[j0], t1 = a[j0 + v], t2 = a[j2], t3 = a[j2 + v];
+                        MontgomeryModInt<T> t0p1 = t0 + t1, t2p3 = t2 + t3;
+                        MontgomeryModInt<T> t0m1 = (t0 - t1) * xx, t2m3 = (t2 - t3) * yy;
                         a[j0] = t0p1 + t2p3;
                         a[j2] = (t0p1 - t2p3) * ww;
                         a[j0 + v] = t0m1 + t2m3;
@@ -148,7 +148,7 @@ namespace Kzrnm.Competitive
                 u = 1 << (k - 1);
                 for (int j = 0; j < u; ++j)
                 {
-                    StaticModInt<T> ajv = a[j] - a[j + u];
+                    MontgomeryModInt<T> ajv = a[j] - a[j + u];
                     a[j] += a[j + u];
                     a[j + u] = ajv;
                 }
@@ -156,22 +156,22 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        internal static void NttLogical(Span<StaticModInt<T>> a)
+        internal static void NttLogical(Span<MontgomeryModInt<T>> a)
         {
             if (a.Length <= 1) return;
             Fft4(a, TrailingZeroCount(a.Length));
         }
         [凾(256)]
-        internal static void INttLogical(Span<StaticModInt<T>> a)
+        internal static void INttLogical(Span<MontgomeryModInt<T>> a)
         {
             if (a.Length <= 1) return;
             IFft4(a, TrailingZeroCount(a.Length));
-            var iv = new StaticModInt<T>(a.Length).Inv();
+            var iv = new MontgomeryModInt<T>(a.Length).Inv();
             for (int i = 0; i < a.Length; i++) a[i] *= iv;
         }
 
         [凾(512)]
-        internal static StaticModInt<T>[] MultiplyLogical(ReadOnlySpan<StaticModInt<T>> a, ReadOnlySpan<StaticModInt<T>> b)
+        internal static MontgomeryModInt<T>[] MultiplyLogical(ReadOnlySpan<MontgomeryModInt<T>> a, ReadOnlySpan<MontgomeryModInt<T>> b)
         {
             if (Math.Min(a.Length, b.Length) <= 60)
                 return MultiplyNative(a, b);
@@ -182,8 +182,8 @@ namespace Kzrnm.Competitive
             var M = 1 << k;
 
             SetWy(k);
-            var s = new StaticModInt<T>[M];
-            var t = new StaticModInt<T>[M];
+            var s = new MontgomeryModInt<T>[M];
+            var t = new MontgomeryModInt<T>[M];
             a.CopyTo(s);
             b.CopyTo(t);
             Fft4(s, k);
@@ -191,8 +191,8 @@ namespace Kzrnm.Competitive
             for (int i = 0; i < s.Length; ++i)
                 s[i] *= t[i];
             IFft4(s, k);
-            var invm = new StaticModInt<T>(M).Inv();
-            var res = new StaticModInt<T>[l];
+            var invm = new MontgomeryModInt<T>(M).Inv();
+            var res = new MontgomeryModInt<T>[l];
             for (int i = 0; i < res.Length; ++i)
                 res[i] = s[i] * invm;
             return res;

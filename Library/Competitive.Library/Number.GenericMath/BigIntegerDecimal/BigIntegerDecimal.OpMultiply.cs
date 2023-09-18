@@ -1,5 +1,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
+#pragma warning disable IDE0057 // 範囲演算子を使用
 using System;
 using System.Buffers;
 using System.Diagnostics;

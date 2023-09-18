@@ -13,7 +13,7 @@ namespace Kzrnm.Competitive.MathNs.Fps
             int[] arr = cr.Repeat(N);
             var exp = new FormalPowerSeries<Mod998244353>(arr).Exp().Coefficients;
             Array.Resize(ref exp, N);
-            cw.WriteLineJoin(exp.AsSpan().Cast<StaticModInt<Mod998244353>, uint>());
+            cw.WriteLineJoin(exp.AsSpan().Select(v => v.Value));
             return null;
         }
     }

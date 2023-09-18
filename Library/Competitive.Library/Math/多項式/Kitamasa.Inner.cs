@@ -36,11 +36,11 @@ namespace Kzrnm.Competitive
                 while (t < c.Length)
                 {
                     t = Math.Min(t << 1, c.Length);
-                    var current = ConvolutionAnyMod.Convolution(c[..t], ic, mod).AsSpan();
+                    var current = NumberTheoreticTransform.Convolution(c[..t], ic, mod).AsSpan();
                     current[0] += 2;
                     if (current[0] >= (uint)mod)
                         current[0] -= (uint)mod;
-                    ic = ConvolutionAnyMod.Convolution(ic, current[..t], mod).AsSpan(0, t);
+                    ic = NumberTheoreticTransform.Convolution(ic, current[..t], mod).AsSpan(0, t);
                 }
             }
 
@@ -58,7 +58,7 @@ namespace Kzrnm.Competitive
 
             [凾(256)]
             public uint[] Convolution(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b)
-                  => ConvolutionAnyMod.Convolution(a, b, (int)mod);
+                  => NumberTheoreticTransform.Convolution(a, b, (int)mod);
 
             [凾(256)]
             public uint Calculate(long n)
@@ -114,11 +114,11 @@ namespace Kzrnm.Competitive
                 while (t < c.Length)
                 {
                     t = Math.Min(t << 1, c.Length);
-                    var current = ConvolutionAnyMod.Convolution<TMod>(c[..t], ic).AsSpan();
+                    var current = NumberTheoreticTransform.Convolution<TMod>(c[..t], ic).AsSpan();
                     current[0] += 2;
                     if (current[0] >= op.Mod)
                         current[0] -= op.Mod;
-                    ic = ConvolutionAnyMod.Convolution<TMod>(ic, current[..t]).AsSpan(0, t);
+                    ic = NumberTheoreticTransform.Convolution<TMod>(ic, current[..t]).AsSpan(0, t);
                 }
             }
 
@@ -136,7 +136,7 @@ namespace Kzrnm.Competitive
 
             [凾(256)]
             public uint[] Convolution(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b)
-                   => ConvolutionAnyMod.Convolution<TMod>(a, b);
+                   => NumberTheoreticTransform.Convolution<TMod>(a, b);
 
             [凾(256)]
             public uint Calculate(long n)

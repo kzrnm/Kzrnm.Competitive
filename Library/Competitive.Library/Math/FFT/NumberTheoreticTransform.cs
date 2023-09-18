@@ -1,6 +1,7 @@
 using AtCoder;
 using System;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics.X86;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -14,8 +15,8 @@ namespace Kzrnm.Competitive
     /// </summary>
     public static partial class NumberTheoreticTransform<T> where T : struct, IStaticMod
     {
-        internal static readonly StaticModInt<T> pr = BuildPr();
-        static StaticModInt<T> BuildPr()
+        internal static readonly MontgomeryModInt<T> pr = BuildPr();
+        static MontgomeryModInt<T> BuildPr()
         {
             var op = new T();
             if (op.Mod == 2) return 1;
@@ -54,7 +55,7 @@ namespace Kzrnm.Competitive
             }
         }
 
-        static StaticModInt<T>[] dws, dys;
+        static MontgomeryModInt<T>[] dws, dys;
         static readonly MontgomeryModInt<T>[] dw, dy;
 
         /// <summary>
@@ -72,8 +73,8 @@ namespace Kzrnm.Competitive
                 return;
 
             var level = BitOperations.TrailingZeroCount(new T().Mod - 1);
-            dws = new StaticModInt<T>[level];
-            dys = new StaticModInt<T>[level];
+            dws = new MontgomeryModInt<T>[level];
+            dys = new MontgomeryModInt<T>[level];
             SetWy(level);
             dw = new MontgomeryModInt<T>[level];
             dy = new MontgomeryModInt<T>[level];
@@ -82,8 +83,8 @@ namespace Kzrnm.Competitive
         }
         static void SetWy(int k)
         {
-            var w = new StaticModInt<T>[k];
-            var y = new StaticModInt<T>[k];
+            var w = new MontgomeryModInt<T>[k];
+            var y = new MontgomeryModInt<T>[k];
             w[k - 1] = pr.Pow((new T().Mod - 1) / (1u << k));
             y[k - 1] = w[k - 1].Inv();
             for (int i = k - 2; i > 0; --i)
@@ -103,19 +104,20 @@ namespace Kzrnm.Competitive
             }
         }
 
-        static StaticModInt<T>[] MultiplyNative(ReadOnlySpan<StaticModInt<T>> a, ReadOnlySpan<StaticModInt<T>> b)
+        static MontgomeryModInt<T>[] MultiplyNative(ReadOnlySpan<MontgomeryModInt<T>> a, ReadOnlySpan<MontgomeryModInt<T>> b)
         {
             if (a.Length == 0 || b.Length == 0)
-                return Array.Empty<StaticModInt<T>>();
-            int l = a.Length + b.Length - 1;
-            var s = new StaticModInt<T>[l];
+                return Array.Empty<MontgomeryModInt<T>>();
+            var s = new MontgomeryModInt<T>[a.Length + b.Length - 1];
+            ref var sPtr = ref MemoryMarshal.GetReference(s.AsSpan());
+
             for (int i = 0; i < a.Length; ++i)
                 for (int j = 0; j < b.Length; ++j)
-                    s[i + j] += a[i] * b[j];
+                    Unsafe.Add(ref sPtr, i + j) += a[i] * b[j];
             return s;
         }
         [凾(256)]
-        public static void Ntt(Span<StaticModInt<T>> a)
+        public static void Ntt(Span<MontgomeryModInt<T>> a)
         {
             if (Avx2.IsSupported)
                 NttSimd(a);
@@ -123,7 +125,7 @@ namespace Kzrnm.Competitive
                 NttLogical(a);
         }
         [凾(256)]
-        public static void INtt(Span<StaticModInt<T>> a)
+        public static void INtt(Span<MontgomeryModInt<T>> a)
         {
             if (Avx2.IsSupported)
                 INttSimd(a);
@@ -131,30 +133,59 @@ namespace Kzrnm.Competitive
                 INttLogical(a);
         }
 
-        /// <summary>
-        /// c[i+j] = Σ <paramref name="a"/>[i] * <paramref name="b"/>[j] となる畳み込みを行います。
-        /// </summary>
-        [凾(256)]
-        public static StaticModInt<T>[] Multiply(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b)
-            => Multiply(MemoryMarshal.Cast<uint, StaticModInt<T>>(a), MemoryMarshal.Cast<uint, StaticModInt<T>>(b));
-
 
         /// <summary>
         /// c[i+j] = Σ <paramref name="a"/>[i] * <paramref name="b"/>[j] となる畳み込みを行います。
         /// </summary>
         [凾(256)]
-        public static StaticModInt<T>[] Multiply(ReadOnlySpan<StaticModInt<T>> a, ReadOnlySpan<StaticModInt<T>> b)
-            => Avx2.IsSupported ? MultiplySimd(a, b) : MultiplyLogical(a, b);
+        public static MontgomeryModInt<T>[] Multiply(ReadOnlySpan<MontgomeryModInt<T>> a, ReadOnlySpan<MontgomeryModInt<T>> b)
+            => Avx2.IsSupported
+            ? MultiplySimd(a, b)
+            : MultiplyLogical(a, b);
 
+
+        /// <summary>
+        /// c[i+j] = Σ <paramref name="a"/>[i] * <paramref name="b"/>[j] となる畳み込みを行います。
+        /// </summary>
         [凾(256)]
-        public static StaticModInt<T>[] NttDoubling(ReadOnlySpan<StaticModInt<T>> a)
+        public static uint[] Multiply(ReadOnlySpan<int> a, ReadOnlySpan<int> b)
         {
-            var res = new StaticModInt<T>[2 * a.Length];
+            var am = MakeMontgomery(a);
+            var bm = MakeMontgomery(b);
+            return FromMontgomery(Avx2.IsSupported ? MultiplySimd(am, bm) : MultiplyLogical(am, bm));
+        }
+
+        /// <summary>
+        /// c[i+j] = Σ <paramref name="a"/>[i] * <paramref name="b"/>[j] となる畳み込みを行います。
+        /// </summary>
+        [凾(256)]
+        public static uint[] Multiply(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b)
+        {
+            var am = MakeMontgomery(a);
+            var bm = MakeMontgomery(b);
+            return FromMontgomery(Avx2.IsSupported ? MultiplySimd(am, bm) : MultiplyLogical(am, bm));
+        }
+
+        /// <summary>
+        /// c[i+j] = Σ <paramref name="a"/>[i] * <paramref name="b"/>[j] となる畳み込みを行います。
+        /// </summary>
+        [凾(256)]
+        public static Span<StaticModInt<T>> Multiply(ReadOnlySpan<StaticModInt<T>> a, ReadOnlySpan<StaticModInt<T>> b)
+        {
+            var am = MemoryMarshal.Cast<StaticModInt<T>, uint>(a);
+            var bm = MemoryMarshal.Cast<StaticModInt<T>, uint>(b);
+            return MemoryMarshal.Cast<uint, StaticModInt<T>>(Multiply(am, bm));
+        }
+
+        [凾(256)]
+        public static MontgomeryModInt<T>[] NttDoubling(ReadOnlySpan<MontgomeryModInt<T>> a)
+        {
+            var res = new MontgomeryModInt<T>[2 * a.Length];
             a.CopyTo(res);
             var b = res.AsSpan(a.Length);
             a.CopyTo(b);
             INtt(b);
-            var r = StaticModInt<T>.Raw(1);
+            var r = MontgomeryModInt<T>.One;
             var zeta = pr.Pow((new T().Mod - 1) / ((uint)a.Length << 1));
 
             for (int i = 0; i < b.Length; i++)
@@ -164,6 +195,28 @@ namespace Kzrnm.Competitive
             }
             Ntt(b);
             return res;
+        }
+
+        static MontgomeryModInt<T>[] MakeMontgomery(ReadOnlySpan<int> a)
+        {
+            var b = new MontgomeryModInt<T>[a.Length];
+            ref var bPtr = ref MemoryMarshal.GetReference(b.AsSpan());
+            for (int i = 0; i < a.Length; i++) Unsafe.Add(ref bPtr, i) = a[i];
+            return b;
+        }
+        static MontgomeryModInt<T>[] MakeMontgomery(ReadOnlySpan<uint> a)
+        {
+            var b = new MontgomeryModInt<T>[a.Length];
+            ref var bPtr = ref MemoryMarshal.GetReference(b.AsSpan());
+            for (int i = 0; i < a.Length; i++) Unsafe.Add(ref bPtr, i) = a[i];
+            return b;
+        }
+        static uint[] FromMontgomery(ReadOnlySpan<MontgomeryModInt<T>> a)
+        {
+            var b = new uint[a.Length];
+            ref var bPtr = ref MemoryMarshal.GetReference<uint>(b);
+            for (int i = 0; i < a.Length; i++) Unsafe.Add(ref bPtr, i) = (uint)a[i].Value;
+            return b;
         }
     }
 }

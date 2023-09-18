@@ -15,21 +15,22 @@ namespace Kzrnm.Competitive
     public partial class FormalPowerSeries<T>
         where T : struct, IStaticMod
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "気にしない")]
         internal ref struct Impl
         {
-            public StaticModInt<T>[] a;
+            public MontgomeryModInt<T>[] a;
             public int Length;
-            public Span<StaticModInt<T>> AsSpan() => a.AsSpan(0, Length);
+            public Span<MontgomeryModInt<T>> AsSpan() => a.AsSpan(0, Length);
 
-            private Impl Set(StaticModInt<T>[] value)
+            private Impl Set(MontgomeryModInt<T>[] value)
             {
                 a = value;
                 Length = value.Length;
                 return this;
             }
 
-            public Impl(FormalPowerSeries<T> fps) : this((StaticModInt<T>[])fps.Coefficients.Clone()) { }
-            public Impl(StaticModInt<T>[] array)
+            public Impl(FormalPowerSeries<T> fps) : this((MontgomeryModInt<T>[])fps.Coefficients.Clone()) { }
+            public Impl(MontgomeryModInt<T>[] array)
             {
                 a = array;
                 Length = array.Length;
@@ -38,22 +39,21 @@ namespace Kzrnm.Competitive
             [凾(256)]
             public FormalPowerSeries<T> ToFps()
             {
-                var arr = a;
-                var shrinked = Shrink(AsSpan());
-                if (arr.Length != shrinked.Length)
-                    arr = shrinked.ToArray();
-                return new FormalPowerSeries<T>(arr, false);
+                var s = AsSpan();
+                if (s.Length == a.Length && a.Length > 0 && a[^1].Value != 0)
+                    return new FormalPowerSeries<T>(a);
+                return new FormalPowerSeries<T>(s);
             }
 
             /// <remarks>
             /// <para>計算量: O(N)</para>
             /// </remarks>
             [凾(256)]
-            public Impl Add(ReadOnlySpan<StaticModInt<T>> rhs)
+            public Impl Add(ReadOnlySpan<MontgomeryModInt<T>> rhs)
             {
                 ref var lp = ref a[0];
                 ref var rp = ref MemoryMarshal.GetReference(rhs);
-                var arr = new StaticModInt<T>[Math.Max(Length, rhs.Length)];
+                var arr = new MontgomeryModInt<T>[Math.Max(Length, rhs.Length)];
                 for (int i = 0; i < arr.Length; i++)
                 {
                     var lv = i < Length ? Unsafe.Add(ref lp, i) : default;
@@ -70,11 +70,15 @@ namespace Kzrnm.Competitive
             /// <para>計算量: O(N)</para>
             /// </remarks>
             [凾(256)]
-            public Impl Subtract(ReadOnlySpan<StaticModInt<T>> rhs)
+            public Impl Subtract(ReadOnlySpan<MontgomeryModInt<T>> rhs)
             {
+                if (Length == 0)
+                {
+                    return Set(rhs.ToArray()).Minus();
+                }
                 ref var lp = ref a[0];
                 ref var rp = ref MemoryMarshal.GetReference(rhs);
-                var arr = new StaticModInt<T>[Math.Max(Length, rhs.Length)];
+                var arr = new MontgomeryModInt<T>[Math.Max(Length, rhs.Length)];
                 for (int i = 0; i < arr.Length; i++)
                 {
                     var lv = i < Length ? Unsafe.Add(ref lp, i) : default;
@@ -87,10 +91,10 @@ namespace Kzrnm.Competitive
             /// <para>計算量: O(N)</para>
             /// </remarks>
             [凾(256)]
-            public Impl Add(StaticModInt<T> v)
+            public Impl Add(MontgomeryModInt<T> v)
             {
                 if (Length == 0)
-                    Set(new StaticModInt<T>[] { v });
+                    Set(new MontgomeryModInt<T>[] { v });
                 else
                     a[0] += v;
                 return this;
@@ -99,10 +103,10 @@ namespace Kzrnm.Competitive
             /// <para>計算量: O(N)</para>
             /// </remarks>
             [凾(256)]
-            public Impl Subtract(StaticModInt<T> v)
+            public Impl Subtract(MontgomeryModInt<T> v)
             {
                 if (Length == 0)
-                    Set(new StaticModInt<T>[] { v });
+                    Set(new MontgomeryModInt<T>[] { v });
                 else
                     a[0] -= v;
                 return this;
@@ -130,7 +134,7 @@ namespace Kzrnm.Competitive
             /// <para>計算量: O(N log N)</para>
             /// </remarks>
             [凾(256)]
-            public Impl Multiply(StaticModInt<T> m)
+            public Impl Multiply(MontgomeryModInt<T> m)
             {
                 for (int i = Length - 1; i >= 0; i--)
                     a[i] *= m;
@@ -140,8 +144,8 @@ namespace Kzrnm.Competitive
             /// <para>計算量: O(N log N)</para>
             /// </remarks>
             [凾(256)]
-            public Impl Multiply(ReadOnlySpan<StaticModInt<T>> rhs)
-                => Set(ConvolutionAnyMod.Convolution(AsSpan(), rhs));
+            public Impl Multiply(ReadOnlySpan<MontgomeryModInt<T>> rhs)
+                => Set(NumberTheoreticTransform.Convolution(AsSpan(), rhs));
             /// <remarks>
             /// <para>計算量: O(N log N)</para>
             /// </remarks>
@@ -152,23 +156,23 @@ namespace Kzrnm.Competitive
             /// <para>計算量: O(N log N)</para>
             /// </remarks>
             [凾(256)]
-            public Impl Divide(ReadOnlySpan<StaticModInt<T>> rhs)
+            public Impl Divide(ReadOnlySpan<MontgomeryModInt<T>> rhs)
             {
                 if (Length < rhs.Length)
-                    return Set(Array.Empty<StaticModInt<T>>());
+                    return Set(Array.Empty<MontgomeryModInt<T>>());
 
                 if (rhs.Length <= 64)
                     return DivideNative(rhs);
 
                 int n = Length - rhs.Length + 1;
-                return new Impl(
-                    ConvolutionAnyMod.Convolution(
-                        new Impl(AsSpan().ToArray()).Reverse().Pre(n).AsSpan(),
-                        new Impl(rhs.ToArray()).Reverse().Inv(n).AsSpan())
-                    ).Pre(n).Reverse();
+                var a = new Impl(AsSpan().ToArray()).Reverse().Pre(n).AsSpan();
+                var b = new Impl(rhs.ToArray()).Reverse().Inv(n).AsSpan();
+
+                var m = NumberTheoreticTransform.Convolution<T>(a, b);
+                return Set(m).Pre(n).Reverse();
             }
 
-            private Impl DivideNative(ReadOnlySpan<StaticModInt<T>> rhs)
+            private Impl DivideNative(ReadOnlySpan<MontgomeryModInt<T>> rhs)
             {
                 var f = a;
                 var g = rhs.ToArray();
@@ -177,7 +181,7 @@ namespace Kzrnm.Competitive
                     g[i] *= coeff;
                 int n = f.Length - g.Length + 1;
 
-                var quotient = new StaticModInt<T>[n];
+                var quotient = new MontgomeryModInt<T>[n];
                 for (int i = quotient.Length - 1; i >= 0; i--)
                 {
                     quotient[i] = f[i + g.Length - 1];
@@ -196,12 +200,12 @@ namespace Kzrnm.Competitive
             /// </summary>
             /// <param name="rhs"></param>
             /// <returns></returns>
-            public (StaticModInt<T>[] Quotient, StaticModInt<T>[] Remainder) DivRem(ReadOnlySpan<StaticModInt<T>> rhs)
+            public (MontgomeryModInt<T>[] Quotient, MontgomeryModInt<T>[] Remainder) DivRem(ReadOnlySpan<MontgomeryModInt<T>> rhs)
             {
                 var arr = AsSpan().ToArray();
                 var qw = Divide(rhs);
                 var quotient = qw.AsSpan().ToArray();
-                var remainder = new Impl(arr).Subtract(ConvolutionAnyMod.Convolution(quotient, rhs)).AsSpan();
+                var remainder = new Impl(arr).Subtract(NumberTheoreticTransform.Convolution(quotient, rhs)).AsSpan();
                 return (quotient, remainder.ToArray());
             }
 
@@ -221,7 +225,7 @@ namespace Kzrnm.Competitive
             {
                 if (sz == 0)
                     return this;
-                var arr = new StaticModInt<T>[Length + sz];
+                var arr = new MontgomeryModInt<T>[Length + sz];
                 AsSpan().CopyTo(arr.AsSpan(sz));
                 return Set(arr);
             }
@@ -239,7 +243,7 @@ namespace Kzrnm.Competitive
                 if (Length > 0)
                 {
                     for (int i = 1; i < a.Length; i++)
-                        a[i - 1] = a[i] * StaticModInt<T>.Raw(i);
+                        a[i - 1] = a[i] * i;
                     --Length;
                 }
                 return this;
@@ -254,10 +258,9 @@ namespace Kzrnm.Competitive
             [凾(256)]
             public Impl Integrate()
             {
-                var res = new StaticModInt<T>[Length + 1];
+                var res = new MontgomeryModInt<T>[Length + 1];
                 for (int i = 1; i < res.Length; i++)
-                    res[i] = a[i - 1] / StaticModInt<T>.Raw(i);
-
+                    res[i] = a[i - 1] / i;
                 return Set(res);
             }
 
@@ -284,12 +287,12 @@ namespace Kzrnm.Competitive
             }
             private Impl InvNtt(int deg)
             {
-                var r = new StaticModInt<T>[deg];
+                var r = new MontgomeryModInt<T>[deg];
                 r[0] = a[0].Inv();
                 for (int d = 1; d < deg; d <<= 1)
                 {
-                    var f = new StaticModInt<T>[2 * d];
-                    var g = new StaticModInt<T>[2 * d];
+                    var f = new MontgomeryModInt<T>[2 * d];
+                    var g = new MontgomeryModInt<T>[2 * d];
 
                     a.AsSpan(0, Math.Min(f.Length, Length)).CopyTo(f);
                     r.AsSpan(0, d).CopyTo(g);
@@ -311,16 +314,16 @@ namespace Kzrnm.Competitive
             }
             private Impl InvAnyMod(int deg)
             {
-                var r = new StaticModInt<T>[1] { a[0].Inv() };
+                var r = new MontgomeryModInt<T>[1] { a[0].Inv() };
                 for (int i = 1; i < deg; i <<= 1)
                 {
-                    var rp = new StaticModInt<T>[r.Length];
+                    var rp = new MontgomeryModInt<T>[r.Length];
                     for (int j = 0; j < r.Length; j++)
                         rp[j] = r[j] + r[j];
 
-                    var rc = ConvolutionAnyMod.Convolution(ConvolutionAnyMod.Convolution(r, r), a.AsSpan(0, Math.Min(Length, i << 1)));
+                    var rc = NumberTheoreticTransform.Convolution(NumberTheoreticTransform.Convolution(r, r), a.AsSpan(0, Math.Min(Length, i << 1)));
 
-                    var r2 = new StaticModInt<T>[1 << i];
+                    var r2 = new MontgomeryModInt<T>[1 << i];
                     for (int j = 0; j < r2.Length; j++)
                     {
                         r2[j] = (uint)j < (uint)r.Length ? r[j] + r[j] : default;
@@ -338,15 +341,15 @@ namespace Kzrnm.Competitive
                 Contract.Assert(Length == 0 || a[0].Value == 0);
                 if (deg < 0) deg = Length;
                 if (deg == 0)
-                    return Set(new StaticModInt<T>[] { StaticModInt<T>.Raw(1) });
+                    return Set(new MontgomeryModInt<T>[] { MontgomeryModInt<T>.One });
                 return NumberTheoreticTransform<T>.CanNtt() ? ExpNtt(deg) : ExpAnyMod(deg);
             }
 
             [凾(256)]
             public Impl ExpAnyMod(int deg)
             {
-                var one = StaticModInt<T>.Raw(1);
-                var ret = new Impl(new StaticModInt<T>[] { one });
+                var one = MontgomeryModInt<T>.One;
+                var ret = new Impl(new MontgomeryModInt<T>[] { one });
                 for (int i = 1; i < deg; i <<= 1)
                 {
                     var p = new Impl(AsSpan().ToArray());
@@ -358,31 +361,31 @@ namespace Kzrnm.Competitive
 
             class SimpleDeque
             {
-                StaticModInt<T>[] array;
+                MontgomeryModInt<T>[] array;
                 int f, t;
                 public SimpleDeque(int size)
                 {
-                    array = new StaticModInt<T>[size * 2];
+                    array = new MontgomeryModInt<T>[size * 2];
                     f = t = size;
                 }
                 public int Length => t - f;
                 [凾(256)] public void Resize(int size) => t = f + size;
-                [凾(256)] public void AddFirst(StaticModInt<T> v) => array[--f] = v;
-                [凾(256)] public void AddLast(StaticModInt<T> v) => array[t++] = v;
+                [凾(256)] public void AddFirst(MontgomeryModInt<T> v) => array[--f] = v;
+                [凾(256)] public void AddLast(MontgomeryModInt<T> v) => array[t++] = v;
                 [凾(256)] public void PopFirst() => ++f;
                 [凾(256)] public void PopLast() => --t;
-                [凾(256)] public Span<StaticModInt<T>> AsSpan() => array.AsSpan(f, Length);
+                [凾(256)] public Span<MontgomeryModInt<T>> AsSpan() => array.AsSpan(f, Length);
             }
             ref struct ExpNttInv
             {
                 int Length;
-                readonly StaticModInt<T>[] array;
+                readonly MontgomeryModInt<T>[] array;
                 public ExpNttInv(int s)
                 {
-                    array = new StaticModInt<T>[s];
+                    array = new MontgomeryModInt<T>[s];
                     Length = 0;
                 }
-                [凾(256)] public void Add(StaticModInt<T> v) => array[Length++] = v;
+                [凾(256)] public void Add(MontgomeryModInt<T> v) => array[Length++] = v;
                 public void InplaceIntegrate(SimpleDeque f)
                 {
                     var mod = (int)new T().Mod;
@@ -395,14 +398,16 @@ namespace Kzrnm.Competitive
                     for (int i = 1; i < fs.Length; i++) fs[i] *= array[i];
                 }
 
+#pragma warning disable CA1822 // メンバーを static に設定します
                 public void InplaceDerivative(SimpleDeque f)
+#pragma warning restore CA1822 // メンバーを static に設定します
                 {
                     if (f.Length > 0)
                     {
                         f.PopFirst();
                         var fs = f.AsSpan();
                         for (int i = 0; i < fs.Length; i++)
-                            fs[i] *= StaticModInt<T>.Raw(i + 1);
+                            fs[i] *= i + 1;
                     }
                 }
             }
@@ -411,28 +416,28 @@ namespace Kzrnm.Competitive
             public Impl ExpNtt(int deg)
             {
                 var inv = new ExpNttInv(3 * deg);
-                inv.Add(StaticModInt<T>.Raw(0));
-                inv.Add(StaticModInt<T>.Raw(1));
+                inv.Add(MontgomeryModInt<T>.Zero);
+                inv.Add(MontgomeryModInt<T>.One);
 
                 var b = new SimpleDeque(3 * deg);
                 b.AddLast(1);
                 b.AddLast(1 < Length ? a[1] : 0);
 
                 var c = new SimpleDeque(deg);
-                c.AddLast(StaticModInt<T>.Raw(1));
+                c.AddLast(MontgomeryModInt<T>.One);
 
-                Span<StaticModInt<T>> z2 = stackalloc StaticModInt<T>[2];
-                z2.Fill(StaticModInt<T>.Raw(1));
+                Span<MontgomeryModInt<T>> z2 = stackalloc MontgomeryModInt<T>[2];
+                z2.Fill(MontgomeryModInt<T>.One);
 
                 for (int m = 2; m < deg; m *= 2)
                 {
-                    var y = new StaticModInt<T>[2 * m];
+                    var y = new MontgomeryModInt<T>[2 * m];
                     b.AsSpan().CopyTo(y);
 
                     NumberTheoreticTransform<T>.Ntt(y);
 
                     var z1 = z2;
-                    var z = new StaticModInt<T>[m];
+                    var z = new MontgomeryModInt<T>[m];
                     for (int i = 0; i < z.Length; i++) z[i] = y[i] * z1[i];
                     NumberTheoreticTransform<T>.INtt(z);
                     z.AsSpan(0, m / 2).Clear();
@@ -442,7 +447,7 @@ namespace Kzrnm.Competitive
 
                     for (int i = m / 2; i < z.Length; i++) c.AddLast(z[i]);
 
-                    z2 = new StaticModInt<T>[2 * m];
+                    z2 = new MontgomeryModInt<T>[2 * m];
                     c.AsSpan().CopyTo(z2);
                     NumberTheoreticTransform<T>.Ntt(z2);
 
@@ -510,7 +515,7 @@ namespace Kzrnm.Competitive
             {
                 if (deg < 0) deg = Length;
                 if (k == 0)
-                    return new Impl(new[] { StaticModInt<T>.One });
+                    return new Impl(new[] { MontgomeryModInt<T>.One });
 
                 var span = AsSpan();
                 for (int i = 0; i < span.Length; i++)
@@ -524,9 +529,9 @@ namespace Kzrnm.Competitive
                             .LeftShift((int)(i * k)).Pre(deg);
                     }
                     if (Math.Max((i + 1) * k, k) > deg)
-                        return Set(new StaticModInt<T>[deg]);
+                        return Set(new MontgomeryModInt<T>[deg]);
                 }
-                return Set(new StaticModInt<T>[deg]);
+                return Set(new MontgomeryModInt<T>[deg]);
             }
 
 

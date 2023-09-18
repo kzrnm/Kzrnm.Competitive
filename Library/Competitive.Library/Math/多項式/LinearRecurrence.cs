@@ -16,9 +16,9 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <para> Bostan-Mori Algorithm で [x^k] P(x) / Q(x) を求めます</para>
         /// </summary>
-        public static StaticModInt<T> BostanMori<T>(FormalPowerSeries<T> Q, FormalPowerSeries<T> P, long k) where T : struct, IStaticMod
+        public static MontgomeryModInt<T> BostanMori<T>(FormalPowerSeries<T> Q, FormalPowerSeries<T> P, long k) where T : struct, IStaticMod
         {
-            StaticModInt<T> ret = default;
+            MontgomeryModInt<T> ret = default;
             if (P.Count >= Q.Count)
             {
                 var (R, Rm) = P.DivRem(Q);
@@ -31,10 +31,10 @@ namespace Kzrnm.Competitive
             {
                 int N = 1 << InternalBit.CeilPow2(Q.Count);
 
-                var prr = new StaticModInt<T>[2 * N];
-                var qrr = new StaticModInt<T>[2 * N];
-                var srr = new StaticModInt<T>[2 * N];
-                var trr = new StaticModInt<T>[2 * N];
+                var prr = new MontgomeryModInt<T>[2 * N];
+                var qrr = new MontgomeryModInt<T>[2 * N];
+                var srr = new MontgomeryModInt<T>[2 * N];
+                var trr = new MontgomeryModInt<T>[2 * N];
 
                 P.Coefficients.AsSpan().CopyTo(prr);
                 Q.Coefficients.AsSpan().CopyTo(qrr);
@@ -48,7 +48,7 @@ namespace Kzrnm.Competitive
                     btr[i] = (btr[i >> 1] >> 1) + ((i & 1) << (logn - 1));
 
                 var dw = NumberTheoreticTransform<T>.pr.Inv()
-                    .Pow((StaticModInt<T>.Mod - 1) / (2L * N));
+                    .Pow((MontgomeryModInt<T>.Mod - 1) / (2L * N));
 
                 while (k != 0)
                 {
@@ -57,7 +57,7 @@ namespace Kzrnm.Competitive
                     var ss = srr.AsSpan(0, N);
                     var tt = trr.AsSpan(0, N);
 
-                    var inv2 = StaticModInt<T>.Raw(2).Inv();
+                    var inv2 = (MontgomeryModInt<T>.One + MontgomeryModInt<T>.One).Inv();
 
                     // even degree of Q(x)Q(-x)
                     for (int i = 0; i < tt.Length; i++)
@@ -96,16 +96,16 @@ namespace Kzrnm.Competitive
             }
             else
             {
-                var pp = new StaticModInt<T>[Q.Count - 1];
+                var pp = new MontgomeryModInt<T>[Q.Count - 1];
                 P.Coefficients.AsSpan().CopyTo(pp);
-                var qq = (StaticModInt<T>[])Q.Coefficients.Clone();
+                var qq = (MontgomeryModInt<T>[])Q.Coefficients.Clone();
                 while (k != 0)
                 {
-                    var Q2 = (StaticModInt<T>[])qq.Clone();
+                    var Q2 = (MontgomeryModInt<T>[])qq.Clone();
                     for (int i = 1; i < Q2.Length; i += 2) Q2[i] = -Q2[i];
 
-                    var ss = new FormalPowerSeries<T>.Impl((StaticModInt<T>[])pp.Clone()).Multiply(Q2).AsSpan();
-                    var tt = new FormalPowerSeries<T>.Impl((StaticModInt<T>[])qq.Clone()).Multiply(Q2).AsSpan();
+                    var ss = new FormalPowerSeries<T>.Impl((MontgomeryModInt<T>[])pp.Clone()).Multiply(Q2).AsSpan();
+                    var tt = new FormalPowerSeries<T>.Impl((MontgomeryModInt<T>[])qq.Clone()).Multiply(Q2).AsSpan();
                     if ((k & 1) != 0)
                     {
                         for (int i = 1; i < ss.Length; i += 2) pp[i >> 1] = ss[i];
@@ -127,41 +127,41 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(k logk logn)</para>
         /// </summary>
         [凾(256)]
-        public static StaticModInt<T> Kitamasa<T>(ReadOnlySpan<int> a, ReadOnlySpan<int> c, long n) where T : struct, IStaticMod
-            => Kitamasa(MemoryMarshal.Cast<int, StaticModInt<T>>(a), MemoryMarshal.Cast<int, StaticModInt<T>>(c), n);
+        public static MontgomeryModInt<T> Kitamasa<T>(ReadOnlySpan<int> a, ReadOnlySpan<int> c, long n) where T : struct, IStaticMod
+            => Kitamasa(a.Select(v => new MontgomeryModInt<T>(v)), c.Select(v => new MontgomeryModInt<T>(v)), n);
         /// <summary>
         /// <para><paramref name="a"/>[n+k] = <paramref name="c"/>[0]*<paramref name="a"/>[n+k-1]+...+<paramref name="c"/>[k-1]*<paramref name="a"/>[n] である漸化式 <paramref name="a"/>(0-based) の <paramref name="n"/> を求めます。</para>
         /// <para>計算量: O(k logk logn)</para>
         /// </summary>
         [凾(256)]
-        public static StaticModInt<T> Kitamasa<T>(ReadOnlySpan<uint> a, ReadOnlySpan<uint> c, long n) where T : struct, IStaticMod
-            => Kitamasa(MemoryMarshal.Cast<uint, StaticModInt<T>>(a), MemoryMarshal.Cast<uint, StaticModInt<T>>(c), n);
+        public static MontgomeryModInt<T> Kitamasa<T>(ReadOnlySpan<uint> a, ReadOnlySpan<uint> c, long n) where T : struct, IStaticMod
+            => Kitamasa(a.Select(v => new MontgomeryModInt<T>((ulong)v)), c.Select(v => new MontgomeryModInt<T>((ulong)v)), n);
 
         /// <summary>
         /// <para><paramref name="a"/>[n+k] = <paramref name="c"/>[0]*<paramref name="a"/>[n+k-1]+...+<paramref name="c"/>[k-1]*<paramref name="a"/>[n] である漸化式 <paramref name="a"/>(0-based) の <paramref name="n"/> を求めます。</para>
         /// <para>計算量: O(k logk logn)</para>
         /// </summary>
         [凾(256)]
-        public static StaticModInt<T> Kitamasa<T>(StaticModInt<T>[] a, StaticModInt<T>[] c, long n) where T : struct, IStaticMod
-            => Kitamasa((ReadOnlySpan<StaticModInt<T>>)a, c, n);
+        public static MontgomeryModInt<T> Kitamasa<T>(MontgomeryModInt<T>[] a, MontgomeryModInt<T>[] c, long n) where T : struct, IStaticMod
+            => Kitamasa((ReadOnlySpan<MontgomeryModInt<T>>)a, c, n);
 
         /// <summary>
         /// <para><paramref name="a"/>[n+k] = <paramref name="c"/>[0]*<paramref name="a"/>[n+k-1]+...+<paramref name="c"/>[k-1]*<paramref name="a"/>[n] である漸化式 <paramref name="a"/>(0-based) の <paramref name="n"/> を求めます。</para>
         /// <para>計算量: O(k logk logn)</para>
         /// </summary>
         [凾(256)]
-        public static StaticModInt<T> Kitamasa<T>(Span<StaticModInt<T>> a, Span<StaticModInt<T>> c, long n) where T : struct, IStaticMod
-            => Kitamasa((ReadOnlySpan<StaticModInt<T>>)a, c, n);
+        public static MontgomeryModInt<T> Kitamasa<T>(Span<MontgomeryModInt<T>> a, Span<MontgomeryModInt<T>> c, long n) where T : struct, IStaticMod
+            => Kitamasa((ReadOnlySpan<MontgomeryModInt<T>>)a, c, n);
 
         /// <summary>
         /// <para><paramref name="a"/>[n+k] = <paramref name="c"/>[0]*<paramref name="a"/>[n+k-1]+...+<paramref name="c"/>[k-1]*<paramref name="a"/>[n] である漸化式 <paramref name="a"/>(0-based) の <paramref name="n"/> を求めます。</para>
         /// <para>計算量: O(k logk logn)</para>
         /// </summary>
-        public static StaticModInt<T> Kitamasa<T>(ReadOnlySpan<StaticModInt<T>> a, ReadOnlySpan<StaticModInt<T>> c, long n) where T : struct, IStaticMod
+        public static MontgomeryModInt<T> Kitamasa<T>(ReadOnlySpan<MontgomeryModInt<T>> a, ReadOnlySpan<MontgomeryModInt<T>> c, long n) where T : struct, IStaticMod
         {
             Contract.Assert(a.Length == c.Length, reason: "漸化式の係数 c と数列 a の数が違います");
             if (n < a.Length) return a[(int)n];
-            var Q = new StaticModInt<T>[c.Length + 1];
+            var Q = new MontgomeryModInt<T>[c.Length + 1];
             Q[0] = 1;
             for (int i = 0; i < c.Length; i++) Q[i + 1] = -c[i];
             var P = new FormalPowerSeries<T>.Impl(a.ToArray()).Multiply(Q).Pre(c.Length);
@@ -174,42 +174,42 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(m log m)</para>
         /// </summary>
         [凾(256)]
-        public static StaticModInt<T>[] Recurrence<T>(ReadOnlySpan<int> a, ReadOnlySpan<int> c, int m) where T : struct, IStaticMod
-            => Recurrence(MemoryMarshal.Cast<int, StaticModInt<T>>(a), MemoryMarshal.Cast<int, StaticModInt<T>>(c), m);
+        public static MontgomeryModInt<T>[] Recurrence<T>(ReadOnlySpan<int> a, ReadOnlySpan<int> c, int m) where T : struct, IStaticMod
+            => Recurrence(a.Select(v => new MontgomeryModInt<T>(v)), c.Select(v => new MontgomeryModInt<T>(v)), m);
         /// <summary>
         /// <para><paramref name="a"/>[n+k] = <paramref name="c"/>[0]*<paramref name="a"/>[n+k-1]+...+<paramref name="c"/>[k-1]*<paramref name="a"/>[n] である漸化式 <paramref name="a"/>(0-based) の <paramref name="m"/> 項目までを求めます。</para>
         /// <para>計算量: O(m log m)</para>
         /// </summary>
         [凾(256)]
-        public static StaticModInt<T>[] Recurrence<T>(ReadOnlySpan<uint> a, ReadOnlySpan<uint> c, int m) where T : struct, IStaticMod
-            => Recurrence(MemoryMarshal.Cast<uint, StaticModInt<T>>(a), MemoryMarshal.Cast<uint, StaticModInt<T>>(c), m);
+        public static MontgomeryModInt<T>[] Recurrence<T>(ReadOnlySpan<uint> a, ReadOnlySpan<uint> c, int m) where T : struct, IStaticMod
+            => Recurrence(a.Select(v => new MontgomeryModInt<T>((ulong)v)), c.Select(v => new MontgomeryModInt<T>((ulong)v)), m);
 
         /// <summary>
         /// <para><paramref name="a"/>[n+k] = <paramref name="c"/>[0]*<paramref name="a"/>[n+k-1]+...+<paramref name="c"/>[k-1]*<paramref name="a"/>[n] である漸化式 <paramref name="a"/>(0-based) の <paramref name="m"/> 項目までを求めます。</para>
         /// <para>計算量: O(m log m)</para>
         /// </summary>
         [凾(256)]
-        public static StaticModInt<T>[] Recurrence<T>(StaticModInt<T>[] a, StaticModInt<T>[] c, int m) where T : struct, IStaticMod
-            => Recurrence((ReadOnlySpan<StaticModInt<T>>)a, c, m);
+        public static MontgomeryModInt<T>[] Recurrence<T>(MontgomeryModInt<T>[] a, MontgomeryModInt<T>[] c, int m) where T : struct, IStaticMod
+            => Recurrence((ReadOnlySpan<MontgomeryModInt<T>>)a, c, m);
 
         /// <summary>
         /// <para><paramref name="a"/>[n+k] = <paramref name="c"/>[0]*<paramref name="a"/>[n+k-1]+...+<paramref name="c"/>[k-1]*<paramref name="a"/>[n] である漸化式 <paramref name="a"/>(0-based) の <paramref name="m"/> 項目までを求めます。</para>
         /// <para>計算量: O(m log m)</para>
         /// </summary>
         [凾(256)]
-        public static StaticModInt<T>[] Recurrence<T>(Span<StaticModInt<T>> a, Span<StaticModInt<T>> c, int m) where T : struct, IStaticMod
-            => Recurrence((ReadOnlySpan<StaticModInt<T>>)a, c, m);
+        public static MontgomeryModInt<T>[] Recurrence<T>(Span<MontgomeryModInt<T>> a, Span<MontgomeryModInt<T>> c, int m) where T : struct, IStaticMod
+            => Recurrence((ReadOnlySpan<MontgomeryModInt<T>>)a, c, m);
 
         /// <summary>
         /// <para><paramref name="a"/>[n+k] = <paramref name="c"/>[0]*<paramref name="a"/>[n+k-1]+...+<paramref name="c"/>[k-1]*<paramref name="a"/>[n] である漸化式 <paramref name="a"/>(0-based) の <paramref name="m"/> 項目までを求めます。</para>
         /// <para>計算量: O(m log m)</para>
         /// </summary>
-        public static StaticModInt<T>[] Recurrence<T>(ReadOnlySpan<StaticModInt<T>> a, ReadOnlySpan<StaticModInt<T>> c, int m) where T : struct, IStaticMod
+        public static MontgomeryModInt<T>[] Recurrence<T>(ReadOnlySpan<MontgomeryModInt<T>> a, ReadOnlySpan<MontgomeryModInt<T>> c, int m) where T : struct, IStaticMod
         {
             Contract.Assert(a.Length <= c.Length, reason: "漸化式の係数 c より数列 a の数が多いです");
             if (m < a.Length) return a[..m].ToArray();
 
-            var Q = new StaticModInt<T>[c.Length + 1];
+            var Q = new MontgomeryModInt<T>[c.Length + 1];
             Q[0] = 1;
             for (int i = 0; i < c.Length; i++) Q[i + 1] = -c[i];
 
