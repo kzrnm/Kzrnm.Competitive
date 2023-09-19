@@ -1,14 +1,9 @@
 using AtCoder;
 using System;
 using System.Buffers;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -100,9 +95,21 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static StaticModInt<T>[] Convolution<T>(ReadOnlySpan<StaticModInt<T>> a, ReadOnlySpan<StaticModInt<T>> b)
              where T : struct, IStaticMod
-            => ConvolutionImpl<T>(a.Select(v => (MontgomeryModInt<T>)v.Value), b.Select(v => (MontgomeryModInt<T>)v.Value))
-                .Select(m => StaticModInt<T>.Raw(m.Value))
-                .ToArray();
+        {
+            var ma = ArrayPool<MontgomeryModInt<T>>.Shared.Rent(a.Length);
+            var mb = ArrayPool<MontgomeryModInt<T>>.Shared.Rent(b.Length);
+            for (int i = 0; i < a.Length; i++) ma[i] = a[i].Value;
+            for (int i = 0; i < b.Length; i++) mb[i] = b[i].Value;
+            var r = ConvolutionImpl<T>(ma.AsSpan(0, a.Length), mb.AsSpan(0, b.Length));
+            ArrayPool<MontgomeryModInt<T>>.Shared.Return(ma);
+            ArrayPool<MontgomeryModInt<T>>.Shared.Return(mb);
+
+            var rt = new StaticModInt<T>[r.Length];
+            for (int i = 0; i < r.Length; i++) rt[i] = r[i].Value;
+
+            return rt;
+        }
+
 
         /// <summary>
         /// Ntt 可能な長さより大きな長さの畳み込みを計算します。
@@ -114,9 +121,19 @@ namespace Kzrnm.Competitive
         /// </remarks>
         [凾(256)]
         public static uint[] Convolution<T>(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b) where T : struct, IStaticMod
-            => ConvolutionImpl<T>(a.Select(v => (MontgomeryModInt<T>)v), b.Select(v => (MontgomeryModInt<T>)v))
-            .Select(m => (uint)m.Value)
-            .ToArray();
+        {
+            var ma = ArrayPool<MontgomeryModInt<T>>.Shared.Rent(a.Length);
+            var mb = ArrayPool<MontgomeryModInt<T>>.Shared.Rent(b.Length);
+            for (int i = 0; i < a.Length; i++) ma[i] = a[i];
+            for (int i = 0; i < b.Length; i++) mb[i] = b[i];
+            var r = ConvolutionImpl<T>(ma.AsSpan(0, a.Length), mb.AsSpan(0, b.Length));
+            ArrayPool<MontgomeryModInt<T>>.Shared.Return(ma);
+            ArrayPool<MontgomeryModInt<T>>.Shared.Return(mb);
+
+            var rt = new uint[r.Length];
+            for (int i = 0; i < r.Length; i++) rt[i] = (uint)r[i].Value;
+            return rt;
+        }
 
         static MontgomeryModInt<T>[] ConvolutionImpl<T>(ReadOnlySpan<MontgomeryModInt<T>> a, ReadOnlySpan<MontgomeryModInt<T>> b, T op = default) where T : struct, IStaticMod
         {
@@ -137,40 +154,47 @@ namespace Kzrnm.Competitive
 
             var half = nttLength >> 1;
 
-            var aL = new MontgomeryModInt<T>[(a.Length + half - 1) / half][];
-            var bL = new MontgomeryModInt<T>[(b.Length + half - 1) / half][];
+            var halfSizeA = (a.Length + half - 1) / half;
+            var halfSizeB = (b.Length + half - 1) / half;
+            var bL = new MontgomeryModInt<T>[halfSizeB][];
 
-            for (int i = 0; i < aL.Length; i++)
-            {
-                var c = new MontgomeryModInt<T>[nttLength];
-                a[(i * half)..Math.Min((i + 1) * half, a.Length)].CopyTo(c);
-                NumberTheoreticTransform<T>.Ntt(c);
-                aL[i] = c;
-            }
             for (int i = 0; i < bL.Length; i++)
             {
                 var c = new MontgomeryModInt<T>[nttLength];
-                b[(i * half)..Math.Min((i + 1) * half, b.Length)].CopyTo(c);
+                var start = i * half;
+                a.Slice(start, Math.Min(half, b.Length - start)).CopyTo(c);
                 NumberTheoreticTransform<T>.Ntt(c);
                 bL[i] = c;
             }
 
-            var cL = new MontgomeryModInt<T>[aL.Length + bL.Length - 1][];
+            var cL = new MontgomeryModInt<T>[halfSizeA + halfSizeB - 1][];
             for (int i = 0; i < cL.Length; i++)
-            {
                 cL[i] = new MontgomeryModInt<T>[nttLength];
-            }
 
-            for (int i = 0; i < aL.Length; i++)
+            MontgomeryModInt<T>[] aaPool;
+            var aa = (aaPool = ArrayPool<MontgomeryModInt<T>>.Shared.Rent(nttLength)).AsSpan(0, nttLength);
+            try
             {
-                for (int j = 0; j < bL.Length; j++)
+                for (int i = 0; i < halfSizeA; i++)
                 {
-                    var cc = cL[i + j];
-                    for (int k = 0; k < cc.Length; k++)
+                    var start = i * half;
+                    a.Slice(start, Math.Min(half, a.Length - start)).CopyTo(aa);
+                    aa.Slice(Math.Min(half, a.Length - start)).Clear();
+                    NumberTheoreticTransform<T>.Ntt(aa);
+
+                    for (int j = 0; j < bL.Length; j++)
                     {
-                        cc[k] += aL[i][k] * bL[j][k];
+                        var cc = cL[i + j];
+                        for (int k = 0; k < cc.Length; k++)
+                        {
+                            cc[k] += aa[k] * bL[j][k];
+                        }
                     }
                 }
+            }
+            finally
+            {
+                ArrayPool<MontgomeryModInt<T>>.Shared.Return(aaPool);
             }
             foreach (var cc in cL) NumberTheoreticTransform<T>.INtt(cc);
 
