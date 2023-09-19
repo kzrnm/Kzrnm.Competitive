@@ -117,10 +117,10 @@ namespace Kzrnm.Competitive
         public static MontgomeryModInt<TMod>[] Convolution<TMod>(ReadOnlySpan<MontgomeryModInt<TMod>> a, ReadOnlySpan<MontgomeryModInt<TMod>> b)
              where TMod : struct, IStaticMod
         {
-            if (CanNtt<TMod>())
+            if (a.Length + b.Length - 1 <= NumberTheoreticTransform<TMod>.NttLength())
                 return NumberTheoreticTransform<TMod>.Multiply(a, b).ToArray();
             return ConvolutionImpl<TMod>(a.Select(m => (uint)m.Value), b.Select(m => (uint)m.Value))
-                .Select(n => new MontgomeryModInt<TMod>((ulong)n))
+                .Select(n => (MontgomeryModInt<TMod>)n)
                 .ToArray();
         }
         /// <summary>
@@ -136,7 +136,7 @@ namespace Kzrnm.Competitive
         public static StaticModInt<TMod>[] Convolution<TMod>(ReadOnlySpan<StaticModInt<TMod>> a, ReadOnlySpan<StaticModInt<TMod>> b)
              where TMod : struct, IStaticMod
         {
-            if (CanNtt<TMod>())
+            if (a.Length + b.Length - 1 <= NumberTheoreticTransform<TMod>.NttLength())
                 return NumberTheoreticTransform<TMod>.Multiply(a, b).ToArray();
             return
                 MemoryMarshal.Cast<uint, StaticModInt<TMod>>(
@@ -157,7 +157,7 @@ namespace Kzrnm.Competitive
         public static uint[] Convolution<TMod>(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b)
              where TMod : struct, IStaticMod
         {
-            if (CanNtt<TMod>())
+            if (a.Length + b.Length - 1 <= NumberTheoreticTransform<TMod>.NttLength())
                 return NumberTheoreticTransform<TMod>.Multiply(a, b);
             return ConvolutionImpl<TMod>(a, b);
         }
@@ -171,22 +171,36 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|))</para>
         /// </remarks>
         [凾(256)]
-        private static uint[] ConvolutionImpl<TMod>(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b, TMod op = default)
+        internal static uint[] ConvolutionImpl<TMod>(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b, TMod op = default)
+             where TMod : struct, IStaticMod
+        {
+            if (a.Length == 0 || b.Length == 0)
+                return Array.Empty<uint>();
+            var r = new uint[a.Length + b.Length - 1];
+            ConvolutionImpl(a, b, r, op);
+            return r;
+        }
+
+        /// <summary>
+        /// 任意 Mod で畳み込みを計算します。
+        /// </summary>
+        /// <remarks>
+        /// <para><paramref name="a"/>, <paramref name="b"/> の少なくとも一方が空の場合は空配列を返します。</para>
+        /// <para>制約:</para>
+        /// <para>- |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^24 = 16,777,216</para>
+        /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|))</para>
+        /// </remarks>
+        [凾(256)]
+        internal static void ConvolutionImpl<TMod>(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b, Span<uint> rt, TMod op)
              where TMod : struct, IStaticMod
         {
             unchecked
             {
-                var n = a.Length;
-                var m = b.Length;
+                Debug.Assert(a.Length + b.Length - 1 == rt.Length);
 
                 if (Math.Min(a.Length, b.Length) <= 60)
                 {
-                    if (n == 0 || m == 0)
-                    {
-                        return Array.Empty<uint>();
-                    }
-                    var r = new uint[n + m - 1];
-                    ref var rPtr = ref MemoryMarshal.GetReference(r.AsSpan());
+                    ref var rPtr = ref MemoryMarshal.GetReference(rt);
                     for (int i = 0; i < a.Length; i++)
                         for (int j = 0; j < b.Length; j++)
                         {
@@ -196,7 +210,7 @@ namespace Kzrnm.Competitive
                             else
                                 Unsafe.Add(ref rPtr, i + j) = v - op.Mod;
                         }
-                    return r;
+                    return;
                 }
 
                 const long Mod1 = 167772161;
@@ -216,17 +230,16 @@ namespace Kzrnm.Competitive
                 var c1 = NumberTheoreticTransform<FFTMod1>.Multiply(a, b);
                 var c2 = NumberTheoreticTransform<FFTMod2>.Multiply(a, b);
                 var c3 = NumberTheoreticTransform<FFTMod3>.Multiply(a, b);
-                var c = new uint[n + m - 1];
 
-                Debug.Assert(c1.Length == c.Length);
-                Debug.Assert(c2.Length == c.Length);
-                Debug.Assert(c3.Length == c.Length);
+                Debug.Assert(c1.Length == rt.Length);
+                Debug.Assert(c2.Length == rt.Length);
+                Debug.Assert(c3.Length == rt.Length);
 
                 ref var d1 = ref MemoryMarshal.GetReference<uint>(c1);
                 ref var d2 = ref MemoryMarshal.GetReference<uint>(c2);
                 ref var d3 = ref MemoryMarshal.GetReference<uint>(c3);
 
-                for (int i = 0; i < c.Length; i++)
+                for (int i = 0; i < rt.Length; i++)
                 {
                     long dd = Unsafe.Add(ref d1, i);
                     var v1 = ((Unsafe.Add(ref d2, i) - dd) * M1i2) % Mod2;
@@ -236,10 +249,8 @@ namespace Kzrnm.Competitive
                     var x = (dd + Mod1 * v1 + M12i * v2) % op.Mod;
                     if (x < 0) x += op.Mod;
 
-                    c[i] = (uint)x;
+                    rt[i] = (uint)x;
                 }
-
-                return c;
             }
         }
 
@@ -619,16 +630,6 @@ namespace Kzrnm.Competitive
         }
 #endif
 
-
-        /// <summary>
-        /// NTT(数論変換)で使えるかどうかを返します。
-        /// </summary>
-        [凾(256)]
-        internal static bool CanNtt<TMod>() where TMod : struct, IStaticMod
-        {
-            var m = new TMod();
-            return m.IsPrime && BitOperations.TrailingZeroCount(m.Mod - 1) >= 23;
-        }
 
 #if NET7_0_OR_GREATER
         private readonly record struct AnyMod(uint Mod) : IStaticMod

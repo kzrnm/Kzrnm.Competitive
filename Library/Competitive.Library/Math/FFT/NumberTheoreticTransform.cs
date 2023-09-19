@@ -1,5 +1,6 @@
 using AtCoder;
 using System;
+using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -55,39 +56,24 @@ namespace Kzrnm.Competitive
             }
         }
 
-        static MontgomeryModInt<T>[] dws, dys;
-        static readonly MontgomeryModInt<T>[] dw, dy;
+        static MontgomeryModInt<T>[] _dw, _dy;
+        static MontgomeryModInt<T>[] dw { [凾(256)] get => _dw ?? Build().dw; }
+        static MontgomeryModInt<T>[] dy { [凾(256)] get => _dy ?? Build().dy; }
 
-        /// <summary>
-        /// NTT(数論変換)で使えるかどうかを返します。
-        /// </summary>
-        [凾(256)]
-        internal static bool CanNtt()
+        static (MontgomeryModInt<T>[] dw, MontgomeryModInt<T>[] dy) Build()
         {
-            var m = new T();
-            return m.IsPrime && BitOperations.TrailingZeroCount(m.Mod - 1) >= 23;
-        }
-        static NumberTheoreticTransform()
-        {
-            if (!CanNtt())
-                return;
+            if (NttLength() < 2)
+                return default;
 
             var level = BitOperations.TrailingZeroCount(new T().Mod - 1);
-            dws = new MontgomeryModInt<T>[level];
-            dys = new MontgomeryModInt<T>[level];
-            SetWy(level);
-            dw = new MontgomeryModInt<T>[level];
-            dy = new MontgomeryModInt<T>[level];
-            for (int i = 0; i < dw.Length; i++) dw[i] = dws[i].Value;
-            for (int i = 0; i < dy.Length; i++) dy[i] = dys[i].Value;
-        }
-        static void SetWy(int k)
-        {
-            var w = new MontgomeryModInt<T>[k];
-            var y = new MontgomeryModInt<T>[k];
-            w[k - 1] = pr.Pow((new T().Mod - 1) / (1u << k));
-            y[k - 1] = w[k - 1].Inv();
-            for (int i = k - 2; i > 0; --i)
+            var dws = new MontgomeryModInt<T>[level + 1];
+            var dys = new MontgomeryModInt<T>[level + 1];
+
+            var w = new MontgomeryModInt<T>[level + 1];
+            var y = new MontgomeryModInt<T>[level + 1];
+            w[level - 1] = pr.Pow((new T().Mod - 1) / (1u << level));
+            y[level - 1] = w[level - 1].Inv();
+            for (int i = level - 2; i > 0; --i)
             {
                 w[i] = w[i + 1] * w[i + 1];
                 y[i] = y[i + 1] * y[i + 1];
@@ -102,19 +88,31 @@ namespace Kzrnm.Competitive
                 dws[i] = dws[i - 1] * y[i - 2] * w[i];
                 dys[i] = dys[i - 1] * w[i - 2] * y[i];
             }
+
+            return (_dw = dws, _dy = dys);
         }
 
-        static MontgomeryModInt<T>[] MultiplyNative(ReadOnlySpan<MontgomeryModInt<T>> a, ReadOnlySpan<MontgomeryModInt<T>> b)
+        /// <summary>
+        /// NTT(数論変換)で使える長さを返します。
+        /// </summary>
+        [凾(256)]
+        internal static int NttLength()
         {
+            var m = new T();
+            return m.IsPrime ? 1 << BitOperations.TrailingZeroCount(m.Mod - 1) : 0;
+        }
+
+        static void MultiplyNative(ReadOnlySpan<MontgomeryModInt<T>> a, ReadOnlySpan<MontgomeryModInt<T>> b, ReadOnlySpan<MontgomeryModInt<T>> rt)
+        {
+            Debug.Assert(rt.Length == a.Length + b.Length - 1);
+
             if (a.Length == 0 || b.Length == 0)
-                return Array.Empty<MontgomeryModInt<T>>();
-            var s = new MontgomeryModInt<T>[a.Length + b.Length - 1];
-            ref var sPtr = ref MemoryMarshal.GetReference(s.AsSpan());
+                return;
+            ref var sPtr = ref MemoryMarshal.GetReference(rt);
 
             for (int i = 0; i < a.Length; ++i)
                 for (int j = 0; j < b.Length; ++j)
                     Unsafe.Add(ref sPtr, i + j) += a[i] * b[j];
-            return s;
         }
         [凾(256)]
         public static void Ntt(Span<MontgomeryModInt<T>> a)
@@ -142,6 +140,18 @@ namespace Kzrnm.Competitive
             => Avx2.IsSupported
             ? MultiplySimd(a, b)
             : MultiplyLogical(a, b);
+
+        /// <summary>
+        /// c[i+j] = Σ <paramref name="a"/>[i] * <paramref name="b"/>[j] となる畳み込みを行います。
+        /// </summary>
+        [凾(256)]
+        public static void Multiply(ReadOnlySpan<MontgomeryModInt<T>> a, ReadOnlySpan<MontgomeryModInt<T>> b, Span<MontgomeryModInt<T>> rt)
+        {
+            if (Avx2.IsSupported)
+                MultiplySimd(a, b, rt);
+            else
+                MultiplyLogical(a, b, rt);
+        }
 
 
         /// <summary>

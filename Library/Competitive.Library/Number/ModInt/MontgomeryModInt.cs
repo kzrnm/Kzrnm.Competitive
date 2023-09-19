@@ -1,6 +1,5 @@
 // https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp
 using AtCoder;
-using AtCoder.Internal;
 using Kzrnm.Competitive.IO;
 using System;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -8,6 +7,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 using System.Numerics;
 using System.Globalization;
 #else
+using AtCoder.Internal;
 using AtCoder.Operators;
 #endif
 
@@ -71,6 +71,11 @@ namespace Kzrnm.Competitive
         [凾(256)] public static implicit operator MontgomeryModInt<T>(uint value) => new MontgomeryModInt<T>((ulong)value);
         [凾(256)] public static implicit operator MontgomeryModInt<T>(long value) => new MontgomeryModInt<T>(value);
         [凾(256)] public static implicit operator MontgomeryModInt<T>(int value) => new MontgomeryModInt<T>(value);
+
+        [凾(256)] public static explicit operator ulong(MontgomeryModInt<T> value) => (ulong)value.Value;
+        [凾(256)] public static explicit operator uint(MontgomeryModInt<T> value) => (uint)value.Value;
+        [凾(256)] public static explicit operator long(MontgomeryModInt<T> value) => value.Value;
+        [凾(256)] public static explicit operator int(MontgomeryModInt<T> value) => value.Value;
 
         /// <summary>
         /// 格納されている値を返します。

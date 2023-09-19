@@ -12,6 +12,10 @@
   <PropertyGroup>
     <NoWarn>$(NoWarn);CA1822;CA1825;CA1032;IDE0028;IDE0044</NoWarn>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Library'">
+    <DefineConstants>$(DefineConstants);DEBUG;LIBRARY</DefineConstants>
+    <SourceExpander_Embedder_Enabled>False</SourceExpander_Embedder_Enabled>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="CompetitiveVerifierResolverTestLogger" Version="1.4.0">

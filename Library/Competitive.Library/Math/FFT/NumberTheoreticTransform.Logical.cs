@@ -1,7 +1,11 @@
 using AtCoder;
 using AtCoder.Internal;
 using System;
+using System.Buffers;
+using System.Diagnostics;
 using System.Numerics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 // https://nyaannyaan.github.io/library/ntt/ntt.hpp
@@ -37,7 +41,7 @@ namespace Kzrnm.Competitive
             int u = 1 << (2 + (k & 1));
             int v = 1 << (k - 2 - (k & 1));
             var one = MontgomeryModInt<T>.One;
-            var imag = dws[1];
+            var imag = dw[1];
             while (v != 0)
             {
                 // jh = 0
@@ -58,7 +62,7 @@ namespace Kzrnm.Competitive
                     }
                 }
                 // jh >= 1
-                var xx = one * dws[2];
+                var xx = one * dw[2];
                 for (int jh = 4; jh < u;)
                 {
                     var ww = xx * xx;
@@ -77,7 +81,7 @@ namespace Kzrnm.Competitive
                         a[j2] = t0m2 + t1m3;
                         a[j2 + v] = t0m2 - t1m3;
                     }
-                    xx *= dws[TrailingZeroCount(jh += 4)];
+                    xx *= dw[TrailingZeroCount(jh += 4)];
                 }
                 u <<= 2;
                 v >>= 2;
@@ -98,7 +102,7 @@ namespace Kzrnm.Competitive
             int u = 1 << (k - 2);
             int v = 1;
             var one = MontgomeryModInt<T>.One;
-            var imag = dys[1];
+            var imag = dy[1];
             while (u != 0)
             {
                 // jh = 0
@@ -119,7 +123,7 @@ namespace Kzrnm.Competitive
                     }
                 }
                 // jh >= 1
-                var xx = one * dys[2];
+                var xx = one * dy[2];
                 u <<= 2;
                 for (int jh = 4; jh < u;)
                 {
@@ -138,7 +142,7 @@ namespace Kzrnm.Competitive
                         a[j0 + v] = t0m1 + t2m3;
                         a[j2 + v] = (t0m1 - t2m3) * ww;
                     }
-                    xx *= dys[TrailingZeroCount(jh += 4)];
+                    xx *= dy[TrailingZeroCount(jh += 4)];
                 }
                 u >>= 4;
                 v <<= 2;
@@ -170,32 +174,57 @@ namespace Kzrnm.Competitive
             for (int i = 0; i < a.Length; i++) a[i] *= iv;
         }
 
-        [凾(512)]
+        [凾(256)]
         internal static MontgomeryModInt<T>[] MultiplyLogical(ReadOnlySpan<MontgomeryModInt<T>> a, ReadOnlySpan<MontgomeryModInt<T>> b)
         {
+            if (a.Length == 0 || b.Length == 0)
+                return Array.Empty<MontgomeryModInt<T>>();
+            var rt = new MontgomeryModInt<T>[a.Length + b.Length - 1];
+            MultiplyLogical(a, b, rt);
+            return rt;
+        }
+
+        [凾(512)]
+        internal static void MultiplyLogical(ReadOnlySpan<MontgomeryModInt<T>> a, ReadOnlySpan<MontgomeryModInt<T>> b, Span<MontgomeryModInt<T>> rt)
+        {
             if (Math.Min(a.Length, b.Length) <= 60)
-                return MultiplyNative(a, b);
+            {
+                MultiplyNative(a, b, rt);
+                return;
+            }
 
-            int l = a.Length + b.Length - 1;
+            Debug.Assert(rt.Length == a.Length + b.Length - 1);
 
-            var k = InternalBit.CeilPow2(l);
+            var k = InternalBit.CeilPow2(rt.Length);
             var M = 1 << k;
 
-            SetWy(k);
-            var s = new MontgomeryModInt<T>[M];
-            var t = new MontgomeryModInt<T>[M];
-            a.CopyTo(s);
-            b.CopyTo(t);
-            Fft4(s, k);
-            Fft4(t, k);
-            for (int i = 0; i < s.Length; ++i)
-                s[i] *= t[i];
-            IFft4(s, k);
-            var invm = new MontgomeryModInt<T>(M).Inv();
-            var res = new MontgomeryModInt<T>[l];
-            for (int i = 0; i < res.Length; ++i)
-                res[i] = s[i] * invm;
-            return res;
+            MontgomeryModInt<T>[] buf1Pool, buf2Pool;
+            var buf1 = (buf1Pool = ArrayPool<MontgomeryModInt<T>>.Shared.Rent(M)).AsSpan(0, M);
+            var buf2 = (buf2Pool = ArrayPool<MontgomeryModInt<T>>.Shared.Rent(M)).AsSpan(0, M);
+            try
+            {
+                a.CopyTo(buf1);
+                b.CopyTo(buf2);
+                buf1[a.Length..].Clear();
+                buf2[b.Length..].Clear();
+
+                Fft4(buf1, k);
+                Fft4(buf2, k);
+                for (int i = 0; i < buf1.Length; ++i)
+                    buf1[i] *= buf2[i];
+                IFft4(buf1, k);
+
+                var invm = new MontgomeryModInt<T>(M).Inv();
+                ref var buf1Ptr = ref MemoryMarshal.GetReference(buf1);
+
+                for (int i = 0; i < rt.Length; ++i)
+                    rt[i] = Unsafe.Add(ref buf1Ptr, i) * invm;
+            }
+            finally
+            {
+                ArrayPool<MontgomeryModInt<T>>.Shared.Return(buf1Pool);
+                ArrayPool<MontgomeryModInt<T>>.Shared.Return(buf2Pool);
+            }
         }
     }
 }

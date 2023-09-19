@@ -2,8 +2,10 @@ using AtCoder;
 using AtCoder.Internal;
 using System;
 using System.Buffers;
+using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -452,15 +454,27 @@ namespace Kzrnm.Competitive
             }
         }
 
-        [凾(512)]
+        [凾(256)]
         static MontgomeryModInt<T>[] MultiplySimd(ReadOnlySpan<MontgomeryModInt<T>> a, ReadOnlySpan<MontgomeryModInt<T>> b)
         {
+            if (a.Length == 0 || b.Length == 0)
+                return Array.Empty<MontgomeryModInt<T>>();
+            var rt = new MontgomeryModInt<T>[a.Length + b.Length - 1];
+            MultiplySimd(a, b, rt);
+            return rt;
+        }
+        [凾(512)]
+        static void MultiplySimd(ReadOnlySpan<MontgomeryModInt<T>> a, ReadOnlySpan<MontgomeryModInt<T>> b, Span<MontgomeryModInt<T>> rt)
+        {
             if (Math.Min(a.Length, b.Length) <= 60)
-                return MultiplyNative(a, b);
+            {
+                MultiplyNative(a, b, rt);
+                return;
+            }
 
-            int len = a.Length + b.Length - 1;
+            Debug.Assert(rt.Length == a.Length + b.Length - 1);
 
-            var k = InternalBit.CeilPow2(len);
+            var k = InternalBit.CeilPow2(rt.Length);
             var M = 1 << k;
 
             MontgomeryModInt<T>[] buf1Pool, buf2Pool;
@@ -481,11 +495,10 @@ namespace Kzrnm.Competitive
                 INttSimd(buf1, false);
 
                 var invm = new MontgomeryModInt<T>(M).Inv();
-                buf1 = buf1[..len];
+                ref var buf1Ptr = ref MemoryMarshal.GetReference(buf1);
 
-                for (int i = 0; i < buf1.Length; ++i)
-                    buf1[i] *= invm;
-                return buf1.ToArray();
+                for (int i = 0; i < rt.Length; ++i)
+                    rt[i] = Unsafe.Add(ref buf1Ptr, i) * invm;
             }
             finally
             {

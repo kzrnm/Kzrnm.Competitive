@@ -282,7 +282,7 @@ namespace Kzrnm.Competitive
             {
                 Contract.Assert(a[0].Value != 0);
                 if (deg < 0) deg = Length;
-                return NumberTheoreticTransform<T>.CanNtt() ? InvNtt(deg) : InvAnyMod(deg);
+                return deg <= NumberTheoreticTransform<T>.NttLength() ? InvNtt(deg) : InvAnyMod(deg);
 
             }
             private Impl InvNtt(int deg)
@@ -342,7 +342,7 @@ namespace Kzrnm.Competitive
                 if (deg < 0) deg = Length;
                 if (deg == 0)
                     return Set(new MontgomeryModInt<T>[] { MontgomeryModInt<T>.One });
-                return NumberTheoreticTransform<T>.CanNtt() ? ExpNtt(deg) : ExpAnyMod(deg);
+                return deg <= NumberTheoreticTransform<T>.NttLength() ? ExpNtt(deg) : ExpAnyMod(deg);
             }
 
             [凾(256)]

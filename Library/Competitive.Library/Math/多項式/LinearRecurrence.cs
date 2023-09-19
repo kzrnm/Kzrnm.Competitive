@@ -27,14 +27,14 @@ namespace Kzrnm.Competitive
             }
             if (P.Count == 0) return ret;
 
-            if (NumberTheoreticTransform<T>.CanNtt())
+            int N = 1 << InternalBit.CeilPow2(Q.Count);
+            if ((N << 1) <= NumberTheoreticTransform<T>.NttLength())
             {
-                int N = 1 << InternalBit.CeilPow2(Q.Count);
 
-                var prr = new MontgomeryModInt<T>[2 * N];
-                var qrr = new MontgomeryModInt<T>[2 * N];
-                var srr = new MontgomeryModInt<T>[2 * N];
-                var trr = new MontgomeryModInt<T>[2 * N];
+                var prr = new MontgomeryModInt<T>[(N << 1)];
+                var qrr = new MontgomeryModInt<T>[(N << 1)];
+                var srr = new MontgomeryModInt<T>[(N << 1)];
+                var trr = new MontgomeryModInt<T>[(N << 1)];
 
                 P.Coefficients.AsSpan().CopyTo(prr);
                 Q.Coefficients.AsSpan().CopyTo(qrr);
