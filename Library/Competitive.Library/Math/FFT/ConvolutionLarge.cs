@@ -135,7 +135,7 @@ namespace Kzrnm.Competitive
             return rt;
         }
 
-        static MontgomeryModInt<T>[] ConvolutionImpl<T>(ReadOnlySpan<MontgomeryModInt<T>> a, ReadOnlySpan<MontgomeryModInt<T>> b, T op = default) where T : struct, IStaticMod
+        static MontgomeryModInt<T>[] ConvolutionImpl<T>(ReadOnlySpan<MontgomeryModInt<T>> a, ReadOnlySpan<MontgomeryModInt<T>> b) where T : struct, IStaticMod
         {
             if (a.Length == 0 || b.Length == 0)
                 return Array.Empty<MontgomeryModInt<T>>();
