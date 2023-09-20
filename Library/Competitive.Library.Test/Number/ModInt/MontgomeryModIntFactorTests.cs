@@ -3,12 +3,12 @@ using System;
 
 namespace Kzrnm.Competitive.Testing.Number
 {
-    public class StaticModIntFactorTests
+    public class MontgomeryModIntFactorTests
     {
         [Fact]
         public void Combination()
         {
-            var factor = new StaticModIntFactor<Mod1000000007>(10);
+            var factor = new MontgomeryModIntFactor<Mod1000000007>(10);
             for (int i = 0; i <= 10; i++)
                 for (int j = 0; j <= 10; j++)
                     factor.Combination(i, j).Value.Should().Be((int)MathLibEx.Combination(i, j));
@@ -18,7 +18,7 @@ namespace Kzrnm.Competitive.Testing.Number
         [Fact]
         public void Homogeneous()
         {
-            var factor = new StaticModIntFactor<Mod1000000007>(30);
+            var factor = new MontgomeryModIntFactor<Mod1000000007>(30);
             for (int i = 0; i <= 10; i++)
                 for (int j = 0; j <= 20; j++)
                     factor.Homogeneous(i, j).Should().Be(factor.Combination(i + j - 1, j));
@@ -33,7 +33,7 @@ namespace Kzrnm.Competitive.Testing.Number
             for (int i = 1; i < fact.Length; i++)
                 fact[i] = fact[i - 1] * i;
 
-            var factor = new StaticModIntFactor<Mod1000000007>(10);
+            var factor = new MontgomeryModIntFactor<Mod1000000007>(10);
             for (int i = 0; i <= 10; i++)
                 for (int j = 0; j <= 10; j++)
                 {
@@ -48,7 +48,7 @@ namespace Kzrnm.Competitive.Testing.Number
         [Fact]
         public void Factorial()
         {
-            var factor = new StaticModIntFactor<Mod1000000007>(10);
+            var factor = new MontgomeryModIntFactor<Mod1000000007>(10);
             int expected = 1;
             factor.Factorial(0).Value.Should().Be(1);
             factor.FactorialInvers(0).Value.Should().Be(1);
@@ -56,7 +56,7 @@ namespace Kzrnm.Competitive.Testing.Number
             {
                 expected *= i;
                 factor.Factorial(i).Value.Should().Be(expected);
-                factor.FactorialInvers(i).Should().Be(StaticModInt<Mod1000000007>.One / expected);
+                factor.FactorialInvers(i).Should().Be(MontgomeryModInt<Mod1000000007>.One / expected);
             }
             factor.Invoking(factor => factor.Factorial(11)).Should().Throw<Exception>();
         }
@@ -64,7 +64,7 @@ namespace Kzrnm.Competitive.Testing.Number
         [Fact]
         public void DoubleFactorialOdd()
         {
-            var factor = new StaticModIntFactor<Mod1000000007>(10);
+            var factor = new MontgomeryModIntFactor<Mod1000000007>(10);
             int expected = 1;
             for (int i = 1; i <= 10; i += 2)
             {
@@ -77,7 +77,7 @@ namespace Kzrnm.Competitive.Testing.Number
         [Fact]
         public void DoubleFactorialEven()
         {
-            var factor = new StaticModIntFactor<Mod1000000007>(10);
+            var factor = new MontgomeryModIntFactor<Mod1000000007>(10);
             int expected = 1;
             factor.DoubleFactorial(0).Value.Should().Be(1);
             for (int i = 2; i <= 10; i += 2)
