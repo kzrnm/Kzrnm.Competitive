@@ -140,7 +140,7 @@ namespace Kzrnm.Competitive
             if (a.Length == 0 || b.Length == 0)
                 return Array.Empty<MontgomeryModInt<T>>();
 
-            if (a.Length > b.Length)
+            if (a.Length < b.Length)
             {
                 var tmp = a;
                 a = b;
@@ -162,7 +162,7 @@ namespace Kzrnm.Competitive
             {
                 var c = new MontgomeryModInt<T>[nttLength];
                 var start = i * half;
-                a.Slice(start, Math.Min(half, b.Length - start)).CopyTo(c);
+                b.Slice(start, Math.Min(half, b.Length - start)).CopyTo(c);
                 NumberTheoreticTransform<T>.Ntt(c);
                 bL[i] = c;
             }

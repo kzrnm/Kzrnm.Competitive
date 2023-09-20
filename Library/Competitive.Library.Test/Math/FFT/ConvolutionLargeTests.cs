@@ -13,26 +13,42 @@ namespace Kzrnm.Competitive.Testing.MathNS
             public bool IsPrime => true;
         }
 
-#if LIBRARY
-#pragma warning disable xUnit1004 // Test methods should not be skipped
-        [Fact(Skip = "重いので")]
-#pragma warning restore xUnit1004 // Test methods should not be skipped
-#else
-        [Fact]
-#endif
+        [HeavyFact]
+        public void Large998244353_2_23_Alpha()
+        {
+            var len = NumberTheoreticTransform<Mod998244353>.NttLength();
+            var a = Enumerable.Repeat(1, len).ToArray();
+            var b = Enumerable.Repeat((0, 1), 1000).SelectMany(t => new[] { t.Item1, t.Item2 }).ToArray();
+            var ret = ConvolutionLarge.Convolution<Mod998244353>(a, b);
+            ret[0].Should().Be(0);
+            for (int i = 1; i < 2000; i += 2)
+            {
+                var expected = (uint)(i + 1) >> 1;
+                ret[i].Should().Be(expected);
+                ret[i + 1].Should().Be(expected);
+                ret[ret.Length - i - 1].Should().Be(expected);
+                ret[ret.Length - i].Should().Be(expected);
+            }
+            ret.Skip(1999).SkipLast(1998).Should().AllBeEquivalentTo(1000);
+        }
+
+        [HeavyFact]
         public void Large998244353_2_24()
         {
             var len = NumberTheoreticTransform<Mod998244353>.NttLength();
             var a = Enumerable.Repeat(1, len).ToArray();
-            var ret = ConvolutionLarge.Convolution<Mod998244353>(a, a);
-            for (int i = 0; i < len; i++)
+            var b = Enumerable.Repeat((0, 1), len / 2).SelectMany(t => new[] { t.Item1, t.Item2 }).ToArray();
+            var ret = ConvolutionLarge.Convolution<Mod998244353>(a, b);
+            ret[0].Should().Be(0);
+            for (int i = 1; i < len; i += 2)
             {
-                var expected = (uint)(i + 1);
+                var expected = (uint)(i + 1) >> 1;
                 ret[i].Should().Be(expected);
+                ret[i + 1].Should().Be(expected);
                 ret[ret.Length - i - 1].Should().Be(expected);
+                ret[ret.Length - i].Should().Be(expected);
             }
         }
-
 
         static uint[] ConvNative(uint[] a, uint[] b, long mod)
         {
