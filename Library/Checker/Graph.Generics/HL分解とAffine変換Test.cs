@@ -68,7 +68,7 @@ namespace Kzrnm.Competitive.Graph
         }
     }
 
-    struct Op1 : ISegtreeOperator<Mod998244353AffineTransformation>
+    readonly struct Op1 : ISegtreeOperator<Mod998244353AffineTransformation>
     {
         [MethodImpl(256)]
         public Mod998244353AffineTransformation Operate(Mod998244353AffineTransformation x, Mod998244353AffineTransformation y)
@@ -76,7 +76,7 @@ namespace Kzrnm.Competitive.Graph
         private readonly static Mod998244353AffineTransformation identity = new Mod998244353AffineTransformation(1, 0);
         public Mod998244353AffineTransformation Identity => identity;
     }
-    struct Op2 : ISegtreeOperator<Mod998244353AffineTransformation>
+    readonly struct Op2 : ISegtreeOperator<Mod998244353AffineTransformation>
     {
         [MethodImpl(256)]
         public Mod998244353AffineTransformation Operate(Mod998244353AffineTransformation x, Mod998244353AffineTransformation y)

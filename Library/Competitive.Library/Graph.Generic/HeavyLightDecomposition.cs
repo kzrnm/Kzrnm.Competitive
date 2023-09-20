@@ -68,7 +68,11 @@ namespace Kzrnm.Competitive
         /// <param name="u">パスの始点</param>
         /// <param name="v">パスの終点</param>
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
-        /// <param name="f">クエリ関数。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</param>
+        /// <param name="f">
+        /// <para>クエリ関数。</para>
+        /// <para>引数はオイラーツアー開始・終了のインデックス。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</para>
+        /// <para>上りも下りも葉側が開放端になっていることに注意。</para>
+        /// </param>
         /// <remarks>
         /// <para>計算量(<paramref name="f"/> を O(F), 木のノード数を n とするとき): O(F log n)</para>
         /// </remarks>
@@ -82,7 +86,11 @@ namespace Kzrnm.Competitive
         /// <param name="u">パスの始点</param>
         /// <param name="v">パスの終点</param>
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
-        /// <param name="f">クエリ関数オペレータ。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</param>
+        /// <param name="f">
+        /// <para>クエリ関数オペレータ。</para>
+        /// <para>引数はオイラーツアー開始・終了のインデックス。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</para>
+        /// <para>上りも下りも葉側が開放端になっていることに注意。</para>
+        /// </param>
         /// <remarks>
         /// <para>計算量(<paramref name="f"/> を O(F), 木のノード数を n とするとき): O(F log n)</para>
         /// </remarks>
@@ -100,7 +108,11 @@ namespace Kzrnm.Competitive
         /// <param name="u">パスの始点</param>
         /// <param name="v">パスの終点</param>
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
-        /// <param name="f">クエリ関数オペレータ。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</param>
+        /// <param name="f">
+        /// <para>クエリ関数オペレータ。</para>
+        /// <para>引数はオイラーツアー開始・終了のインデックス。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</para>
+        /// <para>上りも下りも葉側が開放端になっていることに注意。</para>
+        /// </param>
         /// <remarks>
         /// <para>計算量(<paramref name="f"/> を O(F), 木のノード数を n とするとき): O(log n)</para>
         /// </remarks>
@@ -118,7 +130,11 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <param name="u">部分木の根</param>
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
-        /// <param name="f">クエリ関数。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</param>
+        /// <param name="f">
+        /// <para>クエリ関数。</para>
+        /// <para>引数はオイラーツアー開始・終了のインデックス。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</para>
+        /// <para>上りも下りも葉側が開放端になっていることに注意。</para>
+        /// </param>
         /// <remarks>
         /// <para>計算量(<paramref name="f"/> を O(F) とするとき): O(F)</para>
         /// </remarks>
@@ -131,7 +147,11 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <param name="u">部分木の根</param>
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
-        /// <param name="f">クエリ関数オペレータ。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</param>
+        /// <param name="f">
+        /// <para>クエリ関数オペレータ。</para>
+        /// <para>引数はオイラーツアー開始・終了のインデックス。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</para>
+        /// <para>上りも下りも葉側が開放端になっていることに注意。</para>
+        /// </param>
         /// <remarks>
         /// <para>計算量(<paramref name="f"/> を O(F) とするとき): O(F)</para>
         /// </remarks>
@@ -145,7 +165,11 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <param name="u">部分木の根</param>
         /// <param name="vertex">trueなら頂点クエリ、falseなら辺クエリ</param>
-        /// <param name="f">クエリ関数オペレータ。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</param>
+        /// <param name="f">
+        /// <para>クエリ関数オペレータ。</para>
+        /// <para>引数はオイラーツアー開始・終了のインデックス。<see cref="down"/> の順に格納した Segtree などの範囲演算をさせると良い。</para>
+        /// <para>上りも下りも葉側が開放端になっていることに注意。</para>
+        /// </param>
         /// <remarks>
         /// <para>計算量(<paramref name="f"/> を O(F) とするとき): O(F)</para>
         /// </remarks>
