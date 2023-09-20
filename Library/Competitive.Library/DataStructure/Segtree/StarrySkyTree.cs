@@ -8,6 +8,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive.DataStructure
 {
     [DebuggerTypeProxy(typeof(StarrySkyTree<,>.DebugView))]
+    [Obsolete("LazySegtree を使うべき")]
     public class StarrySkyTree<T, TOp>
         where T : struct
         where TOp : struct, ILazySegtreeOperator<T, T>
@@ -103,18 +104,12 @@ namespace Kzrnm.Competitive.DataStructure
             }
         }
     }
-    public struct StarrySkyTreeOperator : ILazySegtreeOperator<long, long>
+    internal readonly struct StarrySkyTreeOperator : ILazySegtreeOperator<long, long>
     {
         public long Identity => 0;
-
         public long FIdentity => 0;
-
-        [凾(256)]
-        public long Composition(long f, long g) => f + g;
-        [凾(256)]
-        public long Mapping(long f, long x) => x + f;
-
-        [凾(256)]
-        public long Operate(long x, long y) => Math.Max(x, y);
+        [凾(256)] public long Composition(long f, long g) => f + g;
+        [凾(256)] public long Mapping(long f, long x) => x + f;
+        [凾(256)] public long Operate(long x, long y) => Math.Max(x, y);
     }
 }

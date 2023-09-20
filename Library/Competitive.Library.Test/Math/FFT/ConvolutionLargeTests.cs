@@ -27,7 +27,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 ret[i].Should().Be(expected);
                 ret[i + 1].Should().Be(expected);
                 ret[ret.Length - i - 1].Should().Be(expected);
-                ret[ret.Length - i].Should().Be(expected);
+                ret[^i].Should().Be(expected);
             }
             ret.Skip(1999).SkipLast(1998).Should().AllBeEquivalentTo(1000);
         }
@@ -46,7 +46,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 ret[i].Should().Be(expected);
                 ret[i + 1].Should().Be(expected);
                 ret[ret.Length - i - 1].Should().Be(expected);
-                ret[ret.Length - i].Should().Be(expected);
+                ret[^i].Should().Be(expected);
             }
         }
 

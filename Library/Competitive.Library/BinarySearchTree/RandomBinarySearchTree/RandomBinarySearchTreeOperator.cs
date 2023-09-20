@@ -35,7 +35,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <typeparam name="T">モノイド</typeparam>
         /// <typeparam name="TOp">モノイドの操作</typeparam>
-        public struct RandomBinarySearchTreeNodeOperator<T, TOp> : IBbstImplOperator<T, RandomBinarySearchTreeNode<T>>
+        public readonly struct RandomBinarySearchTreeNodeOperator<T, TOp> : IBbstImplOperator<T, RandomBinarySearchTreeNode<T>>
             where TOp : struct, ISegtreeOperator<T>
         {
             public static TOp op => default;

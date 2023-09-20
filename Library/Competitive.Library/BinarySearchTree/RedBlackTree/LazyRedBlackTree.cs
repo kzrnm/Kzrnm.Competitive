@@ -125,7 +125,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public struct TCp : ICopyOperator<LazyRedBlackTreeNode<T, F>>
+        public readonly struct TCp : ICopyOperator<LazyRedBlackTreeNode<T, F>>
         {
             [凾(256)]
             public LazyRedBlackTreeNode<T, F> Copy(LazyRedBlackTreeNode<T, F> t) => t;

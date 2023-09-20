@@ -78,7 +78,7 @@ namespace Kzrnm.Competitive
             [凾(256)]
             TNode Propagate(ref TNode t);
         }
-        public struct SingleBbstOp<T> : IReversibleBinarySearchTreeOperator<T, T>, ISegtreeOperator<T>
+        public readonly struct SingleBbstOp<T> : IReversibleBinarySearchTreeOperator<T, T>, ISegtreeOperator<T>
         {
             public T Identity => default;
             public T FIdentity => default;

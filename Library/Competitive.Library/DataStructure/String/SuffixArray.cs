@@ -75,7 +75,7 @@ namespace Kzrnm.Competitive
                 h = new int[1];
             rmq = new SparseTable<int, MinOp>(h);
         }
-        private struct MinOp : ISparseTableOperator<int>
+        private readonly struct MinOp : ISparseTableOperator<int>
         {
             [凾(256)]
             public int Operate(int x, int y) => Math.Min(x, y);

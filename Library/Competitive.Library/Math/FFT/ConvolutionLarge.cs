@@ -179,7 +179,7 @@ namespace Kzrnm.Competitive
                 {
                     var start = i * half;
                     a.Slice(start, Math.Min(half, a.Length - start)).CopyTo(aa);
-                    aa.Slice(Math.Min(half, a.Length - start)).Clear();
+                    aa[Math.Min(half, a.Length - start)..].Clear();
                     NumberTheoreticTransform<T>.Ntt(aa);
 
                     for (int j = 0; j < bL.Length; j++)

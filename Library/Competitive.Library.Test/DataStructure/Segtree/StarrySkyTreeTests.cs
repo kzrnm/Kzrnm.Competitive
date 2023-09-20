@@ -1,7 +1,9 @@
 using Kzrnm.Competitive.DataStructure;
+using System;
 
 namespace Kzrnm.Competitive.Testing.DataStructure
 {
+    [Obsolete]
     public class StarrySkyTreeTests
     {
         const int N = 1000;
