@@ -11,12 +11,14 @@ namespace Kzrnm.Competitive
     // https://ei1333.github.io/library/math/number-theory/euler-phi-table.hpp
 
     /// <summary>
-    /// オイラーの φ 関数
+    /// <para>オイラーの φ 関数</para>
+    /// <para>φ(n): n 以下で n と互いに素な数の数</para>
     /// </summary>
     public static class EulerPhi
     {
         /// <summary>
         /// <para><paramref name="n"/> 以下の整数の φ(<paramref name="n"/>) の値</para>
+        /// <para>φ(<paramref name="n"/>): <paramref name="n"/> 以下で <paramref name="n"/> と互いに素な数の数</para>
         /// <para>計算量: O(n log log n)</para>
         /// </summary>
         [凾(256)]
@@ -33,6 +35,7 @@ namespace Kzrnm.Competitive
         }
         /// <summary>
         /// <para>φ(<paramref name="n"/>) の値</para>
+        /// <para>φ(<paramref name="n"/>): <paramref name="n"/> 以下で <paramref name="n"/> と互いに素な数の数</para>
         /// <para>計算量: O(√n)</para>
         /// </summary>
         [凾(256)]
