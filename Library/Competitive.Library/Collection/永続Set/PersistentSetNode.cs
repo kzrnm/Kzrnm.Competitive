@@ -160,64 +160,132 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 mutated = false;
                 return this;
             }
-            else
+
+            Debug.Assert(left != null && right != null);
+            var result = this;
+            int compare = comparer.Compare(key, op.GetCompareKey(value));
+            if (compare == 0)
             {
-                Debug.Assert(left != null && right != null);
-                var result = this;
-                int compare = comparer.Compare(key, op.GetCompareKey(value));
-                if (compare == 0)
+                // We have a match.
+                mutated = true;
+
+                // If this is a leaf, just remove it
+                // by returning Empty.  If we have only one child,
+                // replace the node with the child.
+                if (right.IsEmpty && left.IsEmpty)
                 {
-                    // We have a match.
-                    mutated = true;
-
-                    // If this is a leaf, just remove it
-                    // by returning Empty.  If we have only one child,
-                    // replace the node with the child.
-                    if (right.IsEmpty && left.IsEmpty)
-                    {
-                        result = EmptyNode;
-                    }
-                    else if (right.IsEmpty && !left.IsEmpty)
-                    {
-                        result = left;
-                    }
-                    else if (!right.IsEmpty && left.IsEmpty)
-                    {
-                        result = right;
-                    }
-                    else
-                    {
-                        // We have two children. Remove the next-highest node and replace
-                        // this node with it.
-                        var successor = right;
-                        while (!successor.left.IsEmpty)
-                        {
-                            successor = successor.left;
-                        }
-
-                        var newRight = right.Remove(op.GetCompareKey(successor.value), comparer, out _);
-                        result = successor.Mutate(left: left, right: newRight);
-                    }
+                    result = EmptyNode;
                 }
-                else if (compare < 0)
+                else if (right.IsEmpty && !left.IsEmpty)
                 {
-                    var newLeft = left.Remove(key, comparer, out mutated);
-                    if (mutated)
-                    {
-                        result = Mutate(left: newLeft);
-                    }
+                    result = left;
+                }
+                else if (!right.IsEmpty && left.IsEmpty)
+                {
+                    result = right;
                 }
                 else
                 {
-                    var newRight = right.Remove(key, comparer, out mutated);
-                    if (mutated)
+                    // We have two children. Remove the next-highest node and replace
+                    // this node with it.
+                    var successor = right;
+                    while (!successor.left.IsEmpty)
                     {
-                        result = Mutate(right: newRight);
+                        successor = successor.left;
                     }
-                }
 
-                return result.IsEmpty ? result : MakeBalanced(result);
+                    var newRight = right.Remove(op.GetCompareKey(successor.value), comparer, out _);
+                    result = successor.Mutate(left: left, right: newRight);
+                }
             }
+            else if (compare < 0)
+            {
+                var newLeft = left.Remove(key, comparer, out mutated);
+                if (mutated)
+                {
+                    result = Mutate(left: newLeft);
+                }
+            }
+            else
+            {
+                var newRight = right.Remove(key, comparer, out mutated);
+                if (mutated)
+                {
+                    result = Mutate(right: newRight);
+                }
+            }
+
+            return result.IsEmpty ? result : MakeBalanced(result);
+        }
+
+        /// <summary>
+        /// 最大値を削除します。
+        /// </summary>
+        /// <returns>The new tree.</returns>
+        internal PersistentSetNode<T, TKey, TNOp> RemoveMax(out PersistentSetNode<T, TKey, TNOp> maxNode)
+        {
+            if (IsEmpty)
+            {
+                maxNode = this;
+                return this;
+            }
+            Debug.Assert(left != null && right != null);
+
+            PersistentSetNode<T, TKey, TNOp> result;
+            if (right.IsEmpty)
+            {
+                // If this is a leaf, just remove it
+                // by returning Empty.  If we have only one child,
+                // replace the node with the child.
+
+                maxNode = this;
+
+                if (left.IsEmpty)
+                    result = EmptyNode;
+                else
+                    result = left;
+            }
+            else
+            {
+                result = Mutate(right: right.RemoveMax(out maxNode));
+            }
+
+            return result.IsEmpty ? result : MakeBalanced(result);
+        }
+
+        /// <summary>
+        /// 最小値を削除します。
+        /// </summary>
+        /// <returns>The new tree.</returns>
+        internal PersistentSetNode<T, TKey, TNOp> RemoveMin(out PersistentSetNode<T, TKey, TNOp> minNode)
+        {
+            if (IsEmpty)
+            {
+                minNode = this;
+                return this;
+            }
+            Debug.Assert(left != null && right != null);
+
+            PersistentSetNode<T, TKey, TNOp> result;
+            if (left.IsEmpty)
+            {
+                // If this is a leaf, just remove it
+                // by returning Empty.  If we have only one child,
+                // replace the node with the child.
+
+                minNode = this;
+
+                if (right.IsEmpty)
+                    result = EmptyNode;
+                else
+                    result = right;
+            }
+            else
+            {
+                result = Mutate(left: left.RemoveMin(out minNode));
+            }
+
+            return result.IsEmpty ? result : MakeBalanced(result);
         }
 
         /// <summary>

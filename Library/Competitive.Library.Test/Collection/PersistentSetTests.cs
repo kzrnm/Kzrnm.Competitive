@@ -75,5 +75,39 @@ namespace Kzrnm.Competitive.Testing.Collection
                 add2.Should().Equal(Enumerable.Range(1, i).Append(i).Append(i).OrderBy(i => i).Select(i => KeyValuePair.Create(i, i.ToString())).ToArray());
             }
         }
+
+
+        [Fact]
+        public void RemoveMinMax()
+        {
+            var sd = PersistentSetDictionary<int, int>.Empty(isMulti: true);
+            sd.Should().Equal();
+            sd = sd.Add(1, 1);
+            sd = sd.Add(1, 2);
+            sd = sd.Add(2, 1);
+            sd = sd.Add(2, 2);
+            sd.Should().Equal(new[] {
+                KeyValuePair.Create(1, 2),
+                KeyValuePair.Create(1, 1),
+                KeyValuePair.Create(2, 2),
+                KeyValuePair.Create(2, 1),
+            });
+
+            sd.Min.Should().Be(KeyValuePair.Create(1, 2));
+            sd.RemoveMin(out var min).Should().Equal(new[] {
+                KeyValuePair.Create(1, 1),
+                KeyValuePair.Create(2, 2),
+                KeyValuePair.Create(2, 1),
+            });
+            min.Should().Be(KeyValuePair.Create(1, 2));
+
+            sd.Max.Should().Be(KeyValuePair.Create(2, 1));
+            sd.RemoveMax(out var max).Should().Equal(new[] {
+                KeyValuePair.Create(1, 2),
+                KeyValuePair.Create(1, 1),
+                KeyValuePair.Create(2, 2),
+            });
+            max.Should().Be(KeyValuePair.Create(2, 1));
+        }
     }
 }

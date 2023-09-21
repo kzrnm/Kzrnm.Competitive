@@ -143,6 +143,41 @@ namespace Kzrnm.Competitive
             return Wrap(_root.Remove(value, _comparer, out _));
         }
 
+
+        /// <summary>
+        /// 最大値を削除します。
+        /// </summary>
+        /// <returns>The new tree.</returns>
+        public TSet RemoveMax(out T maxValue)
+        {
+            var rt = Wrap(_root.RemoveMax(out var n));
+            maxValue = n.value;
+            return rt;
+        }
+
+        /// <summary>
+        /// 最小値を削除します。
+        /// </summary>
+        /// <returns>The new tree.</returns>
+        public TSet RemoveMin(out T minValue)
+        {
+            var rt = Wrap(_root.RemoveMin(out var n));
+            minValue = n.value;
+            return rt;
+        }
+
+        /// <summary>
+        /// 最大値を削除します。
+        /// </summary>
+        /// <returns>The new tree.</returns>
+        public TSet RemoveMax() => RemoveMax(out _);
+
+        /// <summary>
+        /// 最小値を削除します。
+        /// </summary>
+        /// <returns>The new tree.</returns>
+        public TSet RemoveMin() => RemoveMin(out _);
+
         /// <summary>
         /// Searches the set for a given value and returns the equal value it finds, if any.
         /// </summary>
