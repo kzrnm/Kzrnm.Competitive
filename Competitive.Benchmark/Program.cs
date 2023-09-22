@@ -80,7 +80,7 @@ public class Benchmark
     [BenchmarkCategory("ListAdd")]
     public long NewListAdd()
     {
-        var list = new SpanList<long>(new long[N]);
+        var list = new PoolList<long>(N);
         for (int i = 0; i < N; i++)
             list.Add(rnd.Next());
         return list[^1];
@@ -90,7 +90,7 @@ public class Benchmark
     [BenchmarkCategory("ListAdd")]
     public long StackListAdd()
     {
-        var list = new SpanList<long>(stackalloc long[N]);
+        var list = new PoolList<long>(N);
         for (int i = 0; i < N; i++)
             list.Add(rnd.Next());
         return list[^1];

@@ -34,7 +34,7 @@ namespace Kzrnm.Competitive
             , IUnaryNumOperator<T>
             , ICompareOperator<T>
         {
-            struct MaxFenwickTreeOperator : IAdditionOperator<(T, int)>, ISubtractOperator<(T, int)>
+            readonly struct MaxFenwickTreeOperator : IAdditionOperator<(T, int)>, ISubtractOperator<(T, int)>
             {
                 [凾(256)]
                 public (T, int) Add((T, int) x, (T, int) y)
@@ -54,8 +54,7 @@ namespace Kzrnm.Competitive
             public static (int Index1, int Index2)[] Solve((T, T)[] ps)
             {
                 var op = new TOp();
-                var edges = new (int Index1, int Index2)[ps.Length * 4];
-                var edgesList = new SpanList<(int Index1, int Index2)>(edges);
+                using var edgesList = new PoolList<(int Index1, int Index2)>(ps.Length * 4);
                 var minf = (op.MinValue, 0);
                 ps = ((T, T)[])ps.Clone();
                 for (int ph = 0; ph < 4; ph++)
@@ -87,7 +86,7 @@ namespace Kzrnm.Competitive
                         for (int i = 0; i < ps.Length; i++)
                             ps[i].Item2 = op.Minus(ps[i].Item2);
                 }
-                Array.Sort(edges.Select(new Dist(ps).Convert).ToArray(), edges, 0, edgesList.Count);
+                Array.Sort(edgesList.data.Select(new Dist(ps).Convert).ToArray(), edgesList.data, 0, edgesList.Count);
 
                 var uf = new UnionFind(ps.Length);
                 var res = new (int Index1, int Index2)[ps.Length - 1];
@@ -100,9 +99,9 @@ namespace Kzrnm.Competitive
                 Debug.Assert(ri == res.Length);
                 return res;
             }
-            struct Dist : IComparer<(int Index1, int Index2)>
+            readonly struct Dist : IComparer<(int Index1, int Index2)>
             {
-                public (T, T)[] ps;
+                readonly (T, T)[] ps;
                 public Dist((T, T)[] ps) { this.ps = ps; }
 
                 [凾(256)]

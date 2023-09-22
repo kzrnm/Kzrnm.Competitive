@@ -12,7 +12,7 @@ namespace Kzrnm.Competitive
         public static (T Value, int Count)[] CompressCount<T>(this IEnumerable<T> collection)
         {
             var e = collection.GetEnumerator();
-            var list = new SimpleList<(T Value, int Count)>();
+            using var list = new PoolList<(T Value, int Count)>();
             if (!e.MoveNext()) return Array.Empty<(T, int)>();
             var cur = e.Current;
             list.Add((cur, 1));

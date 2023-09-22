@@ -47,8 +47,7 @@ namespace Kzrnm.Competitive
             /// <param name="ps">座標の一覧</param>
             public static (int Index1, int Index2)[] Solve((T, T)[] ps)
             {
-                var edges = new (int Index1, int Index2)[ps.Length * 4];
-                var edgesList = new SpanList<(int Index1, int Index2)>(edges);
+                using var edgesList = new PoolList<(int Index1, int Index2)>(ps.Length * 4);
                 var minf = MaxFw.AdditiveIdentity;
                 ps = ((T, T)[])ps.Clone();
                 for (int ph = 0; ph < 4; ph++)
@@ -76,7 +75,7 @@ namespace Kzrnm.Competitive
                         for (int i = 0; i < ps.Length; i++)
                             ps[i].Item2 = -ps[i].Item2;
                 }
-                Array.Sort(edges.Select(new Dist(ps).Convert).ToArray(), edges, 0, edgesList.Count);
+                edgesList.data.Select(new Dist(ps).Convert).ToArray().AsSpan().Sort(edgesList.AsSpan());
 
                 var uf = new UnionFind(ps.Length);
                 var res = new (int Index1, int Index2)[ps.Length - 1];
@@ -89,9 +88,9 @@ namespace Kzrnm.Competitive
                 Debug.Assert(ri == res.Length);
                 return res;
             }
-            struct Dist : IComparer<(int Index1, int Index2)>
+            readonly struct Dist : IComparer<(int Index1, int Index2)>
             {
-                public (T, T)[] ps;
+                readonly (T, T)[] ps;
                 public Dist((T, T)[] ps) { this.ps = ps; }
 
                 [凾(256)]
