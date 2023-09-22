@@ -138,9 +138,37 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)] public int LowerBoundIndex<Tv>(Tv item) where Tv : IComparable<TKey> => BinarySearch(new C<Tv>(item), new SetLower()).index;
         /// <summary>
-        /// <paramref name="item"/> 以上の最初の要素を返します。
+        /// <paramref name="item"/> 以上の最初の要素があれば <paramref name="value"/> で返します。
         /// </summary>
-        [凾(256)] public KeyValuePair<TKey, TValue> LowerBoundItem<Tv>(Tv item) where Tv : IComparable<TKey> => BinarySearch(new C<Tv>(item), new SetLower()).node.Pair;
+        /// <returns>要素を取得できたかどうか</returns>
+        [凾(256)]
+        public bool TryGetLowerBound<Tv>(Tv item, out KeyValuePair<TKey, TValue> value) where Tv : IComparable<TKey>
+        {
+            if (BinarySearch(new C<Tv>(item), new SetLower()).node is { } n)
+            {
+                value = n.Pair;
+                return true;
+            }
+            value = default;
+            return false;
+        }
+        /// <summary>
+        /// <paramref name="item"/> 以上の最初の要素があれば <paramref name="value"/> で返します。
+        /// </summary>
+        /// <returns>要素を取得できたかどうか</returns>
+        [凾(256)]
+        public bool TryGetLowerBound<Tv>(Tv item, out TKey key, out TValue value) where Tv : IComparable<TKey>
+        {
+            if (BinarySearch(new C<Tv>(item), new SetLower()).node is { } n)
+            {
+                key = n.Key;
+                value = n.Value;
+                return true;
+            }
+            key = default;
+            value = default;
+            return false;
+        }
         /// <summary>
         /// <paramref name="item"/> を超える最初のノードを返します。
         /// </summary>
@@ -150,9 +178,37 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)] public int UpperBoundIndex<Tv>(Tv item) where Tv : IComparable<TKey> => BinarySearch(new C<Tv>(item), new SetUpper()).index;
         /// <summary>
-        /// <paramref name="item"/> を超える最初の要素を返します。
+        /// <paramref name="item"/> を超える最初の要素があれば <paramref name="value"/> で返します。
         /// </summary>
-        [凾(256)] public KeyValuePair<TKey, TValue> UpperBoundItem<Tv>(Tv item) where Tv : IComparable<TKey> => BinarySearch(new C<Tv>(item), new SetUpper()).node.Pair;
+        /// <returns>要素を取得できたかどうか</returns>
+        [凾(256)]
+        public bool TryGetUpperBound<Tv>(Tv item, out KeyValuePair<TKey, TValue> value) where Tv : IComparable<TKey>
+        {
+            if (BinarySearch(new C<Tv>(item), new SetUpper()).node is { } n)
+            {
+                value = n.Pair;
+                return true;
+            }
+            value = default;
+            return false;
+        }
+        /// <summary>
+        /// <paramref name="item"/> を超える最初の要素があれば <paramref name="value"/> で返します。
+        /// </summary>
+        /// <returns>要素を取得できたかどうか</returns>
+        [凾(256)]
+        public bool TryGetUpperBound<Tv>(Tv item, out TKey key, out TValue value) where Tv : IComparable<TKey>
+        {
+            if (BinarySearch(new C<Tv>(item), new SetUpper()).node is { } n)
+            {
+                key = n.Key;
+                value = n.Value;
+                return true;
+            }
+            key = default;
+            value = default;
+            return false;
+        }
 
         /// <summary>
         /// <paramref name="item"/> 以下の最後のノードを返します。
@@ -163,9 +219,37 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)] public int ReverseLowerBoundIndex<Tv>(Tv item) where Tv : IComparable<TKey> => BinarySearch(new C<Tv>(item), new SetLowerRev()).index;
         /// <summary>
-        /// <paramref name="item"/> 以下の最後の要素を返します。
+        /// <paramref name="item"/> 以下の最後の要素があれば <paramref name="value"/> で返します。
         /// </summary>
-        [凾(256)] public KeyValuePair<TKey, TValue> ReverseLowerBoundItem<Tv>(Tv item) where Tv : IComparable<TKey> => BinarySearch(new C<Tv>(item), new SetLowerRev()).node.Pair;
+        /// <returns>要素を取得できたかどうか</returns>
+        [凾(256)]
+        public bool TryGetReverseLowerBound<Tv>(Tv item, out KeyValuePair<TKey, TValue> value) where Tv : IComparable<TKey>
+        {
+            if (BinarySearch(new C<Tv>(item), new SetLowerRev()).node is { } n)
+            {
+                value = n.Pair;
+                return true;
+            }
+            value = default;
+            return false;
+        }
+        /// <summary>
+        /// <paramref name="item"/> 以下の最後の要素があれば <paramref name="value"/> で返します。
+        /// </summary>
+        /// <returns>要素を取得できたかどうか</returns>
+        [凾(256)]
+        public bool TryGetReverseLowerBound<Tv>(Tv item, out TKey key, out TValue value) where Tv : IComparable<TKey>
+        {
+            if (BinarySearch(new C<Tv>(item), new SetLowerRev()).node is { } n)
+            {
+                key = n.Key;
+                value = n.Value;
+                return true;
+            }
+            key = default;
+            value = default;
+            return false;
+        }
 
         /// <summary>
         /// <paramref name="item"/> 未満の最後のノードを返します。
@@ -176,9 +260,37 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)] public int ReverseUpperBoundIndex<Tv>(Tv item) where Tv : IComparable<TKey> => BinarySearch(new C<Tv>(item), new SetUpperRev()).index;
         /// <summary>
-        /// <paramref name="item"/> 未満の最後の要素を返します。
+        /// <paramref name="item"/> 未満の最後の要素があれば <paramref name="value"/> で返します。
         /// </summary>
-        [凾(256)] public KeyValuePair<TKey, TValue> ReverseUpperBoundItem<Tv>(Tv item) where Tv : IComparable<TKey> => BinarySearch(new C<Tv>(item), new SetUpperRev()).node.Pair;
+        /// <returns>要素を取得できたかどうか</returns>
+        [凾(256)]
+        public bool TryGetReverseUpperBound<Tv>(Tv item, out KeyValuePair<TKey, TValue> value) where Tv : IComparable<TKey>
+        {
+            if (BinarySearch(new C<Tv>(item), new SetUpperRev()).node is { } n)
+            {
+                value = n.Pair;
+                return true;
+            }
+            value = default;
+            return false;
+        }
+        /// <summary>
+        /// <paramref name="item"/> 未満の最後の要素があれば <paramref name="value"/> で返します。
+        /// </summary>
+        /// <returns>要素を取得できたかどうか</returns>
+        [凾(256)]
+        public bool TryGetReverseUpperBound<Tv>(Tv item, out TKey key, out TValue value) where Tv : IComparable<TKey>
+        {
+            if (BinarySearch(new C<Tv>(item), new SetUpperRev()).node is { } n)
+            {
+                key = n.Key;
+                value = n.Value;
+                return true;
+            }
+            key = default;
+            value = default;
+            return false;
+        }
         #endregion Search
 
 #if !LIBRARY

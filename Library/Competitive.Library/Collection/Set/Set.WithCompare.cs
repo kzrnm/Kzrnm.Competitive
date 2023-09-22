@@ -50,7 +50,7 @@ namespace Kzrnm.Competitive
             [凾(256)] public Node Create(T item, NodeColor color) => new Node(item, color);
             [凾(256)] public T GetValue(Node node) => node.Value;
             [凾(256)] public C GetCompareKey(T item) => new C(op, item);
-            public int Compare(T x, T y) => op.Compare(x, y);
+            [凾(256)] public int Compare(T x, T y) => op.Compare(x, y);
         }
         #endregion Operators
     }

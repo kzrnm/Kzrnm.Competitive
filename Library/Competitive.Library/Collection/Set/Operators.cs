@@ -25,25 +25,25 @@ namespace Kzrnm.Competitive.Internal
         /// </summary>
         bool IntoLeft(int order);
     }
-    public struct SetLower : ISetBinarySearchOperator
+    public readonly struct SetLower : ISetBinarySearchOperator
     {
         public bool ReturnLeft => false;
         [凾(256)]
         public bool IntoLeft(int order) => order <= 0;
     }
-    public struct SetUpper : ISetBinarySearchOperator
+    public readonly struct SetUpper : ISetBinarySearchOperator
     {
         public bool ReturnLeft => false;
         [凾(256)]
         public bool IntoLeft(int order) => order < 0;
     }
-    public struct SetLowerRev : ISetBinarySearchOperator
+    public readonly struct SetLowerRev : ISetBinarySearchOperator
     {
         public bool ReturnLeft => true;
         [凾(256)]
         public bool IntoLeft(int order) => order < 0;
     }
-    public struct SetUpperRev : ISetBinarySearchOperator
+    public readonly struct SetUpperRev : ISetBinarySearchOperator
     {
         public bool ReturnLeft => true;
         [凾(256)]

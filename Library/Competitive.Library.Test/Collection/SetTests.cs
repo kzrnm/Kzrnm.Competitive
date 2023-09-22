@@ -48,23 +48,34 @@ namespace Kzrnm.Competitive.Testing.Collection
             set.FindNodeReverseUpperBound(5).Value.Should().Be(4);
             set.FindNodeReverseUpperBound(5).Value.Should().Be(4);
 
-            set.LowerBoundItem(4).Should().Be(4);
-            set.UpperBoundItem(4).Should().Be(6);
-            set.ReverseLowerBoundItem(4).Should().Be(4);
-            set.ReverseUpperBoundItem(4).Should().Be(3);
-            set.LowerBoundItem(5).Should().Be(6);
-            set.UpperBoundItem(5).Should().Be(6);
-            set.ReverseLowerBoundItem(5).Should().Be(4);
-            set.ReverseUpperBoundItem(5).Should().Be(4);
+            int v;
+            set.TryGetLowerBound(4, out v).Should().BeTrue(); v.Should().Be(4);
+            set.TryGetUpperBound(4, out v).Should().BeTrue(); v.Should().Be(6);
+            set.TryGetReverseLowerBound(4, out v).Should().BeTrue(); v.Should().Be(4);
+            set.TryGetReverseUpperBound(4, out v).Should().BeTrue(); v.Should().Be(3);
+            set.TryGetLowerBound(5, out v).Should().BeTrue(); v.Should().Be(6);
+            set.TryGetUpperBound(5, out v).Should().BeTrue(); v.Should().Be(6);
+            set.TryGetReverseLowerBound(5, out v).Should().BeTrue(); v.Should().Be(4);
+            set.TryGetReverseUpperBound(5, out v).Should().BeTrue(); v.Should().Be(4);
 
             set.LowerBoundIndex(4).Should().Be(3);
             set.UpperBoundIndex(4).Should().Be(4);
-            set.ReverseLowerBoundItem(4).Should().Be(4);
-            set.ReverseUpperBoundItem(4).Should().Be(3);
+            set.TryGetReverseLowerBound(4, out v).Should().BeTrue(); v.Should().Be(4);
+            set.TryGetReverseUpperBound(4, out v).Should().BeTrue(); v.Should().Be(3);
             set.LowerBoundIndex(5).Should().Be(4);
             set.UpperBoundIndex(5).Should().Be(4);
-            set.ReverseLowerBoundItem(5).Should().Be(4);
-            set.ReverseUpperBoundItem(5).Should().Be(4);
+            set.TryGetReverseLowerBound(5, out v).Should().BeTrue(); v.Should().Be(4);
+            set.TryGetReverseUpperBound(5, out v).Should().BeTrue(); v.Should().Be(4);
+
+            set.TryGetLowerBound(9, out _).Should().BeTrue();
+            set.TryGetLowerBound(10, out _).Should().BeFalse();
+            set.TryGetUpperBound(8, out _).Should().BeTrue();
+            set.TryGetUpperBound(9, out _).Should().BeFalse();
+
+            set.TryGetReverseLowerBound(1, out _).Should().BeTrue();
+            set.TryGetReverseLowerBound(0, out _).Should().BeFalse();
+            set.TryGetReverseUpperBound(2, out _).Should().BeTrue();
+            set.TryGetReverseUpperBound(1, out _).Should().BeFalse();
 
             set.FindNodeLowerBound(10).Should().BeNull();
             set.FindNodeUpperBound(10).Should().BeNull();
@@ -113,10 +124,21 @@ namespace Kzrnm.Competitive.Testing.Collection
             set.FindNodeReverseLowerBound(3).Value.Should().Be(3);
             set.FindNodeReverseUpperBound(3).Value.Should().Be(2);
 
-            set.LowerBoundItem(3).Should().Be(3);
-            set.UpperBoundItem(3).Should().Be(4);
-            set.ReverseLowerBoundItem(3).Should().Be(3);
-            set.ReverseUpperBoundItem(3).Should().Be(2);
+            int v;
+            set.TryGetLowerBound(3, out v).Should().BeTrue(); v.Should().Be(3);
+            set.TryGetUpperBound(3, out v).Should().BeTrue(); v.Should().Be(4);
+            set.TryGetReverseLowerBound(3, out v).Should().BeTrue(); v.Should().Be(3);
+            set.TryGetReverseUpperBound(3, out v).Should().BeTrue(); v.Should().Be(2);
+
+            set.TryGetLowerBound(9, out _).Should().BeTrue();
+            set.TryGetLowerBound(10, out _).Should().BeFalse();
+            set.TryGetUpperBound(8, out _).Should().BeTrue();
+            set.TryGetUpperBound(9, out _).Should().BeFalse();
+
+            set.TryGetReverseLowerBound(1, out _).Should().BeTrue();
+            set.TryGetReverseLowerBound(0, out _).Should().BeFalse();
+            set.TryGetReverseUpperBound(2, out _).Should().BeTrue();
+            set.TryGetReverseUpperBound(1, out _).Should().BeFalse();
 
             set.LowerBoundIndex(3).Should().Be(4);
             set.UpperBoundIndex(3).Should().Be(6);
@@ -151,10 +173,21 @@ namespace Kzrnm.Competitive.Testing.Collection
             set.FindNodeLowerBound(5).Value.Should().Be(4);
             set.FindNodeUpperBound(5).Value.Should().Be(4);
 
-            set.LowerBoundItem(6).Should().Be(6);
-            set.UpperBoundItem(6).Should().Be(4);
-            set.LowerBoundItem(5).Should().Be(4);
-            set.UpperBoundItem(5).Should().Be(4);
+            int v;
+            set.TryGetLowerBound(6, out v).Should().BeTrue(); v.Should().Be(6);
+            set.TryGetUpperBound(6, out v).Should().BeTrue(); v.Should().Be(4);
+            set.TryGetLowerBound(5, out v).Should().BeTrue(); v.Should().Be(4);
+            set.TryGetUpperBound(5, out v).Should().BeTrue(); v.Should().Be(4);
+
+            set.TryGetLowerBound(1, out _).Should().BeTrue();
+            set.TryGetLowerBound(0, out _).Should().BeFalse();
+            set.TryGetUpperBound(2, out _).Should().BeTrue();
+            set.TryGetUpperBound(1, out _).Should().BeFalse();
+
+            set.TryGetReverseLowerBound(9, out _).Should().BeTrue();
+            set.TryGetReverseLowerBound(10, out _).Should().BeFalse();
+            set.TryGetReverseUpperBound(8, out _).Should().BeTrue();
+            set.TryGetReverseUpperBound(9, out _).Should().BeFalse();
 
             set.LowerBoundIndex(6).Should().Be(3);
             set.UpperBoundIndex(6).Should().Be(4);

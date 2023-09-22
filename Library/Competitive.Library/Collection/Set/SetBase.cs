@@ -252,10 +252,20 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         [凾(256)]
         public int LowerBoundIndex(T item) => BinarySearch<SetLower>(item).index;
         /// <summary>
-        /// <paramref name="item"/> 以上の最初の要素を返します。
+        /// <paramref name="item"/> 以上の最初の要素があれば <paramref name="value"/> で返します。
         /// </summary>
+        /// <returns>要素を取得できたかどうか</returns>
         [凾(256)]
-        public T LowerBoundItem(T item) => op.GetValue(BinarySearch<SetLower>(item).node);
+        public bool TryGetLowerBound(T item, out T value)
+        {
+            if (BinarySearch<SetLower>(item).node is { } n)
+            {
+                value = op.GetValue(n);
+                return true;
+            }
+            value = default;
+            return false;
+        }
         /// <summary>
         /// <paramref name="item"/> を超える最初のノードを返します。
         /// </summary>
@@ -267,10 +277,20 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         [凾(256)]
         public int UpperBoundIndex(T item) => BinarySearch<SetUpper>(item).index;
         /// <summary>
-        /// <paramref name="item"/> を超える最初の要素を返します。
+        /// <paramref name="item"/> を超える最初の要素があれば <paramref name="value"/> で返します。
         /// </summary>
+        /// <returns>要素を取得できたかどうか</returns>
         [凾(256)]
-        public T UpperBoundItem(T item) => op.GetValue(BinarySearch<SetUpper>(item).node);
+        public bool TryGetUpperBound(T item, out T value)
+        {
+            if (BinarySearch<SetUpper>(item).node is { } n)
+            {
+                value = op.GetValue(n);
+                return true;
+            }
+            value = default;
+            return false;
+        }
 
         /// <summary>
         /// <paramref name="item"/> 以下の最後のノードを返します。
@@ -283,10 +303,20 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         [凾(256)]
         public int ReverseLowerBoundIndex(T item) => BinarySearch<SetLowerRev>(item).index;
         /// <summary>
-        /// <paramref name="item"/> 以下の最後の要素を返します。
+        /// <paramref name="item"/> 以下の最後の要素があれば <paramref name="value"/> で返します。
         /// </summary>
+        /// <returns>要素を取得できたかどうか</returns>
         [凾(256)]
-        public T ReverseLowerBoundItem(T item) => op.GetValue(BinarySearch<SetLowerRev>(item).node);
+        public bool TryGetReverseLowerBound(T item, out T value)
+        {
+            if (BinarySearch<SetLowerRev>(item).node is { } n)
+            {
+                value = op.GetValue(n);
+                return true;
+            }
+            value = default;
+            return false;
+        }
 
         /// <summary>
         /// <paramref name="item"/> 未満の最後のノードを返します。
@@ -299,10 +329,20 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         [凾(256)]
         public int ReverseUpperBoundIndex(T item) => BinarySearch<SetUpperRev>(item).index;
         /// <summary>
-        /// <paramref name="item"/> 未満の最後の要素を返します。
+        /// <paramref name="item"/> 未満の最後の要素があれば <paramref name="value"/> で返します。
         /// </summary>
+        /// <returns>要素を取得できたかどうか</returns>
         [凾(256)]
-        public T ReverseUpperBoundItem(T item) => op.GetValue(BinarySearch<SetUpperRev>(item).node);
+        public bool TryGetReverseUpperBound(T item, out T value)
+        {
+            if (BinarySearch<SetUpperRev>(item).node is { } n)
+            {
+                value = op.GetValue(n);
+                return true;
+            }
+            value = default;
+            return false;
+        }
         #endregion Search
 
         #region Enumerate
@@ -581,6 +621,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         IEnumerator IEnumerable.GetEnumerator() => new ValueEnumerator(this);
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
         public struct Enumerator : IEnumerator<Node>
         {
             internal readonly SetBase<T, TCmp, Node, TOp> tree;
@@ -705,6 +746,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             public T Current => inner.CurrentValue();
             object IEnumerator.Current => Current;
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
             public void Dispose() { }
             [凾(256)]
             public bool MoveNext() => inner.MoveNext();

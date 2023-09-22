@@ -57,6 +57,22 @@ namespace Kzrnm.Competitive.Testing.Collection
             set.FindNodeLowerBound(10).Should().BeNull();
             set.FindNodeUpperBound(10).Should().BeNull();
 
+            int k, v;
+            KeyValuePair<int, int> pair;
+            set.TryGetLowerBound(3, out k, out v).Should().BeTrue(); k.Should().Be(3); v.Should().Be(7);
+            set.TryGetUpperBound(3, out k, out v).Should().BeTrue(); k.Should().Be(4); v.Should().Be(8);
+            set.TryGetReverseLowerBound(3, out k, out v).Should().BeTrue(); k.Should().Be(3); v.Should().Be(7);
+            set.TryGetReverseUpperBound(3, out k, out v).Should().BeTrue(); k.Should().Be(2); v.Should().Be(6);
+            set.TryGetLowerBound(3, out pair).Should().BeTrue(); pair.Should().Be(KeyValuePair.Create(3, 7));
+            set.TryGetUpperBound(3, out pair).Should().BeTrue(); pair.Should().Be(KeyValuePair.Create(4, 8));
+            set.TryGetReverseLowerBound(3, out pair).Should().BeTrue(); pair.Should().Be(KeyValuePair.Create(3, 7));
+            set.TryGetReverseUpperBound(3, out pair).Should().BeTrue(); pair.Should().Be(KeyValuePair.Create(2, 6));
+
+            set.TryGetLowerBound(9, out _).Should().BeTrue();
+            set.TryGetLowerBound(10, out _).Should().BeFalse();
+            set.TryGetUpperBound(8, out _).Should().BeTrue();
+            set.TryGetUpperBound(9, out _).Should().BeFalse();
+
             set.Remove(set.FindNodeLowerBound(5));
             set.ToArray().Should().Equal(new Dictionary<int, int>
             {
@@ -149,6 +165,22 @@ namespace Kzrnm.Competitive.Testing.Collection
 
             set.FindNodeLowerBound(10).Should().BeNull();
             set.FindNodeUpperBound(10).Should().BeNull();
+
+            int k, v;
+            KeyValuePair<int, int> pair;
+            set.TryGetLowerBound(3, out k, out v).Should().BeTrue(); k.Should().Be(3); v.Should().Be(7);
+            set.TryGetUpperBound(3, out k, out v).Should().BeTrue(); k.Should().Be(4); v.Should().Be(8);
+            set.TryGetReverseLowerBound(3, out k, out v).Should().BeTrue(); k.Should().Be(3); v.Should().Be(12);
+            set.TryGetReverseUpperBound(3, out k, out v).Should().BeTrue(); k.Should().Be(2); v.Should().Be(11);
+            set.TryGetLowerBound(3, out pair).Should().BeTrue(); pair.Should().Be(KeyValuePair.Create(3, 7));
+            set.TryGetUpperBound(3, out pair).Should().BeTrue(); pair.Should().Be(KeyValuePair.Create(4, 8));
+            set.TryGetReverseLowerBound(3, out pair).Should().BeTrue(); pair.Should().Be(KeyValuePair.Create(3, 12));
+            set.TryGetReverseUpperBound(3, out pair).Should().BeTrue(); pair.Should().Be(KeyValuePair.Create(2, 11));
+
+            set.TryGetLowerBound(9, out _).Should().BeTrue();
+            set.TryGetLowerBound(10, out _).Should().BeFalse();
+            set.TryGetUpperBound(8, out _).Should().BeTrue();
+            set.TryGetUpperBound(9, out _).Should().BeFalse();
         }
         [Fact]
         public void ReverseComparer()
