@@ -43,15 +43,13 @@ public class Benchmark
 {
     private readonly Random rnd = new Random(42);
     const int MAX_N = 1 << 20;
-#if VARIABLE_N
+#if true
     [Params(new object[]
     {
-        1<<5,
-        1<<10,
-        1<<15,
-        //1 << 10,
-        //1 << 15,
-        //1 << 20,
+        1 << 5,
+        1 << 10,
+        1 << 15,
+        1 << 20,
     })]
     public int N;
 #else
