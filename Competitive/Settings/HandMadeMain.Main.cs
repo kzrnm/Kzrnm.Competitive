@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -11,7 +12,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
-
+#nullable enable
 namespace Competitive.Runner
 {
     static partial class HandMadeMain
@@ -22,30 +23,34 @@ namespace Competitive.Runner
             if (args.Length > 0 && args[0] == "expand")
             {
                 Console.WriteLine("expand mode");
-                string expandedCode = null;
+                string? expandedCode = null;
 #if DEBUG
                 expandedCode = GetSourceCode(BasePath.Replace("HandMadeMain.cs", "Program.cs"))
                     ?.Code
                     ?.Replace("\r\n", "\n")
                     ?.Replace("using MI=System.Runtime.CompilerServices.MethodImplAttribute;", "");
-                expandedCode = ReplaceMethodImpl(expandedCode);
-                static string ReplaceMethodImpl(string code)
+                if (expandedCode == null)
+                    ThrowEmptyExpanded();
+
+                expandedCode = Regex.Replace(expandedCode, @"\[(MI|MethodImpl)\(((MethodImplOptions\.)?AggressiveInlining|256)", "[凾(256");
+
+                if (expandedCode.Replace("namespace AtCoder.Extension", "namespace MyAtCoder.Extension") is var rep && rep.Length != expandedCode.Length)
                 {
-                    if (code is null) return null;
-                    return Regex.Replace(code, @"\[(MI|MethodImpl)\(((MethodImplOptions\.)?AggressiveInlining|256)", "[凾(256");
+                    expandedCode = rep;
+                    expandedCode = expandedCode.Replace("using AtCoder.Extension", "using MyAtCoder.Extension");
                 }
+
+                Expand(args.AsSpan(1), expandedCode);
+#else
+                ThrowEmptyExpanded();
 #endif
-                if (expandedCode != null)
-                    Expand(args.AsSpan(1), expandedCode);
-                else
-                    Console.WriteLine("expandedCode is null.");
                 return;
             }
             CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
             var utf8 = new UTF8Encoding(false);
             Console.InputEncoding = utf8;
             Console.OutputEncoding = utf8;
-            Stopwatch stopwatch = null;
+            Stopwatch? stopwatch = null;
             PropertyConsoleReader reader;
             var writer = new Utf8ConsoleWriter(Console.OpenStandardOutput());
 
@@ -89,10 +94,10 @@ namespace Competitive.Runner
         }
         struct StopwatchWrapper : IDisposable
         {
-            Stopwatch Stopwatch;
-            public StopwatchWrapper(Stopwatch stopwatch)
+            Stopwatch? Stopwatch;
+            public StopwatchWrapper(Stopwatch? stopwatch)
             {
-                this.Stopwatch = stopwatch;
+                Stopwatch = stopwatch;
                 if (stopwatch != null)
                 {
                     Trace.WriteLine("---start---");
@@ -142,11 +147,11 @@ namespace Competitive.Runner
             else
                 Console.WriteLine(expandedCode);
         }
-        static SourceExpander.Expanded.SourceCode GetSourceCode(string filePath)
+        static SourceExpander.Expanded.SourceCode? GetSourceCode(string filePath)
         {
             var expandedContainerType = typeof(Program).Assembly.GetType("SourceExpander.Expanded.ExpandedContainer");
             if (expandedContainerType is null) return null;
-            if (expandedContainerType.GetProperty("Files").GetValue(null)
+            if (expandedContainerType.GetProperty("Files")?.GetValue(null)
                 is IReadOnlyDictionary<string, SourceExpander.Expanded.SourceCode> dic)
                 return dic.GetValueOrDefault(filePath);
             return null;
@@ -160,11 +165,17 @@ namespace Competitive.Runner
         }
         static string LoadInput()
         {
-            var path = Path.Combine(Path.GetDirectoryName(BasePath), "input.txt");
+            var path = Path.Combine(Path.GetDirectoryName(BasePath)!, "input.txt");
             using var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
             using var sr = new StreamReader(stream);
             return sr.ReadToEnd().Trim();
         }
         static string CurrentPath([CallerFilePath] string path = "") => path;
+        [DoesNotReturn]
+        static void ThrowEmptyExpanded()
+        {
+            new Exception("expandedCode is null.");
+            Debug.Assert(false);
+        }
     }
 }
