@@ -26,8 +26,9 @@ using static Program;
 using BitArray = System.Collections.BitArray;
 #endregion
 using ModInt = AtCoder.StaticModInt<AtCoder.Mod998244353>;
-using ModIntOperator = AtCoder.StaticModIntOperator<AtCoder.Mod998244353>;
 using ModIntFactor = Kzrnm.Competitive.StaticModIntFactor<AtCoder.Mod998244353>;
+using MontgomeryModInt = Kzrnm.Competitive.MontgomeryModInt<AtCoder.Mod998244353>;
+using MontgomeryModIntFactor = Kzrnm.Competitive.MontgomeryModIntFactor<AtCoder.Mod998244353>;
 
 partial class Program
 {
