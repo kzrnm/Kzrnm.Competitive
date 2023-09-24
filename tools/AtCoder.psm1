@@ -305,8 +305,7 @@ function Update-Input {
     $mainPath = $config.Project.ProgramPath
     $main = (Get-Content $mainPath -Raw)
     if ($modInt) {
-        $main = ($main -replace '(using ModInt[\S]*) ?= ?([^<]+)+[^;]+;', ('$1 = $2' + "<AtCoder.Mod$modInt>;"))
-        $main = ($main -replace '(using MontgomeryModInt[\S]*) ?= ?([^<]+)+[^;]+;', ('$1 = $2' + "<AtCoder.Mod$modInt>;"))
+        $main = ($main -replace "(using \S+ = .+)(AtCoder\.Mod\d+)(.*)", ('$1' + "AtCoder.Mod$modInt" + '$3'))
     }
     $main = ($main -replace 'const bool __ManyTestCases = true', 'const bool __ManyTestCases = false')
     ($main -replace 'ConsoleOutput\? Calc\((.*)\)[\s\S]*', ('ConsoleOutput? Calc($1)')) > $mainPath
