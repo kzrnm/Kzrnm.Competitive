@@ -1,5 +1,6 @@
 // https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp
 using AtCoder;
+using AtCoder.Internal;
 using Kzrnm.Competitive.IO;
 using System;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -7,7 +8,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 using System.Numerics;
 using System.Globalization;
 #else
-using AtCoder.Internal;
 using AtCoder.Operators;
 #endif
 
@@ -17,10 +17,7 @@ namespace Kzrnm.Competitive
     /// 奇数オンリーの ModInt
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "気にしない")]
-    public struct MontgomeryModInt<T> : IUtf8ConsoleWriterFormatter, IEquatable<MontgomeryModInt<T>>, IFormattable
-#if NET7_0_OR_GREATER
-        , INumberBase<MontgomeryModInt<T>>
-#endif
+    public struct MontgomeryModInt<T> : IUtf8ConsoleWriterFormatter, IEquatable<MontgomeryModInt<T>>, IFormattable, IModInt<MontgomeryModInt<T>>
         where T : struct, IStaticMod
     {
         static readonly T op = new T();
@@ -134,8 +131,6 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static MontgomeryModInt<T> operator --(MontgomeryModInt<T> a) => a - 1;
 
-
-#if !NET7_0_OR_GREATER
         /// <summary>
         /// 自身を x として、x^<paramref name="n"/> を返します。
         /// </summary>
@@ -144,9 +139,8 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(log(<paramref name="n"/>))</para>
         /// </remarks>
         [凾(256)]
-        public MontgomeryModInt<T> Pow(long n)
+        public MontgomeryModInt<T> Pow(ulong n)
         {
-            Contract.Assert(0 <= n, $"{nameof(n)} must be positive.");
             MontgomeryModInt<T> x = this, r = 1;
 
             while (n > 0)
@@ -161,7 +155,20 @@ namespace Kzrnm.Competitive
 
             return r;
         }
-#endif
+
+        /// <summary>
+        /// 自身を x として、x^<paramref name="n"/> を返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: 0≤|<paramref name="n"/>|</para>
+        /// <para>計算量: O(log(<paramref name="n"/>))</para>
+        /// </remarks>
+        [凾(256)]
+        public MontgomeryModInt<T> Pow(long n)
+        {
+            Contract.Assert(0 <= n, $"{nameof(n)} must be positive.");
+            return Pow((ulong)n);
+        }
 
         /// <summary>
         /// 自身を x として、 xy≡1 なる y を返します。

@@ -72,9 +72,15 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(N)</para>
         /// </remarks>
         [凾(512)]
+#if NET7_0_OR_GREATER
+        public static MontgomeryModInt<T> Eval<T>(MontgomeryModInt<T>[] y, long x, ModIntFactor<MontgomeryModInt<T>> combination = null) where T : struct, IStaticMod
+        {
+            combination ??= new ModIntFactor<MontgomeryModInt<T>>(y.Length);
+#else
         public static MontgomeryModInt<T> Eval<T>(MontgomeryModInt<T>[] y, long x, MontgomeryModIntFactor<T> combination = null) where T : struct, IStaticMod
         {
             combination ??= new MontgomeryModIntFactor<T>(y.Length);
+#endif
             if (x < y.Length) return y[(int)x];
             var ret = default(MontgomeryModInt<T>);
             var dp = new MontgomeryModInt<T>[y.Length];
