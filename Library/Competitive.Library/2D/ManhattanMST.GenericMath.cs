@@ -75,7 +75,7 @@ namespace Kzrnm.Competitive
                         for (int i = 0; i < ps.Length; i++)
                             ps[i].Item2 = -ps[i].Item2;
                 }
-                edgesList.data.Select(new Dist(ps).Convert).ToArray().AsSpan().Sort(edgesList.AsSpan());
+                edgesList.data.Select(new Dist(ps).Convert).ToArray().AsSpan(0, edgesList.Count).Sort(edgesList.AsSpan());
 
                 var uf = new UnionFind(ps.Length);
                 var res = new (int Index1, int Index2)[ps.Length - 1];
