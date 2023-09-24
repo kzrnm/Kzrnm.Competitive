@@ -1,4 +1,5 @@
 using AtCoder.Operators;
+using System;
 using System.Collections.Generic;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -15,16 +16,33 @@ namespace Kzrnm.Competitive
         public int Length => impl.Length - 1;
         public Sums(T[] arr, T defaultValue = default)
         {
-            impl = new T[arr.Length + 1];
-            impl[0] = defaultValue;
-            for (var i = 0; i < arr.Length; i++)
-                impl[i + 1] = op.Add(impl[i], arr[i]);
+            impl = Accumulate(arr.AsSpan(), defaultValue);
         }
-        public Sums(IList<T> collection)
+        public Sums(IList<T> collection, T defaultValue = default)
         {
-            impl = new T[collection.Count + 1];
-            for (var i = 0; i < collection.Count; i++)
-                impl[i + 1] = op.Add(impl[i], collection[i]);
+            impl = Accumulate(collection, defaultValue);
+        }
+        /// <summary>
+        /// <paramref name="orig"/> の累積和を返します。
+        /// </summary>
+        public static T[] Accumulate(ReadOnlySpan<T> orig, T defaultValue = default)
+        {
+            var impl = new T[orig.Length + 1];
+            impl[0] = defaultValue;
+            for (var i = 0; i < orig.Length; i++)
+                impl[i + 1] = op.Add(impl[i], orig[i]);
+            return impl;
+        }
+        /// <summary>
+        /// <paramref name="orig"/> の累積和を返します。
+        /// </summary>
+        public static T[] Accumulate(IList<T> orig, T defaultValue = default)
+        {
+            var impl = new T[orig.Count + 1];
+            impl[0] = defaultValue;
+            for (var i = 0; i < orig.Count; i++)
+                impl[i + 1] = op.Add(impl[i], orig[i]);
+            return impl;
         }
         [凾(256)] public T Slice(int from, int length) => op.Subtract(impl[from + length], impl[from]);
         public T this[int toExclusive] { [凾(256)] get => impl[toExclusive]; }

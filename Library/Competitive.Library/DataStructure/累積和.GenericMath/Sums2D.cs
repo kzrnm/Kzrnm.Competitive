@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -13,19 +15,27 @@ namespace Kzrnm.Competitive
         public int Length => impl.Length - 1;
         public Sums2D(T[][] arr, T defaultValue = default)
         {
-            impl = new T[arr.Length + 1][];
-            impl[0] = new T[arr[0].Length + 1].Fill(defaultValue);
-            for (var i = 0; i < arr.Length; i++)
+            impl = Accumulate(arr, defaultValue);
+        }
+        /// <summary>
+        /// <paramref name="orig"/> の累積和を返します。
+        /// </summary>
+        public static T[][] Accumulate(T[][] orig, T defaultValue = default)
+        {
+            var impl = new T[orig.Length + 1][];
+            impl[0] = new T[orig[0].Length + 1].Fill(defaultValue);
+            for (var i = 0; i < orig.Length; i++)
             {
-                impl[i + 1] = new T[arr[i].Length + 1];
+                impl[i + 1] = new T[orig[i].Length + 1];
                 impl[i + 1][0] = defaultValue;
-                for (var j = 0; j < arr[i].Length; j++)
+                for (var j = 0; j < orig[i].Length; j++)
                     impl[i + 1][j + 1] =
                             impl[i + 1][j]
                             + impl[i][j + 1]
                             - impl[i][j]
-                            + arr[i][j];
+                            + orig[i][j];
             }
+            return impl;
         }
         [凾(256)]
         public Slicer Slice(int left, int length) => new Slicer(impl, left, left + length);
