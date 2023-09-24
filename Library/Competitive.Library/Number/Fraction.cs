@@ -3,6 +3,8 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 #if NET7_0_OR_GREATER
 using System.Globalization;
 using System.Numerics;
+#else
+using AtCoder.Operators;
 #endif
 
 namespace Kzrnm.Competitive
@@ -260,6 +262,42 @@ namespace Kzrnm.Competitive
         static Fraction INumberBase<Fraction>.Parse(string s, NumberStyles style, IFormatProvider provider) => TryParse(s, out var res) ? res : throw new FormatException();
         static Fraction ISpanParsable<Fraction>.Parse(ReadOnlySpan<char> s, IFormatProvider provider) => TryParse(s, out var res) ? res : throw new FormatException();
         static Fraction IParsable<Fraction>.Parse(string s, IFormatProvider provider) => TryParse(s, out var res) ? res : throw new FormatException();
+#else
+        public readonly struct Operator : INumOperator<Fraction>, ICompareOperator<Fraction>
+        {
+            public Fraction MinValue => new Fraction(long.MinValue, 1);
+            public Fraction MaxValue => new Fraction(long.MaxValue, 1);
+            public Fraction MultiplyIdentity => new Fraction(1, 1);
+
+            [凾(256)]
+            public Fraction Add(Fraction x, Fraction y) => x + y;
+            [凾(256)]
+            public Fraction Subtract(Fraction x, Fraction y) => x - y;
+            [凾(256)]
+            public Fraction Multiply(Fraction x, Fraction y) => x * y;
+            [凾(256)]
+            public Fraction Divide(Fraction x, Fraction y) => x / y;
+            [凾(256)]
+            public Fraction Modulo(Fraction x, Fraction y) => throw new NotSupportedException();
+
+            [凾(256)]
+            public int Compare(Fraction x, Fraction y) => x.CompareTo(y);
+            [凾(256)]
+            public bool GreaterThan(Fraction x, Fraction y) => x > y;
+            [凾(256)]
+            public bool GreaterThanOrEqual(Fraction x, Fraction y) => x >= y;
+            [凾(256)]
+            public bool LessThan(Fraction x, Fraction y) => x < y;
+            [凾(256)]
+            public bool LessThanOrEqual(Fraction x, Fraction y) => x <= y;
+
+            [凾(256)]
+            public Fraction Minus(Fraction x) => -x;
+            [凾(256)]
+            public Fraction Increment(Fraction x) => throw new NotSupportedException();
+            [凾(256)]
+            public Fraction Decrement(Fraction x) => throw new NotSupportedException();
+        }
 #endif
     }
 }

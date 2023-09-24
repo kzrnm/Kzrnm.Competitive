@@ -110,7 +110,7 @@ namespace Kzrnm.Competitive.Testing.Number
             {
                 (-f).Should().Be(new Fraction(-f.Numerator, f.Denominator));
 #if !NET7_0_OR_GREATER
-                default(FractionOperator).Minus(f).Should().Be(new Fraction(-f.Numerator, f.Denominator));
+                default(Fraction.Operator).Minus(f).Should().Be(new Fraction(-f.Numerator, f.Denominator));
 #endif
             }
         }
@@ -129,7 +129,7 @@ namespace Kzrnm.Competitive.Testing.Number
         {
             (num1 + num2).Should().Be(expected);
 #if !NET7_0_OR_GREATER
-            default(FractionOperator).Add(num1, num2).Should().Be(expected);
+            default(Fraction.Operator).Add(num1, num2).Should().Be(expected);
 #endif
         }
 
@@ -147,7 +147,7 @@ namespace Kzrnm.Competitive.Testing.Number
         {
             (num1 - num2).Should().Be(expected);
 #if !NET7_0_OR_GREATER
-            default(FractionOperator).Subtract(num1, num2).Should().Be(expected);
+            default(Fraction.Operator).Subtract(num1, num2).Should().Be(expected);
 #endif
         }
 
@@ -165,7 +165,7 @@ namespace Kzrnm.Competitive.Testing.Number
         {
             (num1 * num2).Should().Be(expected);
 #if !NET7_0_OR_GREATER
-            default(FractionOperator).Multiply(num1, num2).Should().Be(expected);
+            default(Fraction.Operator).Multiply(num1, num2).Should().Be(expected);
 #endif
         }
 
@@ -183,7 +183,7 @@ namespace Kzrnm.Competitive.Testing.Number
         {
             (num1 / num2).Should().Be(expected);
 #if !NET7_0_OR_GREATER
-            default(FractionOperator).Divide(num1, num2).Should().Be(expected);
+            default(Fraction.Operator).Divide(num1, num2).Should().Be(expected);
 #endif
         }
 
