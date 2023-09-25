@@ -42,5 +42,27 @@ namespace Kzrnm.Competitive.Testing.Extensions
                 deque.Should().Equal(new int[0]);
             }
         }
+
+        [Fact]
+        public void RemoveFirst()
+        {
+            for (int i = 0; i <= 7; i++)
+            {
+                var deque = new Deque<int> { 1, 2, 3, 4, 5, 6, 7, };
+                deque.RemoveFirst(i);
+                deque.Should().Equal(Enumerable.Range(i + 1, 7 - i));
+            }
+        }
+
+        [Fact]
+        public void RemoveLast()
+        {
+            for (int i = 0; i <= 7; i++)
+            {
+                var deque = new Deque<int> { 1, 2, 3, 4, 5, 6, 7, };
+                deque.RemoveLast(i);
+                deque.Should().Equal(Enumerable.Range(1, 7 - i));
+            }
+        }
     }
 }

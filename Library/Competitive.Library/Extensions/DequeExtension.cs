@@ -56,5 +56,26 @@ namespace Kzrnm.Competitive
             deq.tail = collection.Length;
             return deq;
         }
+        static void ThrowArgumentOutOfRangeException(string paramName) => throw new ArgumentOutOfRangeException(paramName);
+
+        /// <summary>
+        /// <see cref="Deque{T}"/> の先頭 <paramref name="count"/> 個を削除します。
+        /// </summary>
+        [凾(256)]
+        public static void RemoveFirst<T>(this Deque<T> deque, int count)
+        {
+            if (deque.Count < count) ThrowArgumentOutOfRangeException(nameof(count));
+            deque.head = (deque.head + count) & deque.mask;
+        }
+
+        /// <summary>
+        /// <see cref="Deque{T}"/> の先頭 <paramref name="count"/> 個を削除します。
+        /// </summary>
+        [凾(256)]
+        public static void RemoveLast<T>(this Deque<T> deque, int count)
+        {
+            if (deque.Count < count) ThrowArgumentOutOfRangeException(nameof(count));
+            deque.tail = (deque.tail - count) & deque.mask;
+        }
     }
 }
