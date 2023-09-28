@@ -4,6 +4,7 @@ using System;
 using System.Buffers;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Drawing;
 using System.Globalization;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -235,7 +236,11 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 negative = true;
             }
 
-            var digits = ArrayPool<uint>.Shared.Rent(value.Length / (LOG_B - 1) + 5);
+            var size = value.Length / (LOG_B - 1) + 5;
+            uint[] digitsFromPool = null;
+            Span<uint> digits = ((uint)size <= StackAllocThreshold
+                            ? stackalloc uint[StackAllocThreshold]
+                            : digitsFromPool = ArrayPool<uint>.Shared.Rent(size))[..size];
             try
             {
                 int bi = 0;
@@ -257,12 +262,13 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                     }
                     digits[bi++] = s;
                 }
-                result = new BigIntegerDecimal(digits.AsSpan(0, bi), negative);
+                result = new BigIntegerDecimal(digits[..bi], negative);
                 return true;
             }
             finally
             {
-                ArrayPool<uint>.Shared.Return(digits);
+                if (digitsFromPool != null)
+                    ArrayPool<uint>.Shared.Return(digitsFromPool);
             }
         }
 

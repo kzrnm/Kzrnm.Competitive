@@ -284,30 +284,23 @@ namespace Kzrnm.Competitive
             }
             static long[] Naive(int n)
             {
-                var buf = ArrayPool<long>.Shared.Rent(16);
-                try
+                Span<long> buf = stackalloc long[16];
+                int ix = BitOperations.TrailingZeroCount(n);
+                n >>= ix;
+                buf[..ix].Fill(2);
+                foreach (int p in SmallPrimes()[1..])
                 {
-                    int ix = BitOperations.TrailingZeroCount(n);
-                    n >>= ix;
-                    buf.AsSpan(0, ix).Fill(2);
-                    foreach (int p in SmallPrimes()[1..])
+                    if (p * p > n)
+                        break;
+                    while (Math.DivRem(n, p, out var am) is var d && am == 0)
                     {
-                        if (p * p > n)
-                            break;
-                        while (Math.DivRem(n, p, out var am) is var d && am == 0)
-                        {
-                            n = d;
-                            buf[ix++] = p;
-                        }
+                        n = d;
+                        buf[ix++] = p;
                     }
-                    if (n > 1)
-                        buf[ix++] = n;
-                    return buf.AsSpan(0, ix).ToArray();
                 }
-                finally
-                {
-                    ArrayPool<long>.Shared.Return(buf);
-                }
+                if (n > 1)
+                    buf[ix++] = n;
+                return buf[..ix].ToArray();
             }
             static IEnumerable<long> PollardRho(long n)
             {
