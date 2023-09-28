@@ -413,9 +413,12 @@ function Restore-Source {
 
 function submit-streak {
     param (
-        [int]$Parallel = 6 # デフォルト 6並列
+        [int]$Size = 6 # デフォルト 6個送信
     )
-    $streak.SubmitInternal([AtCoderStreak.Service.SourceOrder]::None, $true, $Parallel, $config.CookieFile).Result | Out-Null
+    for ($i = 0; $i -lt $Size; $i++) {
+        $streak.SubmitInternal([AtCoderStreak.Service.SourceOrder]::None, $true, 1, $config.CookieFile).Result | Out-Null
+	Start-Sleep -Milliseconds 500 | Out-Null
+    }
 }
 
 function submit {
