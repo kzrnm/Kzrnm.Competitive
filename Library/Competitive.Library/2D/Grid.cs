@@ -141,7 +141,28 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)]
         public MoveEnumerator Moves(int h, int w) => new MoveEnumerator(this, h, w);
-        public struct MoveEnumerator : IEnumerator<(int h, int w)>, IEnumerable<(int h, int w)>
+#if NET7_0_OR_GREATER
+        public readonly record struct Position(int Index, int Width)
+        {
+#else
+        public readonly struct Position : IEquatable<Position>
+        {
+            public int Index { get; }
+            public int Width { get; }
+            public Position(int index, int width) { Index = index; Width = width; }
+            public bool Equals(Position other) => Index == other.Index && Width == other.Width;
+#endif
+            [凾(256)]
+            public void Deconstruct(out int h, out int w)
+            {
+                h = Math.DivRem(Index, Width, out w);
+            }
+
+            [凾(256)]
+            public static implicit operator int(Position p) => p.Index;
+        }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
+        public struct MoveEnumerator : IEnumerator<Position>, IEnumerable<Position>
         {
             private enum Status
             {
@@ -162,7 +183,7 @@ namespace Kzrnm.Competitive
                 origW = w;
                 status = Status.None;
             }
-            public (int h, int w) Current
+            public Position Current
             {
                 [凾(256)]
                 get
@@ -184,7 +205,7 @@ namespace Kzrnm.Competitive
                             dh = 1;
                             break;
                     }
-                    return (origH + dh, origW + dw);
+                    return new Position(grid.Index(origH + dh, origW + dw), grid.W);
                 }
             }
 
@@ -227,7 +248,7 @@ namespace Kzrnm.Competitive
 
             [凾(256)]
             public MoveEnumerator GetEnumerator() => this;
-            IEnumerator<(int h, int w)> IEnumerable<(int h, int w)>.GetEnumerator() => this;
+            IEnumerator<Position> IEnumerable<Position>.GetEnumerator() => this;
             IEnumerator IEnumerable.GetEnumerator() => this;
             public void Reset() => status = Status.None;
             public void Dispose() { }

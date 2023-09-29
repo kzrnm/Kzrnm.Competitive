@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace Kzrnm.Competitive.Testing.TwoDimensional
 {
@@ -309,18 +310,56 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                 new[]{ 7,8,9 },
                 new[]{ 10,11,12 },
             }, -1);
-            grid.Moves(0, 0).Should().Equal((0, 1), (1, 0));
-            grid.Moves(0, 1).Should().Equal((0, 0), (0, 2), (1, 1));
-            grid.Moves(0, 2).Should().Equal((0, 1), (1, 2));
-            grid.Moves(1, 0).Should().Equal((0, 0), (1, 1), (2, 0));
-            grid.Moves(1, 1).Should().Equal((1, 0), (0, 1), (1, 2), (2, 1));
-            grid.Moves(1, 2).Should().Equal((1, 1), (0, 2), (2, 2));
-            grid.Moves(2, 0).Should().Equal((1, 0), (2, 1), (3, 0));
-            grid.Moves(2, 1).Should().Equal((2, 0), (1, 1), (2, 2), (3, 1));
-            grid.Moves(2, 2).Should().Equal((2, 1), (1, 2), (3, 2));
-            grid.Moves(3, 0).Should().Equal((2, 0), (3, 1));
-            grid.Moves(3, 1).Should().Equal((3, 0), (2, 1), (3, 2));
-            grid.Moves(3, 2).Should().Equal((3, 1), (2, 2));
+            grid.Moves(0, 0).Select(ToTuples).Should().Equal((0, 1), (1, 0));
+            grid.Moves(0, 1).Select(ToTuples).Should().Equal((0, 0), (0, 2), (1, 1));
+            grid.Moves(0, 2).Select(ToTuples).Should().Equal((0, 1), (1, 2));
+            grid.Moves(1, 0).Select(ToTuples).Should().Equal((0, 0), (1, 1), (2, 0));
+            grid.Moves(1, 1).Select(ToTuples).Should().Equal((1, 0), (0, 1), (1, 2), (2, 1));
+            grid.Moves(1, 2).Select(ToTuples).Should().Equal((1, 1), (0, 2), (2, 2));
+            grid.Moves(2, 0).Select(ToTuples).Should().Equal((1, 0), (2, 1), (3, 0));
+            grid.Moves(2, 1).Select(ToTuples).Should().Equal((2, 0), (1, 1), (2, 2), (3, 1));
+            grid.Moves(2, 2).Select(ToTuples).Should().Equal((2, 1), (1, 2), (3, 2));
+            grid.Moves(3, 0).Select(ToTuples).Should().Equal((2, 0), (3, 1));
+            grid.Moves(3, 1).Select(ToTuples).Should().Equal((3, 0), (2, 1), (3, 2));
+            grid.Moves(3, 2).Select(ToTuples).Should().Equal((3, 1), (2, 2));
+
+            static (int, int) ToTuples(Grid<int>.Position p)
+            {
+                var (h, w) = p;
+                return (h, w);
+            }
+
+            grid.Moves(0).Select(ToInt).Should().Equal(1, 3);
+            grid.Moves(1).Select(ToInt).Should().Equal(0, 2, 4);
+            grid.Moves(2).Select(ToInt).Should().Equal(1, 5);
+            grid.Moves(3).Select(ToInt).Should().Equal(0, 4, 6);
+            grid.Moves(4).Select(ToInt).Should().Equal(3, 1, 5, 7);
+            grid.Moves(5).Select(ToInt).Should().Equal(4, 2, 8);
+            grid.Moves(6).Select(ToInt).Should().Equal(3, 7, 9);
+            grid.Moves(7).Select(ToInt).Should().Equal(6, 4, 8, 10);
+            grid.Moves(8).Select(ToInt).Should().Equal(7, 5, 11);
+            grid.Moves(9).Select(ToInt).Should().Equal(6, 10);
+            grid.Moves(10).Select(ToInt).Should().Equal(9, 7, 11);
+            grid.Moves(11).Select(ToInt).Should().Equal(10, 8);
+
+            static int ToInt(Grid<int>.Position p)
+            {
+                return (int)p;
+            }
+
+            var q = new int[] { 3, 1, 5, 7 }.AsSpan();
+            foreach (int ix in grid.Moves(1, 1))
+            {
+                ix.Should().Be(q[0]);
+                q = q[1..];
+            }
+
+            var r = new (int, int)[] { (1, 0), (0, 1), (1, 2), (2, 1) }.AsSpan();
+            foreach (var (h, w) in grid.Moves(4))
+            {
+                (h, w).Should().Be(r[0]);
+                r = r[1..];
+            }
         }
 
         [Fact]
