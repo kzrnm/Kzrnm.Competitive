@@ -16,8 +16,6 @@ namespace Kzrnm.Competitive
         [凾(256)] public static Grid<ulong> GridULong(this ConsoleReader cr, int H, int W, ulong defaultValue = default) => Create(cr.Grid<ulong>(H, W), defaultValue);
         [凾(256)] public static Grid<char> Create(string[] data, char defaultValue = default) => new Grid<char>(data.Flatten(), data.Length, data[0].Length, defaultValue);
         [凾(256)] public static Grid<T> Create<T>(T[][] data, T defaultValue = default) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);
-        [凾(256)] public static Grid<T> Create<T>(Span<T[]> data, T defaultValue = default) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);
-        [凾(256)] public static Grid<T> Create<T>(ReadOnlySpan<T[]> data, T defaultValue = default) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);
 
         [凾(256)]
         public static void WriteGrid(this Utf8ConsoleWriter cw, Grid<char> grid)
@@ -126,6 +124,7 @@ namespace Kzrnm.Competitive
                 return ToStringNoSplit((Grid<char>)(object)this);
             return ToStringSplit();
         }
+
         /// <summary>
         /// 対象の上下左右の座標を返します。
         /// </summary>
@@ -253,6 +252,9 @@ namespace Kzrnm.Competitive
             public void Reset() => status = Status.None;
             public void Dispose() { }
         }
+#if !LIBRARY
+        [SourceExpander.NotEmbeddingSource]
+#endif
         private class DebugLine
         {
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]

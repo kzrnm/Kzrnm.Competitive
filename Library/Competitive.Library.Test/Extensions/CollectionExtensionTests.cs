@@ -182,7 +182,6 @@ namespace Kzrnm.Competitive.Testing.Extensions
             var expected = new[] { 1, 2, 3, -1, -2, -3, 4, 5, 6, -6, -5, -4, 7, 8, 9 };
 
             arr.Flatten().Should().Equal(expected);
-            arr.AsSpan().Flatten().Should().Equal(expected);
             arr.ToList().Flatten().Should().Equal(expected);
         }
 
