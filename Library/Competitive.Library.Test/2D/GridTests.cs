@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Kzrnm.Competitive.Testing.TwoDimensional
@@ -257,7 +258,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         }
 
         [Fact]
-        public void Rotate()
+        public void Rotate90()
         {
             var grid = Grid.Create(new[]
             {
@@ -266,6 +267,107 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                 new[]{ 7,8,9 },
                 new[]{ 10,11,12 },
             }, -1);
+
+            var rot = grid.Rotate90();
+            rot.data.Should().Equal(Grid.Create(new[]
+            {
+                new[]{ 10,7,4,1 },
+                new[]{ 11,8,5,2 },
+                new[]{ 12,9,6,3 },
+            }).data);
+            rot.defaultValue.Should().Be(grid.defaultValue);
+            grid.data.Should().Equal(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+        }
+
+
+        [Fact]
+        public void Rotate180()
+        {
+            var grid = Grid.Create(new[]
+            {
+                new[]{ 1,2,3 },
+                new[]{ 4,5,6 },
+                new[]{ 7,8,9 },
+                new[]{ 10,11,12 },
+            }, -1);
+
+            var rot = grid.Rotate180();
+            rot.data.Should().Equal(Grid.Create(new[]
+            {
+                new[]{ 12,11,10 },
+                new[]{ 9,8,7 },
+                new[]{ 6,5,4 },
+                new[]{ 3,2,1 },
+            }).data);
+            rot.defaultValue.Should().Be(grid.defaultValue);
+            grid.data.Should().Equal(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+        }
+
+        [Fact]
+        public void Rotate270()
+        {
+            var grid = Grid.Create(new[]
+            {
+                new[]{ 1,2,3 },
+                new[]{ 4,5,6 },
+                new[]{ 7,8,9 },
+                new[]{ 10,11,12 },
+            }, -1);
+
+            var rot = grid.Rotate270();
+            rot.data.Should().Equal(Grid.Create(new[]
+            {
+                new[]{ 3,6,9,12 },
+                new[]{ 2,5,8,11 },
+                new[]{ 1,4,7,10 },
+            }).data);
+            rot.defaultValue.Should().Be(grid.defaultValue);
+            grid.data.Should().Equal(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+        }
+
+        [Fact]
+        public void Transpose()
+        {
+            var grid = Grid.Create(new[]
+            {
+                new[]{ 1,2,3 },
+                new[]{ 4,5,6 },
+                new[]{ 7,8,9 },
+                new[]{ 10,11,12 },
+            }, -1);
+
+            var tr = grid.Transpose();
+            tr.data.Should().Equal(Grid.Create(new[]
+            {
+                new[]{ 1,4,7,10 },
+                new[]{ 2,5,8,11 },
+                new[]{ 3,6,9,12 },
+            }).data);
+            tr.defaultValue.Should().Be(grid.defaultValue);
+            grid.data.Should().Equal(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+        }
+
+        [Fact]
+        public void Foreach()
+        {
+            var grid = Grid.Create(new[]
+            {
+                "123",
+                "456",
+            }, '-');
+            var lst = new List<(char, int, int)>();
+            foreach (var tuple in grid)
+                lst.Add(tuple);
+
+            lst.Should().Equal(new[]
+            {
+                ('1',0,0),
+                ('2',0,1),
+                ('3',0,2),
+                ('4',1,0),
+                ('5',1,1),
+                ('6',1,2),
+            });
         }
     }
 }

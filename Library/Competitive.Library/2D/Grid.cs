@@ -125,6 +125,59 @@ namespace Kzrnm.Competitive
             return ToStringSplit();
         }
 
+
+        /// <summary>
+        /// 時計回りに 90° 回転した <see cref="Grid{T}"/> を返します。
+        /// </summary>
+        public Grid<T> Rotate90()
+        {
+            int H = this.H;
+            int W = this.W;
+            var g = new Grid<T>(W, H, defaultValue);
+            for (int h = 0; h < H; h++)
+                for (int w = 0; w < W; w++)
+                    g[w, H - h - 1] = this[h, w];
+            return g;
+        }
+
+        /// <summary>
+        /// 180° 回転した <see cref="Grid{T}"/> を返します。
+        /// </summary>
+        public Grid<T> Rotate180()
+        {
+            var g = new Grid<T>(this);
+            g.data.AsSpan().Reverse();
+            return g;
+        }
+
+        /// <summary>
+        /// 時計回りに 270° (反時計回りに 90°)回転した <see cref="Grid{T}"/> を返します。
+        /// </summary>
+        public Grid<T> Rotate270()
+        {
+            int H = this.H;
+            int W = this.W;
+            var g = new Grid<T>(W, H, defaultValue);
+            for (int h = 0; h < H; h++)
+                for (int w = 0; w < W; w++)
+                    g[W - w - 1, h] = this[h, w];
+            return g;
+        }
+
+        /// <summary>
+        /// 縦横を入れ替えた <see cref="Grid{T}"/> を返します。
+        /// </summary>
+        public Grid<T> Transpose()
+        {
+            int H = this.H;
+            int W = this.W;
+            var g = new Grid<T>(W, H, defaultValue);
+            for (int h = 0; h < H; h++)
+                for (int w = 0; w < W; w++)
+                    g[w, h] = this[h, w];
+            return g;
+        }
+
         /// <summary>
         /// 対象の上下左右の座標を返します。
         /// </summary>
@@ -251,6 +304,28 @@ namespace Kzrnm.Competitive
             IEnumerator IEnumerable.GetEnumerator() => this;
             public void Reset() => status = Status.None;
             public void Dispose() { }
+        }
+
+        public Enumerator GetEnumerator() => new Enumerator(this);
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
+        public struct Enumerator
+        {
+            private readonly Grid<T> g;
+            private int index;
+            internal Enumerator(Grid<T> grid)
+            {
+                g = grid;
+                index = -1;
+            }
+            public bool MoveNext() => ++index < g.data.Length;
+            public (T value, int h, int w) Current
+            {
+                get
+                {
+                    var (h, w) = g.FromIndex(index);
+                    return (g[index], h, w);
+                }
+            }
         }
 #if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
