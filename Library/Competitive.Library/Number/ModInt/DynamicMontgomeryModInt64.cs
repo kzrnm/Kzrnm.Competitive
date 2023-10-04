@@ -15,6 +15,7 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 奇数オンリーの ModInt
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "気にしない")]
     public struct DynamicMontgomeryModInt64<T> : IUtf8ConsoleWriterFormatter, IEquatable<DynamicMontgomeryModInt64<T>>, IFormattable
 #if NET7_0_OR_GREATER
         , INumberBase<DynamicMontgomeryModInt64<T>>
@@ -179,11 +180,12 @@ namespace Kzrnm.Competitive
         [凾(256)] public static bool operator !=(DynamicMontgomeryModInt64<T> left, DynamicMontgomeryModInt64<T> right) => !Equals(left, right);
         [凾(256)] public override int GetHashCode() => (int)_v;
 
+        public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => Value.TryFormat(destination, out charsWritten, format, provider);
         public string ToString(string format, IFormatProvider formatProvider) => _v.ToString(format, formatProvider);
 #if NET7_0_OR_GREATER
         static int INumberBase<DynamicMontgomeryModInt64<T>>.Radix => 2;
         static DynamicMontgomeryModInt64<T> IAdditiveIdentity<DynamicMontgomeryModInt64<T>, DynamicMontgomeryModInt64<T>>.AdditiveIdentity => default;
-        static DynamicMontgomeryModInt64<T> IMultiplicativeIdentity<DynamicMontgomeryModInt64<T>, DynamicMontgomeryModInt64<T>>.MultiplicativeIdentity => new DynamicMontgomeryModInt64<T>(1u);
+        static DynamicMontgomeryModInt64<T> IMultiplicativeIdentity<DynamicMontgomeryModInt64<T>, DynamicMontgomeryModInt64<T>>.MultiplicativeIdentity => _One;
         static DynamicMontgomeryModInt64<T> INumberBase<DynamicMontgomeryModInt64<T>>.Abs(DynamicMontgomeryModInt64<T> v) => v;
         static bool INumberBase<DynamicMontgomeryModInt64<T>>.IsCanonical(DynamicMontgomeryModInt64<T> v) => true;
         static bool INumberBase<DynamicMontgomeryModInt64<T>>.IsComplexNumber(DynamicMontgomeryModInt64<T> v) => false;
@@ -224,8 +226,6 @@ namespace Kzrnm.Competitive
             result = r;
             return b;
         }
-        bool ISpanFormattable.TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => _v.TryFormat(destination, out charsWritten, format, provider);
-
 
         static bool INumberBase<DynamicMontgomeryModInt64<T>>.TryConvertFromChecked<TOther>(TOther v, out DynamicMontgomeryModInt64<T> r)
         {

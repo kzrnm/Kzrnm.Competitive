@@ -166,5 +166,29 @@ namespace Kzrnm.Competitive.Testing.Number
                 }
             }
         }
+
+
+        [Fact]
+        public void String()
+        {
+            RunStatic<ModID11>();
+            RunStatic<ModID1000000007>();
+            RunStatic<ModID998244353>();
+
+            static void RunStatic<T>() where T : struct
+            {
+                Span<char> chars = stackalloc char[30];
+                var mod = DynamicMontgomeryModInt64<T>.Mod;
+                var max = Math.Min(100000, mod);
+                for (int i = 0; i < max; i++)
+                {
+                    var m = new DynamicMontgomeryModInt64<T>(i);
+                    var expected = (i % mod).ToString();
+                    m.ToString().Should().Be(expected);
+                    m.TryFormat(chars, out var charsWritten, "", null).Should().BeTrue();
+                    new string(chars[..charsWritten]).Should().Be(expected);
+                }
+            }
+        }
     }
 }

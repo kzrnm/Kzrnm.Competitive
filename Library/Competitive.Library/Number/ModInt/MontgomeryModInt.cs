@@ -194,6 +194,7 @@ namespace Kzrnm.Competitive
         [凾(256)] public static bool operator !=(MontgomeryModInt<T> left, MontgomeryModInt<T> right) => !Equals(left, right);
         [凾(256)] public override int GetHashCode() => (int)_v;
 
+        public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => Value.TryFormat(destination, out charsWritten, format, provider);
         public string ToString(string format, IFormatProvider formatProvider) => _v.ToString(format, formatProvider);
 #if NET7_0_OR_GREATER
         static int INumberBase<MontgomeryModInt<T>>.Radix => 2;
@@ -239,8 +240,6 @@ namespace Kzrnm.Competitive
             result = r;
             return b;
         }
-        bool ISpanFormattable.TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => _v.TryFormat(destination, out charsWritten, format, provider);
-
 
         static bool INumberBase<MontgomeryModInt<T>>.TryConvertFromChecked<TOther>(TOther v, out MontgomeryModInt<T> r)
         {
