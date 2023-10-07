@@ -1,4 +1,3 @@
-[![test](https://github.com/kzrnm/Kzrnm.Competitive/workflows/test/badge.svg)](https://github.com/kzrnm/Kzrnm.Competitive/actions)
 [![NuGet version (Kzrnm.Competitive)](https://img.shields.io/nuget/v/Kzrnm.Competitive.svg?style=flat-square)](https://www.nuget.org/packages/Kzrnm.Competitive/)
 [![GitHub Pages](https://img.shields.io/static/v1?label=GitHub+Pages&message=Kzrnm.Competitife+&color=brightgreen&logo=github)](https://kzrnm.github.io/Kzrnm.Competitive/)
 
