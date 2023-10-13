@@ -40,7 +40,7 @@ jobs:
       run:
         working-directory: Library
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
@@ -62,7 +62,7 @@ jobs:
         working-directory: Library
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
@@ -142,7 +142,7 @@ jobs:
           ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09",
            "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 123456789
 
@@ -207,7 +207,7 @@ jobs:
     outputs:
       upload-pages: ${{steps.upload-pages.outcome == 'success'}}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 123456789
 
