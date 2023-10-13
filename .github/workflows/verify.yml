@@ -12,6 +12,10 @@ on:
       - "Library/**"
       - "!**.md"
   workflow_dispatch:
+    inputs:
+      ignore_prev_result:
+        type: boolean
+        default: false
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -147,6 +151,7 @@ jobs:
           fetch-depth: 123456789
 
       - name: Restore cached results
+        if: ${{ !github.event.inputs.ignore_prev_result }}
         uses: actions/cache/restore@v3
         id: restore-cached-results
         with:
