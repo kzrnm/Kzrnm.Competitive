@@ -9,6 +9,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE WaveletMatrix
     /// <summary>
     /// 2 次元平面上にある点が事前に与えられているとき、オンラインでいろいろなクエリを処理するデータ構造
     /// </summary>
