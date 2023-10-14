@@ -5,6 +5,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE 累積和
     /// <summary>
     /// 累積和を求めます。
     /// </summary>

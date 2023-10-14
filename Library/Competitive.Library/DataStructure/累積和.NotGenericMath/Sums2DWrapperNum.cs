@@ -2,6 +2,7 @@ using AtCoder;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE 2次元累積和のラッパークラス
 
     /// <summary>
     /// <see cref="long"/> の累積和を求めます。

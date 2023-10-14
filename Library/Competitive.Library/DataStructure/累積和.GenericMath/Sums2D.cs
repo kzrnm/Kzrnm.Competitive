@@ -5,6 +5,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE 2次元累積和
     /// <summary>
     /// 二次元累積和を求めます。
     /// </summary>
