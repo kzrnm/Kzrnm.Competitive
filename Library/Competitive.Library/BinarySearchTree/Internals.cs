@@ -4,6 +4,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE 二分探索木汎用
     [IsOperator]
     public interface IReversibleBinarySearchTreeOperator<T, F> : ISLazySegtreeOperator<T, F>
     {

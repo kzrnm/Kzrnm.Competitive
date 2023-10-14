@@ -3,8 +3,9 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.Internal.Bbst
 {
+    // competitive-verifier: TITLE 平衡二分探索木のオペレータ
     /// <summary>
-    /// 反転可能遅延伝搬平衡二分探索木のオペレータ
+    /// 平衡二分探索木のオペレータ
     /// </summary>
     /// <typeparam name="T">モノイド</typeparam>
     /// <typeparam name="TOp">モノイドの操作</typeparam>
