@@ -4,6 +4,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE 重み付きグラフ
     public class WGraph<T, TNode, TEdge> : IWGraph<T, TNode, TEdge>
         where TNode : IGraphNode<TEdge>
         where TEdge : IWGraphEdge<T>

@@ -3,6 +3,7 @@ using AtCoder.Operators;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE 最大流
     public static class 最大流
     {
         public static MfGraph<T, TOp> ToMFGraph<T, TOp>(this WGraphBuilder<T, TOp> gb)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE 最短経路(幅優先探索)
     public static class 最短経路Bfs
     {
         /// <summary>

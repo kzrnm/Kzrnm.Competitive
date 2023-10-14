@@ -3,6 +3,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE 最小共通祖先
     /**
      * <summary>最小共通祖先</summary> 
      */

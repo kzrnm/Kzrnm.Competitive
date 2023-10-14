@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE 強連結成分分解
     public static class 強連結成分分解
     {
         /// <summary>

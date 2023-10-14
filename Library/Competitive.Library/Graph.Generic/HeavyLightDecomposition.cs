@@ -6,6 +6,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE HL分解
     /// <summary>
     /// HL分解の実装。合わせてオイラーツアーの内容も保持する。
     /// </summary>

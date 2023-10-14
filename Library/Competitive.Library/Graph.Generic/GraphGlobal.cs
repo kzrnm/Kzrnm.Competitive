@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 
+// competitive-verifier: TITLE グラフ汎用
 // グラフ関連で使うやつ全部入れる
 namespace Kzrnm.Competitive
 {

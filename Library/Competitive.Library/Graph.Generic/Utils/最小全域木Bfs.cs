@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE 最小全域木(幅優先探索)
     public static class 最小全域木Bfs
     {
         /// <summary>

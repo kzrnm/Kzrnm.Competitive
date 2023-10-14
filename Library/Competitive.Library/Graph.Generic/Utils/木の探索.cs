@@ -3,6 +3,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE 木の探索
     public static class 木の探索
     {
         /// <summary>

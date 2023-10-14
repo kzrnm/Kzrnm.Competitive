@@ -3,6 +3,7 @@ using Kzrnm.Competitive.IO;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE long重み付きグラフのBuilder
     public class WLongGraphBuilder : WGraphBuilder<long, LongOperator>
     {
         public WLongGraphBuilder(int count, bool isDirected) : base(count, isDirected) { }
