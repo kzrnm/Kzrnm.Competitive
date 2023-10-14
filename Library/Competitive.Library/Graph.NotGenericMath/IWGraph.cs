@@ -2,7 +2,7 @@ using AtCoder.Operators;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 重み付きグラフの interface
+    // competitive-verifier: TITLE 重み付きグラフのインターフェイス
     public interface IWGraph<T, TOp, TNode, TEdge> : IGraph<TNode, TEdge>
         where TOp : struct, IAdditionOperator<T>
         where TNode : IGraphNode<TEdge>

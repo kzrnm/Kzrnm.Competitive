@@ -9,6 +9,7 @@ namespace Kzrnm.Competitive
     [IsOperator]
     public interface IConvexHullTrickOperator<T> { bool UseLeft(T left, T right); }
 
+    // competitive-verifier: TITLE Convex Hull Trick(Li-Chao (Segment) Tree): GenericMath
     /// <summary>
     /// <para>Convex Hull Trick(Li-Chao (Segment) Tree)</para>
     /// <para>直線 Ax+B 追加をいくつか追加して、区間[l,r]の最小値・最大値を求める</para>
