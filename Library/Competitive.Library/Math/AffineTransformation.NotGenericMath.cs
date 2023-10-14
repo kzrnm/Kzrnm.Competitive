@@ -6,6 +6,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE アフィン変換
     /// <summary>
     /// アフィン変換. Ax+b の形で表される式を保持する。
     /// </summary>

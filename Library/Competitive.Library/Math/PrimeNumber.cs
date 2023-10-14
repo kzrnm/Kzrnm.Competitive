@@ -6,6 +6,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE 素数列挙
     public class PrimeNumber : ICollection<int>
     {
         readonly int[] primes;

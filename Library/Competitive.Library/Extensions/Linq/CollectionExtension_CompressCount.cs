@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
+    // competitive-verifier: TITLE CompressCount
     public static class __CollectionExtension_CompressCount
     {
         /// <summary>
