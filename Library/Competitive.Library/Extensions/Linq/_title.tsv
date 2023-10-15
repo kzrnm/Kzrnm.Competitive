@@ -1,0 +1,9 @@
+CollectionExtension_Chunk.cs	Chunk
+CollectionExtension_CompressCount.cs	CompressCount
+CollectionExtension_Flatten.cs	Flatten
+CollectionExtension_MaxBy.cs	MaxBy
+CollectionExtension_MaxMin.cs	MinMax
+CollectionExtension_MinBy.cs	MinBy
+CollectionExtension_SpanSelect.cs	Span<T> への Select
+CollectionExtension_Tupled2.cs	(T Current, T Next)[] への変換
+MyLinqExtension.cs	Linq 便利メソッド

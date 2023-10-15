@@ -7,7 +7,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive
 {
     using static Internal.NodeColor;
-    // competitive-verifier: TITLE 遅延伝搬反転可能赤黒木(Operator)
     public class LazyRedBlackTreeNode<T, F> : ILazyBbstNode<T, F, LazyRedBlackTreeNode<T, F>>
     {
         internal LazyRedBlackTreeNode<T, F> left;

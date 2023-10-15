@@ -11,7 +11,6 @@ namespace Kzrnm.Competitive
         , IMultiplicativeIdentity<T, T>
         where T : IAffineOperator<T>
     { }
-    // competitive-verifier: TITLE アフィン変換
     /// <summary>
     /// アフィン変換. Ax+b の形で表される式を保持する。
     /// </summary>

@@ -8,7 +8,6 @@ using System.Linq;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
-// competitive-verifier: TITLE 2次元WaveletMatrix(抽象)
 namespace Kzrnm.Competitive
 {
     namespace Internal

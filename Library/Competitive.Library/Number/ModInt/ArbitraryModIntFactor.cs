@@ -10,7 +10,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive
 {
     // https://nyaannyaan.github.io/library/modulo/arbitrary-mod-binomial.hpp.html
-    // competitive-verifier: TITLE 任意 mod 二項係数
     /// <summary>
     /// <para>O(min(N logM/loglogM, M)) で初期構築したあとは、中国剰余定理で二項係数を クエリO(logN logM/loglogM) で求められる。</para>
     /// <para>(M ≦ 1e7 and max(N) ≦ 1e18) or (M &lt; 2^30 and max(N) ≦ 2e7)</para>

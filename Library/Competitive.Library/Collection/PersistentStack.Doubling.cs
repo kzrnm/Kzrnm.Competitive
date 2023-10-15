@@ -7,7 +7,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE $O(log N)$ でインデックスアクセス可能な永続Stack
     public sealed class PersistentStackDoubling<T> : IImmutableStack<T>, IReadOnlyCollection<T>
     {
         private PersistentStackDoubling() { _prevs = Array.Empty<PersistentStackDoubling<T>>(); }

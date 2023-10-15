@@ -4,7 +4,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 永続SetDictionary
     public class PersistentSetDictionary<TKey, TValue> : PersistentSetBase<KeyValuePair<TKey, TValue>, TKey, PersistentSetDictionary<TKey, TValue>, PersistentSetDictionary<TKey, TValue>.PSOperator>
     {
         public struct PSOperator : IPersistentSetNodeOperator<KeyValuePair<TKey, TValue>, TKey>, IPersistentSetOperator<KeyValuePair<TKey, TValue>, TKey, PersistentSetDictionary<TKey, TValue>, PSOperator>

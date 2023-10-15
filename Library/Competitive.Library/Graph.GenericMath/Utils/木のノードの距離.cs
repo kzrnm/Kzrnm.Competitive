@@ -3,7 +3,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 木のノードの距離
     public static class 木のノードの距離
     {
         /// <summary>

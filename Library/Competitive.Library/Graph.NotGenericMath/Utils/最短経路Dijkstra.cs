@@ -3,7 +3,6 @@ using System;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 最短経路(Dijkstra)
     public static class 最短経路Dijkstra
     {
         /// <summary>

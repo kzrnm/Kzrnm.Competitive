@@ -121,6 +121,9 @@ jobs:
           unittest-result: ${{runner.temp}}/VerifierCsUnitTestResult/*.csv
           problems: ${{runner.temp}}/problems-*.json
           msbuild-properties: Configuration=Release
+      - name: Update TITLE
+        run: python "${{github.workspace}}/tools/set_title.py" "${{runner.temp}}/verify_files.json"
+
       - name: Upload verify_files.json
         uses: competitive-verifier/actions/upload-verify-artifact@v1
         with:

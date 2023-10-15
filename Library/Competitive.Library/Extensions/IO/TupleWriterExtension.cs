@@ -4,7 +4,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.IO
 {
-    // competitive-verifier: TITLE TupleWriterExtension
     public static class __Utf8ConsoleWriter__TupleWriterExtension
     {
         [凾(256)]

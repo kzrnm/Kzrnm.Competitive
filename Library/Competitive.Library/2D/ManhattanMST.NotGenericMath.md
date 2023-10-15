@@ -1,5 +1,5 @@
 ---
-title: マンハッタン距離での最小全域木(.NET Core 3.1)
+title: "マンハッタン距離での最小全域木: OperatorInterface"
 documentation_of: ./ManhattanMST.NotGenericMath.cs
 ---
 

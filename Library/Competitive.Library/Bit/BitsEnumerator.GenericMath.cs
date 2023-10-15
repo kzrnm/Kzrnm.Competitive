@@ -6,7 +6,6 @@ using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE BitsEnumerator:GenericMath
     public struct BitsEnumerator<T> : IEnumerable<int>, IEnumerator<int> where T : IBinaryInteger<T>
     {
         T num;

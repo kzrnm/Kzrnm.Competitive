@@ -3,7 +3,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE Flatten
     public static class __CollectionExtension_Flatten
     {
         /// <summary>

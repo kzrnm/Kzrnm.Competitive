@@ -8,7 +8,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive
 {
     using static Internal.NodeColor;
-    // competitive-verifier: TITLE 赤黒木(Operator)
     public class RedBlackTreeNode<T> : IBbstNode<T, RedBlackTreeNode<T>>
     {
         internal RedBlackTreeNode<T> left;

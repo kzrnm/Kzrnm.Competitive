@@ -5,7 +5,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 2次元SparseTable
     /// <summary>
     /// <para> H × W の2次元配列に対する冪等半群に対する区間クエリを, 前計算 O(HW log HW), クエリ O(1) で処理する</para>
     /// <para>冪等: 操作を何回行っても集合が等しければ等しくなる性質(最小値・最大値など)</para>

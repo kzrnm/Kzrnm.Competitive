@@ -3,7 +3,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.Internal
 {
-    // competitive-verifier: TITLE SuccinctIndexableDictionary
     internal class SuccinctIndexableDictionary
     {
         readonly uint[] bit, sum;

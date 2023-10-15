@@ -6,7 +6,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE ロールバック可能な UnionFind
     // https://nyaannyaan.github.io/library/data-structure/rollback-union-find.hpp
     /// <summary>
     /// ロールバック可能なUnionFind

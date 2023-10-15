@@ -7,7 +7,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 乱択平衡二分探索木(Operator)
     // https://ei1333.github.io/library/structure/bbst/lazy-reversible-splay-tree.hpp
     public class RandomBinarySearchTreeNode<T> : IBbstNode<T, RandomBinarySearchTreeNode<T>>
     {

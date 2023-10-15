@@ -5,7 +5,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 重みなしグラフのBuilder
     public class GraphBuilder
     {
         internal readonly EdgeContainer<GraphEdge> edgeContainer;

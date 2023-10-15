@@ -4,7 +4,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive
 {
     // https://nyaannyaan.github.io/library/modint/barrett-reduction.hpp
-    // competitive-verifier: TITLE barrett-reduction の拡張
     /// <summary>
     /// barrett-reduction の拡張
     /// </summary>

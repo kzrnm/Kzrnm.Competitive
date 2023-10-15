@@ -5,7 +5,6 @@ using Kzrnm.Competitive.Internal;
 using System;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
-// competitive-verifier: TITLE 2次元WaveletMatrix(FenwickTree)
 namespace Kzrnm.Competitive
 {
     /// <summary>

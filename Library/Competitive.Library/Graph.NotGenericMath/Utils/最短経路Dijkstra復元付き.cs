@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 経路復元付き最短経路(Dijkstra)
     public static class 最短経路Dijkstra復元付き
     {
         /// <summary>

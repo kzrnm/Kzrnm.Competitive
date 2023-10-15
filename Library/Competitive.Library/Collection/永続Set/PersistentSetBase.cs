@@ -11,7 +11,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 永続Setの基底クラス
     public class PersistentSetBase<T, TKey, TSet, TNOp> : ICollection, ICollection<T>, IReadOnlyCollection<T>
         where TSet : PersistentSetBase<T, TKey, TSet, TNOp>
         where TNOp : struct, IPersistentSetNodeOperator<T, TKey>, IPersistentSetOperator<T, TKey, TSet, TNOp>

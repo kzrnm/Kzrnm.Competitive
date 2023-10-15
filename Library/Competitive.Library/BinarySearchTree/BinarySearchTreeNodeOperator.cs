@@ -3,7 +3,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.Internal.Bbst
 {
-    // competitive-verifier: TITLE 平衡二分探索木のオペレータ
     /// <summary>
     /// 平衡二分探索木のオペレータ
     /// </summary>

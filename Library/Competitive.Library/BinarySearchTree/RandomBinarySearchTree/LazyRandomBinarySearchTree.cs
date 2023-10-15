@@ -8,7 +8,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 遅延伝搬乱択平衡二分探索木
     // https://ei1333.github.io/library/structure/bbst/lazy-reversible-splay-tree.hpp
     /// <summary>
     /// 遅延伝搬乱択平衡二分探索木

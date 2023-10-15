@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 最短経路(01-BFS)
     public static class 最短経路01Bfs
     {
         /// <summary>

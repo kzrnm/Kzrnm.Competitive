@@ -6,7 +6,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 最小全域木(Prim)
     public static class 最小全域木Prim
     {
         /// <summary>

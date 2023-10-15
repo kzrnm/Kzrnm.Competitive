@@ -4,7 +4,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 閉路削除
     public static class 閉路削除Dfs
     {
         enum Status { None, Active, Done }

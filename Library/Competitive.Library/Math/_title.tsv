@@ -1,0 +1,3 @@
+AffineTransformation.GenericMath.cs	アフィン変換
+AffineTransformation.NotGenericMath.cs	アフィン変換: OperatorInterface
+PrimeNumber.cs	素数列挙

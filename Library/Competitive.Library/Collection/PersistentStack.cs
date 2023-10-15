@@ -6,7 +6,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE Countがある永続Stack
     public sealed class PersistentStack<T> : IImmutableStack<T>, IReadOnlyCollection<T>
     {
         private PersistentStack() { }

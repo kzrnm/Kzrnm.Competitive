@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 累積和のラッパークラス
 
     /// <summary>
     /// <see cref="long"/> の累積和を求めます。

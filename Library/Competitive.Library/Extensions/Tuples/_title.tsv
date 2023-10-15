@@ -1,0 +1,2 @@
+CollectionTupleExtension_Queue.cs	Queue<Tuple> の便利メソッド
+CollectionTupleExtension_Stack.cs	Stack<Tuple> の便利メソッド

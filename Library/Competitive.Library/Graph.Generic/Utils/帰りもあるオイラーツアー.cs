@@ -3,7 +3,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 帰りもあるオイラーツアー
     public class 帰りもあるオイラーツアー<TEdge> where TEdge : IGraphEdge, IReversable<TEdge>
     {
         public readonly struct Event

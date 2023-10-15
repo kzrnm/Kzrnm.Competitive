@@ -6,7 +6,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE データ付き重み付きグラフのBuilder
     public class WGraphBuilder<T, S, TOp>
         where TOp : struct, IAdditionOperator<T>
     {

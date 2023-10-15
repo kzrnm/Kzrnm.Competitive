@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 
 namespace Kzrnm.Competitive.Internal.Bbst
 {
-    // competitive-verifier: TITLE 二分探索木のインターフェイス
     public interface IBinarySearchTree<T> : IList<T>
     {
         void AddRange(IEnumerable<T> items);

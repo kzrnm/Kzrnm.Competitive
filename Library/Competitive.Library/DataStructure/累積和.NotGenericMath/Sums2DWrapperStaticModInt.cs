@@ -2,7 +2,6 @@ using AtCoder;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 2次元累積和のStaticModIntラッパークラス
 
     /// <summary>
     /// <see cref="StaticModInt{T}"/> の累積和を求めます。

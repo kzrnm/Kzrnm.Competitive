@@ -10,7 +10,6 @@ using System.Numerics;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE Point(long)
     using P = PointLong;
     public readonly struct PointLong : IEquatable<P>, IComparable<P>, IUtf8ConsoleWriterFormatter
 #if NET7_0_OR_GREATER

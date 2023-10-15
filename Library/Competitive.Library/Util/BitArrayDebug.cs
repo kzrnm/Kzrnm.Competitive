@@ -4,7 +4,6 @@ using System.Diagnostics;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE BitArray のデバッグ表示
     using static DebuggerBrowsableState;
     /// <summary>
     /// <see cref="BitArray"/> や <see cref="BitArray"/>[] を 2 進数表記でデバッガのウォッチ式に表示します。

@@ -5,7 +5,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE Linq 便利メソッド
     public static class __CollectionExtension_MyLinq
     {
         /// <summary>

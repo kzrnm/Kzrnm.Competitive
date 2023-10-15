@@ -2,7 +2,6 @@ using AtCoder;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 重みなしグラフを重み付きグラフに変換
     public static class ___GraphToWeighted
     {
         public static WGraph<int, IntOperator, WGraphNode<int, WEdge<int>>, WEdge<int>> ToWeighted(this SimpleGraph<GraphNode, GraphEdge> graph)

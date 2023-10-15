@@ -2,7 +2,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.Internal.Bbst
 {
-    // competitive-verifier: TITLE 反転可能遅延伝搬平衡二分探索木のオペレータ
     /// <summary>
     /// 反転可能遅延伝搬平衡二分探索木のオペレータ
     /// </summary>

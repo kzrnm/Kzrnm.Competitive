@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 累積和のStaticModIntラッパークラス
     /// <summary>
     /// <see cref="StaticModInt{T}"/> の累積和を求めます。
     /// </summary>

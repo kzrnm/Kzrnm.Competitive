@@ -1,0 +1,3 @@
+SparseTable2D.cs	2次元SparseTable
+Swag.cs	スライド演算(SWAG: Slide Window Aggrigation)
+SwagDeque.cs	両端スライド演算(SWAG: Slide Window Aggrigation)

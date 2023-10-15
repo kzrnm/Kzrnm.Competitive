@@ -6,7 +6,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive
 {
     // https://prng.di.unimi.it/xoshiro256starstar.c
-    // competitive-verifier: TITLE Xoshiro256**
     public class Xoshiro256
     {
         ulong s0, s1, s2, s3;

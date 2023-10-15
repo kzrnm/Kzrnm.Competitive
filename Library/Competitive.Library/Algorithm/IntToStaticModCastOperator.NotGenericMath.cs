@@ -4,7 +4,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE IntToStaticModCastOperator
     public struct IntToStaticModCastOperator<T> : ICastOperator<int, StaticModInt<T>>
            where T : struct, IStaticMod
     {

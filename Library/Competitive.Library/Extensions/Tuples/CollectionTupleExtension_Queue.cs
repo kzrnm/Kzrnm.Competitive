@@ -3,7 +3,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE Queue<Tuple> の便利メソッド
     public static class __CollectionTupleExtension_Queue
     {
         [凾(256)]

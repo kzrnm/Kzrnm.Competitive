@@ -1,0 +1,2 @@
+PersistentStack.Doubling.cs	(log N)$ でインデックスアクセス可能な永続Stack
+PersistentStack.cs	Countがある永続Stack

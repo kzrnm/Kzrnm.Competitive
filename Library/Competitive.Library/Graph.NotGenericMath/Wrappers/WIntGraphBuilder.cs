@@ -3,7 +3,6 @@ using Kzrnm.Competitive.IO;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE int重み付きグラフのBuilder
     public class WIntGraphBuilder : WGraphBuilder<int, IntOperator>
     {
         public WIntGraphBuilder(int count, bool isDirected) : base(count, isDirected) { }

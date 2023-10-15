@@ -2,7 +2,6 @@ using System;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 重み付きグラフのノード
     public class WGraphNode<T, TEdge> : IGraphNode<TEdge>, IEquatable<WGraphNode<T, TEdge>>
         where TEdge : IWGraphEdge<T>
     {

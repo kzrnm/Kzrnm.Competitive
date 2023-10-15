@@ -8,7 +8,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 永続赤黒木
     // https://ei1333.github.io/library/structure/bbst/lazy-red-black-tree.hpp
     /// <summary>
     /// 永続赤黒木

@@ -5,7 +5,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 永続Set
     public class PersistentSet<T> : PersistentSetBase<T, T, PersistentSet<T>, PersistentSet<T>.PSOperator>, ICollection<T>
     {
         public struct PSOperator : IPersistentSetNodeOperator<T, T>, IPersistentSetOperator<T, T, PersistentSet<T>, PSOperator>

@@ -1,5 +1,5 @@
 ---
-title: マンハッタン距離での最小全域木(.NET 7)
+title: マンハッタン距離での最小全域木
 documentation_of: ./ManhattanMST.GenericMath.cs
 ---
 

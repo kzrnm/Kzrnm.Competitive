@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 最小全域森(Kruskal)
     public static class 最小全域森Kruskal
     {
         /// <summary>

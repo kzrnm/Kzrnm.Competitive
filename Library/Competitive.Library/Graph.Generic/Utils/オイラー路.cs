@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE オイラー路
     public static class オイラー路
     {
         /// <summary>

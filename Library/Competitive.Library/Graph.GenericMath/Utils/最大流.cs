@@ -3,7 +3,6 @@ using System.Numerics;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 最大流
     public static class 最大流
     {
         public static MfGraph<T> ToMFGraph<T>(this WGraphBuilder<T> gb)

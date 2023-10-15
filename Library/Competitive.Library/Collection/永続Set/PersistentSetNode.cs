@@ -10,7 +10,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE 永続SetのNode
 
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Value = {" + nameof(value) + "}, Count = {" + nameof(Count) + "}")]

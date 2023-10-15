@@ -8,7 +8,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    // competitive-verifier: TITLE Grid
     public static class Grid
     {
         [凾(256)] public static Grid<char> GridString(this ConsoleReader cr, int H, char defaultValue = default) => Create(cr.Repeat(H).Ascii(), defaultValue);
