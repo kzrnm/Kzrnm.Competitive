@@ -17,21 +17,21 @@ namespace Kzrnm.Competitive.Testing.IO
         public void SmallAlphabet()
         {
             var cr = GetReader("abcdefghijklmnopqrstuvwxyz");
-            cr.AsciiToInt('a').Should().Equal(Enumerable.Range(0, 26));
+            cr.AsciiToNum('a').Should().Equal(Enumerable.Range(0, 26).Select(v => (short)v));
         }
 
         [Fact]
         public void LargeAlphabet()
         {
             var cr = GetReader("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-            cr.AsciiToInt('A').Should().Equal(Enumerable.Range(0, 26));
+            cr.AsciiToNum('A').Should().Equal(Enumerable.Range(0, 26).Select(v => (short)v));
         }
 
         [Fact]
         public void Number()
         {
             var cr = GetReader("0123456789");
-            cr.AsciiToInt('0').Should().Equal(Enumerable.Range(0, 10));
+            cr.AsciiToNum('0').Should().Equal(Enumerable.Range(0, 10).Select(v => (short)v));
         }
     }
 }

@@ -11,12 +11,12 @@ namespace Kzrnm.Competitive.IO
         /// <param name="diff"></param>
         /// <returns></returns>
         [凾(256)]
-        public static int[] AsciiToInt(this ConsoleReader cr, int diff)
+        public static short[] AsciiToNum(this ConsoleReader cr, int diff)
         {
             var arr = cr.AsciiChars();
-            var ret = new int[arr.Length];
+            var ret = new short[arr.Length];
             for (int i = 0; i < ret.Length; i++)
-                ret[i] = arr[i] - diff;
+                ret[i] = (short)(arr[i] - diff);
             return ret;
         }
     }
