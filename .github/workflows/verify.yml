@@ -121,8 +121,29 @@ jobs:
           unittest-result: ${{runner.temp}}/VerifierCsUnitTestResult/*.csv
           problems: ${{runner.temp}}/problems-*.json
           msbuild-properties: Configuration=Release
+
       - name: Update TITLE
-        run: python "${{github.workspace}}/tools/set_title.py" "${{runner.temp}}/verify_files.json"
+        shell: python
+        run: |
+          import csv
+          import pathlib
+          import sys
+          import json
+
+
+          input_path = r"${{runner.temp}}/verify_files.json"
+          with pathlib.Path(input_path).open("rb") as fp:
+              ver = json.load(fp)
+          for path in pathlib.Path(".").glob("**/_title.tsv"):
+              with path.open(mode="r", encoding="utf-8") as fp:
+                  for cols in csv.reader(fp, delimiter="\t"):
+                      file = ver["files"][(path.parent / cols[0]).as_posix()]
+                      file.setdefault("document_attributes", dict())["TITLE"] = cols[1]
+
+          ver_json = json.dumps(ver, separators=(',', ':'))
+          with pathlib.Path(input_path).open("w", encoding="utf-8") as fp:
+              fp.write(ver_json)
+          print(ver_json)
 
       - name: Upload verify_files.json
         uses: competitive-verifier/actions/upload-verify-artifact@v1
@@ -171,7 +192,6 @@ jobs:
       - name: Set up competitive-verifier
         uses: competitive-verifier/actions/setup@v1
         with:
-          python-version: "3.9"
           cache-pip: true
 
       - name: Download verify_files.json
@@ -243,7 +263,6 @@ jobs:
       - name: Set up competitive-verifier
         uses: competitive-verifier/actions/setup@v1
         with:
-          python-version: "3.9"
           cache-pip: true
 
       - name: Merge results
