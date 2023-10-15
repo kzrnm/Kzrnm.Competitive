@@ -175,7 +175,7 @@ jobs:
           fetch-depth: 123456789
 
       - name: Restore cached results
-        if: ${{ !github.event.inputs.ignore_prev_result }}
+        if: ${{ ! inputs.ignore_prev_result }}
         uses: actions/cache/restore@v3
         id: restore-cached-results
         with:
@@ -272,6 +272,7 @@ jobs:
           result-files: ${{ steps.all-artifacts.outputs.artifacts-root }}/Result-*/result.json
           output-path: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
       - name: Save cached results
+        if: ${{ ! inputs.ignore_prev_result }}
         uses: actions/cache/save@v3
         with:
           path: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
