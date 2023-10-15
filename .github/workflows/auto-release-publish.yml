@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - Library/Competitive.Library/**
+      - "!Library/**/_title.csv"
       - "!**.md"
   workflow_dispatch:
 
