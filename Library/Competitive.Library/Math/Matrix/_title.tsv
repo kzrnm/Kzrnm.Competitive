@@ -1,0 +1,3 @@
+BitMatrix.cs	$Mod 2$で値を持つ行列(BitArray実装)
+BitOrMatrix.cs	$\times$ が Bit OR 演算の行列
+MatrixProdStrassen.Simd.cs	Strassenのアルゴリズム

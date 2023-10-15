@@ -1,0 +1,4 @@
+Set.cs	Set
+SetDictionary.cs	Key・ValueのSet
+SetInterval.cs	$[from, to]$を保持するSet
+SetIntervalClosed.cs	$[from, to)$を保持するSet
