@@ -63,6 +63,5 @@ jobs:
     with:
       artifact-name: dist
       version: ${{needs.get-date.outputs.version}}
-      is-prerelease: ${{ needs.get-version.outputs.is-prerelease == 'true' }}
     secrets:
       NUGET_KEY: ${{ secrets.NUGET_KEY }}
