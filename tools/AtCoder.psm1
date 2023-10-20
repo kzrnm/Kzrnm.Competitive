@@ -3,7 +3,10 @@ if (-not (Test-Path "$PSScriptRoot/config.json")) {
     throw "Requied: $PSScriptRoot/config.json"
 }
 
-$defaultLangId = 5042 # AOT じゃない方は 5003
+$Languages = @{
+    'C#(NativeAOT)' = 5042 
+    'C#(Normal)'    = 5003
+}
 $config = (Get-Content "$PSScriptRoot/config.json" | ConvertFrom-Json)
 
 function loadingDll {
@@ -338,27 +341,40 @@ Set-Alias at "ParseAtCoder"
 #endregion Parse AtCoder
 
 function streak {
+    [CmdletBinding(DefaultParameterSetName = 'LangId')]
     param (
+        [Parameter(Mandatory = $false, Position = 0)]
         [string]$Url,
         [Parameter(Mandatory = $false)][System.IO.FileInfo]$File,
-        [Parameter(Mandatory = $false)][int]$langId = $defaultLangId, # AOT じゃない方は 5003
+        [ValidateSet('C#(NativeAOT)' , 'C#(Normal)')]
+        [Parameter(ParameterSetName = 'Language', Mandatory = $false)]
+        [string]$language,
+        [Parameter(ParameterSetName = 'LangId')]
+        [Parameter(Mandatory = $false)][int]$langId = $Languages['C#(NativeAOT)'],
         [Parameter(Mandatory = $false)][int]$priority = 0
     )
-    if (-not $File.Exists) {
-        $file = (Get-ChildItem $config.Project.CombinedPath)
-    }
-    if ($file.Exists) {
-        $filePath = $file.FullName
-        if (-not $Url) {
-            $Url = $lastAtCoderUrl
+    begin {
+        if ($language) {
+            $langId = $Languages[$language]
         }
-        if (-not $Url) {
-            throw "url is Empty"
-        }
-        $streak.AddInternal($Url, "$langId", $filePath, $priority) | Out-Null
     }
-    else {
-        throw "$filePath doesn't Exist"
+    process {
+        if (-not $File.Exists) {
+            $file = (Get-ChildItem $config.Project.CombinedPath)
+        }
+        if ($file.Exists) {
+            $filePath = $file.FullName
+            if (-not $Url) {
+                $Url = $lastAtCoderUrl
+            }
+            if (-not $Url) {
+                throw "url is Empty"
+            }
+            $streak.AddInternal($Url, "$langId", $filePath, $priority) | Out-Null
+        }
+        else {
+            throw "$filePath doesn't Exist"
+        }
     }
 }
 
@@ -417,31 +433,45 @@ function submit-streak {
     )
     for ($i = 0; $i -lt $Size; $i++) {
         $streak.SubmitInternal([AtCoderStreak.Service.SourceOrder]::None, $true, 1, $config.CookieFile).Result | Out-Null
-	Start-Sleep -Milliseconds 500 | Out-Null
+        Start-Sleep -Milliseconds 500 | Out-Null
     }
 }
 
 function submit {
+    [CmdletBinding(DefaultParameterSetName = 'LangId')]
     param (
+        [Parameter(Mandatory = $false, Position = 0)]
         [string]$url,
+        [Parameter(Mandatory = $false)]
         [string]$filePath,
-        [int]$langId = $defaultLangId,
+        [ValidateSet('C#(NativeAOT)' , 'C#(Normal)')]
+        [Parameter(ParameterSetName = 'Language', Mandatory = $false)]
+        [string]$language,
+        [Parameter(ParameterSetName = 'LangId')]
+        [int]$langId = $Languages['C#(NativeAOT)'],
         [switch]$SilentResult
     )
-    if (-not $filePath) {
-        $filePath = $config.Project.CombinedPath
+    begin {
+        if ($language) {
+            $langId = $Languages[$language]
+        }
     }
-    if (-not $url) {
-        $url = $lastAtCoderUrl
-        Write-Host -ForegroundColor DarkGreen "[Submit]: $url"
-    }
-    if (-not $url) {
-        throw "url is Empty"
-    }
-    
-    $streak.SubmitFileInternal((Get-Content -Raw $filePath), $url, "$langId", "$($config.CookieFile)").Result | Out-Null
-    if (-not $SilentResult) {
-        Start-Process ($url -replace 'tasks/.*', 'submissions/me')
+    process {
+        if (-not $filePath) {
+            $filePath = $config.Project.CombinedPath
+        }
+        if (-not $url) {
+            $url = $lastAtCoderUrl
+            Write-Host -ForegroundColor DarkGreen "[Submit]: $url"
+        }
+        if (-not $url) {
+            throw "url is Empty"
+        }
+
+        $streak.SubmitFileInternal((Get-Content -Raw $filePath), $url, "$langId", "$($config.CookieFile)").Result | Out-Null
+        if (-not $SilentResult) {
+            Start-Process ($url -replace 'tasks/.*', 'submissions/me')
+        }
     }
 }
 
