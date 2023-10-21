@@ -286,17 +286,6 @@ jobs:
           verify-result: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
           destination: ${{github.workspace}}/_jekyll
           write-summary: true
-      - name: Format index.md
-        working-directory: _jekyll
-        run: |
-          cat index.md \
-            | sed -E 's@  - name: "?Checker/.*@  - name: Checker@' \
-            | sed -E 's@  - name: "?Competitive.Library.Test/.*@  - name: Competitive.Library.Test@' \
-            | sed -z 's@  - name: Checker\n *pages:\n@@2g' \
-            | sed -z 's@  - name: Competitive.Library.Test\n *pages:\n@@2g' \
-            > output.md
-          mv output.md index.md
-          cat index.md
 
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
