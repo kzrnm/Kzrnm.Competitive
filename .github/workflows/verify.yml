@@ -124,7 +124,7 @@ jobs:
           msbuild-properties: Configuration=Release
 
       - name: Expand Test
-        run: dotnet build Library/Expand.Test/Expand.Test.csproj
+        run: dotnet build Expand.Test/Expand.Test.csproj
         continue-on-error: true
         id: expand-test
 
