@@ -1,6 +1,2 @@
 ConvexHullTrick.GenericMath.cs	Convex Hull Trick(Li-Chao (Segment) Tree)
 ConvexHullTrick.NotGenericMath.cs	Convex Hull Trick(Li-Chao (Segment) Tree): OperatorInterface
-Grid.cs	Grid
-PointDouble.cs	Point(double)
-PointInt.cs	Point(int)
-PointLong.cs	Point(long)
