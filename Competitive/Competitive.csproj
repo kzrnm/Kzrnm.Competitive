@@ -44,8 +44,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SourceExpander.Core" Version="5.4.0" />
-    <PackageReference Include="SourceExpander.Generator" Version="5.4.0">
+    <PackageReference Include="SourceExpander.Core" Version="$(SourceExpanderVersion)" />
+    <PackageReference Include="SourceExpander.Generator" Version="$(SourceExpanderVersion)">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
