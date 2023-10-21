@@ -28,7 +28,8 @@
     {%- assign categories = top.categories | where_exp: "category", category_exp -%}
     {%- for category in categories -%}
         {%- for item in category.pages -%}
-            {%- assign name = item.path -%}
+            {%- capture verification_root_dir -%}{{bigCategory}}/{%- endcapture -%}
+            {%- assign name = item.path | replace_first: verification_root_dir, "" -%}
 
             {%- if item.title -%}
                 {%- capture link_title -%}{{item.title}} <small>({{ name }})</small>{%- endcapture -%}
