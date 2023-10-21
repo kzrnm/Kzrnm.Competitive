@@ -156,9 +156,7 @@ jobs:
                       "status": "${{steps.expand-test.outcome == 'success' && 'success' || 'failure'}}"
                   }
               ],
-              "document_attributes": {
-                  "TITLE": "Expand Test"
-              }
+              "document_attributes": {}
           }
           ver_json = json.dumps(ver, separators=(',', ':'))
           with pathlib.Path(input_path).open("w", encoding="utf-8") as fp:
