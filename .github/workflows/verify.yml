@@ -123,6 +123,11 @@ jobs:
           problems: ${{runner.temp}}/problems-*.json
           msbuild-properties: Configuration=Release
 
+      - name: Expand Test
+        run: dotnet build Library/Expand.Test/Expand.Test.csproj
+        continue-on-error: true
+        id: expand-test
+
       - name: Update TITLE
         shell: python
         run: |
@@ -141,6 +146,20 @@ jobs:
                       file = ver["files"][(path.parent / cols[0]).as_posix()]
                       file.setdefault("document_attributes", dict())["TITLE"] = cols[1]
 
+          ver["files"]["Expand.Test/Expand.Test.csproj"] = {
+              "dependencies": [
+                  "Competitive.Library/+Runner/Program.cs"
+              ],
+              "verification": [
+                  {
+                      "type": "const",
+                      "status": "${{steps.expand-test.outcome == 'success' && 'success' || 'failure'}}"
+                  }
+              ],
+              "document_attributes": {
+                  "TITLE": "Expand Test"
+              }
+          }
           ver_json = json.dumps(ver, separators=(',', ':'))
           with pathlib.Path(input_path).open("w", encoding="utf-8") as fp:
               fp.write(ver_json)

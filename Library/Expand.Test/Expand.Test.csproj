@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net7.0;netcoreapp3.1</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>annotations</Nullable>
+    <LangVersion>11</LangVersion>
+    <NoWarn>$(NoWarn);CS0436;CS8981;CS0649</NoWarn>
+    <SourceExpander_Generator_ExpandingAll>true</SourceExpander_Generator_ExpandingAll>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Competitive.Library\Competitive.Library.csproj" />
+    <PackageReference Include="SourceExpander.Generator" Version="$(SourceExpanderVersion)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>
