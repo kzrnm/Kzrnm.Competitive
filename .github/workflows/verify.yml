@@ -303,6 +303,10 @@ jobs:
           verify-result: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
           destination: ${{github.workspace}}/_jekyll
           write-summary: true
+         
+      - name: Replace csproj with xml
+        run: |
+          sed -ie "s/pathExtension: csproj/pathExtension: xml/" ${{github.workspace}}/_jekyll/Expand.Test/Expand.Test.csproj.md
 
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
