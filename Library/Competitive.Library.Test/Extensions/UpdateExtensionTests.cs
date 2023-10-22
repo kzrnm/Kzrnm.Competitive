@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace Kzrnm.Competitive.Testing.Extensions
 {
@@ -34,6 +35,40 @@ namespace Kzrnm.Competitive.Testing.Extensions
             d.Should().Be(new DateTime(1999, 1, 1));
             d.UpdateMin(new DateTime(2000, 12, 1)).Should().BeFalse();
             d.Should().Be(new DateTime(1999, 1, 1));
+        }
+
+
+        [Fact]
+        public void UpdateValues()
+        {
+            var rnd = new Random(227);
+            for (int i = 0; i < 1000; i++)
+            {
+                var bytes = new byte[20];
+                rnd.NextBytes(bytes);
+                bytes[0] = byte.MaxValue >> 1;
+                byte num;
+                {
+                    num = 0;
+                    num.UpdateMin(bytes).Should().BeFalse();
+                    num.Should().Be(0);
+                }
+                {
+                    num = 0;
+                    num.UpdateMax(bytes).Should().BeTrue();
+                    num.Should().Be(bytes.Max());
+                }
+                {
+                    num = byte.MaxValue;
+                    num.UpdateMin(bytes).Should().BeTrue();
+                    num.Should().Be(bytes.Min());
+                }
+                {
+                    num = byte.MaxValue;
+                    num.UpdateMax(bytes).Should().BeFalse();
+                    num.Should().Be(byte.MaxValue);
+                }
+            }
         }
     }
 }
