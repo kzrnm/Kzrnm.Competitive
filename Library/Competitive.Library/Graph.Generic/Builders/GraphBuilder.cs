@@ -42,9 +42,9 @@ namespace Kzrnm.Competitive
 
         public TreeGraph<TreeNode, GraphEdge> ToTree(int root = 0)
             => GraphBuilderLogic.ToTree<TreeGraph<TreeNode, GraphEdge>, TreeNode, GraphEdge, TOp>(edgeContainer, root);
-        struct TOp :
-            IGraphBuildOperator<SimpleGraph<GraphNode, GraphEdge>, GraphNode, GraphEdge>,
-            ITreeBuildOperator<TreeGraph<TreeNode, GraphEdge>, TreeNode, GraphEdge>
+        readonly struct TOp :
+             IGraphBuildOperator<SimpleGraph<GraphNode, GraphEdge>, GraphNode, GraphEdge>,
+             ITreeBuildOperator<TreeGraph<TreeNode, GraphEdge>, TreeNode, GraphEdge>
         {
             [凾(256)] public SimpleGraph<GraphNode, GraphEdge> Graph(GraphNode[] nodes, Csr<GraphEdge> edges) => new SimpleGraph<GraphNode, GraphEdge>(nodes, edges);
             [凾(256)] public GraphNode Node(int i, GraphEdge[] parents, GraphEdge[] children) => new GraphNode(i, parents, children);
