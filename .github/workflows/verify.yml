@@ -308,6 +308,10 @@ jobs:
         run: |
           sed -ie "s/pathExtension: csproj/pathExtension: xml/" ${{github.workspace}}/_jekyll/Expand.Test/Expand.Test.csproj.md
 
+      - name: Add redirect_from to *.GenericMath.cs.md
+        shell: bash
+        run : python3 "${{github.workspace}}/tools/update_redirect.py" "${{github.workspace}}/_jekyll"
+
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
