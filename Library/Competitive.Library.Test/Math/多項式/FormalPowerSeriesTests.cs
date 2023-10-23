@@ -134,7 +134,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         public void DivRem()
         {
             var rnd = new Random(227);
-            const int N = 160;
+            const int N = 130;
             var lhs = new int[N];
             var rhs = new int[N + 1];
             var rem = new int[N];

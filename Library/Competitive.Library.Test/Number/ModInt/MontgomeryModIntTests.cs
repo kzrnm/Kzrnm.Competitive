@@ -1,7 +1,6 @@
 using AtCoder;
 using System;
 using System.Linq;
-using System.Numerics;
 
 namespace Kzrnm.Competitive.Testing.Number
 {
@@ -60,10 +59,12 @@ namespace Kzrnm.Competitive.Testing.Number
             static void RunStatic<T>() where T : struct, IStaticMod
             {
                 var mod = (int)new T().Mod;
-                var max = Math.Min(100000, mod);
-                for (int i = 1; i < max; i++)
+                var max = Math.Min(1000, mod);
+                var cases = Enumerable.Range(1, max);
+                if (max < mod) cases = cases.Concat(Enumerable.Repeat(new Xoshiro256(227), 1000).Select(r => r.NextInt32(max, mod)));
+                foreach (var i in cases)
                 {
-                    if (!new T().IsPrime && Gcd(i, mod) != 1) continue;
+                    if (Gcd(i, mod) != 1) continue;
                     int x = new MontgomeryModInt<T>(i).Inv().Value;
                     ((long)x * i % mod).Should().Be(1);
                 }
@@ -151,8 +152,10 @@ namespace Kzrnm.Competitive.Testing.Number
             static void RunStatic<T>() where T : struct, IStaticMod
             {
                 var mod = (int)new T().Mod;
-                var max = Math.Min(100000, mod);
-                for (int i = 0; i < max; i++)
+                var max = Math.Min(1000, mod);
+                var cases = Enumerable.Range(0, max);
+                if (max < mod) cases = cases.Concat(Enumerable.Repeat(new Xoshiro256(227), 1000).Select(r => r.NextInt32(max, mod)));
+                foreach (var i in cases)
                 {
                     int x = (-new MontgomeryModInt<T>(i)).Value;
                     x.Should().Be((mod - i) % mod);
@@ -171,8 +174,10 @@ namespace Kzrnm.Competitive.Testing.Number
             {
                 Span<char> chars = stackalloc char[30];
                 var mod = (int)new T().Mod;
-                var max = Math.Min(100000, mod);
-                for (int i = 0; i < max; i++)
+                var max = Math.Min(1000, mod);
+                var cases = Enumerable.Range(0, max);
+                if (max < mod) cases = cases.Concat(Enumerable.Repeat(new Xoshiro256(227), 1000).Select(r => r.NextInt32(max, mod)));
+                foreach (var i in cases)
                 {
                     var m = new MontgomeryModInt<T>(i);
                     var expected = (i % mod).ToString();

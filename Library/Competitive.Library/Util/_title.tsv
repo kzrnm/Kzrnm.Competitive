@@ -1,2 +1,3 @@
 BitArrayDebug.cs	BitArray のデバッグ表示
 Xoshiro256.cs	Xoshiro256**
+Xoshiro256.Ext.cs	Xoshiro256**(ulong 以外)

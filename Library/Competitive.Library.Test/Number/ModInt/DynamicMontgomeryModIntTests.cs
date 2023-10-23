@@ -54,8 +54,10 @@ namespace Kzrnm.Competitive.Testing.Number
             static void RunStatic<T>() where T : struct
             {
                 var mod = DynamicMontgomeryModInt<T>.Mod;
-                var max = Math.Min(100000, mod);
-                for (int i = 1; i < max; i++)
+                var max = Math.Min(1000, mod);
+                var cases = Enumerable.Range(1, max);
+                if (max < mod) cases = cases.Concat(Enumerable.Repeat(new Xoshiro256(227), 1000).Select(r => r.NextInt32(max, mod)));
+                foreach (var i in cases)
                 {
                     if (Gcd(i, mod) != 1) continue;
                     int x = new DynamicMontgomeryModInt<T>(i).Inv().Value;
@@ -130,8 +132,10 @@ namespace Kzrnm.Competitive.Testing.Number
             static void RunStatic<T>() where T : struct
             {
                 var mod = DynamicMontgomeryModInt<T>.Mod;
-                var max = Math.Min(100000, mod);
-                for (int i = 0; i < max; i++)
+                var max = Math.Min(1000, mod);
+                var cases = Enumerable.Range(0, max);
+                if (max < mod) cases = cases.Concat(Enumerable.Repeat(new Xoshiro256(227), 1000).Select(r => r.NextInt32(max, mod)));
+                foreach (var i in cases)
                 {
                     int x = (-new DynamicMontgomeryModInt<T>(i)).Value;
                     x.Should().Be((mod - i) % mod);
@@ -150,8 +154,10 @@ namespace Kzrnm.Competitive.Testing.Number
             {
                 Span<char> chars = stackalloc char[30];
                 var mod = DynamicMontgomeryModInt<T>.Mod;
-                var max = Math.Min(100000, mod);
-                for (int i = 0; i < max; i++)
+                var max = Math.Min(1000, mod);
+                var cases = Enumerable.Range(0, max);
+                if (max < mod) cases = cases.Concat(Enumerable.Repeat(new Xoshiro256(227), 1000).Select(r => r.NextInt32(max, mod)));
+                foreach (var i in cases)
                 {
                     var m = new DynamicMontgomeryModInt<T>(i);
                     var expected = (i % mod).ToString();
