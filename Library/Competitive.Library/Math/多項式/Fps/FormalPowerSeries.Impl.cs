@@ -168,7 +168,7 @@ namespace Kzrnm.Competitive
                 var a = new Impl(AsSpan().ToArray()).Reverse().Pre(n).AsSpan();
                 var b = new Impl(rhs.ToArray()).Reverse().Inv(n).AsSpan();
 
-                var m = NumberTheoreticTransform.Convolution<T>(a, b);
+                var m = NumberTheoreticTransform.Convolution(a, b);
                 return Set(m).Pre(n).Reverse();
             }
 

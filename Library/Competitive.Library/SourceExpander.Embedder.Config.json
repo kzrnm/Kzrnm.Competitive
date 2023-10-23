@@ -11,7 +11,7 @@
     "ATCODER_CONTRACT"
   ],
   "exclude-attributes": [
-    "System.Diagnostics.CodeAnalysis.SuppressMessage",
+    "System.Diagnostics.CodeAnalysis.SuppressMessageAttribute",
     "System.Diagnostics.DebuggerBrowsableAttribute",
     "System.Diagnostics.DebuggerDisplayAttribute",
     "System.Diagnostics.DebuggerHiddenAttribute",

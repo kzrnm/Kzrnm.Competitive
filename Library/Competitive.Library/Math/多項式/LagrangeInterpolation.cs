@@ -11,7 +11,7 @@ namespace Kzrnm.Competitive
         // https://ei1333.github.io/library/math/combinatorics/lagrange-polynomial-2.cpp
         /// <summary>
         /// <para>ラグランジュ補間</para>
-        /// <para>(x0, y0), ..., (xn, yn)を満たす n 次多項式を返します。</para>
+        /// <para>(x0, y0), ..., (xN, yN)を満たす N 次多項式を返します。</para>
         /// <para>制約: xは全て異なる</para>
         /// </summary>
         /// <remarks>
@@ -65,7 +65,7 @@ namespace Kzrnm.Competitive
         // https://ei1333.github.io/library/math/combinatorics/lagrange-polynomial.cpp
         /// <summary>
         /// <para>ラグランジュ補間</para>
-        /// <para>(0, y0), ..., (n, yn)を満たす n 次多項式に <paramref name="x"/> を代入した値を返します。</para>
+        /// <para>(0, y0), ..., (N, yN)を満たす N 次多項式に <paramref name="x"/> を代入した値を返します。</para>
         /// <para>制約: <paramref name="combination"/> が初期化済みならば、<paramref name="y"/>.Length までは使えること</para>
         /// </summary>
         /// <remarks>

@@ -2,7 +2,6 @@ using AtCoder;
 using AtCoder.Internal;
 using System;
 using System.Numerics;
-using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 // https://nyaannyaan.github.io/library/fps/kitamasa.hpp
@@ -15,6 +14,7 @@ namespace Kzrnm.Competitive
     {
         /// <summary>
         /// <para> Bostan-Mori Algorithm で [x^k] P(x) / Q(x) を求めます</para>
+        /// <para>計算量: O(k logk logn)</para>
         /// </summary>
         public static MontgomeryModInt<T> BostanMori<T>(FormalPowerSeries<T> Q, FormalPowerSeries<T> P, long k) where T : struct, IStaticMod
         {
