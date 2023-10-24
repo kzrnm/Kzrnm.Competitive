@@ -20,12 +20,10 @@ def main():
 
     os.chdir(pathlib.Path(__file__).resolve(strict=True).parent/'../Library')
 
-    relative_jekyll_dir = jekyll_dir.relative_to(pathlib.Path.cwd())
-
-    for p in chain(relative_jekyll_dir.glob('**/*.GenericMath.cs.md'), relative_jekyll_dir.glob('**/*.GenericMath/**/*.cs.md')):
+    for p in chain(jekyll_dir.glob('**/*.GenericMath.cs.md'), jekyll_dir.glob('**/*.GenericMath/**/*.cs.md')):
         with log.group(p.as_posix()):
             with p.open('rb') as fp:
-                front_matter, content = split_front_matter(fp.read())
+                front_matter, _ = split_front_matter(fp.read())
 
             logger.info("documentation_of: %s", front_matter.documentation_of)
             new_redirect_from = front_matter.documentation_of.replace('.GenericMath', '')
