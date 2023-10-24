@@ -1,7 +1,6 @@
 using AtCoder;
 using AtCoder.Internal;
 using System;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -15,6 +14,7 @@ namespace Kzrnm.Competitive
     public partial class FormalPowerSeries<T>
         where T : struct, IStaticMod
     {
+        [凾(256)] internal Impl ToImpl() => new Impl(this);
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "気にしない")]
         internal ref struct Impl
         {
@@ -22,7 +22,7 @@ namespace Kzrnm.Competitive
             public int Length;
             public Span<MontgomeryModInt<T>> AsSpan() => a.AsSpan(0, Length);
 
-            private Impl Set(MontgomeryModInt<T>[] value)
+            public Impl Set(MontgomeryModInt<T>[] value)
             {
                 a = value;
                 Length = value.Length;
@@ -70,6 +70,18 @@ namespace Kzrnm.Competitive
             /// <para>計算量: O(N)</para>
             /// </remarks>
             [凾(256)]
+            public Impl Add(MontgomeryModInt<T> v)
+            {
+                if (Length == 0)
+                    Set(new MontgomeryModInt<T>[] { v });
+                else
+                    a[0] += v;
+                return this;
+            }
+            /// <remarks>
+            /// <para>計算量: O(N)</para>
+            /// </remarks>
+            [凾(256)]
             public Impl Subtract(ReadOnlySpan<MontgomeryModInt<T>> rhs)
             {
                 if (Length == 0)
@@ -86,18 +98,6 @@ namespace Kzrnm.Competitive
                     arr[i] = lv - rv;
                 }
                 return Set(arr);
-            }
-            /// <remarks>
-            /// <para>計算量: O(N)</para>
-            /// </remarks>
-            [凾(256)]
-            public Impl Add(MontgomeryModInt<T> v)
-            {
-                if (Length == 0)
-                    Set(new MontgomeryModInt<T>[] { v });
-                else
-                    a[0] += v;
-                return this;
             }
             /// <remarks>
             /// <para>計算量: O(N)</para>
@@ -230,40 +230,6 @@ namespace Kzrnm.Competitive
                 return Set(arr);
             }
 
-            /// <summary>
-            /// 微分した多項式を返します。
-            /// </summary>
-            /// <remarks>
-            /// <para>計算量: O(N)</para>
-            /// </remarks>
-            /// <returns></returns>
-            [凾(256)]
-            public Impl Derivative()
-            {
-                if (Length > 0)
-                {
-                    for (int i = 1; i < a.Length; i++)
-                        a[i - 1] = a[i] * i;
-                    --Length;
-                }
-                return this;
-            }
-            /// <summary>
-            /// 積分した多項式を返します。
-            /// </summary>
-            /// <remarks>
-            /// <para>計算量: O(N)</para>
-            /// </remarks>
-            /// <returns></returns>
-            [凾(256)]
-            public Impl Integrate()
-            {
-                var res = new MontgomeryModInt<T>[Length + 1];
-                for (int i = 1; i < res.Length; i++)
-                    res[i] = a[i - 1] / i;
-                return Set(res);
-            }
-
             [凾(256)]
             public Impl Reverse()
             {
@@ -333,225 +299,6 @@ namespace Kzrnm.Competitive
                     r = r2;
                 }
                 return Set(r).Pre(deg);
-            }
-
-            [凾(256)]
-            public Impl Exp(int deg = -1)
-            {
-                Contract.Assert(Length == 0 || a[0].Value == 0);
-                if (deg < 0) deg = Length;
-                if (deg == 0)
-                    return Set(new MontgomeryModInt<T>[] { MontgomeryModInt<T>.One });
-                return deg <= NumberTheoreticTransform<T>.NttLength() ? ExpNtt(deg) : ExpAnyMod(deg);
-            }
-
-            [凾(256)]
-            public Impl ExpAnyMod(int deg)
-            {
-                var one = MontgomeryModInt<T>.One;
-                var ret = new Impl(new MontgomeryModInt<T>[] { one });
-                for (int i = 1; i < deg; i <<= 1)
-                {
-                    var p = new Impl(AsSpan().ToArray());
-                    var r2 = new Impl(ret.AsSpan().ToArray());
-                    ret = ret.Multiply(p.Pre(i << 1).Add(one).Subtract(r2.Log(i << 1))).Pre(i << 1);
-                }
-                return this = ret.Pre(deg);
-            }
-
-            class SimpleDeque
-            {
-                MontgomeryModInt<T>[] array;
-                int f, t;
-                public SimpleDeque(int size)
-                {
-                    array = new MontgomeryModInt<T>[size * 2];
-                    f = t = size;
-                }
-                public int Length => t - f;
-                [凾(256)] public void Resize(int size) => t = f + size;
-                [凾(256)] public void AddFirst(MontgomeryModInt<T> v) => array[--f] = v;
-                [凾(256)] public void AddLast(MontgomeryModInt<T> v) => array[t++] = v;
-                [凾(256)] public void PopFirst() => ++f;
-                [凾(256)] public void PopLast() => --t;
-                [凾(256)] public Span<MontgomeryModInt<T>> AsSpan() => array.AsSpan(f, Length);
-            }
-            ref struct ExpNttInv
-            {
-                int Length;
-                readonly MontgomeryModInt<T>[] array;
-                public ExpNttInv(int s)
-                {
-                    array = new MontgomeryModInt<T>[s];
-                    Length = 0;
-                }
-                [凾(256)] public void Add(MontgomeryModInt<T> v) => array[Length++] = v;
-                public void InplaceIntegrate(SimpleDeque f)
-                {
-                    var mod = (int)new T().Mod;
-                    var n = f.Length;
-                    for (ref int i = ref Length; i <= n;)
-                        Add((-array[mod % i]) * (mod / i));
-                    f.AddFirst(default);
-                    var fs = f.AsSpan();
-                    Debug.Assert(n + 1 == fs.Length);
-                    for (int i = 1; i < fs.Length; i++) fs[i] *= array[i];
-                }
-
-#pragma warning disable CA1822 // メンバーを static に設定します
-                public void InplaceDerivative(SimpleDeque f)
-#pragma warning restore CA1822 // メンバーを static に設定します
-                {
-                    if (f.Length > 0)
-                    {
-                        f.PopFirst();
-                        var fs = f.AsSpan();
-                        for (int i = 0; i < fs.Length; i++)
-                            fs[i] *= i + 1;
-                    }
-                }
-            }
-
-            [凾(256)]
-            public Impl ExpNtt(int deg)
-            {
-                var inv = new ExpNttInv(3 * deg);
-                inv.Add(MontgomeryModInt<T>.Zero);
-                inv.Add(MontgomeryModInt<T>.One);
-
-                var b = new SimpleDeque(3 * deg);
-                b.AddLast(1);
-                b.AddLast(1 < Length ? a[1] : 0);
-
-                var c = new SimpleDeque(deg);
-                c.AddLast(MontgomeryModInt<T>.One);
-
-                Span<MontgomeryModInt<T>> z2 = stackalloc MontgomeryModInt<T>[2];
-                z2.Fill(MontgomeryModInt<T>.One);
-
-                for (int m = 2; m < deg; m *= 2)
-                {
-                    var y = new MontgomeryModInt<T>[2 * m];
-                    b.AsSpan().CopyTo(y);
-
-                    NumberTheoreticTransform<T>.Ntt(y);
-
-                    var z1 = z2;
-                    var z = new MontgomeryModInt<T>[m];
-                    for (int i = 0; i < z.Length; i++) z[i] = y[i] * z1[i];
-                    NumberTheoreticTransform<T>.INtt(z);
-                    z.AsSpan(0, m / 2).Clear();
-                    NumberTheoreticTransform<T>.Ntt(z);
-                    for (int i = 0; i < z.Length; i++) z[i] *= -z1[i];
-                    NumberTheoreticTransform<T>.INtt(z);
-
-                    for (int i = m / 2; i < z.Length; i++) c.AddLast(z[i]);
-
-                    z2 = new MontgomeryModInt<T>[2 * m];
-                    c.AsSpan().CopyTo(z2);
-                    NumberTheoreticTransform<T>.Ntt(z2);
-
-                    var x = new SimpleDeque(3 * m);
-                    foreach (var v in a.AsSpan(0, Math.Min(Length, m)))
-                        x.AddLast(v);
-                    x.Resize(m);
-
-                    inv.InplaceDerivative(x);
-                    x.AddLast(default);
-                    {
-                        var xs = x.AsSpan();
-                        NumberTheoreticTransform<T>.Ntt(xs);
-                        for (int i = 0; i < m; ++i) xs[i] *= y[i];
-                        NumberTheoreticTransform<T>.INtt(xs);
-
-                        var bd = new Impl(b.AsSpan().ToArray()).Derivative().AsSpan();
-                        for (int i = 0; i < bd.Length; i++) xs[i] -= bd[i];
-                    }
-
-                    x.Resize(2 * m);
-                    {
-                        var xs = x.AsSpan();
-
-                        for (int i = 0; i + 1 < m; ++i)
-                        {
-                            xs[m + i] = xs[i];
-                            xs[i] = default;
-                        }
-                        NumberTheoreticTransform<T>.Ntt(xs);
-                        for (int i = 0; i < xs.Length; ++i) xs[i] *= z2[i];
-                        NumberTheoreticTransform<T>.INtt(xs);
-                    }
-
-                    x.PopLast();
-                    inv.InplaceIntegrate(x);
-                    {
-                        var xs = x.AsSpan();
-                        Debug.Assert(2 * m == xs.Length);
-                        for (int i = 0; i < Math.Min(Length, xs.Length); ++i) xs[i] += a[i];
-                        xs[..m].Clear();
-
-                        NumberTheoreticTransform<T>.Ntt(xs);
-                        for (int i = 0; i < xs.Length; ++i) xs[i] *= y[i];
-                        NumberTheoreticTransform<T>.INtt(xs);
-
-                        foreach (var v in xs[m..])
-                            b.AddLast(v);
-                    }
-                }
-                return Set(b.AsSpan()[..deg].ToArray());
-            }
-
-            [凾(256)]
-            public Impl Log(int deg = -1)
-            {
-                Contract.Assert(a[0].Value == 1);
-                if (deg < 0) deg = Length;
-                var inv = new Impl(AsSpan().ToArray()).Inv(deg);
-                return Derivative().Multiply(inv).Pre(deg - 1).Integrate();
-            }
-
-            [凾(256)]
-            public Impl Pow(long k, int deg = -1)
-            {
-                if (deg < 0) deg = Length;
-                if (k == 0)
-                    return new Impl(new[] { MontgomeryModInt<T>.One });
-
-                var span = AsSpan();
-                for (int i = 0; i < span.Length; i++)
-                {
-                    if (span[i].Value != 0)
-                    {
-                        var rev = span[i].Inv();
-                        var right = span[i].Pow(k);
-
-                        return Multiply(rev).RightShift(i).Log(deg).Multiply(k).Exp(deg).Multiply(right)
-                            .LeftShift((int)(i * k)).Pre(deg);
-                    }
-                    if (Math.Max((i + 1) * k, k) > deg)
-                        return Set(new MontgomeryModInt<T>[deg]);
-                }
-                return Set(new MontgomeryModInt<T>[deg]);
-            }
-
-
-            [凾(256)]
-            public Impl Ntt()
-            {
-                NumberTheoreticTransform<T>.Ntt(AsSpan());
-                return this;
-            }
-            [凾(256)]
-            public Impl INtt()
-            {
-                NumberTheoreticTransform<T>.INtt(AsSpan());
-                return this;
-            }
-            [凾(256)]
-            public Impl NttDoubling()
-            {
-                Set(NumberTheoreticTransform<T>.NttDoubling(AsSpan()));
-                return this;
             }
         }
     }

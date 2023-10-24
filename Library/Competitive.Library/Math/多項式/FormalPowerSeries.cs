@@ -85,7 +85,7 @@ namespace Kzrnm.Competitive
         {
             if (rhs.Coefficients.Length == 0) return lhs;
             if (lhs.Coefficients.Length == 0) return rhs;
-            return new Impl(lhs).Add(rhs.Coefficients).ToFps();
+            return lhs.ToImpl().Add(rhs.Coefficients).ToFps();
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Kzrnm.Competitive
         {
             if (rhs.Length == 0) return lhs;
             if (lhs.Coefficients.Length == 0) return new FormalPowerSeries<T>(rhs);
-            return new Impl(lhs).Add(rhs).ToFps();
+            return lhs.ToImpl().Add(rhs).ToFps();
         }
         #endregion Add
 
@@ -115,7 +115,7 @@ namespace Kzrnm.Competitive
         {
             if (rhs.Coefficients.Length == 0) return lhs;
             if (lhs.Coefficients.Length == 0) return -rhs;
-            return new Impl(lhs).Subtract(rhs.Coefficients).ToFps();
+            return lhs.ToImpl().Subtract(rhs.Coefficients).ToFps();
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace Kzrnm.Competitive
         {
             if (rhs.Length == 0) return lhs;
             if (lhs.Coefficients.Length == 0) return new Impl(rhs.ToArray()).Minus().ToFps();
-            return new Impl(lhs).Subtract(rhs).ToFps();
+            return lhs.ToImpl().Subtract(rhs).ToFps();
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(N)</para>
         /// </remarks>
         public static FormalPowerSeries<T> operator -(FormalPowerSeries<T> v)
-            => new Impl(v).Minus().ToFps();
+            => v.ToImpl().Minus().ToFps();
         #endregion Subtract
 
         #region Multiply
@@ -151,11 +151,11 @@ namespace Kzrnm.Competitive
         /// </remarks>
         [凾(256)]
         public static FormalPowerSeries<T> operator *(FormalPowerSeries<T> lhs, FormalPowerSeries<T> rhs)
-            => new Impl(lhs).Multiply(rhs.Coefficients).ToFps();
+            => lhs.ToImpl().Multiply(rhs.Coefficients).ToFps();
 
         [凾(256)]
         public static FormalPowerSeries<T> operator *(MontgomeryModInt<T> lhs, FormalPowerSeries<T> rhs)
-            => new Impl(rhs).Multiply(lhs).ToFps();
+            => rhs.ToImpl().Multiply(lhs).ToFps();
         #endregion Multiply
 
         #region Divide
@@ -167,7 +167,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         [凾(256)]
         public static FormalPowerSeries<T> operator /(FormalPowerSeries<T> lhs, FormalPowerSeries<T> rhs)
-            => new Impl(lhs).Divide(rhs.Coefficients).ToFps();
+            => lhs.ToImpl().Divide(rhs.Coefficients).ToFps();
         /// <summary>
         /// <paramref name="lhs"/> / <paramref name="rhs"/>
         /// </summary>
@@ -189,7 +189,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public (FormalPowerSeries<T> Quotient, FormalPowerSeries<T> Remainder) DivRem(FormalPowerSeries<T> other)
         {
-            var (q, r) = new Impl(this).DivRem(other.Coefficients);
+            var (q, r) = ToImpl().DivRem(other.Coefficients);
             return (new FormalPowerSeries<T>(q), new FormalPowerSeries<T>(r));
         }
         #endregion Divide
@@ -199,31 +199,15 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)]
         public static FormalPowerSeries<T> operator >>(FormalPowerSeries<T> v, int sz)
-            => new Impl(v).RightShift(sz).ToFps();
+            => v.ToImpl().RightShift(sz).ToFps();
 
         /// <summary>
         /// 次数を <paramref name="sz"/> だけ大きくする。
         /// </summary>
         [凾(256)]
         public static FormalPowerSeries<T> operator <<(FormalPowerSeries<T> v, int sz)
-            => new Impl(v).LeftShift(sz).ToFps();
+            => v.ToImpl().LeftShift(sz).ToFps();
 
-        /// <summary>
-        /// 微分した多項式を返します。
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量: O(N)</para>
-        /// </remarks>
-        [凾(256)]
-        public FormalPowerSeries<T> Derivative() => new Impl(this).Derivative().ToFps();
-        /// <summary>
-        /// 積分した多項式を返します。
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量: O(N)</para>
-        /// </remarks>
-        [凾(256)]
-        public FormalPowerSeries<T> Integrate() => new Impl(this).Integrate().ToFps();
 
         /// <summary>
         /// 多項式に <paramref name="x"/> を代入した値を返します。
@@ -252,36 +236,6 @@ namespace Kzrnm.Competitive
         /// </remarks>
         /// <example>https://judge.yosupo.jp/problem/inv_of_formal_power_series</example>
         [凾(256)]
-        public FormalPowerSeries<T> Inv(int deg = -1) => new Impl(this).Inv(deg).ToFps();
-
-        /// <summary>
-        /// exp(f(x)) となる多項式の先頭 N 項。
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量: O(N)</para>
-        /// </remarks>
-        /// <example>https://judge.yosupo.jp/problem/exp_of_formal_power_series</example>
-        [凾(256)]
-        public FormalPowerSeries<T> Exp(int deg = -1) => new Impl(this).Exp(deg).ToFps();
-
-        /// <summary>
-        /// log(f(x)) となる多項式の先頭 N 項。
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量: O(N)</para>
-        /// </remarks>
-        /// <example>https://judge.yosupo.jp/problem/log_of_formal_power_series</example>
-        [凾(256)]
-        public FormalPowerSeries<T> Log(int deg = -1) => new Impl(this).Log(deg).ToFps();
-
-        /// <summary>
-        /// (f(x))^<paramref name="k"/> となる多項式の先頭 N 項。
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量: O(N)</para>
-        /// </remarks>
-        /// <example>https://judge.yosupo.jp/problem/pow_of_formal_power_series</example>
-        [凾(256)]
-        public FormalPowerSeries<T> Pow(long k, int deg = -1) => new Impl(this).Pow(k, deg).ToFps();
+        public FormalPowerSeries<T> Inv(int deg = -1) => ToImpl().Inv(deg).ToFps();
     }
 }
