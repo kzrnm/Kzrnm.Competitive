@@ -1,6 +1,6 @@
 ---
 title: 形式的冪級数(指数関数)
-documentation_of: ./Exponential.cs
+documentation_of: ./Method.Exponential.cs
 ---
 
 ## 概要

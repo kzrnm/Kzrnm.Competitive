@@ -23,12 +23,13 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static FormalPowerSeries<T> Exp<T>(this FormalPowerSeries<T> f, int deg = -1) where T : struct, IStaticMod
         {
-            var a = f.Coefficients;
+            var a = f._cs;
             Contract.Assert(a.Length == 0 || a[0].Value == 0);
             if (deg < 0) deg = a.Length;
             if (deg == 0)
                 return new FormalPowerSeries<T>(stackalloc MontgomeryModInt<T>[] { MontgomeryModInt<T>.One });
-            return (deg <= NumberTheoreticTransform<T>.NttLength() ? ExpNtt(a, deg) : ExpAnyMod(a, deg)).ToFps();
+            var t = f.ToImpl();
+            return (deg <= NumberTheoreticTransform<T>.NttLength() ? t.ExpNtt(deg) : t.ExpAnyMod(deg)).ToFps();
         }
 
         /// <summary>
@@ -41,28 +42,14 @@ namespace Kzrnm.Competitive
         /// <param name="deg">先頭の <paramref name="deg"/> 項を取得します。負数のときは元の FPS と同じ長さで取得します。</param>
         /// <example>https://judge.yosupo.jp/problem/exp_of_formal_power_series</example>
         [凾(256)]
-        internal static FormalPowerSeries<T>.Impl Exp<T>(this FormalPowerSeries<T>.Impl t, int deg = -1) where T : struct, IStaticMod
+        internal static FpsImpl<T> Exp<T>(this FpsImpl<T> t, int deg = -1) where T : struct, IStaticMod
         {
             var a = t.a;
             Contract.Assert(a.Length == 0 || a[0].Value == 0);
             if (deg < 0) deg = a.Length;
             if (deg == 0)
-                return new FormalPowerSeries<T>.Impl(new MontgomeryModInt<T>[] { MontgomeryModInt<T>.One });
-            return deg <= NumberTheoreticTransform<T>.NttLength() ? ExpNtt(a, deg) : ExpAnyMod(a, deg);
-        }
-
-        [凾(256)]
-        static FormalPowerSeries<T>.Impl ExpAnyMod<T>(MontgomeryModInt<T>[] a, int deg) where T : struct, IStaticMod
-        {
-            var one = MontgomeryModInt<T>.One;
-            var ret = new FormalPowerSeries<T>.Impl(new MontgomeryModInt<T>[] { one });
-            for (int i = 1; i < deg; i <<= 1)
-            {
-                var p = new FormalPowerSeries<T>.Impl(a.AsSpan().ToArray());
-                var r2 = new FormalPowerSeries<T>.Impl(ret.AsSpan().ToArray());
-                ret = ret.Multiply(p.Pre(i << 1).Add(one).Subtract(r2.Log(i << 1))).Pre(i << 1);
-            }
-            return ret.Pre(deg);
+                return t.Set(new MontgomeryModInt<T>[] { MontgomeryModInt<T>.One });
+            return deg <= NumberTheoreticTransform<T>.NttLength() ? t.ExpNtt(deg) : t.ExpAnyMod(deg);
         }
 
         class SimpleDeque<T>
@@ -83,7 +70,7 @@ namespace Kzrnm.Competitive
             [凾(256)] public Span<T> AsSpan() => array.AsSpan(f, Length);
         }
 
-        ref struct ExpNttInv<T> where T : struct, IStaticMod
+        struct ExpNttInv<T> where T : struct, IStaticMod
         {
             int Length;
             readonly MontgomeryModInt<T>[] array;
@@ -107,13 +94,29 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        static FormalPowerSeries<T>.Impl ExpNtt<T>(MontgomeryModInt<T>[] a, int deg) where T : struct, IStaticMod
+        static FpsImpl<T> ExpAnyMod<T>(this FpsImpl<T> t, int deg) where T : struct, IStaticMod
+        {
+            var a = t.a;
+            var one = MontgomeryModInt<T>.One;
+            t.Set(new MontgomeryModInt<T>[] { one });
+            for (int i = 1; i < deg; i <<= 1)
+            {
+                var p = new FpsImpl<T>(a.AsSpan().ToArray());
+                var r2 = new FpsImpl<T>(t.AsSpan().ToArray());
+                t = t.Multiply(p.Pre(i << 1).Add(one).Subtract(r2.Log(i << 1))).Pre(i << 1);
+            }
+            return t.Pre(deg);
+        }
+
+        [凾(256)]
+        static FpsImpl<T> ExpNtt<T>(this FpsImpl<T> t, int deg) where T : struct, IStaticMod
         {
             static SimpleDeque<MontgomeryModInt<T>> GetDeque(int s) => new SimpleDeque<MontgomeryModInt<T>>(s);
             var inv = new ExpNttInv<T>(3 * deg);
             inv.Add(MontgomeryModInt<T>.Zero);
             inv.Add(MontgomeryModInt<T>.One);
 
+            var a = t.a;
             var b = GetDeque(3 * deg);
             b.AddLast(1);
             b.AddLast(1 < a.Length ? a[1] : 0);
@@ -159,7 +162,7 @@ namespace Kzrnm.Competitive
                     for (int i = 0; i < m; ++i) xs[i] *= y[i];
                     NumberTheoreticTransform<T>.INtt(xs);
 
-                    var bd = new FormalPowerSeries<T>.Impl(b.AsSpan().ToArray()).Derivative().AsSpan();
+                    var bd = new FpsImpl<T>(b.AsSpan().ToArray()).Derivative().AsSpan();
                     for (int i = 0; i < bd.Length; i++) xs[i] -= bd[i];
                 }
 
@@ -193,7 +196,7 @@ namespace Kzrnm.Competitive
                         b.AddLast(v);
                 }
             }
-            return new FormalPowerSeries<T>.Impl(b.AsSpan()[..deg].ToArray());
+            return t.Set(b.AsSpan()[..deg].ToArray());
 
 
             static void InplaceDerivative(SimpleDeque<MontgomeryModInt<T>> f)

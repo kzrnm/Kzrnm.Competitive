@@ -10,7 +10,7 @@ namespace Kzrnm.Competitive.MathNs.Fps
         {
             int N = cr;
             int[] arr = cr.Repeat(N);
-            cw.WriteLineJoin(new FormalPowerSeries<Mod998244353>(arr).Inv().Coefficients);
+            cw.WriteLineJoin(new FormalPowerSeries<Mod998244353>(arr).Inv().Coefficients(N));
             return null;
         }
     }

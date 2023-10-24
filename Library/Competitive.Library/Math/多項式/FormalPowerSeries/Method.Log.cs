@@ -32,12 +32,12 @@ namespace Kzrnm.Competitive
         /// <param name="deg">先頭の <paramref name="deg"/> 項を取得します。負数のときは元の FPS と同じ長さで取得します。</param>
         /// <example>https://judge.yosupo.jp/problem/log_of_formal_power_series</example>
         [凾(256)]
-        internal static FormalPowerSeries<T>.Impl Log<T>(this FormalPowerSeries<T>.Impl t, int deg = -1) where T : struct, IStaticMod
+        internal static FpsImpl<T> Log<T>(this FpsImpl<T> t, int deg = -1) where T : struct, IStaticMod
         {
             var a = t.a;
             Contract.Assert(a[0].Value == 1);
             if (deg < 0) deg = t.Length;
-            var inv = new FormalPowerSeries<T>.Impl(t.AsSpan().ToArray()).Inv(deg);
+            var inv = new FpsImpl<T>(t.AsSpan().ToArray()).Inv(deg);
             return t.Derivative().Multiply(inv).Pre(deg - 1).Integrate();
         }
     }

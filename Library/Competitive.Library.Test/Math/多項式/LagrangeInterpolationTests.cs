@@ -39,7 +39,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
                     modPlots[i] = (plots[i].x, plots[i].y);
 
                 var fps = LagrangeInterpolation.Coefficient(modPlots);
-                fps.Coefficients.Should().HaveCount(plots.Length);
+                fps._cs.Should().HaveCount(plots.Length);
                 foreach (var (x, y) in modPlots)
                     fps.Eval(x).Should().Be(y);
             }

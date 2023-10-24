@@ -1,6 +1,6 @@
 ---
 title: 形式的冪級数(対数関数)
-documentation_of: ./Log.cs
+documentation_of: ./Method.Log.cs
 ---
 
 ## 概要

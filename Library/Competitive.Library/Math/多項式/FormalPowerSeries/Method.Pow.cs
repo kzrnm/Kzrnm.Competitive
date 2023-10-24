@@ -27,11 +27,11 @@ namespace Kzrnm.Competitive
 
 
         [凾(256)]
-        internal static FormalPowerSeries<T>.Impl Pow<T>(this FormalPowerSeries<T>.Impl t, long k, int deg = -1) where T : struct, IStaticMod
+        internal static FpsImpl<T> Pow<T>(this FpsImpl<T> t, long k, int deg = -1) where T : struct, IStaticMod
         {
             if (deg < 0) deg = t.Length;
             if (k == 0)
-                return new FormalPowerSeries<T>.Impl(new[] { MontgomeryModInt<T>.One });
+                return new FpsImpl<T>(new[] { MontgomeryModInt<T>.One });
 
             var span = t.AsSpan();
             for (int i = 0; i < span.Length; i++)

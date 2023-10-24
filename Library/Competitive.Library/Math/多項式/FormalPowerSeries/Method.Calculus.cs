@@ -25,7 +25,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(N)</para>
         /// </remarks>
         [凾(256)]
-        internal static FormalPowerSeries<T>.Impl Derivative<T>(this FormalPowerSeries<T>.Impl t) where T : struct, IStaticMod
+        internal static FpsImpl<T> Derivative<T>(this FpsImpl<T> t) where T : struct, IStaticMod
         {
             var a = t.a;
             if (t.Length > 0)
@@ -54,7 +54,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(N)</para>
         /// </remarks>
         [凾(256)]
-        internal static FormalPowerSeries<T>.Impl Integrate<T>(this FormalPowerSeries<T>.Impl t) where T : struct, IStaticMod
+        internal static FpsImpl<T> Integrate<T>(this FpsImpl<T> t) where T : struct, IStaticMod
         {
             var a = t.a;
             var r = new MontgomeryModInt<T>[t.Length + 1];

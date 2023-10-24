@@ -19,6 +19,32 @@ namespace Kzrnm.Competitive.Testing.MathNS
         }
 
         [Fact]
+        public void Coefficients()
+        {
+            RunTest<Mod998244353>(new int[] { 1, 2, 3 });
+            RunTest<Mod998244353>(new int[] { 0, 5, 0, 2 });
+            RunTest<Mod998244353>(new int[0]);
+
+            RunTest<Mod1000000007>(new int[] { 1, 2, 3 });
+            RunTest<Mod1000000007>(new int[] { 0, 5, 0, 2 });
+            RunTest<Mod1000000007>(new int[0]);
+
+            static void RunTest<T>(int[] array) where T : struct, IStaticMod
+            {
+                var modArray = array.Select(v => (MontgomeryModInt<T>)v).ToArray();
+                var f = new FormalPowerSeries<T>(array);
+                f.Coefficients().ToArray().Should().Equal(modArray);
+
+                for (int len = 0; len < modArray.Length; len++)
+                {
+                    f.Coefficients(len).ToArray().Should().Equal(modArray[..len]);
+                }
+
+                f.Coefficients(modArray.Length + 2).ToArray().Should().Equal(modArray.Append(default).Append(default));
+            }
+        }
+
+        [Fact]
         public void Add()
         {
             RunTest<Mod998244353>(new int[] { 1, 2, 3 }, new int[] { 0, 5, 0, 2 }, new int[] { 1, 7, 3, 2 });
@@ -33,12 +59,27 @@ namespace Kzrnm.Competitive.Testing.MathNS
 
             static void RunTest<T>(int[] lhsArray, int[] rhsArray, int[] expectedArray) where T : struct, IStaticMod
             {
-                var lhs = new FormalPowerSeries<T>(lhsArray);
                 var rhs = new FormalPowerSeries<T>(rhsArray);
                 var expected = new FormalPowerSeries<T>(expectedArray);
+                {
+                    var lhs = new FormalPowerSeries<T>(lhsArray);
+                    var orig = lhs._cs.ToArray();
 
-                (lhs + rhs).Coefficients.Should().Equal(expected.Coefficients);
-                (lhs + rhs.Coefficients).Coefficients.Should().Equal(expected.Coefficients);
+                    (lhs + rhs)._cs.Should().Equal(expected._cs);
+                    (lhs + rhs._cs)._cs.Should().Equal(expected._cs);
+
+                    lhs._cs.Should().Equal(orig);
+                }
+                {
+                    var lhs = new FormalPowerSeries<T>(lhsArray);
+                    lhs.AddSelf(rhs)._cs.Should().Equal(expected._cs);
+                    lhs._cs.Should().Equal(expected._cs);
+                }
+                {
+                    var lhs = new FormalPowerSeries<T>(lhsArray);
+                    lhs.AddSelf(rhs._cs)._cs.Should().Equal(expected._cs);
+                    lhs._cs.Should().Equal(expected._cs);
+                }
             }
         }
         [Fact]
@@ -56,12 +97,27 @@ namespace Kzrnm.Competitive.Testing.MathNS
 
             static void RunTest<T>(int[] lhsArray, int[] rhsArray, int[] expectedArray) where T : struct, IStaticMod
             {
-                var lhs = new FormalPowerSeries<T>(lhsArray.Select(n => new StaticModInt<T>(n)).ToArray());
-                var rhs = new FormalPowerSeries<T>(rhsArray.Select(n => new StaticModInt<T>(n)).ToArray());
-                var expected = new FormalPowerSeries<T>(expectedArray.Select(n => new StaticModInt<T>(n)).ToArray());
+                var rhs = new FormalPowerSeries<T>(rhsArray);
+                var expected = new FormalPowerSeries<T>(expectedArray);
+                {
+                    var lhs = new FormalPowerSeries<T>(lhsArray);
+                    var orig = lhs._cs.ToArray();
 
-                (lhs - rhs).Coefficients.Should().Equal(expected.Coefficients);
-                (lhs - rhs.Coefficients).Coefficients.Should().Equal(expected.Coefficients);
+                    (lhs - rhs)._cs.Should().Equal(expected._cs);
+                    (lhs - rhs._cs)._cs.Should().Equal(expected._cs);
+
+                    lhs._cs.Should().Equal(orig);
+                }
+                {
+                    var lhs = new FormalPowerSeries<T>(lhsArray);
+                    lhs.SubtractSelf(rhs)._cs.Should().Equal(expected._cs);
+                    lhs._cs.Should().Equal(expected._cs);
+                }
+                {
+                    var lhs = new FormalPowerSeries<T>(lhsArray);
+                    lhs.SubtractSelf(rhs._cs)._cs.Should().Equal(expected._cs);
+                    lhs._cs.Should().Equal(expected._cs);
+                }
             }
         }
         [Fact]
@@ -77,10 +133,10 @@ namespace Kzrnm.Competitive.Testing.MathNS
 
             static void RunTest<T>(int[] valueArray, int[] expectedArray) where T : struct, IStaticMod
             {
-                var value = new FormalPowerSeries<T>(valueArray.Select(n => new StaticModInt<T>(n)).ToArray());
-                var expected = new FormalPowerSeries<T>(expectedArray.Select(n => new StaticModInt<T>(n)).ToArray());
+                var value = new FormalPowerSeries<T>(valueArray.Select(n => new MontgomeryModInt<T>(n)).ToArray());
+                var expected = new FormalPowerSeries<T>(expectedArray.Select(n => new MontgomeryModInt<T>(n)).ToArray());
 
-                (-value).Coefficients.Should().Equal(expected.Coefficients);
+                (-value)._cs.Should().Equal(expected._cs);
             }
         }
         [Fact]
@@ -98,11 +154,27 @@ namespace Kzrnm.Competitive.Testing.MathNS
 
             static void RunTest<T>(int[] lhsArray, int[] rhsArray, int[] expectedArray) where T : struct, IStaticMod
             {
-                var lhs = new FormalPowerSeries<T>(lhsArray);
                 var rhs = new FormalPowerSeries<T>(rhsArray);
                 var expected = new FormalPowerSeries<T>(expectedArray);
+                {
+                    var lhs = new FormalPowerSeries<T>(lhsArray);
+                    var orig = lhs._cs.ToArray();
 
-                (lhs * rhs).Coefficients.Should().Equal(expected.Coefficients);
+                    (lhs * rhs)._cs.Should().Equal(expected._cs);
+                    (lhs * rhs._cs)._cs.Should().Equal(expected._cs);
+
+                    lhs._cs.Should().Equal(orig);
+                }
+                {
+                    var lhs = new FormalPowerSeries<T>(lhsArray);
+                    lhs.MultiplySelf(rhs)._cs.Should().Equal(expected._cs);
+                    lhs._cs.Should().Equal(expected._cs);
+                }
+                {
+                    var lhs = new FormalPowerSeries<T>(lhsArray);
+                    lhs.MultiplySelf(rhs._cs)._cs.Should().Equal(expected._cs);
+                    lhs._cs.Should().Equal(expected._cs);
+                }
             }
         }
 
@@ -126,7 +198,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 var rhs = new FormalPowerSeries<T>(rhsArray);
                 var expected = new FormalPowerSeries<T>(expectedArray);
 
-                (lhs / rhs).Coefficients.Should().Equal(expected.Coefficients);
+                (lhs / rhs)._cs.Should().Equal(expected._cs);
             }
         }
 
@@ -154,9 +226,9 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 var p = lhs * rhs + rem;
                 var (q, r) = p.DivRem(rhs);
 
-                q.Coefficients.Should().Equal((p / rhs).Coefficients);
-                r.Coefficients.Should().Equal((p % rhs).Coefficients);
-                (q * rhs + r).Coefficients.Should().Equal(p.Coefficients);
+                q._cs.Should().Equal((p / rhs)._cs);
+                r._cs.Should().Equal((p % rhs)._cs);
+                (q * rhs + r)._cs.Should().Equal(p._cs);
             }
         }
 
@@ -178,7 +250,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 var fps = new FormalPowerSeries<T>(valueArray);
                 var expected = new FormalPowerSeries<T>(expectedArray);
 
-                (fps >> shift).Coefficients.Should().Equal(expected.Coefficients);
+                (fps >> shift)._cs.Should().Equal(expected._cs);
             }
         }
 
@@ -198,7 +270,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 var fps = new FormalPowerSeries<T>(valueArray);
                 var expected = new FormalPowerSeries<T>(expectedArray);
 
-                (fps << shift).Coefficients.Should().Equal(expected.Coefficients);
+                (fps << shift)._cs.Should().Equal(expected._cs);
             }
         }
 
@@ -216,7 +288,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             static void RunTest<T>(int[] valueArray, int[] expectedArray) where T : struct, IStaticMod
             {
                 var fps = new FormalPowerSeries<T>(valueArray);
-                fps.Derivative().Coefficients.Should()
+                fps.Derivative()._cs.Should()
                     .Equal(expectedArray.Select(t => new MontgomeryModInt<T>(t)).ToArray());
             }
         }
@@ -237,7 +309,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             static void RunTest<T>(int[] valueArray, (int Numerator, int Denominator)[] expectedArray) where T : struct, IStaticMod
             {
                 var fps = new FormalPowerSeries<T>(valueArray);
-                fps.Integrate().Coefficients.Should()
+                fps.Integrate()._cs.Should()
                     .Equal(expectedArray.Select(t => new MontgomeryModInt<T>(t.Numerator) / t.Denominator).ToArray());
             }
         }
@@ -276,7 +348,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             static void RunTest<T>(int[] fpsArray, int[] expected) where T : struct, IStaticMod
             {
                 var fps = new FormalPowerSeries<T>(fpsArray);
-                fps.Inv().Coefficients.Should().Equal(new FormalPowerSeries<T>(expected).Coefficients);
+                fps.Inv()._cs.Should().Equal(new FormalPowerSeries<T>(expected)._cs);
             }
         }
 
@@ -300,7 +372,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             static void RunTest<T>(int[] fpsArray, int[] expected) where T : struct, IStaticMod
             {
                 var fps = new FormalPowerSeries<T>(fpsArray);
-                fps.Exp().Coefficients.Should().Equal(new FormalPowerSeries<T>(expected).Coefficients);
+                fps.Exp()._cs.Should().Equal(new FormalPowerSeries<T>(expected)._cs);
             }
         }
 
@@ -321,7 +393,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             static void RunTest<T>(int[] fpsArray, int[] expected) where T : struct, IStaticMod
             {
                 var fps = new FormalPowerSeries<T>(fpsArray);
-                fps.Log().Coefficients.Should().Equal(new FormalPowerSeries<T>(expected).Coefficients);
+                fps.Log()._cs.Should().Equal(new FormalPowerSeries<T>(expected)._cs);
             }
         }
 
@@ -351,19 +423,19 @@ namespace Kzrnm.Competitive.Testing.MathNS
             RunTest<Mod1000000007>(new int[0], 2, new int[0]);
 
             new FormalPowerSeries<Mod998244353>(new int[] { 2, 3, 4, 5, 6 })
-                .Pow(3, 13).Coefficients.Should().Equal(8, 36, 102, 231, 456, 735, 1024, 1257, 1344, 1169, 882, 540, 216);
+                .Pow(3, 13)._cs.Should().Equal(8, 36, 102, 231, 456, 735, 1024, 1257, 1344, 1169, 882, 540, 216);
             new FormalPowerSeries<Mod998244353>(new int[] { 0, 0, 2, 3, 4, 5, 6 })
-                .Pow(2, 13).Coefficients.Should().Equal(0, 0, 0, 0, 4, 12, 25, 44, 70, 76, 73, 60, 36);
+                .Pow(2, 13)._cs.Should().Equal(0, 0, 0, 0, 4, 12, 25, 44, 70, 76, 73, 60, 36);
 
             new FormalPowerSeries<Mod1000000007>(new int[] { 2, 3, 4, 5, 6 })
-                .Pow(3, 13).Coefficients.Should().Equal(8, 36, 102, 231, 456, 735, 1024, 1257, 1344, 1169, 882, 540, 216);
+                .Pow(3, 13)._cs.Should().Equal(8, 36, 102, 231, 456, 735, 1024, 1257, 1344, 1169, 882, 540, 216);
             new FormalPowerSeries<Mod1000000007>(new int[] { 0, 0, 2, 3, 4, 5, 6 })
-                .Pow(2, 13).Coefficients.Should().Equal(0, 0, 0, 0, 4, 12, 25, 44, 70, 76, 73, 60, 36);
+                .Pow(2, 13)._cs.Should().Equal(0, 0, 0, 0, 4, 12, 25, 44, 70, 76, 73, 60, 36);
 
             static void RunTest<T>(int[] fpsArray, int n, int[] expected) where T : struct, IStaticMod
             {
                 var fps = new FormalPowerSeries<T>(fpsArray);
-                fps.Pow(n).Coefficients.Should().Equal(new FormalPowerSeries<T>(expected).Coefficients);
+                fps.Pow(n)._cs.Should().Equal(new FormalPowerSeries<T>(expected)._cs);
             }
         }
     }

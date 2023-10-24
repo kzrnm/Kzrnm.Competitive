@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive
             {
                 var (R, Rm) = P.DivRem(Q);
                 P = Rm;
-                if (k < R.Count) ret += R.Coefficients[k];
+                if (k < R.Count) ret += R._cs[k];
             }
             if (P.Count == 0) return ret;
 
@@ -36,8 +36,8 @@ namespace Kzrnm.Competitive
                 var srr = new MontgomeryModInt<T>[(N << 1)];
                 var trr = new MontgomeryModInt<T>[(N << 1)];
 
-                P.Coefficients.AsSpan().CopyTo(prr);
-                Q.Coefficients.AsSpan().CopyTo(qrr);
+                P._cs.AsSpan().CopyTo(prr);
+                Q._cs.AsSpan().CopyTo(qrr);
 
                 NumberTheoreticTransform<T>.Ntt(prr);
                 NumberTheoreticTransform<T>.Ntt(qrr);
@@ -92,20 +92,20 @@ namespace Kzrnm.Competitive
                 var q2 = qrr.AsSpan(0, N).ToArray();
                 NumberTheoreticTransform<T>.INtt(p2);
                 NumberTheoreticTransform<T>.INtt(q2);
-                return ret + new FormalPowerSeries<T>.Impl(q2).Inv().Multiply(p2).a[k];
+                return ret + new FpsImpl<T>(q2).Inv().Multiply(p2).a[k];
             }
             else
             {
                 var pp = new MontgomeryModInt<T>[Q.Count - 1];
-                P.Coefficients.AsSpan().CopyTo(pp);
-                var qq = (MontgomeryModInt<T>[])Q.Coefficients.Clone();
+                P._cs.AsSpan().CopyTo(pp);
+                var qq = (MontgomeryModInt<T>[])Q._cs.Clone();
                 while (k != 0)
                 {
                     var Q2 = (MontgomeryModInt<T>[])qq.Clone();
                     for (int i = 1; i < Q2.Length; i += 2) Q2[i] = -Q2[i];
 
-                    var ss = new FormalPowerSeries<T>.Impl((MontgomeryModInt<T>[])pp.Clone()).Multiply(Q2).AsSpan();
-                    var tt = new FormalPowerSeries<T>.Impl((MontgomeryModInt<T>[])qq.Clone()).Multiply(Q2).AsSpan();
+                    var ss = new FpsImpl<T>((MontgomeryModInt<T>[])pp.Clone()).Multiply(Q2).AsSpan();
+                    var tt = new FpsImpl<T>((MontgomeryModInt<T>[])qq.Clone()).Multiply(Q2).AsSpan();
                     if ((k & 1) != 0)
                     {
                         for (int i = 1; i < ss.Length; i += 2) pp[i >> 1] = ss[i];
@@ -164,7 +164,7 @@ namespace Kzrnm.Competitive
             var Q = new MontgomeryModInt<T>[c.Length + 1];
             Q[0] = 1;
             for (int i = 0; i < c.Length; i++) Q[i + 1] = -c[i];
-            var P = new FormalPowerSeries<T>.Impl(a.ToArray()).Multiply(Q).Pre(c.Length);
+            var P = new FpsImpl<T>(a.ToArray()).Multiply(Q).Pre(c.Length);
             return BostanMori(new FormalPowerSeries<T>(Q), P.ToFps(), n);
         }
 
@@ -213,7 +213,7 @@ namespace Kzrnm.Competitive
             Q[0] = 1;
             for (int i = 0; i < c.Length; i++) Q[i + 1] = -c[i];
 
-            var f0 = new FormalPowerSeries<T>.Impl(a.ToArray()).Multiply(Q);
+            var f0 = new FpsImpl<T>(a.ToArray()).Multiply(Q);
             var f1 = f0.Pre(a.Length).Reverse().LeftShift(m + c.Length - a.Length);
 
             Q.AsSpan().Reverse();

@@ -1,6 +1,5 @@
 using AtCoder;
 using Kzrnm.Competitive.IO;
-using System;
 
 namespace Kzrnm.Competitive.MathNs.Fps
 {
@@ -11,9 +10,8 @@ namespace Kzrnm.Competitive.MathNs.Fps
         {
             int N = cr;
             int[] arr = cr.Repeat(N);
-            var exp = new FormalPowerSeries<Mod998244353>(arr).Exp().Coefficients;
-            Array.Resize(ref exp, N);
-            cw.WriteLineJoin(exp.AsSpan().Select(v => v.Value));
+            var exp = new FormalPowerSeries<Mod998244353>(arr).Exp().Coefficients(N);
+            cw.WriteLineJoin(exp);
             return null;
         }
     }
