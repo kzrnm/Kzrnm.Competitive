@@ -1,2 +1,3 @@
 ConvexHullTrick.GenericMath.cs	Convex Hull Trick(Li-Chao (Segment) Tree)
 ConvexHullTrick.NotGenericMath.cs	Convex Hull Trick(Li-Chao (Segment) Tree): OperatorInterface
+ManhattanMST.NotGenericMath.cs	マンハッタン距離での最小全域木: OperatorInterface
