@@ -1,4 +1,5 @@
 using AtCoder;
+using AtCoder.Internal;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -85,10 +86,11 @@ namespace Kzrnm.Competitive
             }
             divs = divs[..cnt];
 
+            var bt = new Barrett(m);
             for (uint g = 2; ; g++)
             {
                 foreach (var d in divs)
-                    if (MathLib.PowMod(g, (m - 1) / d, (int)m) == 1)
+                    if (bt.Pow(g, (m - 1) / d) == 1)
                         goto NEXT;
                 return g;
             NEXT:;

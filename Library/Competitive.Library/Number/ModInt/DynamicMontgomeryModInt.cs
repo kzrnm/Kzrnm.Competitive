@@ -3,6 +3,7 @@ using AtCoder.Internal;
 using Kzrnm.Competitive.IO;
 using System;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
+using AtCoder;
 #if NET7_0_OR_GREATER
 using System.Numerics;
 using System.Globalization;
@@ -17,7 +18,7 @@ namespace Kzrnm.Competitive
     /// 奇数オンリーの ModInt
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "気にしない")]
-    public struct DynamicMontgomeryModInt<T> : IUtf8ConsoleWriterFormatter, IEquatable<DynamicMontgomeryModInt<T>>, IFormattable
+    public struct DynamicMontgomeryModInt<T> : IUtf8ConsoleWriterFormatter, IEquatable<DynamicMontgomeryModInt<T>>, IFormattable, IModInt<DynamicMontgomeryModInt<T>>
 #if NET7_0_OR_GREATER
         , INumberBase<DynamicMontgomeryModInt<T>>
 #endif
@@ -129,7 +130,6 @@ namespace Kzrnm.Competitive
         public static DynamicMontgomeryModInt<T> operator --(DynamicMontgomeryModInt<T> a) => a - 1;
 
 
-
         /// <summary>
         /// 自身を x として、x^<paramref name="n"/> を返します。
         /// </summary>
@@ -138,9 +138,8 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(log(<paramref name="n"/>))</para>
         /// </remarks>
         [凾(256)]
-        public DynamicMontgomeryModInt<T> Pow(long n)
+        public DynamicMontgomeryModInt<T> Pow(ulong n)
         {
-            Contract.Assert(0 <= n, $"{nameof(n)} must be positive.");
             DynamicMontgomeryModInt<T> x = this, r = 1;
 
             while (n > 0)
@@ -154,6 +153,20 @@ namespace Kzrnm.Competitive
             }
 
             return r;
+        }
+
+        /// <summary>
+        /// 自身を x として、x^<paramref name="n"/> を返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: 0≤|<paramref name="n"/>|</para>
+        /// <para>計算量: O(log(<paramref name="n"/>))</para>
+        /// </remarks>
+        [凾(256)]
+        public DynamicMontgomeryModInt<T> Pow(long n)
+        {
+            Contract.Assert(0 <= n, $"{nameof(n)} must be positive.");
+            return Pow((ulong)n);
         }
 
         /// <summary>
@@ -181,7 +194,7 @@ namespace Kzrnm.Competitive
         [凾(256)] public override int GetHashCode() => (int)_v;
 
         public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => Value.TryFormat(destination, out charsWritten, format, provider);
-        public string ToString(string format, IFormatProvider formatProvider) => _v.ToString(format, formatProvider);
+        public string ToString(string format, IFormatProvider formatProvider) => Value.ToString(format, formatProvider);
 #if NET7_0_OR_GREATER
         static int INumberBase<DynamicMontgomeryModInt<T>>.Radix => 2;
         static DynamicMontgomeryModInt<T> IAdditiveIdentity<DynamicMontgomeryModInt<T>, DynamicMontgomeryModInt<T>>.AdditiveIdentity => default;
@@ -191,8 +204,8 @@ namespace Kzrnm.Competitive
         static bool INumberBase<DynamicMontgomeryModInt<T>>.IsComplexNumber(DynamicMontgomeryModInt<T> v) => false;
         static bool INumberBase<DynamicMontgomeryModInt<T>>.IsRealNumber(DynamicMontgomeryModInt<T> v) => true;
         static bool INumberBase<DynamicMontgomeryModInt<T>>.IsImaginaryNumber(DynamicMontgomeryModInt<T> v) => false;
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsEvenInteger(DynamicMontgomeryModInt<T> v) => uint.IsEvenInteger(v._v);
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsOddInteger(DynamicMontgomeryModInt<T> v) => uint.IsOddInteger(v._v);
+        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsEvenInteger(DynamicMontgomeryModInt<T> v) => int.IsEvenInteger(v.Value);
+        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsOddInteger(DynamicMontgomeryModInt<T> v) => int.IsOddInteger(v.Value);
         static bool INumberBase<DynamicMontgomeryModInt<T>>.IsFinite(DynamicMontgomeryModInt<T> v) => true;
         static bool INumberBase<DynamicMontgomeryModInt<T>>.IsInfinity(DynamicMontgomeryModInt<T> v) => false;
         static bool INumberBase<DynamicMontgomeryModInt<T>>.IsInteger(DynamicMontgomeryModInt<T> v) => true;
@@ -200,14 +213,14 @@ namespace Kzrnm.Competitive
         static bool INumberBase<DynamicMontgomeryModInt<T>>.IsNegative(DynamicMontgomeryModInt<T> v) => false;
         static bool INumberBase<DynamicMontgomeryModInt<T>>.IsPositiveInfinity(DynamicMontgomeryModInt<T> v) => false;
         static bool INumberBase<DynamicMontgomeryModInt<T>>.IsNegativeInfinity(DynamicMontgomeryModInt<T> v) => false;
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsNormal(DynamicMontgomeryModInt<T> v) => v._v != 0;
+        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsNormal(DynamicMontgomeryModInt<T> v) => v.Value != 0;
         static bool INumberBase<DynamicMontgomeryModInt<T>>.IsSubnormal(DynamicMontgomeryModInt<T> v) => false;
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsZero(DynamicMontgomeryModInt<T> v) => v._v == 0;
+        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsZero(DynamicMontgomeryModInt<T> v) => v.Value == 0;
         static bool INumberBase<DynamicMontgomeryModInt<T>>.IsNaN(DynamicMontgomeryModInt<T> v) => false;
-        static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.MaxMagnitude(DynamicMontgomeryModInt<T> x, DynamicMontgomeryModInt<T> y) => new DynamicMontgomeryModInt<T>(uint.Max(x._v, y._v));
-        static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.MaxMagnitudeNumber(DynamicMontgomeryModInt<T> x, DynamicMontgomeryModInt<T> y) => new DynamicMontgomeryModInt<T>(uint.Max(x._v, y._v));
-        static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.MinMagnitude(DynamicMontgomeryModInt<T> x, DynamicMontgomeryModInt<T> y) => new DynamicMontgomeryModInt<T>(uint.Min(x._v, y._v));
-        static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.MinMagnitudeNumber(DynamicMontgomeryModInt<T> x, DynamicMontgomeryModInt<T> y) => new DynamicMontgomeryModInt<T>(uint.Min(x._v, y._v));
+        static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.MaxMagnitude(DynamicMontgomeryModInt<T> x, DynamicMontgomeryModInt<T> y) => new DynamicMontgomeryModInt<T>(int.Max(x.Value, y.Value));
+        static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.MaxMagnitudeNumber(DynamicMontgomeryModInt<T> x, DynamicMontgomeryModInt<T> y) => new DynamicMontgomeryModInt<T>(int.Max(x.Value, y.Value));
+        static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.MinMagnitude(DynamicMontgomeryModInt<T> x, DynamicMontgomeryModInt<T> y) => new DynamicMontgomeryModInt<T>(int.Min(x.Value, y.Value));
+        static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.MinMagnitudeNumber(DynamicMontgomeryModInt<T> x, DynamicMontgomeryModInt<T> y) => new DynamicMontgomeryModInt<T>(int.Min(x.Value, y.Value));
         static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider) => long.Parse(s, style, provider);
         static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.Parse(string s, NumberStyles style, IFormatProvider provider) => long.Parse(s, style, provider);
         static DynamicMontgomeryModInt<T> ISpanParsable<DynamicMontgomeryModInt<T>>.Parse(ReadOnlySpan<char> s, IFormatProvider provider) => long.Parse(s, provider);

@@ -71,6 +71,30 @@ namespace Kzrnm.Competitive.Testing.Number
             }
         }
 
+        [Fact]
+        public void MontgomeryModInt()
+        {
+            int mod = 6221;
+            var hs = Build(mod);
+            for (int i = 0; i < mod; i++)
+            {
+                if (hs[i].Count == 0)
+                    ModSqrt.Solve((MontgomeryModInt<Mod6221>)i).Should().Be(-1, "nothing^2 ≡ {0} mod {1}", i, mod);
+                else
+                    hs[i].Should().Contain(ModSqrt.Solve((MontgomeryModInt<Mod6221>)i), "result^2 ≡ {0} mod {1}", i, mod);
+            }
+
+            mod = 1097;
+            hs = Build(mod);
+            for (int i = 0; i < mod; i++)
+            {
+                if (hs[i].Count == 0)
+                    ModSqrt.Solve((MontgomeryModInt<Mod1097>)i).Should().Be(-1, "nothing^2 ≡ {0} mod {1}", i, mod);
+                else
+                    hs[i].Should().Contain(ModSqrt.Solve((MontgomeryModInt<Mod1097>)i), "result^2 ≡ {0} mod {1}", i, mod);
+            }
+        }
+
         private static HashSet<int>[] Build(int mod)
         {
             var hs = Global.NewArray(mod, () => new HashSet<int>());

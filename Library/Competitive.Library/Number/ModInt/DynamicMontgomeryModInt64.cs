@@ -181,7 +181,7 @@ namespace Kzrnm.Competitive
         [凾(256)] public override int GetHashCode() => (int)_v;
 
         public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => Value.TryFormat(destination, out charsWritten, format, provider);
-        public string ToString(string format, IFormatProvider formatProvider) => _v.ToString(format, formatProvider);
+        public string ToString(string format, IFormatProvider formatProvider) => Value.ToString(format, formatProvider);
 #if NET7_0_OR_GREATER
         static int INumberBase<DynamicMontgomeryModInt64<T>>.Radix => 2;
         static DynamicMontgomeryModInt64<T> IAdditiveIdentity<DynamicMontgomeryModInt64<T>, DynamicMontgomeryModInt64<T>>.AdditiveIdentity => default;
@@ -191,8 +191,8 @@ namespace Kzrnm.Competitive
         static bool INumberBase<DynamicMontgomeryModInt64<T>>.IsComplexNumber(DynamicMontgomeryModInt64<T> v) => false;
         static bool INumberBase<DynamicMontgomeryModInt64<T>>.IsRealNumber(DynamicMontgomeryModInt64<T> v) => true;
         static bool INumberBase<DynamicMontgomeryModInt64<T>>.IsImaginaryNumber(DynamicMontgomeryModInt64<T> v) => false;
-        static bool INumberBase<DynamicMontgomeryModInt64<T>>.IsEvenInteger(DynamicMontgomeryModInt64<T> v) => ulong.IsEvenInteger(v._v);
-        static bool INumberBase<DynamicMontgomeryModInt64<T>>.IsOddInteger(DynamicMontgomeryModInt64<T> v) => ulong.IsOddInteger(v._v);
+        static bool INumberBase<DynamicMontgomeryModInt64<T>>.IsEvenInteger(DynamicMontgomeryModInt64<T> v) => long.IsEvenInteger(v.Value);
+        static bool INumberBase<DynamicMontgomeryModInt64<T>>.IsOddInteger(DynamicMontgomeryModInt64<T> v) => long.IsOddInteger(v.Value);
         static bool INumberBase<DynamicMontgomeryModInt64<T>>.IsFinite(DynamicMontgomeryModInt64<T> v) => true;
         static bool INumberBase<DynamicMontgomeryModInt64<T>>.IsInfinity(DynamicMontgomeryModInt64<T> v) => false;
         static bool INumberBase<DynamicMontgomeryModInt64<T>>.IsInteger(DynamicMontgomeryModInt64<T> v) => true;
@@ -200,14 +200,14 @@ namespace Kzrnm.Competitive
         static bool INumberBase<DynamicMontgomeryModInt64<T>>.IsNegative(DynamicMontgomeryModInt64<T> v) => false;
         static bool INumberBase<DynamicMontgomeryModInt64<T>>.IsPositiveInfinity(DynamicMontgomeryModInt64<T> v) => false;
         static bool INumberBase<DynamicMontgomeryModInt64<T>>.IsNegativeInfinity(DynamicMontgomeryModInt64<T> v) => false;
-        static bool INumberBase<DynamicMontgomeryModInt64<T>>.IsNormal(DynamicMontgomeryModInt64<T> v) => v._v != 0;
+        static bool INumberBase<DynamicMontgomeryModInt64<T>>.IsNormal(DynamicMontgomeryModInt64<T> v) => v.Value != 0;
         static bool INumberBase<DynamicMontgomeryModInt64<T>>.IsSubnormal(DynamicMontgomeryModInt64<T> v) => false;
-        static bool INumberBase<DynamicMontgomeryModInt64<T>>.IsZero(DynamicMontgomeryModInt64<T> v) => v._v == 0;
+        static bool INumberBase<DynamicMontgomeryModInt64<T>>.IsZero(DynamicMontgomeryModInt64<T> v) => v.Value == 0;
         static bool INumberBase<DynamicMontgomeryModInt64<T>>.IsNaN(DynamicMontgomeryModInt64<T> v) => false;
-        static DynamicMontgomeryModInt64<T> INumberBase<DynamicMontgomeryModInt64<T>>.MaxMagnitude(DynamicMontgomeryModInt64<T> x, DynamicMontgomeryModInt64<T> y) => new DynamicMontgomeryModInt64<T>(ulong.Max(x._v, y._v));
-        static DynamicMontgomeryModInt64<T> INumberBase<DynamicMontgomeryModInt64<T>>.MaxMagnitudeNumber(DynamicMontgomeryModInt64<T> x, DynamicMontgomeryModInt64<T> y) => new DynamicMontgomeryModInt64<T>(ulong.Max(x._v, y._v));
-        static DynamicMontgomeryModInt64<T> INumberBase<DynamicMontgomeryModInt64<T>>.MinMagnitude(DynamicMontgomeryModInt64<T> x, DynamicMontgomeryModInt64<T> y) => new DynamicMontgomeryModInt64<T>(ulong.Min(x._v, y._v));
-        static DynamicMontgomeryModInt64<T> INumberBase<DynamicMontgomeryModInt64<T>>.MinMagnitudeNumber(DynamicMontgomeryModInt64<T> x, DynamicMontgomeryModInt64<T> y) => new DynamicMontgomeryModInt64<T>(ulong.Min(x._v, y._v));
+        static DynamicMontgomeryModInt64<T> INumberBase<DynamicMontgomeryModInt64<T>>.MaxMagnitude(DynamicMontgomeryModInt64<T> x, DynamicMontgomeryModInt64<T> y) => new DynamicMontgomeryModInt64<T>(long.Max(x.Value, y.Value));
+        static DynamicMontgomeryModInt64<T> INumberBase<DynamicMontgomeryModInt64<T>>.MaxMagnitudeNumber(DynamicMontgomeryModInt64<T> x, DynamicMontgomeryModInt64<T> y) => new DynamicMontgomeryModInt64<T>(long.Max(x.Value, y.Value));
+        static DynamicMontgomeryModInt64<T> INumberBase<DynamicMontgomeryModInt64<T>>.MinMagnitude(DynamicMontgomeryModInt64<T> x, DynamicMontgomeryModInt64<T> y) => new DynamicMontgomeryModInt64<T>(long.Min(x.Value, y.Value));
+        static DynamicMontgomeryModInt64<T> INumberBase<DynamicMontgomeryModInt64<T>>.MinMagnitudeNumber(DynamicMontgomeryModInt64<T> x, DynamicMontgomeryModInt64<T> y) => new DynamicMontgomeryModInt64<T>(long.Min(x.Value, y.Value));
         static DynamicMontgomeryModInt64<T> INumberBase<DynamicMontgomeryModInt64<T>>.Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider) => long.Parse(s, style, provider);
         static DynamicMontgomeryModInt64<T> INumberBase<DynamicMontgomeryModInt64<T>>.Parse(string s, NumberStyles style, IFormatProvider provider) => long.Parse(s, style, provider);
         static DynamicMontgomeryModInt64<T> ISpanParsable<DynamicMontgomeryModInt64<T>>.Parse(ReadOnlySpan<char> s, IFormatProvider provider) => long.Parse(s, provider);

@@ -195,7 +195,7 @@ namespace Kzrnm.Competitive
         [凾(256)] public override int GetHashCode() => (int)_v;
 
         public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => Value.TryFormat(destination, out charsWritten, format, provider);
-        public string ToString(string format, IFormatProvider formatProvider) => _v.ToString(format, formatProvider);
+        public string ToString(string format, IFormatProvider formatProvider) => Value.ToString(format, formatProvider);
 #if NET7_0_OR_GREATER
         static int INumberBase<MontgomeryModInt<T>>.Radix => 2;
         static MontgomeryModInt<T> IAdditiveIdentity<MontgomeryModInt<T>, MontgomeryModInt<T>>.AdditiveIdentity => default;
@@ -205,8 +205,8 @@ namespace Kzrnm.Competitive
         static bool INumberBase<MontgomeryModInt<T>>.IsComplexNumber(MontgomeryModInt<T> v) => false;
         static bool INumberBase<MontgomeryModInt<T>>.IsRealNumber(MontgomeryModInt<T> v) => true;
         static bool INumberBase<MontgomeryModInt<T>>.IsImaginaryNumber(MontgomeryModInt<T> v) => false;
-        static bool INumberBase<MontgomeryModInt<T>>.IsEvenInteger(MontgomeryModInt<T> v) => uint.IsEvenInteger(v._v);
-        static bool INumberBase<MontgomeryModInt<T>>.IsOddInteger(MontgomeryModInt<T> v) => uint.IsOddInteger(v._v);
+        static bool INumberBase<MontgomeryModInt<T>>.IsEvenInteger(MontgomeryModInt<T> v) => int.IsEvenInteger(v.Value);
+        static bool INumberBase<MontgomeryModInt<T>>.IsOddInteger(MontgomeryModInt<T> v) => int.IsOddInteger(v.Value);
         static bool INumberBase<MontgomeryModInt<T>>.IsFinite(MontgomeryModInt<T> v) => true;
         static bool INumberBase<MontgomeryModInt<T>>.IsInfinity(MontgomeryModInt<T> v) => false;
         static bool INumberBase<MontgomeryModInt<T>>.IsInteger(MontgomeryModInt<T> v) => true;
@@ -214,14 +214,14 @@ namespace Kzrnm.Competitive
         static bool INumberBase<MontgomeryModInt<T>>.IsNegative(MontgomeryModInt<T> v) => false;
         static bool INumberBase<MontgomeryModInt<T>>.IsPositiveInfinity(MontgomeryModInt<T> v) => false;
         static bool INumberBase<MontgomeryModInt<T>>.IsNegativeInfinity(MontgomeryModInt<T> v) => false;
-        static bool INumberBase<MontgomeryModInt<T>>.IsNormal(MontgomeryModInt<T> v) => v._v != 0;
+        static bool INumberBase<MontgomeryModInt<T>>.IsNormal(MontgomeryModInt<T> v) => v.Value != 0;
         static bool INumberBase<MontgomeryModInt<T>>.IsSubnormal(MontgomeryModInt<T> v) => false;
-        static bool INumberBase<MontgomeryModInt<T>>.IsZero(MontgomeryModInt<T> v) => v._v == 0;
+        static bool INumberBase<MontgomeryModInt<T>>.IsZero(MontgomeryModInt<T> v) => v.Value == 0;
         static bool INumberBase<MontgomeryModInt<T>>.IsNaN(MontgomeryModInt<T> v) => false;
-        static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.MaxMagnitude(MontgomeryModInt<T> x, MontgomeryModInt<T> y) => new MontgomeryModInt<T>(uint.Max(x._v, y._v));
-        static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.MaxMagnitudeNumber(MontgomeryModInt<T> x, MontgomeryModInt<T> y) => new MontgomeryModInt<T>(uint.Max(x._v, y._v));
-        static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.MinMagnitude(MontgomeryModInt<T> x, MontgomeryModInt<T> y) => new MontgomeryModInt<T>(uint.Min(x._v, y._v));
-        static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.MinMagnitudeNumber(MontgomeryModInt<T> x, MontgomeryModInt<T> y) => new MontgomeryModInt<T>(uint.Min(x._v, y._v));
+        static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.MaxMagnitude(MontgomeryModInt<T> x, MontgomeryModInt<T> y) => new MontgomeryModInt<T>(int.Max(x.Value, y.Value));
+        static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.MaxMagnitudeNumber(MontgomeryModInt<T> x, MontgomeryModInt<T> y) => new MontgomeryModInt<T>(int.Max(x.Value, y.Value));
+        static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.MinMagnitude(MontgomeryModInt<T> x, MontgomeryModInt<T> y) => new MontgomeryModInt<T>(int.Min(x.Value, y.Value));
+        static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.MinMagnitudeNumber(MontgomeryModInt<T> x, MontgomeryModInt<T> y) => new MontgomeryModInt<T>(int.Min(x.Value, y.Value));
         static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider) => long.Parse(s, style, provider);
         static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.Parse(string s, NumberStyles style, IFormatProvider provider) => long.Parse(s, style, provider);
         static MontgomeryModInt<T> ISpanParsable<MontgomeryModInt<T>>.Parse(ReadOnlySpan<char> s, IFormatProvider provider) => long.Parse(s, provider);

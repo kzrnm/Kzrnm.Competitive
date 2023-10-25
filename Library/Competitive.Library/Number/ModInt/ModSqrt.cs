@@ -46,6 +46,47 @@ namespace Kzrnm.Competitive
             }
             return (int)x;
         }
+#if NET7_0_OR_GREATER
+        /// <summary>
+        /// <paramref name="a"/> ≡ x^2 mod <typeparamref name="T"/> をみたす x を返します。なければ -1 を返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: <typeparamref name="T"/> は素数</para>
+        /// <para>計算量: O(log^2 <typeparamref name="T"/>)</para>
+        /// </remarks>
+        [凾(256)]
+        public static int Solve<T>(T a) where T : IModInt<T>
+        {
+            if (T.IsZero(a)) return 0;
+            if (T.Mod <= 2) return a.Value;
+            if (a.Pow((T.Mod - 1) >> 1).Value != 1) return -1;
+            int b = 1;
+            while (T.CreateTruncating(b).Pow((T.Mod - 1) >> 1).Value == 1) ++b;
+            int m = T.Mod - 1;
+            int e = BitOperations.TrailingZeroCount(m);
+            m >>= e;
+            var x = a.Pow((m - 1) >> 1);
+            var y = a * x * x;
+            x *= a;
+            var z = T.CreateTruncating(b).Pow(m);
+            while (y.Value != 1)
+            {
+                int j = 0;
+                var t = y;
+                while (t.Value != 1)
+                {
+                    j += 1;
+                    t *= t;
+                }
+                z = z.Pow(1L << (e - j - 1));
+                x *= z;
+                z *= z;
+                y *= z;
+                e = j;
+            }
+            return x.Value;
+        }
+#else
         /// <summary>
         /// <paramref name="a"/> ≡ x^2 mod <typeparamref name="T"/> をみたす x を返します。なければ -1 を返します。
         /// </summary>
@@ -69,6 +110,46 @@ namespace Kzrnm.Competitive
             var y = a * x * x;
             x *= a;
             var z = new StaticModInt<T>(b).Pow(m);
+            while (y != 1)
+            {
+                int j = 0;
+                var t = y;
+                while (t != 1)
+                {
+                    j += 1;
+                    t *= t;
+                }
+                z = z.Pow(1L << (e - j - 1));
+                x *= z;
+                z *= z;
+                y *= z;
+                e = j;
+            }
+            return x.Value;
+        }
+        /// <summary>
+        /// <paramref name="a"/> ≡ x^2 mod <typeparamref name="T"/> をみたす x を返します。なければ -1 を返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: <typeparamref name="T"/> は素数</para>
+        /// <para>計算量: O(log^2 <typeparamref name="T"/>)</para>
+        /// </remarks>
+        [凾(256)]
+        public static int Solve<T>(MontgomeryModInt<T> a) where T : struct, IStaticMod
+        {
+            var op = new T();
+            if (a == 0) return 0;
+            if (op.Mod <= 2) return a.Value;
+            if (a.Pow((op.Mod - 1) >> 1).Value != 1) return -1;
+            int b = 1;
+            while (new MontgomeryModInt<T>(b).Pow((op.Mod - 1) >> 1).Value == 1) ++b;
+            int m = (int)op.Mod - 1;
+            int e = BitOperations.TrailingZeroCount(m);
+            m >>= e;
+            var x = a.Pow((m - 1) >> 1);
+            var y = a * x * x;
+            x *= a;
+            var z = new MontgomeryModInt<T>(b).Pow(m);
             while (y != 1)
             {
                 int j = 0;
@@ -126,5 +207,6 @@ namespace Kzrnm.Competitive
             }
             return x.Value;
         }
+#endif
     }
 }
