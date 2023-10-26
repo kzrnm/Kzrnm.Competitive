@@ -62,35 +62,10 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|))</para>
         /// </remarks>
         [凾(256)]
-        public static StaticModInt<TMod>[] Convolution<TMod>(StaticModInt<TMod>[] a, StaticModInt<TMod>[] b)
-             where TMod : struct, IStaticMod
-            => Convolution((ReadOnlySpan<StaticModInt<TMod>>)a, b);
-        /// <summary>
-        /// 任意 Mod で畳み込みを計算します。
-        /// </summary>
-        /// <remarks>
-        /// <para><paramref name="a"/>, <paramref name="b"/> の少なくとも一方が空の場合は空配列を返します。</para>
-        /// <para>制約:</para>
-        /// <para>- |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^24 = 16,777,216</para>
-        /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|))</para>
-        /// </remarks>
-        [凾(256)]
         public static MontgomeryModInt<TMod>[] Convolution<TMod>(MontgomeryModInt<TMod>[] a, MontgomeryModInt<TMod>[] b)
              where TMod : struct, IStaticMod
             => Convolution((ReadOnlySpan<MontgomeryModInt<TMod>>)a, b);
-        /// <summary>
-        /// 任意 Mod で畳み込みを計算します。
-        /// </summary>
-        /// <remarks>
-        /// <para><paramref name="a"/>, <paramref name="b"/> の少なくとも一方が空の場合は空配列を返します。</para>
-        /// <para>制約:</para>
-        /// <para>- |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^24 = 16,777,216</para>
-        /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|))</para>
-        /// </remarks>
-        [凾(256)]
-        public static StaticModInt<TMod>[] Convolution<TMod>(Span<StaticModInt<TMod>> a, Span<StaticModInt<TMod>> b)
-             where TMod : struct, IStaticMod
-            => Convolution((ReadOnlySpan<StaticModInt<TMod>>)a, b);
+
         /// <summary>
         /// 任意 Mod で畳み込みを計算します。
         /// </summary>
@@ -123,27 +98,7 @@ namespace Kzrnm.Competitive
                 .Select(n => (MontgomeryModInt<TMod>)n)
                 .ToArray();
         }
-        /// <summary>
-        /// 任意 Mod で畳み込みを計算します。
-        /// </summary>
-        /// <remarks>
-        /// <para><paramref name="a"/>, <paramref name="b"/> の少なくとも一方が空の場合は空配列を返します。</para>
-        /// <para>制約:</para>
-        /// <para>- |<paramref name="a"/>| + |<paramref name="b"/>| - 1 ≤ 2^24 = 16,777,216</para>
-        /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|))</para>
-        /// </remarks>
-        [凾(256)]
-        public static StaticModInt<TMod>[] Convolution<TMod>(ReadOnlySpan<StaticModInt<TMod>> a, ReadOnlySpan<StaticModInt<TMod>> b)
-             where TMod : struct, IStaticMod
-        {
-            if (a.Length + b.Length - 1 <= NumberTheoreticTransform<TMod>.NttLength())
-                return NumberTheoreticTransform<TMod>.Multiply(a, b).ToArray();
-            return
-                MemoryMarshal.Cast<uint, StaticModInt<TMod>>(
-                    ConvolutionImpl<TMod>(
-                        MemoryMarshal.Cast<StaticModInt<TMod>, uint>(a),
-                        MemoryMarshal.Cast<StaticModInt<TMod>, uint>(b))).ToArray();
-        }
+
         /// <summary>
         /// 任意 Mod で畳み込みを計算します。
         /// </summary>
@@ -224,8 +179,8 @@ namespace Kzrnm.Competitive
                 Debug.Assert(new FFTMod1().Mod == Mod1);
                 Debug.Assert(new FFTMod2().Mod == Mod2);
                 Debug.Assert(new FFTMod3().Mod == Mod3);
-                Debug.Assert(M1i2 == new StaticModInt<FFTMod2>(Mod1).Inv().Value);
-                Debug.Assert(M12i3 == new StaticModInt<FFTMod3>(Mod1 * Mod2).Inv().Value);
+                Debug.Assert(M1i2 == new MontgomeryModInt<FFTMod2>(Mod1).Inv().Value);
+                Debug.Assert(M12i3 == new MontgomeryModInt<FFTMod3>(Mod1 * Mod2).Inv().Value);
 
                 var c1 = NumberTheoreticTransform<FFTMod1>.Multiply(a, b);
                 var c2 = NumberTheoreticTransform<FFTMod2>.Multiply(a, b);
@@ -478,9 +433,9 @@ namespace Kzrnm.Competitive
                 Debug.Assert(new FFTMod1().Mod == Mod1);
                 Debug.Assert(new FFTMod2().Mod == Mod2);
                 Debug.Assert(new FFTMod3().Mod == Mod3);
-                Debug.Assert(i1 == (ulong)new StaticModInt<FFTMod1>(M2M3).Inv().Value);
-                Debug.Assert(i2 == (ulong)new StaticModInt<FFTMod2>(M1M3).Inv().Value);
-                Debug.Assert(i3 == (ulong)new StaticModInt<FFTMod3>(M1M2).Inv().Value);
+                Debug.Assert(i1 == (ulong)new MontgomeryModInt<FFTMod1>(M2M3).Inv().Value);
+                Debug.Assert(i2 == (ulong)new MontgomeryModInt<FFTMod2>(M1M3).Inv().Value);
+                Debug.Assert(i3 == (ulong)new MontgomeryModInt<FFTMod3>(M1M2).Inv().Value);
 
                 var c1 = NumberTheoreticTransform<FFTMod1>.Multiply(a1, b1);
                 var c2 = NumberTheoreticTransform<FFTMod2>.Multiply(a2, b2);
@@ -600,9 +555,9 @@ namespace Kzrnm.Competitive
                 Debug.Assert(new FFTMod1().Mod == Mod1);
                 Debug.Assert(new FFTMod2().Mod == Mod2);
                 Debug.Assert(new FFTMod3().Mod == Mod3);
-                Debug.Assert(M1i2 == (ulong)new StaticModInt<FFTMod2>(Mod1).Inv().Value);
-                Debug.Assert(M2i3 == (ulong)new StaticModInt<FFTMod3>(Mod2).Inv().Value);
-                Debug.Assert(M12i3 == (ulong)new StaticModInt<FFTMod3>(Mod1 * Mod2).Inv().Value);
+                Debug.Assert(M1i2 == (ulong)new MontgomeryModInt<FFTMod2>(Mod1).Inv().Value);
+                Debug.Assert(M2i3 == (ulong)new MontgomeryModInt<FFTMod3>(Mod2).Inv().Value);
+                Debug.Assert(M12i3 == (ulong)new MontgomeryModInt<FFTMod3>(Mod1 * Mod2).Inv().Value);
 
                 var c1 = NumberTheoreticTransform<FFTMod1>.Multiply(a1, b1);
                 var c2 = NumberTheoreticTransform<FFTMod2>.Multiply(a2, b2);
