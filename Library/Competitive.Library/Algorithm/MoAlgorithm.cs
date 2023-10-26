@@ -44,7 +44,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <param name="st">現在の状態</param>
         [凾(256)]
-        public T[] Solve<T, TSt>(TSt st) where TSt : IMoAlgorithmState<T>
+        public T[] Solve<T, TSt>(TSt st = default) where TSt : IMoAlgorithmState<T>
         {
             var wrapper = new StateStrictWrapper<T, TSt>(st, builder.Count);
             SolveStrict(wrapper);
@@ -56,7 +56,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <param name="st">現在の状態</param>
         [凾(256)]
-        public T[] SolveStrict<T, TSt>(TSt st) where TSt : IMoAlgorithmStateStrict<T>
+        public T[] SolveStrict<T, TSt>(TSt st = default) where TSt : IMoAlgorithmStateStrict<T>
         {
             var wrapper = new StrictStateStrictWrapper<T, TSt>(st, builder.Count);
             SolveStrict(wrapper);
@@ -96,14 +96,14 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <param name="op">現在の状態を更新する</param>
         [凾(256)]
-        public void Solve<TOp>(TOp op) where TOp : IMoAlgorithmOperator => SolveStrict(new OpStrictWrapper<TOp>(op), 0);
+        public void Solve<TOp>(TOp op = default) where TOp : IMoAlgorithmOperator => SolveStrict(new OpStrictWrapper<TOp>(op), 0);
 
         /// <summary>
         /// クエリを適用します。
         /// </summary>
         /// <param name="op">現在の状態を更新する</param>
         [凾(256)]
-        public void SolveStrict<TOp>(TOp op) where TOp : IMoAlgorithmOperatorStrict => SolveStrict(op, 0);
+        public void SolveStrict<TOp>(TOp op = default) where TOp : IMoAlgorithmOperatorStrict => SolveStrict(op, 0);
 
         /// <summary>
         /// クエリを適用します。
