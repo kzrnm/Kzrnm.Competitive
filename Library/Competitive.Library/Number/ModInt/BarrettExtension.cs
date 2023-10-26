@@ -1,8 +1,8 @@
-using AtCoder.Internal;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    using AtCoder.Internal;
     // https://nyaannyaan.github.io/library/modint/barrett-reduction.hpp
     /// <summary>
     /// barrett-reduction の拡張
@@ -14,7 +14,7 @@ namespace Kzrnm.Competitive
         {
             var IM = bt.IM;
             var Mod = bt.Mod;
-            var x = InternalMath.Mul128Bit(z, IM);
+            var x = Mul128.Mul128Bit(z, IM);
             var v = unchecked((uint)(z - x * Mod));
             if (Mod <= v) --x;
             return x;
@@ -24,7 +24,7 @@ namespace Kzrnm.Competitive
         {
             var IM = bt.IM;
             var Mod = bt.Mod;
-            var x = InternalMath.Mul128Bit(z, IM);
+            var x = Mul128.Mul128Bit(z, IM);
             var v = unchecked((uint)(z - x * Mod));
             if (Mod <= v)
             {

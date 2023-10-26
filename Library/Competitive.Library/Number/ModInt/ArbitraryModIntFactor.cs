@@ -71,7 +71,7 @@ namespace Kzrnm.Competitive
             {
                 rem[i] = cs[i].Combination(n, k);
             }
-            return (uint)MathLib.Crt(rem, M).y;
+            return (uint)ModCalc.Crt(rem, M).y;
         }
 
         ///<summary>重複組み合わせ関数</summary>

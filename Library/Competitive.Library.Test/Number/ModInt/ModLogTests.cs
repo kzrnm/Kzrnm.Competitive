@@ -1,4 +1,5 @@
 using AtCoder;
+using AtCoder.Internal;
 using System;
 
 namespace Kzrnm.Competitive.Testing.Number
@@ -68,7 +69,7 @@ namespace Kzrnm.Competitive.Testing.Number
         static long Native(long a, long b, int p, bool includeZero)
         {
             for (int i = includeZero ? 0 : 1; i < p; i++)
-                if (MathLib.PowMod(a, i, p) == b)
+                if (ModCalc.PowMod(a, i, p) == b)
                     return i;
             return -1;
         }

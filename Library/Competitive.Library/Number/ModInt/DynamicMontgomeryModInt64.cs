@@ -56,7 +56,7 @@ namespace Kzrnm.Competitive
         /// <remarks>
         /// <paramref name="v"/>が 0 未満、もしくは mod 以上の場合、自動で mod を取ります。
         /// </remarks>
-        public DynamicMontgomeryModInt64(long v) : this(Reduce(((UInt128)InternalMath.SafeMod(v, Mod) + _mod) * n2)) { }
+        public DynamicMontgomeryModInt64(long v) : this(Reduce(((UInt128)ModCalc.SafeMod(v, Mod) + _mod) * n2)) { }
         DynamicMontgomeryModInt64(ulong a)
         {
             _v = a;
@@ -375,7 +375,7 @@ namespace Kzrnm.Competitive
             }
             [凾(256)]
             static (ulong Upper, ulong Lower) BigMul(ulong a, ulong b)
-                => (InternalMath.Mul128Bit(a, b), a * b);
+                => (Mul128.Mul128Bit(a, b), a * b);
 
             [凾(256)]
             public static explicit operator UInt128(long v) => new UInt128(0, (ulong)v);

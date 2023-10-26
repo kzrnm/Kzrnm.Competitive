@@ -502,7 +502,7 @@ namespace Kzrnm.Competitive
                     x += ((ulong)Unsafe.Add(ref d2, i).Value * i2) % Mod2 * M1M3;
                     x += ((ulong)Unsafe.Add(ref d3, i).Value * i3) % Mod3 * M1M2;
 
-                    long diff = Unsafe.Add(ref d3, i).Value - InternalMath.SafeMod((long)x, (long)Mod3);
+                    long diff = Unsafe.Add(ref d3, i).Value - ModCalc.SafeMod((long)x, (long)Mod3);
                     if (diff < 0)
                     {
                         diff += (long)Mod1;
