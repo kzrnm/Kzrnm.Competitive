@@ -1,10 +1,10 @@
 
-namespace Kzrnm.Competitive.Testing.GlobalNS
+using System.Linq;
+
+namespace Kzrnm.Competitive.Testing.Number
 {
     public class BitOperationsExTests
     {
-
-
         [Theory]
         [InlineData(int.MaxValue, 31, 30, 0)]
         [InlineData(int.MinValue, 1, 31, 31)]
@@ -71,6 +71,36 @@ namespace Kzrnm.Competitive.Testing.GlobalNS
         {
             BitOperationsEx.ParallelBitExtract(input, mask).Should().Be(res);
             BitOperationsEx.ParallelBitExtractLogic(input, mask).Should().Be(res);
+        }
+
+        [Theory]
+        [InlineData(0b10101010001010101001000111010101, 0b10101011100010010101010001010101)]
+        [InlineData(0b01010101000010110101011010101010, 0b01010101011010101101000010101010)]
+        [InlineData(0b11010100101000010101001001010111, 0b11101010010010101000010100101011)]
+        [InlineData(0b01010101010101010010000101001011, 0b11010010100001001010101010101010)]
+        [InlineData(0b10111001010101010100001010010101, 0b10101001010000101010101010011101)]
+        [InlineData(0b11110000110001000010100000010010, 0b01001000000101000010001100001111)]
+        public void BitReverseUInt32(uint a, uint b)
+        {
+            new string(System.Convert.ToString(a, 2).PadLeft(32, '0').Reverse().ToArray())
+                .Should().Be(System.Convert.ToString(b, 2).PadLeft(32, '0'));
+
+            BitOperationsEx.BitReverse(a).Should().Be(b);
+            BitOperationsEx.BitReverse(b).Should().Be(a);
+        }
+
+        [Theory]
+        [InlineData(0b0101010100001011010101101010101010101010001010101001000111010101, 0b1010101110001001010101000101010101010101011010101101000010101010)]
+        [InlineData(0b1010101000101010100100011101010101010101000010110101011010101010, 0b0101010101101010110100001010101010101011100010010101010001010101)]
+        [InlineData(0b0101010101010101001000010100101111010100101000010101001001010111, 0b1110101001001010100001010010101111010010100001001010101010101010)]
+        [InlineData(0b1011100101010101010000101001010101010101000010110101011010101010, 0b0101010101101010110100001010101010101001010000101010101010011101)]
+        public void BitReverseUInt64(ulong a, ulong b)
+        {
+            new string(System.Convert.ToString((long)a, 2).PadLeft(64, '0').Reverse().ToArray())
+                .Should().Be(System.Convert.ToString((long)b, 2).PadLeft(64, '0'));
+
+            BitOperationsEx.BitReverse(a).Should().Be(b);
+            BitOperationsEx.BitReverse(b).Should().Be(a);
         }
     }
 }

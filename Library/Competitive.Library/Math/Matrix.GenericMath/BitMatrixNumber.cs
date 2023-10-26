@@ -390,29 +390,12 @@ namespace Kzrnm.Competitive
 
             static T ParseRow(string row)
             {
-                var span = row.ToCharArray().AsSpan().Trim();
-                span.Reverse();
-                var res = T.Zero;
-
-                var reminder = span.Length & 63; // % 64
-                if (reminder > 0)
-                {
-                    res = T.CreateTruncating(Convert.ToUInt64(new string(span[..reminder]), 2));
-                    span = span[reminder..];
-                }
-
-                while (span.Length > 0)
-                {
-                    res <<= 64;
-                    if (span.Length < 64)
-                        res |= T.CreateTruncating(Convert.ToUInt64(new string(span), 2));
-                    else
-                    {
-                        res |= T.CreateTruncating(Convert.ToUInt64(new string(span[..64]), 2));
-                        span = span[64..];
-                    }
-                }
-                return res;
+                var s = row.AsSpan().Trim();
+                Span<char> t = stackalloc char[Unsafe.SizeOf<T>() * 8];
+                s.CopyTo(t);
+                t[s.Length..].Fill('0');
+                t.Reverse();
+                return BinaryParser.ParseNumber<T>(t);
             }
         }
     }

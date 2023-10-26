@@ -1,9 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using BitArray = System.Collections.BitArray;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -22,11 +22,11 @@ namespace Kzrnm.Competitive
         public static int[] GetArray(this BitArray b) => Unsafe.As<Dummy>(b).arr;
 
         [凾(256)]
-        public static void CopyTo(this BitArray b, int[] array, int index = 0) => b.CopyTo((Array)array, index);
+        public static void CopyTo(this BitArray b, int[] array, int index = 0) => b.CopyTo(array, index);
         [凾(256)]
-        public static void CopyTo(this BitArray b, uint[] array, int index = 0) => b.CopyTo((Array)array, index);
+        public static void CopyTo(this BitArray b, uint[] array, int index = 0) => b.CopyTo(array, index);
         [凾(256)]
-        public static void CopyTo(this BitArray b, bool[] array, int index = 0) => b.CopyTo((Array)array, index);
+        public static void CopyTo(this BitArray b, bool[] array, int index = 0) => b.CopyTo(array, index);
         /// <summary>
         /// 内部の配列を <see langword="uint"/> の配列にコピーします。
         /// </summary>

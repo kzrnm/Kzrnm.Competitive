@@ -55,7 +55,7 @@ namespace Kzrnm.Competitive
         BitMatrix64 AddIdentity()
         {
             var arr = CloneArray(Value);
-            for (int i = arr.Length - 1; i >= 0; i--)
+            for (int i = 0; i < arr.Length; i++)
                 arr[i] ^= 1ul << i;
             return new BitMatrix64(arr);
         }
@@ -373,9 +373,12 @@ namespace Kzrnm.Competitive
 
             static ulong ParseRow(string row)
             {
-                var arr = row.ToCharArray().AsSpan().Trim();
-                arr.Reverse();
-                return Convert.ToUInt64(new string(arr), 2);
+                var s = row.AsSpan().Trim();
+                Span<char> t = stackalloc char[64];
+                s.CopyTo(t);
+                t[s.Length..].Fill('0');
+                t.Reverse();
+                return BinaryParser.ParseUInt64(t);
             }
         }
 

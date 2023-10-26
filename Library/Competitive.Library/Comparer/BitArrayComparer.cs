@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using BitArray = System.Collections.BitArray;
 
 namespace Kzrnm.Competitive
 {
-    public class BitArrayComparer : IComparer<System.Collections.BitArray>
+    public class BitArrayComparer : IComparer<BitArray>
     {
         private readonly bool IsReverse;
         public BitArrayComparer(bool isReverse = false)
@@ -11,7 +12,7 @@ namespace Kzrnm.Competitive
         }
         public static readonly BitArrayComparer Default = new BitArrayComparer(false);
         public static readonly BitArrayComparer Reverse = new BitArrayComparer(true);
-        public int Compare(System.Collections.BitArray x, System.Collections.BitArray y)
+        public int Compare(BitArray x, BitArray y)
         {
             if (IsReverse)
                 (x, y) = (y, x);

@@ -1,8 +1,8 @@
 using AtCoder.Internal;
 using System;
-using System.Collections;
 using System.Linq;
 using System.Text;
+using BitArray = System.Collections.BitArray;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 #if NET7_0_OR_GREATER
 using System.Numerics;
@@ -221,36 +221,11 @@ namespace Kzrnm.Competitive
             var arr = new BitArray[rows.Length];
             for (int i = 0; i < arr.Length; i++)
             {
-                arr[i] = ParseRow(rows[i]);
+                arr[i] = BinaryParser.ParseBitArray(rows[i]);
                 if (i > 0 && arr[i].Length != arr[i - 1].Length)
                     throw new FormatException("Row length are diffrent.");
             }
             return new BitOrMatrix(arr);
-
-            static BitArray ParseRow(string row)
-            {
-                var span = row.ToCharArray().AsSpan().Trim();
-                span.Reverse();
-                var length = span.Length;
-                var nums = new int[(span.Length + 31) / 32];
-
-                for (int i = 0; i < nums.Length; i++)
-                {
-                    if (span.Length < 32)
-                    {
-                        nums[i] = Convert.ToInt32(new string(span), 2);
-                        break;
-                    }
-                    else
-                    {
-                        nums[i] = Convert.ToInt32(new string(span[^32..]), 2);
-                        span = span[..^32];
-                    }
-                }
-
-                var res = new BitArray(nums) { Length = length };
-                return res;
-            }
         }
 
 #if NET7_0_OR_GREATER
@@ -263,7 +238,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public BitOrMatrix Pow(long y) => MathLibGeneric.Pow<BitOrMatrix, Operator>(this, y);
 
-        public struct Operator : IAdditionOperator<BitOrMatrix>, IMultiplicationOperator<BitOrMatrix>
+        public readonly struct Operator : IAdditionOperator<BitOrMatrix>, IMultiplicationOperator<BitOrMatrix>
         {
             public BitOrMatrix MultiplyIdentity => Identity;
 

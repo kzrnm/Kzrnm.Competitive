@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Numerics;
 using System.Runtime.Intrinsics.X86;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -135,6 +136,27 @@ namespace Kzrnm.Competitive
             } while (mask != 0);
             return res;
         }
+
+        /// <summary>
+        /// ビットの並びを逆順にします。
+        /// </summary>
+        [凾(256)]
+        public static uint BitReverse(uint x)
+        {
+            x = x << 16 | x >> 16;
+            x = (x & 0x00ff00ff) << 8 | (x >> 8 & 0x00ff00ff);
+            x = (x & 0x0f0f0f0f) << 4 | (x >> 4 & 0x0f0f0f0f);
+            x = (x & 0x33333333) << 2 | (x >> 2 & 0x33333333);
+            x = (x & 0x55555555) << 1 | (x >> 1 & 0x55555555);
+            return x;
+        }
+
+        /// <summary>
+        /// ビットの並びを逆順にします。
+        /// </summary>
+        [凾(256)]
+        public static ulong BitReverse(ulong x)
+            => (ulong)BitReverse((uint)x) << 32 | BitReverse((uint)(x >> 32));
 
 #if NET7_0_OR_GREATER
         /// <summary>
