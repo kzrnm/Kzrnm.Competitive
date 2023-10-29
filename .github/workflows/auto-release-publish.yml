@@ -19,19 +19,23 @@ env:
   PACK_CSPROJ: Library/Competitive.Library/Competitive.Library.csproj
 
 jobs:
-  get-date:
+  get-version:
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.date.outputs.date }}
+      date: ${{ steps.date.outputs.date }}
+      is-new-month: ${{ steps.prev-version.outputs.is-new-month }}
     steps:
+      - uses: actions/checkout@v4
       - id: date
         run: echo "date=$(date "+%Y.%m%d.%H%M")" >> $GITHUB_OUTPUT
+      - id: prev-version
+        run: python tools/action/prev_version.py ${{ steps.date.outputs.date }} >> $GITHUB_OUTPUT
 
   build:
     runs-on: ubuntu-latest
-    needs: [get-date]
+    needs: [get-version]
     env:
-      VERSION: ${{needs.get-date.outputs.version}}
+      VERSION: ${{needs.get-version.outputs.date}}
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET
@@ -58,10 +62,11 @@ jobs:
           path: bin/Packages/Release
 
   publish:
-    needs: [get-date, build]
+    needs: [get-version, build]
     uses: kzrnm/dotnet-actions/.github/workflows/publish.yml@v1
+    if: needs.get-version.outputs.is-new-month
     with:
       artifact-name: dist
-      version: ${{needs.get-date.outputs.version}}
+      version: ${{needs.get-version.outputs.date}}
     secrets:
       NUGET_KEY: ${{ secrets.NUGET_KEY }}

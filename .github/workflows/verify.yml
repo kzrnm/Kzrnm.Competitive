@@ -314,7 +314,7 @@ jobs:
 
       - name: Add redirect_from to *.GenericMath.cs.md
         shell: bash
-        run : python3 "${{github.workspace}}/tools/update_redirect.py" "${{github.workspace}}/_jekyll"
+        run : python3 "${{github.workspace}}/tools/action/update_redirect.py" "${{github.workspace}}/_jekyll"
 
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
