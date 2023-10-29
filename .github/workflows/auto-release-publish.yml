@@ -9,6 +9,10 @@ on:
       - "!Library/**/_title.csv"
       - "!**.md"
   workflow_dispatch:
+    inputs:
+      force-release:
+        type: boolean
+        default: false
 
 env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
@@ -64,7 +68,7 @@ jobs:
   publish:
     needs: [get-version, build]
     uses: kzrnm/dotnet-actions/.github/workflows/publish.yml@v1
-    if: needs.get-version.outputs.is-new-month
+    if: needs.get-version.outputs.is-new-month || inputs.force-release
     with:
       artifact-name: dist
       version: ${{needs.get-version.outputs.date}}
