@@ -21,7 +21,7 @@ REDIRECT_FROM = "redirect_from:\n"
 def main():
     jekyll_dir = pathlib.Path(sys.argv[1]).resolve(strict=True)
 
-    os.chdir(pathlib.Path(__file__).resolve(strict=True).parent / "../Library")
+    os.chdir(pathlib.Path(__file__).resolve(strict=True).parent / "../../Library")
 
     for p in chain(
         jekyll_dir.glob("**/*.GenericMath.cs.md"),
