@@ -62,10 +62,23 @@ namespace Kzrnm.Competitive
             return x + 1;
         }
 
+
+        /// <summary>
+        /// <c><paramref name="fw"/>[i]=<paramref name="fw"/>[i..(i+1)]</c> の値を返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>計算量: O(log <c>n</c>)</para>
+        /// </remarks>
+        public static TValue Get<TValue, TOp>(this FenwickTree<TValue, TOp> fw, int i)
+            where TOp : struct, IAdditionOperator<TValue>, ISubtractOperator<TValue>
+            => fw.Sum(i, i + 1);
+
         /// <summary>
         /// <c>(<paramref name="fw"/>[i..(i+1)], <paramref name="fw"/>[..(i+1)])</c> の配列にして返す。
         /// </summary>
-        /// <returns></returns>
+        /// <remarks>
+        /// <para>計算量: O(<c>n</c>)</para>
+        /// </remarks>
         [凾(256)]
         public static (TValue Item, TValue Sum)[] ToArray<TValue, TOp>(this FenwickTree<TValue, TOp> fw)
             where TOp : struct, IAdditionOperator<TValue>, ISubtractOperator<TValue>

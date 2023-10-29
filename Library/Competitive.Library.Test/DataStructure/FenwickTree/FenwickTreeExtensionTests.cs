@@ -93,6 +93,32 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         }
 
         [Fact]
+        public void Get()
+        {
+            var rnd = new Random(227);
+            var rndArray = new int[128];
+            for (int i = 0; i < rndArray.Length; i++)
+            {
+                rndArray[i] = rnd.Next(314);
+            }
+            foreach (var array in new[]
+            {
+                Enumerable.Range(1, 31).ToArray(),
+                Enumerable.Range(1, 32).ToArray(),
+                Enumerable.Range(1, 33).ToArray(),
+                Enumerable.Range(1, 100).ToArray(),
+                rndArray,
+            })
+            {
+                var fw = new IntFenwickTree(array.Length);
+                for (int i = 0; i < array.Length; i++)
+                    fw.Add(i, array[i]);
+                for (int i = 0; i < array.Length; i++)
+                    fw.Get(i).Should().Be(array[i]);
+            }
+        }
+
+        [Fact]
         public void ToArray()
         {
             var rnd = new Random(227);

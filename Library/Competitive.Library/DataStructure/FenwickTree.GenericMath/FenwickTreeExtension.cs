@@ -60,9 +60,21 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
+        /// <c><paramref name="fw"/>[i]=<paramref name="fw"/>[i..(i+1)]</c> の値を返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>計算量: O(log <c>n</c>)</para>
+        /// </remarks>
+        public static T Get<T>(this FenwickTree<T> fw, int i)
+            where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>, IAdditiveIdentity<T, T>
+            => fw.Sum(i, i + 1);
+
+        /// <summary>
         /// <c>(<paramref name="fw"/>[i..(i+1)], <paramref name="fw"/>[..(i+1)])</c> のタプルを配列にして返します。
         /// </summary>
-        /// <returns></returns>
+        /// <remarks>
+        /// <para>計算量: O(<c>n</c>)</para>
+        /// </remarks>
         [凾(256)]
         public static (T Item, T Sum)[] ToArray<T>(this FenwickTree<T> fw)
             where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>, IAdditiveIdentity<T, T>
