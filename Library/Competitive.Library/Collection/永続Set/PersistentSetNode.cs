@@ -10,7 +10,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Value = {" + nameof(value) + "}, Count = {" + nameof(Count) + "}")]
     public sealed class PersistentSetNode<T, TKey, TNOp> : IEnumerable<PersistentSetNode<T, TKey, TNOp>>
@@ -637,25 +636,25 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             /// </summary>
             bool IntoLeft(int order);
         }
-        public struct L : ISetBinarySearchOperator
+        public readonly struct L : ISetBinarySearchOperator
         {
             public bool ReturnLeft => false;
             [凾(256)]
             public bool IntoLeft(int order) => order <= 0;
         }
-        public struct U : ISetBinarySearchOperator
+        public readonly struct U : ISetBinarySearchOperator
         {
             public bool ReturnLeft => false;
             [凾(256)]
             public bool IntoLeft(int order) => order < 0;
         }
-        public struct LR : ISetBinarySearchOperator
+        public readonly struct LR : ISetBinarySearchOperator
         {
             public bool ReturnLeft => true;
             [凾(256)]
             public bool IntoLeft(int order) => order < 0;
         }
-        public struct UR : ISetBinarySearchOperator
+        public readonly struct UR : ISetBinarySearchOperator
         {
             public bool ReturnLeft => true;
             [凾(256)]
@@ -665,6 +664,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 
 
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
         public struct Enumerator : IEnumerator<PersistentSetNode<T, TKey, TNOp>>
         {
             private PersistentSetNode<T, TKey, TNOp> _root;
@@ -755,6 +755,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             public ValueEnumerator ToValueEnumerator() => new ValueEnumerator(this);
         }
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
         public struct ValueEnumerator : IEnumerator<T>, IEnumerable<T>
         {
             private Enumerator impl;

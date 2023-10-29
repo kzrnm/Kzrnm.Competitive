@@ -7,12 +7,12 @@ namespace Kzrnm.Competitive
 {
     public static partial class Kitamasa
     {
-        private ref struct Inner
+        private readonly ref struct Inner
         {
             public readonly uint mod;
-            public ReadOnlySpan<uint> a;
-            public ReadOnlySpan<uint> c;
-            public ReadOnlySpan<uint> ic;
+            public readonly ReadOnlySpan<uint> a;
+            public readonly ReadOnlySpan<uint> c;
+            public readonly ReadOnlySpan<uint> ic;
 
             public Inner(ReadOnlySpan<uint> a, ReadOnlySpan<uint> c, int mod)
             {
@@ -87,6 +87,8 @@ namespace Kzrnm.Competitive
             }
         }
 
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
         private ref struct Inner<TMod> where TMod : struct, IStaticMod
         {
             public static readonly TMod op = default;
@@ -123,7 +125,7 @@ namespace Kzrnm.Competitive
             }
 
             [凾(256)]
-            public uint[] MultiplyMod(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b)
+            public readonly uint[] MultiplyMod(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b)
             {
                 var beta = Convolution(a, b);
                 var q = Convolution(beta, ic).AsSpan(0, a.Length - 1);
@@ -135,7 +137,7 @@ namespace Kzrnm.Competitive
             }
 
             [凾(256)]
-            public uint[] Convolution(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b)
+            static uint[] Convolution(ReadOnlySpan<uint> a, ReadOnlySpan<uint> b)
                    => NumberTheoreticTransform.Convolution<TMod>(a, b);
 
             [凾(256)]

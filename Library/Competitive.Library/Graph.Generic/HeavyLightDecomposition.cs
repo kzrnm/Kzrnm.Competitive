@@ -192,12 +192,12 @@ namespace Kzrnm.Competitive
             }
             return new SparseTable<(int Depth, int Node), NodeMinOp>(arr);
         }
-        private struct NodeMinOp : ISparseTableOperator<(int Depth, int Node)>
+        readonly struct NodeMinOp : ISparseTableOperator<(int Depth, int Node)>
         {
             [凾(256)]
             public (int Depth, int Node) Operate((int Depth, int Node) x, (int Depth, int Node) y) => x.Depth <= y.Depth ? x : y;
         }
-        private readonly struct FWrapper : IHlDecompositionOperator
+        readonly struct FWrapper : IHlDecompositionOperator
         {
             private readonly Action<int, int> f;
             public FWrapper(Action<int, int> func)
@@ -224,7 +224,7 @@ namespace Kzrnm.Competitive
                 this.v = lca;
                 st = (St)(vertex ? 0b11 : 0b01);
             }
-            public PathEnumerator GetEnumerator() => this;
+            public readonly PathEnumerator GetEnumerator() => this;
             static Stack<(int f, int t)> BuildDesc(HeavyLightDecomposition<TNode, TEdge> hl, int u, int v)
             {
                 var s = new Stack<(int f, int t)>();
@@ -246,7 +246,7 @@ namespace Kzrnm.Competitive
                 }
                 return s;
             }
-            public (int f, int t) Current => _c;
+            public readonly (int f, int t) Current => _c;
             public bool MoveNext()
             {
                 var down = hl.down;

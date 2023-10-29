@@ -7,10 +7,15 @@ namespace Kzrnm.Competitive
     public class RollingHash
     {
         internal static readonly Xoshiro256 rnd = new Xoshiro256();
-        public struct Hash : IEquatable<Hash>
+        public readonly struct Hash : IEquatable<Hash>
         {
-            public ulong a;
-            public ulong b;
+            public readonly ulong a;
+            public readonly ulong b;
+            public Hash(ulong a, ulong b)
+            {
+                this.a = a;
+                this.b = b;
+            }
 
             public override bool Equals(object obj) => obj is Hash h && Equals(h);
             public bool Equals(Hash other) => a == other.a && b == other.b;
@@ -33,7 +38,7 @@ namespace Kzrnm.Competitive
 
         /** <summary>[<paramref name="from"/>, <paramref name="len"/>) のハッシュ</summary> */
         [凾(256)]
-        public Hash Slice(int from, int len) => new Hash { a = hash1.Slice(from, len), b = hash2.Slice(from, len) };
+        public Hash Slice(int from, int len) => new Hash(hash1.Slice(from, len), hash2.Slice(from, len));
 
 
         public class RollingHashUInt64 /* https://webbibouroku.com/Blog/Article/cs-rollinghash */

@@ -95,6 +95,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)]
         public static Enumerator Bits(this ulong num) => new Enumerator(num);
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
         public struct Enumerator : IEnumerable<int>, IEnumerator<int>
         {
             ulong num;
@@ -109,6 +110,7 @@ namespace Kzrnm.Competitive
                 num &= num - 1;
                 return true;
             }
+
             object IEnumerator.Current => Current;
             public int[] ToArray()
             {
@@ -121,7 +123,9 @@ namespace Kzrnm.Competitive
                 return res;
             }
             void IEnumerator.Reset() => throw new NotSupportedException();
+
             void IDisposable.Dispose() { }
+
             IEnumerator<int> IEnumerable<int>.GetEnumerator() => this;
             IEnumerator IEnumerable.GetEnumerator() => this;
         }

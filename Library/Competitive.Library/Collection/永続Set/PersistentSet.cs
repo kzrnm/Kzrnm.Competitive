@@ -7,7 +7,7 @@ namespace Kzrnm.Competitive
 {
     public class PersistentSet<T> : PersistentSetBase<T, T, PersistentSet<T>, PersistentSet<T>.PSOperator>, ICollection<T>
     {
-        public struct PSOperator : IPersistentSetNodeOperator<T, T>, IPersistentSetOperator<T, T, PersistentSet<T>, PSOperator>
+        public readonly struct PSOperator : IPersistentSetNodeOperator<T, T>, IPersistentSetOperator<T, T, PersistentSet<T>, PSOperator>
         {
             [凾(256)]
             public PersistentSet<T> Empty(bool isMulti, IComparer<T> comparer)

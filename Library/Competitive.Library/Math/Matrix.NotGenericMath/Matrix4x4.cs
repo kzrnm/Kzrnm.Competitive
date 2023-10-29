@@ -338,7 +338,7 @@ namespace Kzrnm.Competitive
             return hash.ToHashCode();
         }
 
-        public struct Operator : IArithmeticOperator<Matrix4x4<T, TOp>>
+        public readonly struct Operator : IArithmeticOperator<Matrix4x4<T, TOp>>
         {
             public Matrix4x4<T, TOp> MultiplyIdentity => MultiplicativeIdentity;
 

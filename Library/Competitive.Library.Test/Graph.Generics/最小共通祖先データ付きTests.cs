@@ -5,7 +5,7 @@ namespace Kzrnm.Competitive.Testing.Graph
 {
     public class 最小共通祖先データ付きTests
     {
-        struct TOp : ISegtreeOperator<int>
+        readonly struct TOp : ISegtreeOperator<int>
         {
             public int Identity => 0;
             public int Operate(int x, int y) => x + y;

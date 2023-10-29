@@ -10,6 +10,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
     /// <typeparam name="TOp">モノイドの操作</typeparam>
     /// <typeparam name="Node">ノード</typeparam>
     /// <typeparam name="TImpl">ノードのMerge, Split</typeparam>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
     public struct LazyBinarySearchTreeNodeOperator<T, F, TOp, Node, TImpl>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
         where Node : ILazyBbstNode<T, F, Node>

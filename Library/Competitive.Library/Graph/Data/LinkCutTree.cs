@@ -333,7 +333,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public Node MakeNode(int idx) => new Node(idx, null);
     }
-    public struct NullOperator : ILinkCutTreeOperator<object, object>
+    public readonly struct NullOperator : ILinkCutTreeOperator<object, object>
     {
         public object Identity => null;
         public object FIdentity => null;

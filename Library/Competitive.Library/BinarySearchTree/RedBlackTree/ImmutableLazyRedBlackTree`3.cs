@@ -140,6 +140,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
         public struct TCp : ICopyOperator<LazyRedBlackTreeNode<T, F>>
         {
             [凾(256)]

@@ -458,7 +458,7 @@ namespace Kzrnm.Competitive
         public static bool operator ==(ArrayMatrix<T, TOp> left, ArrayMatrix<T, TOp> right) => left.Equals(right);
         [凾(256)]
         public static bool operator !=(ArrayMatrix<T, TOp> left, ArrayMatrix<T, TOp> right) => !(left == right);
-        public struct Operator : IArithmeticOperator<ArrayMatrix<T, TOp>>
+        public readonly struct Operator : IArithmeticOperator<ArrayMatrix<T, TOp>>
         {
             public ArrayMatrix<T, TOp> MultiplyIdentity => Identity;
 

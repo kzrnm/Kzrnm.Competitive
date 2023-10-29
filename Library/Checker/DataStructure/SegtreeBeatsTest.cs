@@ -69,7 +69,7 @@ namespace Kzrnm.Competitive.DataStructure
             public static F Add(long num) => new F { min = long.MaxValue >> 2, max = long.MinValue >> 2, sum = num };
         }
 
-        struct Op : ISegtreeBeatsOperator<S, F>
+        readonly struct Op : ISegtreeBeatsOperator<S, F>
         {
             public S Identity => new S
             {
@@ -99,7 +99,7 @@ namespace Kzrnm.Competitive.DataStructure
             };
 
             [MethodImpl(256)]
-            long Min2(long v1, long v2, long v3, long v4)
+            static long Min2(long v1, long v2, long v3, long v4)
             {
                 if (v1 == v3) return Min(v2, v4);
                 if (v1 < v3) return Min(v2, v3);
@@ -107,7 +107,7 @@ namespace Kzrnm.Competitive.DataStructure
             }
 
             [MethodImpl(256)]
-            long Max2(long v1, long v2, long v3, long v4)
+            static long Max2(long v1, long v2, long v3, long v4)
             {
                 if (v1 == v3) return Max(v2, v4);
                 if (v1 > v3) return Max(v2, v3);

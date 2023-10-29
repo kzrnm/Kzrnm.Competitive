@@ -17,7 +17,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 seg.ToArray().Should().Equal(Enumerable.Range(0, i));
             }
         }
-        struct Op : ISegtreeOperator<int>
+        readonly struct Op : ISegtreeOperator<int>
         {
             public int Identity => 0;
             public int Operate(int x, int y) => Math.Max(x, y);

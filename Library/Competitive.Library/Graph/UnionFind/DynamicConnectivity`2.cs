@@ -496,14 +496,14 @@ namespace Kzrnm.Competitive
         struct UpdateEdgeStatus
         {
             public EulerianTourTree etti1;
-            public bool Link(int s, int t) => etti1.Link(s, t);
+            public readonly bool Link(int s, int t) => etti1.Link(s, t);
         }
         struct ReconnectStatus
         {
             public List<EulerianTourTree> ett;
             public List<HashSet<int>[]> edges;
             public int index;
-            public bool F(int x)
+            public readonly bool F(int x)
             {
                 var etti = ett[index];
                 var etti1 = ett[index + 1];

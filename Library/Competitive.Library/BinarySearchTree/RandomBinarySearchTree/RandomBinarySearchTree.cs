@@ -107,7 +107,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public struct TCp : ICopyOperator<RandomBinarySearchTreeNode<T>>
+        public readonly struct TCp : ICopyOperator<RandomBinarySearchTreeNode<T>>
         {
             [凾(256)]
             public RandomBinarySearchTreeNode<T> Copy(RandomBinarySearchTreeNode<T> t) => t;

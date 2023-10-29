@@ -66,6 +66,8 @@ namespace Kzrnm.Competitive
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         static T2 ThrowInvalidOperation<T2>() => throw new InvalidOperationException("This operation does not apply to an empty instance.");
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
         public struct Enumerator : IEnumerator<T>
         {
             public T Current { get; private set; }

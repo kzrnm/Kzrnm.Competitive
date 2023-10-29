@@ -42,7 +42,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 this.cnt = cnt;
                 maxCnt = cnt;
             }
-            public override string ToString() => $"max: {max}, max2: {max2}, sum: {sum}, cnt: {cnt}, maxCnt: {maxCnt}";
+            public override readonly string ToString() => $"max: {max}, max2: {max2}, sum: {sum}, cnt: {cnt}, maxCnt: {maxCnt}";
         }
 
         struct Op : ISegtreeBeatsOperator<S, long>
@@ -53,7 +53,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 max2 = long.MinValue >> 2,
             };
 
-            public long FIdentity => long.MinValue >> 2;
+            public readonly long FIdentity => long.MinValue >> 2;
 
             public S Operate(S x, S y) => new()
             {
@@ -64,7 +64,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 maxCnt = x.max == y.max ? x.maxCnt + y.maxCnt : x.max > y.max ? x.maxCnt : y.maxCnt,
             };
 
-            long Max2(long v1, long v2, long v3, long v4)
+            readonly long Max2(long v1, long v2, long v3, long v4)
             {
                 if (v1 == v3) return Max(v2, v4);
                 if (v1 > v3) return Max(v2, v3);
@@ -97,7 +97,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 res = x;
                 return false;
             }
-            public long Composition(long nf, long cf) => Max(nf, cf);
+            public readonly long Composition(long nf, long cf) => Max(nf, cf);
         }
     }
 }

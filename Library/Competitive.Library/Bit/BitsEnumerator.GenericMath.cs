@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
     public struct BitsEnumerator<T> : IEnumerable<int>, IEnumerator<int> where T : IBinaryInteger<T>
     {
         T num;
@@ -23,6 +24,7 @@ namespace Kzrnm.Competitive
             num >>>= l; num >>>= 1;
             return true;
         }
+
         object IEnumerator.Current => Current;
         public int[] ToArray()
         {
@@ -35,7 +37,9 @@ namespace Kzrnm.Competitive
             return res;
         }
         void IEnumerator.Reset() => throw new NotSupportedException();
+
         void IDisposable.Dispose() { }
+
         IEnumerator<int> IEnumerable<int>.GetEnumerator() => this;
         IEnumerator IEnumerable.GetEnumerator() => this;
     }

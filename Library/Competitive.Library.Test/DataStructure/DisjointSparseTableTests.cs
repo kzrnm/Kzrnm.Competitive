@@ -53,7 +53,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             }
         }
 
-        struct MinOp : ISparseTableOperator<short>
+        readonly struct MinOp : ISparseTableOperator<short>
         {
             public short Operate(short x, short y) => Math.Min(x, y);
         }
@@ -102,7 +102,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         }
         struct SumOp : ISparseTableOperator<uint>
         {
-            public uint Operate(uint x, uint y) => x + y;
+            public readonly uint Operate(uint x, uint y) => x + y;
         }
     }
 }

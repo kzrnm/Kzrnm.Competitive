@@ -43,7 +43,7 @@ namespace Kzrnm.Competitive.Graph
             }
             return null;
         }
-        struct Op : ISegtreeOperator<long>
+        readonly struct Op : ISegtreeOperator<long>
         {
             [MethodImpl(256)]
             public long Operate(long x, long y) => x + y;

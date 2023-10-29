@@ -38,7 +38,7 @@ namespace Kzrnm.Competitive
         /// <typeparam name="F">作用素</typeparam>
         /// <typeparam name="TOp">モノイドの操作</typeparam>
 #pragma warning disable IDE0250
-        public struct LazyRandomBinarySearchTreeNodeOperator<T, F, TOp> : ILazyBbstImplOperator<T, LazyRandomBinarySearchTreeNode<T, F>>
+        public readonly struct LazyRandomBinarySearchTreeNodeOperator<T, F, TOp> : ILazyBbstImplOperator<T, LazyRandomBinarySearchTreeNode<T, F>>
             where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
         {
 #pragma warning restore IDE0250
@@ -182,9 +182,10 @@ namespace Kzrnm.Competitive
             public LazyRandomBinarySearchTreeEnumerator<T, F, TOp, LazyRandomBinarySearchTreeNodeOperator<T, F, TOp>> GetEnumerator(LazyRandomBinarySearchTreeNode<T, F> t)
                 => new LazyRandomBinarySearchTreeEnumerator<T, F, TOp, LazyRandomBinarySearchTreeNodeOperator<T, F, TOp>>(t);
         }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
         public struct LazyRandomBinarySearchTreeEnumerator<T, F, TOp, TRb> : IEnumerator<T>
-            where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
-            where TRb : struct, ILazyBbstImplOperator<T, LazyRandomBinarySearchTreeNode<T, F>>
+                where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
+                where TRb : struct, ILazyBbstImplOperator<T, LazyRandomBinarySearchTreeNode<T, F>>
         {
             static TRb rb => default;
             T cur;
@@ -208,6 +209,7 @@ namespace Kzrnm.Competitive
             }
 
             public T Current => cur;
+
             object IEnumerator.Current => cur;
 
             public bool MoveNext()

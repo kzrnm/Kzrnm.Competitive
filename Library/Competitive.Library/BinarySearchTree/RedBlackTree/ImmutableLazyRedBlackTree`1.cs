@@ -130,6 +130,7 @@ namespace Kzrnm.Competitive
         ImmutableLazyRedBlackTree<T> IImmutableLazyBinarySearchTree<T, T, ImmutableLazyRedBlackTree<T>>.Apply(int l, int r, T f) { throw new NotSupportedException(); }
         T IImmutableBinarySearchTree<T, ImmutableLazyRedBlackTree<T>>.Prod(int l, int r) { throw new NotSupportedException(); }
         T IImmutableBinarySearchTree<T, ImmutableLazyRedBlackTree<T>>.Slice(int l, int length) { throw new NotSupportedException(); }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
         public struct TCp : ICopyOperator<LazyRedBlackTreeNode<T, T>>
         {
             [凾(256)]

@@ -172,12 +172,14 @@ namespace Kzrnm.Competitive
         /// </summary>
         public LongMaxConvexHullTrick(long[] xs, long xinf, long yinf) : base(xs, xinf, yinf) { }
     }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
     public struct MinConvexHullTrickOperator<T> : IConvexHullTrickOperator<T>
         where T : IComparable<T>
     {
         [凾(256)]
         public bool UseLeft(T left, T right) => left.CompareTo(right) < 0;
     }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
     public struct MaxConvexHullTrickOperator<T> : IConvexHullTrickOperator<T>
         where T : IComparable<T>
     {

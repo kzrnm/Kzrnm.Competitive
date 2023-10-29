@@ -139,8 +139,9 @@ namespace Kzrnm.Competitive
             public RandomBinarySearchTreeEnumerator<T, TOp> GetEnumerator(RandomBinarySearchTreeNode<T> t)
                 => new RandomBinarySearchTreeEnumerator<T, TOp>(t);
         }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
         public struct RandomBinarySearchTreeEnumerator<T, TOp> : IEnumerator<T>
-            where TOp : struct, ISegtreeOperator<T>
+                where TOp : struct, ISegtreeOperator<T>
         {
             T cur;
             Stack<RandomBinarySearchTreeNode<T>> stack;
@@ -162,6 +163,7 @@ namespace Kzrnm.Competitive
             }
 
             public T Current => cur;
+
             object IEnumerator.Current => cur;
 
             public bool MoveNext()

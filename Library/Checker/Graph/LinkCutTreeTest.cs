@@ -49,7 +49,7 @@ namespace Kzrnm.Competitive.Graph
             return null;
         }
 
-        struct Op : ILinkCutTreeOperator<long, long>
+        readonly struct Op : ILinkCutTreeOperator<long, long>
         {
             [MethodImpl(256)]
             public long Operate(long x, long y) => x + y;

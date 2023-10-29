@@ -118,7 +118,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public struct TCp : ICopyOperator<RedBlackTreeNode<T>>
+        public readonly struct TCp : ICopyOperator<RedBlackTreeNode<T>>
         {
             [凾(256)]
             public RedBlackTreeNode<T> Copy(RedBlackTreeNode<T> t) => new RedBlackTreeNode<T>(t.Key)

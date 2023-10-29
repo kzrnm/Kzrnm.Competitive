@@ -15,6 +15,7 @@ namespace Kzrnm.Competitive
         /// A memory allocation-free enumerator of <see cref="RealTimeQueue{T}"/>.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
         public struct Enumerator
         {
             /// <summary>

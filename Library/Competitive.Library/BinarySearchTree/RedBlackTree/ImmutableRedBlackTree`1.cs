@@ -120,7 +120,7 @@ namespace Kzrnm.Competitive
         T IImmutableBinarySearchTree<T, ImmutableRedBlackTree<T>>.Prod(int l, int r) { throw new NotSupportedException(); }
         T IImmutableBinarySearchTree<T, ImmutableRedBlackTree<T>>.Slice(int l, int length) { throw new NotSupportedException(); }
 
-        public struct TCp : ICopyOperator<RedBlackTreeNode<T>>
+        public readonly struct TCp : ICopyOperator<RedBlackTreeNode<T>>
         {
             [凾(256)]
             public RedBlackTreeNode<T> Copy(RedBlackTreeNode<T> t) => new RedBlackTreeNode<T>(t.Key)

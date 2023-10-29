@@ -95,7 +95,7 @@ namespace Kzrnm.Competitive
                 Edges = result.ToArray()
             };
         }
-        struct HOp<T> : ISkewHeapOperator<T, T>
+        readonly struct HOp<T> : ISkewHeapOperator<T, T>
             where T : IComparable<T>, IAdditionOperators<T, T, T>
         {
             public T FIdentity => default;

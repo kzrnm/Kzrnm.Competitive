@@ -201,7 +201,7 @@ namespace Kzrnm.Competitive
         {
             Trie<TKey, TValue> trie;
             readonly ReadOnlySpan<TKey> span;
-            public MatchEnumerator Current => this;
+            public readonly MatchEnumerator Current => this;
             int len;
             TValue value;
             public MatchEnumerator(Trie<TKey, TValue> trie, ReadOnlySpan<TKey> span)
@@ -231,8 +231,8 @@ namespace Kzrnm.Competitive
                 }
                 return ok;
             }
-            public MatchEnumerator GetEnumerator() => this;
-            public void Deconstruct(out ReadOnlySpan<TKey> key, out TValue value)
+            public readonly MatchEnumerator GetEnumerator() => this;
+            public readonly void Deconstruct(out ReadOnlySpan<TKey> key, out TValue value)
             {
                 key = span[..len];
                 value = this.value;

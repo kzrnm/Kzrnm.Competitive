@@ -124,7 +124,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static bool operator !=(Matrix2x2<T, TOp> left, Matrix2x2<T, TOp> right) => !(left == right);
 
-        public struct Operator : IArithmeticOperator<Matrix2x2<T, TOp>>
+        public readonly struct Operator : IArithmeticOperator<Matrix2x2<T, TOp>>
         {
             public Matrix2x2<T, TOp> MultiplyIdentity => MultiplicativeIdentity;
 

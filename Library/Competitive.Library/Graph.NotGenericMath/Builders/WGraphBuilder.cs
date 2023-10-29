@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive
 
         public WTreeGraph<T, TOp, WTreeNode<T, WEdge<T>>, WEdge<T>> ToTree(int root = 0)
             => GraphBuilderLogic.ToTree<WTreeGraph<T, TOp, WTreeNode<T, WEdge<T>>, WEdge<T>>, WTreeNode<T, WEdge<T>>, WEdge<T>, TBOp>(edgeContainer, root);
-        struct TBOp :
+        readonly struct TBOp :
             IGraphBuildOperator<WGraph<T, TOp, WGraphNode<T, WEdge<T>>, WEdge<T>>, WGraphNode<T, WEdge<T>>, WEdge<T>>,
             ITreeBuildOperator<WTreeGraph<T, TOp, WTreeNode<T, WEdge<T>>, WEdge<T>>, WTreeNode<T, WEdge<T>>, WEdge<T>>
         {

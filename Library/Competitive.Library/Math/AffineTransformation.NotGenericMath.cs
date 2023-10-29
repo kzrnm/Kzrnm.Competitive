@@ -55,7 +55,7 @@ namespace Kzrnm.Competitive
             => EqualityComparer<T>.Default.Equals(a, other.a) && EqualityComparer<T>.Default.Equals(b, other.b);
         public override int GetHashCode() => HashCode.Combine(a, b);
 
-        public struct Operator : IMultiplicationOperator<AffineTransformation<T, TOp>>
+        public readonly struct Operator : IMultiplicationOperator<AffineTransformation<T, TOp>>
         {
             public AffineTransformation<T, TOp> MultiplyIdentity => new AffineTransformation<T, TOp>(op.MultiplyIdentity, default);
 

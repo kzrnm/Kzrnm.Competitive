@@ -26,7 +26,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 return result;
             }
         }
-        struct Op : ILazySegtreeOperator<int, int>
+        readonly struct Op : ILazySegtreeOperator<int, int>
         {
             public int Identity => 0;
             public int FIdentity => 0;

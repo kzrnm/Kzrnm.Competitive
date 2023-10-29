@@ -428,7 +428,7 @@ namespace Kzrnm.Competitive
             var (x, _, y) = Split3(root, index, index + count);
             root = Merge(x, y);
         }
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
         public struct Enumerator : IEnumerator<T>
         {
             internal readonly SplayTree<T, TOp> tree;

@@ -10,7 +10,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
     /// <typeparam name="TOp">モノイドの操作</typeparam>
     /// <typeparam name="Node">ノード</typeparam>
     /// <typeparam name="TImpl">ノードのMerge, Split</typeparam>
-    public struct BinarySearchTreeNodeOperator<T, TOp, Node, TImpl>
+    public readonly struct BinarySearchTreeNodeOperator<T, TOp, Node, TImpl>
         where TOp : struct, ISegtreeOperator<T>
         where Node : IBbstNode<T, Node>
         where TImpl : struct, IBbstImplOperator<T, Node>

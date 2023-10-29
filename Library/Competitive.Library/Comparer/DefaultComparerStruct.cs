@@ -4,7 +4,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public struct DefaultComparerStruct<T> : IComparer<T> where T : IComparable<T>
+    public readonly struct DefaultComparerStruct<T> : IComparer<T> where T : IComparable<T>
     {
         public static DefaultComparerStruct<T> Default => default;
         [凾(256)]

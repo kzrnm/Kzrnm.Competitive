@@ -6,7 +6,7 @@ namespace Kzrnm.Competitive
 {
     public class PersistentSetDictionary<TKey, TValue> : PersistentSetBase<KeyValuePair<TKey, TValue>, TKey, PersistentSetDictionary<TKey, TValue>, PersistentSetDictionary<TKey, TValue>.PSOperator>
     {
-        public struct PSOperator : IPersistentSetNodeOperator<KeyValuePair<TKey, TValue>, TKey>, IPersistentSetOperator<KeyValuePair<TKey, TValue>, TKey, PersistentSetDictionary<TKey, TValue>, PSOperator>
+        public readonly struct PSOperator : IPersistentSetNodeOperator<KeyValuePair<TKey, TValue>, TKey>, IPersistentSetOperator<KeyValuePair<TKey, TValue>, TKey, PersistentSetDictionary<TKey, TValue>, PSOperator>
         {
             [凾(256)]
             public PersistentSetDictionary<TKey, TValue> Empty(bool isMulti, IComparer<TKey> comparer)

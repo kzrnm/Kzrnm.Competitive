@@ -18,7 +18,7 @@ namespace Kzrnm.Competitive
             => GraphBuilderLogic.ToGraph<SimpleGraph<GraphNode<GraphEdge<T>>, GraphEdge<T>>, GraphNode<GraphEdge<T>>, GraphEdge<T>, TOp>(edgeContainer);
         public TreeGraph<TreeNode<T>, GraphEdge<T>> ToTree(int root = 0)
             => GraphBuilderLogic.ToTree<TreeGraph<TreeNode<T>, GraphEdge<T>>, TreeNode<T>, GraphEdge<T>, TOp>(edgeContainer, root);
-        struct TOp :
+        readonly struct TOp :
             IGraphBuildOperator<SimpleGraph<GraphNode<GraphEdge<T>>, GraphEdge<T>>, GraphNode<GraphEdge<T>>, GraphEdge<T>>,
             ITreeBuildOperator<TreeGraph<TreeNode<T>, GraphEdge<T>>, TreeNode<T>, GraphEdge<T>>
         {

@@ -8,6 +8,6 @@ namespace Kzrnm.Competitive
            where T : struct, IStaticMod
     {
         [凾(256)]
-        public StaticModInt<T> Cast(int y) => new StaticModInt<T>(y);
+        public readonly StaticModInt<T> Cast(int y) => new StaticModInt<T>(y);
     }
 }

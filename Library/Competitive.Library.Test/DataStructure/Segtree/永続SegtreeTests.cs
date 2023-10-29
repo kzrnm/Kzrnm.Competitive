@@ -98,7 +98,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             }
         }
 
-        struct MonoidOperator : ISegtreeOperator<string>
+        readonly struct MonoidOperator : ISegtreeOperator<string>
         {
             public string Identity => "$";
             public string Operate(string a, string b)

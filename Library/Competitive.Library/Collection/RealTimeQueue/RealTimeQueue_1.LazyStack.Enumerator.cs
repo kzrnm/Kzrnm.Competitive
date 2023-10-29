@@ -14,6 +14,7 @@ namespace Kzrnm.Competitive
         /// Enumerates a stack with no memory allocations.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Advanced)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
         internal struct LazyStackEnumerator
         {
             /// <summary>

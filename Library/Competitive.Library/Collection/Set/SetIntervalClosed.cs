@@ -352,7 +352,7 @@ namespace Kzrnm.Competitive
                 return 1;
             }
         }
-        public struct NodeOperator : ISetOperator<(T From, T ToInclusive), C<T>, Node>
+        public readonly struct NodeOperator : ISetOperator<(T From, T ToInclusive), C<T>, Node>
         {
             [凾(256)]
             public Node Create((T From, T ToInclusive) item, NodeColor color) => new Node(item.From, item.ToInclusive, color);

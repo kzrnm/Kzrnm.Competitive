@@ -239,7 +239,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 {true,true,true,true,true },
             });
         }
-        struct SolveOp : ISegtreeOperator<long>
+        readonly struct SolveOp : ISegtreeOperator<long>
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public long Operate(long x, long y) => x + y;

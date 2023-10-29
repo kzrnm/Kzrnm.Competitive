@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive.Graph.Generics
             if (dp.Length > 0) cw.WriteLines(dp);
             return null;
         }
-        struct Op : IRerootingOperator<bool, GraphEdge>
+        readonly struct Op : IRerootingOperator<bool, GraphEdge>
         {
             public bool Identity => default;
 

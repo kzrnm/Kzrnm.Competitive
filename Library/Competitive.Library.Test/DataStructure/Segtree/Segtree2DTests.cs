@@ -5,7 +5,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
 {
     public class Segtree2DTests
     {
-        struct S : ISegtreeOperator<long>
+        readonly struct S : ISegtreeOperator<long>
         {
             public long Identity => 0;
 

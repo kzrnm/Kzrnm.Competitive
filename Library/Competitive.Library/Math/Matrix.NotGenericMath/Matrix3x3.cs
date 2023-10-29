@@ -175,7 +175,7 @@ namespace Kzrnm.Competitive
             return hash.ToHashCode();
         }
 
-        public struct Operator : IArithmeticOperator<Matrix3x3<T, TOp>>
+        public readonly struct Operator : IArithmeticOperator<Matrix3x3<T, TOp>>
         {
             public Matrix3x3<T, TOp> MultiplyIdentity => MultiplicativeIdentity;
 

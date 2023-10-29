@@ -41,7 +41,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 for (int r = l; r <= arr.Length; r++)
                     sums[l..r].Should().Be(arr[l..r].Sum());
         }
-        struct Mod100 : IStaticMod
+        readonly struct Mod100 : IStaticMod
         {
             public uint Mod => 100;
             public bool IsPrime => false;
@@ -76,7 +76,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             sums[3..4].Should().Be((8, 17));
             sums[4..4].Should().Be((0, 0));
         }
-        struct Op : IAdditionOperator<(int x, int y)>, ISubtractOperator<(int x, int y)>
+        readonly struct Op : IAdditionOperator<(int x, int y)>, ISubtractOperator<(int x, int y)>
         {
             public (int x, int y) Add((int x, int y) x, (int x, int y) y) => (x.x + y.x, x.y + y.y);
             public (int x, int y) Subtract((int x, int y) x, (int x, int y) y) => (x.x - y.x, x.y - y.y);

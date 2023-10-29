@@ -61,7 +61,7 @@ namespace Kzrnm.Competitive
             for (int i = 0; i < tree.Length; i++) tree[i] = new T[W + 1];
         }
 
-        public ref struct Slicer
+        public readonly ref struct Slicer
         {
             readonly FenwickTree2D<T, TOp> fw;
             readonly int hFrom;

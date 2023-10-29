@@ -31,6 +31,7 @@ namespace Kzrnm.Competitive
     }
     namespace Internal
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
         public struct WaveletSumOp<T> : IWabeletSumOperator<T>
             where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>, IAdditiveIdentity<T, T>
         {

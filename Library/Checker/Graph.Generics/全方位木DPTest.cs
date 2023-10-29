@@ -19,7 +19,7 @@ namespace Kzrnm.Competitive.Graph.Generics
             return dp.Max(t => t.First + t.Second);
         }
 
-        struct Op : IRerootingOperator<(long First, long Second), WEdge<long>>
+        readonly struct Op : IRerootingOperator<(long First, long Second), WEdge<long>>
         {
             public (long First, long Second) Identity => (0, 0);
             [MethodImpl(256)]

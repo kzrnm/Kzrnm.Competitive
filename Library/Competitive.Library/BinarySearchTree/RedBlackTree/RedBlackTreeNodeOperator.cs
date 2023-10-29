@@ -52,7 +52,7 @@ namespace Kzrnm.Competitive
         /// <typeparam name="T">モノイド</typeparam>
         /// <typeparam name="TOp">モノイドの操作</typeparam>
         /// <typeparam name="TCp">コピー操作の実装</typeparam>
-        public struct RedBlackTreeNodeOperator<T, TOp, TCp> : IBbstImplOperator<T, RedBlackTreeNode<T>>
+        public readonly struct RedBlackTreeNodeOperator<T, TOp, TCp> : IBbstImplOperator<T, RedBlackTreeNode<T>>
             where TOp : struct, ISegtreeOperator<T>
             where TCp : struct, ICopyOperator<RedBlackTreeNode<T>>
         {
@@ -215,8 +215,9 @@ namespace Kzrnm.Competitive
             public RedBlackTreeEnumerator<T, TOp> GetEnumerator(RedBlackTreeNode<T> t)
                 => new RedBlackTreeEnumerator<T, TOp>(t);
         }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
         public struct RedBlackTreeEnumerator<T, TOp> : IEnumerator<T>
-            where TOp : struct, ISegtreeOperator<T>
+        where TOp : struct, ISegtreeOperator<T>
         {
             T cur;
             Stack<RedBlackTreeNode<T>> stack;
@@ -229,6 +230,7 @@ namespace Kzrnm.Competitive
             }
 
             public T Current => cur;
+
             object IEnumerator.Current => cur;
 
             public bool MoveNext()

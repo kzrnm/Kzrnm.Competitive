@@ -55,6 +55,7 @@ namespace Kzrnm.Competitive
         /// <typeparam name="F">作用素</typeparam>
         /// <typeparam name="TOp">モノイドの操作</typeparam>
         /// <typeparam name="TCp">コピー操作の実装</typeparam>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
         public struct LazyRedBlackTreeNodeOperator<T, F, TOp, TCp> : ILazyBbstImplOperator<T, LazyRedBlackTreeNode<T, F>>
             where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
             where TCp : struct, ICopyOperator<LazyRedBlackTreeNode<T, F>>
@@ -266,6 +267,7 @@ namespace Kzrnm.Competitive
             public LazyRedBlackTreeEnumerator<T, F, TOp, LazyRedBlackTreeNodeOperator<T, F, TOp, TCp>> GetEnumerator(LazyRedBlackTreeNode<T, F> t)
                 => new LazyRedBlackTreeEnumerator<T, F, TOp, LazyRedBlackTreeNodeOperator<T, F, TOp, TCp>>(t);
         }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
         public struct LazyRedBlackTreeEnumerator<T, F, TOp, TRb> : IEnumerator<T>
             where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
             where TRb : struct, ILazyBbstImplOperator<T, LazyRedBlackTreeNode<T, F>>

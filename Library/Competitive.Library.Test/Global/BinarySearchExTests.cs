@@ -5,16 +5,16 @@ namespace Kzrnm.Competitive.Testing.GlobalNS
 {
     public class BinarySearchExTests
     {
-        private struct DelegateOk<T> : IOk<T>
+        private readonly struct DelegateOk<T> : IOk<T>
         {
-            private Predicate<T> predicate;
+            private readonly Predicate<T> predicate;
             public bool Ok(T value) => predicate(value);
             public DelegateOk(Predicate<T> predicate)
             {
                 this.predicate = predicate;
             }
         }
-        private struct IntLower : IOk<int>
+        private readonly struct IntLower : IOk<int>
         {
             public bool Ok(int value) => value < 0;
         }
@@ -34,7 +34,7 @@ namespace Kzrnm.Competitive.Testing.GlobalNS
             new DelegateOk<int>(num => num > -19).BinarySearch(1000, -1000000000).Should().Be(-18);
         }
 
-        private struct LongLower : IOk<long>
+        private readonly struct LongLower : IOk<long>
         {
             public bool Ok(long value) => value < 0;
         }
@@ -54,7 +54,7 @@ namespace Kzrnm.Competitive.Testing.GlobalNS
             new DelegateOk<long>(num => num > -19).BinarySearch(1000, -1000000000).Should().Be(-18);
         }
 
-        private struct ULongLower : IOk<ulong>
+        private readonly struct ULongLower : IOk<ulong>
         {
             public bool Ok(ulong value) => value < 10;
         }
@@ -72,7 +72,7 @@ namespace Kzrnm.Competitive.Testing.GlobalNS
             new DelegateOk<ulong>(num => num == ulong.MaxValue).BinarySearch(ulong.MaxValue, 0).Should().Be(ulong.MaxValue);
         }
 
-        private struct BigLower : IOk<BigInteger>
+        private readonly struct BigLower : IOk<BigInteger>
         {
             private static readonly BigInteger INF = new BigInteger(1) << 1000;
             public bool Ok(BigInteger value) => value < INF;
@@ -99,7 +99,7 @@ namespace Kzrnm.Competitive.Testing.GlobalNS
             __BinarySearchEx.BinarySearchBig(new BigInteger(1) << 10, new DelegateOk<BigInteger>(num => num < new BigInteger(1) << 1000)).Should().Be(BigInteger.Pow(2, 1000) - 1);
         }
 
-        private struct DoubleLower : IOk<double>
+        private readonly struct DoubleLower : IOk<double>
         {
             public bool Ok(double value) => value < 0;
         }
@@ -124,9 +124,10 @@ namespace Kzrnm.Competitive.Testing.GlobalNS
 
 
 #pragma warning disable CS0649
-        private struct FloatFull : IBinaryOk<float>
+        private readonly struct FloatFull : IBinaryOk<float>
         {
-            public float th;
+            public FloatFull(float value) { th = value; }
+            public readonly float th;
             public bool Continue(float ok, float ng) => Math.Abs(ok - ng) > 50;
             public float Mid(float ok, float ng) => (ok + ng) / 2;
 
