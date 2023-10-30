@@ -10,8 +10,8 @@ namespace Kzrnm.Competitive
         {
             IsReverse = isReverse;
         }
-        public static readonly ArrayComparer<T> Default = new ArrayComparer<T>(false);
-        public static readonly ArrayComparer<T> Reverse = new ArrayComparer<T>(true);
+        public static ArrayComparer<T> Default => new ArrayComparer<T>(false);
+        public static ArrayComparer<T> Reverse => new ArrayComparer<T>(true);
         public int Compare(T[] x, T[] y)
         {
             if (IsReverse)
