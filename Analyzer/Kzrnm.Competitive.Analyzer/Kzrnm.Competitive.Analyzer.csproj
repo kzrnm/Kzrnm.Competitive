@@ -6,9 +6,18 @@
     <PackageTags>competitive programming;ac-library-csharp;AtCoder;Analyzer</PackageTags>
     <Description>Analyzer for competitive programming</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);CS1998</NoWarn>
 
     <Version>1.0.0</Version>
+
+    <PackageId>Kzrnm.Competitive.Analyzer</PackageId>
+    <Authors>kzrnm</Authors>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryCommit Condition="'$(GIT_COMMIT)' != ''">$(GIT_COMMIT)</RepositoryCommit>
+    <PackageProjectUrl>https://github.com/kzrnm/Kzrnm.Competitive</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/kzrnm/Kzrnm.Competitive</RepositoryUrl>
+
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <IsRoslynComponent>true</IsRoslynComponent>
     <IncludeBuildOutput>false</IncludeBuildOutput>
