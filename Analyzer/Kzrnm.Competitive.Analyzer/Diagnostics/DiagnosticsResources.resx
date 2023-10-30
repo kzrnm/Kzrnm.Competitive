@@ -127,39 +127,15 @@
     <value>32 bit number shift expression is assigned to 64 bit number</value>
   </data>
   <data name="KZCOMPETITIVE0003_MessageFormat" xml:space="preserve">
-    <value>Not defined IStaticMod: '{0}'</value>
-  </data>
-  <data name="KZCOMPETITIVE0003_Title" xml:space="preserve">
-    <value>Not defined IStaticMod</value>
-  </data>
-  <data name="KZCOMPETITIVE0004_MessageFormat" xml:space="preserve">
-    <value>Not defined IDynamicModID: '{0}'</value>
-  </data>
-  <data name="KZCOMPETITIVE0004_Title" xml:space="preserve">
-    <value>Not defined IDynamicModID</value>
-  </data>
-  <data name="KZCOMPETITIVE0005_MessageFormat" xml:space="preserve">
-    <value>Not defined ISegtreeOperator&lt;T&gt;: '{0}'</value>
-  </data>
-  <data name="KZCOMPETITIVE0005_Title" xml:space="preserve">
-    <value>Not defined ISegtreeOperator&lt;T&gt;</value>
-  </data>
-  <data name="KZCOMPETITIVE0006_MessageFormat" xml:space="preserve">
-    <value>Not defined ILazySegtreeOperator&lt;T, F&gt;: '{0}'</value>
-  </data>
-  <data name="KZCOMPETITIVE0006_Title" xml:space="preserve">
-    <value>Not defined ILazySegtreeOperator&lt;T, F&gt;</value>
-  </data>
-  <data name="KZCOMPETITIVE0007_MessageFormat" xml:space="preserve">
     <value>Operator method '{0}' doesn't have MethodImpl attribute</value>
   </data>
-  <data name="KZCOMPETITIVE0007_Title" xml:space="preserve">
+  <data name="KZCOMPETITIVE0003_Title" xml:space="preserve">
     <value>Operator method doesn't have MethodImpl attribute</value>
   </data>
-  <data name="KZCOMPETITIVE0008_MessageFormat" xml:space="preserve">
+  <data name="KZCOMPETITIVE0004_MessageFormat" xml:space="preserve">
     <value>Not defined operator type: '{0}'</value>
   </data>
-  <data name="KZCOMPETITIVE0008_Title" xml:space="preserve">
+  <data name="KZCOMPETITIVE0004_Title" xml:space="preserve">
     <value>Not defined operator type</value>
   </data>
 </root>

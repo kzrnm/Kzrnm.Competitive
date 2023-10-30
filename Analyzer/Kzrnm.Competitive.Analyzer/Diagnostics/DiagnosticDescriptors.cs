@@ -52,39 +52,40 @@ public static class DiagnosticDescriptors
         isEnabledByDefault: true
         );
 
-    //public static Diagnostic KZCOMPETITIVE0007_AgressiveInlining(Location location, IEnumerable<string> methods)
-    //    => Diagnostic.Create(KZCOMPETITIVE0007_AgressiveInlining_Descriptor, location, string.Join(", ", methods));
+    public static Diagnostic KZCOMPETITIVE0003_AgressiveInlining(Location location, IEnumerable<string> methods)
+        => Diagnostic.Create(KZCOMPETITIVE0003_AgressiveInlining_Descriptor, location, string.Join(", ", methods));
 
-    //public static readonly DiagnosticDescriptor KZCOMPETITIVE0007_AgressiveInlining_Descriptor = new(
-    //    "KZCOMPETITIVE0007",
-    //    new LocalizableResourceString(
-    //        nameof(DiagnosticsResources.KZCOMPETITIVE0007_Title),
-    //        DiagnosticsResources.ResourceManager,
-    //        typeof(DiagnosticsResources)),
-    //    new LocalizableResourceString(
-    //        nameof(DiagnosticsResources.KZCOMPETITIVE0007_MessageFormat),
-    //        DiagnosticsResources.ResourceManager,
-    //        typeof(DiagnosticsResources)),
-    //    "Type Define",
-    //    DiagnosticSeverity.Info,
-    //    isEnabledByDefault: true
-    //    );
+    public static readonly DiagnosticDescriptor KZCOMPETITIVE0003_AgressiveInlining_Descriptor = new(
+        "KZCOMPETITIVE0003",
+        new LocalizableResourceString(
+            nameof(DiagnosticsResources.KZCOMPETITIVE0003_Title),
+            DiagnosticsResources.ResourceManager,
+            typeof(DiagnosticsResources)),
+        new LocalizableResourceString(
+            nameof(DiagnosticsResources.KZCOMPETITIVE0003_MessageFormat),
+            DiagnosticsResources.ResourceManager,
+            typeof(DiagnosticsResources)),
+        "Type Define",
+        DiagnosticSeverity.Info,
+        isEnabledByDefault: true
+        );
 
-    //public static Diagnostic KZCOMPETITIVE0008_DefineOperatorType(Location location, IEnumerable<string> types)
-    //    => Diagnostic.Create(KZCOMPETITIVE0008_DefineOperatorType_Descriptor, location, string.Join(", ", types));
-    //public static readonly DiagnosticDescriptor KZCOMPETITIVE0008_DefineOperatorType_Descriptor = new(
-    //    "KZCOMPETITIVE0008",
-    //    new LocalizableResourceString(
-    //        nameof(DiagnosticsResources.KZCOMPETITIVE0008_Title),
-    //        DiagnosticsResources.ResourceManager,
-    //        typeof(DiagnosticsResources)),
-    //    new LocalizableResourceString(
-    //        nameof(DiagnosticsResources.KZCOMPETITIVE0008_MessageFormat),
-    //        DiagnosticsResources.ResourceManager,
-    //        typeof(DiagnosticsResources)),
-    //    "Type Define",
-    //    DiagnosticSeverity.Error,
-    //    isEnabledByDefault: true
-    //    );
+    public static Diagnostic KZCOMPETITIVE0004_DefineOperatorType(Location location, IEnumerable<string> types)
+        => Diagnostic.Create(KZCOMPETITIVE0004_DefineOperatorType_Descriptor, location, string.Join(", ", types));
+    public static readonly DiagnosticDescriptor KZCOMPETITIVE0004_DefineOperatorType_Descriptor = new(
+        "KZCOMPETITIVE0004",
+        new LocalizableResourceString(
+            nameof(DiagnosticsResources.KZCOMPETITIVE0004_Title),
+            DiagnosticsResources.ResourceManager,
+            typeof(DiagnosticsResources)),
+        new LocalizableResourceString(
+            nameof(DiagnosticsResources.KZCOMPETITIVE0004_MessageFormat),
+            DiagnosticsResources.ResourceManager,
+            typeof(DiagnosticsResources)),
+        "Type Define",
+        DiagnosticSeverity.Error,
+
+        isEnabledByDefault: true
+        );
 }
 

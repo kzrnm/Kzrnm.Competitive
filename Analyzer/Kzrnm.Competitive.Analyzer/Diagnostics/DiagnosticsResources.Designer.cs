@@ -88,7 +88,7 @@ namespace Kzrnm.Competitive.Analyzer.Diagnostics {
         }
         
         /// <summary>
-        ///   Not defined IStaticMod: &apos;{0}&apos; に類似しているローカライズされた文字列を検索します。
+        ///   Operator method &apos;{0}&apos; doesn&apos;t have MethodImpl attribute に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string KZCOMPETITIVE0003_MessageFormat {
             get {
@@ -97,7 +97,7 @@ namespace Kzrnm.Competitive.Analyzer.Diagnostics {
         }
         
         /// <summary>
-        ///   Not defined IStaticMod に類似しているローカライズされた文字列を検索します。
+        ///   Operator method doesn&apos;t have MethodImpl attribute に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string KZCOMPETITIVE0003_Title {
             get {
@@ -106,7 +106,7 @@ namespace Kzrnm.Competitive.Analyzer.Diagnostics {
         }
         
         /// <summary>
-        ///   Not defined IDynamicModID: &apos;{0}&apos; に類似しているローカライズされた文字列を検索します。
+        ///   Not defined operator type: &apos;{0}&apos; に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string KZCOMPETITIVE0004_MessageFormat {
             get {
@@ -115,83 +115,11 @@ namespace Kzrnm.Competitive.Analyzer.Diagnostics {
         }
         
         /// <summary>
-        ///   Not defined IDynamicModID に類似しているローカライズされた文字列を検索します。
+        ///   Not defined operator type に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string KZCOMPETITIVE0004_Title {
             get {
                 return ResourceManager.GetString("KZCOMPETITIVE0004_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Not defined ISegtreeOperator&lt;T&gt;: &apos;{0}&apos; に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string KZCOMPETITIVE0005_MessageFormat {
-            get {
-                return ResourceManager.GetString("KZCOMPETITIVE0005_MessageFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Not defined ISegtreeOperator&lt;T&gt; に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string KZCOMPETITIVE0005_Title {
-            get {
-                return ResourceManager.GetString("KZCOMPETITIVE0005_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Not defined ILazySegtreeOperator&lt;T, F&gt;: &apos;{0}&apos; に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string KZCOMPETITIVE0006_MessageFormat {
-            get {
-                return ResourceManager.GetString("KZCOMPETITIVE0006_MessageFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Not defined ILazySegtreeOperator&lt;T, F&gt; に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string KZCOMPETITIVE0006_Title {
-            get {
-                return ResourceManager.GetString("KZCOMPETITIVE0006_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Operator method &apos;{0}&apos; doesn&apos;t have MethodImpl attribute に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string KZCOMPETITIVE0007_MessageFormat {
-            get {
-                return ResourceManager.GetString("KZCOMPETITIVE0007_MessageFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Operator method doesn&apos;t have MethodImpl attribute に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string KZCOMPETITIVE0007_Title {
-            get {
-                return ResourceManager.GetString("KZCOMPETITIVE0007_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Not defined operator type: &apos;{0}&apos; に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string KZCOMPETITIVE0008_MessageFormat {
-            get {
-                return ResourceManager.GetString("KZCOMPETITIVE0008_MessageFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Not defined operator type に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string KZCOMPETITIVE0008_Title {
-            get {
-                return ResourceManager.GetString("KZCOMPETITIVE0008_Title", resourceCulture);
             }
         }
     }
