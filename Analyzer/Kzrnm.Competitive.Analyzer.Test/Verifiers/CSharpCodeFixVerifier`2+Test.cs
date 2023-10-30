@@ -8,7 +8,7 @@ namespace Kzrnm.Competitive.Analyzer.Test
 {
     public static partial class CSharpCodeFixVerifier<TAnalyzer, TCodeFix>
         where TAnalyzer : DiagnosticAnalyzer, new()
-        where TCodeFix : CodeFixProvider, new()
+        where TCodeFix : Microsoft.CodeAnalysis.CodeFixes.CodeFixProvider, new()
     {
         public class Test : CSharpCodeFixTest<TAnalyzer, TCodeFix, XUnitVerifier>
         {

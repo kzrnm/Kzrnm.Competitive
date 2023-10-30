@@ -543,7 +543,7 @@ struct Op : ILazySegtreeOperator<long, int>
                 {
                     ("/.editorconfig", @"
 is_global = true
-build_property.AtCoderAnalyzer_UseMethodImplNumeric = true
+build_property.CompetitiveAnalyzer_UseMethodImplNumeric = true
 "),
                 },
             },

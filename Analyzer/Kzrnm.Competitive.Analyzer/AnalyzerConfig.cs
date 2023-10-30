@@ -7,7 +7,7 @@ public record AnalyzerConfig(bool UseMethodImplNumeric)
 {
     public static AnalyzerConfig Parse(AnalyzerConfigOptions analyzerConfigOptions)
     {
-        var useMethodImplNumeric = analyzerConfigOptions.TryGetValue("build_property.AtCoderAnalyzer_UseMethodImplNumeric", out var v) &&
+        var useMethodImplNumeric = analyzerConfigOptions.TryGetValue("build_property.CompetitiveAnalyzer_UseMethodImplNumeric", out var v) &&
             StringComparer.OrdinalIgnoreCase.Equals(v, "true");
 
         return new(

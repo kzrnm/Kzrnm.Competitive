@@ -84,7 +84,6 @@ public static class DiagnosticDescriptors
             typeof(DiagnosticsResources)),
         "Type Define",
         DiagnosticSeverity.Error,
-
         isEnabledByDefault: true
         );
 }

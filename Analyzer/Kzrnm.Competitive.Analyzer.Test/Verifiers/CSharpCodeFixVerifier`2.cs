@@ -9,7 +9,7 @@ namespace Kzrnm.Competitive.Analyzer.Test
 {
     public static partial class CSharpCodeFixVerifier<TAnalyzer, TCodeFix>
         where TAnalyzer : DiagnosticAnalyzer, new()
-        where TCodeFix : CodeFixProvider, new()
+        where TCodeFix : Microsoft.CodeAnalysis.CodeFixes.CodeFixProvider, new()
     {
         /// <inheritdoc cref="CodeFixVerifier{TAnalyzer, TCodeFix, TTest, TVerifier}.Diagnostic()"/>
         public static DiagnosticResult Diagnostic()
