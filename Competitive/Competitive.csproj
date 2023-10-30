@@ -23,11 +23,11 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <CompilerVisibleProperty Include="AtCoderAnalyzer_UseMethodImplNumeric" />
+    <CompilerVisibleProperty Include="CompetitiveAnalyzer_UseMethodImplNumeric" />
     <CompilerVisibleProperty Include="SourceExpander_Generator_IgnoreAssemblies" />
   </ItemGroup>
   <PropertyGroup>
-    <AtCoderAnalyzer_UseMethodImplNumeric>True</AtCoderAnalyzer_UseMethodImplNumeric>
+    <CompetitiveAnalyzer_UseMethodImplNumeric>True</CompetitiveAnalyzer_UseMethodImplNumeric>
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' != 'Release'">
@@ -40,7 +40,7 @@
 
   <ItemGroup>
     <PackageReference Include="TextCopy" Version="6.2.1" />
-    <PackageReference Include="AtCoderAnalyzer" Version="3.2.0">
+    <PackageReference Include="Kzrnm.Competitive.Analyzer" Version="1.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
