@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Kzrnm.Competitive.Analyzer": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\Kzrnm.Competitive.Analyzer.Example\\Kzrnm.Competitive.Analyzer.Example.csproj"
+    }
+  }
+}
