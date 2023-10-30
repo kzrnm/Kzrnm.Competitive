@@ -32,22 +32,26 @@ namespace Kzrnm.Competitive
     }
     namespace Internal
     {
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
-        public struct WaveletFwOp<T> : IWabeletSumOperator<T>
+        public readonly struct WaveletFwOp<T> : IWabeletSumOperator<T, WaveletFwOp<T>>
             where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>, IAdditiveIdentity<T, T>
         {
-            public FenwickTree<T> fw;
-            [凾(256)]
-            public void Init(T[] ts)
+            readonly FenwickTree<T> f;
+            public WaveletFwOp(FenwickTree<T> fw)
             {
-                fw = new FenwickTree<T>(ts.Length);
-                for (int i = 0; i < ts.Length; i++)
-                    fw.Add(i, ts[i]);
+                f = fw;
             }
 
-            [凾(256)] public void Add(int p, T v) => fw.Add(p, v);
-            [凾(256)] public T Sum(int l, int r) => fw.Sum(l, r);
+            [凾(256)]
+            public static WaveletFwOp<T> Init(T[] ts)
+            {
+                var f = new FenwickTree<T>(ts.Length);
+                for (int i = 0; i < ts.Length; i++)
+                    f.Add(i, ts[i]);
+                return new(f);
+            }
+
+            [凾(256)] public void Add(int p, T v) => f.Add(p, v);
+            [凾(256)] public T Sum(int l, int r) => f.Sum(l, r);
         }
     }
 }

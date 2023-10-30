@@ -16,13 +16,13 @@ namespace Kzrnm.Competitive
         /// 範囲演算データ構造
         /// </summary>
         [IsOperator]
-        public interface IWabeletSumOperator<T>
+        public interface IWabeletSumOperator<T, TSelf> where TSelf : IWabeletSumOperator<T, TSelf>
         {
             /// <summary>
             /// 範囲演算データ構造を <paramref name="ts"/> で初期化します。
             /// </summary>
             /// <param name="ts"></param>
-            void Init(T[] ts);
+            static abstract TSelf Init(T[] ts);
             /// <summary>
             /// a[<paramref name="l"/>] + a[<paramref name="l"/> - 1] + ... + a[<paramref name="r"/> - 1] を返します。
             /// </summary>
@@ -44,7 +44,7 @@ namespace Kzrnm.Competitive
     public class WaveletMatrix2D<F, T, ROp>
         where F : IComparable<F>
         where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>
-        where ROp : struct, IWabeletSumOperator<T>
+        where ROp : struct, IWabeletSumOperator<T, ROp>
     {
         readonly WaveletMatrixRangeSumCompressed<T, ROp> mat;
         readonly Dictionary<(F x, F y), int> pos;
@@ -131,7 +131,7 @@ namespace Kzrnm.Competitive
     public class WaveletMatrixRangeSum<F, T, ROp>
         where F : IComparable<F>
         where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>
-        where ROp : struct, IWabeletSumOperator<T>
+        where ROp : struct, IWabeletSumOperator<T, ROp>
     {
         readonly WaveletMatrixRangeSumCompressed<T, ROp> mat;
         readonly F[] ys;
@@ -189,7 +189,7 @@ namespace Kzrnm.Competitive
     /// <typeparam name="ROp">重みの総和を求めるデータ構造</typeparam>
     public class WaveletMatrixRangeSumCompressed<T, ROp>
         where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>
-        where ROp : struct, IWabeletSumOperator<T>
+        where ROp : struct, IWabeletSumOperator<T, ROp>
     {
         private SuccinctIndexableDictionary[] matrix;
         private int[] v;
@@ -240,7 +240,7 @@ namespace Kzrnm.Competitive
                 var dd = new T[Length];
                 for (int i = 0; i < ord.Length; i++)
                     dd[i] = v[ord[i]].d;
-                ds[level].Init(dd);
+                ds[level] = ROp.Init(dd);
             }
         }
 

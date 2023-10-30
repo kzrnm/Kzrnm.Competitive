@@ -31,12 +31,16 @@ namespace Kzrnm.Competitive
     }
     namespace Internal
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
-        public struct WaveletSumOp<T> : IWabeletSumOperator<T>
+        public readonly struct WaveletSumOp<T> : IWabeletSumOperator<T, WaveletSumOp<T>>
             where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>, IAdditiveIdentity<T, T>
         {
-            public Sums<T> s;
-            [凾(256)] public void Init(T[] ts) => s = new Sums<T>(ts);
+            readonly Sums<T> s;
+            public WaveletSumOp(Sums<T> sums)
+            {
+                s = sums;
+            }
+
+            [凾(256)] public static WaveletSumOp<T> Init(T[] ts) => new(new(ts));
             [凾(256)] public void Add(int p, T v) => throw new NotSupportedException();
             [凾(256)] public T Sum(int l, int r) => s[l, r];
         }
