@@ -9,7 +9,7 @@ namespace Kzrnm.Competitive.Analyzer.Test;
 
 public class IntToLongTest
 {
-    static DiagnosticDescriptor KZCOMPETITIVE0001 => DiagnosticDescriptors.KZCOMPETITIVE0001_MultiplyOverflowInt32_Descriptor;
+    static DiagnosticDescriptor KZCOMPETITIVE0001 => DiagnosticDescriptors.KZCOMPETITIVE0001_OverflowInt32_Descriptor;
 
     [Fact]
     public async Task Empty()
@@ -95,22 +95,22 @@ public static class Example
         {
             2L * 4 * v,
             1L << v,
-            1L >> v,
+            1 >> v,
             (long)v * 2 * 5,
             (long)v * v,
             (long)v << 5,
-            (long)v >> 5,
+            v >> 5,
         };
 
         var toULong = new ulong[]
         {
             2UL * 4u * u,
             1UL << v,
-            1UL >> v,
+            1u >> v,
             (ulong)u * 2 * 5,
             (ulong)u * u,
             (ulong)u << 5,
-            (ulong)u >> 5,
+            u >> 5,
         };
 
         return (toLong, toULong);
@@ -122,22 +122,18 @@ public static class Example
                 VerifyCS.Diagnostic(KZCOMPETITIVE0001).WithSpan(8, 13, 8, 18).WithArguments("2 * 4"),
                 VerifyCS.Diagnostic(KZCOMPETITIVE0001).WithSpan(8, 13, 8, 22).WithArguments("2 * 4 * v"),
                 VerifyCS.Diagnostic(KZCOMPETITIVE0001).WithSpan(9, 13, 9, 19).WithArguments("1 << v"),
-                VerifyCS.Diagnostic(KZCOMPETITIVE0001).WithSpan(10, 13, 10, 19).WithArguments("1 >> v"),
                 VerifyCS.Diagnostic(KZCOMPETITIVE0001).WithSpan(11, 13, 11, 18).WithArguments("v * 2"),
                 VerifyCS.Diagnostic(KZCOMPETITIVE0001).WithSpan(11, 13, 11, 22).WithArguments("v * 2 * 5"),
                 VerifyCS.Diagnostic(KZCOMPETITIVE0001).WithSpan(12, 13, 12, 18).WithArguments("v * v"),
                 VerifyCS.Diagnostic(KZCOMPETITIVE0001).WithSpan(13, 13, 13, 19).WithArguments("v << 5"),
-                VerifyCS.Diagnostic(KZCOMPETITIVE0001).WithSpan(14, 13, 14, 19).WithArguments("v >> 5"),
 
                 VerifyCS.Diagnostic(KZCOMPETITIVE0001).WithSpan(19, 13, 19, 20).WithArguments("2u * 4u"),
                 VerifyCS.Diagnostic(KZCOMPETITIVE0001).WithSpan(19, 13, 19, 24).WithArguments("2u * 4u * u"),
                 VerifyCS.Diagnostic(KZCOMPETITIVE0001).WithSpan(20, 13, 20, 20).WithArguments("1u << v"),
-                VerifyCS.Diagnostic(KZCOMPETITIVE0001).WithSpan(21, 13, 21, 20).WithArguments("1u >> v"),
                 VerifyCS.Diagnostic(KZCOMPETITIVE0001).WithSpan(22, 13, 22, 18).WithArguments("u * 2"),
                 VerifyCS.Diagnostic(KZCOMPETITIVE0001).WithSpan(22, 13, 22, 22).WithArguments("u * 2 * 5"),
                 VerifyCS.Diagnostic(KZCOMPETITIVE0001).WithSpan(23, 13, 23, 18).WithArguments("u * u"),
                 VerifyCS.Diagnostic(KZCOMPETITIVE0001).WithSpan(24, 13, 24, 19).WithArguments("u << 5"),
-                VerifyCS.Diagnostic(KZCOMPETITIVE0001).WithSpan(25, 13, 25, 19).WithArguments("u >> 5"),
             },
             fixedSource);
     }

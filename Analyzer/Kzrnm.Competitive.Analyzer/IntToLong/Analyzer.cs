@@ -12,14 +12,14 @@ public class Analyzer : DiagnosticAnalyzer
 {
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         => ImmutableArray.Create(
-            DiagnosticDescriptors.KZCOMPETITIVE0001_MultiplyOverflowInt32_Descriptor);
+            DiagnosticDescriptors.KZCOMPETITIVE0001_OverflowInt32_Descriptor);
 
     public override void Initialize(AnalysisContext context)
     {
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
         context.EnableConcurrentExecution();
         context.RegisterSyntaxNodeAction(AnalyzeIntToLongSyntaxNode,
-            SyntaxKind.LeftShiftExpression, SyntaxKind.RightShiftExpression, SyntaxKind.MultiplyExpression);
+            SyntaxKind.LeftShiftExpression, SyntaxKind.MultiplyExpression);
     }
 
     private void AnalyzeIntToLongSyntaxNode(SyntaxNodeAnalysisContext context)
@@ -42,8 +42,7 @@ public class Analyzer : DiagnosticAnalyzer
                 var diagnostic = node.Kind() switch
                 {
                     SyntaxKind.MultiplyExpression
-                    or SyntaxKind.RightShiftExpression
-                    or SyntaxKind.LeftShiftExpression => DiagnosticDescriptors.KZCOMPETITIVE0001_MultiplyOverflowInt32(context.Node, isUnsigned),
+                    or SyntaxKind.LeftShiftExpression => DiagnosticDescriptors.KZCOMPETITIVE0001_OverflowInt32(context.Node, isUnsigned),
                     _ => throw new InvalidOperationException(),
                 };
 

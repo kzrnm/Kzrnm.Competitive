@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="KZCOMPETITIVE0001_KZCOMPETITIVE0002_MessageFormat" xml:space="preserve">
-    <value>32bit整数から64bit整数へ暗黙的キャスト: '{0}'</value>
-  </data>
-  <data name="KZCOMPETITIVE0001_Title" xml:space="preserve">
+  <data name="KZCOMPETITIVE0001" xml:space="preserve">
     <value>32bit整数の乗算演算子が64bit整数に代入されています</value>
+  </data>
+  <data name="KZCOMPETITIVE0001_MessageFormat" xml:space="preserve">
+    <value>32bit整数から64bit整数へ暗黙的キャスト: '{0}'</value>
   </data>
 </root>

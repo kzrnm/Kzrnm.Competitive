@@ -61,20 +61,29 @@ namespace Kzrnm.Competitive.Analyzer.Diagnostics {
         }
         
         /// <summary>
-        ///   Implicit cast 32 bit number to 64 bit number: &apos;{0}&apos; に類似しているローカライズされた文字列を検索します。
+        ///   32 bit number multiply expression is assigned to 64 bit number に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string KZCOMPETITIVE0001_KZCOMPETITIVE0002_MessageFormat {
+        internal static string KZCOMPETITIVE0001 {
             get {
-                return ResourceManager.GetString("KZCOMPETITIVE0001_KZCOMPETITIVE0002_MessageFormat", resourceCulture);
+                return ResourceManager.GetString("KZCOMPETITIVE0001", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   32 bit number multiply expression is assigned to 64 bit number に類似しているローカライズされた文字列を検索します。
+        ///   Implicit cast 32 bit number to 64 bit number: &apos;{0}&apos; に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string KZCOMPETITIVE0001_Title {
+        internal static string KZCOMPETITIVE0001_MessageFormat {
             get {
-                return ResourceManager.GetString("KZCOMPETITIVE0001_Title", resourceCulture);
+                return ResourceManager.GetString("KZCOMPETITIVE0001_MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Operator method doesn&apos;t have MethodImpl attribute に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string KZCOMPETITIVE0003 {
+            get {
+                return ResourceManager.GetString("KZCOMPETITIVE0003", resourceCulture);
             }
         }
         
@@ -88,11 +97,11 @@ namespace Kzrnm.Competitive.Analyzer.Diagnostics {
         }
         
         /// <summary>
-        ///   Operator method doesn&apos;t have MethodImpl attribute に類似しているローカライズされた文字列を検索します。
+        ///   Not defined operator type に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string KZCOMPETITIVE0003_Title {
+        internal static string KZCOMPETITIVE0004 {
             get {
-                return ResourceManager.GetString("KZCOMPETITIVE0003_Title", resourceCulture);
+                return ResourceManager.GetString("KZCOMPETITIVE0004", resourceCulture);
             }
         }
         
@@ -102,15 +111,6 @@ namespace Kzrnm.Competitive.Analyzer.Diagnostics {
         internal static string KZCOMPETITIVE0004_MessageFormat {
             get {
                 return ResourceManager.GetString("KZCOMPETITIVE0004_MessageFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Not defined operator type に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string KZCOMPETITIVE0004_Title {
-            get {
-                return ResourceManager.GetString("KZCOMPETITIVE0004_Title", resourceCulture);
             }
         }
     }
