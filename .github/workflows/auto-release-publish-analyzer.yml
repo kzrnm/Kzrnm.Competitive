@@ -1,0 +1,92 @@
+name: Auto release publish analyzer
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "Analyzer/**"
+      - .github/workflows/auto-release-publish-analyzer.yml
+  workflow_dispatch:
+    inputs:
+      force-release:
+        type: boolean
+        default: false
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_NOLOGO: true
+  NUGET_XMLDOC_MODE: skip
+  WORKFLOW_BUILD_SLN: Analyzer/Competitive.Analyzer.sln
+  PACK_CSPROJ: Analyzer/Kzrnm.Competitive.Analyzer/Kzrnm.Competitive.Analyzer.csproj
+
+jobs:
+  get-version:
+    uses: kzrnm/dotnet-actions/.github/workflows/get-version.yml@v1
+    with:
+      project-path: Analyzer/Kzrnm.Competitive.Analyzer/Kzrnm.Competitive.Analyzer.csproj
+      prefix: Analyzer-v
+
+  format:
+    uses: kzrnm/dotnet-actions/.github/workflows/format.yml@v1
+    with:
+      target: Analyzer/Competitive.Analyzer.sln
+      dotnet-version: 7.0.x
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [get-version]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+      - uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      - name: Build
+        run: dotnet build ${{ env.WORKFLOW_BUILD_SLN }} -c Release
+      - name: Test
+        run: dotnet test ${{ env.WORKFLOW_BUILD_SLN }} --no-build --logger GitHubActions -c Release
+      - name: Pack
+        run: dotnet pack ${{ env.PACK_CSPROJ }} --no-build -c Release -o Analyzer/bin/Packages/Release
+      - uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: Analyzer/bin/Packages/Release
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: [get-version, build, format]
+    if: ${{ needs.get-version.outputs.is-new == 'true' }}
+    permissions:
+      contents: write
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: dist
+          path: dist
+      - name: Upload nuget
+        run: dotnet nuget push "./dist/*.nupkg" --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_KEY }}
+      - name: Push tag
+        id: tag-version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{github.token}}
+          custom_tag: ${{ needs.get-version.outputs.version }}
+          tag_prefix: "Analyzer-v"
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        id: create-release
+        with:
+          tag: ${{ steps.tag-version.outputs.new_tag }}
+          name: "Analyzer: Version ${{ needs.get-version.outputs.version }}"
+          artifacts: "./dist/*.nupkg,./dist/*.snupkg"
+          prerelease: ${{ needs.get-version.outputs.is-prerelease == 'true' }}
+          makeLatest: "false"

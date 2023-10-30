@@ -50,9 +50,9 @@ public static class Example
     public static object? KZCOMPETITIVE0004(int v)
     {
         //new Impl<Op>();
-        
+
         //var seg = new Segtree<uint, Op>(v);
-        
+
         //3.Other<Op>(2);
 
         return null;
