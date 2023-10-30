@@ -16,9 +16,7 @@ public class CodeFixProvider : Microsoft.CodeAnalysis.CodeFixes.CodeFixProvider
 {
     private const string title = "Cast 32 bit number to 64 bit number";
     public override ImmutableArray<string> FixableDiagnosticIds
-        => ImmutableArray.Create(
-            DiagnosticDescriptors.KZCOMPETITIVE0001_MultiplyOverflowInt32_Descriptor.Id,
-            DiagnosticDescriptors.KZCOMPETITIVE0002_ShiftOverflowInt32_Descriptor.Id);
+        => ImmutableArray.Create(DiagnosticDescriptors.KZCOMPETITIVE0001_MultiplyOverflowInt32_Descriptor.Id);
 
     public sealed override FixAllProvider GetFixAllProvider()
         => WellKnownFixAllProviders.BatchFixer;

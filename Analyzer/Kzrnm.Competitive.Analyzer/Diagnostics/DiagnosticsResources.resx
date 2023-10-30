@@ -123,9 +123,6 @@
   <data name="KZCOMPETITIVE0001_Title" xml:space="preserve">
     <value>32 bit number multiply expression is assigned to 64 bit number</value>
   </data>
-  <data name="KZCOMPETITIVE0002_Title" xml:space="preserve">
-    <value>32 bit number shift expression is assigned to 64 bit number</value>
-  </data>
   <data name="KZCOMPETITIVE0003_MessageFormat" xml:space="preserve">
     <value>Operator method '{0}' doesn't have MethodImpl attribute</value>
   </data>

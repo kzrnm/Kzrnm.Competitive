@@ -12,8 +12,7 @@ public class Analyzer : DiagnosticAnalyzer
 {
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         => ImmutableArray.Create(
-            DiagnosticDescriptors.KZCOMPETITIVE0001_MultiplyOverflowInt32_Descriptor,
-            DiagnosticDescriptors.KZCOMPETITIVE0002_ShiftOverflowInt32_Descriptor);
+            DiagnosticDescriptors.KZCOMPETITIVE0001_MultiplyOverflowInt32_Descriptor);
 
     public override void Initialize(AnalysisContext context)
     {
@@ -42,9 +41,9 @@ public class Analyzer : DiagnosticAnalyzer
                 var isUnsigned = convertedType is SpecialType.System_UInt64;
                 var diagnostic = node.Kind() switch
                 {
-                    SyntaxKind.MultiplyExpression => DiagnosticDescriptors.KZCOMPETITIVE0001_MultiplyOverflowInt32(context.Node, isUnsigned),
-                    SyntaxKind.RightShiftExpression
-                    or SyntaxKind.LeftShiftExpression => DiagnosticDescriptors.KZCOMPETITIVE0002_ShiftOverflowInt32(context.Node, isUnsigned),
+                    SyntaxKind.MultiplyExpression
+                    or SyntaxKind.RightShiftExpression
+                    or SyntaxKind.LeftShiftExpression => DiagnosticDescriptors.KZCOMPETITIVE0001_MultiplyOverflowInt32(context.Node, isUnsigned),
                     _ => throw new InvalidOperationException(),
                 };
 

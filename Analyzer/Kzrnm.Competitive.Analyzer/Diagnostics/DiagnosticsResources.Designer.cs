@@ -79,15 +79,6 @@ namespace Kzrnm.Competitive.Analyzer.Diagnostics {
         }
         
         /// <summary>
-        ///   32 bit number shift expression is assigned to 64 bit number に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        internal static string KZCOMPETITIVE0002_Title {
-            get {
-                return ResourceManager.GetString("KZCOMPETITIVE0002_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Operator method &apos;{0}&apos; doesn&apos;t have MethodImpl attribute に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string KZCOMPETITIVE0003_MessageFormat {

@@ -28,29 +28,6 @@ public static class DiagnosticDescriptors
         DiagnosticSeverity.Warning,
         isEnabledByDefault: true
         );
-    public static Diagnostic KZCOMPETITIVE0002_ShiftOverflowInt32(SyntaxNode node, bool isUnsigned)
-        => Diagnostic.Create(
-            descriptor: KZCOMPETITIVE0002_ShiftOverflowInt32_Descriptor,
-            location: node.GetLocation(),
-            properties: ImmutableDictionary.CreateRange(new[]
-            {
-                new KeyValuePair<string, string>("IsUnsigned", isUnsigned?"true":"false"),
-            }),
-            messageArgs: node.ToString());
-    public static readonly DiagnosticDescriptor KZCOMPETITIVE0002_ShiftOverflowInt32_Descriptor = new(
-        "KZCOMPETITIVE0002",
-        new LocalizableResourceString(
-            nameof(DiagnosticsResources.KZCOMPETITIVE0002_Title),
-            DiagnosticsResources.ResourceManager,
-            typeof(DiagnosticsResources)),
-        new LocalizableResourceString(
-            nameof(DiagnosticsResources.KZCOMPETITIVE0001_KZCOMPETITIVE0002_MessageFormat),
-            DiagnosticsResources.ResourceManager,
-            typeof(DiagnosticsResources)),
-        "Overflow",
-        DiagnosticSeverity.Warning,
-        isEnabledByDefault: true
-        );
 
     public static Diagnostic KZCOMPETITIVE0003_AgressiveInlining(Location location, IEnumerable<string> methods)
         => Diagnostic.Create(KZCOMPETITIVE0003_AgressiveInlining_Descriptor, location, string.Join(", ", methods));

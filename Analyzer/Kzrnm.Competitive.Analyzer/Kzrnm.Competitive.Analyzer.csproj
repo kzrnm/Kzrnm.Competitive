@@ -7,7 +7,7 @@
     <Description>Analyzer for competitive programming</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>$(NoWarn);CS1998</NoWarn>
+    <NoWarn>$(NoWarn);CS1591;CS1998</NoWarn>
 
     <Version>1.0.0</Version>
 
