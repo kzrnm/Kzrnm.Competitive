@@ -13,7 +13,7 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// Mod2 の行列。+: xor *: and
     /// </summary>
-    public readonly struct BitMatrix64
+    public readonly struct BitMatrix64 : IEquatable<BitMatrix64>
     {
         public bool this[int row, int col] => ((Value[row] >> col) & 1) != 0;
         public readonly ulong[] Value;

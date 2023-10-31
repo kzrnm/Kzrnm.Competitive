@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
-using System.Text;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -89,6 +88,7 @@ namespace Kzrnm.Competitive
                 arr[Index(i, i)] += T.MultiplicativeIdentity;
             return new ArrayMatrix<T>(arr, Height, Width);
         }
+        [凾(256)]
         private ArrayMatrix<T> Add(ArrayMatrix<T> other)
         {
             Contract.Assert(Height == other.Height && Width == other.Width);
@@ -99,6 +99,7 @@ namespace Kzrnm.Competitive
 
             return new ArrayMatrix<T>(arr, Height, Width);
         }
+        [凾(256)]
         public static ArrayMatrix<T> operator +(ArrayMatrix<T> x, ArrayMatrix<T> y)
         {
             return x.kind switch
@@ -123,6 +124,7 @@ namespace Kzrnm.Competitive
                 },
             };
         }
+        [凾(256)]
         private ArrayMatrix<T> SubtractIdentity()
         {
             var arr = CloneArray();
@@ -130,6 +132,7 @@ namespace Kzrnm.Competitive
                 arr[Index(i, i)] -= T.MultiplicativeIdentity;
             return new ArrayMatrix<T>(arr, Height, Width);
         }
+        [凾(256)]
         private ArrayMatrix<T> Subtract(ArrayMatrix<T> other)
         {
             Contract.Assert(Height == other.Height && Width == other.Width);
@@ -141,6 +144,7 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)] public static ArrayMatrix<T> operator +(ArrayMatrix<T> x) => x;
+        [凾(256)]
         public static ArrayMatrix<T> operator -(ArrayMatrix<T> x)
         {
             var arr = x.CloneArray();
@@ -149,6 +153,7 @@ namespace Kzrnm.Competitive
             return new ArrayMatrix<T>(arr, x.Height, x.Width);
         }
 
+        [凾(256)]
         public static ArrayMatrix<T> operator -(ArrayMatrix<T> x, ArrayMatrix<T> y)
         {
             return x.kind switch
@@ -173,6 +178,7 @@ namespace Kzrnm.Competitive
                 },
             };
         }
+        [凾(256)]
         private ArrayMatrix<T> Multiply(ArrayMatrix<T> other)
         {
             var rh = Height;
@@ -186,6 +192,7 @@ namespace Kzrnm.Competitive
                         res[i * rw + j] += this[i, k] * other[k, j];
             return new ArrayMatrix<T>(res, rh, rw);
         }
+        [凾(256)]
         public static ArrayMatrix<T> operator *(ArrayMatrix<T> x, ArrayMatrix<T> y)
         {
             return x.kind switch
@@ -209,7 +216,7 @@ namespace Kzrnm.Competitive
                 },
             };
         }
-
+        [凾(256)]
         private ArrayMatrix<T> MultiplyScalar(T scalar)
         {
             var arr = Value;
@@ -218,6 +225,7 @@ namespace Kzrnm.Competitive
                 res[i] = scalar * arr[i];
             return new ArrayMatrix<T>(res, Height, Width);
         }
+        [凾(256)]
         public static ArrayMatrix<T> operator *(ArrayMatrix<T> m, T x)
         {
             return m.kind switch
@@ -230,11 +238,12 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// ベクトルにかける
         /// </summary>
-        public static T[] operator *(ArrayMatrix<T> mat, T[] vector) => mat.Multiply(vector);
+        [凾(256)] public static T[] operator *(ArrayMatrix<T> mat, T[] vector) => mat.Multiply(vector);
 
         /// <summary>
         /// ベクトルにかける
         /// </summary>
+        [凾(256)]
         public T[] Multiply(T[] vector)
         {
             Contract.Assert(Width == vector.Length);
@@ -242,13 +251,41 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// 行列式を求める。行列式
+        /// 行列式を求める。
         /// </summary>
+        [凾(256)]
         public T Determinant()
         {
             Contract.Assert(Height == Width);
+            return DeterminantImpl(ToArray());
+        }
 
-            var arr = ToArray();
+        /// <summary>
+        /// <c>(<paramref name="i"/>, <paramref name="j"/>)</c> 余因子を求める。
+        /// </summary>
+        [凾(256)]
+        public T Cofactor(int i, int j)
+        {
+            Contract.Assert(Height == Width);
+            var arr = new T[Height - 1][];
+            for (int h = 0; h < arr.Length; h++)
+            {
+                var p = h;
+                if (h >= i) ++p;
+                var row = Value.AsSpan(p * Width, Width);
+                arr[h] = new T[Width - 1];
+                row[..j].CopyTo(arr[h]);
+                row[(j + 1)..].CopyTo(arr[h].AsSpan(j));
+            }
+            var rt = DeterminantImpl(arr);
+            if (((i ^ j) & 1) != 0)
+                rt = -rt;
+            return rt;
+        }
+
+        [凾(256)]
+        static T DeterminantImpl(T[][] arr)
+        {
             bool swap = false;
             //上三角行列
             for (int i = 0; i < arr.Length; i++)
@@ -279,6 +316,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 逆行列を掃き出し法で求める。求められなければ零行列を返す。
         /// </summary>
+        [凾(256)]
         public ArrayMatrix<T> Inv()
         {
             Contract.Assert(Height == Width);
@@ -306,6 +344,7 @@ namespace Kzrnm.Competitive
         /// ガウスの消去法(掃き出し法)
         /// </summary>
         /// <param name="isReduced">行標準形にするかどうか。false ならば上三角行列</param>
+        [凾(256)]
         public ArrayMatrix<T> GaussianElimination(bool isReduced = true)
         {
             Contract.Assert(kind == Kd.Normal);
@@ -320,6 +359,7 @@ namespace Kzrnm.Competitive
         /// <param name="arr">対象の行列</param>
         /// <param name="isReduced">行標準形にするかどうか。false ならば上三角行列</param>
         /// <returns>0ではない列のインデックス</returns>
+        [凾(256)]
         private static List<int> GaussianEliminationImpl(T[][] arr, bool isReduced)
         {
             var idx = new List<int>(arr.Length);
@@ -355,6 +395,7 @@ namespace Kzrnm.Competitive
         /// <paramref name="r"/> より下で <paramref name="x"/> 列が 0 ではない行を探して、<paramref name="r"/> 行に置く。
         /// </summary>
         /// <returns>0 ではない行が見つかったかどうか</returns>
+        [凾(256)]
         private static bool SearchNonZero(T[][] mat, int r, int x)
         {
             for (int y = r; y < mat.Length; y++)
@@ -375,6 +416,7 @@ namespace Kzrnm.Competitive
         /// <item><description>ただし解無しのときは空配列を返す</description></item>
         /// </list>
         /// </returns>
+        [凾(256)]
         public T[][] LinearSystem(T[] vector)
         {
             Contract.Assert(Height == vector.Length);

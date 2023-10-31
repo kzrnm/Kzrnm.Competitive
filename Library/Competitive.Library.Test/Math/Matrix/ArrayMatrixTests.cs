@@ -1,6 +1,7 @@
 using AtCoder;
 using System.Linq;
 using Kzrnm.Competitive.Internal;
+using System.Collections.Generic;
 
 namespace Kzrnm.Competitive.Testing.MathNS.Matrix
 {
@@ -414,16 +415,16 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 new Fraction[,]
                 {
                     {10, -9},
-                    { 7, -12}
+                    { 7, -12},
                 },
                 -57
             },
             {
-new Fraction[,]
-{
+                new Fraction[,]
+                {
                     {10, -9, -12},
                     {7, -12, 11},
-                    {-10, 10, 3}
+                    {-10, 10, 3},
                 },
                 319
             },
@@ -433,7 +434,7 @@ new Fraction[,]
                     {10, -9, -12, 6 },
                     {7, -12, 11, 15},
                     {1, 0, 2, 9},
-                    {-10, 10, 3, 13}
+                    {-10, 10, 3, 13},
                 },
                 -10683
             },
@@ -444,7 +445,7 @@ new Fraction[,]
                     { 1,-2,-1, 2,4},
                     { 0, 3, 1, 4,3},
                     {-7, 5,-1, 3,5},
-                    {-1, 3, 2,-2,2}
+                    {-1, 3, 2,-2,2},
                 },
                 -881
             }
@@ -484,6 +485,48 @@ new Fraction[,]
                 array[i, 0] = array[0, i] = array[i, i] = 1;
             }
             new FractionArrayMatrix(array).Determinant().Should().Be(-(n - 2));
+        }
+
+        public static IEnumerable<(Fraction[,] array, int i, int j, Fraction expected)> Cofactor_Data()
+        {
+            {
+                var mt = new Fraction[,]
+                {
+                    {10, -9},
+                    { 7, -12},
+                };
+
+                yield return (mt, 0, 0, -12);
+                yield return (mt, 0, 1, -7);
+                yield return (mt, 1, 0, 9);
+                yield return (mt, 1, 1, 10);
+            }
+            {
+                var mt = new Fraction[,]
+                {
+                    {10, -9, -12},
+                    {7, -12, 11},
+                    {-10, 10, 3},
+                };
+
+                yield return (mt, 0, 0, -146);
+                yield return (mt, 0, 1, -131);
+                yield return (mt, 0, 2, -50);
+                yield return (mt, 1, 0, -93);
+                yield return (mt, 1, 1, -90);
+                yield return (mt, 1, 2, -10);
+                yield return (mt, 2, 0, -243);
+                yield return (mt, 2, 1, -194);
+                yield return (mt, 2, 2, -57);
+            }
+        }
+
+        [Theory]
+        [TupleMemberData(nameof(Cofactor_Data))]
+        [Trait("Category", "Normal")]
+        public void Cofactor(Fraction[,] array, int i, int j, Fraction expected)
+        {
+            new FractionArrayMatrix(array).Cofactor(i, j).Should().Be(expected);
         }
 
         [Fact]
