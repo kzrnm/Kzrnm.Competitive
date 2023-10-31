@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net7.0;netcoreapp3.1</TargetFrameworks>
-    <LangVersion Condition="'$(TargetFramework)' == 'netcoreapp3.1'">8</LangVersion>
+    <TargetFrameworks>net7.0</TargetFrameworks>
     <LangVersion Condition="'$(TargetFramework)' == 'net7.0'">11</LangVersion>
     <RootNamespace>Kzrnm.Competitive</RootNamespace>
     <OutputType>Library</OutputType>
@@ -25,19 +24,6 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
-    <Compile Remove="**/*.GenericMath.cs" />
-    <Compile Remove="**/*.GenericMath/**" />
-    <None Include="**/*.GenericMath.cs" />
-    <None Include="**/*.GenericMath/**" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp3.1'">
-    <Compile Remove="**/*.NotGenericMath.cs" />
-    <Compile Remove="**/*.NotGenericMath/**" />
-    <None Include="**/*.NotGenericMath.cs" />
-    <None Include="**/*.NotGenericMath/**" />
-  </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Library'">
     <DefineConstants>$(DefineConstants);DEBUG;LIBRARY</DefineConstants>
@@ -70,20 +56,20 @@
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-    <None Update="Math\Matrix.GenericMath\Matrix5x5.tt">
+    <None Update="Math\Matrix\Matrix5x5.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Matrix5x5.cs</LastGenOutput>
     </None>
-    <Compile Update="Math\Matrix.GenericMath\Matrix5x5.cs">
+    <Compile Update="Math\Matrix\Matrix5x5.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Matrix5x5.tt</DependentUpon>
     </Compile>
-    <None Update="Math\Matrix.GenericMath\Matrix6x6.tt">
+    <None Update="Math\Matrix\Matrix6x6.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Matrix6x6.cs</LastGenOutput>
     </None>
-    <Compile Update="Math\Matrix.GenericMath\Matrix6x6.cs">
+    <Compile Update="Math\Matrix\Matrix6x6.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Matrix6x6.tt</DependentUpon>

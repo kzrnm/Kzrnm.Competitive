@@ -1,8 +1,0 @@
-ArrayMatrix.cs	行列(配列実装)
-BitMatrixNumber.cs	$Mod 2$で値を持つ行列(整数実装)
-Matrix2x2.cs	$2 \times 2$ 行列
-Matrix3x3.cs	$3 \times 3$ 行列
-Matrix4x4.cs	$4 \times 4$ 行列
-Matrix5x5.cs	$5 \times 5$ 行列
-Matrix6x6.cs	$6 \times 6$ 行列
-MatrixProdStrassen.cs	Strassenのアルゴリズム

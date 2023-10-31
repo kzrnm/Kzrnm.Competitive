@@ -1,6 +1,6 @@
 ---
 title: 多項式
-documentation_of: ./Polynomial.GenericMath.cs
+documentation_of: ./Polynomial.cs
 ---
 
 ## 概要

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net7.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net7.0</TargetFrameworks>
 
     <IsPackable>false</IsPackable>
     <RootNamespace>Kzrnm.Competitive.Testing</RootNamespace>
@@ -46,13 +46,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Competitive.Library\Competitive.Library.csproj" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
-    <Compile Remove="**/*.GenericMath.cs" />
-    <Compile Remove="**/*.GenericMath/**" />
-    <None Include="**/*.GenericMath.cs" />
-    <None Include="**/*.GenericMath/**" />
   </ItemGroup>
 
 </Project>
