@@ -32,6 +32,8 @@ jobs:
       - uses: actions/checkout@v4
       - id: date
         run: echo "date=$(date "+%Y.%m%d.%H%M")" >> $GITHUB_OUTPUT
+        env:
+          TZ: Asia/Tokyo
       - id: prev-version
         run: python tools/action/prev_version.py ${{ steps.date.outputs.date }} >> $GITHUB_OUTPUT
 
