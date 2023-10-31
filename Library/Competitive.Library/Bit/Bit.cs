@@ -46,34 +46,11 @@ namespace Kzrnm.Competitive
         public static string ToBitString(this ulong num, int padLeft = sizeof(ulong) * 8) => Convert.ToString(unchecked((long)num), 2).PadLeft(padLeft, '0');
 #endif
 
-#if NET7_0_OR_GREATER
         /// <summary>
         /// <paramref name="num"/> の <paramref name="index"/> 番目のビットが立っているかを返します。
         /// </summary>
         [凾(256)]
         public static bool On<T>(this T num, int index) where T : IBinaryInteger<T> => T.IsOddInteger(num >> index);
-#else
-        /// <summary>
-        /// <paramref name="num"/> の <paramref name="index"/> 番目のビットが立っているかを返します。
-        /// </summary>
-        [凾(256)]
-        public static bool On(this int num, int index) => ((num >> index) & 1) != 0;
-        /// <summary>
-        /// <paramref name="num"/> の <paramref name="index"/> 番目のビットが立っているかを返します。
-        /// </summary>
-        [凾(256)]
-        public static bool On(this uint num, int index) => ((num >> index) & 1) != 0;
-        /// <summary>
-        /// <paramref name="num"/> の <paramref name="index"/> 番目のビットが立っているかを返します。
-        /// </summary>
-        [凾(256)]
-        public static bool On(this long num, int index) => ((num >> index) & 1) != 0;
-        /// <summary>
-        /// <paramref name="num"/> の <paramref name="index"/> 番目のビットが立っているかを返します。
-        /// </summary>
-        [凾(256)]
-        public static bool On(this ulong num, int index) => ((num >> index) & 1) != 0;
-#endif
 
         /// <summary>
         /// <paramref name="num"/> の立っているビットを列挙します。

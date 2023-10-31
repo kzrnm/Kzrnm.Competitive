@@ -135,10 +135,6 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         {
             (mat1 + mat2).Should().Be(expected);
             (mat2 + mat1).Should().Be(expected);
-#if !NET7_0_OR_GREATER
-            default(IntArrayMatrix.Operator).Add(mat1, mat2).Should().Be(expected);
-            default(IntArrayMatrix.Operator).Add(mat2, mat1).Should().Be(expected);
-#endif
         }
 
         public static TheoryData Subtract_Data => new TheoryData<IntArrayMatrix, IntArrayMatrix, IntArrayMatrix>
@@ -224,9 +220,6 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         public void Subtract(IntArrayMatrix mat1, IntArrayMatrix mat2, IntArrayMatrix expected)
         {
             (mat1 - mat2).Should().Be(expected);
-#if !NET7_0_OR_GREATER
-            default(IntArrayMatrix.Operator).Subtract(mat1, mat2).Should().Be(expected);
-#endif
         }
 
         public static TheoryData Multiply_Data => new TheoryData<IntArrayMatrix, IntArrayMatrix, IntArrayMatrix>
@@ -288,9 +281,6 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         public void Multiply(IntArrayMatrix mat1, IntArrayMatrix mat2, IntArrayMatrix expected)
         {
             (mat1 * mat2).Should().Be(expected);
-#if !NET7_0_OR_GREATER
-            default(IntArrayMatrix.Operator).Multiply(mat1, mat2).Should().Be(expected);
-#endif
         }
 
         [Theory]
@@ -303,10 +293,6 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             var expected = Int2ModInt(expectedInt);
             (mat1 * mat2).Should().Be(expected);
             mat1.Strassen(mat2).Should().Be(expected);
-#if !NET7_0_OR_GREATER
-            default(Mod1000000007ArrayMatrix.Operator)
-                .Multiply(mat1, mat2).Should().Be(expected);
-#endif
         }
         private static Mod1000000007ArrayMatrix Int2ModInt(IntArrayMatrix mat)
             => mat.kind switch

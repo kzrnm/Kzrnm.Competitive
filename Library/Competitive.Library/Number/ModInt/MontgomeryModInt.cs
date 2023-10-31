@@ -4,12 +4,8 @@ using AtCoder.Internal;
 using Kzrnm.Competitive.IO;
 using System;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
-#if NET7_0_OR_GREATER
 using System.Numerics;
 using System.Globalization;
-#else
-using AtCoder.Operators;
-#endif
 
 namespace Kzrnm.Competitive
 {
@@ -196,7 +192,6 @@ namespace Kzrnm.Competitive
 
         public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => Value.TryFormat(destination, out charsWritten, format, provider);
         public string ToString(string format, IFormatProvider formatProvider) => Value.ToString(format, formatProvider);
-#if NET7_0_OR_GREATER
         static int INumberBase<MontgomeryModInt<T>>.Radix => 2;
         static MontgomeryModInt<T> IAdditiveIdentity<MontgomeryModInt<T>, MontgomeryModInt<T>>.AdditiveIdentity => default;
         static MontgomeryModInt<T> IMultiplicativeIdentity<MontgomeryModInt<T>, MontgomeryModInt<T>>.MultiplicativeIdentity => _One;
@@ -305,19 +300,5 @@ namespace Kzrnm.Competitive
             => typeof(TFrom) == typeof(TTo)
             ? (r = (TTo)(object)v) is { }
             : TTo.TryConvertFromTruncating(v, out r) || TFrom.TryConvertToTruncating(v, out r);
-#else
-        public readonly struct Operator : IArithmeticOperator<MontgomeryModInt<T>>
-        {
-            public MontgomeryModInt<T> MultiplyIdentity => One;
-            [凾(256)] public MontgomeryModInt<T> Add(MontgomeryModInt<T> x, MontgomeryModInt<T> y) => x + y;
-            [凾(256)] public MontgomeryModInt<T> Subtract(MontgomeryModInt<T> x, MontgomeryModInt<T> y) => x - y;
-            [凾(256)] public MontgomeryModInt<T> Multiply(MontgomeryModInt<T> x, MontgomeryModInt<T> y) => x * y;
-            [凾(256)] public MontgomeryModInt<T> Divide(MontgomeryModInt<T> x, MontgomeryModInt<T> y) => x / y;
-            [凾(256)] MontgomeryModInt<T> IDivisionOperator<MontgomeryModInt<T>>.Modulo(MontgomeryModInt<T> x, MontgomeryModInt<T> y) => throw new NotSupportedException();
-            [凾(256)] public MontgomeryModInt<T> Minus(MontgomeryModInt<T> x) => -x;
-            [凾(256)] public MontgomeryModInt<T> Increment(MontgomeryModInt<T> x) => ++x;
-            [凾(256)] public MontgomeryModInt<T> Decrement(MontgomeryModInt<T> x) => --x;
-        }
-#endif
     }
 }

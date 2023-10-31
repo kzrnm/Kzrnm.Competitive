@@ -4,17 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
-#if NET7_0_OR_GREATER
 using System.Numerics;
-#endif
 
 namespace Kzrnm.Competitive
 {
     using P = PointLong;
     public readonly struct PointLong : IEquatable<P>, IComparable<P>, IUtf8ConsoleWriterFormatter
-#if NET7_0_OR_GREATER
         , IAdditionOperators<P, P, P>, ISubtractionOperators<P, P, P>, IUnaryPlusOperators<P, P>, IUnaryNegationOperators<P, P>
-#endif
     {
         public readonly long x;
         public readonly long y;

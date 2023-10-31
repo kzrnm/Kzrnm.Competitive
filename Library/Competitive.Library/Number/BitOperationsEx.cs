@@ -158,13 +158,11 @@ namespace Kzrnm.Competitive
         public static ulong BitReverse(ulong x)
             => (ulong)BitReverse((uint)x) << 32 | BitReverse((uint)(x >> 32));
 
-#if NET7_0_OR_GREATER
         /// <summary>
         /// <para><paramref name="x"/> 以上で最も小さい2のべき乗を返します。</para>
         /// </summary>
         [凾(256)]
         public static int RoundUpToPowerOf2(int x)
             => (int)BO.RoundUpToPowerOf2((uint)x);
-#endif
     }
 }

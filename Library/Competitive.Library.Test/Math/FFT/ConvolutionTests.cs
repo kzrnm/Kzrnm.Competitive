@@ -174,7 +174,6 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [Fact]
         public void ULong()
         {
-#if NET7_0
             var arr = new UInt128[10];
             Random.Shared.NextBytes(MemoryMarshal.AsBytes(arr.AsSpan()));
             var brr = System.Runtime.CompilerServices.Unsafe.As<Int128[]>(arr);
@@ -183,7 +182,6 @@ namespace Kzrnm.Competitive.Testing.MathNS
             {
                 crr[i] = brr[i];
             }
-#endif
             var rnd = new Random(42);
             for (int n = 1; n < 65; n++)
             {
@@ -218,7 +216,6 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 return c;
             }
         }
-#if NET7_0_OR_GREATER
         [Fact]
         public void UInt128()
         {
@@ -257,6 +254,5 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 return c;
             }
         }
-#endif
     }
 }

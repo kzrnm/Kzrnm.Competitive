@@ -76,11 +76,6 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         {
             (mat1 + mat2).Should().Be(expected);
             (mat2 + mat1).Should().Be(expected);
-
-#if !NET7_0_OR_GREATER
-            default(LongMatrix4x4.Operator).Add(mat1, mat2).Should().Be(expected);
-            default(LongMatrix4x4.Operator).Add(mat2, mat1).Should().Be(expected);
-#endif
         }
 
         public static TheoryData Subtract_Data => new TheoryData<LongMatrix4x4, LongMatrix4x4, LongMatrix4x4>
@@ -142,9 +137,6 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         public void Subtract(LongMatrix4x4 mat1, LongMatrix4x4 mat2, LongMatrix4x4 expected)
         {
             (mat1 - mat2).Should().Be(expected);
-#if !NET7_0_OR_GREATER
-            default(LongMatrix4x4.Operator).Subtract(mat1, mat2).Should().Be(expected);
-#endif
         }
 
         public static TheoryData Multiply_Data => new TheoryData<LongMatrix4x4, LongMatrix4x4, LongMatrix4x4>
@@ -207,9 +199,6 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         public void Multiply(LongMatrix4x4 mat1, LongMatrix4x4 mat2, LongMatrix4x4 expected)
         {
             (mat1 * mat2).Should().Be(expected);
-#if !NET7_0_OR_GREATER
-            default(LongMatrix4x4.Operator).Multiply(mat1, mat2).Should().Be(expected);
-#endif
         }
 
         public static TheoryData MultiplyScalar_Data => new TheoryData<long, LongMatrix4x4, LongMatrix4x4>

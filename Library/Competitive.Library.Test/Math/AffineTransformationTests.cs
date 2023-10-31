@@ -27,14 +27,6 @@ namespace Kzrnm.Competitive.Testing.MathNS
             DoubleAffineTransformation expected)
         {
             (a * b).Should().Be(expected);
-#if !NET7_0_OR_GREATER
-            var op = new DoubleAffineTransformation.Operator();
-            op.Multiply(a, b).Should().Be(expected);
-            op.Multiply(op.MultiplyIdentity, a).Should().Be(a);
-            op.Multiply(op.MultiplyIdentity, b).Should().Be(b);
-            op.Multiply(a, op.MultiplyIdentity).Should().Be(a);
-            op.Multiply(b, op.MultiplyIdentity).Should().Be(b);
-#endif
         }
 
         public static TheoryData<DoubleAffineTransformation, double, double> Apply_Data = new()

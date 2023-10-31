@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 using AtCoder;
 using Kzrnm.Competitive.IO;
 using System.Collections.Generic;
@@ -37,4 +36,3 @@ namespace Kzrnm.Competitive.MathNs
         }
     }
 }
-#endif

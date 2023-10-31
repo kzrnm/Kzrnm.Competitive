@@ -2,11 +2,6 @@ using AtCoder;
 using System;
 using System.Collections.Generic;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
-#if NET7_0_OR_GREATER
-using System.Numerics;
-#else
-using AtCoder.Internal;
-#endif
 
 namespace Kzrnm.Competitive
 {

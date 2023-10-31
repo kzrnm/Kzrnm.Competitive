@@ -33,21 +33,12 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static uint Solve(uint p)
         {
-#if NET7_0_OR_GREATER
             ref var result = ref System.Runtime.InteropServices.CollectionsMarshal.GetValueRefOrAddDefault(primitiveRootsCache, p, out var exists);
             if (!exists)
             {
                 result = Calculate(p);
             }
             return result;
-#else
-            if (primitiveRootsCache.TryGetValue(p, out var v))
-            {
-                return v;
-            }
-
-            return primitiveRootsCache[p] = Calculate(p);
-#endif
         }
 
         static readonly Dictionary<uint, uint> primitiveRootsCache = new Dictionary<uint, uint>()

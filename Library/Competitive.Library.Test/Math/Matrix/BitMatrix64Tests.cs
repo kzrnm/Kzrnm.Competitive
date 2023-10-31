@@ -199,11 +199,6 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat2 + mat1).Should().BeEquivalentTo(expected);
             (mat1 - mat2).Should().BeEquivalentTo(expected);
             (mat1 ^ mat2).Should().BeEquivalentTo(expected);
-#if !NET7_0_OR_GREATER
-            default(BitMatrix64.Operator).Add(mat1, mat2).Should().BeEquivalentTo(expected);
-            default(BitMatrix64.Operator).Add(mat2, mat1).Should().BeEquivalentTo(expected);
-            default(BitMatrix64.Operator).Subtract(mat1, mat2).Should().BeEquivalentTo(expected);
-#endif
         }
 
         public static TheoryData Multiply_Data => new TheoryData<BitMatrix64, BitMatrix64, BitMatrix64>
@@ -265,9 +260,6 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         public void Multiply(BitMatrix64 mat1, BitMatrix64 mat2, BitMatrix64 expected)
         {
             (mat1 * mat2).Should().BeEquivalentTo(expected);
-#if !NET7_0_OR_GREATER
-            default(BitMatrix64.Operator).Multiply(mat1, mat2).Should().BeEquivalentTo(expected);
-#endif
         }
 
         public static TheoryData MultiplyVector_Data => new TheoryData<BitMatrix64, bool[], ulong, ulong>

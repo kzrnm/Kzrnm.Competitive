@@ -3,12 +3,8 @@ using AtCoder.Internal;
 using Kzrnm.Competitive.IO;
 using System;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
-#if NET7_0_OR_GREATER
 using System.Numerics;
 using System.Globalization;
-#else
-using AtCoder.Operators;
-#endif
 
 namespace Kzrnm.Competitive
 {
@@ -17,9 +13,7 @@ namespace Kzrnm.Competitive
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "気にしない")]
     public struct DynamicMontgomeryModInt64<T> : IUtf8ConsoleWriterFormatter, IEquatable<DynamicMontgomeryModInt64<T>>, IFormattable
-#if NET7_0_OR_GREATER
         , INumberBase<DynamicMontgomeryModInt64<T>>
-#endif
         where T : struct
     {
         internal static ulong n2;
@@ -86,12 +80,7 @@ namespace Kzrnm.Competitive
         internal static ulong Reduce(UInt128 b)
         {
             var a = (UInt128)((ulong)b * (~r + 1)) * _mod + b;
-
-#if NET7_0_OR_GREATER
             return (ulong)(a >> 64);
-#else
-            return a.Upper;
-#endif
         }
 
         [凾(256)]
@@ -182,7 +171,6 @@ namespace Kzrnm.Competitive
 
         public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => Value.TryFormat(destination, out charsWritten, format, provider);
         public string ToString(string format, IFormatProvider formatProvider) => Value.ToString(format, formatProvider);
-#if NET7_0_OR_GREATER
         static int INumberBase<DynamicMontgomeryModInt64<T>>.Radix => 2;
         static DynamicMontgomeryModInt64<T> IAdditiveIdentity<DynamicMontgomeryModInt64<T>, DynamicMontgomeryModInt64<T>>.AdditiveIdentity => default;
         static DynamicMontgomeryModInt64<T> IMultiplicativeIdentity<DynamicMontgomeryModInt64<T>, DynamicMontgomeryModInt64<T>>.MultiplicativeIdentity => _One;
@@ -276,20 +264,6 @@ namespace Kzrnm.Competitive
             => typeof(TFrom) == typeof(TTo)
             ? (r = (TTo)(object)v) is { }
             : TTo.TryConvertFromTruncating(v, out r) || TFrom.TryConvertToTruncating(v, out r);
-#else
-        public readonly struct Operator : IArithmeticOperator<DynamicMontgomeryModInt64<T>>
-        {
-            public DynamicMontgomeryModInt64<T> MultiplyIdentity => One;
-            [凾(256)] public DynamicMontgomeryModInt64<T> Add(DynamicMontgomeryModInt64<T> x, DynamicMontgomeryModInt64<T> y) => x + y;
-            [凾(256)] public DynamicMontgomeryModInt64<T> Subtract(DynamicMontgomeryModInt64<T> x, DynamicMontgomeryModInt64<T> y) => x - y;
-            [凾(256)] public DynamicMontgomeryModInt64<T> Multiply(DynamicMontgomeryModInt64<T> x, DynamicMontgomeryModInt64<T> y) => x * y;
-            [凾(256)] public DynamicMontgomeryModInt64<T> Divide(DynamicMontgomeryModInt64<T> x, DynamicMontgomeryModInt64<T> y) => x / y;
-            [凾(256)] DynamicMontgomeryModInt64<T> IDivisionOperator<DynamicMontgomeryModInt64<T>>.Modulo(DynamicMontgomeryModInt64<T> x, DynamicMontgomeryModInt64<T> y) => throw new NotSupportedException();
-            [凾(256)] public DynamicMontgomeryModInt64<T> Minus(DynamicMontgomeryModInt64<T> x) => -x;
-            [凾(256)] public DynamicMontgomeryModInt64<T> Increment(DynamicMontgomeryModInt64<T> x) => ++x;
-            [凾(256)] public DynamicMontgomeryModInt64<T> Decrement(DynamicMontgomeryModInt64<T> x) => --x;
-        }
-#endif
 
         /// <summary>
         /// Montgomery の r ?
@@ -321,69 +295,5 @@ namespace Kzrnm.Competitive
         static ulong Modulus(ulong hi, ulong lo, ulong m)
             => (ulong)(new UInt128(hi, lo) % m);
 
-
-#if !NET7_0_OR_GREATER
-        internal readonly struct UInt128
-        {
-            public readonly ulong Upper;
-            public readonly ulong Lower;
-
-            public UInt128(ulong hi, ulong lo)
-            {
-                Upper = hi;
-                Lower = lo;
-            }
-
-            [凾(256)]
-            public static UInt128 operator +(UInt128 a, UInt128 b)
-            {
-                var ahi = a.Upper;
-                var alo = a.Lower;
-                var bhi = b.Upper;
-                var blo = b.Lower;
-                if (blo > 0 && ulong.MaxValue - blo + 1 <= alo)
-                    ++ahi;
-                return new UInt128(ahi + bhi, alo + blo);
-            }
-
-            [凾(256)]
-            public static UInt128 operator *(UInt128 a, ulong b)
-            {
-                if (b == 0) return a;
-                var hi = a.Upper;
-                var lo = a.Lower;
-                var (hi2, lo2) = BigMul(lo, b);
-                return new UInt128(hi2 + hi * b, lo2);
-            }
-
-            [凾(256)]
-            public static UInt128 operator %(UInt128 v, ulong m)
-            {
-                var hi = v.Upper;
-                var lo = v.Lower;
-                var s = lo % m;
-                var p = (ulong.MaxValue - m + 1) % m;
-
-                while (hi != 0)
-                {
-                    (hi, lo) = BigMul(hi, p);
-                    s += lo % m;
-                    if (s >= m) s -= m;
-                }
-
-                return s;
-            }
-            [凾(256)]
-            static (ulong Upper, ulong Lower) BigMul(ulong a, ulong b)
-                => (Mul128.Mul128Bit(a, b), a * b);
-
-            [凾(256)]
-            public static explicit operator UInt128(long v) => new UInt128(0, (ulong)v);
-            [凾(256)]
-            public static implicit operator UInt128(ulong v) => new UInt128(0, v);
-            [凾(256)]
-            public static explicit operator ulong(UInt128 v) => v.Lower;
-        }
-#endif
     }
 }

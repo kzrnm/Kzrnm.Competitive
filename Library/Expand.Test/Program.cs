@@ -27,10 +27,8 @@
     using BitArray = System.Collections.BitArray;
     using ModInt = AtCoder.StaticModInt<SourceExpander.Testing.AtCoder.Mod998244353>;
     using MontgomeryModInt = Kzrnm.Competitive.MontgomeryModInt<SourceExpander.Testing.AtCoder.Mod998244353>;
-#if NET7_0_OR_GREATER
     using ModIntFactor = Kzrnm.Competitive.ModIntFactor<SourceExpander.Testing.AtCoder.StaticModInt<SourceExpander.Testing.AtCoder.Mod998244353>>;
     using MontgomeryModIntFactor = Kzrnm.Competitive.ModIntFactor<Kzrnm.Competitive.MontgomeryModInt<SourceExpander.Testing.AtCoder.Mod998244353>>;
-#endif
 
     partial class Program
     {
@@ -41,10 +39,8 @@
         {
             var m1 = new ModInt[5];
             var m2 = new MontgomeryModInt[5];
-#if NET7_0_OR_GREATER
             m1[0] = new ModIntFactor(10).Combination(5, 1);
             m2[0] = new MontgomeryModIntFactor(10).Combination(5, 1);
-#endif
 
             var bt = new BitArray(4);
             BinarySearch<Op>(0, 1);

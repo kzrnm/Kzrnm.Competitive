@@ -4,11 +4,7 @@ using System.Linq;
 using System.Text;
 using BitArray = System.Collections.BitArray;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
-#if NET7_0_OR_GREATER
 using System.Numerics;
-#else
-using AtCoder.Operators;
-#endif
 
 namespace Kzrnm.Competitive
 {
@@ -17,9 +13,7 @@ namespace Kzrnm.Competitive
     /// OR 演算の行列。+: or *: and
     /// </summary>
     public readonly struct BitOrMatrix
-#if NET7_0_OR_GREATER
         : Internal.IMatrixOperator<BitOrMatrix>
-#endif
     {
         public bool this[int row, int col] => Value[row][col];
         public readonly BitArray[] Value;
@@ -228,25 +222,7 @@ namespace Kzrnm.Competitive
             return new BitOrMatrix(arr);
         }
 
-#if NET7_0_OR_GREATER
         static BitOrMatrix ISubtractionOperators<BitOrMatrix, BitOrMatrix, BitOrMatrix>.operator -(BitOrMatrix left, BitOrMatrix right) => throw new NotSupportedException();
         static BitOrMatrix IUnaryNegationOperators<BitOrMatrix, BitOrMatrix>.operator -(BitOrMatrix value) => throw new NotSupportedException();
-
-#else
-        /// <summary>
-        /// <paramref name="y"/> 乗した行列を返す。
-        /// </summary>
-        public BitOrMatrix Pow(long y) => MathLibGeneric.Pow<BitOrMatrix, Operator>(this, y);
-
-        public readonly struct Operator : IAdditionOperator<BitOrMatrix>, IMultiplicationOperator<BitOrMatrix>
-        {
-            public BitOrMatrix MultiplyIdentity => Identity;
-
-            [凾(256)]
-            public BitOrMatrix Add(BitOrMatrix x, BitOrMatrix y) => x + y;
-            [凾(256)]
-            public BitOrMatrix Multiply(BitOrMatrix x, BitOrMatrix y) => x * y;
-        }
-#endif
     }
 }

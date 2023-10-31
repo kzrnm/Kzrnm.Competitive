@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
-#if !NET7_0_OR_GREATER
-using AtCoder.Operators;
-#endif
 
 namespace Kzrnm.Competitive
 {
@@ -14,7 +11,6 @@ namespace Kzrnm.Competitive
         // 高速な Gcd の実装
         // https://nyaannyaan.github.io/library/trial/fast-gcd.hpp
 
-#if NET7_0_OR_GREATER
         /// <summary>
         /// 最大公約数
         /// </summary>
@@ -51,57 +47,7 @@ namespace Kzrnm.Competitive
                 gcd = Gcd(nums[i], gcd);
             return gcd;
         }
-#else
-        /// <summary>
-        /// 最大公約数
-        /// </summary>
-        [凾(256)]
-        public static int Gcd(int a, int b) => (int)Gcd((long)a, b);
-        /// <summary>
-        /// 最大公約数
-        /// </summary>
-        [凾(256)]
-        public static long Gcd(long a, long b)
-        {
-            if (a == 0) return b;
-            if (b == 0) return a;
-            a = Math.Abs(a);
-            b = Math.Abs(b);
-            int n = BitOperations.TrailingZeroCount(a);
-            int m = BitOperations.TrailingZeroCount(b);
-            a >>= n;
-            b >>= m;
-            while (a != b)
-            {
-                int m2 = BitOperations.TrailingZeroCount(a - b);
-                if (a < b) (a, b) = (b, a);
-                a = (a - b) >> m2;
-            }
-            return a << Math.Min(n, m);
-        }
-        /// <summary>
-        /// 最大公約数
-        /// </summary>
-        [凾(256)]
-        public static int Gcd(params int[] nums)
-        {
-            var gcd = nums[0];
-            for (var i = 1; i < nums.Length; i++)
-                gcd = Gcd(nums[i], gcd);
-            return gcd;
-        }
-        /// <summary>
-        /// 最大公約数
-        /// </summary>
-        [凾(256)]
-        public static long Gcd(params long[] nums)
-        {
-            var gcd = nums[0];
-            for (var i = 1; i < nums.Length; i++)
-                gcd = Gcd(nums[i], gcd);
-            return gcd;
-        }
-#endif
+        
         /// <summary>
         /// 最大公約数
         /// </summary>
@@ -120,7 +66,6 @@ namespace Kzrnm.Competitive
             return gcd;
         }
 
-#if NET7_0_OR_GREATER
         /// <summary>
         /// 最小公倍数
         /// </summary>
@@ -141,40 +86,6 @@ namespace Kzrnm.Competitive
                 lcm = Lcm(lcm, nums[i]);
             return lcm;
         }
-#else
-        /// <summary>
-        /// 最小公倍数
-        /// </summary>
-        [凾(256)]
-        public static int Lcm(int a, int b) => a / Gcd(a, b) * b;
-        /// <summary>
-        /// 最小公倍数
-        /// </summary>
-        [凾(256)]
-        public static long Lcm(long a, long b) => checked(a / Gcd(a, b) * b);
-        /// <summary>
-        /// 最小公倍数
-        /// </summary>
-        [凾(256)]
-        public static int Lcm(params int[] nums)
-        {
-            var lcm = nums[0];
-            for (var i = 1; i < nums.Length; i++)
-                lcm = Lcm(lcm, nums[i]);
-            return lcm;
-        }
-        /// <summary>
-        /// 最小公倍数
-        /// </summary>
-        [凾(256)]
-        public static long Lcm(params long[] nums)
-        {
-            var lcm = nums[0];
-            for (var i = 1; i < nums.Length; i++)
-                lcm = Lcm(lcm, nums[i]);
-            return lcm;
-        }
-#endif
 
         /// <summary>
         /// 最小公倍数
@@ -194,7 +105,6 @@ namespace Kzrnm.Competitive
             return lcm;
         }
 
-#if NET7_0_OR_GREATER
         /// <summary>
         /// <paramref name="n"/> の約数を返します。
         /// </summary>
@@ -228,75 +138,7 @@ namespace Kzrnm.Competitive
             list.Sort();
             return list.ToArray();
         }
-#else
-        /// <summary>
-        /// <paramref name="n"/> の約数を返します。
-        /// </summary>
-        public static long[] Divisor(long n)
-        {
-            if (n <= 0) return Array.Empty<long>();
-            if (n <= 1) return new long[] { 1 };
 
-            var pairs = PrimeFactoring(n).ToArray();
-            var list = new List<long>();
-            var st = new Stack<(int pi, long x, int pc)>();
-            st.Push((0, 1, ~pairs[0].Value));
-            while (st.TryPop(out var tup))
-            {
-                var (pi, x, pc) = tup;
-                if (pc < 0)
-                {
-                    st.Push((pi, x, ~pc));
-                    if (++pi < pairs.Length)
-                        st.Push((pi, x, ~pairs[pi].Value));
-                    else
-                        list.Add(x);
-                }
-                else if (pc > 0)
-                {
-                    st.Push((pi, x * pairs[pi].Key, ~--pc));
-                }
-            }
-
-            list.Sort();
-            return list.ToArray();
-        }
-
-        /// <summary>
-        /// <paramref name="n"/> の約数を返します。
-        /// </summary>
-        public static int[] Divisor(int n)
-        {
-            if (n <= 0) return Array.Empty<int>();
-            if (n <= 1) return new int[] { 1 };
-
-            var pairs = PrimeFactoring(n).ToArray();
-            var list = new List<int>();
-            var st = new Stack<(int pi, int x, int pc)>();
-            st.Push((0, 1, ~pairs[0].Value));
-            while (st.TryPop(out var tup))
-            {
-                var (pi, x, pc) = tup;
-                if (pc < 0)
-                {
-                    st.Push((pi, x, ~pc));
-                    if (++pi < pairs.Length)
-                        st.Push((pi, x, ~pairs[pi].Value));
-                    else
-                        list.Add(x);
-                }
-                else if (pc > 0)
-                {
-                    st.Push((pi, x * pairs[pi].Key, ~--pc));
-                }
-            }
-
-            list.Sort();
-            return list.ToArray();
-        }
-#endif
-
-#if NET7_0_OR_GREATER
         /// <summary>
         /// <paramref name="n"/> を素因数分解します。
         /// </summary>
@@ -363,114 +205,6 @@ namespace Kzrnm.Competitive
             var div = a / b;
             return (div, a - div * b);
         }
-#else
-        /// <summary>
-        /// <paramref name="n"/> を素因数分解します。
-        /// </summary>
-        public static Dictionary<int, int> PrimeFactoring(int n)
-        {
-            var res = new Dictionary<int, int>();
-            if (n <= 1)
-                return res;
-
-            int t = BitOperations.TrailingZeroCount(n);
-            if (t > 0)
-            {
-                res[2] = t;
-                n >>= t;
-            }
-            {
-                int c;
-                (n, c) = Divide(n, 3);
-                if (c > 0)
-                    res[3] = c;
-
-                (n, c) = Divide(n, 5);
-                if (c > 0)
-                    res[5] = c;
-            }
-            for (long i = 7; i * i <= n; i += 2)
-            {
-                for (int p = 0; p < 4; p++, i += 2)
-                {
-                    int c;
-                    var ii = (int)i;
-                    // 10x + (7,9,1,3)
-                    (n, c) = Divide(n, ii);
-                    if (c > 0)
-                        res[ii] = c;
-                }
-            }
-            if (n > 1)
-                res[n] = 1;
-            return res;
-        }
-
-        /// <summary>
-        /// <paramref name="n"/> を素因数分解します。
-        /// </summary>
-        public static Dictionary<long, int> PrimeFactoring(long n)
-        {
-            var res = new Dictionary<long, int>();
-            if (n <= 1)
-                return res;
-
-            int t = BitOperations.TrailingZeroCount(n);
-            if (t > 0)
-            {
-                res[2] = t;
-                n >>= t;
-            }
-
-            {
-                int c;
-                (n, c) = Divide(n, 3);
-                if (c > 0)
-                    res[3] = c;
-
-                (n, c) = Divide(n, 5);
-                if (c > 0)
-                    res[5] = c;
-            }
-            for (long i = 7; i * i <= n; i += 2)
-            {
-                for (int p = 0; p < 4; p++, i += 2)
-                {
-                    int c;
-                    // 10x + (7,9,1,3)
-                    (n, c) = Divide(n, i);
-                    if (c > 0)
-                        res[i] = c;
-                }
-            }
-            if (n > 1)
-                res[n] = 1;
-            return res;
-        }
-
-        [凾(256)]
-        static (int Divided, int Count) Divide(int n, int i)
-        {
-            int c = 0;
-            while (Math.DivRem(n, i, out var am) is var d && am == 0)
-            {
-                n = d;
-                ++c;
-            }
-            return (n, c);
-        }
-        [凾(256)]
-        static (long Divided, int Count) Divide(long n, long i)
-        {
-            int c = 0;
-            while (Math.DivRem(n, i, out var am) is var d && am == 0)
-            {
-                n = d;
-                ++c;
-            }
-            return (n, c);
-        }
-#endif
 
         /// <summary>
         /// 二項係数 <paramref name="n"/>_C_<paramref name="k"/> を返す。
@@ -485,7 +219,6 @@ namespace Kzrnm.Competitive
             return res;
         }
 
-#if NET7_0_OR_GREATER
         /// <summary>
         /// C[n][k] = 二項係数 n_C_k となる配列 C を返す。
         /// </summary>
@@ -505,28 +238,6 @@ namespace Kzrnm.Competitive
             }
             return c;
         }
-#else
-        /// <summary>
-        /// C[n][k] = 二項係数 n_C_k となる配列 C を返す。
-        /// </summary>
-        /// <param name="maxSize">n の最大値</param>
-        public static T[][] CombinationTable<T, TOp>(int maxSize)
-            where TOp : struct, IAdditionOperator<T>, IMultiplicationOperator<T>
-        {
-            var op = new TOp();
-            var c = new T[++maxSize][];
-            for (int i = 0; i < c.Length; i++)
-            {
-                c[i] = new T[i + 1];
-                c[i][0] = c[i][^1] = op.MultiplyIdentity;
-                for (int j = 1; j + 1 < c[i].Length; ++j)
-                {
-                    c[i][j] = op.Add(c[i - 1][j - 1], c[i - 1][j]);
-                }
-            }
-            return c;
-        }
-#endif
 
         /// <summary>
         /// 等差数列の和

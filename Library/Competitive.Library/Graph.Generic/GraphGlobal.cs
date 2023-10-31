@@ -217,14 +217,7 @@ namespace Kzrnm.Competitive
                     var to = es[ci].To;
                     if (parent[cur] == to)
                     {
-#if NET7_0_OR_GREATER
                         (es[ci], es[^1]) = (es[^1], es[ci]);
-#else
-                        // 親は末尾に置く
-                        // Roslyn のバグがあるっぽいので参照を取り出してからswap https://github.com/dotnet/roslyn/issues/58472
-                        var b = es.Length - 1;
-                        (es[ci], es[b]) = (es[b], es[ci]);
-#endif
                         to = es[ci].To;
                     }
                     stack.Push((cur, ci + 1));

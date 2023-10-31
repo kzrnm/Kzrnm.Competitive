@@ -1,6 +1,5 @@
 global using Xunit;
 global using FluentAssertions;
-#if NET7_0_OR_GREATER
 global using LongFenwickTree = AtCoder.FenwickTree<long>;
 global using DoubleAffineTransformation = Kzrnm.Competitive.AffineTransformation<double>;
 global using Mod998244353AffineTransformation = Kzrnm.Competitive.AffineTransformation<AtCoder.StaticModInt<AtCoder.Mod998244353>>;
@@ -34,25 +33,3 @@ global using LongWaveletMatrixWithSums = Kzrnm.Competitive.WaveletMatrixWithSums
 global using IntWeightedUnionFind = Kzrnm.Competitive.WeightedUnionFind<int>;
 global using WIntGraphBuilder = Kzrnm.Competitive.WGraphBuilder<int>;
 global using WLongGraphBuilder = Kzrnm.Competitive.WGraphBuilder<long>;
-#else
-global using DoubleAffineTransformation = Kzrnm.Competitive.AffineTransformation<double, AtCoder.DoubleOperator>;
-global using Mod998244353AffineTransformation = Kzrnm.Competitive.AffineTransformation<AtCoder.StaticModInt<AtCoder.Mod998244353>, AtCoder.StaticModIntOperator<AtCoder.Mod998244353>>;
-global using Mod1000000007ArrayMatrix = Kzrnm.Competitive.ArrayMatrix<AtCoder.StaticModInt<AtCoder.Mod1000000007>, AtCoder.StaticModIntOperator<AtCoder.Mod1000000007>>;
-global using StaticModInt1000000007Factor = Kzrnm.Competitive.StaticModIntFactor<AtCoder.Mod1000000007>;
-global using MontgomeryModInt1000000007Factor = Kzrnm.Competitive.MontgomeryModIntFactor<AtCoder.Mod1000000007>;
-global using IntArrayMatrix = Kzrnm.Competitive.ArrayMatrix<int, AtCoder.IntOperator>;
-global using FractionArrayMatrix = Kzrnm.Competitive.ArrayMatrix<Kzrnm.Competitive.Fraction, Kzrnm.Competitive.Fraction.Operator>;
-global using LongArrayMatrix = Kzrnm.Competitive.ArrayMatrix<long, AtCoder.LongOperator>;
-global using FractionMatrix2x2 = Kzrnm.Competitive.Matrix2x2<Kzrnm.Competitive.Fraction, Kzrnm.Competitive.Fraction.Operator>;
-global using LongMatrix2x2 = Kzrnm.Competitive.Matrix2x2<long, AtCoder.LongOperator>;
-global using FractionMatrix3x3 = Kzrnm.Competitive.Matrix3x3<Kzrnm.Competitive.Fraction, Kzrnm.Competitive.Fraction.Operator>;
-global using LongMatrix3x3 = Kzrnm.Competitive.Matrix3x3<long, AtCoder.LongOperator>;
-global using FractionMatrix4x4 = Kzrnm.Competitive.Matrix4x4<Kzrnm.Competitive.Fraction, Kzrnm.Competitive.Fraction.Operator>;
-global using LongMatrix4x4 = Kzrnm.Competitive.Matrix4x4<long, AtCoder.LongOperator>;
-global using DoublePolynomial = Kzrnm.Competitive.Polynomial<double, AtCoder.DoubleOperator>;
-global using IntPolynomial = Kzrnm.Competitive.Polynomial<int, AtCoder.IntOperator>;
-global using LongWaveletMatrix2DWithFenwickTree = Kzrnm.Competitive.WaveletMatrix2DWithFenwickTree<int, long, AtCoder.LongOperator>;
-global using LongWaveletMatrix2DWithSums = Kzrnm.Competitive.WaveletMatrix2DWithSums<int, long, AtCoder.LongOperator>;
-global using LongWaveletMatrixWithFenwickTree = Kzrnm.Competitive.WaveletMatrixWithFenwickTree<int, long, AtCoder.LongOperator>;
-global using LongWaveletMatrixWithSums = Kzrnm.Competitive.WaveletMatrixWithSums<int, long, AtCoder.LongOperator>;
-#endif

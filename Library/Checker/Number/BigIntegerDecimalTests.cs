@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 using Kzrnm.Competitive.IO;
 
 namespace Kzrnm.Competitive.Number
@@ -36,4 +35,3 @@ namespace Kzrnm.Competitive.Number
     //    }
     //}
 }
-#endif
