@@ -43,10 +43,11 @@ public class Analyzer : DiagnosticAnalyzer
                 {
                     SyntaxKind.MultiplyExpression
                     or SyntaxKind.LeftShiftExpression => DiagnosticDescriptors.KZCOMPETITIVE0001_OverflowInt32(context.Node, isUnsigned),
-                    _ => throw new InvalidOperationException(),
+                    _ => null,
                 };
 
-                context.ReportDiagnostic(diagnostic);
+                if (diagnostic != null)
+                    context.ReportDiagnostic(diagnostic);
                 return;
             }
         }
