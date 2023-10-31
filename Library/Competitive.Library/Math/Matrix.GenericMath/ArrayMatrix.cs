@@ -284,7 +284,7 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        static T DeterminantImpl(T[][] arr)
+        internal static T DeterminantImpl(T[][] arr)
         {
             bool swap = false;
             //上三角行列
