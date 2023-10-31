@@ -24,8 +24,8 @@ def main(prev: Version):
         "https://api.nuget.org/v3-flatcontainer/kzrnm.competitive/index.json"
     ) as req:
         latest = Version.parse(json.load(req)["versions"][-1])
-    print(prev.date_num(), file=sys.stderr)
-    print(latest.date_num(), file=sys.stderr)
+    print(f"prev={prev.date_num()}", file=sys.stderr)
+    print(f"latest={latest.date_num()}", file=sys.stderr)
     print(f"is-new-month={prev.date_num()<latest.date_num()}".lower())
 
 
