@@ -9,27 +9,28 @@ namespace Competitive.Runner
 {
     public partial class Runner
     {
-        private class ResouceSource : TheoryData<string, string>
+        private class ResouceSource : TheoryData<int, string, string>
         {
             public ResouceSource()
             {
-                Add(InOut.A_IN, InOut.A_OUT);
-                Add(InOut.B_IN, InOut.B_OUT);
-                Add(InOut.C_IN, InOut.C_OUT);
-                Add(InOut.D_IN, InOut.D_OUT);
-                Add(InOut.E_IN, InOut.E_OUT);
-                Add(InOut.F_IN, InOut.F_OUT);
+                int num = 0;
+                Add(++num, InOut.A_IN, InOut.A_OUT);
+                Add(++num, InOut.B_IN, InOut.B_OUT);
+                Add(++num, InOut.C_IN, InOut.C_OUT);
+                Add(++num, InOut.D_IN, InOut.D_OUT);
+                Add(++num, InOut.E_IN, InOut.E_OUT);
+                Add(++num, InOut.F_IN, InOut.F_OUT);
             }
-            public new void Add(string p1, string p2)
+            public new void Add(int num, string p1, string p2)
             {
                 if (!string.IsNullOrEmpty(p1) && !string.IsNullOrEmpty(p2))
-                    base.Add(p1, p2);
+                    base.Add(num, p1, p2);
             }
         }
 
         [Theory(Timeout = 4000)]
         [ClassData(typeof(ResouceSource))]
-        public Task FromSource(string input, string output) => Task.Run(() =>
+        public Task FromSource(int _, string input, string output) => Task.Run(() =>
         {
             var encoding = new UTF8Encoding(false);
             using var inSteam = new MemoryStream(encoding.GetBytes(input));
