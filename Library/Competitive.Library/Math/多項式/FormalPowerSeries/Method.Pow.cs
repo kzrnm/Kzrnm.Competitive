@@ -1,5 +1,4 @@
 using AtCoder;
-using AtCoder.Internal;
 using System;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 

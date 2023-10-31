@@ -1,4 +1,3 @@
-using AtCoder;
 using AtCoder.Internal;
 using System;
 using System.Runtime.InteropServices;
@@ -84,11 +83,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 rnd.NextBytes(MemoryMarshal.Cast<uint, byte>(arr));
                 for (int i = 0; i < arr.Length; i++)
                     arr[i] &= (1 << 16) - 1;
-#if NET7_0_OR_GREATER
                 var sums = new Sums<uint>(arr);
-#else
-                var sums = new Sums<uint, UIntOperator>(arr);
-#endif
                 var st = new DisjointSparseTable<uint, SumOp>(arr);
 
                 for (var i = 0; i < len; i++)

@@ -3,7 +3,6 @@ using AtCoder.Internal;
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -488,7 +487,6 @@ namespace Kzrnm.Competitive
             }
         }
 
-#if NET7_0_OR_GREATER
 
         /// <summary>
         /// 128 bit で畳み込みを計算します。
@@ -583,22 +581,12 @@ namespace Kzrnm.Competitive
                 return c;
             }
         }
-#endif
 
 
-#if NET7_0_OR_GREATER
         private readonly record struct AnyMod(uint Mod) : IStaticMod
         {
             public bool IsPrime => false;
         }
-#else
-        private readonly struct AnyMod : IStaticMod
-        {
-            public AnyMod(uint m) { Mod = m; }
-            public uint Mod { get; }
-            public bool IsPrime => false;
-        }
-#endif
         private readonly struct FFTMod1 : IStaticMod
         {
             public uint Mod => 167772161;

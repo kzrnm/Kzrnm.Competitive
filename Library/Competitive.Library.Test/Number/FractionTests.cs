@@ -109,9 +109,6 @@ namespace Kzrnm.Competitive.Testing.Number
             foreach (var f in RandomFractions(new Random(13)))
             {
                 (-f).Should().Be(new Fraction(-f.Numerator, f.Denominator));
-#if !NET7_0_OR_GREATER
-                default(Fraction.Operator).Minus(f).Should().Be(new Fraction(-f.Numerator, f.Denominator));
-#endif
             }
         }
 
@@ -128,9 +125,6 @@ namespace Kzrnm.Competitive.Testing.Number
         public void AddTest(Fraction num1, Fraction num2, Fraction expected)
         {
             (num1 + num2).Should().Be(expected);
-#if !NET7_0_OR_GREATER
-            default(Fraction.Operator).Add(num1, num2).Should().Be(expected);
-#endif
         }
 
         public static TheoryData Subtract_Data => new TheoryData<Fraction, Fraction, Fraction>
@@ -146,9 +140,6 @@ namespace Kzrnm.Competitive.Testing.Number
         public void SubtractTest(Fraction num1, Fraction num2, Fraction expected)
         {
             (num1 - num2).Should().Be(expected);
-#if !NET7_0_OR_GREATER
-            default(Fraction.Operator).Subtract(num1, num2).Should().Be(expected);
-#endif
         }
 
         public static TheoryData Multiply_Data => new TheoryData<Fraction, Fraction, Fraction>
@@ -164,9 +155,6 @@ namespace Kzrnm.Competitive.Testing.Number
         public void MultiplyTest(Fraction num1, Fraction num2, Fraction expected)
         {
             (num1 * num2).Should().Be(expected);
-#if !NET7_0_OR_GREATER
-            default(Fraction.Operator).Multiply(num1, num2).Should().Be(expected);
-#endif
         }
 
         public static TheoryData Divide_Data => new TheoryData<Fraction, Fraction, Fraction>
@@ -182,9 +170,6 @@ namespace Kzrnm.Competitive.Testing.Number
         public void DivideTest(Fraction num1, Fraction num2, Fraction expected)
         {
             (num1 / num2).Should().Be(expected);
-#if !NET7_0_OR_GREATER
-            default(Fraction.Operator).Divide(num1, num2).Should().Be(expected);
-#endif
         }
 
         [Fact]

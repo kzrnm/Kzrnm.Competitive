@@ -5,9 +5,6 @@ using System.Linq;
 using System.Text;
 using BitArray = System.Collections.BitArray;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
-#if !NET7_0_OR_GREATER
-using AtCoder.Operators;
-#endif
 
 namespace Kzrnm.Competitive
 {
@@ -16,9 +13,7 @@ namespace Kzrnm.Competitive
     /// Mod2 の行列。+: xor *: and
     /// </summary>
     public readonly struct BitMatrix
-#if NET7_0_OR_GREATER
         : Internal.IMatrixOperator<BitMatrix>
-#endif
     {
         public bool this[int row, int col] => Value[row][col];
         public readonly BitArray[] Value;
@@ -399,35 +394,5 @@ namespace Kzrnm.Competitive
             }
             return new BitMatrix(arr);
         }
-
-#if !NET7_0_OR_GREATER
-        /// <summary>
-        /// <paramref name="y"/> 乗した行列を返す。
-        /// </summary>
-        public BitMatrix Pow(long y) => MathLibGeneric.Pow<BitMatrix, Operator>(this, y);
-
-        public readonly struct Operator : IArithmeticOperator<BitMatrix>
-        {
-            public BitMatrix MultiplyIdentity => Identity;
-
-            [凾(256)]
-            public BitMatrix Add(BitMatrix x, BitMatrix y) => x + y;
-            [凾(256)]
-            public BitMatrix Subtract(BitMatrix x, BitMatrix y) => x - y;
-            [凾(256)]
-            public BitMatrix Multiply(BitMatrix x, BitMatrix y) => x * y;
-            [凾(256)]
-            public BitMatrix Minus(BitMatrix x) => -x;
-
-            [凾(256)]
-            public BitMatrix Increment(BitMatrix x) => throw new NotSupportedException();
-            [凾(256)]
-            public BitMatrix Decrement(BitMatrix x) => throw new NotSupportedException();
-            [凾(256)]
-            public BitMatrix Divide(BitMatrix x, BitMatrix y) => throw new NotSupportedException();
-            [凾(256)]
-            public BitMatrix Modulo(BitMatrix x, BitMatrix y) => throw new NotSupportedException();
-        }
-#endif
     }
 }

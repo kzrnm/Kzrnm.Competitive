@@ -1,19 +1,13 @@
 using System;
-using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
-#if NET7_0_OR_GREATER
 using System.Globalization;
 using System.Numerics;
-#else
-using AtCoder.Operators;
-#endif
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
     /// <summary>有理数を既約分数で表す</summary>
     public readonly struct Fraction : IEquatable<Fraction>, IComparable<Fraction>
-#if NET7_0_OR_GREATER
         , INumberBase<Fraction>
-#endif
     {
         public static readonly Fraction NaN = new Fraction(0, -1, true);
         public static bool IsNaN(Fraction v) => v._denominator0 < 0;
@@ -118,7 +112,6 @@ namespace Kzrnm.Competitive
 
 
         [凾(256)] public static Fraction Abs(Fraction v) => new Fraction(Math.Abs(v.Numerator), v.Denominator, true);
-#if NET7_0_OR_GREATER
         public static Fraction One => new Fraction(1, 1, true);
         static int INumberBase<Fraction>.Radix => 2;
         static Fraction INumberBase<Fraction>.Zero => default;
@@ -262,42 +255,5 @@ namespace Kzrnm.Competitive
         static Fraction INumberBase<Fraction>.Parse(string s, NumberStyles style, IFormatProvider provider) => TryParse(s, out var res) ? res : throw new FormatException();
         static Fraction ISpanParsable<Fraction>.Parse(ReadOnlySpan<char> s, IFormatProvider provider) => TryParse(s, out var res) ? res : throw new FormatException();
         static Fraction IParsable<Fraction>.Parse(string s, IFormatProvider provider) => TryParse(s, out var res) ? res : throw new FormatException();
-#else
-        public readonly struct Operator : INumOperator<Fraction>, ICompareOperator<Fraction>
-        {
-            public Fraction MinValue => new Fraction(long.MinValue, 1);
-            public Fraction MaxValue => new Fraction(long.MaxValue, 1);
-            public Fraction MultiplyIdentity => new Fraction(1, 1);
-
-            [凾(256)]
-            public Fraction Add(Fraction x, Fraction y) => x + y;
-            [凾(256)]
-            public Fraction Subtract(Fraction x, Fraction y) => x - y;
-            [凾(256)]
-            public Fraction Multiply(Fraction x, Fraction y) => x * y;
-            [凾(256)]
-            public Fraction Divide(Fraction x, Fraction y) => x / y;
-            [凾(256)]
-            public Fraction Modulo(Fraction x, Fraction y) => throw new NotSupportedException();
-
-            [凾(256)]
-            public int Compare(Fraction x, Fraction y) => x.CompareTo(y);
-            [凾(256)]
-            public bool GreaterThan(Fraction x, Fraction y) => x > y;
-            [凾(256)]
-            public bool GreaterThanOrEqual(Fraction x, Fraction y) => x >= y;
-            [凾(256)]
-            public bool LessThan(Fraction x, Fraction y) => x < y;
-            [凾(256)]
-            public bool LessThanOrEqual(Fraction x, Fraction y) => x <= y;
-
-            [凾(256)]
-            public Fraction Minus(Fraction x) => -x;
-            [凾(256)]
-            public Fraction Increment(Fraction x) => throw new NotSupportedException();
-            [凾(256)]
-            public Fraction Decrement(Fraction x) => throw new NotSupportedException();
-        }
-#endif
     }
 }

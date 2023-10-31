@@ -1,6 +1,5 @@
 using AtCoder;
 using Kzrnm.Competitive.IO;
-using System;
 
 namespace Kzrnm.Competitive.MathNs.Fps
 {

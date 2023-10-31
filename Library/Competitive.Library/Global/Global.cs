@@ -1,5 +1,5 @@
-using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 using System;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {

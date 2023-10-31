@@ -1,10 +1,7 @@
-using AtCoder;
 using AtCoder.Extension;
 using System;
 using System.Linq;
-#if NET7_0_OR_GREATER
 using IntFenwickTree = AtCoder.FenwickTree<int>;
-#endif
 
 namespace Kzrnm.Competitive.Testing.DataStructure
 {

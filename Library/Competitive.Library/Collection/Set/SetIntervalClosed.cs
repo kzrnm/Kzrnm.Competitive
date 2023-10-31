@@ -1,42 +1,17 @@
-using AtCoder;
 using Kzrnm.Competitive.Internal;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
-#if NET7_0_OR_GREATER
 using System.Numerics;
-#else
-using AtCoder.Operators;
-#endif
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-#if !NET7_0_OR_GREATER
-    /// <summary>
-    /// 閉区間をSetで保持する
-    /// </summary>
-    public class SetIntervalClosedLong : SetIntervalClosed<long, LongOperator>
-    {
-        public SetIntervalClosedLong() : base() { }
-        public SetIntervalClosedLong(IEnumerable<(long From, long ToInclusive)> collection) : base(collection) { }
-    }
-    /// <summary>
-    /// 閉区間をSetで保持する
-    /// </summary>
-    public class SetIntervalClosedInt : SetIntervalClosed<int, IntOperator>
-    {
-        public SetIntervalClosedInt() : base() { }
-        public SetIntervalClosedInt(IEnumerable<(int From, int ToInclusive)> collection) : base(collection) { }
-    }
-#endif
-
     /// <summary>
     /// 閉区間をSetで保持する
     /// </summary>
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-#if NET7_0_OR_GREATER
     [DebuggerTypeProxy(typeof(SetIntervalClosed<>.DebugView))]
     public class SetIntervalClosed<T>
         : SetBase<(T From, T ToInclusive), SetIntervalClosed<T>.C<T>, SetIntervalClosed<T>.Node, SetIntervalClosed<T>.NodeOperator>
@@ -54,27 +29,6 @@ namespace Kzrnm.Competitive
             public static T MaxValue => T.MaxValue;
             public static T MinValue => T.MinValue;
         }
-#else
-    [DebuggerTypeProxy(typeof(SetIntervalClosed<,>.DebugView))]
-    public class SetIntervalClosed<T, TOp>
-        : SetBase<(T From, T ToInclusive), SetIntervalClosed<T, TOp>.C<T>, SetIntervalClosed<T, TOp>.Node, SetIntervalClosed<T, TOp>.NodeOperator>
-        where T : IComparable<T>
-        where TOp : struct, IUnaryNumOperator<T>, IMinMaxValueOperator<T>
-    {
-        public SetIntervalClosed() : this(new TOp()) { }
-        public SetIntervalClosed(IEnumerable<(T From, T ToInclusive)> collection) : this(collection, new TOp()) { }
-        public SetIntervalClosed(TOp op) : base(false, new NodeOperator())
-        {
-            this.op = op;
-        }
-        public SetIntervalClosed(IEnumerable<(T From, T ToInclusive)> collection, TOp op)
-            : base(false, new NodeOperator(), collection)
-        {
-            this.op = op;
-        }
-
-        protected readonly TOp op;
-#endif
 
         protected override ReadOnlySpan<(T From, T ToInclusive)> InitArray(IEnumerable<(T From, T ToInclusive)> collection)
         {

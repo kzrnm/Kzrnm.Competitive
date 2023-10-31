@@ -1,7 +1,7 @@
 using Kzrnm.Competitive.IO;
 using System.Linq;
-using static System.Math;
 using System.Runtime.CompilerServices;
+using static System.Math;
 
 namespace Kzrnm.Competitive.DataStructure
 {

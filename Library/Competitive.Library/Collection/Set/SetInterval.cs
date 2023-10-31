@@ -1,42 +1,17 @@
-using AtCoder;
 using Kzrnm.Competitive.Internal;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
-#if NET7_0_OR_GREATER
 using System.Numerics;
-#else
-using AtCoder.Operators;
-#endif
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-#if !NET7_0_OR_GREATER
-    /// <summary>
-    /// 半開区間をSetで保持する
-    /// </summary>
-    public class SetIntervalLong : SetInterval<long, LongOperator>
-    {
-        public SetIntervalLong() : base() { }
-        public SetIntervalLong(IEnumerable<(long From, long ToExclusive)> collection) : base(collection) { }
-    }
-    /// <summary>
-    /// 半開区間をSetで保持する
-    /// </summary>
-    public class SetIntervalInt : SetInterval<int, IntOperator>
-    {
-        public SetIntervalInt() : base() { }
-        public SetIntervalInt(IEnumerable<(int From, int ToExclusive)> collection) : base(collection) { }
-    }
-#endif
-
     /// <summary>
     /// 半開区間をSetで保持する
     /// </summary>
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-#if NET7_0_OR_GREATER
     [DebuggerTypeProxy(typeof(SetInterval<>.DebugView))]
     public class SetInterval<T>
         : SetBase<(T From, T ToExclusive), SetInterval<T>.C<T>, SetInterval<T>.Node, SetInterval<T>.NodeOperator>
@@ -54,27 +29,6 @@ namespace Kzrnm.Competitive
             public static T MaxValue => T.MaxValue;
             public static T MinValue => T.MinValue;
         }
-#else
-    [DebuggerTypeProxy(typeof(SetInterval<,>.DebugView))]
-    public class SetInterval<T, TOp>
-        : SetBase<(T From, T ToExclusive), SetInterval<T, TOp>.C<T>, SetInterval<T, TOp>.Node, SetInterval<T, TOp>.NodeOperator>
-        where T : IComparable<T>
-        where TOp : struct, IUnaryNumOperator<T>, IMinMaxValueOperator<T>
-    {
-        public SetInterval() : this(new TOp()) { }
-        public SetInterval(IEnumerable<(T From, T ToExclusive)> collection) : this(collection, new TOp()) { }
-        public SetInterval(TOp op) : base(false, new NodeOperator())
-        {
-            this.op = op;
-        }
-        public SetInterval(IEnumerable<(T From, T ToExclusive)> collection, TOp op)
-            : base(false, new NodeOperator(), collection)
-        {
-            this.op = op;
-        }
-
-        protected readonly TOp op;
-#endif
 
         protected override ReadOnlySpan<(T From, T ToExclusive)> InitArray(IEnumerable<(T From, T ToExclusive)> collection)
         {

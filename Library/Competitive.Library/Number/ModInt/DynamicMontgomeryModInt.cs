@@ -1,15 +1,11 @@
 // https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp
+using AtCoder;
 using AtCoder.Internal;
 using Kzrnm.Competitive.IO;
 using System;
-using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
-using AtCoder;
-#if NET7_0_OR_GREATER
-using System.Numerics;
 using System.Globalization;
-#else
-using AtCoder.Operators;
-#endif
+using System.Numerics;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -19,9 +15,7 @@ namespace Kzrnm.Competitive
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "気にしない")]
     public struct DynamicMontgomeryModInt<T> : IUtf8ConsoleWriterFormatter, IEquatable<DynamicMontgomeryModInt<T>>, IFormattable, IModInt<DynamicMontgomeryModInt<T>>
-#if NET7_0_OR_GREATER
         , INumberBase<DynamicMontgomeryModInt<T>>
-#endif
         where T : struct
     {
         internal static uint n2;
@@ -195,7 +189,6 @@ namespace Kzrnm.Competitive
 
         public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => Value.TryFormat(destination, out charsWritten, format, provider);
         public string ToString(string format, IFormatProvider formatProvider) => Value.ToString(format, formatProvider);
-#if NET7_0_OR_GREATER
         static int INumberBase<DynamicMontgomeryModInt<T>>.Radix => 2;
         static DynamicMontgomeryModInt<T> IAdditiveIdentity<DynamicMontgomeryModInt<T>, DynamicMontgomeryModInt<T>>.AdditiveIdentity => default;
         static DynamicMontgomeryModInt<T> IMultiplicativeIdentity<DynamicMontgomeryModInt<T>, DynamicMontgomeryModInt<T>>.MultiplicativeIdentity => _One;
@@ -305,19 +298,5 @@ namespace Kzrnm.Competitive
             => typeof(TFrom) == typeof(TTo)
             ? (r = (TTo)(object)v) is { }
             : TTo.TryConvertFromTruncating(v, out r) || TFrom.TryConvertToTruncating(v, out r);
-#else
-        public readonly struct Operator : IArithmeticOperator<DynamicMontgomeryModInt<T>>
-        {
-            public DynamicMontgomeryModInt<T> MultiplyIdentity => One;
-            [凾(256)] public DynamicMontgomeryModInt<T> Add(DynamicMontgomeryModInt<T> x, DynamicMontgomeryModInt<T> y) => x + y;
-            [凾(256)] public DynamicMontgomeryModInt<T> Subtract(DynamicMontgomeryModInt<T> x, DynamicMontgomeryModInt<T> y) => x - y;
-            [凾(256)] public DynamicMontgomeryModInt<T> Multiply(DynamicMontgomeryModInt<T> x, DynamicMontgomeryModInt<T> y) => x * y;
-            [凾(256)] public DynamicMontgomeryModInt<T> Divide(DynamicMontgomeryModInt<T> x, DynamicMontgomeryModInt<T> y) => x / y;
-            [凾(256)] DynamicMontgomeryModInt<T> IDivisionOperator<DynamicMontgomeryModInt<T>>.Modulo(DynamicMontgomeryModInt<T> x, DynamicMontgomeryModInt<T> y) => throw new NotSupportedException();
-            [凾(256)] public DynamicMontgomeryModInt<T> Minus(DynamicMontgomeryModInt<T> x) => -x;
-            [凾(256)] public DynamicMontgomeryModInt<T> Increment(DynamicMontgomeryModInt<T> x) => ++x;
-            [凾(256)] public DynamicMontgomeryModInt<T> Decrement(DynamicMontgomeryModInt<T> x) => --x;
-        }
-#endif
     }
 }

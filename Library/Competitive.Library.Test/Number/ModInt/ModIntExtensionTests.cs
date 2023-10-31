@@ -5,7 +5,6 @@ namespace Kzrnm.Competitive.Testing.Number
 {
     public class ModIntExtensionTests
     {
-#if NET7_0_OR_GREATER
         [Fact]
         public void Sum()
         {
@@ -48,6 +47,5 @@ namespace Kzrnm.Competitive.Testing.Number
                 }
             }
         }
-#endif
     }
 }

@@ -1,9 +1,6 @@
-using System;
 using System.Linq;
-using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
-#if NET7_0_OR_GREATER
 using System.Numerics;
-#endif
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
@@ -39,7 +36,6 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(√n)</para>
         /// </summary>
         [凾(256)]
-#if NET7_0_OR_GREATER
         public static T Solve<T>(T n) where T : IBinaryNumber<T>
         {
             T r = n;
@@ -60,21 +56,5 @@ namespace Kzrnm.Competitive
             T quotient = left / right;
             return (quotient, left - (quotient * right));
         }
-#else
-        public static long Solve(long n)
-        {
-            long r = n;
-            for (long i = 2; i * i <= n; i++)
-                if (n % i == 0)
-                {
-                    r -= r / i;
-                    while (Math.DivRem(n, i, out var rm) is var dd && rm == 0)
-                        n = dd;
-                }
-            if (n > 1)
-                r -= r / n;
-            return r;
-        }
-#endif
     }
 }

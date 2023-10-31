@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net7.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net7.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>annotations</Nullable>
     <LangVersion>11</LangVersion>

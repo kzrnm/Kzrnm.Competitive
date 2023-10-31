@@ -1,4 +1,3 @@
-using AtCoder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -344,11 +343,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [Fact]
         public void CombinationTable()
         {
-#if NET7_0_OR_GREATER
             var c = MathLibEx.CombinationTable<long>(10);
-#else
-            var c = MathLibEx.CombinationTable<long, LongOperator>(10);
-#endif
             for (int i = 0; i <= 10; i++)
                 for (int j = 0; j <= i; j++)
                 {

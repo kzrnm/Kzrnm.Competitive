@@ -49,7 +49,6 @@ jobs:
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
-            3.1.x
             7.0.x
       - uses: actions/cache@v3
         with:
@@ -71,7 +70,6 @@ jobs:
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
-            3.1.x
             7.0.x
       - uses: actions/cache@v3
         with:
@@ -96,11 +94,6 @@ jobs:
         env:
           UNITTEST_CSPROJ: Competitive.Library.Test/Competitive.Library.Test.csproj
 
-      - name: Resolve netcoreapp3.1
-        run: dotnet run --project $VERIFY_CSPROJ --framework $FRAMEWORK --no-launch-profile --no-build -c Release | tee "${{runner.temp}}/problems-$FRAMEWORK.json"
-        env:
-          VERIFY_CSPROJ: Checker/Checker.csproj
-          FRAMEWORK: netcoreapp3.1
       - name: Resolve net7.0
         run: dotnet run --project $VERIFY_CSPROJ --framework $FRAMEWORK --no-launch-profile --no-build -c Release | tee "${{runner.temp}}/problems-$FRAMEWORK.json"
         env:
@@ -222,7 +215,6 @@ jobs:
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
-            3.1.x
             7.0.x
       - name: Download binaries
         uses: actions/download-artifact@v3
@@ -311,10 +303,6 @@ jobs:
       - name: Replace csproj with xml
         run: |
           sed -ie "s/pathExtension: csproj/pathExtension: xml/" ${{github.workspace}}/_jekyll/Expand.Test/Expand.Test.csproj.md
-
-      - name: Add redirect_from to *.GenericMath.cs.md
-        shell: bash
-        run : python3 "${{github.workspace}}/tools/action/update_redirect.py" "${{github.workspace}}/_jekyll"
 
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1

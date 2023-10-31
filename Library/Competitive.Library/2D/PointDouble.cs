@@ -3,18 +3,14 @@ using Kzrnm.Competitive.IO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
-#if NET7_0_OR_GREATER
 using System.Numerics;
-#endif
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
     using P = PointDouble;
     public readonly struct PointDouble : IEquatable<P>, IComparable<P>, IUtf8ConsoleWriterFormatter
-#if NET7_0_OR_GREATER
         , IAdditionOperators<P, P, P>, ISubtractionOperators<P, P, P>, IUnaryPlusOperators<P, P>, IUnaryNegationOperators<P, P>
-#endif
     {
         public readonly double x;
         public readonly double y;

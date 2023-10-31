@@ -193,17 +193,8 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)]
         public MoveEnumerator Moves(int h, int w) => new MoveEnumerator(this, h, w);
-#if NET7_0_OR_GREATER
         public readonly record struct Position(int Index, int Width)
         {
-#else
-        public readonly struct Position : IEquatable<Position>
-        {
-            public int Index { get; }
-            public int Width { get; }
-            public Position(int index, int width) { Index = index; Width = width; }
-            public bool Equals(Position other) => Index == other.Index && Width == other.Width;
-#endif
             [凾(256)]
             public void Deconstruct(out int h, out int w)
             {

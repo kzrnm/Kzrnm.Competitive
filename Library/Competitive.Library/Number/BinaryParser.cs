@@ -1,10 +1,8 @@
 using System;
+using System.Diagnostics;
+using System.Numerics;
 using BitArray = System.Collections.BitArray;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
-using System.Diagnostics;
-#if NET7_0_OR_GREATER
-using System.Numerics;
-#endif
 
 namespace Kzrnm.Competitive
 {
@@ -45,7 +43,6 @@ namespace Kzrnm.Competitive
         }
 #endif
 
-#if NET7_0_OR_GREATER
         /// <summary>
         /// 2進数表記の数値を <see cref="uint"/> に変換します。
         /// </summary>
@@ -59,51 +56,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static ulong ParseUInt64(ReadOnlySpan<char> s)
             => ParseNumber<ulong>(s);
-#else
-        /// <summary>
-        /// 2進数表記の数値を <see cref="uint"/> に変換します。
-        /// </summary>
-        [凾(256)]
-        public static uint ParseUInt32(ReadOnlySpan<char> s)
-        {
-            s = s.Trim().TrimStart('0');
-            var v = 0u;
-            while (s.Length > 0)
-            {
-                var r = s.IndexOf('1');
-                if (r < 0)
-                {
-                    v <<= s.Length;
-                    break;
-                }
-                v = (v << (r + 1)) | 1;
-                s = s[(r + 1)..];
-            }
-            return v;
-        }
 
-        /// <summary>
-        /// 2進数表記の数値を <see cref="ulong"/> に変換します。
-        /// </summary>
-        [凾(256)]
-        public static ulong ParseUInt64(ReadOnlySpan<char> s)
-        {
-            s = s.Trim().TrimStart('0');
-            var v = 0ul;
-            while (s.Length > 0)
-            {
-                var r = s.IndexOf('1');
-                if (r < 0)
-                {
-                    v <<= s.Length;
-                    break;
-                }
-                v = (v << (r + 1)) | 1;
-                s = s[(r + 1)..];
-            }
-            return v;
-        }
-#endif
         /// <summary>
         /// 2進数表記の数値を <see cref="BitArray"/> に変換します。
         /// </summary>
@@ -124,12 +77,7 @@ namespace Kzrnm.Competitive
                     t = s[..32];
                     s = s[32..];
                 }
-                uint x =
-#if NET7_0_OR_GREATER
-                ParseNumber<uint>(t);
-#else
-                ParseUInt32(t);
-#endif
+                uint x = ParseNumber<uint>(t);
                 a[i] = BitOperationsEx.BitReverse(x);
             }
 
@@ -140,12 +88,7 @@ namespace Kzrnm.Competitive
                 Span<char> t = stackalloc char[32];
                 s.CopyTo(t);
                 t[s.Length..].Fill('0');
-                uint x =
-#if NET7_0_OR_GREATER
-                ParseNumber<uint>(t);
-#else
-                ParseUInt32(t);
-#endif
+                uint x = ParseNumber<uint>(t);
                 a[^1] = BitOperationsEx.BitReverse(x);
             }
 

@@ -92,12 +92,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
 
             static void RunTest<T>(int a0, int a1, long n) where T : struct, IStaticMod
             {
-#if NET7_0_OR_GREATER
-                Matrix2x2<MontgomeryModInt<T>>
-#else
-                Matrix2x2<MontgomeryModInt<T>, MontgomeryModInt<T>.Operator>
-#endif
-                mat = new(
+                Matrix2x2<MontgomeryModInt<T>> mat = new(
                     (0, 1),
                     (1, 1)
                 );

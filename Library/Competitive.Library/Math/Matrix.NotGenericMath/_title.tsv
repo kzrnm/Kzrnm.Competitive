@@ -1,6 +1,0 @@
-ArrayMatrix.cs	行列(配列実装)
-BitMatrix64.cs	$Mod 2$で値を持つ行列(ulong実装)
-Matrix2x2.cs	$2 \times 2$ 行列
-Matrix3x3.cs	$3 \times 3$ 行列
-Matrix4x4.cs	$4 \times 4$ 行列
-MatrixProdStrassen.cs	Strassenのアルゴリズム

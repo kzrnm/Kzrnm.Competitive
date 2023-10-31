@@ -1,1 +1,0 @@
-../FenwickTree.GenericMath/FenwickTree2D.md

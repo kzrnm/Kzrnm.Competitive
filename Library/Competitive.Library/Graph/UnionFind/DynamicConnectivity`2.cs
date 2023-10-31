@@ -519,7 +519,7 @@ namespace Kzrnm.Competitive
                 {
                     used.Add(y);
                     var edgeY = edge[y];
-                    if (edgeY == null) edgeY = new HashSet<int>();
+                    edgeY ??= new();
                     edgeX.Remove(y);
                     edgeY.Remove(x);
                     if (edgeX.Count == 0) etti.UpdateEdgeConnected(x, false);

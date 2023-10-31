@@ -1,11 +1,6 @@
 using System;
 using System.Linq;
-
-#if NET7_0_OR_GREATER
 using LargeInteger = System.UInt128;
-#else
-using LargeInteger = System.Numerics.BigInteger;
-#endif
 
 namespace Kzrnm.Competitive.Testing.Number
 {

@@ -12,11 +12,7 @@ namespace Kzrnm.Competitive.Testing.Graph
         {
             var gb = new GraphBuilder(1, false);
             var g = gb.ToGraph();
-#if NET7_0_OR_GREATER
             g.MatrixTreeTheorem().Calc<StaticModInt<Mod1000000007>>()
-#else
-                g.MatrixTreeTheorem().Calc<Mod1000000007>()
-#endif
                 .Value.Should().Be(1);
         }
 
@@ -44,11 +40,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 }
 
                 var g = gb.ToGraph();
-#if NET7_0_OR_GREATER
                 g.MatrixTreeTheorem().Calc<StaticModInt<Mod1000000007>>()
-#else
-                g.MatrixTreeTheorem().Calc<Mod1000000007>()
-#endif
                     .Value.Should().Be(Naive(n, hs.ToArray()));
             }
         }

@@ -1,4 +1,3 @@
-using AtCoder.Internal;
 using System;
 using System.Buffers;
 using System.Collections.Generic;
@@ -34,9 +33,7 @@ namespace Kzrnm.Competitive
             }
             else
             {
-#if NET7_0_OR_GREATER
                 if (!collection.TryGetNonEnumeratedCount(out count))
-#endif
                     count = 16;
                 Count = 0;
                 data = ArrayPool<T>.Shared.Rent(count);
@@ -120,11 +117,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public PoolList<T> Sort<TComparer>(TComparer comparer) where TComparer : IComparer<T>
         {
-#if NET7_0_OR_GREATER
             AsSpan().Sort(comparer);
-#else
-            Array.Sort(data, 0, Count, comparer);
-#endif
             return this;
         }
         [凾(256)]
