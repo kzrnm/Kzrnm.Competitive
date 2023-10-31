@@ -75,7 +75,7 @@ jobs:
   publish:
     needs: [get-version, build]
     uses: kzrnm/dotnet-actions/.github/workflows/publish.yml@v1
-    if: needs.get-version.outputs.release
+    if: fromJson(needs.get-version.outputs.release)
     with:
       artifact-name: dist
       version: ${{needs.get-version.outputs.date}}
