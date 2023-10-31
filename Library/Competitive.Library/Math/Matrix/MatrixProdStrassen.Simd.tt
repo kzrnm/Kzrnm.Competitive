@@ -6,29 +6,29 @@
 <#@ output extension=".cs" encoding="utf-8" #>
 <#
 Func<int, int, string> INIT_X = (x, y) => $"Vector256<ulong> prod02{x}{y} = default;Vector256<ulong> prod13{x}{y} = default;";
-Func<int, string> INIT_Y = (y) => $"Vector256<uint> T{y} = t[(j + y) * B + k + l];var T13{y} = Avx2.Shuffle(T{y}, 0xF5);";
+Func<int, string> INIT_Y = (y) => $"Vector256<uint> T{y} = t[(j + y) * B + k + l];var T13{y} = Shuffle(T{y}, 0xF5);";
 
 Func<int, int, string> PROD = (x, y) => @$"var S{x}{y} = Vector256.Create(s[(i + {x}) * B8 + k / 8].Value.GetElement(l));
-var ST02{x}{y} = Avx2.Multiply(S{x}{y}, T{y});
-var ST13{x}{y} = Avx2.Multiply(S{x}{y}, T13{y});
-prod02{x}{y} = Avx2.Add(prod02{x}{y}, ST02{x}{y});
-prod13{x}{y} = Avx2.Add(prod13{x}{y}, ST13{x}{y});";
+var ST02{x}{y} = Multiply(S{x}{y}, T{y});
+var ST13{x}{y} = Multiply(S{x}{y}, T13{y});
+prod02{x}{y} = Add(prod02{x}{y}, ST02{x}{y});
+prod13{x}{y} = Add(prod13{x}{y}, ST13{x}{y});";
 
-Func<int, int, string> COMP = (x, y) => @$"var cmp02{x}{y} = Avx2.CompareGreaterThan(zero.AsInt64(), prod02{x}{y}.AsInt64());
-var cmp13{x}{y} = Avx2.CompareGreaterThan(zero.AsInt64(), prod13{x}{y}.AsInt64());
-var dif02{x}{y} = Avx2.And(cmp02{x}{y}, th2);
-var dif13{x}{y} = Avx2.And(cmp13{x}{y}, th2);
-prod02{x}{y} = Avx2.Subtract(prod02{x}{y}, dif02{x}{y}.AsUInt64());
-prod13{x}{y} = Avx2.Subtract(prod13{x}{y}, dif13{x}{y}.AsUInt64());";
+Func<int, int, string> COMP = (x, y) => @$"var cmp02{x}{y} = CompareGreaterThan(zero.AsInt64(), prod02{x}{y}.AsInt64());
+var cmp13{x}{y} = CompareGreaterThan(zero.AsInt64(), prod13{x}{y}.AsInt64());
+var dif02{x}{y} = And(cmp02{x}{y}, th2);
+var dif13{x}{y} = And(cmp13{x}{y}, th2);
+prod02{x}{y} = Subtract(prod02{x}{y}, dif02{x}{y}.AsUInt64());
+prod13{x}{y} = Subtract(prod13{x}{y}, dif13{x}{y}.AsUInt64());";
 
 Func<int, int, string> REDUCE = (x, y) => @$"
   for (int _ = 0; _ < 2; _++) {{
-    var cmp02 = Avx2.CompareGreaterThan(prod02{x}{y}.AsInt64(), th1);
-    var cmp13 = Avx2.CompareGreaterThan(prod13{x}{y}.AsInt64(), th1);
-    var dif02 = Avx2.And(cmp02, th1);
-    var dif13 = Avx2.And(cmp13, th1);
-    prod02{x}{y} = Avx2.Subtract(prod02{x}{y}, dif02.AsUInt64());
-    prod13{x}{y} = Avx2.Subtract(prod13{x}{y}, dif13.AsUInt64());
+    var cmp02 = CompareGreaterThan(prod02{x}{y}.AsInt64(), th1);
+    var cmp13 = CompareGreaterThan(prod13{x}{y}.AsInt64(), th1);
+    var dif02 = And(cmp02, th1);
+    var dif13 = And(cmp13, th1);
+    prod02{x}{y} = Subtract(prod02{x}{y}, dif02.AsUInt64());
+    prod13{x}{y} = Subtract(prod13{x}{y}, dif13.AsUInt64());
   }}
   u[(i + {x}) * B8 + j + {y}] = VectorizedStaticModInt<T>.Reduce(prod02{x}{y}.AsUInt32(), prod13{x}{y}.AsUInt32());";
 #>
@@ -42,6 +42,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+using static Avx2;
     public static partial class __MatrixProdStrassen
     {
     public readonly partial struct Impl<T>
@@ -51,12 +52,12 @@ namespace Kzrnm.Competitive
         {
             for (int i = 0; i < B * B8; i++)
             {
-                var cmpS = Avx2.CompareGreaterThan(s[i].Value.AsInt32(), VectorizedStaticModInt<T>.M1.AsInt32()).AsUInt32();
-                var cmpT = Avx2.CompareGreaterThan(t[i].Value.AsInt32(), VectorizedStaticModInt<T>.M1.AsInt32()).AsUInt32();
-                var difS = Avx2.And(cmpS, VectorizedStaticModInt<T>.M1);
-                var difT = Avx2.And(cmpT, VectorizedStaticModInt<T>.M1);
-                s[i] = Avx2.Subtract(s[i].Value, difS);
-                t[i] = Avx2.Subtract(t[i].Value, difT);
+                var cmpS = CompareGreaterThan(s[i].Value.AsInt32(), VectorizedStaticModInt<T>.M1.AsInt32()).AsUInt32();
+                var cmpT = CompareGreaterThan(t[i].Value.AsInt32(), VectorizedStaticModInt<T>.M1.AsInt32()).AsUInt32();
+                var difS = And(cmpS, VectorizedStaticModInt<T>.M1);
+                var difT = And(cmpT, VectorizedStaticModInt<T>.M1);
+                s[i] = Subtract(s[i].Value, difS);
+                t[i] = Subtract(t[i].Value, difT);
             }
 
             var m1v = VectorizedStaticModInt<T>.M1.GetElement(0);
@@ -79,7 +80,7 @@ namespace Kzrnm.Competitive
                 <#= INIT_X(7, 0) #>
                 for (int k = 0; k < B; k += 8) {
                   for (int l = 0; l < 8; l++) {
-                    Vector256<uint> T0 = t[j * B + k + l].Value;var T130 = Avx2.Shuffle(T0, 0xF5);
+                    Vector256<uint> T0 = t[j * B + k + l].Value;var T130 = Shuffle(T0, 0xF5);
                     <#= PROD(0, 0) #>
                     <#= PROD(1, 0) #>
                     <#= PROD(2, 0) #>

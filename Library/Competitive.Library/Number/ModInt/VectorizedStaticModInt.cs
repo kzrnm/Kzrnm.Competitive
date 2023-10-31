@@ -7,8 +7,9 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 // https://nyaannyaan.github.io/library/modint/vectorize-modint.hpp
 namespace Kzrnm.Competitive
 {
+    using static Avx2;
     /// <summary>
-    /// <see cref="Vector256{T}"/> で <see cref="StaticModInt{T}"/> の演算を行う型
+    /// <see cref="Vector256{T}"/> で <see cref="MontgomeryModInt{T}"/> の演算を行う型
     /// </summary>
     public readonly struct VectorizedStaticModInt<T> : IEquatable<VectorizedStaticModInt<T>>
         where T : struct, IStaticMod
@@ -63,20 +64,20 @@ namespace Kzrnm.Competitive
         [凾(256 | 512)]
         public static Vector256<uint> Reduce(Vector256<uint> prod02, Vector256<uint> prod13)
         {
-            var unpalo = Avx2.UnpackLow(prod02, prod13);
-            var unpahi = Avx2.UnpackHigh(prod02, prod13);
-            var prodlo = Avx2.UnpackLow(unpalo.AsUInt64(), unpahi.AsUInt64()).AsUInt32();
-            var prodhi = Avx2.UnpackHigh(unpalo.AsUInt64(), unpahi.AsUInt64()).AsUInt32();
-            var hiplm1 = Avx2.Add(prodhi.AsUInt32(), M1);
-            var prodlohi = Avx2.Shuffle(prodlo, 0xF5);
-            var lmlr02 = Avx2.Multiply(prodlo, R).AsUInt32();
-            var lmlr13 = Avx2.Multiply(prodlohi, R).AsUInt32();
-            var prod02_ = Avx2.Multiply(lmlr02, M1).AsUInt32();
-            var prod13_ = Avx2.Multiply(lmlr13, M1).AsUInt32();
-            var unpalo_ = Avx2.UnpackLow(prod02_, prod13_);
-            var unpahi_ = Avx2.UnpackHigh(prod02_, prod13_);
-            var prod = Avx2.UnpackHigh(unpalo_.AsUInt64(), unpahi_.AsUInt64()).AsUInt32();
-            return Avx2.Subtract(hiplm1, prod);
+            var unpalo = UnpackLow(prod02, prod13);
+            var unpahi = UnpackHigh(prod02, prod13);
+            var prodlo = UnpackLow(unpalo.AsUInt64(), unpahi.AsUInt64()).AsUInt32();
+            var prodhi = UnpackHigh(unpalo.AsUInt64(), unpahi.AsUInt64()).AsUInt32();
+            var hiplm1 = Add(prodhi.AsUInt32(), M1);
+            var prodlohi = Shuffle(prodlo, 0xF5);
+            var lmlr02 = Multiply(prodlo, R).AsUInt32();
+            var lmlr13 = Multiply(prodlohi, R).AsUInt32();
+            var prod02_ = Multiply(lmlr02, M1).AsUInt32();
+            var prod13_ = Multiply(lmlr13, M1).AsUInt32();
+            var unpalo_ = UnpackLow(prod02_, prod13_);
+            var unpahi_ = UnpackHigh(prod02_, prod13_);
+            var prod = UnpackHigh(unpalo_.AsUInt64(), unpahi_.AsUInt64()).AsUInt32();
+            return Subtract(hiplm1, prod);
         }
 
         [凾(256)]
@@ -86,17 +87,17 @@ namespace Kzrnm.Competitive
         public VectorizedStaticModInt<T> Mtoi()
         {
             var A = Value;
-            var A13 = Avx2.Shuffle(A, 0xF5);
-            var lmlr02 = Avx2.Multiply(A, R).AsUInt32();
-            var lmlr13 = Avx2.Multiply(A13, R).AsUInt32();
-            var prod02_ = Avx2.Multiply(lmlr02, M1).AsUInt32();
-            var prod13_ = Avx2.Multiply(lmlr13, M1).AsUInt32();
-            var unpalo_ = Avx2.UnpackLow(prod02_, prod13_);
-            var unpahi_ = Avx2.UnpackHigh(prod02_, prod13_);
-            var prod = Avx2.UnpackHigh(unpalo_.AsUInt64(), unpahi_.AsUInt64()).AsUInt32();
-            var cmp = Avx2.CompareGreaterThan(prod.AsInt32(), Vector256<int>.Zero).AsUInt32();
-            var dif = Avx2.And(cmp, M1);
-            return new VectorizedStaticModInt<T>(Avx2.Subtract(dif, prod));
+            var A13 = Shuffle(A, 0xF5);
+            var lmlr02 = Multiply(A, R).AsUInt32();
+            var lmlr13 = Multiply(A13, R).AsUInt32();
+            var prod02_ = Multiply(lmlr02, M1).AsUInt32();
+            var prod13_ = Multiply(lmlr13, M1).AsUInt32();
+            var unpalo_ = UnpackLow(prod02_, prod13_);
+            var unpahi_ = UnpackHigh(prod02_, prod13_);
+            var prod = UnpackHigh(unpalo_.AsUInt64(), unpahi_.AsUInt64()).AsUInt32();
+            var cmp = CompareGreaterThan(prod.AsInt32(), Vector256<int>.Zero).AsUInt32();
+            var dif = And(cmp, M1);
+            return new VectorizedStaticModInt<T>(Subtract(dif, prod));
         }
 
         [凾(256 | 512)]
@@ -104,11 +105,11 @@ namespace Kzrnm.Competitive
         {
             var A = lhs.Value;
             var B = rhs.Value;
-            var apb = Avx2.Add(A, B);
-            var ret = Avx2.Subtract(apb, M2);
-            var cmp = Avx2.CompareGreaterThan(Vector256<int>.Zero, ret.AsInt32()).AsUInt32();
-            var add = Avx2.And(cmp, M2);
-            return new VectorizedStaticModInt<T>(Avx2.Add(add, ret));
+            var apb = Add(A, B);
+            var ret = Subtract(apb, M2);
+            var cmp = CompareGreaterThan(Vector256<int>.Zero, ret.AsInt32()).AsUInt32();
+            var add = And(cmp, M2);
+            return new VectorizedStaticModInt<T>(Add(add, ret));
         }
 
         [凾(256 | 512)]
@@ -116,10 +117,10 @@ namespace Kzrnm.Competitive
         {
             var A = lhs.Value;
             var B = rhs.Value;
-            var ret = Avx2.Subtract(A, B);
-            var cmp = Avx2.CompareGreaterThan(Vector256<int>.Zero, ret.AsInt32()).AsUInt32();
-            var add = Avx2.And(cmp, M2);
-            return new VectorizedStaticModInt<T>(Avx2.Add(add, ret));
+            var ret = Subtract(A, B);
+            var cmp = CompareGreaterThan(Vector256<int>.Zero, ret.AsInt32()).AsUInt32();
+            var add = And(cmp, M2);
+            return new VectorizedStaticModInt<T>(Add(add, ret));
         }
 
         [凾(256 | 512)]
@@ -127,10 +128,10 @@ namespace Kzrnm.Competitive
         {
             var A = lhs.Value;
             var B = rhs.Value;
-            var a13 = Avx2.Shuffle(A, 0xF5);
-            var b13 = Avx2.Shuffle(B, 0xF5);
-            var prod02 = Avx2.Multiply(A, B);
-            var prod13 = Avx2.Multiply(a13, b13);
+            var a13 = Shuffle(A, 0xF5);
+            var b13 = Shuffle(B, 0xF5);
+            var prod02 = Multiply(A, B);
+            var prod13 = Multiply(a13, b13);
             return new VectorizedStaticModInt<T>(Reduce(prod02.AsUInt32(), prod13.AsUInt32()));
         }
     }
