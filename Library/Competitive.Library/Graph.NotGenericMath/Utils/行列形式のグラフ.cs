@@ -63,7 +63,7 @@ namespace Kzrnm.Competitive
                 arr[i * N + i] = g[i].Children.Length;
                 foreach (var e in g[i].Children)
                 {
-                    arr[i * N + e.To] = -1;
+                    --arr[i * N + e.To];
                 }
             }
             return new ArrayMatrix<int, IntOperator>(arr, N, N);
