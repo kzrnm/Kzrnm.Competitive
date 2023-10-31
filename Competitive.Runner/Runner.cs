@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Competitive.Runner
 {
-    public class Runner
+    public partial class Runner
     {
         private class ResouceSource : TheoryData<string, string>
         {
@@ -27,7 +27,6 @@ namespace Competitive.Runner
             }
         }
 
-        static readonly Regex doubleRegex = new Regex(@"^\d+\.\d+$", RegexOptions.IgnoreCase);
         [Theory(Timeout = 4000)]
         [ClassData(typeof(ResouceSource))]
         public Task FromSource(string input, string output) => Task.Run(() =>
@@ -40,12 +39,14 @@ namespace Competitive.Runner
             new Program(cr, cw).Run();
 
             var result = encoding.GetString(outStream.ToArray());
-            if (doubleRegex.IsMatch(output))
+            if (DoubleRegex().IsMatch(output))
                 Assert.Equal(double.Parse(output), double.Parse(result), 10);
             else
                 Assert.Equal(Normalize(output), Normalize(result));
 
             static string Normalize(string s) => s.Replace("\r\n", "\n").Trim();
         });
+        [GeneratedRegex("^\\d+\\.\\d+$", RegexOptions.IgnoreCase, "ja-JP")]
+        private static partial Regex DoubleRegex();
     }
 }
