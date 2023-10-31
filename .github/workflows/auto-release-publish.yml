@@ -26,16 +26,22 @@ jobs:
   get-version:
     runs-on: ubuntu-latest
     outputs:
+      release: ${{ steps.release.outputs.release }}
       date: ${{ steps.date.outputs.date }}
       is-new-month: ${{ steps.prev-version.outputs.is-new-month }}
     steps:
       - uses: actions/checkout@v4
       - id: date
-        run: echo "date=$(date "+%Y.%m%d.%H%M")" >> $GITHUB_OUTPUT
+        name: date
+        run: echo "date=$(date "+%Y.%m%d.%H%M")" | tee $GITHUB_OUTPUT
         env:
           TZ: Asia/Tokyo
       - id: prev-version
-        run: python tools/action/prev_version.py ${{ steps.date.outputs.date }} >> $GITHUB_OUTPUT
+        name: prev-version
+        run: python tools/action/prev_version.py ${{ steps.date.outputs.date }} | tee $GITHUB_OUTPUT
+      - id: release
+        name: release
+        run: echo "release=${{fromJson(inputs.force-release || steps.prev-version.outputs.is-new-month)}}" | tee $GITHUB_OUTPUT
 
   build:
     runs-on: ubuntu-latest
@@ -70,7 +76,7 @@ jobs:
   publish:
     needs: [get-version, build]
     uses: kzrnm/dotnet-actions/.github/workflows/publish.yml@v1
-    if: fromJson(inputs.force-release || needs.get-version.outputs.is-new-month)
+    if: needs.get-version.outputs.release
     with:
       artifact-name: dist
       version: ${{needs.get-version.outputs.date}}
