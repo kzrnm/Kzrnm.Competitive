@@ -37,7 +37,7 @@ namespace Kzrnm.Competitive
                 var orig = Matrix.Value;
                 var n = Matrix.Height - 1;
                 var a = new StaticModInt<T>[n][];
-                for (int i = 0; i < a.Length; i += n)
+                for (int i = 0; i < a.Length; i++)
                 {
                     a[i] = new StaticModInt<T>[n];
                     ref var head = ref a[i][0];
