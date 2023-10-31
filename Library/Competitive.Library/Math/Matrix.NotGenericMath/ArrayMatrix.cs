@@ -49,19 +49,29 @@ namespace Kzrnm.Competitive
         public ArrayMatrix(ReadOnlySpan<T> span, int height, int width) : this(span.ToArray(), height, width) { }
         public ArrayMatrix(T[][] m)
         {
-            kind = Kd.Normal;
-            var height = m.Length;
-            var width = m[0].Length;
-            kind = Kd.Normal;
-            Height = height;
-            Width = width;
-            var val = new T[height * width];
-            for (int i = 0; i < m.Length; i++)
+            if (m.Length == 0)
             {
-                Contract.Assert(m[i].Length == width);
-                m[i].AsSpan().CopyTo(val.AsSpan(i * width));
+                kind = Kd.Normal;
+                Value = Array.Empty<T>();
+                Height = 0;
+                Width = 0;
             }
-            Value = val;
+            else
+            {
+                kind = Kd.Normal;
+                var height = m.Length;
+                var width = m[0].Length;
+                kind = Kd.Normal;
+                Height = height;
+                Width = width;
+                var val = new T[height * width];
+                for (int i = 0; i < m.Length; i++)
+                {
+                    Contract.Assert(m[i].Length == width);
+                    m[i].AsSpan().CopyTo(val.AsSpan(i * width));
+                }
+                Value = val;
+            }
         }
         public ArrayMatrix(T[,] m)
         {
