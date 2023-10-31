@@ -32,7 +32,6 @@ public class BenchmarkConfig : ManualConfig
     {
         //AddDiagnoser(MemoryDiagnoser.Default);
         AddExporter(BenchmarkDotNet.Exporters.MarkdownExporter.GitHub);
-        AddJob(Job.ShortRun.WithToolchain(CsProjCoreToolchain.NetCoreApp31));
         AddJob(Job.ShortRun.WithToolchain(CsProjCoreToolchain.NetCoreApp70));
     }
 }
@@ -77,16 +76,6 @@ public class Benchmark
     [Benchmark]
     [BenchmarkCategory("ListAdd")]
     public long NewListAdd()
-    {
-        var list = new PoolList<long>(N);
-        for (int i = 0; i < N; i++)
-            list.Add(rnd.Next());
-        return list[^1];
-    }
-
-    [Benchmark]
-    [BenchmarkCategory("ListAdd")]
-    public long StackListAdd()
     {
         var list = new PoolList<long>(N);
         for (int i = 0; i < N; i++)
