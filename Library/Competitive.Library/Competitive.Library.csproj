@@ -74,11 +74,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Matrix6x6.tt</DependentUpon>
     </Compile>
-    <None Update="Math\Matrix\MatrixProdStrassen.Simd.tt">
+    <None Update="Math\Matrix\Extensions\MatrixProdStrassen.Simd.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MatrixProdStrassen.Simd.cs</LastGenOutput>
     </None>
-    <Compile Update="Math\Matrix\MatrixProdStrassen.Simd.cs">
+    <Compile Update="Math\Matrix\Extensions\MatrixProdStrassen.Simd.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>MatrixProdStrassen.Simd.tt</DependentUpon>
