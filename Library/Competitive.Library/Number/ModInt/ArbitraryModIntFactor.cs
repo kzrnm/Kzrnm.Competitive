@@ -1,4 +1,3 @@
-using AtCoder;
 using AtCoder.Internal;
 using Kzrnm.Competitive.Internal;
 using System;

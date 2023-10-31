@@ -1,8 +1,8 @@
 // Original: https://ei1333.github.io/library/structure/wavelet/wavelet-matrix.cpp.html
 using AtCoder;
-using System.Numerics;
 using Kzrnm.Competitive.Internal;
 using System;
+using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive

@@ -1,7 +1,6 @@
-using System;
 using System.Linq;
-using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 using System.Numerics;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {

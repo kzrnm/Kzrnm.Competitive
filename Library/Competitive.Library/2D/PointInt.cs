@@ -3,8 +3,8 @@ using Kzrnm.Competitive.IO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 using System.Numerics;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {

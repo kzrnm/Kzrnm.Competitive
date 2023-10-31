@@ -1,7 +1,6 @@
 using AtCoder;
 using System;
 using System.Buffers;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;

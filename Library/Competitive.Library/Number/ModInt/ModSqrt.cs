@@ -3,7 +3,6 @@ using AtCoder.Internal;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
-
 namespace Kzrnm.Competitive
 {
     using static ModCalc;

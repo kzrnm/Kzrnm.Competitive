@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Numerics;
 using System.Runtime.Intrinsics.X86;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;

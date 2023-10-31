@@ -85,7 +85,7 @@ namespace Kzrnm.Competitive
         /// lazy を伝搬させる
         /// </summary>
         [凾(256)]
-        Node Propagate(Node t)
+        static Node Propagate(Node t)
         {
             if (t != null)
             {

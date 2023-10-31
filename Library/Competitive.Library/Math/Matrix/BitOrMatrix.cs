@@ -1,10 +1,10 @@
 using AtCoder.Internal;
 using System;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using BitArray = System.Collections.BitArray;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
-using System.Numerics;
 
 namespace Kzrnm.Competitive
 {

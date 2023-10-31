@@ -47,7 +47,7 @@ namespace Kzrnm.Competitive
                 gcd = Gcd(nums[i], gcd);
             return gcd;
         }
-        
+
         /// <summary>
         /// 最大公約数
         /// </summary>

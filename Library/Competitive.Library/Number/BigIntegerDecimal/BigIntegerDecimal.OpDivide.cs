@@ -161,7 +161,6 @@ namespace Kzrnm.Competitive
 
             if (trivialDivisor)
             {
-                uint rest;
 
                 uint[] bitsFromPool = null;
                 int size = dividend.digits.Length;
@@ -172,7 +171,7 @@ namespace Kzrnm.Competitive
                 try
                 {
                     // may throw DivideByZeroException
-                    Divide(dividend.digits, (uint)Math.Abs(divisor.sign), quotient, out rest);
+                    Divide(dividend.digits, (uint)Math.Abs(divisor.sign), quotient, out uint rest);
 
                     remainder = dividend.sign < 0 ? -1 * rest : rest;
                     return new BigIntegerDecimal(quotient, (dividend.sign < 0) ^ (divisor.sign < 0));
@@ -319,7 +318,7 @@ namespace Kzrnm.Competitive
             // However, mutated left is not used afterwards, so use array pooling or stack alloc
             Span<uint> leftCopy = (left.Length <= StackAllocThreshold ?
                                   stackalloc uint[StackAllocThreshold]
-                                  : leftCopyFromPool = ArrayPool<uint>.Shared.Rent(left.Length)).Slice(0, left.Length);
+                                  : leftCopyFromPool = ArrayPool<uint>.Shared.Rent(left.Length))[..left.Length];
             left.CopyTo(leftCopy);
 
             Divide2(leftCopy, right, quotient);

@@ -243,7 +243,7 @@ namespace Kzrnm.Competitive
         [SourceExpander.NotEmbeddingSource]
 #endif
         [DebuggerDisplay("{" + nameof(value) + "}", Name = "{" + nameof(key) + ",nq}")]
-        private struct DebugItem
+        private readonly struct DebugItem
         {
             public DebugItem(TKey[] key, TValue value)
             {

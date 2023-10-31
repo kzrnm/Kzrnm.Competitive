@@ -1,5 +1,5 @@
-using System.Linq;
 using Kzrnm.Competitive.IO;
+using System.Linq;
 
 namespace Kzrnm.Competitive.Graph
 {
