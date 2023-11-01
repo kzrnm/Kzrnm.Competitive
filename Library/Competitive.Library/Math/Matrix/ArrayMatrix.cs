@@ -41,6 +41,7 @@ namespace Kzrnm.Competitive
 
         public ArrayMatrix(T[] value, int height, int width)
         {
+            Contract.Assert(value.Length == height * width, "value.Length が不正です。");
             kind = Kd.Normal;
             Height = height;
             Width = width;
@@ -368,7 +369,7 @@ namespace Kzrnm.Competitive
         /// <param name="isReduced">行標準形にするかどうか。false ならば上三角行列</param>
         /// <returns>0ではない列のインデックス</returns>
         [凾(256)]
-        private static List<int> GaussianEliminationImpl(T[][] arr, bool isReduced)
+        internal static List<int> GaussianEliminationImpl(T[][] arr, bool isReduced)
         {
             var idx = new List<int>(arr.Length);
             int r = 0;

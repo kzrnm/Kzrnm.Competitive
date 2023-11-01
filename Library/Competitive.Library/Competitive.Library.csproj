@@ -60,6 +60,11 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Matrix5x5.cs</LastGenOutput>
     </None>
+    <Compile Update="Math\Matrix\Extensions\MatrixProdStrassen.Simd.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MatrixProdStrassen.Simd.tt</DependentUpon>
+    </Compile>
     <Compile Update="Math\Matrix\Matrix5x5.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -78,10 +83,5 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MatrixProdStrassen.Simd.cs</LastGenOutput>
     </None>
-    <Compile Update="Math\Matrix\Extensions\MatrixProdStrassen.Simd.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>MatrixProdStrassen.Simd.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
 </Project>
