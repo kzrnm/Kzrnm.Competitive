@@ -11,8 +11,7 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 多項式
     /// </summary>
-    public class Polynomial<T>
-        where T : INumberBase<T>
+    public class Polynomial<T> where T : INumberBase<T>
     {
         /// <summary>
         /// 多項式の係数
@@ -30,6 +29,8 @@ namespace Kzrnm.Competitive
                 span = span[..^1];
             Coefficients = span.ToArray();
         }
+
+        [凾(256)] public static implicit operator Polynomial<T>(T v) => new(new[] { v });
 
         public override string ToString() => string.Join(", ", Coefficients);
 
