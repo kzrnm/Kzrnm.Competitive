@@ -51,12 +51,12 @@ namespace Kzrnm.Competitive.Testing.Number
             var factor = new MontgomeryModInt1000000007Factor(10);
             int expected = 1;
             factor.Factorial(0).Value.Should().Be(1);
-            factor.FactorialInvers(0).Value.Should().Be(1);
+            factor.FactorialInverse(0).Value.Should().Be(1);
             for (int i = 1; i <= 10; i++)
             {
                 expected *= i;
                 factor.Factorial(i).Value.Should().Be(expected);
-                factor.FactorialInvers(i).Should().Be(MontgomeryModInt<Mod1000000007>.One / expected);
+                factor.FactorialInverse(i).Should().Be(MontgomeryModInt<Mod1000000007>.One / expected);
             }
             factor.Invoking(factor => factor.Factorial(11)).Should().Throw<Exception>();
         }

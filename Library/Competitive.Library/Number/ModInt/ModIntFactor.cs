@@ -28,6 +28,7 @@ namespace Kzrnm.Competitive
 
         public ModIntFactor(int max)
         {
+            if (max == 0) ++max;
             fac = new T[++max];
             finv = new T[max];
             fac[0] = fac[1] = T.One;
@@ -62,6 +63,17 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
+        /// <paramref name="n"/> の逆数
+        /// </summary>
+        [凾(256)]
+        public T Inverse(int n) => n switch
+        {
+            > 0 => finv[n] * fac[n - 1],
+            < 0 => -Inverse(-n),
+            0 => T.Zero, // ゼロ除算だが気にしないでおく
+        };
+
+        /// <summary>
         /// <paramref name="n"/> の階乗
         /// </summary>
         [凾(256)]
@@ -71,7 +83,7 @@ namespace Kzrnm.Competitive
         /// <paramref name="n"/> の階乗の逆数
         /// </summary>
         [凾(256)]
-        public T FactorialInvers(int n) => finv[n];
+        public T FactorialInverse(int n) => finv[n];
 
 
         /// <summary>

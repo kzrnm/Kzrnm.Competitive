@@ -438,5 +438,37 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 fps.Pow(n)._cs.Should().Equal(new FormalPowerSeries<T>(expected)._cs);
             }
         }
+
+
+        [Fact]
+        public void TaylorShift()
+        {
+            RunTest<Mod998244353>(new int[] { 2, 3, 4, 5, 6 });
+            RunTest<Mod998244353>(new int[] { 2, 3, 4 });
+            RunTest<Mod998244353>(new int[] { 0, 0, 2, 3, 4, 5, 6 });
+            RunTest<Mod998244353>(new int[0]);
+
+            RunTest<Mod1000000007>(new int[] { 2, 3, 4 });
+            RunTest<Mod1000000007>(new int[] { 2, 3, 4, 5, 6 });
+            RunTest<Mod1000000007>(new int[] { 0, 0, 2, 3, 4, 5, 6 });
+            RunTest<Mod1000000007>(new int[0]);
+
+            static void RunTest<T>(int[] fpsArray) where T : struct, IStaticMod
+            {
+                var fac = new ModIntFactor<MontgomeryModInt<T>>(fpsArray.Length);
+                var f = new FormalPowerSeries<T>(fpsArray);
+                var rnd = new Random(227);
+
+                for (int shift = -20; shift < 20; shift++)
+                {
+                    var g = f.TaylorShift(shift, fac);
+                    for (int i = 0; i < 1000; i++)
+                    {
+                        MontgomeryModInt<T> x = rnd.Next();
+                        f.Eval(x + shift).Should().Be(g.Eval(x));
+                    }
+                }
+            }
+        }
     }
 }

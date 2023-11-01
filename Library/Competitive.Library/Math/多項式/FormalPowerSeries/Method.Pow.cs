@@ -5,7 +5,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive
 {
     /// <summary>
-    /// 形式的冪級数の対数
+    /// 形式的冪級数の冪関数
     /// </summary>
     public static class __FormalPowerSeries__Pow
     {

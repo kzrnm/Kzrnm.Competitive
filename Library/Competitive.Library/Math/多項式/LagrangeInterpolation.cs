@@ -85,7 +85,7 @@ namespace Kzrnm.Competitive
             for (int i = pd.Length - 1; i > 0; i--) pd[i - 1] = pd[i] * (x - i);
             for (int i = 0; i < dp.Length; i++)
             {
-                var t = y[i] * dp[i] * pd[i] * combination.FactorialInvers(i) * combination.FactorialInvers(y.Length - i - 1);
+                var t = y[i] * dp[i] * pd[i] * combination.FactorialInverse(i) * combination.FactorialInverse(y.Length - i - 1);
                 if (((y.Length ^ i) & 1) == 0) ret -= t;
                 else ret += t;
             }
