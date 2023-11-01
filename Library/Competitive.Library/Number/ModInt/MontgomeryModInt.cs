@@ -179,8 +179,8 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public bool Equals(MontgomeryModInt<T> other)
         {
-            var v1 = _v;
-            var v2 = other._v;
+            var v1 = Reduce(_v);
+            var v2 = Reduce(other._v);
 
             if (v1 >= op.Mod) v1 -= op.Mod;
             if (v2 >= op.Mod) v2 -= op.Mod;
@@ -188,7 +188,7 @@ namespace Kzrnm.Competitive
         }
         [凾(256)] public static bool operator ==(MontgomeryModInt<T> left, MontgomeryModInt<T> right) => Equals(left, right);
         [凾(256)] public static bool operator !=(MontgomeryModInt<T> left, MontgomeryModInt<T> right) => !Equals(left, right);
-        [凾(256)] public override int GetHashCode() => (int)_v;
+        [凾(256)] public override int GetHashCode() => Value;
 
         public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => Value.TryFormat(destination, out charsWritten, format, provider);
         public string ToString(string format, IFormatProvider formatProvider) => Value.ToString(format, formatProvider);
