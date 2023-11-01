@@ -380,6 +380,9 @@ namespace Kzrnm.Competitive
             public TValue Value { get; }
             public F Lazy { get; }
         }
+#if !LIBRARY
+        [SourceExpander.NotEmbeddingSource]
+#endif
         private class DebugView
         {
             private readonly SLazySegtree<TValue, F, TOp> s;
@@ -387,9 +390,7 @@ namespace Kzrnm.Competitive
             {
                 s = segtree;
             }
-#if !LIBRARY
-            [SourceExpander.NotEmbeddingSource]
-#endif
+
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
             public DebugItem[] Items
             {

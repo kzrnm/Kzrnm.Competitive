@@ -2,6 +2,7 @@ using AtCoder.Internal;
 using Kzrnm.Competitive.IO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -10,6 +11,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive
 {
     using Kd = Internal.ArrayMatrixKind;
+    [DebuggerTypeProxy(typeof(ArrayMatrix<>.DebugView))]
     public readonly struct ArrayMatrix<T> : Internal.IMatrixOperator<ArrayMatrix<T>>
         , IMultiplyOperators<ArrayMatrix<T>, T, ArrayMatrix<T>>
         where T : INumberBase<T>
@@ -367,8 +369,9 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <param name="arr">対象の行列</param>
         /// <param name="isReduced">行標準形にするかどうか。false ならば上三角行列</param>
-        /// <returns>0ではない列のインデックス</returns>
+        /// <returns>(行列式, 0ではない列のインデックス)</returns>
         [凾(256)]
+        //internal static (T det, List<int> idxs) GaussianEliminationImpl(T[][] arr, bool isReduced)
         internal static List<int> GaussianEliminationImpl(T[][] arr, bool isReduced)
         {
             var idx = new List<int>(arr.Length);
@@ -508,6 +511,44 @@ namespace Kzrnm.Competitive
         public static bool operator ==(ArrayMatrix<T> left, ArrayMatrix<T> right) => left.Equals(right);
         [凾(256)]
         public static bool operator !=(ArrayMatrix<T> left, ArrayMatrix<T> right) => !(left == right);
+
+#if !LIBRARY
+        [SourceExpander.NotEmbeddingSource]
+#endif
+        class DebugView
+        {
+            private readonly ArrayMatrix<T> m;
+            public Kd Kind => m.kind;
+            public DebugView(ArrayMatrix<T> matrix)
+            {
+                m = matrix;
+            }
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            public Item[] Items
+            {
+                get
+                {
+                    if (m.kind != Kd.Normal) return null;
+                    var a = m.ToArray();
+                    return a.Select(r => new Item(r)).ToArray();
+                }
+            }
+
+            internal readonly struct Item
+            {
+                [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+                public readonly T[] Row;
+                public Item(T[] row)
+                {
+                    Row = row;
+                }
+
+                public override string ToString()
+                    => Row.Length < 50
+                    ? string.Join(' ', Row)
+                    : (string.Join(' ', Row.Take(50)) + ",...");
+            }
+        }
     }
     public static class __ArrayMatrix_WriteGrid
     {

@@ -1,6 +1,7 @@
 using AtCoder.Internal;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using BitArray = System.Collections.BitArray;
@@ -12,6 +13,7 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// Mod2 の行列。+: xor *: and
     /// </summary>
+    [DebuggerTypeProxy(typeof(DebugView))]
     public readonly struct BitMatrix
         : Internal.IMatrixOperator<BitMatrix>
     {
@@ -393,6 +395,20 @@ namespace Kzrnm.Competitive
                     throw new FormatException("Row length are diffrent.");
             }
             return new BitMatrix(arr);
+        }
+
+#if !LIBRARY
+        [SourceExpander.NotEmbeddingSource]
+#endif
+        class DebugView
+        {
+            private readonly BitMatrix m;
+            public DebugView(BitMatrix matrix)
+            {
+                m = matrix;
+            }
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            public BitArrayDebug Items => new(m.Value);
         }
     }
 }

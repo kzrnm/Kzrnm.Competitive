@@ -2,6 +2,7 @@ using AtCoder.Internal;
 using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -14,6 +15,7 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// Mod2 の行列。+: xor *: and
     /// </summary>
+    [DebuggerTypeProxy(typeof(BitMatrix<>.DebugView))]
     public readonly struct BitMatrix<T> : Internal.IMatrixOperator<BitMatrix<T>>
         where T : unmanaged, IBinaryInteger<T>
     {
@@ -396,6 +398,43 @@ namespace Kzrnm.Competitive
                 t[s.Length..].Fill('0');
                 t.Reverse();
                 return BinaryParser.ParseNumber<T>(t);
+            }
+        }
+
+#if !LIBRARY
+        [SourceExpander.NotEmbeddingSource]
+#endif
+        class DebugView
+        {
+            private readonly BitMatrix<T> m;
+            public DebugView(BitMatrix<T> matrix)
+            {
+                m = matrix;
+            }
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            internal Item[] Items => m.Value.Select(v => new Item(v)).ToArray();
+
+            internal readonly record struct Item(T Value)
+            {
+                public override string ToString()
+                {
+                    // TODO: .NET 8 か 9 以降では 2 進数の Parse/Format ができるようになりそう
+                    // https://github.com/dotnet/runtime/issues/83619
+                    var v = Value;
+                    var bitSize = BitSize();
+                    var charsSize = (bitSize + 63) / 64;
+                    var sb = new StringBuilder(bitSize + 2);
+                    for (int i = 0; i < charsSize; i++)
+                    {
+                        var chars = Convert.ToString(long.CreateTruncating(v), 2).ToCharArray();
+                        Array.Reverse(chars);
+                        sb.Append(chars).Append('0', 64 - chars.Length);
+                        v >>= 64;
+                    }
+                    while (sb.Length > bitSize)
+                        sb.Remove(sb.Length - 1, 1);
+                    return sb.ToString();
+                }
             }
         }
     }

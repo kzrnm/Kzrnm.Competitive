@@ -1,5 +1,6 @@
 using AtCoder.Internal;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -12,6 +13,7 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// OR 演算の行列。+: or *: and
     /// </summary>
+    [DebuggerTypeProxy(typeof(DebugView))]
     public readonly struct BitOrMatrix
         : Internal.IMatrixOperator<BitOrMatrix>
     {
@@ -224,5 +226,19 @@ namespace Kzrnm.Competitive
 
         static BitOrMatrix ISubtractionOperators<BitOrMatrix, BitOrMatrix, BitOrMatrix>.operator -(BitOrMatrix left, BitOrMatrix right) => throw new NotSupportedException();
         static BitOrMatrix IUnaryNegationOperators<BitOrMatrix, BitOrMatrix>.operator -(BitOrMatrix value) => throw new NotSupportedException();
+
+#if !LIBRARY
+        [SourceExpander.NotEmbeddingSource]
+#endif
+        class DebugView
+        {
+            private readonly BitOrMatrix m;
+            public DebugView(BitOrMatrix matrix)
+            {
+                m = matrix;
+            }
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            public BitArrayDebug Items => new(m.Value);
+        }
     }
 }
