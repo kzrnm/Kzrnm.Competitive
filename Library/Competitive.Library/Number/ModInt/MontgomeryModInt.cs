@@ -12,10 +12,11 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 奇数オンリーの ModInt
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "気にしない")]
-    public struct MontgomeryModInt<T> : IUtf8ConsoleWriterFormatter, IEquatable<MontgomeryModInt<T>>, IFormattable, IModInt<MontgomeryModInt<T>>
+    public readonly struct MontgomeryModInt<T> : IUtf8ConsoleWriterFormatter, IEquatable<MontgomeryModInt<T>>, IFormattable, IModInt<MontgomeryModInt<T>>
         where T : struct, IStaticMod
     {
+        internal readonly uint _v;
+
         static readonly T op = new T();
         internal static readonly uint n2 = (uint)(((ulong)-op.Mod) % op.Mod);
         internal static readonly uint r = GetR();
@@ -23,7 +24,6 @@ namespace Kzrnm.Competitive
         /// 1
         /// </summary>
         private static readonly MontgomeryModInt<T> _One = 1;
-        internal uint _v;
         static uint GetR()
         {
             var mod = new T().Mod;
@@ -59,6 +59,11 @@ namespace Kzrnm.Competitive
         {
             _v = a;
         }
+        /// <summary>
+        /// <para>計算済みの <paramref name="a"/> から <see cref="MontgomeryModInt{T}"/> を生成します。</para>
+        /// </summary>
+        [凾(256)]
+        internal static MontgomeryModInt<T> Raw(uint a) => new(a);
 
         [凾(256)] public static implicit operator MontgomeryModInt<T>(ulong value) => new MontgomeryModInt<T>(value);
         [凾(256)] public static implicit operator MontgomeryModInt<T>(uint value) => new MontgomeryModInt<T>((ulong)value);
@@ -177,18 +182,17 @@ namespace Kzrnm.Competitive
 
         [凾(256)] public override bool Equals(object obj) => obj is MontgomeryModInt<T> m && Equals(m);
         [凾(256)]
-        public bool Equals(MontgomeryModInt<T> other)
-        {
-            var v1 = Reduce(_v);
-            var v2 = Reduce(other._v);
+        public bool Equals(MontgomeryModInt<T> other) => GetHashCode() == other.GetHashCode();
 
-            if (v1 >= op.Mod) v1 -= op.Mod;
-            if (v2 >= op.Mod) v2 -= op.Mod;
-            return v1 == v2;
+        [凾(256)] public static bool operator ==(MontgomeryModInt<T> left, MontgomeryModInt<T> right) => left.Equals(right);
+        [凾(256)] public static bool operator !=(MontgomeryModInt<T> left, MontgomeryModInt<T> right) => !left.Equals(right);
+        [凾(256)]
+        public override int GetHashCode()
+        {
+            var v = _v;
+            if (v >= op.Mod) v -= op.Mod;
+            return (int)v;
         }
-        [凾(256)] public static bool operator ==(MontgomeryModInt<T> left, MontgomeryModInt<T> right) => Equals(left, right);
-        [凾(256)] public static bool operator !=(MontgomeryModInt<T> left, MontgomeryModInt<T> right) => !Equals(left, right);
-        [凾(256)] public override int GetHashCode() => Value;
 
         public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => Value.TryFormat(destination, out charsWritten, format, provider);
         public string ToString(string format, IFormatProvider formatProvider) => Value.ToString(format, formatProvider);

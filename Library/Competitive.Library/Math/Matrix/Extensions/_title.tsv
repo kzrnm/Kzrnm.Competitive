@@ -1,4 +1,4 @@
-MatrixProdStrassen.StaticMod.cs	Strassenのアルゴリズムを呼び出す: `StaticModInt<T>`
-MatrixProdStrassen.MontgomeryMod.cs	Strassenのアルゴリズムを呼び出す: `MontgomeryModInt<T>`
+MatrixProdStrassen.StaticMod.cs	Strassenのアルゴリズムを呼び出す: StaticModInt<T>
+MatrixProdStrassen.MontgomeryMod.cs	Strassenのアルゴリズムを呼び出す: MontgomeryModInt<T>
 MatrixProdStrassen.cs	Strassenのアルゴリズム: 実装
 MatrixProdStrassen.Simd.cs	Strassenのアルゴリズム: Simd実装

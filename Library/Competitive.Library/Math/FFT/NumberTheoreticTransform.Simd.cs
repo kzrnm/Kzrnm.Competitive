@@ -490,7 +490,7 @@ namespace Kzrnm.Competitive
                 NttSimd(buf1);
                 NttSimd(buf2);
                 for (int i = 0; i < buf1.Length; i++)
-                    buf1[i]._v = MontgomeryModInt<T>.Reduce((ulong)buf1[i]._v * buf2[i]._v);
+                    buf1[i] = MontgomeryModInt<T>.Raw(MontgomeryModInt<T>.Reduce((ulong)buf1[i]._v * buf2[i]._v));
 
                 INttSimd(buf1, false);
 

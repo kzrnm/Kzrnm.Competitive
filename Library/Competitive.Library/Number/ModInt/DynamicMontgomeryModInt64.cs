@@ -157,17 +157,18 @@ namespace Kzrnm.Competitive
         [凾(256)] public override bool Equals(object obj) => obj is DynamicMontgomeryModInt64<T> m && Equals(m);
         [凾(256)]
         public bool Equals(DynamicMontgomeryModInt64<T> other)
+            => GetHashCodeUInt64() == other.GetHashCodeUInt64();
+        [凾(256)] public static bool operator ==(DynamicMontgomeryModInt64<T> left, DynamicMontgomeryModInt64<T> right) => left.Equals(right);
+        [凾(256)] public static bool operator !=(DynamicMontgomeryModInt64<T> left, DynamicMontgomeryModInt64<T> right) => !left.Equals(right);
+        [凾(256)]
+        public ulong GetHashCodeUInt64()
         {
-            var v1 = _v;
-            var v2 = other._v;
-
-            if (v1 >= _mod) v1 -= _mod;
-            if (v2 >= _mod) v2 -= _mod;
-            return v1 == v2;
+            var v = _v;
+            if (v >= _mod) v -= _mod;
+            return v;
         }
-        [凾(256)] public static bool operator ==(DynamicMontgomeryModInt64<T> left, DynamicMontgomeryModInt64<T> right) => Equals(left, right);
-        [凾(256)] public static bool operator !=(DynamicMontgomeryModInt64<T> left, DynamicMontgomeryModInt64<T> right) => !Equals(left, right);
-        [凾(256)] public override int GetHashCode() => (int)_v;
+        [凾(256)]
+        public override int GetHashCode() => GetHashCodeUInt64().GetHashCode();
 
         public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => Value.TryFormat(destination, out charsWritten, format, provider);
         public string ToString(string format, IFormatProvider formatProvider) => Value.ToString(format, formatProvider);
