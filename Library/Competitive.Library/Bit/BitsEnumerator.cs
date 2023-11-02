@@ -6,11 +6,17 @@ using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive
 {
+    /// <summary>
+    /// <typeparamref name="T"/> の立っているビットを列挙します。
+    /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
     public struct BitsEnumerator<T> : IEnumerable<int>, IEnumerator<int> where T : IBinaryInteger<T>
     {
         T num;
-        public BitsEnumerator(T num) { this.num = num; Current = -1; }
+        /// <summary>
+        /// <paramref name="n"/> の立っているビットを列挙します。
+        /// </summary>
+        public BitsEnumerator(T n) { num = n; Current = -1; }
         public BitsEnumerator<T> GetEnumerator() => this;
         public int Current { get; private set; }
         [MethodImpl(256)]

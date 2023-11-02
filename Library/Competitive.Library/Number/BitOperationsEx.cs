@@ -91,14 +91,37 @@ namespace Kzrnm.Competitive
                 return Bmi2.ParallelBitDeposit(x, mask);
             return ParallelBitDepositLogic(x, mask);
         }
-        internal static uint ParallelBitDepositLogic(uint x, uint mask)
+        /// <summary>
+        /// <para><paramref name="x"/> を <paramref name="mask"/> に移す</para>
+        /// </summary>
+        /// <example>
+        /// <para>ex. x=0b1101 mask=0b11110000 → 0b11010000</para>
+        /// <para>https://atcoder.jp/contests/abc187/submissions/19171980</para>
+        /// </example>
+        [凾(256)]
+        public static long ParallelBitDeposit(long x, long mask) => (long)ParallelBitDeposit((ulong)x, (ulong)mask);
+        /// <summary>
+        /// <para><paramref name="x"/> を <paramref name="mask"/> に移す</para>
+        /// </summary>
+        /// <example>
+        /// <para>ex. x=0b1101 mask=0b11110000 → 0b11010000</para>
+        /// <para>https://atcoder.jp/contests/abc187/submissions/19171980</para>
+        /// </example>
+        [凾(256)]
+        public static ulong ParallelBitDeposit(ulong x, ulong mask)
         {
-            uint res = 0;
-            for (int i = 0; mask > 0; i++, mask >>= 1)
+            if (Bmi2.X64.IsSupported)
+                return Bmi2.X64.ParallelBitDeposit(x, mask);
+            return ParallelBitDepositLogic(x, mask);
+        }
+        internal static T ParallelBitDepositLogic<T>(T x, T mask) where T : IBinaryInteger<T>
+        {
+            T res = T.Zero;
+            for (int i = 0; !T.IsZero(mask); i++, mask >>= 1)
             {
-                if ((mask & 1U) != 0)
+                if (!T.IsZero(mask & T.One))
                 {
-                    res |= (x & 1U) << i;
+                    res |= (x & T.One) << i;
                     x >>= 1;
                 }
             }
@@ -122,17 +145,34 @@ namespace Kzrnm.Competitive
                 return Bmi2.ParallelBitExtract(x, mask);
             return ParallelBitExtractLogic(x, mask);
         }
-        internal static uint ParallelBitExtractLogic(uint x, uint mask)
+        /// <summary>
+        /// <para><paramref name="x"/> の <paramref name="mask"/> に合致する箇所を取り出す</para>
+        /// </summary>
+        /// <example>ex. x=0b01101 mask=0b11110 → 0b110</example>
+        [凾(256)]
+        public static long ParallelBitExtract(long x, long mask) => (long)ParallelBitExtract((ulong)x, (ulong)mask);
+        /// <summary>
+        /// <para><paramref name="x"/> の <paramref name="mask"/> に合致する箇所を取り出す</para>
+        /// </summary>
+        /// <example>ex. x=0b01101 mask=0b11110 → 0b110</example>
+        [凾(256)]
+        public static ulong ParallelBitExtract(ulong x, ulong mask)
         {
-            uint res = 0;
+            if (Bmi2.X64.IsSupported)
+                return Bmi2.X64.ParallelBitExtract(x, mask);
+            return ParallelBitExtractLogic(x, mask);
+        }
+        internal static T ParallelBitExtractLogic<T>(T x, T mask) where T : IBinaryInteger<T>
+        {
+            T res = T.Zero;
             int k = 0;
             do
             {
-                if ((mask & 1U) != 0)
-                    res |= (x & 1U) << k++;
+                if (!T.IsZero(mask & T.One))
+                    res |= (x & T.One) << k++;
                 x >>= 1;
                 mask >>= 1;
-            } while (mask != 0);
+            } while (!T.IsZero(mask));
             return res;
         }
 
