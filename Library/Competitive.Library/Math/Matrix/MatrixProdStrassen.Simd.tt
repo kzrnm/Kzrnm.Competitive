@@ -40,12 +40,10 @@ using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
-namespace Kzrnm.Competitive
+namespace Kzrnm.Competitive.Internal
 {
 using static Avx2;
-    public static partial class __MatrixProdStrassen
-    {
-    public readonly partial struct Impl<T>
+    public readonly partial struct StrassenImpl<T>
     {
         [凾(256|512)]
         private static void MulSimd(Span<VectorizedStaticModInt<T>> s, Span<VectorizedStaticModInt<T>> t, Span<VectorizedStaticModInt<T>> u)
@@ -110,5 +108,5 @@ using static Avx2;
               }
             }
         }
-    }}
+    }
 }

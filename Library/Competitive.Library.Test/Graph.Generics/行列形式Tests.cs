@@ -17,7 +17,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 0, 1);
 
             var g = gb.ToGraph();
-            g.Adjacency().Should().Be(new IntArrayMatrix(new int[5, 5]
+            g.Adjacency().Should().Be(new ArrayMatrix<int>(new int[5, 5]
             {
                 {  0, 1,  10,  30, 1 },
                 {  1, 0,   5,   0, 0 },
@@ -26,7 +26,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 {  1, 0,   6,   6, 0 },
             }));
 
-            g.AsUnweighted().Adjacency().Should().Be(new IntArrayMatrix(new int[5, 5]
+            g.AsUnweighted().Adjacency().Should().Be(new ArrayMatrix<int>(new int[5, 5]
             {
                 { 0, 1, 1, 1, 1 },
                 { 1, 0, 1, 0, 0 },
@@ -50,7 +50,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 3, 6);
 
             var g = gb.ToGraph();
-            g.Laplacian().Should().Be(new IntArrayMatrix(new int[5, 5]
+            g.Laplacian().Should().Be(new ArrayMatrix<int>(new int[5, 5]
             {
                 { 4, -1, -1, -1, -1 },
                 { -1, 2, -1, 0, 0 },

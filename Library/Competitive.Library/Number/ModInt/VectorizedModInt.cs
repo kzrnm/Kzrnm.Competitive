@@ -11,7 +11,7 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// <see cref="Vector256{T}"/> で <see cref="MontgomeryModInt{T}"/> の演算を行う型
     /// </summary>
-    public readonly struct VectorizedStaticModInt<T> : IEquatable<VectorizedStaticModInt<T>>
+    public readonly struct VectorizedModInt<T> : IEquatable<VectorizedModInt<T>>
         where T : struct, IStaticMod
     {
         private static readonly T op = default;
@@ -19,7 +19,7 @@ namespace Kzrnm.Competitive
         internal static readonly Vector256<uint> M1;
         internal static readonly Vector256<uint> M2;
         internal static readonly Vector256<uint> N2;
-        static VectorizedStaticModInt()
+        static VectorizedModInt()
         {
             var rv = op.Mod;
             for (int i = 0; i < 4; ++i) rv *= 2 - op.Mod * rv;
@@ -31,12 +31,12 @@ namespace Kzrnm.Competitive
         }
 
         public readonly Vector256<uint> Value;
-        public VectorizedStaticModInt(Vector256<uint> x) { Value = x; }
-        public VectorizedStaticModInt(uint a) : this(Vector256.Create(a)) { }
-        public VectorizedStaticModInt(uint a0, uint a1, uint a2, uint a3, uint a4, uint a5, uint a6, uint a7)
+        public VectorizedModInt(Vector256<uint> x) { Value = x; }
+        public VectorizedModInt(uint a) : this(Vector256.Create(a)) { }
+        public VectorizedModInt(uint a0, uint a1, uint a2, uint a3, uint a4, uint a5, uint a6, uint a7)
             : this(Vector256.Create(a0, a1, a2, a3, a4, a5, a6, a7)) { }
         [凾(256)]
-        public static implicit operator VectorizedStaticModInt<T>(Vector256<uint> x) => new VectorizedStaticModInt<T>(x);
+        public static implicit operator VectorizedModInt<T>(Vector256<uint> x) => new VectorizedModInt<T>(x);
         public int this[int i]
         {
             [凾(256)]
@@ -44,8 +44,8 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        public bool Equals(VectorizedStaticModInt<T> other) => Value.Equals(other.Value);
-        public override bool Equals(object other) => other is VectorizedStaticModInt<T> o && Value.Equals(o.Value);
+        public bool Equals(VectorizedModInt<T> other) => Value.Equals(other.Value);
+        public override bool Equals(object other) => other is VectorizedModInt<T> o && Value.Equals(o.Value);
         public override int GetHashCode() => Value.GetHashCode();
 
         [凾(256)]
@@ -54,10 +54,10 @@ namespace Kzrnm.Competitive
             => $"{Reduce1(Value.GetElement(0))} {Reduce1(Value.GetElement(1))} {Reduce1(Value.GetElement(2))} {Reduce1(Value.GetElement(3))} {Reduce1(Value.GetElement(4))} {Reduce1(Value.GetElement(5))} {Reduce1(Value.GetElement(6))} {Reduce1(Value.GetElement(7))}";
 
         [凾(256)]
-        public static bool operator ==(VectorizedStaticModInt<T> lhs, VectorizedStaticModInt<T> rhs)
+        public static bool operator ==(VectorizedModInt<T> lhs, VectorizedModInt<T> rhs)
             => lhs.Value.Equals(rhs.Value);
         [凾(256)]
-        public static bool operator !=(VectorizedStaticModInt<T> lhs, VectorizedStaticModInt<T> rhs)
+        public static bool operator !=(VectorizedModInt<T> lhs, VectorizedModInt<T> rhs)
             => !lhs.Value.Equals(rhs.Value);
 
 
@@ -81,10 +81,10 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        public VectorizedStaticModInt<T> Itom() => this * new VectorizedStaticModInt<T>(N2);
+        public VectorizedModInt<T> Itom() => this * new VectorizedModInt<T>(N2);
 
         [凾(256 | 512)]
-        public VectorizedStaticModInt<T> Mtoi()
+        public VectorizedModInt<T> Mtoi()
         {
             var A = Value;
             var A13 = Shuffle(A, 0xF5);
@@ -97,11 +97,11 @@ namespace Kzrnm.Competitive
             var prod = UnpackHigh(unpalo_.AsUInt64(), unpahi_.AsUInt64()).AsUInt32();
             var cmp = CompareGreaterThan(prod.AsInt32(), Vector256<int>.Zero).AsUInt32();
             var dif = And(cmp, M1);
-            return new VectorizedStaticModInt<T>(Subtract(dif, prod));
+            return new VectorizedModInt<T>(Subtract(dif, prod));
         }
 
         [凾(256 | 512)]
-        public static VectorizedStaticModInt<T> operator +(VectorizedStaticModInt<T> lhs, VectorizedStaticModInt<T> rhs)
+        public static VectorizedModInt<T> operator +(VectorizedModInt<T> lhs, VectorizedModInt<T> rhs)
         {
             var A = lhs.Value;
             var B = rhs.Value;
@@ -109,22 +109,22 @@ namespace Kzrnm.Competitive
             var ret = Subtract(apb, M2);
             var cmp = CompareGreaterThan(Vector256<int>.Zero, ret.AsInt32()).AsUInt32();
             var add = And(cmp, M2);
-            return new VectorizedStaticModInt<T>(Add(add, ret));
+            return new VectorizedModInt<T>(Add(add, ret));
         }
 
         [凾(256 | 512)]
-        public static VectorizedStaticModInt<T> operator -(VectorizedStaticModInt<T> lhs, VectorizedStaticModInt<T> rhs)
+        public static VectorizedModInt<T> operator -(VectorizedModInt<T> lhs, VectorizedModInt<T> rhs)
         {
             var A = lhs.Value;
             var B = rhs.Value;
             var ret = Subtract(A, B);
             var cmp = CompareGreaterThan(Vector256<int>.Zero, ret.AsInt32()).AsUInt32();
             var add = And(cmp, M2);
-            return new VectorizedStaticModInt<T>(Add(add, ret));
+            return new VectorizedModInt<T>(Add(add, ret));
         }
 
         [凾(256 | 512)]
-        public static VectorizedStaticModInt<T> operator *(VectorizedStaticModInt<T> lhs, VectorizedStaticModInt<T> rhs)
+        public static VectorizedModInt<T> operator *(VectorizedModInt<T> lhs, VectorizedModInt<T> rhs)
         {
             var A = lhs.Value;
             var B = rhs.Value;
@@ -132,7 +132,7 @@ namespace Kzrnm.Competitive
             var b13 = Shuffle(B, 0xF5);
             var prod02 = Multiply(A, B);
             var prod13 = Multiply(a13, b13);
-            return new VectorizedStaticModInt<T>(Reduce(prod02.AsUInt32(), prod13.AsUInt32()));
+            return new VectorizedModInt<T>(Reduce(prod02.AsUInt32(), prod13.AsUInt32()));
         }
     }
 }
