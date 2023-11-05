@@ -36,7 +36,7 @@
   <ItemGroup>
     <InternalsVisibleTo Include="Competitive.Library.Test" />
     <PackageReference Include="ac-library-csharp" Version="3.5.0" />
-    <PackageReference Include="Kzrnm.Competitive.Analyzer" Version="1.0.1">
+    <PackageReference Include="Kzrnm.Competitive.Analyzer" Version="1.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
