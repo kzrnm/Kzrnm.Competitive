@@ -1,5 +1,3 @@
-global using FluentAssertions;
-global using Xunit;
 global using LongFenwickTree = AtCoder.FenwickTree<long>;
 global using Mod998244353AffineTransformation = Kzrnm.Competitive.AffineTransformation<AtCoder.StaticModInt<AtCoder.Mod998244353>>;
 global using DoubleAffineTransformation = Kzrnm.Competitive.AffineTransformation<double>;

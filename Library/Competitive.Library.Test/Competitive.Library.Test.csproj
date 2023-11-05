@@ -18,6 +18,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Using Include="FluentAssertions" />
+    <Using Include="Xunit" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <PackageReference Include="CompetitiveVerifierResolverTestLogger" Version="*">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
