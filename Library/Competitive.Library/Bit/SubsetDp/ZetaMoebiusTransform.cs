@@ -42,7 +42,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <remarks>
         /// <para>制約:</para>
-        /// <para>- |<paramref name="a"/>| は 2の冪乗</para>
+        /// <para>- |<paramref name="b"/>| は 2の冪乗</para>
         /// <para>計算量: O(3^n) ただし |<paramref name="b"/>| = 2^n</para>
         /// </remarks>
         [凾(256)]
@@ -53,7 +53,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <remarks>
         /// <para>制約:</para>
-        /// <para>- |<paramref name="a"/>| は 2の冪乗</para>
+        /// <para>- |<paramref name="b"/>| は 2の冪乗</para>
         /// <para>計算量: O(3^n) ただし |<paramref name="b"/>| = 2^n</para>
         /// </remarks>
         [凾(256)]
@@ -99,7 +99,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <remarks>
         /// <para>制約:</para>
-        /// <para>- |<paramref name="a"/>| は 2の冪乗</para>
+        /// <para>- |<paramref name="b"/>| は 2の冪乗</para>
         /// <para>計算量: O(3^n) ただし |<paramref name="b"/>| = 2^n</para>
         /// </remarks>
         [凾(256)]
@@ -110,7 +110,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <remarks>
         /// <para>制約:</para>
-        /// <para>- |<paramref name="a"/>| は 2の冪乗</para>
+        /// <para>- |<paramref name="b"/>| は 2の冪乗</para>
         /// <para>計算量: O(3^n) ただし |<paramref name="b"/>| = 2^n</para>
         /// </remarks>
         [凾(256)]

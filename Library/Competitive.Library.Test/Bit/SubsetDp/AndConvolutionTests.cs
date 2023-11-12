@@ -5,9 +5,8 @@ using System.Numerics;
 
 namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
 {
-    public class XorConvolutionTests
+    public class AndConvolutionTests
     {
-
         [Fact]
         public void UInt32()
         {
@@ -23,7 +22,7 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
                     a[i] = (uint)rnd.Next(100);
                     b[i] = (uint)rnd.Next(100);
                 }
-                XorConvolution.Convolution(a, b).Should().Equal(Naive(a, b));
+                AndConvolution.Convolution(a, b).Should().Equal(Naive(a, b));
             }
         }
 
@@ -42,7 +41,7 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
                     a[i] = rnd.Next(int.MaxValue / len);
                     b[i] = rnd.Next(int.MaxValue / len);
                 }
-                XorConvolution.Convolution(a, b).Should().Equal(Naive(a, b));
+                AndConvolution.Convolution(a, b).Should().Equal(Naive(a, b));
             }
         }
 
@@ -52,16 +51,15 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
             var rnd = new Random(227);
             for (int q = 100; q >= 0; q--)
             {
-                int n = rnd.Next(1, 10);
-                int len = 1 << n;
-                var a = new StaticModInt<Mod1000000007>[len];
-                var b = new StaticModInt<Mod1000000007>[len];
+                var len = rnd.Next(1, 10);
+                var a = new StaticModInt<Mod1000000007>[1 << len];
+                var b = new StaticModInt<Mod1000000007>[1 << len];
                 for (int i = 0; i < a.Length; i++)
                 {
                     a[i] = rnd.Next();
                     b[i] = rnd.Next();
                 }
-                XorConvolution.Convolution(a, b).Should().Equal(Naive(a, b));
+                AndConvolution.Convolution(a, b).Should().Equal(Naive(a, b));
             }
         }
 
@@ -71,16 +69,15 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
             var rnd = new Random(227);
             for (int q = 100; q >= 0; q--)
             {
-                int n = rnd.Next(1, 10);
-                int len = 1 << n;
-                var a = new MontgomeryModInt<Mod998244353>[len];
-                var b = new MontgomeryModInt<Mod998244353>[len];
+                var len = rnd.Next(1, 10);
+                var a = new MontgomeryModInt<Mod998244353>[1 << len];
+                var b = new MontgomeryModInt<Mod998244353>[1 << len];
                 for (int i = 0; i < a.Length; i++)
                 {
                     a[i] = rnd.Next();
                     b[i] = rnd.Next();
                 }
-                XorConvolution.Convolution(a, b).Should().Equal(Naive(a, b));
+                AndConvolution.Convolution(a, b).Should().Equal(Naive(a, b));
             }
         }
 
@@ -90,16 +87,15 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
             var rnd = new Random(227);
             for (int q = 100; q >= 0; q--)
             {
-                int n = rnd.Next(1, 10);
-                int len = 1 << n;
-                var a = new double[len];
-                var b = new double[len];
+                var len = rnd.Next(1, 10);
+                var a = new double[1 << len];
+                var b = new double[1 << len];
                 for (int i = 0; i < a.Length; i++)
                 {
                     a[i] = rnd.NextDouble();
                     b[i] = rnd.NextDouble();
                 }
-                XorConvolution.Convolution(a, b)
+                AndConvolution.Convolution(a, b)
                     .Zip(Naive(a, b), (a, b) => Math.Abs(a - b))
                     .Should().AllSatisfy(diff =>
                     {
@@ -113,7 +109,7 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
             var f = new T[a.Length];
             for (int i = 0; i < a.Length; i++)
                 for (int j = 0; j < b.Length; j++)
-                    f[i ^ j] += a[i] * b[j];
+                    f[i & j] += a[i] * b[j];
             return f;
         }
     }
