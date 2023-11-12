@@ -47,7 +47,7 @@ namespace Competitive.Runner
 
             static string Normalize(string s) => s.Replace("\r\n", "\n").Trim();
         });
-        [GeneratedRegex("^\\d+\\.\\d+$", RegexOptions.IgnoreCase, "ja-JP")]
+        [GeneratedRegex("^-?\\d+\\.\\d+$", RegexOptions.IgnoreCase, "ja-JP")]
         private static partial Regex DoubleRegex();
     }
 }
