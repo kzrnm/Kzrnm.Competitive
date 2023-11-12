@@ -1,5 +1,5 @@
 ---
-title: 永続Queue(Real time Queue)
+title: 永続 Queue (Real time Queue)
 documentation_of:
 - ./RealTimeQueue/RealTimeQueue_1.cs
 - ./RealTimeQueue/RealTimeQueue_1.Enumerator.cs
