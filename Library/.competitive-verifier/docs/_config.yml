@@ -7,3 +7,6 @@ exclude:
   - Competitive.Library.Test/BinarySearchTree/ImmutableLazyBinarySearchTreeTestsBase.cs
   - Competitive.Library.Test/BinarySearchTree/LazyBinarySearchTreeTestsBase.cs
   - Competitive.Library.Test/+TestUtility
+consolidate:
+  - Checker/
+  - Competitive.Library.Test/
