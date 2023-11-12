@@ -10,7 +10,7 @@ documentation_of: ./ZetaMoebiusTransform.cs
 
 ### 計算量
  
-$|a| = 2^N$ としたとき、計算量は $\mathrm{O}(3^N)$
+$ \|a \| = 2^N$ としたとき、計算量は $\mathrm{O}(3^N)$
 
 ### 使い方
 
