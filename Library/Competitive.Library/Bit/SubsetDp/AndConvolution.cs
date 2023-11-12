@@ -11,13 +11,13 @@ namespace Kzrnm.Competitive
     public static class AndConvolution
     {
         /// <summary>
-        /// AND 畳み込み。c[i&j] = ∑ <paramref name="a"/>[i] <paramref name="b"/>[j] となる c を返します。
+        /// AND 畳み込み。c[i&amp;j] = ∑ <paramref name="a"/>[i] <paramref name="b"/>[j] となる c を返します。
         /// </summary>
         [凾(256)]
         public static T[] Convolution<T>(T[] a, T[] b) where T : INumberBase<T>
             => Convolution((ReadOnlySpan<T>)a, b);
         /// <summary>
-        /// AND 畳み込み。c[i&j] = ∑ <paramref name="a"/>[i] <paramref name="b"/>[j] となる c を返します。
+        /// AND 畳み込み。c[i&amp;j] = ∑ <paramref name="a"/>[i] <paramref name="b"/>[j] となる c を返します。
         /// </summary>
         [凾(256)]
         public static T[] Convolution<T>(Span<T> a, Span<T> b) where T : INumberBase<T>
