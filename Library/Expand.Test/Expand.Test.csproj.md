@@ -8,7 +8,7 @@ display: no-index
 
 SourceExpander で埋め込んだソースを展開したときにコンパイルできるか確認します。
 
-特に [Competitive.Library/+Runner/Program.cs](/Competitive.Library/+Runner/Program.cs) は `partial` で定義して展開して完成するので変に書き換えるとコンパイルできなくなってしまいます。
+特に [Competitive.Library/+Runner/Program.cs]({{'/Competitive.Library/+Runner/Program.cs' | relative_url }}) は `partial` で定義して展開して完成するので変に書き換えるとコンパイルできなくなってしまいます。
 
 ## Program.cs
 

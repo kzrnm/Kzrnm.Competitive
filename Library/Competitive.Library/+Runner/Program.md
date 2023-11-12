@@ -1,6 +1,7 @@
 ---
 title: 起動クラス
 documentation_of: ./Program.cs
+display: hidden
 ---
 
 ## 概要
