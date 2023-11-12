@@ -15,19 +15,15 @@
     <OutputPath>$(SolutionDir)bin\$(Configuration)</OutputPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <CompilerVisibleProperty Include="SourceExpander_Generator_IgnoreAssemblies" />
+  </ItemGroup>
+
   <PropertyGroup>
     <ExpandArgs>--writefile</ExpandArgs>
     <ExpandArgs2>--writefile --toclipboard</ExpandArgs2>
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
     <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <CompilerVisibleProperty Include="CompetitiveAnalyzer_UseMethodImplNumeric" />
-    <CompilerVisibleProperty Include="SourceExpander_Generator_IgnoreAssemblies" />
-  </ItemGroup>
-  <PropertyGroup>
-    <CompetitiveAnalyzer_UseMethodImplNumeric>True</CompetitiveAnalyzer_UseMethodImplNumeric>
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' != 'Release'">
