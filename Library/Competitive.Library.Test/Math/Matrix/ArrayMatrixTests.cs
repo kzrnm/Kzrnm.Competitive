@@ -566,6 +566,41 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (inv * orig).ToArray().Should().BeEquivalentTo(id);
         }
 
+
+        public static TheoryData Transpose_Data => new TheoryData<ArrayMatrix<int>, ArrayMatrix<int>>
+        {
+            {
+                new(new int[2,3]{
+                    { 1,-4,3 },
+                    { 3,2,2 },
+                }),
+                new(new int[3,2]{
+                    { 1,3 },
+                    {-4,2 },
+                    { 3,2 },
+                })
+            },
+            {
+                new(new int[2,2]{
+                    { 1,2 },
+                    { 3,4 },
+                }),
+                new(new int[2,2]{
+                    { 1,3 },
+                    { 2,4 },
+                })
+            },
+        };
+
+        [Theory]
+        [MemberData(nameof(Transpose_Data))]
+        [Trait("Category", "Normal")]
+        public void Transpose(ArrayMatrix<int> orig, ArrayMatrix<int> expected)
+        {
+            orig.Transpose().Should().Be(expected);
+        }
+
+
         public static TheoryData GaussianElimination_Data => new TheoryData<
             ArrayMatrix<Fraction>,
             ArrayMatrix<Fraction>>
