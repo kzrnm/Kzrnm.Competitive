@@ -181,7 +181,7 @@ namespace Kzrnm.Competitive.Internal
         [凾(256)]
         public Vector256<uint>[] ToVectorize(ArrayMatrix<MontgomeryModInt<T>> m)
         {
-            var v = m.Value;
+            var v = m._v;
             var w = m.Width;
             var s8 = S8;
             var rt = new Vector256<uint>[VectorSize];

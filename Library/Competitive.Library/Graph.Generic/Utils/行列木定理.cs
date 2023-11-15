@@ -34,7 +34,7 @@ namespace Kzrnm.Competitive
             /// </summary>
             public T Calc<T>() where T : IModInt<T>
             {
-                var orig = Matrix.Value;
+                var orig = Matrix._v;
                 var n = Matrix.Height - 1;
                 var a = new T[n][];
                 for (int i = 0; i < a.Length; i++)

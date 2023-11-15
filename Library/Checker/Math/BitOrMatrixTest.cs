@@ -18,7 +18,7 @@ namespace Kzrnm.Competitive.MathNs
                 int b = cr;
                 bits[a][b] = true;
             }
-            return new BitOrMatrix(bits).Pow(T).Value switch
+            return new BitOrMatrix(bits).Pow(T)._v switch
             {
                 null => 1,
                 var v => v[0].PopCount(),

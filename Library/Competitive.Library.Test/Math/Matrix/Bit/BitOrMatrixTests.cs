@@ -12,7 +12,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             {
                 new []{ true, false, true},
                 new []{ false, true, true },
-            }).Value.Should().BeEquivalentTo(new BitArray[]
+            })._v.Should().BeEquivalentTo(new BitArray[]
             {
                 new BitArray(new[]{ true, false, true }),
                 new BitArray(new[]{ false, true, true }),
@@ -21,7 +21,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             {
                 new BitArray(new[]{ true, false, true }),
                 new BitArray(new[]{ false, true, true }),
-            }).Value.Should().BeEquivalentTo(new BitArray[]
+            })._v.Should().BeEquivalentTo(new BitArray[]
             {
                 new BitArray(new[]{ true, false, true }),
                 new BitArray(new[]{ false, true, true }),

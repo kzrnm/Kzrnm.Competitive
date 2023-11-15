@@ -15,10 +15,12 @@ namespace Kzrnm.Competitive
     /// </summary>
     [DebuggerTypeProxy(typeof(DebugView))]
     public readonly struct BitOrMatrix
-        : Internal.IMatrixOperator<BitOrMatrix>
+        : Internal.IMatrix<BitOrMatrix>
     {
-        public bool this[int row, int col] => Value[row][col];
-        public readonly BitArray[] Value;
+        public bool this[int row, int col] => _v[row][col];
+        public readonly BitArray[] _v;
+        public int Height => _v.Length;
+        public int Width => _v[0].Length;
 
         public static readonly BitOrMatrix Zero = new BitOrMatrix(Kd.Zero);
         public static readonly BitOrMatrix Identity = new BitOrMatrix(Kd.Identity);
@@ -29,12 +31,12 @@ namespace Kzrnm.Competitive
         internal BitOrMatrix(Kd kind)
         {
             this.kind = kind;
-            Value = null;
+            _v = null;
         }
 
         public BitOrMatrix(BitArray[] value)
         {
-            Value = value;
+            _v = value;
             kind = Kd.Normal;
         }
         public BitOrMatrix(bool[][] value) : this(value.Select(a => new BitArray(a)).ToArray()) { }
@@ -62,17 +64,17 @@ namespace Kzrnm.Competitive
 
         private BitOrMatrix AddIdentity()
         {
-            var arr = CloneArray(Value);
+            var arr = CloneArray(_v);
             for (int i = 0; i < arr.Length; i++)
                 arr[i][i] = true;
             return new BitOrMatrix(arr);
         }
         private BitOrMatrix Add(BitOrMatrix other)
         {
-            Contract.Assert(Value.Length == other.Value.Length);
-            Contract.Assert(Value[0].Length == other.Value[0].Length);
-            var otherArr = other.Value;
-            var val = Value;
+            Contract.Assert(_v.Length == other._v.Length);
+            Contract.Assert(_v[0].Length == other._v[0].Length);
+            var otherArr = other._v;
+            var val = _v;
             var arr = new BitArray[val.Length];
             for (int i = 0; i < arr.Length; i++)
                 arr[i] = new BitArray(val[i]).Or(otherArr[i]);
@@ -87,7 +89,7 @@ namespace Kzrnm.Competitive
                 {
                     Kd.Zero => Zero,
                     Kd.Identity => Identity,
-                    _ => new BitOrMatrix(CloneArray(y.Value)),
+                    _ => new BitOrMatrix(CloneArray(y._v)),
                 },
                 Kd.Identity => y.kind switch
                 {
@@ -97,7 +99,7 @@ namespace Kzrnm.Competitive
                 },
                 _ => y.kind switch
                 {
-                    Kd.Zero => new BitOrMatrix(CloneArray(x.Value)),
+                    Kd.Zero => new BitOrMatrix(CloneArray(x._v)),
                     Kd.Identity => x.AddIdentity(),
                     _ => x.Add(y),
                 },
@@ -108,8 +110,8 @@ namespace Kzrnm.Competitive
 
         private BitOrMatrix Multiply(BitOrMatrix other)
         {
-            var val = Value;
-            var otherArr = other.Value;
+            var val = _v;
+            var otherArr = other._v;
             Contract.Assert(val[0].Length == otherArr.Length);
             var res = new BitArray[val.Length];
             for (int i = 0; i < res.Length; i++)
@@ -127,7 +129,7 @@ namespace Kzrnm.Competitive
             {
                 Kd.Zero => y.kind switch
                 {
-                    Kd.Normal => new BitOrMatrix(NormalZeroMatrix(y.Value.Length, y.Value[0].Length)),
+                    Kd.Normal => new BitOrMatrix(NormalZeroMatrix(y._v.Length, y._v[0].Length)),
                     _ => Zero,
                 },
                 Kd.Identity => y.kind switch
@@ -138,7 +140,7 @@ namespace Kzrnm.Competitive
                 },
                 _ => y.kind switch
                 {
-                    Kd.Zero => new BitOrMatrix(NormalZeroMatrix(x.Value.Length, x.Value[0].Length)),
+                    Kd.Zero => new BitOrMatrix(NormalZeroMatrix(x._v.Length, x._v[0].Length)),
                     Kd.Identity => x,
                     _ => x.Multiply(y),
                 },
@@ -160,7 +162,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public BitArray Multiply(BitArray vector)
         {
-            var val = Value;
+            var val = _v;
             var res = new bool[val.Length];
             for (int i = 0; i < res.Length; i++)
                 res[i] = new BitArray(val[i]).And(vector).Lsb() < vector.Length;
@@ -172,7 +174,7 @@ namespace Kzrnm.Competitive
         public override bool Equals(object obj) => obj is BitOrMatrix x && Equals(x);
         [凾(256)]
         public bool Equals(BitOrMatrix other) =>
-            kind == other.kind && (kind != Kd.Normal || EqualsMat(Value, other.Value));
+            kind == other.kind && (kind != Kd.Normal || EqualsMat(_v, other._v));
         private static bool EqualsMat(BitArray[] a, BitArray[] b)
         {
             if (a.Length != b.Length) return false;
@@ -188,7 +190,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public override int GetHashCode() => kind switch
         {
-            Kd.Normal => HashCode.Combine(kind, Value.Length, Value[0][0], Value[0][^1], Value[^1][0], Value[^1][^1]),
+            Kd.Normal => HashCode.Combine(kind, _v.Length, _v[0][0], _v[0][^1], _v[^1][0], _v[^1][^1]),
             _ => HashCode.Combine(kind),
         };
         [凾(256)]
@@ -199,8 +201,8 @@ namespace Kzrnm.Competitive
         public override string ToString()
         {
             if (kind != Kd.Normal) return kind.ToString();
-            var sb = new StringBuilder(Value.Length * (Value[0].Length + 2));
-            foreach (var row in Value)
+            var sb = new StringBuilder(_v.Length * (_v[0].Length + 2));
+            foreach (var row in _v)
             {
                 var chr = new char[row.Length];
                 for (int j = 0; j < row.Length; j++)
@@ -238,7 +240,7 @@ namespace Kzrnm.Competitive
                 m = matrix;
             }
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            public BitArrayDebug Items => new(m.Value);
+            public BitArrayDebug Items => new(m._v);
         }
     }
 }

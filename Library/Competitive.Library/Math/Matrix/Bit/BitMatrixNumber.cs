@@ -16,11 +16,13 @@ namespace Kzrnm.Competitive
     /// Mod2 の行列。+: xor *: and
     /// </summary>
     [DebuggerTypeProxy(typeof(BitMatrix<>.DebugView))]
-    public readonly struct BitMatrix<T> : Internal.IMatrixOperator<BitMatrix<T>>
+    public readonly struct BitMatrix<T> : Internal.IMatrix<BitMatrix<T>>
         where T : unmanaged, IBinaryInteger<T>
     {
-        public bool this[int row, int col] => (uint.CreateTruncating(Value[row] >> col) & 1) != 0;
-        public readonly T[] Value;
+        public bool this[int row, int col] => (uint.CreateTruncating(_v[row] >> col) & 1) != 0;
+        public readonly T[] _v;
+        public int Height => _v.Length;
+        public int Width => Unsafe.SizeOf<T>() * 8;
 
         public static readonly BitMatrix<T> Zero = new BitMatrix<T>(Kd.Zero);
         public static readonly BitMatrix<T> Identity = new BitMatrix<T>(Kd.Identity);
@@ -31,12 +33,12 @@ namespace Kzrnm.Competitive
         internal BitMatrix(Kd kind)
         {
             this.kind = kind;
-            Value = null;
+            _v = null;
         }
 
         public BitMatrix(T[] value)
         {
-            Value = value;
+            _v = value;
             kind = Kd.Normal;
         }
         public BitMatrix(bool[][] value) : this(value.Select(BoolArrayToNumber).ToArray()) { }
@@ -62,16 +64,16 @@ namespace Kzrnm.Competitive
 
         BitMatrix<T> AddIdentity()
         {
-            var arr = CloneArray(Value);
+            var arr = CloneArray(_v);
             for (int i = 0; i < arr.Length; i++)
                 arr[i] ^= T.One << i;
             return new BitMatrix<T>(arr);
         }
         BitMatrix<T> Add(BitMatrix<T> other)
         {
-            Contract.Assert(Value.Length == other.Value.Length);
-            var otherArr = other.Value;
-            var val = Value;
+            Contract.Assert(_v.Length == other._v.Length);
+            var otherArr = other._v;
+            var val = _v;
             var arr = new T[val.Length];
             for (int i = 0; i < arr.Length; i++)
                 arr[i] = val[i] ^ otherArr[i];
@@ -86,7 +88,7 @@ namespace Kzrnm.Competitive
                 {
                     Kd.Zero => Zero,
                     Kd.Identity => Identity,
-                    _ => new BitMatrix<T>(CloneArray(y.Value)),
+                    _ => new BitMatrix<T>(CloneArray(y._v)),
                 },
                 Kd.Identity => y.kind switch
                 {
@@ -96,7 +98,7 @@ namespace Kzrnm.Competitive
                 },
                 _ => y.kind switch
                 {
-                    Kd.Zero => new BitMatrix<T>(CloneArray(x.Value)),
+                    Kd.Zero => new BitMatrix<T>(CloneArray(x._v)),
                     Kd.Identity => x.AddIdentity(),
                     _ => x.Add(y),
                 },
@@ -106,7 +108,7 @@ namespace Kzrnm.Competitive
         [凾(256)] public static BitMatrix<T> operator +(BitMatrix<T> x) => x;
         public static BitMatrix<T> operator -(BitMatrix<T> x)
         {
-            var val = x.Value;
+            var val = x._v;
             var arr = new T[val.Length];
             for (int i = 0; i < arr.Length; i++)
                 arr[i] = ~val[i];
@@ -119,8 +121,8 @@ namespace Kzrnm.Competitive
 
         private BitMatrix<T> Multiply(BitMatrix<T> other)
         {
-            var val = Value;
-            var otherArr = other.Value;
+            var val = _v;
+            var otherArr = other._v;
             Contract.Assert(otherArr.Length <= BitSize());
             var res = new T[val.Length];
             for (int i = 0; i < res.Length; i++)
@@ -138,7 +140,7 @@ namespace Kzrnm.Competitive
             {
                 Kd.Zero => y.kind switch
                 {
-                    Kd.Normal => new BitMatrix<T>(new T[y.Value.Length]),
+                    Kd.Normal => new BitMatrix<T>(new T[y._v.Length]),
                     _ => Zero,
                 },
                 Kd.Identity => y.kind switch
@@ -149,7 +151,7 @@ namespace Kzrnm.Competitive
                 },
                 _ => y.kind switch
                 {
-                    Kd.Zero => new BitMatrix<T>(new T[x.Value.Length]),
+                    Kd.Zero => new BitMatrix<T>(new T[x._v.Length]),
                     Kd.Identity => x,
                     _ => x.Multiply(y),
                 },
@@ -171,7 +173,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public T Multiply(T vector)
         {
-            var val = Value;
+            var val = _v;
             var res = default(T);
             for (int i = 0; i < val.Length; i++)
                 res |= (T.PopCount(val[i] & vector) & T.One) << i;
@@ -186,7 +188,7 @@ namespace Kzrnm.Competitive
         public BitMatrix<T> GaussianElimination(bool isReduced = true)
         {
             Contract.Assert(kind == Kd.Normal);
-            var arr = CloneArray(Value);
+            var arr = CloneArray(_v);
             GaussianEliminationImpl(arr, isReduced);
             return new BitMatrix<T>(arr);
         }
@@ -247,7 +249,7 @@ namespace Kzrnm.Competitive
         public T[] LinearSystem(T vector)
         {
             int log2 = 0;
-            foreach (var v in Value)
+            foreach (var v in _v)
             {
                 var s = int.CreateTruncating(T.Log2(v));
                 if (log2 < s) log2 = s;
@@ -273,7 +275,7 @@ namespace Kzrnm.Competitive
         public T[] LinearSystem(T vector, int width)
         {
             Contract.Assert(width < BitSize());
-            var impl = (T[])Value.Clone();
+            var impl = (T[])_v.Clone();
             {
                 var last = T.One << width;
                 for (int i = 0; i < impl.Length; i++)
@@ -340,14 +342,14 @@ namespace Kzrnm.Competitive
         public override bool Equals(object obj) => obj is BitMatrix<T> x && Equals(x);
         [凾(256)]
         public bool Equals(BitMatrix<T> other) =>
-            kind == other.kind && (kind != Kd.Normal || EqualsMat(Value, other.Value));
+            kind == other.kind && (kind != Kd.Normal || EqualsMat(_v, other._v));
         private static bool EqualsMat(T[] a, T[] b)
             => a.AsSpan().SequenceEqual(b);
 
         [凾(256)]
         public override int GetHashCode() => kind switch
         {
-            Kd.Normal => HashCode.Combine(kind, Value.Length, Value[0], Value[^1], Value[1], Value[^2]),
+            Kd.Normal => HashCode.Combine(kind, _v.Length, _v[0], _v[^1], _v[1], _v[^2]),
             _ => HashCode.Combine(kind),
         };
         [凾(256)]
@@ -358,10 +360,10 @@ namespace Kzrnm.Competitive
         {
             if (kind != Kd.Normal) return kind.ToString();
             var bitSize = BitSize();
-            var sb = new StringBuilder(Value.Length * (bitSize + 2));
+            var sb = new StringBuilder(_v.Length * (bitSize + 2));
             var charsSize = (bitSize + 63) / 64;
 
-            foreach (var row in Value)
+            foreach (var row in _v)
             {
                 // TODO: .NET 8 か 9 以降では 2 進数の Parse/Format ができるようになりそう
                 // https://github.com/dotnet/runtime/issues/83619
@@ -412,7 +414,7 @@ namespace Kzrnm.Competitive
                 m = matrix;
             }
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            internal Item[] Items => m.Value.Select(v => new Item(v)).ToArray();
+            internal Item[] Items => m._v.Select(v => new Item(v)).ToArray();
 
             internal readonly record struct Item(T Value)
             {

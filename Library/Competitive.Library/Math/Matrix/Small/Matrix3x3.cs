@@ -5,10 +5,12 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public readonly struct Matrix3x3<T> : Internal.IMatrixOperator<Matrix3x3<T>>
+    public readonly struct Matrix3x3<T> : Internal.IMatrix<Matrix3x3<T>>
         , IMultiplyOperators<Matrix3x3<T>, T, Matrix3x3<T>>
         where T : INumberBase<T>
     {
+        public int Height => 3;
+        public int Width => 3;
         public (T Col0, T Col1, T Col2) Row0 => (V00, V01, V02);
         public (T Col0, T Col1, T Col2) Row1 => (V10, V11, V12);
         public (T Col0, T Col1, T Col2) Row2 => (V20, V21, V22);

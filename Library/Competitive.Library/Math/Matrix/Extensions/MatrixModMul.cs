@@ -21,8 +21,8 @@ namespace Kzrnm.Competitive
             if (res.Length == 0) return new();
 
             ref var rp = ref res[0];
-            ref var tp = ref lhs.Value[0];
-            ref var op = ref rhs.Value[0];
+            ref var tp = ref lhs._v[0];
+            ref var op = ref rhs._v[0];
 
             for (int i = 0; i < rh; i++)
                 for (int j = 0; j < rw; j++)

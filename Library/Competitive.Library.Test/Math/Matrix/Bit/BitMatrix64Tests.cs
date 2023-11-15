@@ -1,163 +1,157 @@
-using System.Collections;
+using System.Linq;
 
 namespace Kzrnm.Competitive.Testing.MathNS.Matrix
 {
-    public class BitMatrixTests
+    public class BitMatrix64Tests
     {
         [Fact]
         [Trait("Category", "Normal")]
         public void Construct()
         {
-            new BitMatrix(new bool[][]
+            new BitMatrix64(new bool[][]
             {
                 new []{ true, false, true},
                 new []{ false, true, true },
-            }).Value.Should().BeEquivalentTo(new BitArray[]
+            })._v.Should().BeEquivalentTo(new ulong[]
             {
-                new BitArray(new[]{ true, false, true }),
-                new BitArray(new[]{ false, true, true }),
+                0b101ul,
+                0b110ul,
             });
-            new BitMatrix(new BitArray[]
+            new BitMatrix64(new ulong[]
             {
-                new BitArray(new[]{ true, false, true }),
-                new BitArray(new[]{ false, true, true }),
-            }).Value.Should().BeEquivalentTo(new BitArray[]
+                0b101ul,
+                0b110ul,
+            })._v.Should().BeEquivalentTo(new ulong[]
             {
-                new BitArray(new[]{ true, false, true }),
-                new BitArray(new[]{ false, true, true }),
+                0b101ul,
+                0b110ul,
             });
         }
 
-        public static TheoryData Parse_Data => new TheoryData<string, BitMatrix>
+        public static TheoryData Parse_Data => new TheoryData<string, BitMatrix64>
         {
             {
                 """
-                10001
-                00110
+                1010101010101010101010101010101010101010101010101010101010101010
+                0101010101010101010101010101010101010101010101010101010101010101
                 """,
-                new BitMatrix(new BitArray[]
+                new BitMatrix64(new ulong[]
                 {
-                    new BitArray(new[]{ true, false, false, false, true }),
-                    new BitArray(new[]{ false, false, true, true, false }),
+                    0b0101010101010101010101010101010101010101010101010101010101010101,
+                    0b1010101010101010101010101010101010101010101010101010101010101010,
                 })
             },
             {
                 """
-                10101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010
-                01010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101
-                01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001
+                11001
+                10010
                 """,
-                new BitMatrix(new BitArray[]
+                new BitMatrix64(new ulong[]
                 {
-                    new BitArray((int[])(object)new uint[]{ 0b01010101010101010101010101010101, 0b01010101010101010101010101010101,0b01010101010101010101010101010101,0b01010101010101010101010101010101,}),
-                    new BitArray((int[])(object)new uint[]{ 0b10101010101010101010101010101010, 0b10101010101010101010101010101010,0b10101010101010101010101010101010,0b10101010101010101010101010101010,}),
-                    new BitArray((int[])(object)new uint[]{ 0b10, 0, 0, 0b10000000000000000000000000000000, }),
-                })
-            },
-            {
-                $"""
-                {new string('0', 130)}
-                {new string('1', 130)}
-                """,
-                new BitMatrix(new BitArray[]
-                {
-                    new BitArray(130, false),
-                    new BitArray(130, true),
+                    0b10011,
+                    0b01001,
                 })
             },
         };
         [Theory]
         [Trait("Category", "Normal")]
         [MemberData(nameof(Parse_Data))]
-        public void Parse(string text, BitMatrix mat)
+        public void Parse(string text, BitMatrix64 mat)
         {
-            BitMatrix.Parse(text.Split('\n')).Should().BeEquivalentTo(mat);
+            BitMatrix64.Parse(text.Split('\n')).Should().BeEquivalentTo(mat);
         }
 
-        public static TheoryData String_Data => new TheoryData<BitMatrix, string>
+        public static TheoryData String_Data => new TheoryData<BitMatrix64, string>
         {
             {
-                new BitMatrix(new[]
+                new BitMatrix64(new[]
                 {
                     new[] {  true, false,  true },
                     new[] { false, false, false },
                     new[] { false, false,  true },
                     new[] {  true,  true,  true },
                 }),
-                """
-                101
-                000
-                001
-                111
+                $$$"""
+                {{{"101".PadRight(64, '0')}}}
+                {{{"000".PadRight(64, '0')}}}
+                {{{"001".PadRight(64, '0')}}}
+                {{{"111".PadRight(64, '0')}}}
                 """.Replace("\r\n", "\n")
             },
             {
-                new BitMatrix(new[]
+                new BitMatrix64(new[]
                 {
                     new[] {  false },
                 }),
-                "0"
+                "0".PadRight(64, '0')
             },
             {
-                new BitMatrix(new[]
+                new BitMatrix64(new[]
                 {
                     new[] {  true },
                 }),
-                "1"
+                "1".PadRight(64, '0')
+            },
+            {
+                new BitMatrix64(new[]
+                {
+                    0b1100111ul,
+                }),
+                "1110011000000000000000000000000000000000000000000000000000000000"
             },
         };
         [Theory]
         [Trait("Category", "Normal")]
         [MemberData(nameof(String_Data))]
-        public void String(BitMatrix mat, string text)
+        public void String(BitMatrix64 mat, string text)
         {
             mat.ToString().Replace("\r\n", "\n").Should().Be(text);
-            BitMatrix.Parse(text.Split('\n')).Should().BeEquivalentTo(mat);
+            BitMatrix64.Parse(text.Split('\n')).Should().BeEquivalentTo(mat);
         }
 
         [Fact]
         [Trait("Category", "Operator")]
         public void SingleMinus()
         {
-            var mat = BitMatrix.Parse(new[]
+            var mat = BitMatrix64.Parse(new[]
             {
                 "101",
                 "000",
                 "001",
                 "111",
             });
-            var expected = BitMatrix.Parse(new[]
+            var expected = BitMatrix64.Parse(new[]
             {
-                "010",
-                "111",
-                "110",
-                "000",
+                "010".PadRight(64, '1'),
+                "111".PadRight(64, '1'),
+                "110".PadRight(64, '1'),
+                "000".PadRight(64, '1'),
             });
             (-mat).Should().BeEquivalentTo(expected);
             (~mat).Should().BeEquivalentTo(expected);
         }
 
-        public static TheoryData Add_Data => new TheoryData<BitMatrix, BitMatrix, BitMatrix>
+        public static TheoryData Add_Data => new TheoryData<BitMatrix64, BitMatrix64, BitMatrix64>
         {
             {
-                BitMatrix.Zero,
-                BitMatrix.Identity,
-                BitMatrix.Identity
+                BitMatrix64.Zero,
+                BitMatrix64.Identity,
+                BitMatrix64.Identity
             },
             {
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "101",
                     "000",
                     "001",
                 }),
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "100",
                     "010",
                     "101",
                 }),
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "001",
                     "010",
@@ -165,14 +159,14 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 })
             },
             {
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "101",
                     "000",
                     "001",
                 }),
-                BitMatrix.Zero,
-                BitMatrix.Parse(new[]
+                BitMatrix64.Zero,
+                BitMatrix64.Parse(new[]
                 {
                     "101",
                     "000",
@@ -180,14 +174,14 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 })
             },
             {
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "101",
                     "000",
                     "001",
                 }),
-                BitMatrix.Identity,
-                BitMatrix.Parse(new[]
+                BitMatrix64.Identity,
+                BitMatrix64.Parse(new[]
                 {
                     "001",
                     "010",
@@ -199,7 +193,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Theory]
         [Trait("Category", "Operator")]
         [MemberData(nameof(Add_Data))]
-        public void Add(BitMatrix mat1, BitMatrix mat2, BitMatrix expected)
+        public void Add(BitMatrix64 mat1, BitMatrix64 mat2, BitMatrix64 expected)
         {
             (mat1 + mat2).Should().BeEquivalentTo(expected);
             (mat2 + mat1).Should().BeEquivalentTo(expected);
@@ -207,52 +201,52 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat1 ^ mat2).Should().BeEquivalentTo(expected);
         }
 
-        public static TheoryData Multiply_Data => new TheoryData<BitMatrix, BitMatrix, BitMatrix>
+        public static TheoryData Multiply_Data => new TheoryData<BitMatrix64, BitMatrix64, BitMatrix64>
         {
             {
-                BitMatrix.Identity,
-                BitMatrix.Zero,
-                BitMatrix.Zero
+                BitMatrix64.Identity,
+                BitMatrix64.Zero,
+                BitMatrix64.Zero
             },
             {
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "101",
                     "010",
                 }),
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "10",
                     "11",
                     "10",
                 }),
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "00",
                     "11",
                 })
             },
             {
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "00",
                     "11",
                 }),
-                BitMatrix.Zero,
-                BitMatrix.Parse(new[]
+                BitMatrix64.Zero,
+                BitMatrix64.Parse(new[]
                 {
                     "00",
                     "00",
                 })
             },
             {
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "00",
                     "11",
                 }),
-                BitMatrix.Identity,
-                BitMatrix.Parse(new[]
+                BitMatrix64.Identity,
+                BitMatrix64.Parse(new[]
                 {
                     "00",
                     "11",
@@ -263,48 +257,69 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Theory]
         [Trait("Category", "Operator")]
         [MemberData(nameof(Multiply_Data))]
-        public void Multiply(BitMatrix mat1, BitMatrix mat2, BitMatrix expected)
+        public void Multiply(BitMatrix64 mat1, BitMatrix64 mat2, BitMatrix64 expected)
         {
             (mat1 * mat2).Should().BeEquivalentTo(expected);
         }
 
-        public static TheoryData MultiplyVector_Data => new TheoryData<BitMatrix, bool[], BitArray>
+        public static TheoryData MultiplyVector_Data => new TheoryData<BitMatrix64, bool[], ulong, ulong>
         {
             {
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "101",
                     "010",
                 }),
                 new[]{ true, false, true},
-                new BitArray(new[]{ false, false})
+                0b101ul,
+                0b0ul
             },
             {
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "101",
                     "010",
                 }),
                 new[]{ true, true, true},
-                new BitArray(new[]{ false, true})
+                0b111ul,
+                0b10ul
+            },
+            {
+                BitMatrix64.Parse(new[]
+                {
+                    "101",
+                    "010",
+                }),
+                new[]{ false, true, true},
+                0b110ul,
+                0b11ul
+            },
+            {
+                BitMatrix64.Parse(
+                    Enumerable.Repeat(new string('0', 64), 64)
+                    .Select((s, i) => s.Remove(i, 1).Insert(i, "1"))
+                    .ToArray()
+                ),
+                new[] { true, false, false, true, false, true, false, false, true, true, false, true, false, true, true, true, true, true, false, true, false, false, false, false, true, true, true, false, true, false, true, true, false, false, false, false, true, false, true, false, true, false, true, true, false, true, false, false, true, true, true, false, false, true, false, true, false, true, false, true, false, false, true, true },
+                0b1100101010100111001011010101000011010111000010111110101100101001ul,
+                0b1100101010100111001011010101000011010111000010111110101100101001ul
             },
         };
 
         [Theory]
         [Trait("Category", "Operator")]
         [MemberData(nameof(MultiplyVector_Data))]
-        public void MultiplyVector(BitMatrix mat, bool[] vector, BitArray expected)
+        public void MultiplyVector(BitMatrix64 mat, bool[] vector, ulong vectorArray, ulong expected)
         {
-            (mat * vector).Should().BeEquivalentTo(expected);
-            (mat * new BitArray(vector)).Should().BeEquivalentTo(expected);
-            mat.Multiply(new BitArray(vector)).Should().BeEquivalentTo(expected);
+            (mat * vector).Should().Be(expected);
+            (mat * vectorArray).Should().Be(expected);
         }
 
         [Fact]
         [Trait("Category", "Normal")]
         public void Pow()
         {
-            var orig = BitMatrix.Parse(new[]
+            var orig = BitMatrix64.Parse(new[]
             {
                 "111",
                 "101",
@@ -312,41 +327,41 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             });
             var expecteds = new[]
             {
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "100",
                     "010",
                     "001",
                 }),
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "111",
                     "101",
                     "011",
                 }),
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "001",
                     "100",
-                    "110",
-                }),
-                BitMatrix.Parse(new[]
-                {
-                    "011",
-                    "111",
                     "010",
                 }),
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
-                    "110",
-                    "001",
+                    "111",
+                    "011",
                     "101",
                 }),
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
+                    "001",
                     "010",
-                    "011",
                     "100",
+                }),
+                BitMatrix64.Parse(new[]
+                {
+                    "111",
+                    "101",
+                    "011",
                 }),
             };
             var cur = orig;
@@ -358,64 +373,20 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             }
         }
 
-        public static TheoryData Inv_Data => new TheoryData<BitMatrix>
-        {
-            {
-                BitMatrix.Parse(new[]
-                {
-                    "101",
-                    "010",
-                    "011",
-                })
-            },
-            {
-                BitMatrix.Parse(new[]
-                {
-                    "100",
-                    "010",
-                    "111",
-                })
-            },
-            {
-                BitMatrix.Parse(new[]
-                {
-                    "001",
-                    "010",
-                    "111",
-                })
-            },
-        };
-
-        [Theory]
-        [Trait("Category", "Operator")]
-        [MemberData(nameof(Inv_Data))]
-        public void Inv(BitMatrix mat)
-        {
-            var inv = mat.Inv();
-            var expected = BitMatrix.Parse(new[]
-            {
-                "100",
-                "010",
-                "001",
-            });
-            (mat * inv).Should().BeEquivalentTo(expected);
-            (inv * mat).Should().BeEquivalentTo(expected);
-        }
-
         public static TheoryData GaussianElimination_Data => new TheoryData<
             bool,
-            BitMatrix,
-            BitMatrix>
+            BitMatrix64,
+            BitMatrix64>
         {
             {
                 false,
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "1001",
                     "0101",
                     "1111",
                 }),
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "1001",
                     "0101",
@@ -424,7 +395,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             },
             {
                 false,
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "1001",
                     "0101",
@@ -432,7 +403,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "1110",
                     "1100",
                 }),
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "1001",
                     "0101",
@@ -443,7 +414,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             },
             {
                 true,
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "1001",
                     "0101",
@@ -451,7 +422,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "1110",
                     "1100",
                 }),
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "1000",
                     "0100",
@@ -464,92 +435,87 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
 
         [Theory]
         [MemberData(nameof(GaussianElimination_Data))]
-        public void GaussianElimination(bool isReduced, BitMatrix orig, BitMatrix expected)
+        public void GaussianElimination(bool isReduced, BitMatrix64 orig, BitMatrix64 expected)
         {
             var got = orig.GaussianElimination(isReduced);
             got.Should().BeEquivalentTo(expected);
         }
 
-        public static TheoryData LinearSystem_Data => new TheoryData<
-            BitMatrix,
-            bool[],
-            BitArray[]>
+        public static TheoryData LinearSystem_Data => new TheoryData<BitMatrix64, ulong, ulong[]>
         {
             {
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "100",
                     "010",
                     "111",
                 }),
-                new[] { true, true, true, },
+                0b111ul,
                 new[]
                 {
-                    new BitArray(new[]{ true, true, true, })
+                    0b111ul
                 }
             },
             {
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "100",
                     "010",
                     "101",
                 }),
-                new[] { true, true, true, },
+                0b111ul,
                 new[]
                 {
-                    new BitArray(new[]{ true, true, false, })
+                    0b011ul
                 }
             },
             {
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "100",
                     "010",
                     "110",
                 }),
-                new[] { true, true, true, },
-                new BitArray[0]
+                0b111ul,
+                new ulong[0]
             },
             {
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "100",
                     "010",
                     "110",
                 }),
-                new[] { true, true, false, },
+                0b110,
                 new[]
                 {
-                    new BitArray(new[]{ true, true, false, }),
-                    new BitArray(new[]{ false, false, true, }),
+                    0b010ul,
+                    0b100ul,
                 }
             },
             {
-                BitMatrix.Parse(new[]
+                BitMatrix64.Parse(new[]
                 {
                     "000",
                     "000",
                 }),
-                new[] { false, false, },
+                0ul,
                 new[]
                 {
-                    new BitArray(new[]{ false, false, false, }),
-                    new BitArray(new[]{ true, false, false, }),
-                    new BitArray(new[]{ false, true, false, }),
-                    new BitArray(new[]{ false, false, true, }),
+                    0ul,
+                    1ul,
                 }
             },
         };
 
         [Theory]
         [MemberData(nameof(LinearSystem_Data))]
-        public void LinearSystem(BitMatrix matrix, bool[] vector, BitArray[] expected)
+        public void LinearSystem(BitMatrix64 matrix, ulong vector, ulong[] expected)
         {
             var got = matrix.LinearSystem(vector);
             got.Should().HaveSameCount(expected);
             for (int i = 0; i < got.Length; i++)
-                got[i].Should().BeEquivalentTo(expected[i], because: "got[{0}]", i);
+                got[i].Should().Be(expected[i], because: "got[{0}]", i);
         }
     }
 }

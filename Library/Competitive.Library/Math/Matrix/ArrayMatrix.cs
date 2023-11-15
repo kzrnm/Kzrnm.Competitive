@@ -13,20 +13,23 @@ namespace Kzrnm.Competitive
 {
     using Kd = Internal.ArrayMatrixKind;
     [DebuggerTypeProxy(typeof(ArrayMatrix<>.DebugView))]
-    public readonly struct ArrayMatrix<T> : Internal.IMatrixOperator<ArrayMatrix<T>>
+    public readonly struct ArrayMatrix<T> : Internal.IArrayMatrix<ArrayMatrix<T>, T>
         , IMultiplyOperators<ArrayMatrix<T>, T, ArrayMatrix<T>>
         where T : INumberBase<T>
     {
-        public T this[int row, int col] => Value[Index(row, col)];
-        [凾(256)] int Index(int row, int col) => row * Width + col;
+        public T this[int row, int col] => _v[Index(row, col)];
+        [凾(256)] int Index(int row, int col) => row * _w + col;
 
-        public readonly int Height, Width;
-        internal readonly T[] Value;
+        public int Height => _h;
+        public int Width => _w;
+        private readonly int _h, _w;
+        internal readonly T[] _v;
+        public ReadOnlySpan<T> Value => _v;
         public T[][] ToArray()
         {
-            var arr = new T[Height][];
+            var arr = new T[_h][];
             for (int i = 0; i < arr.Length; i++)
-                arr[i] = Value.AsSpan(i * Width, Width).ToArray();
+                arr[i] = _v.AsSpan(i * _w, _w).ToArray();
             return arr;
         }
 
@@ -39,16 +42,16 @@ namespace Kzrnm.Competitive
         internal ArrayMatrix(Kd kind)
         {
             this.kind = kind;
-            Value = null;
+            _v = null;
         }
 
         public ArrayMatrix(T[] value, int height, int width)
         {
             Contract.Assert(value.Length == height * width, "value.Length が不正です。");
             kind = Kd.Normal;
-            Height = height;
-            Width = width;
-            Value = value;
+            _h = height;
+            _w = width;
+            _v = value;
         }
         public ArrayMatrix(ReadOnlySpan<T> span, int height, int width) : this(span.ToArray(), height, width) { }
         public ArrayMatrix(T[][] m)
@@ -56,7 +59,7 @@ namespace Kzrnm.Competitive
             if (m.Length == 0)
             {
                 kind = Kd.Normal;
-                Value = Array.Empty<T>();
+                _v = Array.Empty<T>();
             }
             else
             {
@@ -64,15 +67,15 @@ namespace Kzrnm.Competitive
                 var height = m.Length;
                 var width = m[0].Length;
                 kind = Kd.Normal;
-                Height = height;
-                Width = width;
+                _h = height;
+                _w = width;
                 var val = new T[height * width];
                 for (int i = 0; i < m.Length; i++)
                 {
                     Contract.Assert(m[i].Length == width);
                     m[i].AsSpan().CopyTo(val.AsSpan(i * width));
                 }
-                Value = val;
+                _v = val;
             }
         }
         public ArrayMatrix(T[,] m)
@@ -80,9 +83,9 @@ namespace Kzrnm.Competitive
             var height = m.GetLength(0);
             var width = m.GetLength(1);
             kind = Kd.Normal;
-            Height = height;
-            Width = width;
-            Value = MemoryMarshal.CreateReadOnlySpan(ref m[0, 0], m.Length).ToArray();
+            _h = height;
+            _w = width;
+            _v = MemoryMarshal.CreateReadOnlySpan(ref m[0, 0], m.Length).ToArray();
         }
 
         private static ArrayMatrix<T> ThrowNotSupportResponse() => throw new NotSupportedException();
@@ -103,25 +106,26 @@ namespace Kzrnm.Competitive
         /// 零行列かどうかを返します。
         /// </summary>
         public bool IsZero => kind is Kd.Zero;
-        [凾(256)] T[] CloneArray() => (T[])Value.Clone();
+        [凾(256)] T[] CloneArray() => (T[])_v.Clone();
 
         private ArrayMatrix<T> AddIdentity()
         {
             var arr = CloneArray();
-            for (int i = Math.Min(Height, Width) - 1; i >= 0; i--)
+            for (int i = Math.Min(_h, _w) - 1; i >= 0; i--)
                 arr[Index(i, i)] += T.MultiplicativeIdentity;
-            return new(arr, Height, Width);
+            return new(arr, _h, _w);
         }
         [凾(256)]
         private ArrayMatrix<T> Add(ArrayMatrix<T> other)
         {
-            Contract.Assert(Height == other.Height && Width == other.Width);
-            var otherArr = other.Value;
+            Contract.Assert(_h == other._h && _w == other._w);
+            if (_v.Length == 0) return new();
+            ref var op = ref other._v[0];
             var arr = CloneArray();
             for (int i = 0; i < arr.Length; i++)
-                arr[i] += otherArr[i];
+                arr[i] += Unsafe.Add(ref op, i);
 
-            return new(arr, Height, Width);
+            return new(arr, _h, _w);
         }
         [凾(256)]
         public static ArrayMatrix<T> operator +(ArrayMatrix<T> x, ArrayMatrix<T> y)
@@ -152,19 +156,20 @@ namespace Kzrnm.Competitive
         private ArrayMatrix<T> SubtractIdentity()
         {
             var arr = CloneArray();
-            for (int i = Math.Min(Height, Width) - 1; i >= 0; i--)
+            for (int i = Math.Min(_h, _w) - 1; i >= 0; i--)
                 arr[Index(i, i)] -= T.MultiplicativeIdentity;
-            return new(arr, Height, Width);
+            return new(arr, _h, _w);
         }
         [凾(256)]
         private ArrayMatrix<T> Subtract(ArrayMatrix<T> other)
         {
-            Contract.Assert(Height == other.Height && Width == other.Width);
-            var otherArr = other.Value;
+            Contract.Assert(_h == other._h && _w == other._w);
+            if (_v.Length == 0) return new();
+            ref var op = ref other._v[0];
             var arr = CloneArray();
             for (int i = 0; i < arr.Length; i++)
-                arr[i] -= otherArr[i];
-            return new(arr, Height, Width);
+                arr[i] -= Unsafe.Add(ref op, i);
+            return new(arr, _h, _w);
         }
 
         [凾(256)] public static ArrayMatrix<T> operator +(ArrayMatrix<T> x) => x;
@@ -174,7 +179,7 @@ namespace Kzrnm.Competitive
             var arr = x.CloneArray();
             for (int i = 0; i < arr.Length; i++)
                 arr[i] = -arr[i];
-            return new(arr, x.Height, x.Width);
+            return new(arr, x._h, x._w);
         }
 
         [凾(256)]
@@ -205,16 +210,16 @@ namespace Kzrnm.Competitive
         [凾(256)]
         private ArrayMatrix<T> Multiply(ArrayMatrix<T> other)
         {
-            var rh = Height;
-            var rw = other.Width;
-            var mid = Width;
-            Contract.Assert(Width == other.Height);
+            var rh = _h;
+            var rw = other._w;
+            var mid = _w;
+            Contract.Assert(_w == other._h);
             var res = new T[rh * rw];
             if (res.Length == 0) return new();
 
             ref var rp = ref res[0];
-            ref var tp = ref Value[0];
-            ref var op = ref other.Value[0];
+            ref var tp = ref _v[0];
+            ref var op = ref other._v[0];
 
             for (int i = 0; i < rh; i++)
                 for (int j = 0; j < rw; j++)
@@ -233,12 +238,12 @@ namespace Kzrnm.Competitive
                 Kd.Normal => y.kind switch
                 {
                     Kd.Normal => x.Multiply(y),
-                    Kd.Zero => new(new T[x.Value.Length], x.Height, x.Width),
+                    Kd.Zero => new(new T[x._v.Length], x._h, x._w),
                     _ => x,
                 },
                 Kd.Zero => y.kind switch
                 {
-                    Kd.Normal => new(new T[y.Value.Length], y.Height, y.Width),
+                    Kd.Normal => new(new T[y._v.Length], y._h, y._w),
                     _ => Zero,
                 },
                 _ => y.kind switch
@@ -252,11 +257,11 @@ namespace Kzrnm.Competitive
         [凾(256)]
         private ArrayMatrix<T> MultiplyScalar(T scalar)
         {
-            var arr = Value;
+            var arr = _v;
             var res = new T[arr.Length];
             for (int i = 0; i < res.Length; i++)
                 res[i] = scalar * arr[i];
-            return new(res, Height, Width);
+            return new(res, _h, _w);
         }
         [凾(256)]
         public static ArrayMatrix<T> operator *(ArrayMatrix<T> m, T x)
@@ -279,8 +284,8 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public T[] Multiply(T[] vector)
         {
-            Contract.Assert(Width == vector.Length);
-            return (this * new ArrayMatrix<T>(vector, vector.Length, 1)).Value;
+            Contract.Assert(_w == vector.Length);
+            return (this * new ArrayMatrix<T>(vector, vector.Length, 1))._v;
         }
 
         /// <summary>
@@ -289,7 +294,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public T Determinant()
         {
-            Contract.Assert(Height == Width);
+            Contract.Assert(_h == _w);
             return DeterminantImpl(ToArray());
         }
 
@@ -299,14 +304,14 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public T Cofactor(int i, int j)
         {
-            Contract.Assert(Height == Width);
-            var arr = new T[Height - 1][];
+            Contract.Assert(_h == _w);
+            var arr = new T[_h - 1][];
             for (int h = 0; h < arr.Length; h++)
             {
                 var p = h;
                 if (h >= i) ++p;
-                var row = Value.AsSpan(p * Width, Width);
-                arr[h] = new T[Width - 1];
+                var row = _v.AsSpan(p * _w, _w);
+                arr[h] = new T[_w - 1];
                 row[..j].CopyTo(arr[h]);
                 row[(j + 1)..].CopyTo(arr[h].AsSpan(j));
             }
@@ -352,14 +357,14 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public ArrayMatrix<T> Inv()
         {
-            Contract.Assert(Height == Width);
-            var len1 = Width * 2;
-            var arr = new T[Height][];
+            Contract.Assert(_h == _w);
+            var len1 = _w * 2;
+            var arr = new T[_h][];
             for (int i = 0; i < arr.Length; i++)
             {
                 arr[i] = new T[len1];
-                Value.AsSpan(i * Width, Width).CopyTo(arr[i]);
-                arr[i][Width + i] = T.MultiplicativeIdentity;
+                _v.AsSpan(i * _w, _w).CopyTo(arr[i]);
+                arr[i][_w + i] = T.MultiplicativeIdentity;
             }
             GaussianEliminationImpl(arr, true);
 
@@ -379,12 +384,12 @@ namespace Kzrnm.Competitive
         public ArrayMatrix<T> Transpose()
         {
             Contract.Assert(kind == Kd.Normal);
-            var h = Height;
-            var w = Width;
+            var h = _h;
+            var w = _w;
             var rt = new T[h * w];
             if (rt.Length == 0) return new();
 
-            var v = Value;
+            var v = _v;
             ref var rp = ref rt[0];
             for (int hh = 0; hh < h; hh++)
             {
@@ -478,17 +483,17 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public T[][] LinearSystem(T[] vector)
         {
-            Contract.Assert(Height == vector.Length);
-            var impl = new T[Height][];
+            Contract.Assert(_h == vector.Length);
+            var impl = new T[_h][];
             for (int i = 0; i < impl.Length; i++)
             {
-                impl[i] = new T[Width + 1];
-                Value.AsSpan(i * Width, Width).CopyTo(impl[i]);
+                impl[i] = new T[_w + 1];
+                _v.AsSpan(i * _w, _w).CopyTo(impl[i]);
                 impl[i][^1] = vector[i];
             }
             var idxs = GaussianEliminationImpl(impl, false).AsSpan();
             var r = idxs.Length;
-            int w = Width;
+            int w = _w;
 
             // 解があるかチェック
             // a×0+b×0+c×0..+z×0≠0 になっていたら解無し
@@ -547,11 +552,11 @@ namespace Kzrnm.Competitive
         public override bool Equals(object obj) => obj is ArrayMatrix<T> x && Equals(x);
         [凾(256)]
         public bool Equals(ArrayMatrix<T> other)
-            => kind == other.kind && (kind != Kd.Normal || Height == other.Height && Value.AsSpan().SequenceEqual(other.Value));
+            => kind == other.kind && (kind != Kd.Normal || _h == other._h && _v.AsSpan().SequenceEqual(other._v));
         [凾(256)]
         public override int GetHashCode() => kind switch
         {
-            Kd.Normal => HashCode.Combine(kind, Value.Length, Value[0], Value[1], Value[^2], Value[^1]),
+            Kd.Normal => HashCode.Combine(kind, _v.Length, _v[0], _v[1], _v[^2], _v[^1]),
             _ => HashCode.Combine(kind),
         };
         [凾(256)]
@@ -603,7 +608,7 @@ namespace Kzrnm.Competitive
         {
             var h = m.Height;
             var w = m.Width;
-            var v = m.Value;
+            var v = m._v;
             for (int i = 0; i < h; i++)
                 cw.WriteLineJoin(v.AsSpan(i * w, w));
         }

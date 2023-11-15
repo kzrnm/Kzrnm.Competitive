@@ -12,10 +12,12 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public readonly struct <#= matrixName #> : Internal.IMatrixOperator<<#= matrixName #>>
+    public readonly struct <#= matrixName #> : Internal.IMatrix<<#= matrixName #>>
         , IMultiplyOperators<<#= matrixName #>, T, <#= matrixName #>>
         where T : INumberBase<T>
     {
+        public int Height => <#= size #>;
+        public int Width => <#= size #>;
 <# for (int i = 0; i < size; i++) { #>
         public <#= tupleName #> Row<#= i #> => (<#= string.Join(", ", Enumerable.Range(0, size).Select(c => $"V{i}{c}")) #>);
 <# } #>

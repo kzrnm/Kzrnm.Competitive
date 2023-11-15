@@ -57,30 +57,30 @@
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-    <None Update="Math\Matrix\Matrix5x5.tt">
+    <None Update="Math\Matrix\Small\Matrix5x5.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Matrix5x5.cs</LastGenOutput>
     </None>
-    <Compile Update="Math\Matrix\Extensions\MatrixProdStrassen.Simd.cs">
+    <Compile Update="Math\Matrix\Small\Extensions\MatrixProdStrassen.Simd.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>MatrixProdStrassen.Simd.tt</DependentUpon>
     </Compile>
-    <Compile Update="Math\Matrix\Matrix5x5.cs">
+    <Compile Update="Math\Matrix\Small\Matrix5x5.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Matrix5x5.tt</DependentUpon>
     </Compile>
-    <None Update="Math\Matrix\Matrix6x6.tt">
+    <None Update="Math\Matrix\Small\Matrix6x6.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Matrix6x6.cs</LastGenOutput>
     </None>
-    <Compile Update="Math\Matrix\Matrix6x6.cs">
+    <Compile Update="Math\Matrix\Small\Matrix6x6.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Matrix6x6.tt</DependentUpon>
     </Compile>
-    <None Update="Math\Matrix\Extensions\MatrixProdStrassen.Simd.tt">
+    <None Update="Math\Matrix\Small\Extensions\MatrixProdStrassen.Simd.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MatrixProdStrassen.Simd.cs</LastGenOutput>
     </None>

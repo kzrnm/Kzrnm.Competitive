@@ -14,7 +14,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             {
                 new []{ true, false, true},
                 new []{ false, true, true },
-            }).Value.Should().BeEquivalentTo(new UInt128[]
+            })._v.Should().BeEquivalentTo(new UInt128[]
             {
                 0b101ul,
                 0b110ul,
@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             {
                 0b101ul,
                 0b110ul,
-            }).Value.Should().BeEquivalentTo(new UInt128[]
+            })._v.Should().BeEquivalentTo(new UInt128[]
             {
                 0b101ul,
                 0b110ul,

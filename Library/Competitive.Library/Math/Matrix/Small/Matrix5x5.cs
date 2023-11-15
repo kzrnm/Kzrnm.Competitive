@@ -8,10 +8,12 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public readonly struct Matrix5x5<T> : Internal.IMatrixOperator<Matrix5x5<T>>
+    public readonly struct Matrix5x5<T> : Internal.IMatrix<Matrix5x5<T>>
         , IMultiplyOperators<Matrix5x5<T>, T, Matrix5x5<T>>
         where T : INumberBase<T>
     {
+        public int Height => 5;
+        public int Width => 5;
         public (T Col0, T Col1, T Col2, T Col3, T Col4) Row0 => (V00, V01, V02, V03, V04);
         public (T Col0, T Col1, T Col2, T Col3, T Col4) Row1 => (V10, V11, V12, V13, V14);
         public (T Col0, T Col1, T Col2, T Col3, T Col4) Row2 => (V20, V21, V22, V23, V24);
