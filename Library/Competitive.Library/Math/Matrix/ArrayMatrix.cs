@@ -205,9 +205,12 @@ namespace Kzrnm.Competitive
             ref var op = ref other.Value[0];
 
             for (int i = 0; i < rh; i++)
-                for (var k = 0; k < mid; k++)
-                    for (int j = 0; j < rw; j++)
-                        Unsafe.Add(ref rp, i * rw + j) += Unsafe.Add(ref tp, i * mid + k) * Unsafe.Add(ref op, k * rw + j);
+                for (int j = 0; j < rw; j++)
+                {
+                    ref var v = ref Unsafe.Add(ref rp, i * rw + j);
+                    for (var k = 0; k < mid; k++)
+                        v += Unsafe.Add(ref tp, i * mid + k) * Unsafe.Add(ref op, k * rw + j);
+                }
             return new(res, rh, rw);
         }
         [凾(256)]
