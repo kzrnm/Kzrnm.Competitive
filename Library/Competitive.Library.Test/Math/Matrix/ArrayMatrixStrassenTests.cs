@@ -39,6 +39,30 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             ModInt2Int(mat1.Strassen(mat2)).Should().Be(expected);
         }
 
+        [Fact]
+        [Trait("Category", "Operator")]
+        public void LargeRandomStrassen()
+        {
+            var rnd = new Random(227);
+            var v1 = new MontgomeryModInt<Mod998244353>[200 * 200];
+            var v2 = new MontgomeryModInt<Mod998244353>[200 * 200];
+            for (int q = 0; q < 5; q++)
+            {
+                for (int i = 0; i < 200 * 200; i++)
+                {
+                    v1[i] = rnd.Next();
+                    v2[i] = rnd.Next();
+                }
+
+                var mat1 = new ArrayMatrix<MontgomeryModInt<Mod998244353>>(v1, 200, 200);
+                var mat2 = new ArrayMatrix<MontgomeryModInt<Mod998244353>>(v2, 200, 200);
+
+                var got = ModInt2Int(mat1.Strassen(mat2));
+                var expected = ModInt2Int(mat1 * mat2);
+                got.Should().Be(expected);
+            }
+        }
+
         static ArrayMatrix<int> ModInt2Int<T>(ArrayMatrix<T> mat) where T : IModInt<T>
            => mat.kind switch
            {
@@ -46,5 +70,23 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                    => new(mat.Value.Select(v => v.Value).ToArray(), mat.Height, mat.Width),
                _ => new(mat.kind),
            };
+
+
+        [Fact]
+        [Trait("Category", "Normal")]
+        public void Pow()
+        {
+            var orig = new ArrayMatrix<MontgomeryModInt<Mod998244353>>(new MontgomeryModInt<Mod998244353>[,]
+            {
+                { 1, 2 },
+                { 3, 4 },
+            });
+            var cur = orig;
+            for (int i = 1; i < 10; i++)
+            {
+                orig.Pow(i).Should().BeEquivalentTo(cur);
+                cur *= orig;
+            }
+        }
     }
 }

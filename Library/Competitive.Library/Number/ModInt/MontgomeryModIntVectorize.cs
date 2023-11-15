@@ -32,11 +32,6 @@ namespace Kzrnm.Competitive
             : this(Vector256.Create(a0, a1, a2, a3, a4, a5, a6, a7)) { }
         [凾(256)]
         public static implicit operator MontgomeryModIntVectorize<T>(Vector256<uint> x) => new MontgomeryModIntVectorize<T>(x);
-        public int this[int i]
-        {
-            [凾(256)]
-            get => (int)Value.GetElement(i);
-        }
 
         [凾(256)]
         public bool Equals(MontgomeryModIntVectorize<T> other) => Value.Equals(other.Value);
@@ -60,20 +55,7 @@ namespace Kzrnm.Competitive
         [凾(256 | 512)]
         public static Vector256<uint> Reduce(Vector256<uint> prod02, Vector256<uint> prod13)
         {
-            var unpalo = UnpackLow(prod02, prod13);
-            var unpahi = UnpackHigh(prod02, prod13);
-            var prodlo = UnpackLow(unpalo.AsUInt64(), unpahi.AsUInt64()).AsUInt32();
-            var prodhi = UnpackHigh(unpalo.AsUInt64(), unpahi.AsUInt64()).AsUInt32();
-            var hiplm1 = Add(prodhi.AsUInt32(), M1);
-            var prodlohi = Shuffle(prodlo, 0xF5);
-            var lmlr02 = Multiply(prodlo, R).AsUInt32();
-            var lmlr13 = Multiply(prodlohi, R).AsUInt32();
-            var prod02_ = Multiply(lmlr02, M1).AsUInt32();
-            var prod13_ = Multiply(lmlr13, M1).AsUInt32();
-            var unpalo_ = UnpackLow(prod02_, prod13_);
-            var unpahi_ = UnpackHigh(prod02_, prod13_);
-            var prod = UnpackHigh(unpalo_.AsUInt64(), unpahi_.AsUInt64()).AsUInt32();
-            return Subtract(hiplm1, prod);
+            return SimdMontgomery.Reduce(prod02, prod13, R, M1);
         }
 
         [凾(256)]
@@ -99,36 +81,19 @@ namespace Kzrnm.Competitive
         [凾(256 | 512)]
         public static MontgomeryModIntVectorize<T> operator +(MontgomeryModIntVectorize<T> lhs, MontgomeryModIntVectorize<T> rhs)
         {
-            var A = lhs.Value;
-            var B = rhs.Value;
-            var apb = Add(A, B);
-            var ret = Subtract(apb, M2);
-            var cmp = CompareGreaterThan(Vector256<int>.Zero, ret.AsInt32()).AsUInt32();
-            var add = And(cmp, M2);
-            return new MontgomeryModIntVectorize<T>(Add(add, ret));
+            return SimdMontgomery.MontgomeryAdd(lhs.Value, rhs.Value, M2);
         }
 
         [凾(256 | 512)]
         public static MontgomeryModIntVectorize<T> operator -(MontgomeryModIntVectorize<T> lhs, MontgomeryModIntVectorize<T> rhs)
         {
-            var A = lhs.Value;
-            var B = rhs.Value;
-            var ret = Subtract(A, B);
-            var cmp = CompareGreaterThan(Vector256<int>.Zero, ret.AsInt32()).AsUInt32();
-            var add = And(cmp, M2);
-            return new MontgomeryModIntVectorize<T>(Add(add, ret));
+            return SimdMontgomery.MontgomerySubtract(lhs.Value, rhs.Value, M2);
         }
 
         [凾(256 | 512)]
         public static MontgomeryModIntVectorize<T> operator *(MontgomeryModIntVectorize<T> lhs, MontgomeryModIntVectorize<T> rhs)
         {
-            var A = lhs.Value;
-            var B = rhs.Value;
-            var a13 = Shuffle(A, 0xF5);
-            var b13 = Shuffle(B, 0xF5);
-            var prod02 = Multiply(A, B);
-            var prod13 = Multiply(a13, b13);
-            return new MontgomeryModIntVectorize<T>(Reduce(prod02.AsUInt32(), prod13.AsUInt32()));
+            return SimdMontgomery.MontgomeryMultiply(lhs.Value, rhs.Value, R, M1);
         }
     }
 }

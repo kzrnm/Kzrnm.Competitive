@@ -51,15 +51,14 @@ namespace Kzrnm.Competitive
                 }
                 else
                 {
-                    var m0 = Vector256<uint>.Zero;
                     var m2 = Vector256.Create(new T().Mod * 2);
                     for (int j0 = 0, j1 = vv; j0 < vv; j0 += 8, j1 += 8)
                     {
                         ref var T0 = ref ToVector256(ref a[j0]);
                         ref var T1 = ref ToVector256(ref a[j1]);
 
-                        var naj = MontgomeryAdd(T0, T1, m2, m0);
-                        var najv = MontgomerySubtract(T0, T1, m2, m0);
+                        var naj = MontgomeryAdd(T0, T1, m2);
+                        var najv = MontgomerySubtract(T0, T1, m2);
                         T0 = naj;
                         T1 = najv;
                     }
@@ -95,7 +94,6 @@ namespace Kzrnm.Competitive
                 }
                 else if (v == 4)
                 {
-                    var m0 = Vector128<uint>.Zero;
                     var m1 = Vector128.Create(new T().Mod);
                     var m2 = Vector128.Create(new T().Mod * 2);
                     var r = Vector128.Create(MontgomeryModInt<T>.r);
@@ -117,14 +115,14 @@ namespace Kzrnm.Competitive
                                 ref var T2 = ref ToVector128(ref a[j2]);
                                 ref var T3 = ref ToVector128(ref a[j3]);
 
-                                var T0P2 = MontgomeryAdd(T0, T2, m2, m0);
-                                var T1P3 = MontgomeryAdd(T1, T3, m2, m0);
-                                var T0M2 = MontgomerySubtract(T0, T2, m2, m0);
-                                var T1M3 = MontgomeryMultiply(MontgomerySubtract(T1, T3, m2, m0), Imag, r, m1);
-                                T0 = MontgomeryAdd(T0P2, T1P3, m2, m0);
-                                T1 = MontgomerySubtract(T0P2, T1P3, m2, m0);
-                                T2 = MontgomeryAdd(T0M2, T1M3, m2, m0);
-                                T3 = MontgomerySubtract(T0M2, T1M3, m2, m0);
+                                var T0P2 = MontgomeryAdd(T0, T2, m2);
+                                var T1P3 = MontgomeryAdd(T1, T3, m2);
+                                var T0M2 = MontgomerySubtract(T0, T2, m2);
+                                var T1M3 = MontgomeryMultiply(MontgomerySubtract(T1, T3, m2), Imag, r, m1);
+                                T0 = MontgomeryAdd(T0P2, T1P3, m2);
+                                T1 = MontgomerySubtract(T0P2, T1P3, m2);
+                                T2 = MontgomeryAdd(T0M2, T1M3, m2);
+                                T3 = MontgomerySubtract(T0M2, T1M3, m2);
                             }
                         }
                         else
@@ -149,14 +147,14 @@ namespace Kzrnm.Competitive
                                 var MT1 = MontgomeryMultiply(T1, XX, r, m1);
                                 var MT2 = MontgomeryMultiply(T2, WW, r, m1);
                                 var MT3 = MontgomeryMultiply(T3, WX, r, m1);
-                                var T0P2 = MontgomeryAdd(T0, MT2, m2, m0);
-                                var T1P3 = MontgomeryAdd(MT1, MT3, m2, m0);
-                                var T0M2 = MontgomerySubtract(T0, MT2, m2, m0);
-                                var T1M3 = MontgomeryMultiply(MontgomerySubtract(MT1, MT3, m2, m0), Imag, r, m1);
-                                T0 = MontgomeryAdd(T0P2, T1P3, m2, m0);
-                                T1 = MontgomerySubtract(T0P2, T1P3, m2, m0);
-                                T2 = MontgomeryAdd(T0M2, T1M3, m2, m0);
-                                T3 = MontgomerySubtract(T0M2, T1M3, m2, m0);
+                                var T0P2 = MontgomeryAdd(T0, MT2, m2);
+                                var T1P3 = MontgomeryAdd(MT1, MT3, m2);
+                                var T0M2 = MontgomerySubtract(T0, MT2, m2);
+                                var T1M3 = MontgomeryMultiply(MontgomerySubtract(MT1, MT3, m2), Imag, r, m1);
+                                T0 = MontgomeryAdd(T0P2, T1P3, m2);
+                                T1 = MontgomerySubtract(T0P2, T1P3, m2);
+                                T2 = MontgomeryAdd(T0M2, T1M3, m2);
+                                T3 = MontgomerySubtract(T0M2, T1M3, m2);
                             }
                         }
                         xx *= dw[TrailingZeroCount(jh += 4)];
@@ -164,7 +162,6 @@ namespace Kzrnm.Competitive
                 }
                 else
                 {
-                    var m0 = Vector256<uint>.Zero;
                     var m1 = Vector256.Create(new T().Mod);
                     var m2 = Vector256.Create(new T().Mod * 2);
                     var r = Vector256.Create(MontgomeryModInt<T>.r);
@@ -186,14 +183,14 @@ namespace Kzrnm.Competitive
                                 ref var T2 = ref ToVector256(ref a[j2]);
                                 ref var T3 = ref ToVector256(ref a[j3]);
 
-                                var T0P2 = MontgomeryAdd(T0, T2, m2, m0);
-                                var T1P3 = MontgomeryAdd(T1, T3, m2, m0);
-                                var T0M2 = MontgomerySubtract(T0, T2, m2, m0);
-                                var T1M3 = MontgomeryMultiply(MontgomerySubtract(T1, T3, m2, m0), Imag, r, m1);
-                                T0 = MontgomeryAdd(T0P2, T1P3, m2, m0);
-                                T1 = MontgomerySubtract(T0P2, T1P3, m2, m0);
-                                T2 = MontgomeryAdd(T0M2, T1M3, m2, m0);
-                                T3 = MontgomerySubtract(T0M2, T1M3, m2, m0);
+                                var T0P2 = MontgomeryAdd(T0, T2, m2);
+                                var T1P3 = MontgomeryAdd(T1, T3, m2);
+                                var T0M2 = MontgomerySubtract(T0, T2, m2);
+                                var T1M3 = MontgomeryMultiply(MontgomerySubtract(T1, T3, m2), Imag, r, m1);
+                                T0 = MontgomeryAdd(T0P2, T1P3, m2);
+                                T1 = MontgomerySubtract(T0P2, T1P3, m2);
+                                T2 = MontgomeryAdd(T0M2, T1M3, m2);
+                                T3 = MontgomerySubtract(T0M2, T1M3, m2);
                             }
                         }
                         else
@@ -218,14 +215,14 @@ namespace Kzrnm.Competitive
                                 var MT1 = MontgomeryMultiply(T1, XX, r, m1);
                                 var MT2 = MontgomeryMultiply(T2, WW, r, m1);
                                 var MT3 = MontgomeryMultiply(T3, WX, r, m1);
-                                var T0P2 = MontgomeryAdd(T0, MT2, m2, m0);
-                                var T1P3 = MontgomeryAdd(MT1, MT3, m2, m0);
-                                var T0M2 = MontgomerySubtract(T0, MT2, m2, m0);
-                                var T1M3 = MontgomeryMultiply(MontgomerySubtract(MT1, MT3, m2, m0), Imag, r, m1);
-                                T0 = MontgomeryAdd(T0P2, T1P3, m2, m0);
-                                T1 = MontgomerySubtract(T0P2, T1P3, m2, m0);
-                                T2 = MontgomeryAdd(T0M2, T1M3, m2, m0);
-                                T3 = MontgomerySubtract(T0M2, T1M3, m2, m0);
+                                var T0P2 = MontgomeryAdd(T0, MT2, m2);
+                                var T1P3 = MontgomeryAdd(MT1, MT3, m2);
+                                var T0M2 = MontgomerySubtract(T0, MT2, m2);
+                                var T1M3 = MontgomeryMultiply(MontgomerySubtract(MT1, MT3, m2), Imag, r, m1);
+                                T0 = MontgomeryAdd(T0P2, T1P3, m2);
+                                T1 = MontgomerySubtract(T0P2, T1P3, m2);
+                                T2 = MontgomeryAdd(T0M2, T1M3, m2);
+                                T3 = MontgomerySubtract(T0M2, T1M3, m2);
                             }
                         }
                         xx *= dw[TrailingZeroCount(jh += 4)];
@@ -283,7 +280,6 @@ namespace Kzrnm.Competitive
                 }
                 else if (v == 4)
                 {
-                    var m0 = Vector128<uint>.Zero;
                     var m1 = Vector128.Create(new T().Mod);
                     var m2 = Vector128.Create(new T().Mod * 2);
                     var r = Vector128.Create(MontgomeryModInt<T>.r);
@@ -305,14 +301,14 @@ namespace Kzrnm.Competitive
                                 ref var T2 = ref ToVector128(ref a[j2]);
                                 ref var T3 = ref ToVector128(ref a[j3]);
 
-                                var T0P1 = MontgomeryAdd(T0, T1, m2, m0);
-                                var T2P3 = MontgomeryAdd(T2, T3, m2, m0);
-                                var T0M1 = MontgomerySubtract(T0, T1, m2, m0);
-                                var T2M3 = MontgomeryMultiply(MontgomerySubtract(T2, T3, m2, m0), Imag, r, m1);
-                                T0 = MontgomeryAdd(T0P1, T2P3, m2, m0);
-                                T2 = MontgomerySubtract(T0P1, T2P3, m2, m0);
-                                T1 = MontgomeryAdd(T0M1, T2M3, m2, m0);
-                                T3 = MontgomerySubtract(T0M1, T2M3, m2, m0);
+                                var T0P1 = MontgomeryAdd(T0, T1, m2);
+                                var T2P3 = MontgomeryAdd(T2, T3, m2);
+                                var T0M1 = MontgomerySubtract(T0, T1, m2);
+                                var T2M3 = MontgomeryMultiply(MontgomerySubtract(T2, T3, m2), Imag, r, m1);
+                                T0 = MontgomeryAdd(T0P1, T2P3, m2);
+                                T2 = MontgomerySubtract(T0P1, T2P3, m2);
+                                T1 = MontgomeryAdd(T0M1, T2M3, m2);
+                                T3 = MontgomerySubtract(T0M1, T2M3, m2);
                             }
                         }
                         else
@@ -334,14 +330,14 @@ namespace Kzrnm.Competitive
                                 ref var T2 = ref ToVector128(ref a[j2]);
                                 ref var T3 = ref ToVector128(ref a[j3]);
 
-                                var T0P1 = MontgomeryAdd(T0, T1, m2, m0);
-                                var T2P3 = MontgomeryAdd(T2, T3, m2, m0);
-                                var T0M1 = MontgomeryMultiply(MontgomerySubtract(T0, T1, m2, m0), XX, r, m1);
-                                var T2M3 = MontgomeryMultiply(MontgomerySubtract(T2, T3, m2, m0), YY, r, m1);
-                                T0 = MontgomeryAdd(T0P1, T2P3, m2, m0);
-                                T2 = MontgomeryMultiply(MontgomerySubtract(T0P1, T2P3, m2, m0), WW, r, m1);
-                                T1 = MontgomeryAdd(T0M1, T2M3, m2, m0);
-                                T3 = MontgomeryMultiply(MontgomerySubtract(T0M1, T2M3, m2, m0), WW, r, m1);
+                                var T0P1 = MontgomeryAdd(T0, T1, m2);
+                                var T2P3 = MontgomeryAdd(T2, T3, m2);
+                                var T0M1 = MontgomeryMultiply(MontgomerySubtract(T0, T1, m2), XX, r, m1);
+                                var T2M3 = MontgomeryMultiply(MontgomerySubtract(T2, T3, m2), YY, r, m1);
+                                T0 = MontgomeryAdd(T0P1, T2P3, m2);
+                                T2 = MontgomeryMultiply(MontgomerySubtract(T0P1, T2P3, m2), WW, r, m1);
+                                T1 = MontgomeryAdd(T0M1, T2M3, m2);
+                                T3 = MontgomeryMultiply(MontgomerySubtract(T0M1, T2M3, m2), WW, r, m1);
                             }
                         }
                         xx *= dy[TrailingZeroCount(jh += 4)];
@@ -349,7 +345,6 @@ namespace Kzrnm.Competitive
                 }
                 else
                 {
-                    var m0 = Vector256<uint>.Zero;
                     var m1 = Vector256.Create(new T().Mod);
                     var m2 = Vector256.Create(new T().Mod * 2);
                     var r = Vector256.Create(MontgomeryModInt<T>.r);
@@ -372,14 +367,14 @@ namespace Kzrnm.Competitive
                                 ref var T2 = ref ToVector256(ref a[j2]);
                                 ref var T3 = ref ToVector256(ref a[j3]);
 
-                                var T0P1 = MontgomeryAdd(T0, T1, m2, m0);
-                                var T2P3 = MontgomeryAdd(T2, T3, m2, m0);
-                                var T0M1 = MontgomerySubtract(T0, T1, m2, m0);
-                                var T2M3 = MontgomeryMultiply(MontgomerySubtract(T2, T3, m2, m0), Imag, r, m1);
-                                T0 = MontgomeryAdd(T0P1, T2P3, m2, m0);
-                                T2 = MontgomerySubtract(T0P1, T2P3, m2, m0);
-                                T1 = MontgomeryAdd(T0M1, T2M3, m2, m0);
-                                T3 = MontgomerySubtract(T0M1, T2M3, m2, m0);
+                                var T0P1 = MontgomeryAdd(T0, T1, m2);
+                                var T2P3 = MontgomeryAdd(T2, T3, m2);
+                                var T0M1 = MontgomerySubtract(T0, T1, m2);
+                                var T2M3 = MontgomeryMultiply(MontgomerySubtract(T2, T3, m2), Imag, r, m1);
+                                T0 = MontgomeryAdd(T0P1, T2P3, m2);
+                                T2 = MontgomerySubtract(T0P1, T2P3, m2);
+                                T1 = MontgomeryAdd(T0M1, T2M3, m2);
+                                T3 = MontgomerySubtract(T0M1, T2M3, m2);
                             }
                         }
                         else
@@ -401,14 +396,14 @@ namespace Kzrnm.Competitive
                                 ref var T2 = ref ToVector256(ref a[j2]);
                                 ref var T3 = ref ToVector256(ref a[j3]);
 
-                                var T0P1 = MontgomeryAdd(T0, T1, m2, m0);
-                                var T2P3 = MontgomeryAdd(T2, T3, m2, m0);
-                                var T0M1 = MontgomeryMultiply(MontgomerySubtract(T0, T1, m2, m0), XX, r, m1);
-                                var T2M3 = MontgomeryMultiply(MontgomerySubtract(T2, T3, m2, m0), YY, r, m1);
-                                T0 = MontgomeryAdd(T0P1, T2P3, m2, m0);
-                                T2 = MontgomeryMultiply(MontgomerySubtract(T0P1, T2P3, m2, m0), WW, r, m1);
-                                T1 = MontgomeryAdd(T0M1, T2M3, m2, m0);
-                                T3 = MontgomeryMultiply(MontgomerySubtract(T0M1, T2M3, m2, m0), WW, r, m1);
+                                var T0P1 = MontgomeryAdd(T0, T1, m2);
+                                var T2P3 = MontgomeryAdd(T2, T3, m2);
+                                var T0M1 = MontgomeryMultiply(MontgomerySubtract(T0, T1, m2), XX, r, m1);
+                                var T2M3 = MontgomeryMultiply(MontgomerySubtract(T2, T3, m2), YY, r, m1);
+                                T0 = MontgomeryAdd(T0P1, T2P3, m2);
+                                T2 = MontgomeryMultiply(MontgomerySubtract(T0P1, T2P3, m2), WW, r, m1);
+                                T1 = MontgomeryAdd(T0M1, T2M3, m2);
+                                T3 = MontgomeryMultiply(MontgomerySubtract(T0M1, T2M3, m2), WW, r, m1);
                             }
                         }
                         xx *= dy[TrailingZeroCount(jh += 4)];
@@ -431,7 +426,6 @@ namespace Kzrnm.Competitive
                 }
                 else
                 {
-                    var m0 = Vector256<uint>.Zero;
                     var m2 = Vector256.Create(new T().Mod * 2);
                     int j0 = 0;
                     int j1 = v;
@@ -439,8 +433,8 @@ namespace Kzrnm.Competitive
                     {
                         ref var T0 = ref ToVector256(ref a[j0]);
                         ref var T1 = ref ToVector256(ref a[j1]);
-                        var naj = MontgomeryAdd(T0, T1, m2, m0);
-                        var najv = MontgomerySubtract(T0, T1, m2, m0);
+                        var naj = MontgomeryAdd(T0, T1, m2);
+                        var najv = MontgomerySubtract(T0, T1, m2);
                         T0 = naj;
                         T1 = najv;
                     }

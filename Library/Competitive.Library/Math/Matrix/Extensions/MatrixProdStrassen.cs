@@ -4,10 +4,12 @@ using System;
 using System.Buffers;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.Internal
 {
+    using static SimdMontgomery;
     public readonly partial struct StrassenImpl<T> where T : struct, IStaticMod
     {
         private const int B = 1 << 7;
@@ -16,20 +18,24 @@ namespace Kzrnm.Competitive.Internal
         public readonly int S;
         public readonly int S8;
         public int VectorSize => S8 * S;
+        readonly Vector256<uint> R, M1, M2;
         public StrassenImpl(int length)
         {
             S = Math.Max(1 << InternalBit.CeilPow2(length), B);
             S8 = S / 8;
+            R = Vector256.Create(MontgomeryModInt<T>.r);
+            M1 = Vector256.Create(new T().Mod);
+            M2 = Vector256.Create(new T().Mod * 2);
         }
-        public MontgomeryModIntVectorize<T>[] Strassen(ArrayMatrix<MontgomeryModInt<T>> lhs, ArrayMatrix<MontgomeryModInt<T>> rhs)
+        public Vector256<uint>[] Strassen(ArrayMatrix<MontgomeryModInt<T>> lhs, ArrayMatrix<MontgomeryModInt<T>> rhs)
         {
-            var c = new MontgomeryModIntVectorize<T>[VectorSize];
+            var c = new Vector256<uint>[VectorSize];
 
             var len = c.Length * 3 / 2;
 
-            var sb = ArrayPool<MontgomeryModIntVectorize<T>>.Shared.Rent(len);
-            var tb = ArrayPool<MontgomeryModIntVectorize<T>>.Shared.Rent(len);
-            var ub = ArrayPool<MontgomeryModIntVectorize<T>>.Shared.Rent(len);
+            var sb = ArrayPool<Vector256<uint>>.Shared.Rent(len);
+            var tb = ArrayPool<Vector256<uint>>.Shared.Rent(len);
+            var ub = ArrayPool<Vector256<uint>>.Shared.Rent(len);
 
             try
             {
@@ -47,17 +53,17 @@ namespace Kzrnm.Competitive.Internal
             }
             finally
             {
-                ArrayPool<MontgomeryModIntVectorize<T>>.Shared.Return(sb);
-                ArrayPool<MontgomeryModIntVectorize<T>>.Shared.Return(tb);
-                ArrayPool<MontgomeryModIntVectorize<T>>.Shared.Return(ub);
+                ArrayPool<Vector256<uint>>.Shared.Return(sb);
+                ArrayPool<Vector256<uint>>.Shared.Return(tb);
+                ArrayPool<Vector256<uint>>.Shared.Return(ub);
             }
         }
 
         [凾(256 | 512)]
-        static void Strassen(int N,
-            Span<MontgomeryModIntVectorize<T>> s,
-            Span<MontgomeryModIntVectorize<T>> t,
-            Span<MontgomeryModIntVectorize<T>> u)
+        void Strassen(int N,
+            Span<Vector256<uint>> s,
+            Span<Vector256<uint>> t,
+            Span<Vector256<uint>> u)
         {
             if (N <= B)
             {
@@ -72,50 +78,50 @@ namespace Kzrnm.Competitive.Internal
             int o11 = nx * 0, o12 = nx * 1, o21 = nx * 2, o22 = nx * 3;
 
             // P1
-            for (int i = 0; i < nx; i++) ps[i] = s[o11 + i] + s[o22 + i];
-            for (int i = 0; i < nx; i++) pt[i] = t[o11 + i] + t[o22 + i];
+            for (int i = 0; i < nx; i++) ps[i] = MontgomeryAdd(s[o11 + i], s[o22 + i], M2);
+            for (int i = 0; i < nx; i++) pt[i] = MontgomeryAdd(t[o11 + i], t[o22 + i], M2);
             Strassen(N / 2, ps, pt, pu);
             for (int i = 0; i < nx; i++) { u[o11 + i] = pu[i]; u[o22 + i] = pu[i]; }
 
             // P2
-            for (int i = 0; i < nx; i++) ps[i] = s[o21 + i] + s[o22 + i];
+            for (int i = 0; i < nx; i++) ps[i] = MontgomeryAdd(s[o21 + i], s[o22 + i], M2);
             for (int i = 0; i < nx; i++) pt[i] = t[o11 + i];
             Strassen(N / 2, ps, pt, pu);
-            for (int i = 0; i < nx; i++) { u[o21 + i] = pu[i]; u[o22 + i] -= pu[i]; }
+            for (int i = 0; i < nx; i++) { u[o21 + i] = pu[i]; u[o22 + i] = MontgomerySubtract(u[o22 + i], pu[i], M2); }
 
             // P3
             for (int i = 0; i < nx; i++) ps[i] = s[o11 + i];
-            for (int i = 0; i < nx; i++) pt[i] = t[o12 + i] - t[o22 + i];
+            for (int i = 0; i < nx; i++) pt[i] = MontgomerySubtract(t[o12 + i], t[o22 + i], M2);
             Strassen(N / 2, ps, pt, pu);
-            for (int i = 0; i < nx; i++) { u[o12 + i] = pu[i]; u[o22 + i] += pu[i]; }
+            for (int i = 0; i < nx; i++) { u[o12 + i] = pu[i]; u[o22 + i] = MontgomeryAdd(u[o22 + i], pu[i], M2); }
 
             // P4
             for (int i = 0; i < nx; i++) ps[i] = s[o22 + i];
-            for (int i = 0; i < nx; i++) pt[i] = t[o21 + i] - t[o11 + i];
+            for (int i = 0; i < nx; i++) pt[i] = MontgomerySubtract(t[o21 + i], t[o11 + i], M2);
             Strassen(N / 2, ps, pt, pu);
-            for (int i = 0; i < nx; i++) { u[o11 + i] += pu[i]; u[o21 + i] += pu[i]; }
+            for (int i = 0; i < nx; i++) { u[o11 + i] = MontgomeryAdd(u[o11 + i], pu[i], M2); u[o21 + i] = MontgomeryAdd(u[o21 + i], pu[i], M2); }
 
             // P5
-            for (int i = 0; i < nx; i++) ps[i] = s[o11 + i] + s[o12 + i];
+            for (int i = 0; i < nx; i++) ps[i] = MontgomeryAdd(s[o11 + i], s[o12 + i], M2);
             for (int i = 0; i < nx; i++) pt[i] = t[o22 + i];
             Strassen(N / 2, ps, pt, pu);
-            for (int i = 0; i < nx; i++) { u[o11 + i] -= pu[i]; u[o12 + i] += pu[i]; }
+            for (int i = 0; i < nx; i++) { u[o11 + i] = MontgomerySubtract(u[o11 + i], pu[i], M2); u[o12 + i] = MontgomeryAdd(u[o12 + i], pu[i], M2); }
 
             // P6
-            for (int i = 0; i < nx; i++) ps[i] = s[o21 + i] - s[o11 + i];
-            for (int i = 0; i < nx; i++) pt[i] = t[o11 + i] + t[o12 + i];
+            for (int i = 0; i < nx; i++) ps[i] = MontgomerySubtract(s[o21 + i], s[o11 + i], M2);
+            for (int i = 0; i < nx; i++) pt[i] = MontgomeryAdd(t[o11 + i], t[o12 + i], M2);
             Strassen(N / 2, ps, pt, pu);
-            for (int i = 0; i < nx; i++) u[o22 + i] += pu[i];
+            for (int i = 0; i < nx; i++) u[o22 + i] = MontgomeryAdd(u[o22 + i], pu[i], M2);
 
             // P7
-            for (int i = 0; i < nx; i++) ps[i] = s[o12 + i] - s[o22 + i];
-            for (int i = 0; i < nx; i++) pt[i] = t[o21 + i] + t[o22 + i];
+            for (int i = 0; i < nx; i++) ps[i] = MontgomerySubtract(s[o12 + i], s[o22 + i], M2);
+            for (int i = 0; i < nx; i++) pt[i] = MontgomeryAdd(t[o21 + i], t[o22 + i], M2);
             Strassen(N / 2, ps, pt, pu);
-            for (int i = 0; i < nx; i++) u[o11 + i] += pu[i];
+            for (int i = 0; i < nx; i++) u[o11 + i] = MontgomeryAdd(u[o11 + i], pu[i], M2);
         }
 
         [凾(256 | 512)]
-        public void PlaceRev(int N, int a, int b, Span<MontgomeryModIntVectorize<T>> dst, Span<MontgomeryModIntVectorize<T>> src)
+        public void PlaceRev(int N, int a, int b, Span<Vector256<uint>> dst, Span<Vector256<uint>> src)
         {
             if (N > B)
             {
@@ -134,7 +140,7 @@ namespace Kzrnm.Competitive.Internal
 
 
         [凾(256 | 512)]
-        public void PlaceS(int N, int a, int b, Span<MontgomeryModIntVectorize<T>> dst, Span<MontgomeryModIntVectorize<T>> src)
+        public void PlaceS(int N, int a, int b, Span<Vector256<uint>> dst, Span<Vector256<uint>> src)
         {
             if (N > B)
             {
@@ -152,7 +158,7 @@ namespace Kzrnm.Competitive.Internal
         }
 
         [凾(256 | 512)]
-        public void PlaceT(int N, int a, int b, Span<MontgomeryModIntVectorize<T>> dst, Span<MontgomeryModIntVectorize<T>> src)
+        public void PlaceT(int N, int a, int b, Span<Vector256<uint>> dst, Span<Vector256<uint>> src)
         {
             if (N > B)
             {
@@ -173,30 +179,30 @@ namespace Kzrnm.Competitive.Internal
 
 
         [凾(256)]
-        public MontgomeryModIntVectorize<T>[] ToVectorize(ArrayMatrix<MontgomeryModInt<T>> m)
+        public Vector256<uint>[] ToVectorize(ArrayMatrix<MontgomeryModInt<T>> m)
         {
             var v = m.Value;
             var w = m.Width;
             var s8 = S8;
-            var rt = new MontgomeryModIntVectorize<T>[VectorSize];
+            var rt = new Vector256<uint>[VectorSize];
             for (int i = m.Height - 1; i >= 0; i--)
             {
                 var src = v.AsSpan(i * w, w);
-                var dst = MemoryMarshal.Cast<MontgomeryModIntVectorize<T>, MontgomeryModInt<T>>(rt.AsSpan(i * s8));
+                var dst = MemoryMarshal.Cast<Vector256<uint>, MontgomeryModInt<T>>(rt.AsSpan(i * s8));
                 src.CopyTo(dst);
             }
             return rt;
         }
 
         [凾(256)]
-        public ArrayMatrix<MontgomeryModInt<T>> ToMatrix(MontgomeryModIntVectorize<T>[] c, int h, int w)
+        public ArrayMatrix<MontgomeryModInt<T>> ToMatrix(Vector256<uint>[] c, int h, int w)
         {
             Debug.Assert(h * w <= c.Length * 8);
             var s8 = S8;
             var rt = new MontgomeryModInt<T>[h * w];
             for (int i = 0; i < h; i++)
             {
-                var src = MemoryMarshal.Cast<MontgomeryModIntVectorize<T>, MontgomeryModInt<T>>(c.AsSpan(s8 * i));
+                var src = MemoryMarshal.Cast<Vector256<uint>, MontgomeryModInt<T>>(c.AsSpan(s8 * i));
                 var dst = rt.AsSpan(i * w, w);
                 src[..dst.Length].CopyTo(dst);
             }

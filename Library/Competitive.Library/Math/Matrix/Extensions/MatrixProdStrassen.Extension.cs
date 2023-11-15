@@ -1,8 +1,6 @@
 using AtCoder;
 using Kzrnm.Competitive.Internal;
 using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -38,9 +36,9 @@ namespace Kzrnm.Competitive
             var res = ((y & 1) != 0) ? x : ArrayMatrix<MontgomeryModInt<T>>.Identity;
             for (y >>= 1; y > 0; y >>= 1)
             {
-                x = x.Multiply(x);
+                x = x.Strassen(x);
                 if ((y & 1) != 0)
-                    res = res.Multiply(x);
+                    res = res.Strassen(x);
             }
             return res;
         }

@@ -23,6 +23,8 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [InlineData(8)]
         [InlineData(16)]
         [InlineData(128)]
+        [InlineData(1024)]
+        [InlineData(2048)]
         public void Ntt(int n)
         {
             var rnd = new Random(42);
@@ -38,6 +40,8 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [InlineData(8)]
         [InlineData(16)]
         [InlineData(128)]
+        [InlineData(1024)]
+        [InlineData(2048)]
         public void INtt(int n)
         {
             var rnd = new Random(42);
@@ -49,11 +53,13 @@ namespace Kzrnm.Competitive.Testing.MathNS
             a.Should().Equal(b);
         }
 
-        [Fact]
-        public void Multiply()
+        [Theory]
+        [InlineData(123, 234)]
+        [InlineData(1234, 2345)]
+        [InlineData(1235, 2345)]
+        public void Multiply(int n, int m)
         {
             var rnd = new Random(42);
-            int n = 123, m = 234;
             var a = new MontgomeryModInt<Mod998244353>[n];
             var b = new MontgomeryModInt<Mod998244353>[m];
             for (int i = 0; i < n; i++) a[i] = rnd.NextUInt();
