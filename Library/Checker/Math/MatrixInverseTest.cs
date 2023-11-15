@@ -13,7 +13,7 @@ namespace Kzrnm.Competitive.MathNs
             if (mat.IsZero)
                 cw.WriteLine(-1);
             else
-                cw.WriteGrid(mat);
+                cw.WriteMatrix(mat);
             return null;
         }
     }

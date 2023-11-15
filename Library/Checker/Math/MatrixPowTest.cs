@@ -21,7 +21,7 @@ namespace Kzrnm.Competitive.MathNs
 
             if (K == 0)
             {
-                cw.WriteGrid(ArrayMatrix<int>.NormalIdentity(N));
+                cw.WriteMatrix(ArrayMatrix<int>.NormalIdentity(N));
                 return null;
             }
 
@@ -30,7 +30,7 @@ namespace Kzrnm.Competitive.MathNs
                     if (m1[h, w].Value != m2[h, w].Value)
                         throw new System.Exception("Difference");
 
-            cw.WriteGrid(m1);
+            cw.WriteMatrix(m1);
             return null;
         }
         static Mod998244353ArrayMatrix Static(int N, int[] a)

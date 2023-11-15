@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive.MathNs
             var mat2 = new ArrayMatrix<MontgomeryModInt>(
                 cr.Repeat(M).Select(cr => cr.Repeat(K).Select(cr => (MontgomeryModInt)cr.Int())));
 
-            cw.WriteGrid(mat1.Strassen(mat2));
+            cw.WriteMatrix(mat1.Strassen(mat2));
             return null;
         }
     }

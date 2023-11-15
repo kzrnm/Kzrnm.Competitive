@@ -1,5 +1,6 @@
 using AtCoder;
 using AtCoder.Internal;
+using Kzrnm.Competitive.Internal;
 using System;
 using System.Runtime.CompilerServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -47,7 +48,7 @@ namespace Kzrnm.Competitive
                         Unsafe.Add(ref head, j) = T.CreateTruncating(src[j]);
                     }
                 }
-                return ArrayMatrix<T>.DeterminantImpl(a);
+                return ArrayMatrixLogic<T>.DeterminantImpl(a);
             }
         }
     }

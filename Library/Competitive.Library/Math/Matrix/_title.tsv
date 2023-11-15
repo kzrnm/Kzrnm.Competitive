@@ -1,2 +1,3 @@
 ArrayMatrix.cs	行列(配列実装)
 Matrix.WriteGrid.cs	行列を書き出す
+ArrayMatrixLogic.cs	行列のロジック
