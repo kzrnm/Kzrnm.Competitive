@@ -1,25 +1,16 @@
 using Kzrnm.Competitive.IO;
 using System;
-using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Kzrnm.Competitive.Testing.IO
 {
     public class TupleWriterExtensionTests
     {
-        private class Utf8Wrapper
-        {
-            readonly MemoryStream stream = new();
-            public static implicit operator Stream(Utf8Wrapper writer) => writer.stream;
-            public string Read() => new UTF8Encoding(false).GetString(stream.ToArray());
-        }
-
         [Fact]
         public void WriteTuples2()
         {
-            var utf8Wrapper = new Utf8Wrapper();
-            using (var cw = new Utf8ConsoleWriter(utf8Wrapper))
+            var utf8Wrapper = new Utf8ConsoleWriterWrapper();
+            using (var cw = utf8Wrapper.GetWriter())
             {
                 var arr = new (int Num, string Text)[]
                 {
@@ -47,8 +38,8 @@ namespace Kzrnm.Competitive.Testing.IO
         [Fact]
         public void WriteTuples3()
         {
-            var utf8Wrapper = new Utf8Wrapper();
-            using (var cw = new Utf8ConsoleWriter(utf8Wrapper))
+            var utf8Wrapper = new Utf8ConsoleWriterWrapper();
+            using (var cw = utf8Wrapper.GetWriter())
             {
                 var arr = new (int Num, string Text, char C)[]
                 {
@@ -76,8 +67,8 @@ namespace Kzrnm.Competitive.Testing.IO
         [Fact]
         public void WriteTuples4()
         {
-            var utf8Wrapper = new Utf8Wrapper();
-            using (var cw = new Utf8ConsoleWriter(utf8Wrapper))
+            var utf8Wrapper = new Utf8ConsoleWriterWrapper();
+            using (var cw = utf8Wrapper.GetWriter())
             {
                 var arr = new (int Num, string Text, char C, decimal D)[]
                 {

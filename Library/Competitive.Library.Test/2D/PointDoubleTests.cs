@@ -423,5 +423,29 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         {
             PointDouble.三角形に分割(s).Should().Equal(expected);
         }
+
+        [Fact]
+        public void ConsoleWriter()
+        {
+            var utf8Wrapper = new Utf8ConsoleWriterWrapper();
+            using (var cw = utf8Wrapper.GetWriter())
+            {
+                var arr = new PointDouble[]
+                {
+                    new(1.0/1, 1e-10),
+                    new(-1.0/3, 1e-5),
+                    new(-1.0/5, 1e+5),
+                    new(1.0/7, 1e+10),
+                };
+                cw.WriteLines(arr);
+            }
+            utf8Wrapper.Read().Should().Be("""
+            1.00000000000000000000 0.00000000010000000000
+            -0.33333333333333331483 0.00001000000000000000
+            -0.20000000000000001110 100000.00000000000000000000
+            0.14285714285714284921 10000000000.00000000000000000000
+
+            """.Replace("\r\n", "\n"));
+        }
     }
 }

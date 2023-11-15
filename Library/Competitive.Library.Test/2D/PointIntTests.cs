@@ -197,5 +197,29 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                     (-1, 1)
                 );
         }
+
+        [Fact]
+        public void ConsoleWriter()
+        {
+            var utf8Wrapper = new Utf8ConsoleWriterWrapper();
+            using (var cw = utf8Wrapper.GetWriter())
+            {
+                var arr = new PointInt[]
+                {
+                    new(1, int.MinValue+0),
+                    new(3, int.MinValue+1),
+                    new(5, int.MinValue+2),
+                    new(7, int.MinValue+3),
+                };
+                cw.WriteLines(arr);
+            }
+            utf8Wrapper.Read().Should().Be("""
+            1 -2147483648
+            3 -2147483647
+            5 -2147483646
+            7 -2147483645
+
+            """.Replace("\r\n", "\n"));
+        }
     }
 }
