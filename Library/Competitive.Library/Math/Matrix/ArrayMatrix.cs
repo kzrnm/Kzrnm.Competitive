@@ -88,6 +88,18 @@ namespace Kzrnm.Competitive
         private static ArrayMatrix<T> ThrowNotSupportResponse() => throw new NotSupportedException();
 
         /// <summary>
+        /// 大きさ <paramref name="s"/> の単位行列を返します。
+        /// </summary>
+        [凾(256)]
+        public static ArrayMatrix<T> NormalIdentity(int s)
+        {
+            var v = new T[s * s];
+            for (int i = 0; i < v.Length; i += s + 1)
+                v[i] = T.One;
+            return new(v, s, s);
+        }
+
+        /// <summary>
         /// 零行列かどうかを返します。
         /// </summary>
         public bool IsZero => kind is Kd.Zero;

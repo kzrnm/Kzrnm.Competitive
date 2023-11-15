@@ -1,5 +1,1 @@
 MatrixModMul.cs	高速な ModInt 行列の掛け算
-MatrixProdStrassen.StaticMod.cs	Strassenのアルゴリズムを呼び出す: StaticModInt<T>
-MatrixProdStrassen.MontgomeryMod.cs	Strassenのアルゴリズムを呼び出す: MontgomeryModInt<T>
-MatrixProdStrassen.cs	Strassenのアルゴリズム: 実装
-MatrixProdStrassen.Simd.cs	Strassenのアルゴリズム: Simd実装

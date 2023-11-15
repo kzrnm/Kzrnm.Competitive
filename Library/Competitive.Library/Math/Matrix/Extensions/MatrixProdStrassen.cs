@@ -2,11 +2,13 @@ using AtCoder;
 using AtCoder.Internal;
 using System;
 using System.Buffers;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.Internal
 {
-    public readonly partial struct StrassenImpl<T> where T : struct
+    public readonly partial struct StrassenImpl<T> where T : struct, IStaticMod
     {
         private const int B = 1 << 7;
         private const int B8 = B / 8;
@@ -19,16 +21,15 @@ namespace Kzrnm.Competitive.Internal
             S = Math.Max(1 << InternalBit.CeilPow2(length), B);
             S8 = S / 8;
         }
-        public VectorizedModInt<T>[] Strassen(VectorizedModInt<T>[] a, VectorizedModInt<T>[] b)
+        public MontgomeryModIntVectorize<T>[] Strassen(ArrayMatrix<MontgomeryModInt<T>> lhs, ArrayMatrix<MontgomeryModInt<T>> rhs)
         {
-            Contract.Assert(VectorizedModInt<T>.Mod % 2 == 1);
-            var c = new VectorizedModInt<T>[VectorSize];
+            var c = new MontgomeryModIntVectorize<T>[VectorSize];
 
             var len = c.Length * 3 / 2;
 
-            var sb = ArrayPool<VectorizedModInt<T>>.Shared.Rent(len);
-            var tb = ArrayPool<VectorizedModInt<T>>.Shared.Rent(len);
-            var ub = ArrayPool<VectorizedModInt<T>>.Shared.Rent(len);
+            var sb = ArrayPool<MontgomeryModIntVectorize<T>>.Shared.Rent(len);
+            var tb = ArrayPool<MontgomeryModIntVectorize<T>>.Shared.Rent(len);
+            var ub = ArrayPool<MontgomeryModIntVectorize<T>>.Shared.Rent(len);
 
             try
             {
@@ -36,30 +37,27 @@ namespace Kzrnm.Competitive.Internal
                 var t = tb.AsSpan(0, len);
                 var u = ub.AsSpan(0, len);
 
-                PlaceS(S, 0, 0, s, a);
-                PlaceT(S, 0, 0, t, b);
-                for (int i = 0; i < S * S8; i++) s[i] = s[i].Itom();
-                for (int i = 0; i < S * S8; i++) t[i] = t[i].Itom();
+                PlaceS(S, 0, 0, s, ToVectorize(lhs));
+                PlaceT(S, 0, 0, t, ToVectorize(rhs));
 
                 Strassen(S, s, t, u);
 
-                for (int i = 0; i < S * S8; i++) u[i] = u[i].Mtoi();
                 PlaceRev(S, 0, 0, u, c);
                 return c;
             }
             finally
             {
-                ArrayPool<VectorizedModInt<T>>.Shared.Return(sb);
-                ArrayPool<VectorizedModInt<T>>.Shared.Return(tb);
-                ArrayPool<VectorizedModInt<T>>.Shared.Return(ub);
+                ArrayPool<MontgomeryModIntVectorize<T>>.Shared.Return(sb);
+                ArrayPool<MontgomeryModIntVectorize<T>>.Shared.Return(tb);
+                ArrayPool<MontgomeryModIntVectorize<T>>.Shared.Return(ub);
             }
         }
 
         [凾(256 | 512)]
         static void Strassen(int N,
-            Span<VectorizedModInt<T>> s,
-            Span<VectorizedModInt<T>> t,
-            Span<VectorizedModInt<T>> u)
+            Span<MontgomeryModIntVectorize<T>> s,
+            Span<MontgomeryModIntVectorize<T>> t,
+            Span<MontgomeryModIntVectorize<T>> u)
         {
             if (N <= B)
             {
@@ -117,7 +115,7 @@ namespace Kzrnm.Competitive.Internal
         }
 
         [凾(256 | 512)]
-        public void PlaceRev(int N, int a, int b, Span<VectorizedModInt<T>> dst, Span<VectorizedModInt<T>> src)
+        public void PlaceRev(int N, int a, int b, Span<MontgomeryModIntVectorize<T>> dst, Span<MontgomeryModIntVectorize<T>> src)
         {
             if (N > B)
             {
@@ -136,7 +134,7 @@ namespace Kzrnm.Competitive.Internal
 
 
         [凾(256 | 512)]
-        public void PlaceS(int N, int a, int b, Span<VectorizedModInt<T>> dst, Span<VectorizedModInt<T>> src)
+        public void PlaceS(int N, int a, int b, Span<MontgomeryModIntVectorize<T>> dst, Span<MontgomeryModIntVectorize<T>> src)
         {
             if (N > B)
             {
@@ -154,7 +152,7 @@ namespace Kzrnm.Competitive.Internal
         }
 
         [凾(256 | 512)]
-        public void PlaceT(int N, int a, int b, Span<VectorizedModInt<T>> dst, Span<VectorizedModInt<T>> src)
+        public void PlaceT(int N, int a, int b, Span<MontgomeryModIntVectorize<T>> dst, Span<MontgomeryModIntVectorize<T>> src)
         {
             if (N > B)
             {
@@ -171,6 +169,38 @@ namespace Kzrnm.Competitive.Internal
                     for (int j = 0; j < B8; j++)
                         dst[j * B + k] = src[(a + k) * S8 + j + b / 8];
             }
+        }
+
+
+        [凾(256)]
+        public MontgomeryModIntVectorize<T>[] ToVectorize(ArrayMatrix<MontgomeryModInt<T>> m)
+        {
+            var v = m.Value;
+            var w = m.Width;
+            var s8 = S8;
+            var rt = new MontgomeryModIntVectorize<T>[VectorSize];
+            for (int i = m.Height - 1; i >= 0; i--)
+            {
+                var src = v.AsSpan(i * w, w);
+                var dst = MemoryMarshal.Cast<MontgomeryModIntVectorize<T>, MontgomeryModInt<T>>(rt.AsSpan(i * s8));
+                src.CopyTo(dst);
+            }
+            return rt;
+        }
+
+        [凾(256)]
+        public ArrayMatrix<MontgomeryModInt<T>> ToMatrix(MontgomeryModIntVectorize<T>[] c, int h, int w)
+        {
+            Debug.Assert(h * w <= c.Length * 8);
+            var s8 = S8;
+            var rt = new MontgomeryModInt<T>[h * w];
+            for (int i = 0; i < h; i++)
+            {
+                var src = MemoryMarshal.Cast<MontgomeryModIntVectorize<T>, MontgomeryModInt<T>>(c.AsSpan(s8 * i));
+                var dst = rt.AsSpan(i * w, w);
+                src[..dst.Length].CopyTo(dst);
+            }
+            return new(rt, h, w);
         }
     }
 }

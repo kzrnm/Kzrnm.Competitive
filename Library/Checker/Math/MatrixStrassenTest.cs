@@ -1,5 +1,5 @@
 using Kzrnm.Competitive.IO;
-using ModInt = AtCoder.StaticModInt<AtCoder.Mod998244353>;
+using MontgomeryModInt = Kzrnm.Competitive.MontgomeryModInt<AtCoder.Mod998244353>;
 
 namespace Kzrnm.Competitive.MathNs
 {
@@ -11,10 +11,10 @@ namespace Kzrnm.Competitive.MathNs
             int N = cr;
             int M = cr;
             int K = cr;
-            var mat1 = new Mod998244353ArrayMatrix(
-                cr.Repeat(N).Select(cr => cr.Repeat(M).Select(cr => ModInt.Raw(cr))));
-            var mat2 = new Mod998244353ArrayMatrix(
-                cr.Repeat(M).Select(cr => cr.Repeat(K).Select(cr => ModInt.Raw(cr))));
+            var mat1 = new ArrayMatrix<MontgomeryModInt>(
+                cr.Repeat(N).Select(cr => cr.Repeat(M).Select(cr => (MontgomeryModInt)cr.Int())));
+            var mat2 = new ArrayMatrix<MontgomeryModInt>(
+                cr.Repeat(M).Select(cr => cr.Repeat(K).Select(cr => (MontgomeryModInt)cr.Int())));
 
             cw.WriteGrid(mat1.Strassen(mat2));
             return null;

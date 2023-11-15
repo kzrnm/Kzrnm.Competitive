@@ -34,6 +34,30 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
 
         [Fact]
         [Trait("Category", "Normal")]
+        public void NormalIdentity()
+        {
+            ArrayMatrix<int>.NormalIdentity(2).Should().Be(new ArrayMatrix<int>(new int[][]
+            {
+                new int[]{ 1, 0 },
+                new int[]{ 0, 1 },
+            }));
+            ArrayMatrix<int>.NormalIdentity(3).Should().Be(new ArrayMatrix<int>(new int[][]
+            {
+                new int[]{ 1, 0, 0 },
+                new int[]{ 0, 1, 0 },
+                new int[]{ 0, 0, 1 },
+            }));
+
+            ArrayMatrix<MontgomeryModInt<Mod1000000007>>.NormalIdentity(3).Should().Be(new ArrayMatrix<MontgomeryModInt<Mod1000000007>>(new MontgomeryModInt<Mod1000000007>[][]
+            {
+                new MontgomeryModInt<Mod1000000007>[]{ 1, 0, 0 },
+                new MontgomeryModInt<Mod1000000007>[]{ 0, 1, 0 },
+                new MontgomeryModInt<Mod1000000007>[]{ 0, 0, 1 },
+            }));
+        }
+
+        [Fact]
+        [Trait("Category", "Normal")]
         public void Equal()
         {
             new ArrayMatrix<int>(new int[][]
@@ -293,7 +317,6 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             var mat2 = Int2ModInt(matInt2);
             var expected = Int2ModInt(expectedInt);
             (mat1 * mat2).Should().Be(expected);
-            mat1.Strassen(mat2).Should().Be(expected);
         }
 
         [Theory]
