@@ -6,11 +6,13 @@ on:
       - main
     paths:
       - "Library/**"
+      - "!Library/.competitive-verifier/prev-result.json.gz"
       - .github/workflows/verify.yml
   pull_request:
     types: [opened, synchronize]
     paths:
       - "Library/**"
+      - "!Library/.competitive-verifier/prev-result.json.gz"
       - "!**.md"
   workflow_dispatch:
     inputs:
