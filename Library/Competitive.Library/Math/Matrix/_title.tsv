@@ -1,3 +1,6 @@
 ArrayMatrix.cs	行列(配列実装)
+ArrayMatrixKind.cs	行列の種類
+IMatrix.cs	行列インターフェイス
 Matrix.WriteGrid.cs	行列を書き出す
 ArrayMatrixLogic.cs	行列のロジック
+SimdModMatrix.cs	SIMD 最適化した MontgomeryModInt 行列

@@ -14,7 +14,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             var utf8Wrapper = new Utf8ConsoleWriterWrapper();
             using (var cw = utf8Wrapper.GetWriter())
             {
-                cw.WriteMatrix(new Matrix2x2<int>((1, 2), (3, 4)));
+                cw.WriteGrid(new Matrix2x2<int>((1, 2), (3, 4)));
             }
             utf8Wrapper.Read().Should().Be("""
             1 2
@@ -28,7 +28,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             var utf8Wrapper = new Utf8ConsoleWriterWrapper();
             using (var cw = utf8Wrapper.GetWriter())
             {
-                cw.WriteMatrix(new ArrayMatrix<int>(new int[2, 3] {
+                cw.WriteGrid(new ArrayMatrix<int>(new int[2, 3] {
                     { 1, 2, 3, },
                     { -1, -2, -3, },
                 }));

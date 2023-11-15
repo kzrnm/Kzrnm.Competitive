@@ -27,7 +27,7 @@ namespace Kzrnm.Competitive.Internal
             M1 = Vector256.Create(new T().Mod);
             M2 = Vector256.Create(new T().Mod * 2);
         }
-        public Vector256<uint>[] Strassen(ArrayMatrix<MontgomeryModInt<T>> lhs, ArrayMatrix<MontgomeryModInt<T>> rhs)
+        public Vector256<uint>[] Strassen(Vector256<uint>[] lhs, Vector256<uint>[] rhs)
         {
             var c = new Vector256<uint>[VectorSize];
 
@@ -43,8 +43,8 @@ namespace Kzrnm.Competitive.Internal
                 var t = tb.AsSpan(0, len);
                 var u = ub.AsSpan(0, len);
 
-                PlaceS(S, 0, 0, s, ToVectorize(lhs));
-                PlaceT(S, 0, 0, t, ToVectorize(rhs));
+                PlaceS(S, 0, 0, s, lhs);
+                PlaceT(S, 0, 0, t, rhs);
 
                 Strassen(S, s, t, u);
 
@@ -179,15 +179,13 @@ namespace Kzrnm.Competitive.Internal
 
 
         [凾(256)]
-        public Vector256<uint>[] ToVectorize(ArrayMatrix<MontgomeryModInt<T>> m)
+        public Vector256<uint>[] ToVectorize(ReadOnlySpan<MontgomeryModInt<T>> v, int h, int w)
         {
-            var v = m._v;
-            var w = m.Width;
             var s8 = S8;
             var rt = new Vector256<uint>[VectorSize];
-            for (int i = m.Height - 1; i >= 0; i--)
+            for (int i = h - 1; i >= 0; i--)
             {
-                var src = v.AsSpan(i * w, w);
+                var src = v.Slice(i * w, w);
                 var dst = MemoryMarshal.Cast<Vector256<uint>, MontgomeryModInt<T>>(rt.AsSpan(i * s8));
                 src.CopyTo(dst);
             }
@@ -195,7 +193,7 @@ namespace Kzrnm.Competitive.Internal
         }
 
         [凾(256)]
-        public ArrayMatrix<MontgomeryModInt<T>> ToMatrix(Vector256<uint>[] c, int h, int w)
+        public MontgomeryModInt<T>[] ToMatrix(Vector256<uint>[] c, int h, int w)
         {
             Debug.Assert(h * w <= c.Length * 8);
             var s8 = S8;
@@ -206,7 +204,7 @@ namespace Kzrnm.Competitive.Internal
                 var dst = rt.AsSpan(i * w, w);
                 src[..dst.Length].CopyTo(dst);
             }
-            return new(rt, h, w);
+            return rt;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Kzrnm.Competitive.MathNs
         {
             int n = cr;
             var a = cr.Repeat(n * n).Int();
-            var mt = new Mod998244353ArrayMatrix(a.Select(v => (ModInt)v).ToArray(), n, n);
+            var mt = new ArrayMatrix<ModInt>(a.Select(v => (ModInt)v).ToArray(), n, n);
             cw.WriteLineJoin(mt.CharacteristricPolynomial());
             return null;
         }

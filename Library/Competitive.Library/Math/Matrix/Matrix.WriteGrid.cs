@@ -7,7 +7,7 @@ namespace Kzrnm.Competitive
     public static class __Matrix_WriteGrid
     {
         [凾(256)]
-        public static void WriteMatrix<TSelf, T>(this Utf8ConsoleWriter cw, IMatrix<TSelf, T> m)
+        public static void WriteGrid<TSelf, T>(this Utf8ConsoleWriter cw, IMatrix<TSelf, T> m)
             where TSelf : IMatrix<TSelf, T>
         {
             var h = m.Height;

@@ -21,21 +21,27 @@ namespace Kzrnm.Competitive.MathNs
 
             if (K == 0)
             {
-                cw.WriteMatrix(ArrayMatrix<int>.NormalIdentity(N));
+                cw.WriteGrid(ArrayMatrix<int>.NormalIdentity(N));
                 return null;
             }
+            ShouldEqual(m1, m2);
 
-            for (int h = 0; h < N; h++)
-                for (int w = 0; w < N; w++)
-                    if (m1[h, w].Value != m2[h, w].Value)
-                        throw new System.Exception("Difference");
-
-            cw.WriteMatrix(m1);
+            cw.WriteGrid(m1);
             return null;
         }
-        static Mod998244353ArrayMatrix Static(int N, int[] a)
-            => new Mod998244353ArrayMatrix(a.Select(v => (ModInt)v).ToArray(), N, N);
-        static ArrayMatrix<MontgomeryModInt> Montgomery(int N, int[] a)
-            => new ArrayMatrix<MontgomeryModInt>(a.Select(v => (MontgomeryModInt)v).ToArray(), N, N);
+        static ArrayMatrix<ModInt> Static(int N, int[] a)
+            => new ArrayMatrix<ModInt>(a.Select(v => (ModInt)v).ToArray(), N, N);
+        static SimdModMatrix<Mod998244353> Montgomery(int N, int[] a)
+            => new SimdModMatrix<Mod998244353>(a.Select(v => (MontgomeryModInt)v).ToArray(), N, N);
+        static void ShouldEqual(ArrayMatrix<ModInt> m1, SimdModMatrix<Mod998244353> m2)
+        {
+            if (m1.Height != m2.Height) throw new System.Exception("Diff height");
+            if (m1.Width != m2.Width) throw new System.Exception("Diff width");
+
+            for (int h = 0; h < m1.Height; h++)
+                for (int w = 0; w < m1.Width; w++)
+                    if (m1[h, w].Value != m2[h, w].Value)
+                        throw new System.Exception("Difference");
+        }
     }
 }

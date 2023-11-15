@@ -1,6 +1,9 @@
 using AtCoder;
 using Kzrnm.Competitive.Internal;
 using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -13,14 +16,16 @@ namespace Kzrnm.Competitive
         /// <remarks>
         /// <para>計算量: O( N^log_2(7))</para>
         /// </remarks>
-        public static ArrayMatrix<MontgomeryModInt<T>> Strassen<T>(this ArrayMatrix<MontgomeryModInt<T>> mat1, ArrayMatrix<MontgomeryModInt<T>> mat2) where T : struct, IStaticMod
+        public static ArrayMatrix<MontgomeryModInt<T>> Strassen<T>(this ArrayMatrix<MontgomeryModInt<T>> m1, ArrayMatrix<MontgomeryModInt<T>> m2) where T : struct, IStaticMod
         {
-            if (mat1.kind != ArrayMatrixKind.Normal || mat2.kind != ArrayMatrixKind.Normal)
-                return mat1 * mat2;
+            if (m1.kind != ArrayMatrixKind.Normal || m2.kind != ArrayMatrixKind.Normal)
+                return m1 * m2;
 
-            var impl = new StrassenImpl<T>(Math.Max(Math.Max(mat1.Height, mat2.Height), Math.Max(mat1.Width, mat2.Width)));
-            var rt = impl.Strassen(mat1, mat2);
-            return impl.ToMatrix(rt, mat1.Height, mat2.Width);
+            var rh = m1.Height;
+            var rw = m2.Width;
+            var impl = new StrassenImpl<T>(Math.Max(Math.Max(rh, m2.Height), Math.Max(m1.Width, rw)));
+            var rt = impl.Strassen(impl.ToVectorize(m1.AsSpan(), rh, m1.Width), impl.ToVectorize(m2.AsSpan(), m2.Height, rw));
+            return new(impl.ToMatrix(rt, rh, rw), rh, rw);
         }
 
         /// <summary>

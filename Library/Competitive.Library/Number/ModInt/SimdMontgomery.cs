@@ -2,7 +2,7 @@ using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
-namespace Kzrnm.Competitive
+namespace Kzrnm.Competitive.Internal
 {
     using static Avx2;
     using static Sse2;
