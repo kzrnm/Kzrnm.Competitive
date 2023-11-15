@@ -1,11 +1,14 @@
+using Kzrnm.Competitive.Internal;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public readonly struct Matrix2x2<T> : Internal.IMatrix<Matrix2x2<T>>
+    public readonly struct Matrix2x2<T> : IMatrix<Matrix2x2<T>, T>
         , IMultiplyOperators<Matrix2x2<T>, T, Matrix2x2<T>>
         where T : INumberBase<T>
     {
@@ -17,7 +20,12 @@ namespace Kzrnm.Competitive
         internal readonly T
             V00, V01,
             V10, V11;
-
+        [凾(256)] public ReadOnlySpan<T> AsSpan() => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.As<Matrix2x2<T>, T>(ref Unsafe.AsRef(this)), 2 * 2);
+        public T[][] ToArray() => new[]
+        {
+            new[]{ V00, V01 },
+            new[]{ V10, V11 },
+        };
         [凾(256)]
         public Matrix2x2((T Col0, T Col1) row0, (T Col0, T Col1) row1)
         {

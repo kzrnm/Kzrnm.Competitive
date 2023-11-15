@@ -1,5 +1,5 @@
 using AtCoder.Internal;
-using Kzrnm.Competitive.IO;
+using Kzrnm.Competitive.Internal;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,9 +11,9 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using Kd = Internal.ArrayMatrixKind;
+    using Kd = ArrayMatrixKind;
     [DebuggerTypeProxy(typeof(ArrayMatrix<>.DebugView))]
-    public readonly struct ArrayMatrix<T> : Internal.IArrayMatrix<ArrayMatrix<T>, T>
+    public readonly struct ArrayMatrix<T> : IMatrix<ArrayMatrix<T>, T>
         , IMultiplyOperators<ArrayMatrix<T>, T, ArrayMatrix<T>>
         where T : INumberBase<T>
     {
@@ -24,7 +24,7 @@ namespace Kzrnm.Competitive
         public int Width => _w;
         private readonly int _h, _w;
         internal readonly T[] _v;
-        public ReadOnlySpan<T> Value => _v;
+        public ReadOnlySpan<T> AsSpan() => _v;
         public T[][] ToArray()
         {
             var arr = new T[_h][];
@@ -600,17 +600,6 @@ namespace Kzrnm.Competitive
                     ? string.Join(' ', Row)
                     : (string.Join(' ', Row.Take(50)) + ",...");
             }
-        }
-    }
-    public static class __ArrayMatrix_WriteGrid
-    {
-        public static void WriteGrid<T>(this Utf8ConsoleWriter cw, ArrayMatrix<T> m) where T : INumberBase<T>
-        {
-            var h = m.Height;
-            var w = m.Width;
-            var v = m._v;
-            for (int i = 0; i < h; i++)
-                cw.WriteLineJoin(v.AsSpan(i * w, w));
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace Kzrnm.Competitive.Internal
 {
-    internal interface IMatrix<T>
+    public interface IMatrix<T>
         : IAdditionOperators<T, T, T>
         , IAdditiveIdentity<T, T>
         , IMultiplicativeIdentity<T, T>
@@ -18,9 +18,13 @@ namespace Kzrnm.Competitive.Internal
         int Height { get; }
         int Width { get; }
     }
-    internal interface IArrayMatrix<TSelf, T> : IMatrix<TSelf> where TSelf : IArrayMatrix<TSelf, T>
+    public interface IMatrixGet<T>
     {
+        ReadOnlySpan<T> AsSpan();
         T[][] ToArray();
-        ReadOnlySpan<T> Value { get; }
+    }
+    public interface IMatrix<TSelf, T> : IMatrix<TSelf>, IMatrixGet<T>
+        where TSelf : IMatrix<TSelf>
+    {
     }
 }

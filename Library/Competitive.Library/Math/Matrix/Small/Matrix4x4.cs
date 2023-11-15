@@ -1,11 +1,14 @@
+using Kzrnm.Competitive.Internal;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public readonly struct Matrix4x4<T> : Internal.IMatrix<Matrix4x4<T>>
+    public readonly struct Matrix4x4<T> : IMatrix<Matrix4x4<T>>, IMatrixGet<T>
         , IMultiplyOperators<Matrix4x4<T>, T, Matrix4x4<T>>
         where T : INumberBase<T>
     {
@@ -20,6 +23,14 @@ namespace Kzrnm.Competitive
             V10, V11, V12, V13,
             V20, V21, V22, V23,
             V30, V31, V32, V33;
+        [凾(256)] public ReadOnlySpan<T> AsSpan() => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.As<Matrix4x4<T>, T>(ref Unsafe.AsRef(this)), 4 * 4);
+        public T[][] ToArray() => new[]
+        {
+            new[]{ V00, V01, V02, V03 },
+            new[]{ V10, V11, V12, V13 },
+            new[]{ V20, V21, V22, V23 },
+            new[]{ V30, V31, V32, V33 },
+        };
         [凾(256)]
         public Matrix4x4((T Col0, T Col1, T Col2, T Col3) row0, (T Col0, T Col1, T Col2, T Col3) row1, (T Col0, T Col1, T Col2, T Col3) row2, (T Col0, T Col1, T Col2, T Col3) row3)
         {
