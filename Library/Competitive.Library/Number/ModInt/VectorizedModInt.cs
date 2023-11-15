@@ -11,23 +11,23 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// <see cref="Vector256{T}"/> で <see cref="MontgomeryModInt{T}"/> の演算を行う型
     /// </summary>
-    public readonly struct VectorizedModInt<T> : IEquatable<VectorizedModInt<T>>
-        where T : struct, IStaticMod
+    public readonly struct VectorizedModInt<T> : IEquatable<VectorizedModInt<T>> where T : struct
     {
-        private static readonly T op = default;
-        internal static readonly Vector256<uint> R;
-        internal static readonly Vector256<uint> M1;
-        internal static readonly Vector256<uint> M2;
-        internal static readonly Vector256<uint> N2;
-        static VectorizedModInt()
+        internal static uint Mod;
+        internal static Vector256<uint> R;
+        internal static Vector256<uint> M1;
+        internal static Vector256<uint> M2;
+        internal static Vector256<uint> N2;
+        public static void SetMod(uint m)
         {
-            var rv = op.Mod;
-            for (int i = 0; i < 4; ++i) rv *= 2 - op.Mod * rv;
-            System.Diagnostics.Debug.Assert(rv * op.Mod == 1);
+            var rv = m;
+            for (int i = 0; i < 4; ++i) rv *= 2 - m * rv;
+            System.Diagnostics.Debug.Assert(rv * m == 1);
+            Mod = m;
             R = Vector256.Create(rv);
-            M1 = Vector256.Create(op.Mod);
-            M2 = Vector256.Create(op.Mod * 2);
-            N2 = Vector256.Create((uint)(((ulong)-op.Mod) % op.Mod));
+            M1 = Vector256.Create(m);
+            M2 = Vector256.Create(m * 2);
+            N2 = Vector256.Create((uint)(((ulong)-m) % m));
         }
 
         public readonly Vector256<uint> Value;
@@ -48,10 +48,8 @@ namespace Kzrnm.Competitive
         public override bool Equals(object other) => other is VectorizedModInt<T> o && Value.Equals(o.Value);
         public override int GetHashCode() => Value.GetHashCode();
 
-        [凾(256)]
-        private static uint Reduce1(ulong b) => (uint)(b % op.Mod);
         public override string ToString()
-            => $"{Reduce1(Value.GetElement(0))} {Reduce1(Value.GetElement(1))} {Reduce1(Value.GetElement(2))} {Reduce1(Value.GetElement(3))} {Reduce1(Value.GetElement(4))} {Reduce1(Value.GetElement(5))} {Reduce1(Value.GetElement(6))} {Reduce1(Value.GetElement(7))}";
+            => $"{Value.GetElement(0) % Mod} {Value.GetElement(1) % Mod} {Value.GetElement(2) % Mod} {Value.GetElement(3) % Mod} {Value.GetElement(4) % Mod} {Value.GetElement(5) % Mod} {Value.GetElement(6) % Mod} {Value.GetElement(7) % Mod}";
 
         [凾(256)]
         public static bool operator ==(VectorizedModInt<T> lhs, VectorizedModInt<T> rhs)

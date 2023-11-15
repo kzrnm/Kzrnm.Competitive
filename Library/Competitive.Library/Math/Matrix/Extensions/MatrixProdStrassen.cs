@@ -6,7 +6,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.Internal
 {
-    public readonly partial struct StrassenImpl<T> where T : struct, IStaticMod
+    public readonly partial struct StrassenImpl<T> where T : struct
     {
         private const int B = 1 << 7;
         private const int B8 = B / 8;
@@ -21,7 +21,7 @@ namespace Kzrnm.Competitive.Internal
         }
         public VectorizedModInt<T>[] Strassen(VectorizedModInt<T>[] a, VectorizedModInt<T>[] b)
         {
-            Contract.Assert(new T().Mod % 2 == 1);
+            Contract.Assert(VectorizedModInt<T>.Mod % 2 == 1);
             var c = new VectorizedModInt<T>[VectorSize];
 
             var len = c.Length * 3 / 2;
@@ -56,7 +56,7 @@ namespace Kzrnm.Competitive.Internal
         }
 
         [凾(256 | 512)]
-        private void Strassen(int N,
+        static void Strassen(int N,
             Span<VectorizedModInt<T>> s,
             Span<VectorizedModInt<T>> t,
             Span<VectorizedModInt<T>> u)
