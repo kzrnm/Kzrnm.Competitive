@@ -14,11 +14,11 @@ namespace Kzrnm.Competitive
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     [DebuggerTypeProxy(typeof(SetIntervalClosed<>.DebugView))]
     public class SetIntervalClosed<T>
-        : SetBase<(T From, T ToInclusive), SetIntervalClosed<T>.C<T>, SetIntervalClosed<T>.Node, SetIntervalClosed<T>.NodeOperator>
+        : SetBase<(T From, T ToInclusive), SetIntervalClosed<T>.C<T>, SetIntervalClosed<T>.Node, DefaultComparerStruct<(T, T)>>
         where T : IComparable<T>, IIncrementOperators<T>, IDecrementOperators<T>, IMinMaxValue<T>
     {
-        public SetIntervalClosed() : base(false, new NodeOperator()) { }
-        public SetIntervalClosed(IEnumerable<(T From, T ToInclusive)> collection) : base(false, new NodeOperator(), collection) { }
+        public SetIntervalClosed() : base(false, new()) { }
+        public SetIntervalClosed(IEnumerable<(T From, T ToInclusive)> collection) : base(false, new(), collection) { }
 
 #pragma warning disable CS8981
         static class op
@@ -279,7 +279,7 @@ namespace Kzrnm.Competitive
                 Remove(op.Increment(last.ToInclusive), op.MaxValue);
         }
 
-        public class Node : SetNodeBase<Node>
+        public class Node : SetNodeBase<Node>, ISetOperator<(T From, T ToInclusive), C<T>, Node, DefaultComparerStruct<(T, T)>>
         {
             public T From;
             public T ToInclusive;
@@ -290,6 +290,12 @@ namespace Kzrnm.Competitive
                 ToInclusive = toInclusive;
             }
             public override string ToString() => $"Range = [{From}, {ToInclusive}], Size = {Size}";
+            [凾(256)]
+            public static Node Create((T From, T ToInclusive) item, NodeColor color) => new Node(item.From, item.ToInclusive, color);
+            [凾(256)]
+            public static (T From, T ToInclusive) GetValue(Node node) => node.Pair;
+            [凾(256)]
+            public static C<T> GetCompareKey(DefaultComparerStruct<(T, T)> op, (T From, T ToInclusive) item) => new C<T>(item.From);
         }
         public readonly struct C<Tv> : IComparable<Node> where Tv : IComparable<T>
         {
@@ -305,17 +311,6 @@ namespace Kzrnm.Competitive
                     return 0;
                 return 1;
             }
-        }
-        public readonly struct NodeOperator : ISetOperator<(T From, T ToInclusive), C<T>, Node>
-        {
-            [凾(256)]
-            public Node Create((T From, T ToInclusive) item, NodeColor color) => new Node(item.From, item.ToInclusive, color);
-            [凾(256)]
-            public (T From, T ToInclusive) GetValue(Node node) => node.Pair;
-            [凾(256)]
-            public C<T> GetCompareKey((T From, T ToInclusive) item) => new C<T>(item.From);
-            [凾(256)]
-            public int Compare((T From, T ToInclusive) x, (T From, T ToInclusive) y) => x.From.CompareTo(y.From);
         }
         #region Search
         [凾(256)] public new Node FindNode<Tv>(Tv item) where Tv : IComparable<T> => base.FindNode(new C<Tv>(item));

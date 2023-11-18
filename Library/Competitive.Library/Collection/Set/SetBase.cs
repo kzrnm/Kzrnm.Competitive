@@ -14,9 +14,9 @@ namespace Kzrnm.Competitive.Internal
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public abstract class SetBase<T, TCmp, Node, TOp> : ICollection, ICollection<T>, IReadOnlyCollection<T>
-        where Node : SetNodeBase<Node>
+        where Node : SetNodeBase<Node>, ISetOperator<T, TCmp, Node, TOp>
         where TCmp : IComparable<Node>
-        where TOp : struct, ISetOperator<T, TCmp, Node>
+        where TOp : struct, IComparer<T>
     {
         /*
          * Original is SortedSet<T>
@@ -82,24 +82,24 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 case 0:
                     return null;
                 case 1:
-                    root = op.Create(arr[0], NodeColor.Black);
+                    root = Node.Create(arr[0], NodeColor.Black);
                     if (redNode != null)
                     {
                         root.Left = redNode;
                     }
                     break;
                 case 2:
-                    root = op.Create(arr[0], NodeColor.Black);
-                    root.Right = op.Create(arr[^1], NodeColor.Red);
+                    root = Node.Create(arr[0], NodeColor.Black);
+                    root.Right = Node.Create(arr[^1], NodeColor.Red);
                     if (redNode != null)
                     {
                         root.Left = redNode;
                     }
                     break;
                 case 3:
-                    root = op.Create(arr[1], NodeColor.Black);
-                    root.Left = op.Create(arr[0], NodeColor.Black);
-                    root.Right = op.Create(arr[^1], NodeColor.Black);
+                    root = Node.Create(arr[1], NodeColor.Black);
+                    root.Left = Node.Create(arr[0], NodeColor.Black);
+                    root.Right = Node.Create(arr[^1], NodeColor.Black);
                     if (redNode != null)
                     {
                         root.Left.Left = redNode;
@@ -107,10 +107,10 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                     break;
                 default:
                     int midpt = (arr.Length - 1) / 2;
-                    root = op.Create(arr[midpt], NodeColor.Black);
+                    root = Node.Create(arr[midpt], NodeColor.Black);
                     root.Left = ConstructRootFromSortedArray(arr[..midpt], redNode);
                     root.Right = arr.Length % 2 == 0 ?
-                        ConstructRootFromSortedArray(arr[(midpt + 2)..], op.Create(arr[midpt + 1], NodeColor.Red)) :
+                        ConstructRootFromSortedArray(arr[(midpt + 2)..], Node.Create(arr[midpt + 1], NodeColor.Red)) :
                         ConstructRootFromSortedArray(arr[(midpt + 1)..], null);
                     break;
             }
@@ -133,12 +133,12 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             while (cur.Right != null) { cur = cur.Right; }
             return cur;
         }
-        public T Min { [凾(256)] get => MinNode() switch { { } n => op.GetValue(n), _ => default }; }
-        public T Max { [凾(256)] get => MaxNode() switch { { } n => op.GetValue(n), _ => default }; }
+        public T Min { [凾(256)] get => MinNode() switch { { } n => Node.GetValue(n), _ => default }; }
+        public T Max { [凾(256)] get => MaxNode() switch { { } n => Node.GetValue(n), _ => default }; }
 
         #region Search
         [凾(256)]
-        public Node FindNode(T item) => FindNode(op.GetCompareKey(item));
+        public Node FindNode(T item) => FindNode(Node.GetCompareKey(op, item));
         protected Node FindNode<TKey>(TKey key) where TKey : IComparable<Node>
         {
             Node current = root;
@@ -201,7 +201,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         [凾(256)]
         public (Node node, int index) BinarySearch<TBOp>(T item, TBOp bop = default)
                where TBOp : struct, ISetBinarySearchOperator
-            => BinarySearch(op.GetCompareKey(item), bop);
+            => BinarySearch(Node.GetCompareKey(op, item), bop);
         /// <summary>
         /// <paramref name="key"/> 以上/超えるの要素のノードとインデックスを返します。
         /// </summary>
@@ -260,7 +260,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         {
             if (BinarySearch<SetLower>(item).node is { } n)
             {
-                value = op.GetValue(n);
+                value = Node.GetValue(n);
                 return true;
             }
             value = default;
@@ -285,7 +285,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         {
             if (BinarySearch<SetUpper>(item).node is { } n)
             {
-                value = op.GetValue(n);
+                value = Node.GetValue(n);
                 return true;
             }
             value = default;
@@ -311,7 +311,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         {
             if (BinarySearch<SetLowerRev>(item).node is { } n)
             {
-                value = op.GetValue(n);
+                value = Node.GetValue(n);
                 return true;
             }
             value = default;
@@ -337,7 +337,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         {
             if (BinarySearch<SetUpperRev>(item).node is { } n)
             {
-                value = op.GetValue(n);
+                value = Node.GetValue(n);
                 return true;
             }
             value = default;
@@ -386,10 +386,10 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         public bool Add(T item) => DoAdd(item);
         protected bool DoAdd(T item)
         {
-            var key = op.GetCompareKey(item);
+            var key = Node.GetCompareKey(op, item);
             if (root == null)
             {
-                root = op.Create(item, NodeColor.Black);
+                root = Node.Create(item, NodeColor.Black);
                 return true;
             }
             Node current = root;
@@ -418,7 +418,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 parent = current;
                 current = order < 0 ? current.Left : current.Right;
             }
-            Node node = op.Create(item, NodeColor.Red);
+            Node node = Node.Create(item, NodeColor.Red);
             if (order >= 0) parent.Right = node;
             else parent.Left = node;
             if (parent.IsRed) InsertionBalance(node, ref parent, grandParent, greatGrandParent);
@@ -496,8 +496,8 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             }
             root?.ColorBlack();
         }
-        [凾(256)] public Node GetAndRemove(T item) => DoRemove(op.GetCompareKey(item));
-        [凾(256)] public bool Remove(T item) => DoRemove(op.GetCompareKey(item)) != null;
+        [凾(256)] public Node GetAndRemove(T item) => DoRemove(Node.GetCompareKey(op, item));
+        [凾(256)] public bool Remove(T item) => DoRemove(Node.GetCompareKey(op, item)) != null;
         protected Node DoRemove(TCmp key)
         {
             if (root == null) return null;
@@ -706,7 +706,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             static int Log2(int num) => BitOperations.Log2((uint)num) + 1;
             public Node Current => current;
             [凾(256)]
-            internal T CurrentValue() => tree.op.GetValue(current);
+            internal T CurrentValue() => Node.GetValue(current);
 
             [凾(256)]
             public bool MoveNext()

@@ -9,17 +9,17 @@ namespace Kzrnm.Competitive
 {
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class Set<T, TOp> : SetBase<T, Set<T, TOp>.C, Set<T, TOp>.Node, Set<T, TOp>.NodeOperator>
+    public class Set<T, TOp> : SetBase<T, Set<T, TOp>.C, Set<T, TOp>.Node, TOp>
         where TOp : struct, IComparer<T>
     {
         public Set(bool isMulti = false) : this(new TOp(), isMulti) { }
         public Set(IEnumerable<T> collection, bool isMulti = false) : this(collection, new TOp(), isMulti) { }
-        public Set(TOp comparer, bool isMulti = false) : base(isMulti, new NodeOperator(comparer))
+        public Set(TOp comparer, bool isMulti = false) : base(isMulti, comparer)
         {
             this.comparer = comparer;
         }
         public Set(IEnumerable<T> collection, TOp comparer, bool isMulti = false)
-            : base(isMulti, new NodeOperator(comparer), collection)
+            : base(isMulti, comparer, collection)
         {
             this.comparer = comparer;
         }
@@ -27,7 +27,7 @@ namespace Kzrnm.Competitive
         protected readonly TOp comparer;
 
         #region Operators
-        public class Node : SetNodeBase<Node>
+        public class Node : SetNodeBase<Node>, ISetOperator<T, C, Node, TOp>
         {
             public T Value;
             internal Node(T item, NodeColor color) : base(color)
@@ -35,6 +35,9 @@ namespace Kzrnm.Competitive
                 Value = item;
             }
             public override string ToString() => $"Value = {Value}, Size = {Size}";
+            [凾(256)] public static Node Create(T item, NodeColor color) => new(item, color);
+            [凾(256)] public static T GetValue(Node node) => node.Value;
+            [凾(256)] public static C GetCompareKey(TOp op, T item) => new(op, item);
         }
         public readonly struct C : IComparable<Node>
         {
@@ -42,15 +45,6 @@ namespace Kzrnm.Competitive
             private readonly T v;
             public C(TOp op, T val) { this.op = op; v = val; }
             [凾(256)] public int CompareTo(Node other) => op.Compare(v, other.Value);
-        }
-        public readonly struct NodeOperator : ISetOperator<T, C, Node>
-        {
-            private readonly TOp op;
-            public NodeOperator(TOp op) { this.op = op; }
-            [凾(256)] public Node Create(T item, NodeColor color) => new Node(item, color);
-            [凾(256)] public T GetValue(Node node) => node.Value;
-            [凾(256)] public C GetCompareKey(T item) => new C(op, item);
-            [凾(256)] public int Compare(T x, T y) => op.Compare(x, y);
         }
         #endregion Operators
     }

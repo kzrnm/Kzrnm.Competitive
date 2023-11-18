@@ -10,18 +10,18 @@ namespace Kzrnm.Competitive
     [DebuggerTypeProxy(typeof(SetDictionary<,,>.DebugView))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class SetDictionary<TKey, TValue, TOp>
-        : SetBase<KeyValuePair<TKey, TValue>, SetDictionary<TKey, TValue, TOp>.C, SetDictionary<TKey, TValue, TOp>.Node, SetDictionary<TKey, TValue, TOp>.NodeOperator>
+        : SetBase<KeyValuePair<TKey, TValue>, SetDictionary<TKey, TValue, TOp>.C, SetDictionary<TKey, TValue, TOp>.Node, SetDictionary<TKey, TValue, TOp>.Comparer>
         , IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
         where TOp : struct, IComparer<TKey>
     {
         public SetDictionary(bool isMulti = false) : this(new TOp(), isMulti) { }
         public SetDictionary(IDictionary<TKey, TValue> dict, bool isMulti = false) : this(dict, new TOp(), isMulti) { }
-        public SetDictionary(TOp comparer, bool isMulti = false) : base(isMulti, new NodeOperator(comparer))
+        public SetDictionary(TOp comparer, bool isMulti = false) : base(isMulti, new(comparer))
         {
             this.comparer = comparer;
         }
         public SetDictionary(IDictionary<TKey, TValue> dict, TOp comparer, bool isMulti = false)
-            : base(isMulti, new NodeOperator(comparer), dict)
+            : base(isMulti, new(comparer), dict)
         {
             this.comparer = comparer;
         }
@@ -110,7 +110,7 @@ namespace Kzrnm.Competitive
         #endregion IDictionary
 
         #region Operators
-        public class Node : SetNodeBase<Node>
+        public class Node : SetNodeBase<Node>, ISetOperator<KeyValuePair<TKey, TValue>, C, Node, Comparer>
         {
             public TKey Key;
             public TValue Value;
@@ -120,7 +120,12 @@ namespace Kzrnm.Competitive
                 Key = key;
                 Value = value;
             }
-            public override string ToString() => $"Key = {Key}, Value = {Value}, Size = {Size}";
+            [凾(256)]
+            public static Node Create(KeyValuePair<TKey, TValue> item, NodeColor color) => new Node(item.Key, item.Value, color);
+            [凾(256)]
+            public static KeyValuePair<TKey, TValue> GetValue(Node node) => node.Pair;
+            [凾(256)]
+            public static C GetCompareKey(Comparer op, KeyValuePair<TKey, TValue> item) => new(op.inner, item.Key);
         }
         public readonly struct C : IComparable<Node>
         {
@@ -129,22 +134,11 @@ namespace Kzrnm.Competitive
             public C(TOp op, TKey val) { this.op = op; v = val; }
             [凾(256)] public int CompareTo(Node other) => op.Compare(v, other.Key);
         }
-        public readonly struct NodeOperator : ISetOperator<KeyValuePair<TKey, TValue>, C, Node>
+        public readonly struct Comparer : IComparer<KeyValuePair<TKey, TValue>>
         {
-            private readonly TOp comparer;
-            public IComparer<TKey> Comparer => comparer;
-            public NodeOperator(TOp comparer)
-            {
-                this.comparer = comparer;
-            }
-            [凾(256)]
-            public Node Create(KeyValuePair<TKey, TValue> item, NodeColor color) => new Node(item.Key, item.Value, color);
-            [凾(256)]
-            public KeyValuePair<TKey, TValue> GetValue(Node node) => node.Pair;
-            [凾(256)]
-            public C GetCompareKey(KeyValuePair<TKey, TValue> item) => new C(comparer, item.Key);
-            [凾(256)]
-            public int Compare(KeyValuePair<TKey, TValue> x, KeyValuePair<TKey, TValue> y) => comparer.Compare(x.Key, y.Key);
+            public readonly TOp inner;
+            public Comparer(TOp k) { inner = k; }
+            [凾(256)] public int Compare(KeyValuePair<TKey, TValue> x, KeyValuePair<TKey, TValue> y) => inner.Compare(x.Key, y.Key);
         }
         #endregion Operators
 

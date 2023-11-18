@@ -9,14 +9,14 @@ namespace Kzrnm.Competitive
 {
     [DebuggerTypeProxy(typeof(CollectionDebugView<>))]
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class Set<T> : SetBase<T, Set<T>.C<T>, Set<T>.Node, Set<T>.NodeOperator>
+    public class Set<T> : SetBase<T, Set<T>.C<T>, Set<T>.Node, DefaultComparerStruct<T>>
         where T : IComparable<T>
     {
-        public Set(bool isMulti = false) : base(isMulti, new NodeOperator()) { }
-        public Set(IEnumerable<T> collection, bool isMulti = false) : base(isMulti, new NodeOperator(), collection) { }
+        public Set(bool isMulti = false) : base(isMulti, new()) { }
+        public Set(IEnumerable<T> collection, bool isMulti = false) : base(isMulti, new(), collection) { }
 
         #region Operators
-        public class Node : SetNodeBase<Node>
+        public class Node : SetNodeBase<Node>, ISetOperator<T, C<T>, Node, DefaultComparerStruct<T>>
         {
             public T Value;
             internal Node(T item, NodeColor color) : base(color)
@@ -24,19 +24,15 @@ namespace Kzrnm.Competitive
                 Value = item;
             }
             public override string ToString() => $"Value = {Value}, Size = {Size}";
+            [凾(256)] public static Node Create(T item, NodeColor color) => new(item, color);
+            [凾(256)] public static T GetValue(Node node) => node.Value;
+            [凾(256)] public static C<T> GetCompareKey(DefaultComparerStruct<T> comparer, T item) => new(item);
         }
         public readonly struct C<Tv> : IComparable<Node> where Tv : IComparable<T>
         {
             private readonly Tv v;
             public C(Tv val) { v = val; }
             [凾(256)] public int CompareTo(Node other) => v.CompareTo(other.Value);
-        }
-        public readonly struct NodeOperator : ISetOperator<T, C<T>, Node>
-        {
-            [凾(256)] public Node Create(T item, NodeColor color) => new Node(item, color);
-            [凾(256)] public T GetValue(Node node) => node.Value;
-            [凾(256)] public C<T> GetCompareKey(T item) => new C<T>(item);
-            [凾(256)] public int Compare(T x, T y) => x.CompareTo(y);
         }
         #endregion Operators
 
