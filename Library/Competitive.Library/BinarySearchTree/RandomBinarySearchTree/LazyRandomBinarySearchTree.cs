@@ -12,7 +12,7 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 遅延伝搬乱択平衡二分探索木
     /// </summary>
-    public class LazyRandomBinarySearchTree<T> : LazyRandomBinarySearchTree<T, T, SingleBbstOp<T>>
+    public class LazyRandomBinarySearchTree<T> : LazyRandomBinarySearchTree<T, ValueTuple, SingleBbstOp<T>>
     {
         public LazyRandomBinarySearchTree() { }
         public LazyRandomBinarySearchTree(IEnumerable<T> v) : base(v.ToArray()) { }

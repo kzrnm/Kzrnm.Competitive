@@ -13,7 +13,7 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 遅延伝搬反転可能赤黒木
     /// </summary>
-    public class LazyRedBlackTree<T> : LazyRedBlackTree<T, T, SingleBbstOp<T>>
+    public class LazyRedBlackTree<T> : LazyRedBlackTree<T, ValueTuple, SingleBbstOp<T>>
     {
         public LazyRedBlackTree() { }
         public LazyRedBlackTree(IEnumerable<T> v) : base(v.ToArray()) { }

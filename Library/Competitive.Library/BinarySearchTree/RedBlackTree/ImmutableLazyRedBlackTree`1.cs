@@ -8,21 +8,22 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    using Emp = ValueTuple;
     // https://ei1333.github.io/library/structure/bbst/lazy-red-black-tree.hpp
     /// <summary>
     /// 永続反転可能赤黒木
     /// </summary>
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class ImmutableLazyRedBlackTree<T> : IImmutableLazyBinarySearchTree<T, T, ImmutableLazyRedBlackTree<T>>
+    public class ImmutableLazyRedBlackTree<T> : IImmutableLazyBinarySearchTree<T, Emp, ImmutableLazyRedBlackTree<T>>
     {
-        public static LazyBinarySearchTreeNodeOperator<T, T, SingleBbstOp<T>, LazyRedBlackTreeNode<T, T>, LazyRedBlackTreeNodeOperator<T, T, SingleBbstOp<T>, TCp>> rb => default;
+        public static LazyBinarySearchTreeNodeOperator<T, Emp, SingleBbstOp<T>, LazyRedBlackTreeNode<T, Emp>, LazyRedBlackTreeNodeOperator<T, Emp, SingleBbstOp<T>, TCp>> rb => default;
 
-        public LazyRedBlackTreeNode<T, T> root;
+        public LazyRedBlackTreeNode<T, Emp> root;
 
         public static ImmutableLazyRedBlackTree<T> Empty { get; } = new ImmutableLazyRedBlackTree<T>();
         protected ImmutableLazyRedBlackTree() { }
 
-        public ImmutableLazyRedBlackTree(LazyRedBlackTreeNode<T, T> root) { this.root = root; }
+        public ImmutableLazyRedBlackTree(LazyRedBlackTreeNode<T, Emp> root) { this.root = root; }
         public ImmutableLazyRedBlackTree(IEnumerable<T> v) : this(v.ToArray()) { }
         public ImmutableLazyRedBlackTree(T[] v) : this(v.AsSpan()) { }
         public ImmutableLazyRedBlackTree(ReadOnlySpan<T> v) : this(rb.im.Build(v)) { }
@@ -121,20 +122,20 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        public LazyRedBlackTreeEnumerator<T, T, SingleBbstOp<T>, LazyRedBlackTreeNodeOperator<T, T, SingleBbstOp<T>, TCp>> GetEnumerator()
+        public LazyRedBlackTreeEnumerator<T, Emp, SingleBbstOp<T>, LazyRedBlackTreeNodeOperator<T, Emp, SingleBbstOp<T>, TCp>> GetEnumerator()
             => rb.im.GetEnumerator(root);
         [凾(256)]
         IEnumerator<T> IEnumerable<T>.GetEnumerator() => GetEnumerator();
         [凾(256)]
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-        ImmutableLazyRedBlackTree<T> IImmutableLazyBinarySearchTree<T, T, ImmutableLazyRedBlackTree<T>>.Apply(int l, int r, T f) { throw new NotSupportedException(); }
+        ImmutableLazyRedBlackTree<T> IImmutableLazyBinarySearchTree<T, Emp, ImmutableLazyRedBlackTree<T>>.Apply(int l, int r, Emp f) { throw new NotSupportedException(); }
         T IImmutableBinarySearchTree<T, ImmutableLazyRedBlackTree<T>>.Prod(int l, int r) { throw new NotSupportedException(); }
         T IImmutableBinarySearchTree<T, ImmutableLazyRedBlackTree<T>>.Slice(int l, int length) { throw new NotSupportedException(); }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
-        public struct TCp : ICopyOperator<LazyRedBlackTreeNode<T, T>>
+        public struct TCp : ICopyOperator<LazyRedBlackTreeNode<T, Emp>>
         {
             [凾(256)]
-            public LazyRedBlackTreeNode<T, T> Copy(LazyRedBlackTreeNode<T, T> t) => new LazyRedBlackTreeNode<T, T>(t.Key, t.Lazy)
+            public LazyRedBlackTreeNode<T, Emp> Copy(LazyRedBlackTreeNode<T, Emp> t) => new LazyRedBlackTreeNode<T, Emp>(t.Key, t.Lazy)
             {
                 Level = t.Level,
                 Color = t.Color,

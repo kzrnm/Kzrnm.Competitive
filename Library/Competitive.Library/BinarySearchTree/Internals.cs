@@ -1,4 +1,5 @@
 using AtCoder;
+using System;
 using System.Collections.Generic;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -78,13 +79,13 @@ namespace Kzrnm.Competitive
             [凾(256)]
             TNode Propagate(ref TNode t);
         }
-        public readonly struct SingleBbstOp<T> : IReversibleBinarySearchTreeOperator<T, T>, ISegtreeOperator<T>
+        public readonly struct SingleBbstOp<T> : IReversibleBinarySearchTreeOperator<T, ValueTuple>, ISegtreeOperator<T>
         {
             public T Identity => default;
-            public T FIdentity => default;
-            [凾(256)] public T Composition(T nf, T cf) => FIdentity;
+            public ValueTuple FIdentity => new();
+            [凾(256)] public ValueTuple Composition(ValueTuple nf, ValueTuple cf) => new();
             [凾(256)] public T Inverse(T v) => v;
-            [凾(256)] public T Mapping(T f, T x, int size) => x;
+            [凾(256)] public T Mapping(ValueTuple f, T x, int size) => x;
             [凾(256)] public T Operate(T x, T y) => EqualityComparer<T>.Default.Equals(x, default) ? y : x;
         }
     }

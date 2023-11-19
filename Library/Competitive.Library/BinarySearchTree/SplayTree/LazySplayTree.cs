@@ -15,7 +15,7 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 遅延伝搬反転可能 Splay 木
     /// </summary>
-    public class LazySplayTree<T> : LazySplayTree<T, T, SingleBbstOp<T>>
+    public class LazySplayTree<T> : LazySplayTree<T, ValueTuple, SingleBbstOp<T>>
     {
         public LazySplayTree() { }
         public LazySplayTree(IEnumerable<T> v) : base(v.ToArray()) { }
