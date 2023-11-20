@@ -73,7 +73,7 @@ namespace Kzrnm.Competitive
         public interface ILazyBbstImplOperator<T, TNode> : IBbstImplOperator<T, TNode>
         {
             /// <summary>
-            /// <paramref name="t"/> の子に遅延伝搬させます。
+            /// <paramref name="t"/> の子に遅延伝播させます。
             /// </summary>
             /// <returns><paramref name="t"/> でなければならない</returns>
             [凾(256)]

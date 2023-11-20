@@ -82,7 +82,7 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// lazy を伝搬させる
+        /// lazy を伝播させる
         /// </summary>
         [凾(256)]
         static Node Propagate(Node t)

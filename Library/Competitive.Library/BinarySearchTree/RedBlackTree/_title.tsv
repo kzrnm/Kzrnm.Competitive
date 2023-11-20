@@ -1,8 +1,8 @@
 ImmutableLazyRedBlackTree`1.cs	永続反転可能赤黒木
-ImmutableLazyRedBlackTree`3.cs	永続遅延伝搬反転可能赤黒木
+ImmutableLazyRedBlackTree`3.cs	永続遅延伝播反転可能赤黒木
 ImmutableRedBlackTree`1.cs	永続赤黒木
 ImmutableRedBlackTree`2.cs	永続赤黒木(範囲取得)
-LazyRedBlackTree.cs	遅延伝搬反転可能赤黒木
-LazyRedBlackTreeNodeOperator.cs	遅延伝搬反転可能赤黒木(Operator)
+LazyRedBlackTree.cs	遅延伝播反転可能赤黒木
+LazyRedBlackTreeNodeOperator.cs	遅延伝播反転可能赤黒木(Operator)
 RedBlackTree.cs	赤黒木
 RedBlackTreeNodeOperator.cs	赤黒木(Operator)

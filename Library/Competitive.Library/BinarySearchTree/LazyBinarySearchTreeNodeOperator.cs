@@ -3,7 +3,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive.Internal.Bbst
 {
     /// <summary>
-    /// 反転可能遅延伝搬平衡二分探索木のオペレータ
+    /// 反転可能遅延伝播平衡二分探索木のオペレータ
     /// </summary>
     /// <typeparam name="T">モノイド</typeparam>
     /// <typeparam name="F">作用素</typeparam>

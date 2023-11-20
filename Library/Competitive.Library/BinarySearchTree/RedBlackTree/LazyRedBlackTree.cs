@@ -11,7 +11,7 @@ namespace Kzrnm.Competitive
     // https://ei1333.github.io/library/structure/bbst/lazy-red-black-tree.hpp
 
     /// <summary>
-    /// 遅延伝搬反転可能赤黒木
+    /// 遅延伝播反転可能赤黒木
     /// </summary>
     public class LazyRedBlackTree<T> : LazyRedBlackTree<T, ValueTuple, SingleBbstOp<T>>
     {
@@ -22,7 +22,7 @@ namespace Kzrnm.Competitive
     }
 
     /// <summary>
-    /// 遅延伝搬反転可能赤黒木
+    /// 遅延伝播反転可能赤黒木
     /// </summary>
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class LazyRedBlackTree<T, F, TOp> : ILazyBinarySearchTree<T, F>

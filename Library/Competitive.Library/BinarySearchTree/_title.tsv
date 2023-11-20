@@ -1,4 +1,4 @@
 BinarySearchTreeNodeOperator.cs	平衡二分探索木のオペレータ
 Interfaces.cs	二分探索木のインターフェイス
 Internals.cs	二分探索木汎用
-LazyBinarySearchTreeNodeOperator.cs	反転可能遅延伝搬平衡二分探索木のオペレータ
+LazyBinarySearchTreeNodeOperator.cs	反転可能遅延伝播平衡二分探索木のオペレータ

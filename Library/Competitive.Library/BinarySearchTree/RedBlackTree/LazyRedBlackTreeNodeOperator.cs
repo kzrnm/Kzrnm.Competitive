@@ -49,7 +49,7 @@ namespace Kzrnm.Competitive
     namespace Internal.Bbst
     {
         /// <summary>
-        /// 反転可能遅延伝搬赤黒木のオペレータ
+        /// 反転可能遅延伝播赤黒木のオペレータ
         /// </summary>
         /// <typeparam name="T">モノイド</typeparam>
         /// <typeparam name="F">作用素</typeparam>

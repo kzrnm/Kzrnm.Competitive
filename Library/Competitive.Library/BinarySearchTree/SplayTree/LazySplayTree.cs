@@ -13,7 +13,7 @@ namespace Kzrnm.Competitive
 {
     // https://ei1333.github.io/library/structure/bbst/lazy-reversible-splay-tree.hpp
     /// <summary>
-    /// 遅延伝搬反転可能 Splay 木
+    /// 遅延伝播反転可能 Splay 木
     /// </summary>
     public class LazySplayTree<T> : LazySplayTree<T, ValueTuple, SingleBbstOp<T>>
     {
@@ -25,7 +25,7 @@ namespace Kzrnm.Competitive
 
     // https://ei1333.github.io/library/structure/bbst/lazy-reversible-splay-tree.hpp
     /// <summary>
-    /// 遅延伝搬反転可能 Splay 木
+    /// 遅延伝播反転可能 Splay 木
     /// </summary>
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public class LazySplayTree<T, F, TOp> : ILazyBinarySearchTree<T, F>
