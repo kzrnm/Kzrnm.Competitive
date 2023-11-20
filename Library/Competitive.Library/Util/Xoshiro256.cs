@@ -9,7 +9,7 @@ namespace Kzrnm.Competitive
     public class Xoshiro256
     {
         ulong s0, s1, s2, s3;
-        public Xoshiro256() : this(new Random()) { }
+        public Xoshiro256() : this(Random.Shared) { }
         public Xoshiro256(int seed) : this(new Random(seed)) { }
         public Xoshiro256(ulong t0, ulong t1, ulong t2, ulong t3)
         {
