@@ -1,10 +1,8 @@
 using AtCoder;
-using Kzrnm.Competitive.Internal.Bbst;
+using Kzrnm.Competitive.Internal;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -16,101 +14,68 @@ namespace Kzrnm.Competitive
     public class RandomBinarySearchTree<T> : RandomBinarySearchTree<T, SingleBbstOp<T>>
     {
         public RandomBinarySearchTree() { }
-        public RandomBinarySearchTree(IEnumerable<T> v) : base(v.ToArray()) { }
-        public RandomBinarySearchTree(T[] v) : base(v.AsSpan()) { }
+        public RandomBinarySearchTree(IEnumerable<T> v) : base(v) { }
+        public RandomBinarySearchTree(T[] v) : base(v) { }
         public RandomBinarySearchTree(ReadOnlySpan<T> v) : base(v) { }
+        public RandomBinarySearchTree(RandomBinarySearchTreeNode<T, SingleBbstOp<T>> root) : base(root) { }
     }
 
     /// <summary>
     /// 乱択平衡二分探索木
     /// </summary>
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class RandomBinarySearchTree<T, TOp> : IBinarySearchTree<T>
+    public class RandomBinarySearchTree<T, TOp> : BinarySearchTreeBase<T, RandomBinarySearchTreeNode<T, TOp>>
         where TOp : struct, ISegtreeOperator<T>
     {
-        public static BinarySearchTreeNodeOperator<T, TOp, RandomBinarySearchTreeNode<T>, RandomBinarySearchTreeNodeOperator<T, TOp>> rb => default;
-
-        public RandomBinarySearchTreeNode<T> root;
-
-        public RandomBinarySearchTree(RandomBinarySearchTreeNode<T> root) { this.root = root; }
         public RandomBinarySearchTree() { }
-        public RandomBinarySearchTree(IEnumerable<T> v) : this(v.ToArray()) { }
-        public RandomBinarySearchTree(T[] v) : this(v.AsSpan()) { }
-        public RandomBinarySearchTree(ReadOnlySpan<T> v) : this(rb.im.Build(v)) { }
-
-        public T this[int index]
+        public RandomBinarySearchTree(IEnumerable<T> v) : base(v) { }
+        public RandomBinarySearchTree(T[] v) : base(v) { }
+        public RandomBinarySearchTree(ReadOnlySpan<T> v) : base(v) { }
+        public RandomBinarySearchTree(RandomBinarySearchTreeNode<T, TOp> root) : base(root) { }
+        public RandomBinarySearchTreeNode<T, TOp>.Enumerator GetEnumerator()
         {
-            get => rb.im.GetValue(ref root, index);
-            set => rb.im.SetValue(ref root, index, value);
+            RandomBinarySearchTreeNode<T, TOp>.GetEnumerator(ref root);
+            return new(root);
         }
+    }
 
-        [凾(256)] public T Prod(int l, int r) => rb.Prod(ref root, l, r);
-        [凾(256)] public T Slice(int l, int length) => Prod(l, l + length);
-
-        public T AllProd => rb.Sum(root);
-        public int Count => rb.Size(root);
-        bool ICollection<T>.IsReadOnly => false;
-
-        [凾(256)]
-        public void Add(T item)
+    namespace Internal
+    {
+        public class RandomBinarySearchTreeNode<T, TOp>
+            : RandomBinarySearchTreeNodeBase<RandomBinarySearchTreeNode<T, TOp>, T>
+            , IBbstNode<T, RandomBinarySearchTreeNode<T, TOp>>
+            where TOp : struct, ISegtreeOperator<T>
         {
-            rb.AddLast(ref root, item);
-        }
-        [凾(256)]
-        public void AddRange(IEnumerable<T> items)
-        {
-            root = rb.im.Merge(root, rb.im.Build(items.ToArray()));
-        }
+            static TOp op => new();
+            public RandomBinarySearchTreeNode(T v)
+            {
+                Size = 1;
+                Sum = Value = v;
+            }
 
-        [凾(256)]
-        public void Insert(int index, T item)
-        {
-            rb.Insert(ref root, index, item);
-        }
-        [凾(256)]
-        public void InsertRange(int index, IEnumerable<T> items)
-        {
-            var (t1, t2) = rb.im.Split(root, index);
-            root = rb.Merge3(t1, rb.im.Build(items.ToArray()), t2);
-        }
-
-        void IList<T>.RemoveAt(int index) { RemoveAt(index); }
-        [凾(256)]
-        public T RemoveAt(int index)
-            => rb.Erase(ref root, index);
-
-        [凾(256)]
-        public void RemoveRange(int index, int count)
-        {
-            var (t1, _, t3) = rb.Split3(root, index, index + count);
-            root = rb.im.Merge(t1, t3);
-        }
-
-        [凾(256)]
-        public void Clear()
-        {
-            root = null;
-        }
-
-        [凾(256)]
-        public void CopyTo(T[] array, int arrayIndex)
-        {
-            foreach (var v in this)
-                array[arrayIndex++] = v;
-        }
-
-        [凾(256)]
-        public RandomBinarySearchTreeEnumerator<T, TOp> GetEnumerator()
-            => rb.im.GetEnumerator(root);
-        [凾(256)]
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() => GetEnumerator();
-        [凾(256)]
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        public readonly struct TCp : ICopyOperator<RandomBinarySearchTreeNode<T>>
-        {
             [凾(256)]
-            public RandomBinarySearchTreeNode<T> Copy(RandomBinarySearchTreeNode<T> t) => t;
+            public static RandomBinarySearchTreeNode<T, TOp> Create(T v) => new(v);
+
+            [凾(256)]
+            public static void Propagate(ref RandomBinarySearchTreeNode<T, TOp> t)
+            {
+            }
+
+            [凾(256)]
+            public static RandomBinarySearchTreeNode<T, TOp> Update(RandomBinarySearchTreeNode<T, TOp> t)
+            {
+                if (t == null) return t;
+                t.Size = (t.left?.Size ?? 0) + (t.right?.Size ?? 0) + 1;
+                t.Sum = op.Operate(op.Operate(GetSum(t.left), t.Value), GetSum(t.right));
+                return t;
+            }
+
+            [凾(256)]
+            static T GetSum(RandomBinarySearchTreeNode<T, TOp> t)
+                => t != null ? t.Sum : op.Identity;
+            static T IBbstNode<T, RandomBinarySearchTreeNode<T, TOp>>.Sum(RandomBinarySearchTreeNode<T, TOp> t)
+                => GetSum(t);
+            public override string ToString() => $"Size = {Size}, Value = {Value}, Sum = {Sum}";
         }
     }
 }

@@ -1,6 +1,6 @@
 using AtCoder;
 using Kzrnm.Competitive;
-using Kzrnm.Competitive.Internal.Bbst;
+using Kzrnm.Competitive.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,18 +8,13 @@ using System.Runtime.InteropServices;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
 {
-    public abstract class ImmutableBinarySearchTreeTestsBase<TSelf>
-        where TSelf : IImmutableBinarySearchTree<int, TSelf>
+    public abstract class ImmutableBinarySearchTreeTestsBase<Node, TBbst>
+        where Node : class, IBbstNode<int, Node>
+        where TBbst : ImmutableBinarySearchTreeBase<int, Node, TBbst>, IImmutableBbst<int, Node, TBbst>
     {
-        protected readonly struct Starry : ISegtreeOperator<int>
-        {
-            public int Identity => 0;
-            public int Operate(int x, int y) => x + y;
-        }
-
         protected virtual bool UseProd => true;
-        protected abstract TSelf Empty { get; }
-        protected abstract TSelf Create(IEnumerable<int> values);
+        protected abstract TBbst Empty { get; }
+        protected abstract TBbst Create(IEnumerable<int> values);
 
         [Fact]
         public void Zero()
@@ -98,7 +93,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
                 tree = tree.Insert(index, value);
                 list.Insert(index, value);
             }
-            var savedTree = new List<TSelf>();
+            var savedTree = new List<TBbst>();
             var savedExpects = new List<int[]>();
             void Test()
             {
@@ -110,7 +105,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
             }
 
 
-            tree = tree.Add(-1);
+            tree = tree.AddLast(-1);
             list.Add(-1);
             Test();
 
@@ -145,7 +140,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
             var tree = Create(list);
             void Add(int value)
             {
-                tree = tree.Add(value);
+                tree = tree.AddLast(value);
                 list.Add(value);
             }
             void SetValue(int index, int value)
@@ -153,7 +148,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
                 tree = tree.SetItem(index, value);
                 list[index] = value;
             }
-            var savedTree = new List<TSelf>();
+            var savedTree = new List<TBbst>();
             var savedExpects = new List<int[]>();
             void Test()
             {
@@ -195,7 +190,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
                 tree = tree.AddRange(values);
                 list.AddRange(values);
             }
-            var savedTree = new List<TSelf>();
+            var savedTree = new List<TBbst>();
             var savedExpects = new List<int[]>();
             void Test()
             {
@@ -235,7 +230,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
                 tree = tree.InsertRange(index, values);
                 list.InsertRange(index, values);
             }
-            var savedTree = new List<TSelf>();
+            var savedTree = new List<TBbst>();
             var savedExpects = new List<int[]>();
             void Test()
             {
@@ -275,7 +270,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
                 tree = tree.RemoveAt(index);
                 list.RemoveAt(index);
             }
-            var savedTree = new List<TSelf>();
+            var savedTree = new List<TBbst>();
             var savedExpects = new List<int[]>();
             void Test()
             {
@@ -313,7 +308,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
                 tree = tree.RemoveRange(index, count);
                 list.RemoveRange(index, count);
             }
-            var savedTree = new List<TSelf>();
+            var savedTree = new List<TBbst>();
             var savedExpects = new List<int[]>();
             void Test()
             {

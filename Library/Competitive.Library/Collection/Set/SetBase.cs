@@ -955,4 +955,16 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         }
         public override string ToString() => $"Size = {Size}";
     }
+    public enum NodeColor : byte
+    {
+        Black,
+        Red
+    }
+    enum TreeRotation : byte
+    {
+        Left = 1,
+        Right = 2,
+        RightLeft = 3,
+        LeftRight = 4,
+    }
 }

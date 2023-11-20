@@ -1,5 +1,5 @@
 using Kzrnm.Competitive;
-using Kzrnm.Competitive.Internal.Bbst;
+using Kzrnm.Competitive.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,21 +7,22 @@ using System.Runtime.InteropServices;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
 {
-    public abstract class LazyBinarySearchTreeTestsBase
+    public readonly struct SumOp : IReversibleBinarySearchTreeOperator<int, int>
     {
-        protected readonly struct SumOp : IReversibleBinarySearchTreeOperator<int, int>
-        {
-            public int Identity => 0;
-            public int FIdentity => 0;
+        public int Identity => 0;
+        public int FIdentity => 0;
 
-            public int Composition(int f, int g) => f + g;
+        public int Composition(int f, int g) => f + g;
 
-            public int Inverse(int v) => v;
-            public int Mapping(int f, int x, int size) => f * size + x;
-            public int Operate(int x, int y) => x + y;
-        }
-        protected abstract ILazyBinarySearchTree<int, int> Create();
-        protected abstract ILazyBinarySearchTree<int, int> Create(IEnumerable<int> values);
+        public int Inverse(int v) => v;
+        public int Mapping(int f, int x, int size) => f * size + x;
+        public int Operate(int x, int y) => x + y;
+    }
+    public abstract class LazyBinarySearchTreeTestsBase<Node>
+        where Node : class, ILazyBbstNode<int, int, Node>
+    {
+        protected abstract LazyBinarySearchTreeBase<int, int, Node> Create();
+        protected abstract LazyBinarySearchTreeBase<int, int, Node> Create(IEnumerable<int> values);
 
         [Fact]
         public void Zero()
@@ -164,7 +165,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
             }
 
 
-            tree.Add(-1);
+            tree.AddLast(-1);
             list.Add(-1);
             Test();
 
@@ -202,7 +203,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
             var tree = Create(list);
             void Add(int value)
             {
-                tree.Add(value);
+                tree.AddLast(value);
                 list.Add(value);
             }
             void SetValue(int index, int value)

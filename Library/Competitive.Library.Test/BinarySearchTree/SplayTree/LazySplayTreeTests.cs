@@ -1,14 +1,14 @@
-using Kzrnm.Competitive.Internal.Bbst;
+using Kzrnm.Competitive.Internal;
 using System.Collections.Generic;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
 {
-    public class LazySplayTreeTests : LazyBinarySearchTreeTestsBase
+    public class LazySplayTreeTests : LazyBinarySearchTreeTestsBase<LazySplayTreeNode<int, int, SumOp>>
     {
-        protected override ILazyBinarySearchTree<int, int> Create()
+        protected override LazySplayTree<int, int, SumOp> Create()
             => new LazySplayTree<int, int, SumOp>();
 
-        protected override ILazyBinarySearchTree<int, int> Create(IEnumerable<int> values)
+        protected override LazySplayTree<int, int, SumOp> Create(IEnumerable<int> values)
             => new LazySplayTree<int, int, SumOp>(values);
     }
 }

@@ -1,8 +1,10 @@
+using Kzrnm.Competitive.Internal;
 using System.Collections.Generic;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
 {
-    public class ImmutableRedBlackTreeTests : ImmutableBinarySearchTreeTestsBase<ImmutableRedBlackTree<int>>
+    public class ImmutableRedBlackTreeTests
+        : ImmutableBinarySearchTreeTestsBase<ImmutableRedBlackTreeNode<int, SingleBbstOp<int>>, ImmutableRedBlackTree<int>>
     {
         protected override bool UseProd => false;
         protected override ImmutableRedBlackTree<int> Empty

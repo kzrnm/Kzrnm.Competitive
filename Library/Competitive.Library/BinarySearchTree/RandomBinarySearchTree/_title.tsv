@@ -1,4 +1,3 @@
-LazyRandomBinarySearchTree.cs	遅延伝搬乱択平衡二分探索木
-LazyRandomBinarySearchTreeOperator.cs	遅延伝搬乱択平衡二分探索木(Operator)
+LazyRandomBinarySearchTree.cs	遅延伝播乱択平衡二分探索木
 RandomBinarySearchTree.cs	乱択平衡二分探索木
-RandomBinarySearchTreeOperator.cs	乱択平衡二分探索木(Operator)
+RandomBinarySearchTreeNodeBase.cs	乱択平衡二分探索木の基本実装

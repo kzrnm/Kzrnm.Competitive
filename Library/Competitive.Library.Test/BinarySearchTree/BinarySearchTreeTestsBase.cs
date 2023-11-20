@@ -1,6 +1,6 @@
 using AtCoder;
 using Kzrnm.Competitive;
-using Kzrnm.Competitive.Internal.Bbst;
+using Kzrnm.Competitive.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,16 +8,17 @@ using System.Runtime.InteropServices;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
 {
-    public abstract class BinarySearchTreeTestsBase
+    public readonly struct Starry : ISegtreeOperator<int>
     {
-        protected readonly struct Starry : ISegtreeOperator<int>
-        {
-            public int Identity => 0;
-            public int Operate(int x, int y) => x + y;
-        }
+        public int Identity => 0;
+        public int Operate(int x, int y) => x + y;
+    }
 
-        protected abstract IBinarySearchTree<int> Create();
-        protected abstract IBinarySearchTree<int> Create(IEnumerable<int> values);
+    public abstract class BinarySearchTreeTestsBase<Node>
+        where Node : class, IBbstNode<int, Node>
+    {
+        protected abstract BinarySearchTreeBase<int, Node> Create();
+        protected abstract BinarySearchTreeBase<int, Node> Create(IEnumerable<int> values);
 
         [Fact]
         public void Zero()
@@ -95,7 +96,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
             }
 
 
-            tree.Add(-1);
+            tree.AddLast(-1);
             list.Add(-1);
             Test();
 
@@ -127,7 +128,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
             var tree = Create(list);
             void Add(int value)
             {
-                tree.Add(value);
+                tree.AddLast(value);
                 list.Add(value);
             }
             void SetValue(int index, int value)

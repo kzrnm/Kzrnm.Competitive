@@ -1,13 +1,14 @@
+using Kzrnm.Competitive.Internal;
 using System.Collections.Generic;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
 {
-    using Starry = ImmutableLazyBinarySearchTreeTestsBase.Starry;
-    public class ImmutableLazyRedBlackTreeTests : ImmutableLazyBinarySearchTreeTestsBase<ImmutableLazyRedBlackTree<int, int, Starry>>
+    public class ImmutableLazyRedBlackTreeTests
+        : ImmutableLazyBinarySearchTreeTestsBase<ImmutableLazyRedBlackTreeNode<int, int, SumOp>, ImmutableLazyRedBlackTree<int, int, SumOp>>
     {
-        protected override ImmutableLazyRedBlackTree<int, int, Starry> Empty
-            => ImmutableLazyRedBlackTree<int, int, Starry>.Empty;
-        protected override ImmutableLazyRedBlackTree<int, int, Starry> Create(IEnumerable<int> values)
-            => new ImmutableLazyRedBlackTree<int, int, Starry>(values);
+        protected override ImmutableLazyRedBlackTree<int, int, SumOp> Empty
+            => ImmutableLazyRedBlackTree<int, int, SumOp>.Empty;
+        protected override ImmutableLazyRedBlackTree<int, int, SumOp> Create(IEnumerable<int> values)
+            => new ImmutableLazyRedBlackTree<int, int, SumOp>(values);
     }
 }
