@@ -1,6 +1,8 @@
 ---
 title: 形式的冪級数
-documentation_of: ./FormalPowerSeries.cs
+documentation_of:
+  - ./FormalPowerSeries.cs
+  - ./FormalPowerSeries.Impl.cs
 ---
 
 ## 概要

@@ -1,13 +1,8 @@
 lang: ja
 highlightjs-style: vs
-exclude:
-  - Checker/BaseSolver.cs
-  - Competitive.Library.Test/BinarySearchTree/BinarySearchTreeTestsBase.cs
-  - Competitive.Library.Test/BinarySearchTree/ImmutableBinarySearchTreeTestsBase.cs
-  - Competitive.Library.Test/BinarySearchTree/ImmutableLazyBinarySearchTreeTestsBase.cs
-  - Competitive.Library.Test/BinarySearchTree/LazyBinarySearchTreeTestsBase.cs
-  - Competitive.Library.Test/+TestUtility
+exclude: []
 filename-index: true
 consolidate:
+  - Competitive.Library/BinarySearchTree/
   - Checker/
   - Competitive.Library.Test/
