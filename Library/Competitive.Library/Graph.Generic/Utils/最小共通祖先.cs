@@ -18,7 +18,7 @@ namespace Kzrnm.Competitive
         private readonly PathDoubling doubling;
         public LowestCommonAncestor(TNode[] tree)
         {
-            if (tree.Length == 0) throw new ArgumentException(nameof(tree));
+            if (tree.Length == 0) throw new ArgumentException("空の木です", nameof(tree));
 
             this.tree = tree;
             var parents = new int[tree.Length];

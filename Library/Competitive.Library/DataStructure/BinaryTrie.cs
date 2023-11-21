@@ -31,7 +31,7 @@ namespace Kzrnm.Competitive
         public void Add(ulong num, int delta, int idx = -1, ulong xorVal = 0)
              => _root = Add(_root, num, idx, MaxDepth, delta, xorVal);
         [凾(256)]
-        Node Add(Node t, ulong bit, int idx, int depth, int x, ulong xorVal)
+        static Node Add(Node t, ulong bit, int idx, int depth, int x, ulong xorVal)
         {
             if (depth == -1)
             {
@@ -74,7 +74,7 @@ namespace Kzrnm.Competitive
         public Node Find(ulong num, ulong xorVal = 0)
              => Find(_root, num, MaxDepth, xorVal);
         [凾(256)]
-        Node Find(Node t, ulong bit, int depth, ulong xorVal)
+        static Node Find(Node t, ulong bit, int depth, ulong xorVal)
         {
             if (depth == -1)
                 return t;

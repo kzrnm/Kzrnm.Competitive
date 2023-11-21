@@ -21,8 +21,6 @@ namespace Kzrnm.Competitive.Internal
         public T Value { get; protected set; }
         public T Sum { get; protected set; }
 
-
-        [凾(256)]
         public static TSelf Merge(TSelf l, TSelf r)
         {
             if (l == null || r == null)
@@ -40,7 +38,6 @@ namespace Kzrnm.Competitive.Internal
                 return TSelf.Update(r);
             }
         }
-        [凾(256)]
         public static (TSelf, TSelf) Split(TSelf t, int k)
         {
             if (t == null) return (null, null);
