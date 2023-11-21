@@ -137,10 +137,15 @@ jobs:
               ver = json.load(fp)
           for path in pathlib.Path(".").glob("**/_title.tsv"):
               with path.open(mode="r", encoding="utf-8") as fp:
-                  for cols in csv.reader(fp, delimiter="\t"):
-                      file = ver["files"][(path.parent / cols[0]).as_posix()]
-                      file.setdefault("document_attributes", dict())["TITLE"] = cols[1]
-
+                  for line, cols in enumerate(csv.reader(fp, delimiter="\t")):
+                      file_path = (path.parent / cols[0]).as_posix()
+                      file = ver["files"].get(file_path)
+                      if file:
+                          file.setdefault("document_attributes", dict())["TITLE"] = cols[1]
+                      else:
+                          print(
+                              f"::warning file={path.as_posix()},line={line+1},title=A file is not found::{file_path} is not in verify_files.json"
+                          )
           ver["files"]["Expand.Test/Expand.Test.csproj"] = {
               "dependencies": [
                   "Competitive.Library/+Runner/Program.cs"
