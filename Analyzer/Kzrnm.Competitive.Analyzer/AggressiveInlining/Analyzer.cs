@@ -47,6 +47,10 @@ public class Analyzer : DiagnosticAnalyzer
                 || m.IsImplicitlyDeclared)
                 return false;
 
+            // Skip ToString()
+            if (m is { Name: nameof(object.ToString), Parameters.Length: 0 })
+                return false;
+
             if (m.GetAttributes()
                 .Where(at => SymbolEqualityComparer.Default.Equals(at.AttributeClass, MethodImplAttribute))
                 .FirstOrDefault() is { } attr)
