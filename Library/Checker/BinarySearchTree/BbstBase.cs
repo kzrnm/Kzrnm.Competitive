@@ -8,6 +8,8 @@ namespace Kzrnm.Competitive.BinarySearchTree
     // competitive-verifier: DISPLAY no-index
     internal abstract class BbstBase : BaseSolver
     {
+        public override string Url => "https://judge.yosupo.jp/problem/dynamic_sequence_range_affine_range_sum";
+        public override double? Tle => 10 * 1.2;
         internal readonly struct Op : IReversibleBinarySearchTreeOperator<ModInt, Mod998244353AffineTransformation>
         {
             public ModInt Identity => ModInt.Zero;
@@ -26,7 +28,6 @@ namespace Kzrnm.Competitive.BinarySearchTree
     internal abstract class BbstBase<Node> : BbstBase
         where Node : class, ILazyBbstNode<ModInt, Mod998244353AffineTransformation, Node>
     {
-        public override string Url => "https://judge.yosupo.jp/problem/dynamic_sequence_range_affine_range_sum";
         public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             SolveImpl(cr, cw, CreateTree());
