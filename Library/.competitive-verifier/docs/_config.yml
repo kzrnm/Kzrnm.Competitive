@@ -4,5 +4,6 @@ exclude: []
 filename-index: true
 consolidate:
   - Competitive.Library/BinarySearchTree/
+  - Competitive.Library/BinarySearchTree/Internal/
   - Checker/
   - Competitive.Library.Test/

@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 
-namespace Kzrnm.Competitive.Internal
+namespace Kzrnm.Competitive.Internal.Bbst
 {
     /// <summary>
     /// なにかしらを遅延伝播させる

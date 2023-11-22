@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 
-namespace Kzrnm.Competitive.Internal
+namespace Kzrnm.Competitive.Internal.Bbst
 {
     // https://ei1333.github.io/library/structure/bbst/randomized-binary-search-tree-lazy.hpp
     public class RandomBinarySearchTreeNodeBase

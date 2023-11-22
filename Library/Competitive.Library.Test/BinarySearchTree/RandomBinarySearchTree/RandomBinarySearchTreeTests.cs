@@ -1,4 +1,4 @@
-using Kzrnm.Competitive.Internal;
+using Kzrnm.Competitive.Internal.Bbst;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
