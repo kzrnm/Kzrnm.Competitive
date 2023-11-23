@@ -22,6 +22,7 @@ using static Kzrnm.Competitive.IterTools;
 using static Kzrnm.Competitive.MathLibEx;
 using static Kzrnm.Competitive.NumberTheoreticTransform;
 using static Kzrnm.Competitive.__BinarySearchEx;
+using static Kzrnm.Competitive.Palindrome;
 using static Program;
 using BitArray = System.Collections.BitArray;
 #endregion
