@@ -33,7 +33,7 @@ namespace Kzrnm.Competitive
     {
         TOp comparer;
         readonly WaveletMatrixCompressed mat;
-        readonly Dictionary<T, int> pos;
+        readonly SortedDictionary<T, int> pos;
         readonly T[] ys;
 
         /// <summary>

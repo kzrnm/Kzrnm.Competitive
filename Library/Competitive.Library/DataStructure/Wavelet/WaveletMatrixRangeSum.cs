@@ -47,7 +47,7 @@ namespace Kzrnm.Competitive
         where ROp : struct, IWabeletSumOperator<T, ROp>
     {
         readonly WaveletMatrixRangeSumCompressed<T, ROp> mat;
-        readonly Dictionary<(F x, F y), int> pos;
+        readonly SortedDictionary<(F x, F y), int> pos;
         readonly (F x, F y)[] ps;
         readonly F[] ys;
 

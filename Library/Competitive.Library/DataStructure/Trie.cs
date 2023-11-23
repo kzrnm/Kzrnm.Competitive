@@ -8,7 +8,11 @@ namespace Kzrnm.Competitive
     [DebuggerTypeProxy(typeof(Trie<,>.DebugView))]
     public class Trie<TKey, TValue>
     {
-        public Trie() : this(null) { }
+        public Trie() : this(
+            typeof(TKey) == typeof(string)
+            ? (IComparer<TKey>)(object)StringComparer.Ordinal
+            : null)
+        { }
         public Trie(IComparer<TKey> comparer) { children = new SortedDictionary<TKey, Trie<TKey, TValue>>(comparer); }
 
         readonly SortedDictionary<TKey, Trie<TKey, TValue>> children;

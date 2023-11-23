@@ -55,17 +55,12 @@ namespace Kzrnm.Competitive
     /// </summary>
     public class ZahyoCompress<T>
     {
-        public ZahyoCompress() { data = new HashSet<T>(); }
-        public ZahyoCompress(T[] arr) { data = new HashSet<T>(arr); }
-        public ZahyoCompress(IEnumerable<T> collection) { data = new HashSet<T>(collection); }
-        public ZahyoCompress(ReadOnlySpan<T> span)
-        {
-            data = new HashSet<T>(span.Length);
-            foreach (var item in span)
-                data.Add(item);
-        }
+        public ZahyoCompress() { data = new SortedSet<T>(); }
+        public ZahyoCompress(T[] arr) : this(arr.AsEnumerable()) { }
+        public ZahyoCompress(IEnumerable<T> collection) { data = new SortedSet<T>(collection); }
+        public ZahyoCompress(ReadOnlySpan<T> span) : this(span.ToArray()) { }
 
-        private readonly HashSet<T> data;
+        private readonly SortedSet<T> data;
         private int version;
         private int lastCompressVesion = -1;
         private IComparer<T> lastComparer;
@@ -100,7 +95,7 @@ namespace Kzrnm.Competitive
 
             var ox = data.ToArray();
             Array.Sort(ox, comparer);
-            var zip = new Dictionary<T, int>();
+            var zip = new SortedDictionary<T, int>(comparer);
             for (int i = 0; i < ox.Length; i++)
                 zip[ox[i]] = i;
 
@@ -117,7 +112,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 座標圧縮後のインデックス
         /// </summary>
-        public Dictionary<T, int> NewTable { private set; get; }
+        public SortedDictionary<T, int> NewTable { private set; get; }
 
         /// <summary>
         /// インデックスに対応する元の値
@@ -126,7 +121,7 @@ namespace Kzrnm.Competitive
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [凾(256)]
-        public void Deconstruct(out Dictionary<T, int> newTable, out T[] original)
+        public void Deconstruct(out SortedDictionary<T, int> newTable, out T[] original)
         {
             newTable = NewTable;
             original = Original;
