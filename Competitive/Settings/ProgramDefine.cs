@@ -34,7 +34,10 @@ public partial class Program
         }
 #pragma warning restore CS0162 // 到達できないコードが検出されました
         for (; Q > 0; Q--)
+        {
             Calc();
-        cw.Flush();
+            // ローカルでは逐次 Flush
+            cw.Flush();
+        }
     }
 }
