@@ -475,25 +475,12 @@ function submit {
     }
 }
 
-function Restore-MainProgram {
-    $prog = "$PSScriptRoot/../Competitive/Program.cs"
-    git update-index --no-assume-unchanged $prog
-    git restore $prog
-}
-function Add-MainProgram {
-    $prog = "$PSScriptRoot/../Competitive/Program.cs"
-    git add $prog
-    git update-index --assume-unchanged $prog
-}
-
 Export-ModuleMember  -Function @(
     "streak",
     "ParseAtCoder",
     "Get-Source",
     "Remove-Source",
     "Restore-Source",
-    "Restore-MainProgram",
-    "Add-MainProgram",
     "submit-streak",
     "submit"
 ) -Alias "at"
