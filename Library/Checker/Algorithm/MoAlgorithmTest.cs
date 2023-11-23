@@ -1,6 +1,6 @@
 using Kzrnm.Competitive.IO;
 
-namespace Kzrnm.Competitive.MathNs
+namespace Kzrnm.Competitive.Algorithm
 {
     internal class MoAlgorithmTest : BaseSolver
     {
