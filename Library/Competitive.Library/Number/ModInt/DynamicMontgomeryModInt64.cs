@@ -170,6 +170,35 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public override int GetHashCode() => GetHashCodeUInt64().GetHashCode();
 
+        public static bool TryParse(ReadOnlySpan<char> s, out DynamicMontgomeryModInt64<T> result)
+        {
+            result = Zero;
+            DynamicMontgomeryModInt64<T> ten = 10u;
+            s = s.Trim();
+            bool minus = false;
+            if (s.Length > 0 && s[0] == '-')
+            {
+                minus = true;
+                s = s.Slice(1);
+            }
+            for (int i = 0; i < s.Length; i++)
+            {
+                var d = (uint)(s[i] - '0');
+                if (d >= 10) return false;
+                result = result * ten + d;
+            }
+            if (minus)
+                result = -result;
+            return true;
+        }
+        public static DynamicMontgomeryModInt64<T> Parse(ReadOnlySpan<char> s)
+        {
+            if (!TryParse(s, out var r))
+                Throw();
+            return r;
+            void Throw() => throw new FormatException();
+        }
+
         public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => Value.TryFormat(destination, out charsWritten, format, provider);
         public string ToString(string format, IFormatProvider formatProvider) => Value.ToString(format, formatProvider);
         static int INumberBase<DynamicMontgomeryModInt64<T>>.Radix => 2;
@@ -197,24 +226,15 @@ namespace Kzrnm.Competitive
         static DynamicMontgomeryModInt64<T> INumberBase<DynamicMontgomeryModInt64<T>>.MaxMagnitudeNumber(DynamicMontgomeryModInt64<T> x, DynamicMontgomeryModInt64<T> y) => new DynamicMontgomeryModInt64<T>(long.Max(x.Value, y.Value));
         static DynamicMontgomeryModInt64<T> INumberBase<DynamicMontgomeryModInt64<T>>.MinMagnitude(DynamicMontgomeryModInt64<T> x, DynamicMontgomeryModInt64<T> y) => new DynamicMontgomeryModInt64<T>(long.Min(x.Value, y.Value));
         static DynamicMontgomeryModInt64<T> INumberBase<DynamicMontgomeryModInt64<T>>.MinMagnitudeNumber(DynamicMontgomeryModInt64<T> x, DynamicMontgomeryModInt64<T> y) => new DynamicMontgomeryModInt64<T>(long.Min(x.Value, y.Value));
-        static DynamicMontgomeryModInt64<T> INumberBase<DynamicMontgomeryModInt64<T>>.Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider) => long.Parse(s, style, provider);
-        static DynamicMontgomeryModInt64<T> INumberBase<DynamicMontgomeryModInt64<T>>.Parse(string s, NumberStyles style, IFormatProvider provider) => long.Parse(s, style, provider);
-        static DynamicMontgomeryModInt64<T> ISpanParsable<DynamicMontgomeryModInt64<T>>.Parse(ReadOnlySpan<char> s, IFormatProvider provider) => long.Parse(s, provider);
-        static DynamicMontgomeryModInt64<T> IParsable<DynamicMontgomeryModInt64<T>>.Parse(string s, IFormatProvider provider) => long.Parse(s, provider);
-        static bool ISpanParsable<DynamicMontgomeryModInt64<T>>.TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out DynamicMontgomeryModInt64<T> result)
-        => TryParse(s, NumberStyles.None, provider, out result);
-        static bool IParsable<DynamicMontgomeryModInt64<T>>.TryParse(string s, IFormatProvider provider, out DynamicMontgomeryModInt64<T> result)
-        => TryParse(s, NumberStyles.None, provider, out result);
-        static bool INumberBase<DynamicMontgomeryModInt64<T>>.TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider, out DynamicMontgomeryModInt64<T> result)
-        => TryParse(s, style, provider, out result);
-        static bool INumberBase<DynamicMontgomeryModInt64<T>>.TryParse(string s, NumberStyles style, IFormatProvider provider, out DynamicMontgomeryModInt64<T> result)
-        => TryParse(s, style, provider, out result);
-        private static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider, out DynamicMontgomeryModInt64<T> result)
-        {
-            var b = long.TryParse(s, style, provider, out var r);
-            result = r;
-            return b;
-        }
+
+        static DynamicMontgomeryModInt64<T> INumberBase<DynamicMontgomeryModInt64<T>>.Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider) => Parse(s);
+        static DynamicMontgomeryModInt64<T> INumberBase<DynamicMontgomeryModInt64<T>>.Parse(string s, NumberStyles style, IFormatProvider provider) => Parse(s);
+        static DynamicMontgomeryModInt64<T> ISpanParsable<DynamicMontgomeryModInt64<T>>.Parse(ReadOnlySpan<char> s, IFormatProvider provider) => Parse(s);
+        static DynamicMontgomeryModInt64<T> IParsable<DynamicMontgomeryModInt64<T>>.Parse(string s, IFormatProvider provider) => Parse(s);
+        static bool ISpanParsable<DynamicMontgomeryModInt64<T>>.TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out DynamicMontgomeryModInt64<T> result) => TryParse(s, out result);
+        static bool IParsable<DynamicMontgomeryModInt64<T>>.TryParse(string s, IFormatProvider provider, out DynamicMontgomeryModInt64<T> result) => TryParse(s, out result);
+        static bool INumberBase<DynamicMontgomeryModInt64<T>>.TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider, out DynamicMontgomeryModInt64<T> result) => TryParse(s, out result);
+        static bool INumberBase<DynamicMontgomeryModInt64<T>>.TryParse(string s, NumberStyles style, IFormatProvider provider, out DynamicMontgomeryModInt64<T> result) => TryParse(s, out result);
 
         static bool INumberBase<DynamicMontgomeryModInt64<T>>.TryConvertFromChecked<TOther>(TOther v, out DynamicMontgomeryModInt64<T> r)
         {

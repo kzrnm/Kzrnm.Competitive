@@ -5,7 +5,7 @@
     <LangVersion Condition="'$(TargetFramework)' == 'net7.0'">11</LangVersion>
     <RootNamespace>Kzrnm.Competitive</RootNamespace>
     <OutputType>Library</OutputType>
-    <NoWarn>1701;1702;CA1034;CA1036;CA1815;CA2211;CS1591;IDE1006;IDE0034;IDE0044;EMBED0004;EMBED0010</NoWarn>
+    <NoWarn>1701;1702;CA1034;CA1036;CA1815;CA2211;CS1591;IDE1006;IDE0034;IDE0044;IDE0062;EMBED0004;EMBED0010</NoWarn>
     <DefineConstants>$(DefineConstants);ATCODER_CONTRACT</DefineConstants>
     <Configurations>Debug;Release;Library</Configurations>
     <CompetitiveAnalyzer_UseMethodImplNumeric>True</CompetitiveAnalyzer_UseMethodImplNumeric>
@@ -36,13 +36,13 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="Competitive.Library.Test" />
-    <PackageReference Include="ac-library-csharp" Version="3.5.0" />
-    <PackageReference Include="Kzrnm.Competitive.Analyzer" Version="1.0.2">
+    <PackageReference Include="ac-library-csharp" Version="3.6.0" />
+    <PackageReference Include="Kzrnm.Competitive.Analyzer" Version="1.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Competitive.IO" Version="1.3.1" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

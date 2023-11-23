@@ -1,5 +1,7 @@
+using AtCoder;
 using System;
 using System.Linq;
+using System.Numerics;
 using LargeInteger = System.UInt128;
 
 namespace Kzrnm.Competitive.Testing.Number
@@ -117,6 +119,58 @@ namespace Kzrnm.Competitive.Testing.Number
             a.Value.Should().Be(10);
         }
 
+        [Fact]
+        public void Parse()
+        {
+            var bigs = new[]{
+                BigInteger.Pow(10, 1000),
+                BigInteger.Pow(10, 1000),
+            };
+            var invalids = new[]
+            {
+                "2-2",
+                "ABC",
+                "111.0",
+                "111,1",
+            };
+            RunStatic<ModID11>();
+            RunStatic<ModID1000000007>();
+            RunStatic<ModID998244353>();
+
+
+            void RunStatic<T>() where T : struct
+            {
+                var mod = DynamicMontgomeryModInt64<T>.Mod;
+                var nums = Enumerable.Range(-100, 200).SelectMany(i => new[] { i, mod + i });
+                foreach (var n in nums)
+                {
+                    var s = n.ToString();
+                    var expected = (n % mod + mod) % mod;
+                    DynamicMontgomeryModInt64<T>.TryParse(s, out var num1).Should().BeTrue();
+                    var num2 = DynamicMontgomeryModInt64<T>.Parse(s);
+
+                    num1.Value.Should().Be(expected);
+                    num2.Value.Should().Be(expected);
+                }
+
+                foreach (var n in bigs)
+                {
+                    var s = n.ToString();
+                    var expected = (int)(n % mod + mod) % mod;
+                    DynamicMontgomeryModInt64<T>.TryParse(s, out var num1).Should().BeTrue();
+                    var num2 = DynamicMontgomeryModInt64<T>.Parse(s);
+
+                    num1.Value.Should().Be(expected);
+                    num2.Value.Should().Be(expected);
+                }
+
+                foreach (var s in invalids)
+                {
+                    DynamicMontgomeryModInt64<T>.TryParse(s, out _).Should().BeFalse();
+                    s.Invoking(s => DynamicMontgomeryModInt64<T>.Parse(s)).Should().ThrowExactly<FormatException>();
+                }
+            }
+        }
         [Fact]
         public void ConstructorStatic()
         {
