@@ -47,7 +47,7 @@ namespace Kzrnm.Competitive
             /// <param name="ps">座標の一覧</param>
             public static (int Index1, int Index2)[] Solve((T, T)[] ps)
             {
-                using var edgesList = new PoolList<(int Index1, int Index2)>(ps.Length * 4);
+                var edgesList = new List<(int Index1, int Index2)>(ps.Length * 4);
                 var minf = MaxFw.AdditiveIdentity;
                 ps = ((T, T)[])ps.Clone();
                 for (int ph = 0; ph < 4; ph++)
@@ -75,7 +75,7 @@ namespace Kzrnm.Competitive
                         for (int i = 0; i < ps.Length; i++)
                             ps[i].Item2 = -ps[i].Item2;
                 }
-                edgesList.data.Select(new Dist(ps).Convert).ToArray().AsSpan(0, edgesList.Count).Sort(edgesList.AsSpan());
+                edgesList.Select(new Dist(ps).Convert).ToArray().AsSpan(0, edgesList.Count).Sort(edgesList.AsSpan());
 
                 var uf = new UnionFind(ps.Length);
                 var res = new (int Index1, int Index2)[ps.Length - 1];

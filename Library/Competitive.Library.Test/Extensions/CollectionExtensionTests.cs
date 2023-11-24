@@ -344,5 +344,49 @@ namespace Kzrnm.Competitive.Testing.Extensions
         {
             input.CompressCount().Should().Equal(expected);
         }
+
+        public static TheoryData CompressCount2_Data => new TheoryData<string, (char Value, int Count)[]>
+        {
+            {
+                "<<>>",
+                new (char, int)[]
+                {
+                    ('<', 2),
+                    ('>', 2),
+                }
+            },
+            {
+                "<<><>>><><>><><><<>><<<><><<>",
+                new (char, int)[]
+                {
+                    ('<', 2),
+                    ('>', 1),
+                    ('<', 1),
+                    ('>', 3),
+                    ('<', 1),
+                    ('>', 1),
+                    ('<', 1),
+                    ('>', 2),
+                    ('<', 1),
+                    ('>', 1),
+                    ('<', 1),
+                    ('>', 1),
+                    ('<', 2),
+                    ('>', 2),
+                    ('<', 3),
+                    ('>', 1),
+                    ('<', 1),
+                    ('>', 1),
+                    ('<', 2),
+                    ('>', 1),
+                }
+            },
+        };
+        [Theory]
+        [MemberData(nameof(CompressCount2_Data))]
+        public void CompressCount2(string input, (char Value, int Count)[] expected)
+        {
+            input.CompressCount().Should().Equal(expected);
+        }
     }
 }

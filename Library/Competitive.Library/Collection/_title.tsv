@@ -1,6 +1,5 @@
 PersistentStack.Doubling.cs	$O(log N)$ でインデックスアクセス可能な永続Stack
 PersistentStack.cs	Countがある永続Stack
-PoolList.cs	短寿命でアロケーションを抑えるリスト
 PriorityDeque.cs	PriorityDeque<T>
 PriorityDeque`2.cs	PriorityDeque<TKey, TValue>
 PriorityQueueDijkstra.cs	Dijkstra法用のPriorityQueue

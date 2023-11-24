@@ -11,14 +11,14 @@ namespace Kzrnm.Competitive
         public static (T Value, int Count)[] CompressCount<T>(this IEnumerable<T> collection)
         {
             var e = collection.GetEnumerator();
-            using var list = new PoolList<(T Value, int Count)>();
+            var list = new List<(T Value, int Count)>();
             if (!e.MoveNext()) return Array.Empty<(T, int)>();
             var cur = e.Current;
             list.Add((cur, 1));
             while (e.MoveNext())
             {
                 if (EqualityComparer<T>.Default.Equals(cur, e.Current))
-                    list[^1].Count++;
+                    list.AsSpan()[^1].Count++;
                 else
                 {
                     cur = e.Current;
