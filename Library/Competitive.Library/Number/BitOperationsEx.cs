@@ -69,7 +69,8 @@ namespace Kzrnm.Competitive
         public static int Lsb(long x) => BO.TrailingZeroCount((ulong)x);
 
         /// <summary>
-        /// <para><paramref name="x"/> を <paramref name="mask"/> に移す</para>
+        /// <para><paramref name="x"/> を <paramref name="mask"/> に移します。</para>
+        /// <para><paramref name="mask"/> = 0b10110 で <paramref name="x"/> が 0b{2}{1}{0} なら 0b{2}0{1}{0}0 を返します。</para>
         /// </summary>
         /// <example>
         /// <para>ex. x=0b1101 mask=0b11110000 → 0b11010000</para>
@@ -78,7 +79,8 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static int ParallelBitDeposit(int x, int mask) => (int)ParallelBitDeposit((uint)x, (uint)mask);
         /// <summary>
-        /// <para><paramref name="x"/> を <paramref name="mask"/> に移す</para>
+        /// <para><paramref name="x"/> を <paramref name="mask"/> に移します。</para>
+        /// <para><paramref name="mask"/> = 0b10110 で <paramref name="x"/> が 0b{2}{1}{0} なら 0b{2}0{1}{0}0 を返します。</para>
         /// </summary>
         /// <example>
         /// <para>ex. x=0b1101 mask=0b11110000 → 0b11010000</para>
@@ -92,7 +94,8 @@ namespace Kzrnm.Competitive
             return ParallelBitDepositLogic(x, mask);
         }
         /// <summary>
-        /// <para><paramref name="x"/> を <paramref name="mask"/> に移す</para>
+        /// <para><paramref name="x"/> を <paramref name="mask"/> に移します。</para>
+        /// <para><paramref name="mask"/> = 0b10110 で <paramref name="x"/> が 0b{2}{1}{0} なら 0b{2}0{1}{0}0 を返します。</para>
         /// </summary>
         /// <example>
         /// <para>ex. x=0b1101 mask=0b11110000 → 0b11010000</para>
@@ -101,7 +104,8 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static long ParallelBitDeposit(long x, long mask) => (long)ParallelBitDeposit((ulong)x, (ulong)mask);
         /// <summary>
-        /// <para><paramref name="x"/> を <paramref name="mask"/> に移す</para>
+        /// <para><paramref name="x"/> を <paramref name="mask"/> に移します。</para>
+        /// <para><paramref name="mask"/> = 0b10110 で <paramref name="x"/> が 0b{2}{1}{0} なら 0b{2}0{1}{0}0 を返します。</para>
         /// </summary>
         /// <example>
         /// <para>ex. x=0b1101 mask=0b11110000 → 0b11010000</para>
@@ -129,13 +133,15 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// <para><paramref name="x"/> の <paramref name="mask"/> に合致する箇所を取り出す</para>
+        /// <para><paramref name="x"/> の <paramref name="mask"/> に合致する箇所を取り出します。</para>
+        /// <para><paramref name="mask"/> = 0b10110 で <paramref name="x"/> が 0b{4}{3}{2}{1}{0} なら 0b{4}{2}{1} を返します。</para>
         /// </summary>
         /// <example>ex. x=0b01101 mask=0b11110 → 0b110</example>
         [凾(256)]
         public static int ParallelBitExtract(int x, int mask) => (int)ParallelBitExtract((uint)x, (uint)mask);
         /// <summary>
-        /// <para><paramref name="x"/> の <paramref name="mask"/> に合致する箇所を取り出す</para>
+        /// <para><paramref name="x"/> の <paramref name="mask"/> に合致する箇所を取り出します。</para>
+        /// <para><paramref name="mask"/> = 0b10110 で <paramref name="x"/> が 0b{4}{3}{2}{1}{0} なら 0b{4}{2}{1} を返します。</para>
         /// </summary>
         /// <example>ex. x=0b01101 mask=0b11110 → 0b110</example>
         [凾(256)]
@@ -146,13 +152,15 @@ namespace Kzrnm.Competitive
             return ParallelBitExtractLogic(x, mask);
         }
         /// <summary>
-        /// <para><paramref name="x"/> の <paramref name="mask"/> に合致する箇所を取り出す</para>
+        /// <para><paramref name="x"/> の <paramref name="mask"/> に合致する箇所を取り出します。</para>
+        /// <para><paramref name="mask"/> = 0b10110 で <paramref name="x"/> が 0b{4}{3}{2}{1}{0} なら 0b{4}{2}{1} を返します。</para>
         /// </summary>
         /// <example>ex. x=0b01101 mask=0b11110 → 0b110</example>
         [凾(256)]
         public static long ParallelBitExtract(long x, long mask) => (long)ParallelBitExtract((ulong)x, (ulong)mask);
         /// <summary>
-        /// <para><paramref name="x"/> の <paramref name="mask"/> に合致する箇所を取り出す</para>
+        /// <para><paramref name="x"/> の <paramref name="mask"/> に合致する箇所を取り出します。</para>
+        /// <para><paramref name="mask"/> = 0b10110 で <paramref name="x"/> が 0b{4}{3}{2}{1}{0} なら 0b{4}{2}{1} を返します。</para>
         /// </summary>
         /// <example>ex. x=0b01101 mask=0b11110 → 0b110</example>
         [凾(256)]
