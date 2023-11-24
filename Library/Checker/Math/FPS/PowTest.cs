@@ -11,7 +11,7 @@ namespace Kzrnm.Competitive.MathNs.Fps
             int N = cr;
             long M = cr;
             int[] arr = cr.Repeat(N);
-            var pow = new FormalPowerSeries<Mod998244353>(arr).Pow(M).Coefficients(N);
+            var pow = new FormalPowerSeries<Mod998244353>(arr).Pow(M, N).Coefficients(N);
             cw.WriteLineJoin(pow);
             return null;
         }
