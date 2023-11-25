@@ -40,7 +40,7 @@ namespace Kzrnm.Competitive
                 s = sums;
             }
 
-            [凾(256)] public static WaveletSumOp<T> Init(T[] ts) => new(new(ts));
+            [凾(256)] public static WaveletSumOp<T> Init(T[] ts) => new(Sums.Create(ts));
             [凾(256)] public void Add(int p, T v) => throw new NotSupportedException();
             [凾(256)] public T Sum(int l, int r) => s[l, r];
         }

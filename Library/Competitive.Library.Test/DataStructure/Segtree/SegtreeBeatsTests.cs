@@ -7,22 +7,22 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         [Fact]
         public void Native()
         {
-            LongSums sums;
+            Sums<long> sums;
             var seg = new SegtreeBeats<S, long, Op>(new S[10].Fill(new S(0)));
             seg.Apply(0, 8, 1);
-            sums = new LongSums(new long[] { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 });
+            sums = Sums.Create(new long[] { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 });
             for (int l = 0; l < 10; l++)
                 for (int r = l; r <= 10; r++)
                     seg[l..r].sum.Should().Be(sums[l..r]);
 
             seg.Apply(0, 3, 5);
-            sums = new LongSums(new long[] { 5, 5, 5, 1, 1, 1, 1, 1, 0, 0 });
+            sums = Sums.Create(new long[] { 5, 5, 5, 1, 1, 1, 1, 1, 0, 0 });
             for (int l = 0; l < 10; l++)
                 for (int r = l; r <= 10; r++)
                     seg[l..r].sum.Should().Be(sums[l..r]);
 
             seg.Apply(2, 5, 2);
-            sums = new LongSums(new long[] { 5, 5, 5, 2, 2, 1, 1, 1, 0, 0 });
+            sums = Sums.Create(new long[] { 5, 5, 5, 2, 2, 1, 1, 1, 0, 0 });
             for (int l = 0; l < 10; l++)
                 for (int r = l; r <= 10; r++)
                     seg[l..r].sum.Should().Be(sums[l..r]);

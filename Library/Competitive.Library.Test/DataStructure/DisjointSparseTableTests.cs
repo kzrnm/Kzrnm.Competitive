@@ -11,7 +11,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         [Fact]
         public void Invalid()
         {
-            ((Action)(() => new DisjointSparseTable<short, MinOp>(Array.Empty<short>()))).Should().Throw<ContractAssertException>();
+            ((Action)(() => _ = new DisjointSparseTable<short, MinOp>(Array.Empty<short>()))).Should().Throw<ContractAssertException>();
 
             var s = new DisjointSparseTable<short, MinOp>(new short[] { 1, 2, 3 });
             s.Invoking(s => s[-1..3]).Should().Throw<ContractAssertException>();
@@ -83,7 +83,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 rnd.NextBytes(MemoryMarshal.Cast<uint, byte>(arr));
                 for (int i = 0; i < arr.Length; i++)
                     arr[i] &= (1 << 16) - 1;
-                var sums = new Sums<uint>(arr);
+                var sums = Sums.Create(arr);
                 var st = new DisjointSparseTable<uint, SumOp>(arr);
 
                 for (var i = 0; i < len; i++)

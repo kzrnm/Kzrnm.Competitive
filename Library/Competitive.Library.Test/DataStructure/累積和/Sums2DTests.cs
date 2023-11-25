@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                     arr[i][j] = i * j;
                 }
             }
-            var sums = new IntSums2D(arr);
+            var sums = Sums2D.Create(arr);
             sums[0..10][0..20].Should().Be(8550);
             sums[1..10][1..20].Should().Be(8550);
             sums[3..10][1..20].Should().Be(7980);
@@ -36,7 +36,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                     arr[i][j] = rnd.Next(-100000, 100000);
                 }
             }
-            var sums = new LongSums2D(arr);
+            var sums = Sums2D.Create(arr);
             for (int l = 0; l <= 10; l++)
                 for (int r = l; r <= 10; r++)
                     for (int u = 0; u <= 20; u++)

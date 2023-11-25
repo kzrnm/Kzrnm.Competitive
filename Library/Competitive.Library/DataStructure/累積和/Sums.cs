@@ -8,27 +8,13 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 累積和を求めます。
     /// </summary>
-    public class Sums<T>
-        where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>
+    public static class Sums
     {
-        private readonly T[] impl;
-        public int Length => impl.Length - 1;
-        public Sums(ReadOnlySpan<T> span, T defaultValue = default)
-        {
-            impl = Accumulate(span, defaultValue);
-        }
-        public Sums(T[] arr, T defaultValue = default)
-        {
-            impl = Accumulate(arr.AsSpan(), defaultValue);
-        }
-        public Sums(IList<T> collection, T defaultValue = default)
-        {
-            impl = Accumulate(collection, defaultValue);
-        }
         /// <summary>
         /// <paramref name="orig"/> の累積和を返します。
         /// </summary>
-        public static T[] Accumulate(ReadOnlySpan<T> orig, T defaultValue = default)
+        [凾(256)]
+        public static T[] Accumulate<T>(ReadOnlySpan<T> orig, T defaultValue = default) where T : IAdditionOperators<T, T, T>
         {
             var impl = new T[orig.Length + 1];
             impl[0] = defaultValue;
@@ -39,13 +25,64 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="orig"/> の累積和を返します。
         /// </summary>
-        public static T[] Accumulate(IList<T> orig, T defaultValue = default)
+        [凾(256)]
+        public static T[] Accumulate<T>(Span<T> orig, T defaultValue = default) where T : IAdditionOperators<T, T, T>
+            => Accumulate((ReadOnlySpan<T>)orig, defaultValue);
+        /// <summary>
+        /// <paramref name="orig"/> の累積和を返します。
+        /// </summary>
+        [凾(256)]
+        public static T[] Accumulate<T>(T[] orig, T defaultValue = default) where T : IAdditionOperators<T, T, T>
+            => Accumulate((ReadOnlySpan<T>)orig, defaultValue);
+        /// <summary>
+        /// <paramref name="orig"/> の累積和を返します。
+        /// </summary>
+        [凾(256)]
+        public static T[] Accumulate<T>(IList<T> orig, T defaultValue = default) where T : IAdditionOperators<T, T, T>
         {
             var impl = new T[orig.Count + 1];
             impl[0] = defaultValue;
             for (var i = 0; i < orig.Count; i++)
                 impl[i + 1] = impl[i] + orig[i];
             return impl;
+        }
+
+        /// <summary>
+        /// <paramref name="orig"/> の累積和を範囲演算で取得できるデータ構造を返します。
+        /// </summary>
+        [凾(256)]
+        public static Sums<T> Create<T>(ReadOnlySpan<T> orig, T defaultValue = default) where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>
+            => new(Accumulate(orig, defaultValue));
+        /// <summary>
+        /// <paramref name="orig"/> の累積和を範囲演算で取得できるデータ構造を返します。
+        /// </summary>
+        [凾(256)]
+        public static Sums<T> Create<T>(Span<T> orig, T defaultValue = default) where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>
+            => new(Accumulate(orig, defaultValue));
+        /// <summary>
+        /// <paramref name="orig"/> の累積和を範囲演算で取得できるデータ構造を返します。
+        /// </summary>
+        [凾(256)]
+        public static Sums<T> Create<T>(T[] orig, T defaultValue = default) where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>
+            => new(Accumulate(orig, defaultValue));
+        /// <summary>
+        /// <paramref name="orig"/> の累積和を範囲演算で取得できるデータ構造を返します。
+        /// </summary>
+        [凾(256)]
+        public static Sums<T> Create<T>(IList<T> orig, T defaultValue = default) where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>
+            => new(Accumulate(orig, defaultValue));
+    }
+    /// <summary>
+    /// 範囲演算で累積和を取得します。
+    /// </summary>
+    public class Sums<T>
+        where T : ISubtractionOperators<T, T, T>
+    {
+        private readonly T[] impl;
+        public int Length => impl.Length - 1;
+        internal Sums(T[] accu)
+        {
+            impl = accu;
         }
         [凾(256)] public T Slice(int from, int length) => impl[from + length] - impl[from];
         public T this[int toExclusive] { [凾(256)] get => impl[toExclusive]; }

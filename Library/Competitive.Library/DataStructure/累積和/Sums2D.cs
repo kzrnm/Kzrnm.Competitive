@@ -6,19 +6,14 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 二次元累積和を求めます。
     /// </summary>
-    public class Sums2D<T>
-        where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>
+    public static class Sums2D
     {
-        private readonly T[][] impl;
-        public int Length => impl.Length - 1;
-        public Sums2D(T[][] arr, T defaultValue = default)
-        {
-            impl = Accumulate(arr, defaultValue);
-        }
         /// <summary>
         /// <paramref name="orig"/> の累積和を返します。
         /// </summary>
-        public static T[][] Accumulate(T[][] orig, T defaultValue = default)
+        [凾(256)]
+        public static T[][] Accumulate<T>(T[][] orig, T defaultValue = default)
+            where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>
         {
             var impl = new T[orig.Length + 1][];
             impl[0] = new T[orig[0].Length + 1].Fill(defaultValue);
@@ -34,6 +29,26 @@ namespace Kzrnm.Competitive
                             + orig[i][j];
             }
             return impl;
+        }
+
+        /// <summary>
+        /// <paramref name="orig"/> の累積和を範囲演算で取得できるデータ構造を返します。
+        /// </summary>
+        [凾(256)]
+        public static Sums2D<T> Create<T>(T[][] orig, T defaultValue = default)
+            where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>
+            => new(Accumulate(orig, defaultValue));
+    }
+    /// <summary>
+    /// 範囲演算で二次元累積和を取得します。
+    /// </summary>
+    public class Sums2D<T> where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>
+    {
+        private readonly T[][] impl;
+        public int Length => impl.Length - 1;
+        internal Sums2D(T[][] accu)
+        {
+            impl = accu;
         }
         [凾(256)]
         public Slicer Slice(int left, int length) => new Slicer(impl, left, left + length);

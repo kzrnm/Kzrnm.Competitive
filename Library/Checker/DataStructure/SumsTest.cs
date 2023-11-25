@@ -9,7 +9,7 @@ namespace Kzrnm.Competitive.DataStructure
         {
             int n = cr;
             int q = cr;
-            var sums = new LongSums(cr.Repeat(n));
+            var sums = Sums.Create<long>(cr.Repeat(n));
             for (int i = 0; i < q; i++)
             {
                 int l = cr;
