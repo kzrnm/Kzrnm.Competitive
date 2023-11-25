@@ -126,8 +126,8 @@ namespace Kzrnm.Competitive
         static bool INumberBase<Fraction>.IsInfinity(Fraction v) => false;
         static bool INumberBase<Fraction>.IsNegativeInfinity(Fraction v) => false;
         static bool INumberBase<Fraction>.IsPositiveInfinity(Fraction v) => false;
-        static bool INumberBase<Fraction>.IsNegative(Fraction v) => long.IsNegative(v.Numerator);
-        static bool INumberBase<Fraction>.IsPositive(Fraction v) => long.IsPositive(v.Numerator);
+        public static bool IsNegative(Fraction v) => long.IsNegative(v.Numerator);
+        public static bool IsPositive(Fraction v) => long.IsPositive(v.Numerator);
         static bool INumberBase<Fraction>.IsNormal(Fraction v) => !IsNaN(v);
         static bool INumberBase<Fraction>.IsSubnormal(Fraction v) => false;
         static bool INumberBase<Fraction>.IsInteger(Fraction v) => v._denominator0 == 0;
