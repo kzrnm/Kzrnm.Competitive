@@ -55,8 +55,11 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// <paramref name="target"/> の中で pattern と一致するインデックスを1つ返す
+        /// <paramref name="target"/> の中で pattern と一致するインデックスを1つ返します。見つからなければ -1 を返します。
         /// </summary>
+        /// <remarks>
+        /// <para>計算量: 最良 O(|<see cref="pattern"/>| / |<paramref name="target"/>|) , 最悪 O(|<see cref="pattern"/>| × |<paramref name="target"/>|)</para>
+        /// </remarks>
         [凾(256)]
         public int Match(ReadOnlySpan<T> target)
         {

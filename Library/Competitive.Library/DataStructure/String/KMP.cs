@@ -10,25 +10,25 @@ namespace Kzrnm.Competitive
     public static class KMP
     {
         /// <summary>
-        /// KMP法で検索するパターンを初期化する
+        /// KMP法で検索するパターンを初期化します。
         /// </summary>
         /// <param name="pattern">検索したいパターン</param>
         [凾(256)]
         public static KMP<T> Create<T>(ReadOnlySpan<T> pattern) => new KMP<T>(pattern);
         /// <summary>
-        /// KMP法で検索するパターンを初期化する
+        /// KMP法で検索するパターンを初期化します。
         /// </summary>
         /// <param name="pattern">検索したいパターン</param>
         [凾(256)]
         public static KMP<T> Create<T>(Span<T> pattern) => new KMP<T>(pattern);
         /// <summary>
-        /// KMP法で検索するパターンを初期化する
+        /// KMP法で検索するパターンを初期化します。
         /// </summary>
         /// <param name="pattern">検索したいパターン</param>
         [凾(256)]
         public static KMP<T> Create<T>(T[] pattern) => new KMP<T>(pattern);
         /// <summary>
-        /// KMP法で検索するパターンを初期化する
+        /// KMP法で検索するパターンを初期化します。
         /// </summary>
         /// <param name="pattern">検索したいパターン</param>
         [凾(256)]
@@ -54,8 +54,11 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// <paramref name="target"/> の中で pattern と一致するインデックスを返す
+        /// <paramref name="target"/> の中で pattern と一致するインデックスを返します。
         /// </summary>
+        /// <remarks>
+        /// <para>計算量: O(|<paramref name="target"/>|)</para>
+        /// </remarks>
         [凾(256)]
         public Enumerator Matches(ReadOnlySpan<T> target) => new Enumerator(pattern, target, table);
 
