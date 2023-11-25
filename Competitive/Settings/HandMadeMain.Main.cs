@@ -71,16 +71,12 @@ namespace Competitive.Runner
                 {
                     stopwatch = new Stopwatch();
                     var input = sb.ToString();
-                    if (input.Length < 1000 && File.Exists(input.Trim()))
+                    reader = new PropertyConsoleReader(new MemoryStream(utf8.GetBytes(input)), Encoding.UTF8);
+                    if (input.Length < 1000)
                     {
-                        reader = new PropertyConsoleReader(new FileStream(input.Trim(), FileMode.Open), utf8);
                         Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.Error.WriteLine($"File input: {input}");
+                        Console.Error.WriteLine($"File input:\n{input}");
                         Console.ResetColor();
-                    }
-                    else
-                    {
-                        reader = new PropertyConsoleReader(new MemoryStream(utf8.GetBytes(input)), Encoding.UTF8);
                     }
                 }
                 else
