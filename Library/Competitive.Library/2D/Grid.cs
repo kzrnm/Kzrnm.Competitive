@@ -32,7 +32,7 @@ namespace Kzrnm.Competitive
         }
     }
 
-    [DebuggerDisplay("{ToStringSplit(),raw}")]
+    [DebuggerDisplay(@"{ToStringSplit().Replace(""\r\n"",""\n""),raw}")]
     [DebuggerTypeProxy(typeof(Grid<>.DebugView))]
     public class Grid<T>
     {
