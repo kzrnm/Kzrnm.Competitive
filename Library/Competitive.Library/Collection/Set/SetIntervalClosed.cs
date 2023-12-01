@@ -381,7 +381,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="item"/> 以上の最初の要素を返します。
         /// </summary>
-        [凾(256)] public (T From, T ToExclusive) LowerBoundItem(T item) => BinarySearch(new C<T>(item), new SetLower()).node.Pair;
+        [凾(256)] public (T From, T ToInclusive) LowerBoundItem(T item) => BinarySearch(new C<T>(item), new SetLower()).node.Pair;
         /// <summary>
         /// <paramref name="item"/> を超える最初のノードを返します。
         /// </summary>
@@ -393,7 +393,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="item"/> を超える最初の要素を返します。
         /// </summary>
-        [凾(256)] public (T From, T ToExclusive) UpperBoundItem(T item) => BinarySearch(new C<T>(item), new SetUpper()).node.Pair;
+        [凾(256)] public (T From, T ToInclusive) UpperBoundItem(T item) => BinarySearch(new C<T>(item), new SetUpper()).node.Pair;
 
         /// <summary>
         /// <paramref name="item"/> 以下の最後のノードを返します。
@@ -406,7 +406,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="item"/> 以下の最後の要素を返します。
         /// </summary>
-        [凾(256)] public (T From, T ToExclusive) ReverseLowerBoundItem(T item) => BinarySearch(new C<T>(item), new SetLowerRev()).node.Pair;
+        [凾(256)] public (T From, T ToInclusive) ReverseLowerBoundItem(T item) => BinarySearch(new C<T>(item), new SetLowerRev()).node.Pair;
 
         /// <summary>
         /// <paramref name="item"/> 未満の最後のノードを返します。
@@ -419,7 +419,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="item"/> 未満の最後の要素を返します。
         /// </summary>
-        [凾(256)] public (T From, T ToExclusive) ReverseUpperBoundItem(T item) => BinarySearch(new C<T>(item), new SetUpperRev()).node.Pair;
+        [凾(256)] public (T From, T ToInclusive) ReverseUpperBoundItem(T item) => BinarySearch(new C<T>(item), new SetUpperRev()).node.Pair;
         #endregion Search<T>
         private class DebugView
         {
