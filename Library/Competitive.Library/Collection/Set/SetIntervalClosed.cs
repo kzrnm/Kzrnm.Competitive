@@ -57,7 +57,7 @@ namespace Kzrnm.Competitive
             return resList.ToArray();
         }
 
-        protected new bool Add((T From, T ToInclusive) item) => Add(item.From, item.ToInclusive);
+        public new bool Add((T From, T ToInclusive) item) => Add(item.From, item.ToInclusive);
         public bool Add(T from, T toInclusive)
         {
             var left = FindNode(from);
@@ -200,7 +200,7 @@ namespace Kzrnm.Competitive
             root?.ColorBlack();
             return resultMatch;
         }
-        protected new bool Contains((T From, T ToInclusive) item) => Contains(item.From, item.ToInclusive);
+        public new bool Contains((T From, T ToInclusive) item) => Contains(item.From, item.ToInclusive);
         public bool Contains(T from, T toInclusive)
         {
             var node = FindNode(from);
