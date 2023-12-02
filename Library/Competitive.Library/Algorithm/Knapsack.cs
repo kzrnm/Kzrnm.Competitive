@@ -39,7 +39,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(NW)</para>
         /// <para>制約: <paramref name="wv"/>.W は非負である</para>
         /// </remarks>
-        public static T[] SmallWeightLimited<T>((int W, T V)[] wv, int W) where T : INumber<T>, IMinMaxValue<T>
+        public static T[] SmallWeightUnlimited<T>((int W, T V)[] wv, int W) where T : INumber<T>, IMinMaxValue<T>
         {
             var rt = new T[W + 1];
             rt.AsSpan(1).Fill(T.MinValue / (T.One + T.One));
