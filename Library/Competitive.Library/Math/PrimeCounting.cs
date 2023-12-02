@@ -15,7 +15,7 @@ namespace Kzrnm.Competitive
         /// <paramref name="n"/> 以下の素数の個数を返します。
         /// </summary>
         [凾(256)]
-        public static long Count(long n) => (long)Count((ulong)n);
+        public static long Count(long n) => n < 0 ? 0 : (long)Count((ulong)n);
 
         /// <summary>
         /// <paramref name="n"/> 以下の素数の個数を返します。
@@ -23,6 +23,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static ulong Count(ulong n)
         {
+            if (n < 2) return 0;
             var n2 = (uint)Math.Sqrt(n);
             var ndN2 = n / n2;
 

@@ -1,6 +1,3 @@
-using AtCoder.Extension;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Kzrnm.Competitive.Testing.MathNS
@@ -12,6 +9,8 @@ namespace Kzrnm.Competitive.Testing.MathNS
         {
             var naiveCounting = new uint[10001];
             var p = new PrimeNumber(10000).ToHashSet();
+            PrimeCounting.Count(0).Should().Be(0);
+            PrimeCounting.Count(1).Should().Be(0);
             for (int i = 2; i < naiveCounting.Length; i++)
             {
                 naiveCounting[i] = naiveCounting[i - 1];
