@@ -20,7 +20,7 @@ namespace Kzrnm.Competitive
     /// <para> サイズを別途保持することで使いやすくしてます。 </para>
     /// </summary>
     [DebuggerTypeProxy(typeof(SLazySegtree<,,>.DebugView))]
-    public class SLazySegtree<TValue, F, TOp> where TOp : struct, ISLazySegtreeOperator<TValue, F>
+    public class SLazySegtree<T, F, TOp> where TOp : struct, ISLazySegtreeOperator<T, F>
     {
         private static readonly TOp op = default;
 
@@ -31,7 +31,7 @@ namespace Kzrnm.Competitive
 
         internal readonly int log;
         internal readonly int size;
-        private readonly TValue[] d;
+        private readonly T[] d;
         private readonly int[] valSize;
         private readonly F[] lz;
 
@@ -49,7 +49,7 @@ namespace Kzrnm.Competitive
             Length = n;
             log = InternalBit.CeilPow2(n);
             size = 1 << log;
-            d = new TValue[2 * size];
+            d = new T[2 * size];
             lz = new F[size];
             Array.Fill(d, op.Identity);
             Array.Fill(lz, op.FIdentity);
@@ -68,9 +68,29 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(<c>n</c>)</para>
         /// </remarks>
         /// <param name="v">初期配列</param>
-        public SLazySegtree(TValue[] v) : this(v.Length)
+        public SLazySegtree(T[] v) : this((ReadOnlySpan<T>)v) { }
+
+        /// <summary>
+        /// 長さ n=<paramref name="v"/>.Length の数列 a　を持つ <see cref="SLazySegtree{TValue, F, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <paramref name="v"/> です。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: 0≤<c>n</c>≤10^8</para>
+        /// <para>計算量: O(<c>n</c>)</para>
+        /// </remarks>
+        /// <param name="v">初期配列</param>
+        public SLazySegtree(Span<T> v) : this((ReadOnlySpan<T>)v) { }
+
+        /// <summary>
+        /// 長さ n=<paramref name="v"/>.Length の数列 a　を持つ <see cref="SLazySegtree{TValue, F, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <paramref name="v"/> です。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: 0≤<c>n</c>≤10^8</para>
+        /// <para>計算量: O(<c>n</c>)</para>
+        /// </remarks>
+        /// <param name="v">初期配列</param>
+        public SLazySegtree(ReadOnlySpan<T> v) : this(v.Length)
         {
-            for (int i = 0; i < v.Length; i++) d[size + i] = v[i];
+            v.CopyTo(d.AsSpan(size));
             for (int i = size - 1; i >= 1; i--)
             {
                 Update(i);
@@ -102,7 +122,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(log n)</para>
         /// </remarks>
         /// <returns></returns>
-        public TValue this[int p]
+        public T this[int p]
         {
             [凾(256)]
             set
@@ -124,7 +144,7 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        public TValue Slice(int l, int len) => Prod(l, l + len);
+        public T Slice(int l, int len) => Prod(l, l + len);
 
         /// <summary>
         /// <c>op.Operate</c>(a[<paramref name="l"/>], ..., a[<paramref name="r"/> - 1]) を返します。<paramref name="l"/> = <paramref name="r"/> のときは　<c>Identity</c> を返します。
@@ -135,7 +155,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         /// <returns><c>op.Operate</c>(a[<paramref name="l"/>], ..., a[<paramref name="r"/> - 1])</returns>
         [凾(256)]
-        public TValue Prod(int l, int r)
+        public T Prod(int l, int r)
         {
             Contract.Assert(0U <= (uint)l && (uint)l <= (uint)r && (uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= {nameof(r)} && {nameof(r)} <= Length");
             if (l == r) return op.Identity;
@@ -149,7 +169,7 @@ namespace Kzrnm.Competitive
                 if (((r >> i) << i) != r) Push(r >> i);
             }
 
-            TValue sml = op.Identity, smr = op.Identity;
+            T sml = op.Identity, smr = op.Identity;
             while (l < r)
             {
                 if ((l & 1) != 0) sml = op.Operate(sml, d[l++]);
@@ -168,7 +188,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(1)</para>
         /// </remarks>
         /// <returns><c>op.Operate</c>(a[0], ..., a[n - 1])</returns>
-        public TValue AllProd => d[1];
+        public T AllProd => d[1];
 
         /// <summary>
         /// a[<paramref name="p"/>] = <c>Mapping</c>(<paramref name="f"/>, a[<paramref name="p"/>])
@@ -256,14 +276,14 @@ namespace Kzrnm.Competitive
         /// </list>
         /// <para>計算量: O(log n)</para>
         /// </remarks>
-        public int MaxRight(int l, Predicate<TValue> g)
+        public int MaxRight(int l, Predicate<T> g)
         {
             Contract.Assert((uint)l <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(l)} && {nameof(l)} <= Length");
-            Contract.Assert(g(op.Identity), reason: $"{nameof(g)}({nameof(TOp)}.{nameof(ISLazySegtreeOperator<TValue, F>.Identity)}) must be true.");
+            Contract.Assert(g(op.Identity), reason: $"{nameof(g)}({nameof(TOp)}.{nameof(ISLazySegtreeOperator<T, F>.Identity)}) must be true.");
             if (l == Length) return Length;
             l += size;
             for (int i = log; i >= 1; i--) Push(l >> i);
-            TValue sm = op.Identity;
+            T sm = op.Identity;
             do
             {
                 while (l % 2 == 0) l >>= 1;
@@ -315,14 +335,14 @@ namespace Kzrnm.Competitive
         /// </list>
         /// <para>計算量: O(log n)</para>
         /// </remarks>
-        public int MinLeft(int r, Predicate<TValue> g)
+        public int MinLeft(int r, Predicate<T> g)
         {
             Contract.Assert((uint)r <= (uint)Length, reason: $"IndexOutOfRange: 0 <= {nameof(r)} && {nameof(r)} <= Length");
-            Contract.Assert(g(op.Identity), reason: $"{nameof(g)}({nameof(TOp)}.{nameof(ISLazySegtreeOperator<TValue, F>.Identity)}) must be true.");
+            Contract.Assert(g(op.Identity), reason: $"{nameof(g)}({nameof(TOp)}.{nameof(ISLazySegtreeOperator<T, F>.Identity)}) must be true.");
             if (r == 0) return 0;
             r += size;
             for (int i = log; i >= 1; i--) Push((r - 1) >> i);
-            TValue sm = op.Identity;
+            T sm = op.Identity;
             do
             {
                 r--;
@@ -349,7 +369,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 現在のセグ木の中身を配列にコピーして返します。
         /// </summary>
-        public TValue[] ToArray()
+        public T[] ToArray()
         {
             var data = d;
             var p = data.Length / 2;
@@ -364,7 +384,7 @@ namespace Kzrnm.Competitive
         [DebuggerDisplay("Value = {" + nameof(Value) + "}, Lazy = {" + nameof(Lazy) + "}", Name = "{" + nameof(Key) + ",nq}")]
         internal readonly struct DebugItem
         {
-            public DebugItem(int l, int r, TValue value, F lazy)
+            public DebugItem(int l, int r, T value, F lazy)
             {
                 L = l;
                 R = r;
@@ -377,7 +397,7 @@ namespace Kzrnm.Competitive
             public int R { get; }
             [DebuggerBrowsable(0)]
             public string Key => R - L == 1 ? $"[{L}]" : $"[{L}-{R})";
-            public TValue Value { get; }
+            public T Value { get; }
             public F Lazy { get; }
         }
 #if !LIBRARY
@@ -385,8 +405,8 @@ namespace Kzrnm.Competitive
 #endif
         private class DebugView
         {
-            private readonly SLazySegtree<TValue, F, TOp> s;
-            public DebugView(SLazySegtree<TValue, F, TOp> segtree)
+            private readonly SLazySegtree<T, F, TOp> s;
+            public DebugView(SLazySegtree<T, F, TOp> segtree)
             {
                 s = segtree;
             }
