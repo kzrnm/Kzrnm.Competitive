@@ -42,5 +42,27 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
                 }
             }
         }
+
+        [Theory]
+        [InlineData("", new int[0])]
+        [InlineData("abcbaba", new int[] { 1, 1, 3, 1, 2, 2, 1, })]
+        [InlineData("aaaaa", new int[] { 1, 2, 3, 2, 1, })]
+        public void Manacher(string s, int[] expected)
+        {
+            Palindrome.Manacher(s).Should()
+                .HaveCount(s.Length)
+                .And.Equal(expected);
+        }
+
+        [Theory]
+        [InlineData("", new int[0])]
+        [InlineData("abccbc", new int[] { 1, 0, 1, 0, 1, 4, 1, 0, 3, 0, 1, })]
+        [InlineData("aaaaa", new int[] { 1, 2, 3, 4, 5, 4, 3, 2, 1, })]
+        public void Manacher2(string s, int[] expected)
+        {
+            Palindrome.Manacher2(s).Should()
+                .HaveCount(Math.Max(s.Length * 2 - 1, 0))
+                .And.Equal(expected);
+        }
     }
 }
