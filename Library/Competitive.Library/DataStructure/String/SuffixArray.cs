@@ -7,35 +7,17 @@ namespace Kzrnm.Competitive
 {
     public class SuffixArray
     {
-        /// <summary>
-        /// 数列 <paramref name="s"/> の Suffix Array を構築します。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約: 0≤|<paramref name="s"/>|&lt;10^8</para>
-        /// <para>計算量: 時間O(|<paramref name="s"/>|log|<paramref name="s"/>|), 空間O(|<paramref name="s"/>|)</para>
-        /// </remarks>
+        /// <inheritdoc cref="Create{T}(ReadOnlySpan{T})"/>
         [凾(256)]
         public static SuffixArray Create(string s)
             => Create((ReadOnlySpan<char>)s);
 
-        /// <summary>
-        /// 数列 <paramref name="s"/> の Suffix Array を構築します。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約: 0≤|<paramref name="s"/>|&lt;10^8</para>
-        /// <para>計算量: 時間O(|<paramref name="s"/>|log|<paramref name="s"/>|), 空間O(|<paramref name="s"/>|)</para>
-        /// </remarks>
+        /// <inheritdoc cref="Create{T}(ReadOnlySpan{T})"/>
         [凾(256)]
         public static SuffixArray Create<T>(Span<T> s)
             => Create((ReadOnlySpan<T>)s);
 
-        /// <summary>
-        /// 数列 <paramref name="s"/> の Suffix Array を構築します。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約: 0≤|<paramref name="s"/>|&lt;10^8</para>
-        /// <para>計算量: 時間O(|<paramref name="s"/>|log|<paramref name="s"/>|), 空間O(|<paramref name="s"/>|)</para>
-        /// </remarks>
+        /// <inheritdoc cref="Create{T}(ReadOnlySpan{T})"/>
         [凾(256)]
         public static SuffixArray Create<T>(T[] s)
             => Create((ReadOnlySpan<T>)s);

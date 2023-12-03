@@ -1,3 +1,4 @@
+using AtCoder;
 using System;
 using System.Collections.Generic;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -6,26 +7,14 @@ namespace Kzrnm.Competitive
 {
     public static class StringLibEx
     {
-        /// <summary>
-        /// <paramref name="s"/>[..i] と <paramref name="t"/>[..j] の LCS(最長共通部分列)長を table[i][j] に保持する2次元配列を返します。
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量: O(|<paramref name="s"/>| |<paramref name="t"/>|)</para>
-        /// </remarks>
+        /// <inheritdoc cref="LcsTable{T}(ReadOnlySpan{T}, ReadOnlySpan{T})"/>
+        [凾(256)]
         public static int[][] LcsTable(string s, string t) => LcsTable(s.AsSpan(), t);
-        /// <summary>
-        /// <paramref name="s"/>[..i] と <paramref name="t"/>[..j] の LCS(最長共通部分列)長を table[i][j] に保持する2次元配列を返します。
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量: O(|<paramref name="s"/>| |<paramref name="t"/>|)</para>
-        /// </remarks>
+        /// <inheritdoc cref="LcsTable{T}(ReadOnlySpan{T}, ReadOnlySpan{T})"/>
+        [凾(256)]
         public static int[][] LcsTable<T>(T[] s, T[] t) => LcsTable((ReadOnlySpan<T>)s, t);
-        /// <summary>
-        /// <paramref name="s"/>[..i] と <paramref name="t"/>[..j] の LCS(最長共通部分列)長を table[i][j] に保持する2次元配列を返します。
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量: O(|<paramref name="s"/>| |<paramref name="t"/>|)</para>
-        /// </remarks>
+        /// <inheritdoc cref="LcsTable{T}(ReadOnlySpan{T}, ReadOnlySpan{T})"/>
+        [凾(256)]
         public static int[][] LcsTable<T>(Span<T> s, Span<T> t) => LcsTable((ReadOnlySpan<T>)s, t);
         /// <summary>
         /// <paramref name="s"/>[..i] と <paramref name="t"/>[..j] の LCS(最長共通部分列)長を table[i][j] に保持する2次元配列を返します。
@@ -55,26 +44,14 @@ namespace Kzrnm.Competitive
             return dp;
         }
 
-        /// <summary>
-        /// <paramref name="s"/> と <paramref name="t"/> の LCS(最長共通部分列)を返します。
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量: O(|<paramref name="s"/>| |<paramref name="t"/>|)</para>
-        /// </remarks>
+        /// <inheritdoc cref="Lcs{T}(ReadOnlySpan{T}, ReadOnlySpan{T})"/>
+        [凾(256)]
         public static char[] Lcs(string s, string t) => Lcs(s.AsSpan(), t);
-        /// <summary>
-        /// <paramref name="s"/> と <paramref name="t"/> の LCS(最長共通部分列)を返します。
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量: O(|<paramref name="s"/>| |<paramref name="t"/>|)</para>
-        /// </remarks>
+        /// <inheritdoc cref="Lcs{T}(ReadOnlySpan{T}, ReadOnlySpan{T})"/>
+        [凾(256)]
         public static T[] Lcs<T>(T[] s, T[] t) => Lcs((ReadOnlySpan<T>)s, t);
-        /// <summary>
-        /// <paramref name="s"/> と <paramref name="t"/> の LCS(最長共通部分列)を返します。
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量: O(|<paramref name="s"/>| |<paramref name="t"/>|)</para>
-        /// </remarks>
+        /// <inheritdoc cref="Lcs{T}(ReadOnlySpan{T}, ReadOnlySpan{T})"/>
+        [凾(256)]
         public static T[] Lcs<T>(Span<T> s, Span<T> t) => Lcs((ReadOnlySpan<T>)s, t);
         /// <summary>
         /// <paramref name="s"/> と <paramref name="t"/> の LCS(最長共通部分列)を返します。

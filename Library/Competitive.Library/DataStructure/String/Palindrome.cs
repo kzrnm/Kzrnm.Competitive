@@ -12,17 +12,11 @@ namespace Kzrnm.Competitive
     /// </summary>
     public static class Palindrome
     {
-        /// <summary>
-        /// <paramref name="s"/> が回文か判定します。
-        /// </summary>
+        /// <inheritdoc cref="IsPalindrome{T}(ReadOnlySpan{T})"/>
         public static bool IsPalindrome(string s) => IsPalindrome((ReadOnlySpan<char>)s);
-        /// <summary>
-        /// <paramref name="s"/> が回文か判定します。
-        /// </summary>
+        /// <inheritdoc cref="IsPalindrome{T}(ReadOnlySpan{T})"/>
         public static bool IsPalindrome<T>(T[] s) => IsPalindrome((ReadOnlySpan<T>)s);
-        /// <summary>
-        /// <paramref name="s"/> が回文か判定します。
-        /// </summary>
+        /// <inheritdoc cref="IsPalindrome{T}(ReadOnlySpan{T})"/>
         public static bool IsPalindrome<T>(Span<T> s) => IsPalindrome((ReadOnlySpan<T>)s);
         /// <summary>
         /// <paramref name="s"/> が回文か判定します。
@@ -36,29 +30,11 @@ namespace Kzrnm.Competitive
             return true;
         }
 
-        /// <summary>
-        /// <paramref name="s"/>の i 文字目を中心とした回文の半径を返します。
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量: O(|<paramref name="s"/>|)</para>
-        /// </remarks>
-        /// <example>abcbaba → 1131121</example>
+        /// <inheritdoc cref="Manacher{T}(ReadOnlySpan{T})"/>
         public static int[] Manacher(string s) => Manacher(s.AsSpan());
-        /// <summary>
-        /// <paramref name="s"/>の i 文字目を中心とした回文の半径を返します。
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量: O(|<paramref name="s"/>|)</para>
-        /// </remarks>
-        /// <example>abcbaba → 1131121</example>
+        /// <inheritdoc cref="Manacher{T}(ReadOnlySpan{T})"/>
         public static int[] Manacher<T>(T[] s) => Manacher((ReadOnlySpan<T>)s);
-        /// <summary>
-        /// <paramref name="s"/>の i 文字目を中心とした回文の半径を返します。
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量: O(|<paramref name="s"/>|)</para>
-        /// </remarks>
-        /// <example>abcbaba → 1131121</example>
+        /// <inheritdoc cref="Manacher{T}(ReadOnlySpan{T})"/>
         public static int[] Manacher<T>(Span<T> s) => Manacher((ReadOnlySpan<T>)s);
         /// <summary>
         /// <paramref name="s"/>の i 文字目を中心とした回文の半径を返します。
@@ -93,30 +69,11 @@ namespace Kzrnm.Competitive
             return rt;
         }
 
-
-        /// <summary>
-        /// <paramref name="s"/>の i/2 文字目、または i/2 文字目と i/2 + 1 文字目の間を中心とした回文の直径を返します。
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量: O(|<paramref name="s"/>|)</para>
-        /// </remarks>
-        /// <example>abccbc → 10101410301</example>
+        /// <inheritdoc cref="Manacher2{T}(ReadOnlySpan{T})"/>
         public static int[] Manacher2(string s) => Manacher2(s.AsSpan());
-        /// <summary>
-        /// <paramref name="s"/>の i/2 文字目、または i/2 文字目と i/2 + 1 文字目の間を中心とした回文の直径を返します。
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量: O(|<paramref name="s"/>|)</para>
-        /// </remarks>
-        /// <example>abccbc → 10101410301</example>
+        /// <inheritdoc cref="Manacher2{T}(ReadOnlySpan{T})"/>
         public static int[] Manacher2<T>(T[] s) => Manacher2((ReadOnlySpan<T>)s);
-        /// <summary>
-        /// <paramref name="s"/>の i/2 文字目、または i/2 文字目と i/2 + 1 文字目の間を中心とした回文の直径を返します。
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量: O(|<paramref name="s"/>|)</para>
-        /// </remarks>
-        /// <example>abccbc → 10101410301</example>
+        /// <inheritdoc cref="Manacher2{T}(ReadOnlySpan{T})"/>
         public static int[] Manacher2<T>(Span<T> s) => Manacher2((ReadOnlySpan<T>)s);
         /// <summary>
         /// <paramref name="s"/>の i/2 文字目、または i/2 文字目と i/2 + 1 文字目の間を中心とした回文の直径を返します。
