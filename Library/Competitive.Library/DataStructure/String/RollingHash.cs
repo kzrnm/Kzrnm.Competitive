@@ -1,27 +1,28 @@
 using Kzrnm.Competitive.Internal;
 using System;
 using System.Numerics;
-using static Kzrnm.Competitive.RollingHash;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public class RollingHash : RollingHashBase<Rhf<Rh1>, Rhf<Rh2>>
+    using Rhf1 = RollingHash.Rhf<Rh1>;
+    using Rhf2 = RollingHash.Rhf<Rh2>;
+    public class RollingHash : RollingHashBase<Rhf1, Rhf2>
     {
         [凾(256)]
         public static RollingHash Create(string s)
-            => new(s.Length, Rhf<Rh1>.Create<char>(s), Rhf<Rh2>.Create<char>(s));
+            => new(s.Length, Rhf1.Create<char>(s), Rhf2.Create<char>(s));
         [凾(256)]
         public static RollingHash Create<T>(T[] s) where T : IBinaryInteger<T>
-            => new(s.Length, Rhf<Rh1>.Create<T>(s), Rhf<Rh2>.Create<T>(s));
+            => new(s.Length, Rhf1.Create<T>(s), Rhf2.Create<T>(s));
         [凾(256)]
         public static RollingHash Create<T>(Span<T> s) where T : IBinaryInteger<T>
-            => new(s.Length, Rhf<Rh1>.Create<T>(s), Rhf<Rh2>.Create<T>(s));
+            => new(s.Length, Rhf1.Create<T>(s), Rhf2.Create<T>(s));
         [凾(256)]
         public static RollingHash Create<T>(ReadOnlySpan<T> s) where T : IBinaryInteger<T>
-            => new(s.Length, Rhf<Rh1>.Create(s), Rhf<Rh2>.Create(s));
+            => new(s.Length, Rhf1.Create(s), Rhf2.Create(s));
 
-        public RollingHash(int length, Rhf<Rh1> h1, Rhf<Rh2> h2) : base(length, h1, h2) { }
+        public RollingHash(int length, Rhf1 h1, Rhf2 h2) : base(length, h1, h2) { }
 
         ///<summary>
         ///[<paramref name="from"/>, <paramref name="len"/>) のハッシュ
