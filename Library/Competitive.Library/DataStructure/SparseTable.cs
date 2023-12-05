@@ -27,8 +27,9 @@ namespace Kzrnm.Competitive
             {
                 var stp = st[k - 1];
                 var sti = st[k] = new TValue[Length - (1 << k) + 1];
+                var d = 1 << (k - 1);
                 for (int i = 0; i < sti.Length; i++)
-                    sti[i] = op.Operate(stp[i], stp[i + (1 << (k - 1))]);
+                    sti[i] = op.Operate(stp[i], stp[i + d]);
             }
         }
 

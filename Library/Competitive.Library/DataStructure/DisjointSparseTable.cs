@@ -24,16 +24,9 @@ namespace Kzrnm.Competitive
             Length = array.Length;
             st = new TValue[BitOperations.Log2((uint)Length) + 1][];
             st[0] = (TValue[])array.Clone();
-            for (int i = 1; i < st.Length; i++)
-            {
-                var stp = st[i - 1];
-                var sti = st[i] = new TValue[Length - (1 << i) + 1];
-                for (int j = 0; j < sti.Length; j++)
-                    sti[j] = op.Operate(stp[j], stp[j + (1 << (i - 1))]);
-            }
             for (int h = 1; h < st.Length; h++)
             {
-                int s = (1 << h);
+                int s = 1 << h;
                 st[h] = new TValue[array.Length];
                 for (int i = 0; i < array.Length; i += (s << 1))
                 {

@@ -33,19 +33,19 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         }
 
         [Fact]
-        public void NativeMin()
+        public void NaiveMin()
         {
             for (int len = 1; len < 50; len++)
             {
                 var arr = new short[len];
                 rnd.NextBytes(MemoryMarshal.Cast<short, byte>(arr));
-                var native = new MinNative(arr);
+                var naive = new MinNaive(arr);
                 var st = new DisjointSparseTable<short, MinOp>(arr);
 
                 for (var i = 0; i < len; i++)
                     for (var j = i + 1; j <= len; j++)
                     {
-                        var expected = native.Prod(i, j);
+                        var expected = naive.Prod(i, j);
                         st[i..j].Should().Be(expected);
                         st.Prod(i, j).Should().Be(expected);
                     }
@@ -56,10 +56,10 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         {
             public short Operate(short x, short y) => Math.Min(x, y);
         }
-        private class MinNative
+        private class MinNaive
         {
             private readonly short[] array;
-            public MinNative(short[] array)
+            public MinNaive(short[] array)
             {
                 this.array = array;
             }
@@ -75,7 +75,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
 
 
         [Fact]
-        public void NativeSum()
+        public void NaiveSum()
         {
             for (int len = 1; len < 50; len++)
             {
