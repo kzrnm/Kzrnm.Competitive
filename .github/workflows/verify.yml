@@ -229,6 +229,13 @@ jobs:
           name: binary-${{github.sha}}
           path: Library/Checker/bin/Release
 
+      - name: Warm up checker
+        run: |
+          for checker in $(ls Checker/bin/Release/*/Checker.dll); do
+            echo "Warm up $checker"
+            dotnet $checker
+          done
+
       - name: Verify
         uses: competitive-verifier/actions/verify@v1
         with:
