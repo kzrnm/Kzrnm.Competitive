@@ -1,21 +1,15 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    internal interface IAffineOperator<T> : IEquatable<T>
-        , IMultiplyOperators<T, T, T>
-        , IMultiplicativeIdentity<T, T>
-        where T : IAffineOperator<T>
-    { }
     /// <summary>
     /// アフィン変換. Ax+b の形で表される式を保持する。
     /// </summary>
     [DebuggerDisplay("{" + nameof(a) + "} x + {" + nameof(b) + "}")]
-    public readonly struct AffineTransformation<T> : IAffineOperator<AffineTransformation<T>>
+    public readonly record struct AffineTransformation<T> : IEquatable<AffineTransformation<T>>
         where T : struct
         , IAdditionOperators<T, T, T>
         , IMultiplyOperators<T, T, T>
@@ -31,8 +25,7 @@ namespace Kzrnm.Competitive
         /// 定数項
         /// </summary>
         public readonly T b;
-
-        public static AffineTransformation<T> MultiplicativeIdentity => new AffineTransformation<T>(T.MultiplicativeIdentity, T.AdditiveIdentity);
+        public static AffineTransformation<T> Identity => new(T.MultiplicativeIdentity, T.AdditiveIdentity);
 
         public AffineTransformation(T a, T b)
         {
@@ -44,27 +37,12 @@ namespace Kzrnm.Competitive
         /// A <paramref name="x"/> + b を求める。
         /// </summary>
         [凾(256)]
-        public T Apply(T x)
-            => a * x + b;
+        public T Apply(T x) => a * x + b;
 
         /// <summary>
-        /// <paramref name="g"/>(<paramref name="f"/>(x))
+        /// A * <paramref name="other"/> + b を求める。
         /// </summary>
         [凾(256)]
-        public static AffineTransformation<T> operator *(AffineTransformation<T> f, AffineTransformation<T> g)
-            => new AffineTransformation<T>(f.a * g.a, g.a * f.b + g.b);
-
-        [凾(256)]
-        public static bool operator ==(AffineTransformation<T> left, AffineTransformation<T> right)
-            => left.Equals(right);
-        [凾(256)]
-        public static bool operator !=(AffineTransformation<T> left, AffineTransformation<T> right)
-            => !left.Equals(right);
-        public override bool Equals(object obj) => obj is AffineTransformation<T> transformation && Equals(transformation);
-
-        [凾(256)]
-        public bool Equals(AffineTransformation<T> other)
-            => EqualityComparer<T>.Default.Equals(a, other.a) && EqualityComparer<T>.Default.Equals(b, other.b);
-        public override int GetHashCode() => HashCode.Combine(a, b);
+        public AffineTransformation<T> Apply(AffineTransformation<T> other) => new(a * other.a, a * other.b + b);
     }
 }

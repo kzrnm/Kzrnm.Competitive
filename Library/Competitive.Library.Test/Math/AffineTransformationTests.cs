@@ -5,7 +5,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         public static TheoryData<
             DoubleAffineTransformation,
             DoubleAffineTransformation,
-            DoubleAffineTransformation> Multiply_Data = new()
+            DoubleAffineTransformation> ApplyOther_Data => new()
             {
                 {
                     new DoubleAffineTransformation(2.0, 3.0),
@@ -20,16 +20,16 @@ namespace Kzrnm.Competitive.Testing.MathNS
             };
 
         [Theory]
-        [MemberData(nameof(Multiply_Data))]
-        public void Multiply(
+        [MemberData(nameof(ApplyOther_Data))]
+        public void ApplyOther(
             DoubleAffineTransformation a,
             DoubleAffineTransformation b,
             DoubleAffineTransformation expected)
         {
-            (a * b).Should().Be(expected);
+            b.Apply(a).Should().Be(expected);
         }
 
-        public static TheoryData<DoubleAffineTransformation, double, double> Apply_Data = new()
+        public static TheoryData<DoubleAffineTransformation, double, double> ApplyNumber_Data => new()
         {
             { new DoubleAffineTransformation(2.0, 3.0), 1, 5 },
             { new DoubleAffineTransformation(-5, 7.0), 1, 2 },
@@ -46,8 +46,8 @@ namespace Kzrnm.Competitive.Testing.MathNS
             { new DoubleAffineTransformation(0, -2), -1.5, -2 },
         };
         [Theory]
-        [MemberData(nameof(Apply_Data))]
-        public void Apply(
+        [MemberData(nameof(ApplyNumber_Data))]
+        public void ApplyNumber(
             DoubleAffineTransformation a, double x, double expected)
         {
             a.Apply(x).Should().Be(expected);

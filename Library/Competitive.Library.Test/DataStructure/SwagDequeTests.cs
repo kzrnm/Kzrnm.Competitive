@@ -230,7 +230,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         readonly struct AffineTransformationOp : ISegtreeOperator<Mod998244353AffineTransformation>
         {
             public Mod998244353AffineTransformation Operate(Mod998244353AffineTransformation x, Mod998244353AffineTransformation y)
-                => x * y;
+                => y.Apply(x);
             public Mod998244353AffineTransformation Identity => new(StaticModInt<Mod998244353>.One, default);
         }
         readonly struct SlideMinOp : ISegtreeOperator<int>

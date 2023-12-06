@@ -31,7 +31,7 @@ namespace Kzrnm.Competitive.DataStructure
         readonly struct Op : ISegtreeOperator<Mod998244353AffineTransformation>
         {
             [MethodImpl(256)]
-            public Mod998244353AffineTransformation Operate(Mod998244353AffineTransformation x, Mod998244353AffineTransformation y) => x * y;
+            public Mod998244353AffineTransformation Operate(Mod998244353AffineTransformation x, Mod998244353AffineTransformation y) => y.Apply(x);
 
             public Mod998244353AffineTransformation Identity => new Mod998244353AffineTransformation(ModInt.One, ModInt.Zero);
         }

@@ -21,7 +21,7 @@ namespace Kzrnm.Competitive.BinarySearchTree
             [凾(256)]
             public ModInt Mapping(Mod998244353AffineTransformation f, ModInt x, int size) => f.Apply(x) + f.b * (size - 1);
             [凾(256)]
-            public Mod998244353AffineTransformation Composition(Mod998244353AffineTransformation nf, Mod998244353AffineTransformation cf) => cf * nf;
+            public Mod998244353AffineTransformation Composition(Mod998244353AffineTransformation nf, Mod998244353AffineTransformation cf) => nf.Apply(cf);
             [凾(256)] public ModInt Inverse(ModInt v) => v;
         }
     }
