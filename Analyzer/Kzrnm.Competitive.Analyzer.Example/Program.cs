@@ -55,7 +55,7 @@ public static class Example
 
         //3.Other<Op>(2);
 
-        return null;
+        return v;
     }
 }
 

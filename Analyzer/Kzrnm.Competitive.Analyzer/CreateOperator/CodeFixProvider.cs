@@ -109,17 +109,9 @@ public class CodeFixProvider : Microsoft.CodeAnalysis.CodeFixes.CodeFixProvider
         context.RegisterCodeFix(action, diagnostic);
     }
 
-    private class OperatorTypeSyntaxBuilder
+    private class OperatorTypeSyntaxBuilder(SemanticModel semanticModel, AnalyzerConfig config)
     {
-        private readonly SemanticModel semanticModel;
-        private readonly int origPosition;
-        private readonly AnalyzerConfig config;
-        public OperatorTypeSyntaxBuilder(SemanticModel semanticModel, AnalyzerConfig config)
-        {
-            this.semanticModel = semanticModel;
-            origPosition = semanticModel.SyntaxTree.Length;
-            this.config = config;
-        }
+        private readonly int origPosition = semanticModel.SyntaxTree.Length;
 
         public async Task<Document> AddOperatorType(
             Document document,
@@ -129,7 +121,7 @@ public class CodeFixProvider : Microsoft.CodeAnalysis.CodeFixes.CodeFixProvider
             bool hasMethod = false;
             var usings = root.Usings.ToNamespaceHashSet();
 
-            MemberDeclarationSyntax[] newMembers = new MemberDeclarationSyntax[constraintDic.Count];
+            TypeDeclarationSyntax[] newMembers = new TypeDeclarationSyntax[constraintDic.Count];
             foreach (var (p, i) in constraintDic.Select((p, i) => (p, i)))
             {
                 bool m;
@@ -141,10 +133,10 @@ public class CodeFixProvider : Microsoft.CodeAnalysis.CodeFixes.CodeFixProvider
 
         }
 
-        private (StructDeclarationSyntax syntax, bool hasMethod) Build(string operatorTypeName, ImmutableArray<ITypeSymbol> constraints)
+        private (TypeDeclarationSyntax syntax, bool hasMethod) Build(string operatorTypeName, ImmutableArray<ITypeSymbol> constraints)
         {
             bool hasMethod = false;
-            var members = ImmutableList.CreateBuilder<MemberDeclarationSyntax>();
+            var members = ImmutableArray.CreateBuilder<MemberDeclarationSyntax>();
             var added = ImmutableHashSet.CreateBuilder<ITypeSymbol>(SymbolEqualityComparer.Default);
 
             foreach (var constraint in constraints)
@@ -162,14 +154,32 @@ public class CodeFixProvider : Microsoft.CodeAnalysis.CodeFixes.CodeFixProvider
                 }
             }
 
-            SyntaxTokenList modifiers = default;
-            if (semanticModel.SyntaxTree.Options is CSharpParseOptions parseOptions
-                && (int)parseOptions.LanguageVersion >= (int)LanguageVersion.CSharp7_2)
+            static TypeDeclarationSyntax DeclarationSyntax(string operatorTypeName, LanguageVersion? languageVersion)
             {
-                modifiers = SyntaxTokenList.Create(SyntaxFactory.Token(SyntaxKind.ReadOnlyKeyword));
+                switch ((int?)languageVersion)
+                {
+                    case null:
+                        goto default;
+                    case >= (int)LanguageVersion.CSharp10:
+                        return SyntaxFactory.RecordDeclaration(SyntaxKind.RecordStructDeclaration, SyntaxFactory.Token(SyntaxKind.RecordKeyword), operatorTypeName)
+                            .WithClassOrStructKeyword(SyntaxFactory.Token(SyntaxKind.StructKeyword))
+                            .WithModifiers(SyntaxTokenList.Create(SyntaxFactory.Token(SyntaxKind.ReadOnlyKeyword)))
+                            .WithOpenBraceToken(SyntaxFactory.Token(SyntaxKind.OpenBraceToken))
+                            .WithCloseBraceToken(SyntaxFactory.Token(SyntaxKind.CloseBraceToken));
+                    case >= (int)LanguageVersion.CSharp7_2:
+                        return SyntaxFactory.StructDeclaration(operatorTypeName)
+                            .WithModifiers(SyntaxTokenList.Create(SyntaxFactory.Token(SyntaxKind.ReadOnlyKeyword)));
+                    default:
+                        return SyntaxFactory.StructDeclaration(operatorTypeName);
+                }
             }
-            var dec = SyntaxFactory.StructDeclaration(operatorTypeName)
-                .WithModifiers(modifiers)
+
+
+            var dec = DeclarationSyntax(operatorTypeName, semanticModel.SyntaxTree.Options switch
+            {
+                CSharpParseOptions parseOptions => parseOptions.LanguageVersion,
+                _ => null,
+            })
                 .WithBaseList(SyntaxFactory.BaseList(
                     constraints.Select(c => (BaseTypeSyntax)SyntaxFactory.SimpleBaseType(c.ToTypeSyntax(semanticModel, origPosition))).ToSeparatedSyntaxList()))
                 .WithMembers(SyntaxFactory.List(members.Distinct(MemberDeclarationEqualityComparer.Default)));

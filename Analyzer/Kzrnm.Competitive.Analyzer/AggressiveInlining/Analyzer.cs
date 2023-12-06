@@ -116,12 +116,14 @@ public class Analyzer : DiagnosticAnalyzer
 
         string[] notMethodImplInliningMethods;
         if (concurrentBuild)
+#pragma warning disable IDE0305 // コレクションの初期化を簡略化します
             notMethodImplInliningMethods = symbol.GetMembers()
                 .AsParallel(context.CancellationToken)
                 .OfType<IMethodSymbol>()
                 .Where(types.DoesNotHaveMethodImplInlining)
                 .Select(m => m.Name)
                 .ToArray();
+#pragma warning restore IDE0305 // コレクションの初期化を簡略化します
         else
             notMethodImplInliningMethods = symbol.GetMembers()
                 .Do(_ => context.CancellationToken.ThrowIfCancellationRequested())

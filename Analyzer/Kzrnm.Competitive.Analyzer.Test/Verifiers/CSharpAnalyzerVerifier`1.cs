@@ -32,5 +32,22 @@ namespace Kzrnm.Competitive.Analyzer.Test
             test.ExpectedDiagnostics.AddRange(expected);
             await test.RunAsync(CancellationToken.None);
         }
+
+        public class Test : CSharpAnalyzerTest<TAnalyzer, XUnitVerifier>
+        {
+            public Test()
+            {
+                ReferenceAssemblies = ReferenceAssemblies.WithPackages(ReferencesHelper.Packages);
+                SolutionTransforms.Add((solution, projectId) =>
+                {
+                    var compilationOptions = solution.GetProject(projectId)!.CompilationOptions;
+                    compilationOptions = compilationOptions!.WithSpecificDiagnosticOptions(
+                        compilationOptions.SpecificDiagnosticOptions.SetItems(CSharpVerifierHelper.NullableWarnings));
+                    solution = solution.WithProjectCompilationOptions(projectId, compilationOptions);
+
+                    return solution;
+                });
+            }
+        }
     }
 }

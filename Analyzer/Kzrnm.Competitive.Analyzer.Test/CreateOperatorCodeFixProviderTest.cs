@@ -2,73 +2,87 @@ using Kzrnm.Competitive.Analyzer.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Testing;
+using System.Text.RegularExpressions;
+using VerifyCS = Kzrnm.Competitive.Analyzer.Test.CSharpCodeFixVerifier<
+    Kzrnm.Competitive.Analyzer.CreateOperator.Analyzer,
+    Kzrnm.Competitive.Analyzer.CreateOperator.CodeFixProvider>;
 
 namespace Kzrnm.Competitive.Analyzer.Test;
 
-public class CreateOperatorCodeFixProviderTest
+public partial class CreateOperatorCodeFixProviderTest
 {
-    static DiagnosticDescriptor KZCOMPETITIVE0004 => DiagnosticDescriptors.KZCOMPETITIVE0004_DefineOperatorType_Descriptor;
-    static class VerifyCS
+    public class Test(LanguageVersion languageVersion) : VerifyCS.Test
     {
-        public class Test : CSharpCodeFixVerifier<CreateOperator.Analyzer, CreateOperator.CodeFixProvider>.Test
+        protected override ParseOptions CreateParseOptions()
+            => ((CSharpParseOptions)base.CreateParseOptions()).WithLanguageVersion(languageVersion);
+    }
+
+    static DiagnosticDescriptor KZCOMPETITIVE0004 => DiagnosticDescriptors.KZCOMPETITIVE0004_DefineOperatorType_Descriptor;
+
+    static async Task VerifyCodeFixAsync(string source, DiagnosticResult expected, string fixedSource, Action<Test>? updateTest = null)
+        => await VerifyCodeFixAsync(source, [expected], fixedSource, updateTest: updateTest);
+
+    static async Task VerifyCodeFixAsync(string source, DiagnosticResult[] expected, string fixedSource, Action<Test>? updateTest = null)
+    {
+        foreach (var languageVersion in new LanguageVersion[]
         {
-            protected override ParseOptions CreateParseOptions()
-                => ((CSharpParseOptions)base.CreateParseOptions()).WithLanguageVersion(LanguageVersion.CSharp7_1);
-        }
-        public static DiagnosticResult Diagnostic()
-            => CSharpCodeFixVerifier<CreateOperator.Analyzer, CreateOperator.CodeFixProvider>.Diagnostic();
-
-        public static DiagnosticResult Diagnostic(string diagnosticId)
-            => CSharpCodeFixVerifier<CreateOperator.Analyzer, CreateOperator.CodeFixProvider>.Diagnostic(diagnosticId);
-
-        public static DiagnosticResult Diagnostic(DiagnosticDescriptor descriptor)
-            => CSharpCodeFixVerifier<CreateOperator.Analyzer, CreateOperator.CodeFixProvider>.Diagnostic(descriptor);
-
-        public static async Task VerifyAnalyzerAsync(string source, params DiagnosticResult[] expected)
+            LanguageVersion.CSharp7_1,
+            LanguageVersion.CSharp7_2,
+            LanguageVersion.CSharp10,
+        })
         {
-            var test = new Test
+            var test = new Test(languageVersion)
             {
                 TestCode = source,
+                FixedCode = ConvertFixedSource(fixedSource, languageVersion),
             };
-
             test.ExpectedDiagnostics.AddRange(expected);
-            await test.RunAsync(CancellationToken.None);
-        }
 
-        public static async Task VerifyCodeFixAsync(string source, string fixedSource)
-            => await VerifyCodeFixAsync(source, DiagnosticResult.EmptyDiagnosticResults, fixedSource);
+            updateTest?.Invoke(test);
 
-        public static async Task VerifyCodeFixAsync(string source, DiagnosticResult expected, string fixedSource)
-            => await VerifyCodeFixAsync(source, new[] { expected }, fixedSource);
-
-        public static async Task VerifyCodeFixAsync(string source, DiagnosticResult[] expected, string fixedSource)
-        {
-            var test = new Test
-            {
-                TestCode = source,
-                FixedCode = fixedSource,
-            };
-
-            test.ExpectedDiagnostics.AddRange(expected);
             await test.RunAsync(CancellationToken.None);
         }
     }
 
 
+    [GeneratedRegex(@"\$\$([^\$]*)\$\$")]
+    private static partial Regex ConvertFixedSourceRegex();
+    static string ConvertFixedSource(string fixedSource, LanguageVersion languageVersion)
+    {
+        return languageVersion switch
+        {
+            LanguageVersion.CSharp7_1 => ConvertFixedSourceRegex().Replace(fixedSource, m => m.Value switch
+            {
+                "$$TypeDefinition$$" => "struct",
+                _ => throw new InvalidOperationException(),
+            }),
+            LanguageVersion.CSharp7_2 => ConvertFixedSourceRegex().Replace(fixedSource, m => m.Value switch
+            {
+                "$$TypeDefinition$$" => "readonly struct",
+                _ => throw new InvalidOperationException(),
+            }),
+            LanguageVersion.CSharp10 => ConvertFixedSourceRegex().Replace(fixedSource, m => m.Value switch
+            {
+                "$$TypeDefinition$$" => "readonly record struct",
+                _ => throw new InvalidOperationException(),
+            }),
+            _ => throw new InvalidOperationException(),
+        };
+    }
 
     #region StaticModInt
     [Fact]
     public async Task StaticModInt_Using()
     {
-        var source = @"
+        var source = """
 using AtCoder;
 class Program
 {
     StaticModInt<Op> notDefined;
     StaticModInt<Mod1000000007> defined;
 }
-";
-        var fixedSource = @"
+""";
+        var fixedSource = """
 using AtCoder;
 class Program
 {
@@ -76,29 +90,30 @@ class Program
     StaticModInt<Mod1000000007> defined;
 }
 
-struct Op : IStaticMod
+$$TypeDefinition$$ Op : IStaticMod
 {
     public uint Mod => default;
 
     public bool IsPrime => default;
-}";
-        await VerifyCS.VerifyCodeFixAsync(source,
-            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(5, 5, 5, 21).WithArguments("Op"),
+}
+""";
+        await VerifyCodeFixAsync(source,
+            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(4, 5, 4, 21).WithArguments("Op"),
             fixedSource);
     }
 
     [Fact]
     public async Task StaticModInt_Qualified_Using()
     {
-        var source = @"
+        var source = """
 using AtCoder;
 class Program
 {
     AtCoder.StaticModInt<Op> notDefined;
     AtCoder.StaticModInt<Mod1000000007> defined;
 }
-";
-        var fixedSource = @"
+""";
+        var fixedSource = """
 using AtCoder;
 class Program
 {
@@ -106,42 +121,44 @@ class Program
     AtCoder.StaticModInt<Mod1000000007> defined;
 }
 
-struct Op : IStaticMod
+$$TypeDefinition$$ Op : IStaticMod
 {
     public uint Mod => default;
 
     public bool IsPrime => default;
-}";
-        await VerifyCS.VerifyCodeFixAsync(source,
-            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(5, 13, 5, 29).WithArguments("Op"),
+}
+""";
+        await VerifyCodeFixAsync(source,
+            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(4, 13, 4, 29).WithArguments("Op"),
             fixedSource);
     }
 
     [Fact]
     public async Task StaticModInt_Qualified()
     {
-        var source = @"
+        var source = """
 class Program
 {
     AtCoder.StaticModInt<Op> notDefined;
     AtCoder.StaticModInt<AtCoder.Mod1000000007> defined;
 }
-";
-        var fixedSource = @"
+""";
+        var fixedSource = """
 class Program
 {
     AtCoder.StaticModInt<Op> notDefined;
     AtCoder.StaticModInt<AtCoder.Mod1000000007> defined;
 }
 
-struct Op : AtCoder.IStaticMod
+$$TypeDefinition$$ Op : AtCoder.IStaticMod
 {
     public uint Mod => default;
 
     public bool IsPrime => default;
-}";
-        await VerifyCS.VerifyCodeFixAsync(source,
-            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(4, 13, 4, 29).WithArguments("Op"),
+}
+""";
+        await VerifyCodeFixAsync(source,
+            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(3, 13, 3, 29).WithArguments("Op"),
             fixedSource);
     }
     #endregion StaticModInt
@@ -150,7 +167,8 @@ struct Op : AtCoder.IStaticMod
     [Fact]
     public async Task Segtree_Using()
     {
-        var source = @"using AtCoder;
+        var source = """
+using AtCoder;
 using System.Runtime.CompilerServices;
 class Program
 {
@@ -166,8 +184,9 @@ struct MinOp : ISegtreeOperator<int>
         return System.Math.Min(x, y);
     }
 }
-";
-        var fixedSource = @"using AtCoder;
+""";
+        var fixedSource = """
+using AtCoder;
 using System.Runtime.CompilerServices;
 class Program
 {
@@ -184,14 +203,15 @@ struct MinOp : ISegtreeOperator<int>
     }
 }
 
-struct OpSeg : ISegtreeOperator<int>
+$$TypeDefinition$$ OpSeg : ISegtreeOperator<int>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int Operate(int x, int y) => default;
 
     public int Identity => default;
-}";
-        await VerifyCS.VerifyCodeFixAsync(source,
+}
+""";
+        await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(6, 5, 6, 24).WithArguments("OpSeg"),
             fixedSource);
     }
@@ -199,7 +219,8 @@ struct OpSeg : ISegtreeOperator<int>
     [Fact]
     public async Task Segtree_Qualified_Using()
     {
-        var source = @"using AtCoder;
+        var source = """
+using AtCoder;
 using System.Runtime.CompilerServices;
 class Program
 {
@@ -215,8 +236,9 @@ struct MinOp : ISegtreeOperator<int>
         return System.Math.Min(x, y);
     }
 }
-";
-        var fixedSource = @"using AtCoder;
+""";
+        var fixedSource = """
+using AtCoder;
 using System.Runtime.CompilerServices;
 class Program
 {
@@ -233,14 +255,15 @@ struct MinOp : ISegtreeOperator<int>
     }
 }
 
-struct OpSeg : ISegtreeOperator<int>
+$$TypeDefinition$$ OpSeg : ISegtreeOperator<int>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int Operate(int x, int y) => default;
 
     public int Identity => default;
-}";
-        await VerifyCS.VerifyCodeFixAsync(source,
+}
+""";
+        await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(6, 13, 6, 32).WithArguments("OpSeg"),
             fixedSource);
     }
@@ -248,7 +271,7 @@ struct OpSeg : ISegtreeOperator<int>
     [Fact]
     public async Task Segtree_Qualified()
     {
-        var source = @"
+        var source = """
 class Program
 {
     AtCoder.Segtree<int, MinOp> defined;
@@ -263,8 +286,8 @@ struct MinOp : AtCoder.ISegtreeOperator<int>
         return System.Math.Min(x, y);
     }
 }
-";
-        var fixedSource = @"
+""";
+        var fixedSource = """
 class Program
 {
     AtCoder.Segtree<int, MinOp> defined;
@@ -280,22 +303,23 @@ struct MinOp : AtCoder.ISegtreeOperator<int>
     }
 }
 
-struct OpSeg : AtCoder.ISegtreeOperator<int>
+$$TypeDefinition$$ OpSeg : AtCoder.ISegtreeOperator<int>
 {
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public int Operate(int x, int y) => default;
 
     public int Identity => default;
-}";
-        await VerifyCS.VerifyCodeFixAsync(source,
-            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(5, 13, 5, 32).WithArguments("OpSeg"),
+}
+""";
+        await VerifyCodeFixAsync(source,
+            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(4, 13, 4, 32).WithArguments("OpSeg"),
             fixedSource);
     }
 
     [Fact]
     public async Task Segtree_Using_With_System_Runtime_CompilerServices()
     {
-        var source = @"
+        var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
 class Program
@@ -312,8 +336,8 @@ struct MinOp : ISegtreeOperator<int>
         return System.Math.Min(x, y);
     }
 }
-";
-        var fixedSource = @"
+""";
+        var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
 class Program
@@ -331,15 +355,16 @@ struct MinOp : ISegtreeOperator<int>
     }
 }
 
-struct OpSeg : ISegtreeOperator<int>
+$$TypeDefinition$$ OpSeg : ISegtreeOperator<int>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int Operate(int x, int y) => default;
 
     public int Identity => default;
-}";
-        await VerifyCS.VerifyCodeFixAsync(source,
-            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(7, 5, 7, 24).WithArguments("OpSeg"),
+}
+""";
+        await VerifyCodeFixAsync(source,
+            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(6, 5, 6, 24).WithArguments("OpSeg"),
             fixedSource);
     }
     #endregion Segtree
@@ -348,7 +373,8 @@ struct OpSeg : ISegtreeOperator<int>
     [Fact]
     public async Task LazySegtree_Using()
     {
-        var source = @"using AtCoder;
+        var source = """
+using AtCoder;
 using System.Runtime.CompilerServices;
 class Program
 {
@@ -366,8 +392,9 @@ struct Op : ILazySegtreeOperator<long, int>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public long Operate(long x, long y) => 0L;
 }
-";
-        var fixedSource = @"using AtCoder;
+""";
+        var fixedSource = """
+using AtCoder;
 using System.Runtime.CompilerServices;
 class Program
 {
@@ -386,7 +413,7 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 
-struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
+$$TypeDefinition$$ OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int v, int size) Operate((int v, int size) x, (int v, int size) y) => default;
@@ -398,8 +425,9 @@ struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
     public (int v, int size) Identity => default;
 
     public (int b, int c) FIdentity => default;
-}";
-        await VerifyCS.VerifyCodeFixAsync(source,
+}
+""";
+        await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(6, 5, 6, 58).WithArguments("OpSeg"),
             fixedSource);
     }
@@ -407,7 +435,8 @@ struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
     [Fact]
     public async Task LazySegtree_Qualified_Using()
     {
-        var source = @"using AtCoder;
+        var source = """
+using AtCoder;
 using System.Runtime.CompilerServices;
 class Program
 {
@@ -425,8 +454,9 @@ struct Op : AtCoder.ILazySegtreeOperator<long, int>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public long Operate(long x, long y) => 0L;
 }
-";
-        var fixedSource = @"using AtCoder;
+""";
+        var fixedSource = """
+using AtCoder;
 using System.Runtime.CompilerServices;
 class Program
 {
@@ -445,7 +475,7 @@ struct Op : AtCoder.ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 
-struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
+$$TypeDefinition$$ OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int v, int size) Operate((int v, int size) x, (int v, int size) y) => default;
@@ -457,8 +487,9 @@ struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
     public (int v, int size) Identity => default;
 
     public (int b, int c) FIdentity => default;
-}";
-        await VerifyCS.VerifyCodeFixAsync(source,
+}
+""";
+        await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(6, 13, 6, 66).WithArguments("OpSeg"),
             fixedSource);
     }
@@ -466,7 +497,8 @@ struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
     [Fact]
     public async Task LazySegtree_Qualified()
     {
-        var source = @"using System.Runtime.CompilerServices;
+        var source = """
+using System.Runtime.CompilerServices;
 
 class Program
 {
@@ -484,8 +516,9 @@ struct Op : AtCoder.ILazySegtreeOperator<long, int>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public long Operate(long x, long y) => 0L;
 }
-";
-        var fixedSource = @"using System.Runtime.CompilerServices;
+""";
+        var fixedSource = """
+using System.Runtime.CompilerServices;
 
 class Program
 {
@@ -504,7 +537,7 @@ struct Op : AtCoder.ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 
-struct OpSeg : AtCoder.ILazySegtreeOperator<(int v, int size), (int b, int c)>
+$$TypeDefinition$$ OpSeg : AtCoder.ILazySegtreeOperator<(int v, int size), (int b, int c)>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int v, int size) Operate((int v, int size) x, (int v, int size) y) => default;
@@ -516,8 +549,9 @@ struct OpSeg : AtCoder.ILazySegtreeOperator<(int v, int size), (int b, int c)>
     public (int v, int size) Identity => default;
 
     public (int b, int c) FIdentity => default;
-}";
-        await VerifyCS.VerifyCodeFixAsync(source,
+}
+""";
+        await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(6, 13, 6, 66).WithArguments("OpSeg"),
             fixedSource);
     }
@@ -525,7 +559,7 @@ struct OpSeg : AtCoder.ILazySegtreeOperator<(int v, int size), (int b, int c)>
     [Fact]
     public async Task LazySegtree_Using_With_System_Runtime_CompilerServices()
     {
-        var source = @"
+        var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
 class Program
@@ -544,8 +578,8 @@ struct Op : ILazySegtreeOperator<long, int>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public long Operate(long x, long y) => 0L;
 }
-";
-        var fixedSource = @"
+""";
+        var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
 class Program
@@ -565,7 +599,7 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 
-struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
+$$TypeDefinition$$ OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int v, int size) Operate((int v, int size) x, (int v, int size) y) => default;
@@ -577,9 +611,10 @@ struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
     public (int v, int size) Identity => default;
 
     public (int b, int c) FIdentity => default;
-}";
-        await VerifyCS.VerifyCodeFixAsync(source,
-            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(7, 5, 7, 58).WithArguments("OpSeg"),
+}
+""";
+        await VerifyCodeFixAsync(source,
+            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(6, 5, 6, 58).WithArguments("OpSeg"),
             fixedSource);
     }
     #endregion LazySegtree
@@ -588,7 +623,8 @@ struct OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c)>
     [Fact]
     public async Task ICompare()
     {
-        var source = @"using System;
+        var source = """
+using System;
 using AtCoder;
 public class Generic<T, TOp> where TOp : System.Collections.Generic.IComparer<T> { }
 class Program
@@ -596,8 +632,9 @@ class Program
     Generic<short, Op> notDefined;
     Type Type = typeof(Generic<,>);
 }
-";
-        var fixedSource = @"using System;
+""";
+        var fixedSource = """
+using System;
 using AtCoder;
 public class Generic<T, TOp> where TOp : System.Collections.Generic.IComparer<T> { }
 class Program
@@ -606,12 +643,13 @@ class Program
     Type Type = typeof(Generic<,>);
 }
 
-struct Op : System.Collections.Generic.IComparer<short>
+$$TypeDefinition$$ Op : System.Collections.Generic.IComparer<short>
 {
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public int Compare(short x, short y) => x.CompareTo(y);
-}";
-        await VerifyCS.VerifyCodeFixAsync(source,
+}
+""";
+        await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(6, 5, 6, 23).WithArguments("Op"),
             fixedSource);
     }
@@ -619,7 +657,7 @@ struct Op : System.Collections.Generic.IComparer<short>
     [Fact]
     public async Task AnyDefinedType()
     {
-        var source = @"
+        var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
 [IsOperator]
@@ -640,8 +678,8 @@ struct Def<T> : IAny<T> {
     public T Prop1 { set; get; }
     public T Prop2 { set; get; }
 }
-";
-        var fixedSource = @"
+""";
+        var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
 [IsOperator]
@@ -663,7 +701,7 @@ struct Def<T> : IAny<T> {
     public T Prop2 { set; get; }
 }
 
-struct Op : IAny<(int, long)>
+$$TypeDefinition$$ Op : IAny<(int, long)>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Init(ref (int, long) val, out bool success, params int[] nums)
@@ -672,16 +710,17 @@ struct Op : IAny<(int, long)>
 
     public (int, long) Prop1 { set; get; }
     public (int, long) Prop2 { set; get; }
-}";
-        await VerifyCS.VerifyCodeFixAsync(source,
-            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(13, 5, 13, 29).WithArguments("Op"),
+}
+""";
+        await VerifyCodeFixAsync(source,
+            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(12, 5, 12, 29).WithArguments("Op"),
            fixedSource);
     }
 
     [Fact]
     public async Task AnyDefinedMethod()
     {
-        var source = @"
+        var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
 [IsOperator]
@@ -698,8 +737,8 @@ class Program
         M<(int n, long m), Op>();
     }
 }
-";
-        var fixedSource = @"
+""";
+        var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
 [IsOperator]
@@ -717,7 +756,7 @@ class Program
     }
 }
 
-struct Op : IAny<(int n, long m)>
+$$TypeDefinition$$ Op : IAny<(int n, long m)>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Init()
@@ -726,16 +765,17 @@ struct Op : IAny<(int n, long m)>
 
     public (int n, long m) Prop1 { set; get; }
     public (int n, long m) Prop2 { set; get; }
-}";
-        await VerifyCS.VerifyCodeFixAsync(source,
-            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(15, 9, 15, 31).WithArguments("Op"),
+}
+""";
+        await VerifyCodeFixAsync(source,
+            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(14, 9, 14, 31).WithArguments("Op"),
            fixedSource);
     }
 
     [Fact]
     public async Task Array()
     {
-        var source = @"
+        var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
 
@@ -751,8 +791,8 @@ class Program
         M<System.Numerics.BigInteger[], BigOp>();
     }
 }
-";
-        var fixedSource = @"
+""";
+        var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
 
@@ -769,19 +809,20 @@ class Program
     }
 }
 
-struct BigOp : IAny<System.Numerics.BigInteger[]>
+$$TypeDefinition$$ BigOp : IAny<System.Numerics.BigInteger[]>
 {
     public System.Numerics.BigInteger[] Prop => default;
-}";
-        await VerifyCS.VerifyCodeFixAsync(source,
-            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(14, 9, 14, 47).WithArguments("BigOp"),
+}
+""";
+        await VerifyCodeFixAsync(source,
+            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(13, 9, 13, 47).WithArguments("BigOp"),
             fixedSource);
     }
 
     [Fact]
     public async Task Generic()
     {
-        var source = @"
+        var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
 
@@ -797,8 +838,8 @@ class Program
         M<StaticModInt<Mod1000000007>, ModOp>();
     }
 }
-";
-        var fixedSource = @"
+""";
+        var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
 
@@ -815,19 +856,20 @@ class Program
     }
 }
 
-struct ModOp : IAny<StaticModInt<Mod1000000007>>
+$$TypeDefinition$$ ModOp : IAny<StaticModInt<Mod1000000007>>
 {
     public StaticModInt<Mod1000000007> Prop => default;
-}";
-        await VerifyCS.VerifyCodeFixAsync(source,
-            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(14, 9, 14, 46).WithArguments("ModOp"),
+}
+""";
+        await VerifyCodeFixAsync(source,
+            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(13, 9, 13, 46).WithArguments("ModOp"),
             fixedSource);
     }
 
     [Fact]
     public async Task NumOperatorAndShiftOperator()
     {
-        var source = @"
+        var source = """
 using AtCoder.Operators;
 using System.Runtime.CompilerServices;
 class Program
@@ -838,8 +880,8 @@ class Program
         M<Op>();
     }
 }
-";
-        var fixedSource = @"
+""";
+        var fixedSource = """
 using AtCoder.Operators;
 using System.Runtime.CompilerServices;
 class Program
@@ -851,7 +893,7 @@ class Program
     }
 }
 
-struct Op : ICastOperator<short, char>, INumOperator<float>, INumOperator<int>, IShiftOperator<int>
+$$TypeDefinition$$ Op : ICastOperator<short, char>, INumOperator<float>, INumOperator<int>, IShiftOperator<int>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public char Cast(short y) => (char)y;
@@ -927,16 +969,18 @@ struct Op : ICastOperator<short, char>, INumOperator<float>, INumOperator<int>, 
     public int LeftShift(int x, int y) => x << y;
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public int RightShift(int x, int y) => x >> y;
-}";
-        await VerifyCS.VerifyCodeFixAsync(source,
-            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(9, 9, 9, 14).WithArguments("Op"),
+}
+""";
+        await VerifyCodeFixAsync(source,
+            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(8, 9, 8, 14).WithArguments("Op"),
             fixedSource);
     }
 
     [Fact]
     public async Task UsingAlias()
     {
-        var source = @"using AtCoder;
+        var source = """
+using AtCoder;
 using System.Runtime.CompilerServices;
 using ModInt = StaticModInt<Mod1000000007>;
 class Program
@@ -953,8 +997,9 @@ struct MinOp : ISegtreeOperator<int>
         return System.Math.Min(x, y);
     }
 }
-";
-        var fixedSource = @"using AtCoder;
+""";
+        var fixedSource = """
+using AtCoder;
 using System.Runtime.CompilerServices;
 using ModInt = StaticModInt<Mod1000000007>;
 class Program
@@ -972,14 +1017,15 @@ struct MinOp : ISegtreeOperator<int>
     }
 }
 
-struct OpSeg : ISegtreeOperator<ModInt>
+$$TypeDefinition$$ OpSeg : ISegtreeOperator<ModInt>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ModInt Operate(ModInt x, ModInt y) => default;
 
     public ModInt Identity => default;
-}";
-        await VerifyCS.VerifyCodeFixAsync(source,
+}
+""";
+        await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(7, 5, 7, 27).WithArguments("OpSeg"),
             fixedSource);
     }
@@ -987,7 +1033,8 @@ struct OpSeg : ISegtreeOperator<ModInt>
     [Fact]
     public async Task MethodImplAlias()
     {
-        var source = @"using AtCoder;
+        var source = """
+using AtCoder;
 using System.Runtime.CompilerServices;
 using MI = System.Runtime.CompilerServices.MethodImplAttribute;
 class Program
@@ -1004,8 +1051,9 @@ struct MinOp : ISegtreeOperator<int>
         return System.Math.Min(x, y);
     }
 }
-";
-        var fixedSource = @"using AtCoder;
+""";
+        var fixedSource = """
+using AtCoder;
 using System.Runtime.CompilerServices;
 using MI = System.Runtime.CompilerServices.MethodImplAttribute;
 class Program
@@ -1023,27 +1071,25 @@ struct MinOp : ISegtreeOperator<int>
     }
 }
 
-struct OpSeg : ISegtreeOperator<long>
+$$TypeDefinition$$ OpSeg : ISegtreeOperator<long>
 {
     [MI(MethodImplOptions.AggressiveInlining)]
     public long Operate(long x, long y) => default;
 
     public long Identity => default;
-}";
+}
+""";
 
-        var test = new VerifyCS.Test
-        {
-            TestCode = source,
-            FixedCode = fixedSource,
-        };
-        test.ExpectedDiagnostics.Add(VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(7, 5, 7, 25).WithArguments("OpSeg"));
-        await test.RunAsync(CancellationToken.None);
+        await VerifyCodeFixAsync(source,
+            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(7, 5, 7, 25).WithArguments("OpSeg"),
+            fixedSource);
     }
 
     [Fact]
     public async Task MethodImpl256()
     {
-        var source = @"using AtCoder;
+        var source = """
+using AtCoder;
 using System.Runtime.CompilerServices;
 class Program
 {
@@ -1059,8 +1105,9 @@ struct MinOp : ISegtreeOperator<int>
         return System.Math.Min(x, y);
     }
 }
-";
-        var fixedSource = @"using AtCoder;
+""";
+        var fixedSource = """
+using AtCoder;
 using System.Runtime.CompilerServices;
 class Program
 {
@@ -1077,38 +1124,30 @@ struct MinOp : ISegtreeOperator<int>
     }
 }
 
-struct OpSeg : ISegtreeOperator<long>
+$$TypeDefinition$$ OpSeg : ISegtreeOperator<long>
 {
     [MethodImpl(256)]
     public long Operate(long x, long y) => default;
 
     public long Identity => default;
-}";
+}
+""";
 
-        var test = new VerifyCS.Test
-        {
-            TestCode = source,
-            FixedCode = fixedSource,
-            TestState =
-            {
-                AnalyzerConfigFiles =
-                {
-                    ("/.editorconfig", @"
+        static void updateTest(Test t) => t.TestState.AnalyzerConfigFiles.Add(("/.editorconfig", """
 is_global = true
 build_property.CompetitiveAnalyzer_UseMethodImplNumeric = true
-")
-                },
-            },
-        };
-        test.ExpectedDiagnostics.Add(VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(6, 5, 6, 25).WithArguments("OpSeg"));
-        await test.RunAsync(CancellationToken.None);
+"""));
+        await VerifyCodeFixAsync(source,
+            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(6, 5, 6, 25).WithArguments("OpSeg"),
+            fixedSource,
+            updateTest: updateTest);
     }
 
 
     [Fact]
     public async Task Virtual()
     {
-        var source = @"
+        var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
 [IsOperator]
@@ -1123,8 +1162,8 @@ class Program
         M<Op>();
     }
 }
-";
-        var fixedSource = @"
+""";
+        var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
 [IsOperator]
@@ -1140,18 +1179,19 @@ class Program
     }
 }
 
-struct Op : IAny
+$$TypeDefinition$$ Op : IAny
 {
-}";
-        await VerifyCS.VerifyCodeFixAsync(source,
-            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(13, 9, 13, 14).WithArguments("Op"),
+}
+""";
+        await VerifyCodeFixAsync(source,
+            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(12, 9, 12, 14).WithArguments("Op"),
            fixedSource);
     }
 
     [Fact]
     public async Task StaticAbstract()
     {
-        var source = @"
+        var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
 [IsOperator]
@@ -1168,8 +1208,8 @@ class Program
         M<(int n, long m), Op>();
     }
 }
-";
-        var fixedSource = @"
+""";
+        var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
 [IsOperator]
@@ -1187,7 +1227,7 @@ class Program
     }
 }
 
-struct Op : IAny<(int n, long m)>
+$$TypeDefinition$$ Op : IAny<(int n, long m)>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool Init() => default;
@@ -1195,16 +1235,17 @@ struct Op : IAny<(int n, long m)>
     public static (int n, long m) Prop1 { set; get; }
 
     public static ((int n, long m), (int n, long m)) Prop2 => default;
-}";
-        await VerifyCS.VerifyCodeFixAsync(source,
-            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(15, 9, 15, 31).WithArguments("Op"),
+}
+""";
+        await VerifyCodeFixAsync(source,
+            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(14, 9, 14, 31).WithArguments("Op"),
            fixedSource);
     }
 
     [Fact]
     public async Task StaticVirtual()
     {
-        var source = @"
+        var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
 [IsOperator]
@@ -1221,8 +1262,8 @@ class Program
         M<(int n, long m), Op>();
     }
 }
-";
-        var fixedSource = @"
+""";
+        var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
 [IsOperator]
@@ -1240,11 +1281,12 @@ class Program
     }
 }
 
-struct Op : IAny<(int n, long m)>
+$$TypeDefinition$$ Op : IAny<(int n, long m)>
 {
-}";
-        await VerifyCS.VerifyCodeFixAsync(source,
-            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(15, 9, 15, 31).WithArguments("Op"),
+}
+""";
+        await VerifyCodeFixAsync(source,
+            VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(14, 9, 14, 31).WithArguments("Op"),
            fixedSource);
     }
     #endregion Others
