@@ -21,14 +21,14 @@ namespace Kzrnm.Competitive
         public static void WriteGrid(this Utf8ConsoleWriter cw, Grid<char> grid)
         {
             for (int i = 0; i < grid.H; i++)
-                cw.WriteLine(grid.data.AsSpan(i * grid.W, grid.W));
+                cw.WriteLine(grid.RowSpan(i));
         }
 
         [凾(256)]
         public static void WriteGrid<T>(this Utf8ConsoleWriter cw, Grid<T> grid)
         {
             for (int i = 0; i < grid.H; i++)
-                cw.WriteLineJoin(grid.data.AsSpan(i * grid.W, grid.W));
+                cw.WriteLineJoin(grid.RowSpan(i));
         }
     }
 
