@@ -116,6 +116,29 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         }
 
         [Fact]
+        public void AddSpan()
+        {
+            var nums = Enumerable.Range(1, 100).ToArray().AsSpan();
+
+            for (int n = 0; n <= 100; n++)
+            {
+                var fw1 = new IntFenwickTree(n);
+                var fw2 = new IntFenwickTree(n);
+                fw1.data.Should().Equal(fw2.data);
+
+                fw1.Add(nums[..n]);
+                for (int i = 0; i < n; i++)
+                    fw2.Add(i, i + 1);
+                fw1.data.Should().Equal(fw2.data);
+
+                fw1.Add(nums[..(n / 2)]);
+                for (int i = 0; i < (n / 2); i++)
+                    fw2.Add(i, i + 1);
+                fw1.data.Should().Equal(fw2.data);
+            }
+        }
+
+        [Fact]
         public void ToArray()
         {
             var rnd = new Random(227);

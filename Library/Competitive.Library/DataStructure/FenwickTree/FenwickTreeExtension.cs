@@ -1,6 +1,9 @@
 using AtCoder;
 using AtCoder.Internal;
+using System;
+using System.Buffers;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -68,6 +71,32 @@ namespace Kzrnm.Competitive
         public static T Get<T>(this FenwickTree<T> fw, int i)
             where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>, IAdditiveIdentity<T, T>
             => fw.Sum(i, i + 1);
+
+        /// <summary>
+        /// <c><paramref name="fw"/>[i]+=<paramref name="s"/>[i]</c> となるよう更新します。
+        /// </summary>
+        /// <remarks>
+        /// <para>計算量: O(<c>n</c>)</para>
+        /// </remarks>
+        public static void Add<T>(this FenwickTree<T> fw, ReadOnlySpan<T> s)
+            where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>, IAdditiveIdentity<T, T>
+        {
+            Contract.Assert(s.Length <= fw.Length, reason: $"IndexOutOfRange: input is longer than fenwick tree.");
+            var d = fw.data;
+            var buf = ArrayPool<T>.Shared.Rent(d.Length);
+            s.CopyTo(buf.AsSpan(1));
+            buf.AsSpan(s.Length + 1).Clear();
+            ref var bp = ref buf[0];
+            for (int p = 1; p < d.Length; ++p)
+            {
+                var t = Unsafe.Add(ref bp, p);
+                d[p] += t;
+                var q = p + (int)InternalBit.ExtractLowestSetBit(p);
+                if (q < d.Length)
+                    Unsafe.Add(ref bp, q) += t;
+            }
+            ArrayPool<T>.Shared.Return(buf);
+        }
 
         /// <summary>
         /// <c>(<paramref name="fw"/>[i..(i+1)], <paramref name="fw"/>[..(i+1)])</c> のタプルを配列にして返します。
