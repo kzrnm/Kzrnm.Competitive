@@ -1,2 +1,3 @@
 Palindrome.cs	回文
-RollingHashEditable.cs	更新可能な Rolling Hash
+RollingHashWritable.cs	更新可能な Rolling Hash
+RollingHashEditable.cs	追加・削除・更新可能な Rolling Hash

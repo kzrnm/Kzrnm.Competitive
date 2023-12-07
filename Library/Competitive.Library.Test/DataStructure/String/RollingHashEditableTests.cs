@@ -20,39 +20,44 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
         [Fact]
         public void Large()
         {
+            RollingHashEditable.ResizePow(10000);
             const int length = 20;
-            Span<int> str = rnd.NextIntArray(length, 1, 3);
-            var rh = RollingHashEditable.Create(str);
+            var sl = rnd.NextIntArray(length, 1, 3).ToList();
+            var rh = RollingHashEditable.Create(sl.AsSpan());
 
             for (int q = 0; q < 4; q++)
             {
-                for (int p = 0; p < 20; p++)
+                for (int p = 0; p < 5; p++)
                 {
-                    var ix = rnd.Next(length);
                     var v = rnd.Next(3);
-                    rh.Set(ix, v);
-                    str[ix] = v;
-                }
-                var notMatchCount = 0;
-                var notMatchHashNotMatchCount = 0;
+                    var ix = rnd.Next(rh.Length);
+                    switch (rnd.Next(4))
+                    {
+                        case 0:
+                            sl[ix] = v;
+                            rh.Set(ix, v);
+                            break;
+                        case 1:
+                            rh.Add(v);
+                            sl.Add(v);
+                            break;
+                        case 2:
+                            rh.Insert(ix, v);
+                            sl.Insert(ix, v);
+                            break;
+                        case 3:
+                            rh.RemoveAt(ix);
+                            sl.RemoveAt(ix);
+                            break;
 
-                for (int l1 = 0; l1 < str.Length; l1++)
-                    for (int r1 = l1 + 1; r1 <= str.Length; r1++)
-                        for (int l2 = 0; l2 < str.Length; l2++)
-                            for (int r2 = l2 + 1; r2 <= str.Length; r2++)
-                            {
-                                if (str[l1..r1].SequenceEqual(str[l2..r2]))
-                                {
-                                    rh[l1..r1].Should().Be(rh[l2..r2]);
-                                }
-                                else
-                                {
-                                    notMatchCount++;
-                                    if (rh[l1..r1] != rh[l2..r2])
-                                        notMatchHashNotMatchCount++;
-                                }
-                            }
-                ((double)notMatchHashNotMatchCount / notMatchCount).Should().BeGreaterThan(0.9999);
+                    }
+                }
+                var re = RollingHash.Create(sl.AsSpan());
+
+                rh.Length.Should().Be(re.Length);
+                for (int l = 0; l < rh.Length; l++)
+                    for (int r = l + 1; r <= rh.Length; r++)
+                        rh[l..r].Should().Be(re[l..r]);
             }
         }
     }
