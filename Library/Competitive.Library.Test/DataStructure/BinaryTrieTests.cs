@@ -131,6 +131,43 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             nodes[5].Should().BeNull();
             nodes[6].Should().BeNull();
             nodes[7].Should().BeNull();
+
+            bt.Add(2, -2, idx: 2);
+            nodes = Enumerable.Range(0, 8).Select(i => bt.Find((byte)i)).ToArray();
+            nodes[0].Accepts.ToArray().Should().Equal(1);
+            nodes[0].Exist.Should().Be(3);
+            nodes[0].Left.Should().BeNull();
+            nodes[0].Right.Should().BeNull();
+            nodes[1].Accepts.ToArray().Should().BeEmpty();
+            nodes[1].Exist.Should().Be(1);
+            nodes[1].Left.Should().BeNull();
+            nodes[1].Right.Should().BeNull();
+            nodes[2].Accepts.ToArray().Should().Equal(0, 2);
+            nodes[2].Exist.Should().Be(0);
+            nodes[2].Left.Should().BeNull();
+            nodes[2].Right.Should().BeNull();
+            nodes[3].Should().BeNull();
+            nodes[4].Should().BeNull();
+            nodes[5].Should().BeNull();
+            nodes[6].Should().BeNull();
+            nodes[7].Should().BeNull();
+
+            bt.Decrement(0, clear: true, xorVal: 1);
+            nodes = Enumerable.Range(0, 8).Select(i => bt.Find((byte)i)).ToArray();
+            nodes[0].Accepts.ToArray().Should().Equal(1);
+            nodes[0].Exist.Should().Be(3);
+            nodes[0].Left.Should().BeNull();
+            nodes[0].Right.Should().BeNull();
+            nodes[1].Should().BeNull();
+            nodes[2].Accepts.ToArray().Should().Equal(0, 2);
+            nodes[2].Exist.Should().Be(0);
+            nodes[2].Left.Should().BeNull();
+            nodes[2].Right.Should().BeNull();
+            nodes[3].Should().BeNull();
+            nodes[4].Should().BeNull();
+            nodes[5].Should().BeNull();
+            nodes[6].Should().BeNull();
+            nodes[7].Should().BeNull();
         }
     }
 }
