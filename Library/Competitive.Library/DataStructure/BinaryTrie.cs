@@ -49,55 +49,50 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <para><paramref name="num"/> を <paramref name="delta"/> 個追加します。</para>
         /// <para><paramref name="idx"/> に対して −1 以外を与えると、マッチしたノードの accept に <paramref name="idx"/> が追加されます。</para>
-        /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱います。</para>
         /// <para><paramref name="clear"/> が true で <paramref name="num"/> が 0 個になったときにはノードを削除します。</para>
         /// </summary>
         /// <remarks>
         /// <para><paramref name="num"/> が負とならないようにしなければなりません。</para>
         /// </remarks>
         [凾(256)]
-        public void Add(T num, int delta, T xorVal = default, int idx = -1, bool clear = false)
-             => _r = _r.Add(num, MaxDepth, delta, xorVal, idx, clear);
+        public void Add(T num, int delta, int idx = -1, bool clear = false)
+             => _r = _r.Add(num, MaxDepth, delta, idx, clear);
 
         /// <summary>
         /// <para><paramref name="num"/> をデクリメントする。</para>
-        /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱います。</para>
         /// </summary>
         [凾(256)]
-        public void Increment(T num, T xorVal = default)
-             => Add(num, 1, xorVal);
+        public void Increment(T num)
+             => Add(num, 1);
 
         /// <summary>
         /// <para><paramref name="num"/> をデクリメントする。</para>
-        /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱います。</para>
         /// <para><paramref name="clear"/> が true で <paramref name="num"/> が 0 個になったときにはノードを削除します。</para>
         /// </summary>
         [凾(256)]
-        public void Decrement(T num, bool clear = false, T xorVal = default)
-             => Add(num, -1, xorVal, clear: clear);
+        public void Decrement(T num, bool clear = false)
+             => Add(num, -1, clear: clear);
 
         /// <summary>
-        /// <para><paramref name="num"/> に対応するノードを返す。</para>
-        /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱います。</para>
+        /// <para><paramref name="num"/> に対応するノードを返します。</para>
         /// </summary>
         [凾(256)]
-        public Node Find(T num, T xorVal = default)
-             => _r.Find(num, MaxDepth, xorVal);
+        public Node Find(T num)
+             => _r.Find(num, MaxDepth);
 
         /// <summary>
-        /// 現在の要素数を返す。
+        /// 現在の要素数を返します。
         /// </summary>
         public int CountAll => _r.Exist;
 
         /// <summary>
-        /// <para><paramref name="num"/> に対応する個数を返す。</para>
-        /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱います。</para>
+        /// <para><paramref name="num"/> に対応する個数を返します。</para>
         /// </summary>
         [凾(256)]
-        public int Count(T num, T xorVal = default) => Find(num, xorVal)?.Exist ?? 0;
+        public int Count(T num) => Find(num)?.Exist ?? 0;
 
         /// <summary>
-        /// <para>最小値と対応するノードを返す。</para>
+        /// <para>最小値と対応するノードを返します。</para>
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱います。</para>
         /// </summary>
         [凾(256)]
@@ -108,7 +103,7 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// <para>最大値と対応するノードを返す。</para>
+        /// <para>最大値と対応するノードを返します。</para>
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱います。</para>
         /// </summary>
         [凾(256)]
@@ -119,7 +114,7 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// <para><paramref name="k"/> 番目(0-indexed) に小さい値とそれに対応するノードを返す。</para>
+        /// <para><paramref name="k"/> 番目(0-indexed) に小さい値とそれに対応するノードを返します。</para>
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱います。</para>
         /// </summary>
         [凾(256)]
@@ -130,7 +125,7 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// <para><paramref name="num"/> 未満の個数を返す。</para>
+        /// <para><paramref name="num"/> 未満の個数を返します。</para>
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱います。</para>
         /// </summary>
         [凾(256)]
@@ -152,14 +147,13 @@ namespace Kzrnm.Competitive
             /// <summary>
             /// <para><paramref name="num"/> を <paramref name="x"/> 個追加します。</para>
             /// <para><paramref name="idx"/> に対して −1 以外を与えると、マッチしたノードの accept に <paramref name="idx"/> が追加されます。</para>
-            /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱います。</para>
             /// <para><paramref name="clear"/> が true で <paramref name="num"/> が 0 個になったときにはノードを削除します。</para>
             /// </summary>
             /// <remarks>
             /// <para><paramref name="num"/> が負とならないようにしなければなりません。</para>
             /// </remarks>
             [凾(256)]
-            public Node Add(T num, int depth, int x, T xorVal = default, int idx = -1, bool clear = false)
+            public Node Add(T num, int depth, int x, int idx = -1, bool clear = false)
             {
                 if (depth == -1)
                 {
@@ -170,28 +164,28 @@ namespace Kzrnm.Competitive
                 {
                     Exist += x;
                     ref var to = ref _l;
-                    if ((((xorVal >> depth) ^ (num >> depth)) & T.MultiplicativeIdentity) != default)
+                    if (((num >> depth) & T.MultiplicativeIdentity) != default)
                         to = ref _r;
-                    to = (to ?? new()).Add(num, depth - 1, x, xorVal, idx, clear);
+                    to = (to ?? new()).Add(num, depth - 1, x, idx, clear);
                     if (to.Exist <= 0 && clear)
                         to = null;
                 }
                 return this;
             }
             [凾(256)]
-            public Node Find(T bit, int depth, T xorVal)
+            public Node Find(T bit, int depth)
             {
                 if (depth == -1)
                     return this;
                 var to = _l;
-                if ((((xorVal >> depth) ^ (bit >> depth)) & T.MultiplicativeIdentity) != default)
+                if (((bit >> depth) & T.MultiplicativeIdentity) != default)
                     to = _r;
-                return to?.Find(bit, depth - 1, xorVal);
+                return to?.Find(bit, depth - 1);
             }
 
 
             /// <summary>
-            /// <para><paramref name="k"/> 番目(0-indexed) に小さい値とそれに対応するノードを返す。</para>
+            /// <para><paramref name="k"/> 番目(0-indexed) に小さい値とそれに対応するノードを返します。</para>
             /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱います。</para>
             /// </summary>
             [凾(256)]
@@ -220,7 +214,7 @@ namespace Kzrnm.Competitive
             }
 
             /// <summary>
-            /// <para><paramref name="num"/> 未満の個数を返す。</para>
+            /// <para><paramref name="num"/> 未満の個数を返します。</para>
             /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱います。</para>
             /// </summary>
             [凾(256)]

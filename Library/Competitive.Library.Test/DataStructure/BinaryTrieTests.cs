@@ -20,9 +20,14 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             bt.MinElement().Num.Should().Be(1);
             bt.MaxElement().Num.Should().Be(5);
 
+            bt.Count(0).Should().Be(0);
             bt.Count(1).Should().Be(2);
             bt.Count(2).Should().Be(1);
+            bt.Count(3).Should().Be(0);
+            bt.Count(4).Should().Be(0);
             bt.Count(5).Should().Be(1);
+            bt.Count(6).Should().Be(0);
+            bt.Count(ulong.MaxValue).Should().Be(0);
 
             bt.CountLess(1).Should().Be(0);
             bt.CountLess(2).Should().Be(2);
@@ -37,11 +42,6 @@ namespace Kzrnm.Competitive.Testing.DataStructure
 
             bt.MinElement(4).Num.Should().Be(1);
             bt.MaxElement(4).Num.Should().Be(6);
-
-            bt.Count(1, 4).Should().Be(1);
-            bt.Count(2, 4).Should().Be(0);
-            bt.Count(5, 4).Should().Be(2);
-            bt.Count(6, 4).Should().Be(1);
 
             bt.CountLess(1, 4).Should().Be(0);
             bt.CountLess(2, 4).Should().Be(1);
@@ -152,7 +152,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             nodes[6].Should().BeNull();
             nodes[7].Should().BeNull();
 
-            bt.Decrement(0, clear: true, xorVal: 1);
+            bt.Decrement(1, clear: true);
             nodes = Enumerable.Range(0, 8).Select(i => bt.Find((byte)i)).ToArray();
             nodes[0].Accepts.ToArray().Should().Equal(1);
             nodes[0].Exist.Should().Be(3);
