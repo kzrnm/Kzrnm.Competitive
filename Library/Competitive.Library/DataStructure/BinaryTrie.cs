@@ -136,7 +136,8 @@ namespace Kzrnm.Competitive
 
         public class Node
         {
-            Node _l, _r;
+            Node _l, _r, _p;
+            public Node Parent => _p;
             public Node Left => _l;
             public Node Right => _r;
             public int Exist { get; private set; }
@@ -166,21 +167,21 @@ namespace Kzrnm.Competitive
                     ref var to = ref _l;
                     if (((num >> depth) & T.MultiplicativeIdentity) != default)
                         to = ref _r;
-                    to = (to ?? new()).Add(num, depth - 1, x, idx, clear);
+                    to = (to ?? new() { _p = this }).Add(num, depth - 1, x, idx, clear);
                     if (to.Exist <= 0 && clear)
                         to = null;
                 }
                 return this;
             }
             [凾(256)]
-            public Node Find(T bit, int depth)
+            public Node Find(T num, int depth)
             {
                 if (depth == -1)
                     return this;
                 var to = _l;
-                if (((bit >> depth) & T.MultiplicativeIdentity) != default)
+                if (((num >> depth) & T.MultiplicativeIdentity) != default)
                     to = _r;
-                return to?.Find(bit, depth - 1);
+                return to?.Find(num, depth - 1);
             }
 
 
