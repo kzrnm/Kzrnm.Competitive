@@ -47,13 +47,16 @@ namespace Kzrnm.Competitive
         readonly int MaxDepth;
 
         /// <summary>
-        /// <para><paramref name="num"/> に <paramref name="delta"/> を追加します。</para>
+        /// <para><paramref name="num"/> を <paramref name="delta"/> 個追加します。</para>
         /// <para><paramref name="idx"/> に対して −1 以外を与えると、マッチしたノードの accept に <paramref name="idx"/> が追加されます。</para>
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱う。</para>
         /// </summary>
+        /// <remarks>
+        /// <para><paramref name="num"/> が負とならないようにしなければなりません。</para>
+        /// </remarks>
         [凾(256)]
         public void Add(T num, int delta, int idx = -1, T xorVal = default)
-             => _r = _r.Add(num, idx, MaxDepth, delta, xorVal);
+             => _r = _r.Add(num, MaxDepth, delta, xorVal, idx);
 
         /// <summary>
         /// <para><paramref name="num"/> をデクリメントする。</para>
@@ -144,7 +147,7 @@ namespace Kzrnm.Competitive
             public ReadOnlySpan<int> Accepts => ac == null ? default : CollectionsMarshal.AsSpan(ac);
 
             [凾(256)]
-            public Node Add(T bit, int idx, int depth, int x, T xorVal)
+            public Node Add(T bit, int depth, int x, T xorVal, int idx = -1)
             {
                 if (depth == -1)
                 {
@@ -157,7 +160,7 @@ namespace Kzrnm.Competitive
                     if ((((xorVal >> depth) ^ (bit >> depth)) & T.MultiplicativeIdentity) != default)
                         to = ref _r;
                     to ??= new();
-                    to = to.Add(bit, idx, depth - 1, x, xorVal);
+                    to = to.Add(bit, depth - 1, x, xorVal, idx);
                     Exist += x;
                 }
                 return this;
