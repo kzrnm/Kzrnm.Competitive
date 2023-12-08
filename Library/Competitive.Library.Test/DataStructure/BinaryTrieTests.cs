@@ -1,3 +1,4 @@
+using System.Linq;
 
 namespace Kzrnm.Competitive.Testing.DataStructure
 {
@@ -28,8 +29,6 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             bt.CountLess(3).Should().Be(3);
             bt.CountLess(5).Should().Be(3);
             bt.CountLess(6).Should().Be(4);
-
-
 
             bt.KthElement(0, 4).Num.Should().Be(1);
             bt.KthElement(1, 4).Num.Should().Be(5);
@@ -66,6 +65,72 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             bt.CountLess(2).Should().Be(2);
             bt.CountLess(5).Should().Be(2);
             bt.CountLess(6).Should().Be(3);
+        }
+
+        [Fact]
+        public void Byte()
+        {
+            var bt = new BinaryTrie<byte>(3);
+            var nodes = Enumerable.Range(0, 8).Select(i => bt.Find((byte)i)).ToArray();
+            nodes[0].Should().BeNull();
+            nodes[1].Should().BeNull();
+            nodes[2].Should().BeNull();
+            nodes[3].Should().BeNull();
+            nodes[4].Should().BeNull();
+            nodes[5].Should().BeNull();
+            nodes[6].Should().BeNull();
+            nodes[7].Should().BeNull();
+
+            bt.Increment(1);
+            nodes = Enumerable.Range(0, 8).Select(i => bt.Find((byte)i)).ToArray();
+            nodes[0].Should().BeNull();
+            nodes[1].Accepts.ToArray().Should().BeEmpty();
+            nodes[1].Exist.Should().Be(1);
+            nodes[1].Left.Should().BeNull();
+            nodes[1].Right.Should().BeNull();
+            nodes[2].Should().BeNull();
+            nodes[3].Should().BeNull();
+            nodes[4].Should().BeNull();
+            nodes[5].Should().BeNull();
+            nodes[6].Should().BeNull();
+            nodes[7].Should().BeNull();
+
+            bt.Add(2, 2, idx: 0);
+            nodes = Enumerable.Range(0, 8).Select(i => bt.Find((byte)i)).ToArray();
+            nodes[0].Should().BeNull();
+            nodes[1].Accepts.ToArray().Should().BeEmpty();
+            nodes[1].Exist.Should().Be(1);
+            nodes[1].Left.Should().BeNull();
+            nodes[1].Right.Should().BeNull();
+            nodes[2].Accepts.ToArray().Should().Equal(0);
+            nodes[2].Exist.Should().Be(2);
+            nodes[2].Left.Should().BeNull();
+            nodes[2].Right.Should().BeNull();
+            nodes[3].Should().BeNull();
+            nodes[4].Should().BeNull();
+            nodes[5].Should().BeNull();
+            nodes[6].Should().BeNull();
+            nodes[7].Should().BeNull();
+
+            bt.Add(0, 3, idx: 1);
+            nodes = Enumerable.Range(0, 8).Select(i => bt.Find((byte)i)).ToArray();
+            nodes[0].Accepts.ToArray().Should().Equal(1);
+            nodes[0].Exist.Should().Be(3);
+            nodes[0].Left.Should().BeNull();
+            nodes[0].Right.Should().BeNull();
+            nodes[1].Accepts.ToArray().Should().BeEmpty();
+            nodes[1].Exist.Should().Be(1);
+            nodes[1].Left.Should().BeNull();
+            nodes[1].Right.Should().BeNull();
+            nodes[2].Accepts.ToArray().Should().Equal(0);
+            nodes[2].Exist.Should().Be(2);
+            nodes[2].Left.Should().BeNull();
+            nodes[2].Right.Should().BeNull();
+            nodes[3].Should().BeNull();
+            nodes[4].Should().BeNull();
+            nodes[5].Should().BeNull();
+            nodes[6].Should().BeNull();
+            nodes[7].Should().BeNull();
         }
     }
 }
