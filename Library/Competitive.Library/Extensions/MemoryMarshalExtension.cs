@@ -7,6 +7,9 @@ namespace Kzrnm.Competitive
 {
     public static class __MemoryMarshalExtension
     {
+        /// <summary>
+        /// <see cref="List{T}"/> の内部配列を <see cref="Span{T}"/> として取り出します。null でも空 Span を返します。
+        /// </summary>
         [凾(256)]
         public static Span<T> AsSpan<T>(this List<T> list, int start = 0)
             => CollectionsMarshal.AsSpan(list)[start..];

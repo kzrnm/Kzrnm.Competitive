@@ -41,15 +41,9 @@ namespace Kzrnm.Competitive.Testing.Graph
 
         [Theory]
         [MemberData(nameof(BfsData))]
-        public void Bfs重みなしグラフ(int root, int[] expected)
+        public void Bfs(int root, int[] expected)
         {
             gb.ToTree(root).BfsDescendant().Should().Equal(expected);
-        }
-
-        [Theory]
-        [MemberData(nameof(BfsData))]
-        public void Bfs重み付きグラフ(int root, int[] expected)
-        {
             wgb.ToTree(root).BfsDescendant().Should().Equal(expected);
         }
 
@@ -67,15 +61,9 @@ namespace Kzrnm.Competitive.Testing.Graph
 
         [Theory]
         [MemberData(nameof(DfsData))]
-        public void Dfs重みなしグラフ(int root, int[] expected)
+        public void Dfs(int root, int[] expected)
         {
             gb.ToTree(root).DfsDescendant().Should().Equal(expected);
-        }
-
-        [Theory]
-        [MemberData(nameof(DfsData))]
-        public void Dfs重み付きグラフ(int root, int[] expected)
-        {
             wgb.ToTree(root).DfsDescendant().Should().Equal(expected);
         }
 
@@ -93,16 +81,30 @@ namespace Kzrnm.Competitive.Testing.Graph
 
         [Theory]
         [MemberData(nameof(DfsLeafData))]
-        public void DfsLeaf重みなしグラフ(int root, int[] expected)
+        public void DfsLeaf(int root, int[] expected)
         {
             gb.ToTree(root).DfsDescendantLeaf().Should().Equal(expected);
+            wgb.ToTree(root).DfsDescendantLeaf().Should().Equal(expected);
         }
 
-        [Theory]
-        [MemberData(nameof(DfsLeafData))]
-        public void DfsLeaf重み付きグラフ(int root, int[] expected)
+        public static TheoryData DfsEventsData => new TheoryData<int, int[]>
         {
-            wgb.ToTree(root).DfsDescendantLeaf().Should().Equal(expected);
+            { 0, new[] { 0, 1, 3, 7, ~7, ~3, 4, ~4, ~1, 2, 6, ~6, 5, ~5, ~2, ~0 }},
+            { 1, new[] { 1, 0, 2, 6, ~6, 5, ~5, ~2, ~0, 3, 7, ~7, ~3, 4, ~4, ~1 }},
+            { 2, new[] { 2, 0, 1, 3, 7, ~7, ~3, 4, ~4, ~1, ~0, 5, ~5, 6, ~6, ~2 }},
+            { 3, new[] { 3, 1, 0, 2, 6, ~6, 5, ~5, ~2, ~0, 4, ~4, ~1, 7, ~7, ~3 }},
+            { 4, new[] { 4, 1, 0, 2, 6, ~6, 5, ~5, ~2, ~0, 3, 7, ~7, ~3, ~1, ~4 }},
+            { 5, new[] { 5, 2, 0, 1, 3, 7, ~7, ~3, 4, ~4, ~1, ~0, 6, ~6, ~2, ~5 }},
+            { 6, new[] { 6, 2, 0, 1, 3, 7, ~7, ~3, 4, ~4, ~1, ~0, 5, ~5, ~2, ~6 }},
+            { 7, new[] { 7, 3, 1, 0, 2, 6, ~6, 5, ~5, ~2, ~0, 4, ~4, ~1, ~3, ~7 }},
+        };
+
+        [Theory]
+        [MemberData(nameof(DfsEventsData))]
+        public void DfsEvents(int root, int[] expected)
+        {
+            gb.ToTree(root).DfsDescendantEvents().Should().Equal(expected);
+            wgb.ToTree(root).DfsDescendantEvents().Should().Equal(expected);
         }
     }
 }
