@@ -42,7 +42,14 @@ namespace Kzrnm.Competitive
         public readonly T[] data;
         internal readonly T defaultValue;
         public Grid(int H, int W, T defaultValue = default) : this(new T[H * W].Fill(defaultValue), H, W, defaultValue) { }
-        public Grid(Grid<T> other) : this((T[])other.data.Clone(), other.H, other.W, other.defaultValue) { }
+        public Grid(ReadOnlySpan<T> data, int H, int W, T defaultValue = default) : this(data.ToArray(), H, W, defaultValue)
+        {
+            AtCoder.Internal.Contract.Assert(H * W == data.Length);
+        }
+        public Grid(Grid<T> other) : this((T[])other.data.Clone(), other.H, other.W, other.defaultValue)
+        {
+            AtCoder.Internal.Contract.Assert(other.H * other.W == other.data.Length);
+        }
         internal Grid(T[] data, int H, int W, T defaultValue)
         {
             this.H = H;
