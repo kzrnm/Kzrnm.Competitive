@@ -30,7 +30,7 @@ namespace Kzrnm.Competitive
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
     public struct BitSubsetEnumerator32<T> : IEnumerable<T>, IEnumerator<T> where T : IBinaryInteger<T>
     {
-        uint msk, num, c;
+        uint msk, n;
         byte p;
         /// <summary>
         /// <para><paramref name="v"/> をビット集合としたときの部分集合を列挙します。</para>
@@ -41,38 +41,33 @@ namespace Kzrnm.Competitive
         internal BitSubsetEnumerator32(T v, bool proper)
         {
             Debug.Assert(typeof(T) == typeof(int) || typeof(T) == typeof(uint));
-            var n = Unsafe.As<T, uint>(ref v);
-            msk = n;
-            num = uint.MaxValue >> PopCount(~n);
-            Debug.Assert(msk == 0 || PopCount(num) == PopCount(msk));
+            var u = Unsafe.As<T, uint>(ref v);
+            msk = u;
+            n = u;
             if (proper)
-            {
                 p = 1;
-                --num;
-            }
-            if (n == 0)
-            {
-                num = 0;
-                p |= 128;
-            }
+            else
+                ++n;
         }
         [凾(256)]
         public bool MoveNext()
         {
-            if (num == 0)
+            if (--n >= msk)
             {
-                if (p > 128) return false;
-                p |= 192;
-                c = 0;
+                if (p != 0) return false;
+                p = 1;
             }
             else
-                c = ParallelBitDeposit(num--, msk);
+                n &= msk;
             return true;
         }
 
+        /// <summary>
+        /// 配列を返します。当然ながら列挙中に呼び出すと壊れます。
+        /// </summary>
         public T[] ToArray()
         {
-            var res = new T[(1 << PopCount(msk)) - (p & 1)];
+            var res = new T[(1 << PopCount(msk)) - p];
             for (var i = 0; i < res.Length; i++)
             {
                 MoveNext();
@@ -80,7 +75,7 @@ namespace Kzrnm.Competitive
             }
             return res;
         }
-        public T Current => Unsafe.As<uint, T>(ref c);
+        public T Current => Unsafe.As<uint, T>(ref n);
         public BitSubsetEnumerator32<T> GetEnumerator() => this;
         [凾(256)]
         void IDisposable.Dispose() { }

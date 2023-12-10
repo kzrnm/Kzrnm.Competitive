@@ -1,5 +1,6 @@
 using System.Numerics;
 using System.Runtime.Intrinsics.X86;
+using System.Xml.Linq;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -121,13 +122,14 @@ namespace Kzrnm.Competitive
         internal static T ParallelBitDepositLogic<T>(T x, T mask) where T : IBinaryInteger<T>
         {
             T res = T.Zero;
-            for (int i = 0; !T.IsZero(mask); i++, mask >>= 1)
+            for (T i = T.One; !T.IsZero(mask); i <<= 1)
             {
-                if (!T.IsZero(mask & T.One))
-                {
-                    res |= (x & T.One) << i;
-                    x >>= 1;
-                }
+                var pr = mask;
+                // mask で立っているうちの最下位の 1 ビットを0にする。
+                mask &= mask - T.One;
+
+                if (!T.IsZero(x & i))
+                    res |= mask ^ pr;
             }
             return res;
         }
@@ -173,14 +175,15 @@ namespace Kzrnm.Competitive
         internal static T ParallelBitExtractLogic<T>(T x, T mask) where T : IBinaryInteger<T>
         {
             T res = T.Zero;
-            int k = 0;
-            do
+            for (T i = T.One; !T.IsZero(mask); i <<= 1)
             {
-                if (!T.IsZero(mask & T.One))
-                    res |= (x & T.One) << k++;
-                x >>= 1;
-                mask >>= 1;
-            } while (!T.IsZero(mask));
+                var pr = mask;
+                // mask で立っているうちの最下位の 1 ビットを0にする。
+                mask &= mask - T.One;
+
+                if (!T.IsZero(x & (mask ^ pr)))
+                    res |= i;
+            }
             return res;
         }
 
