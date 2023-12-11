@@ -85,26 +85,26 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [Fact]
         public void DivisorLong()
         {
-            PrimeFactorization.Divisor(1L).Should().Equal(new long[] { 1 });
-            PrimeFactorization.Divisor(128100283921).Should().Equal(new long[] {
+            PrimeFactorization.Divisor(1L).Should().Equal([1]);
+            PrimeFactorization.Divisor(128100283921).Should().Equal([
                 1,
                 71,
                 5041,
                 357911,
                 25411681,
                 1804229351,
-                128100283921 });
-            PrimeFactorization.Divisor(132147483703).Should().Equal(new long[] { 1, 132147483703 });
+                128100283921]);
+            PrimeFactorization.Divisor(132147483703).Should().Equal([1, 132147483703]);
             PrimeFactorization.Divisor(963761198400).Should().HaveCount(6720); //高度合成数
             PrimeFactorization.Divisor(897612484786617600).Should().HaveCount(103680); //高度合成数
 
-            PrimeFactorization.Divisor(9007199254740997).Should().Equal(new long[] { 1, 9007199254740997 });
-            PrimeFactorization.Divisor(89652331L * 96325939).Should().Equal(new long[] {
+            PrimeFactorization.Divisor(9007199254740997).Should().Equal([1, 9007199254740997]);
+            PrimeFactorization.Divisor(89652331L * 96325939).Should().Equal([
                 1,
                 89652331,
                 96325939,
                 89652331L * 96325939,
-            });
+            ]);
         }
 
         public static TheoryData PrimeFactoringInt_Data => new TheoryData<int, Dictionary<int, int>>
@@ -263,7 +263,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
 
         static long[] NaiveDivisor(long n)
         {
-            if (n <= 1) return new long[] { 1 };
+            if (n <= 1) return [1];
 
             var left = new List<long>();
             var right = new List<long>();

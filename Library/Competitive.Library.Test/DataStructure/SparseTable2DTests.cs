@@ -11,15 +11,15 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         [Fact]
         public void Invalid()
         {
-            ((Action)(() => new SparseTable2D<short, MinOp>(Array.Empty<short[]>()))).Should().Throw<ContractAssertException>();
-            ((Action)(() => new SparseTable2D<short, MinOp>(new short[1][] { Array.Empty<short>() }))).Should().Throw<ContractAssertException>();
+            ((Action)(() => _ = new SparseTable2D<short, MinOp>([]))).Should().Throw<ContractAssertException>();
+            ((Action)(() => _ = new SparseTable2D<short, MinOp>([[]]))).Should().Throw<ContractAssertException>();
 
             var s = new SparseTable2D<short, MinOp>(Grid.Create(new[]
             {
                 new short[]{ 1,2,3 },
-                new short[]{ 4,5,6 },
-                new short[]{ 7,8,9 },
-                new short[]{ 10,11,12 },
+                [4,5,6],
+                [7,8,9],
+                [10,11,12],
             }));
             s.Invoking(s => s[-1..3][0..1]).Should().Throw<ContractAssertException>();
             s.Invoking(s => s[0..5][0..1]).Should().Throw<ContractAssertException>();
@@ -74,13 +74,8 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         {
             public short Operate(short x, short y) => Math.Min(x, y);
         }
-        private class MinNative
+        private class MinNative(short[][] array)
         {
-            private readonly short[][] array;
-            public MinNative(short[][] array)
-            {
-                this.array = array;
-            }
 
             public short Prod(int lh, int rh, int lw, int rw)
             {

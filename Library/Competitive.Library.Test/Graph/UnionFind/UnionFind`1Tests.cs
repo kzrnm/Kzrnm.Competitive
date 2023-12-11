@@ -9,14 +9,14 @@ namespace Kzrnm.Competitive.Testing.Graph
         [Fact]
         public void Zero()
         {
-            var uf = new UnionFind<int>(Array.Empty<int>(), (a, b) => a + b);
-            uf.Groups().Should().Equal(Array.Empty<int[]>());
+            var uf = new UnionFind<int>([], (a, b) => a + b);
+            uf.Groups().Should().Equal([]);
         }
 
         [Fact]
         public void Simple()
         {
-            var uf = new UnionFind<int>(new int[2] { 1, 2 }, (a, b) => a + b);
+            var uf = new UnionFind<int>([1, 2], (a, b) => a + b);
             uf.Same(0, 1).Should().BeFalse();
 
             uf.Data(0).Should().Be(1);

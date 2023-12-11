@@ -9,12 +9,12 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [Fact]
         public void String()
         {
-            var grid = Grid.Create(new[]
-            {
+            var grid = Grid.Create(
+            [
                 "...#.",
                 ".#.#.",
                 ".#..."
-            });
+            ]);
             grid.H.Should().Be(3);
             grid.W.Should().Be(5);
             grid[0, 0].Should().Be('.');
@@ -82,13 +82,12 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [Fact]
         public void IntArray()
         {
-            var grid = Grid.Create(new[]
-            {
-                new[]{ 1,2,3 },
-                new[]{ 4,5,6 },
-                new[]{ 7,8,9 },
-                new[]{ 10,11,12 },
-            });
+            var grid = Grid.Create([
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9],
+                [10, 11, 12],
+            ]);
             grid.H.Should().Be(4);
             grid.W.Should().Be(3);
             grid[0, 0].Should().Be(1);
@@ -114,13 +113,13 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [Fact]
         public void IntArrayDefault()
         {
-            var grid = Grid.Create(new[]
-            {
-                new[]{ 1,2,3 },
-                new[]{ 4,5,6 },
-                new[]{ 7,8,9 },
-                new[]{ 10,11,12 },
-            }, -1);
+            var grid = Grid.Create(
+            [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9],
+                [10, 11, 12],
+            ], -1);
             grid.H.Should().Be(4);
             grid.W.Should().Be(3);
             grid[0, 0].Should().Be(1);
@@ -147,13 +146,13 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [Fact]
         public void Index()
         {
-            var grid = Grid.Create(new[]
-            {
-                new[]{ 1,2,3 },
-                new[]{ 4,5,6 },
-                new[]{ 7,8,9 },
-                new[]{ 10,11,12 },
-            }, -1);
+            var grid = Grid.Create(
+            [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9],
+                [10, 11, 12],
+            ], -1);
             for (int h = 0; h < 4; h++)
                 for (int w = 0; w < 3; w++)
                     grid.Index(h, w).Should().Be(3 * h + w);
@@ -173,13 +172,13 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [Fact]
         public void Moves()
         {
-            var grid = Grid.Create(new[]
-            {
-                new[]{ 1,2,3 },
-                new[]{ 4,5,6 },
-                new[]{ 7,8,9 },
-                new[]{ 10,11,12 },
-            }, -1);
+            var grid = Grid.Create(
+            [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9],
+                [10, 11, 12],
+            ], -1);
             grid.Moves(0, 0).Select(ToTuples).Should().Equal((0, 1), (1, 0));
             grid.Moves(0, 1).Select(ToTuples).Should().Equal((0, 0), (0, 2), (1, 1));
             grid.Moves(0, 2).Select(ToTuples).Should().Equal((0, 1), (1, 2));
@@ -235,13 +234,13 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [Fact]
         public void Clone()
         {
-            var grid = Grid.Create(new[]
-            {
-                new[]{ 1,2,3 },
-                new[]{ 4,5,6 },
-                new[]{ 7,8,9 },
-                new[]{ 10,11,12 },
-            }, -1);
+            var grid = Grid.Create(
+            [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9],
+                [10, 11, 12],
+            ], -1);
             var clone = grid.Clone();
 
             grid.data.Should().Equal(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
@@ -260,21 +259,20 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [Fact]
         public void Rotate90()
         {
-            var grid = Grid.Create(new[]
-            {
-                new[]{ 1,2,3 },
-                new[]{ 4,5,6 },
-                new[]{ 7,8,9 },
-                new[]{ 10,11,12 },
-            }, -1);
+            var grid = Grid.Create(
+            [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9],
+                [10, 11, 12],
+            ], -1);
 
             var rot = grid.Rotate90();
-            rot.data.Should().Equal(Grid.Create(new[]
-            {
-                new[]{ 10,7,4,1 },
-                new[]{ 11,8,5,2 },
-                new[]{ 12,9,6,3 },
-            }).data);
+            rot.data.Should().Equal(Grid.Create([
+                [10, 7, 4, 1],
+                [11, 8, 5, 2],
+                [12, 9, 6, 3],
+            ]).data);
             rot.defaultValue.Should().Be(grid.defaultValue);
             grid.data.Should().Equal(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
         }
@@ -283,22 +281,21 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [Fact]
         public void Rotate180()
         {
-            var grid = Grid.Create(new[]
-            {
-                new[]{ 1,2,3 },
-                new[]{ 4,5,6 },
-                new[]{ 7,8,9 },
-                new[]{ 10,11,12 },
-            }, -1);
+            var grid = Grid.Create(
+            [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9],
+                [10, 11, 12],
+            ], -1);
 
             var rot = grid.Rotate180();
-            rot.data.Should().Equal(Grid.Create(new[]
-            {
-                new[]{ 12,11,10 },
-                new[]{ 9,8,7 },
-                new[]{ 6,5,4 },
-                new[]{ 3,2,1 },
-            }).data);
+            rot.data.Should().Equal(Grid.Create([
+                [12, 11, 10],
+                [9, 8, 7],
+                [6, 5, 4],
+                [3, 2, 1],
+            ]).data);
             rot.defaultValue.Should().Be(grid.defaultValue);
             grid.data.Should().Equal(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
         }
@@ -306,21 +303,20 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [Fact]
         public void Rotate270()
         {
-            var grid = Grid.Create(new[]
-            {
-                new[]{ 1,2,3 },
-                new[]{ 4,5,6 },
-                new[]{ 7,8,9 },
-                new[]{ 10,11,12 },
-            }, -1);
+            var grid = Grid.Create(
+            [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9],
+                [10, 11, 12],
+            ], -1);
 
             var rot = grid.Rotate270();
-            rot.data.Should().Equal(Grid.Create(new[]
-            {
-                new[]{ 3,6,9,12 },
-                new[]{ 2,5,8,11 },
-                new[]{ 1,4,7,10 },
-            }).data);
+            rot.data.Should().Equal(Grid.Create([
+                [3, 6, 9, 12],
+                [2, 5, 8, 11],
+                [1, 4, 7, 10],
+            ]).data);
             rot.defaultValue.Should().Be(grid.defaultValue);
             grid.data.Should().Equal(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
         }
@@ -328,21 +324,20 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [Fact]
         public void Transpose()
         {
-            var grid = Grid.Create(new[]
-            {
-                new[]{ 1,2,3 },
-                new[]{ 4,5,6 },
-                new[]{ 7,8,9 },
-                new[]{ 10,11,12 },
-            }, -1);
+            var grid = Grid.Create(
+            [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9],
+                [10, 11, 12],
+            ], -1);
 
             var tr = grid.Transpose();
-            tr.data.Should().Equal(Grid.Create(new[]
-            {
-                new[]{ 1,4,7,10 },
-                new[]{ 2,5,8,11 },
-                new[]{ 3,6,9,12 },
-            }).data);
+            tr.data.Should().Equal(Grid.Create([
+                [1, 4, 7, 10],
+                [2, 5, 8, 11],
+                [3, 6, 9, 12],
+            ]).data);
             tr.defaultValue.Should().Be(grid.defaultValue);
             grid.data.Should().Equal(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
         }
@@ -359,15 +354,15 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             foreach (var tuple in grid)
                 lst.Add(tuple);
 
-            lst.Should().Equal(new[]
-            {
-                ('1',0,0),
-                ('2',0,1),
-                ('3',0,2),
-                ('4',1,0),
-                ('5',1,1),
-                ('6',1,2),
-            });
+            lst.Should().Equal(
+            [
+                ('1', 0, 0),
+                ('2', 0, 1),
+                ('3', 0, 2),
+                ('4', 1, 0),
+                ('5', 1, 1),
+                ('6', 1, 2),
+            ]);
         }
     }
 }

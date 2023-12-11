@@ -266,7 +266,7 @@ namespace Kzrnm.Competitive.Testing.Collection
         public void Add()
         {
             var set = new SetIntervalInt();
-            set.Should().Equal(Array.Empty<(int From, int ToExclusive)>());
+            set.Should().Equal([]);
 
             set.Add(50, 60);
             set.Should().Equal(new (int, int)[] {
@@ -332,7 +332,7 @@ namespace Kzrnm.Competitive.Testing.Collection
         public void MinMax()
         {
             var set = new SetIntervalInt();
-            set.Should().Equal(Array.Empty<(int From, int ToExclusive)>());
+            set.Should().Equal([]);
             set.Min.Should().Be(default);
             set.Max.Should().Be(default);
             set.Add(50, 60);

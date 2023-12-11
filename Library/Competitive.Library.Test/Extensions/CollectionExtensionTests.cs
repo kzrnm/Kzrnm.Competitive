@@ -118,19 +118,19 @@ namespace Kzrnm.Competitive.Testing.Extensions
             grouped.Should().HaveCount(5);
 
             grouped[0].Key.Should().Be(StringComparison.OrdinalIgnoreCase);
-            grouped[0].Should().Equal(new int[] { 0, 1, 7, 9 });
+            grouped[0].Should().Equal([0, 1, 7, 9]);
 
             grouped[1].Key.Should().Be(StringComparison.InvariantCulture);
-            grouped[1].Should().Equal(new int[] { 2, 10 });
+            grouped[1].Should().Equal([2, 10]);
 
             grouped[2].Key.Should().Be(StringComparison.InvariantCultureIgnoreCase);
-            grouped[2].Should().Equal(new int[] { 3 });
+            grouped[2].Should().Equal([3]);
 
             grouped[3].Key.Should().Be(StringComparison.CurrentCulture);
-            grouped[3].Should().Equal(new int[] { 4, 5, 6 });
+            grouped[3].Should().Equal([4, 5, 6]);
 
             grouped[4].Key.Should().Be(StringComparison.Ordinal);
-            grouped[4].Should().Equal(new int[] { 8 });
+            grouped[4].Should().Equal([8]);
         }
 
         [Fact]
@@ -143,25 +143,25 @@ namespace Kzrnm.Competitive.Testing.Extensions
             grouped.Should().HaveCount(7);
 
             grouped[0].Key.Should().Be(1);
-            grouped[0].Should().Equal(new int[] { 0, 2, 6, 9, 17, 18, 20 });
+            grouped[0].Should().Equal([0, 2, 6, 9, 17, 18, 20]);
 
             grouped[1].Key.Should().Be(3);
-            grouped[1].Should().Equal(new int[] { 1, 11, 14 });
+            grouped[1].Should().Equal([1, 11, 14]);
 
             grouped[2].Key.Should().Be(4);
-            grouped[2].Should().Equal(new int[] { 3, 10 });
+            grouped[2].Should().Equal([3, 10]);
 
             grouped[3].Key.Should().Be(0);
-            grouped[3].Should().Equal(new int[] { 4, 5, 7, 16 });
+            grouped[3].Should().Equal([4, 5, 7, 16]);
 
             grouped[4].Key.Should().Be(6);
-            grouped[4].Should().Equal(new int[] { 8, 19 });
+            grouped[4].Should().Equal([8, 19]);
 
             grouped[5].Key.Should().Be(5);
-            grouped[5].Should().Equal(new int[] { 12, 15 });
+            grouped[5].Should().Equal([12, 15]);
 
             grouped[6].Key.Should().Be(2);
-            grouped[6].Should().Equal(new int[] { 13 });
+            grouped[6].Should().Equal([13]);
         }
 
 
@@ -170,15 +170,15 @@ namespace Kzrnm.Competitive.Testing.Extensions
         {
             new[] { "abc", "def", "012", "345", "678" }.Flatten()
                 .Should().Equal(
-                new char[] { 'a', 'b', 'c', 'd', 'e', 'f', '0', '1', '2', '3', '4', '5', '6', '7', '8' });
+                ['a', 'b', 'c', 'd', 'e', 'f', '0', '1', '2', '3', '4', '5', '6', '7', '8']);
 
-            var arr = new[] {
-                new[] { 1, 2, 3 },
-                new[] { -1, -2, -3 },
-                new[] { 4, 5, 6 },
-                new[] { -6, -5, -4 },
-                new[] { 7, 8, 9 },
-            };
+            int[][] arr = [
+                [1, 2, 3],
+                [-1, -2, -3],
+                [4, 5, 6],
+                [-6, -5, -4],
+                [7, 8, 9],
+            ];
             var expected = new[] { 1, 2, 3, -1, -2, -3, 4, 5, 6, -6, -5, -4, 7, 8, 9 };
 
             arr.Flatten().Should().Equal(expected);
@@ -233,9 +233,9 @@ namespace Kzrnm.Competitive.Testing.Extensions
                 4,
                 new int[][]
                 {
-                    new int[]{ 0, 1, 2, 3, },
-                    new int[]{ 4, 5, 6, 7, },
-                    new int[]{ 8, 9, 10, 11, },
+                    [0, 1, 2, 3,],
+                    [4, 5, 6, 7,],
+                    [8, 9, 10, 11,],
                 }
             },
             {
@@ -243,9 +243,9 @@ namespace Kzrnm.Competitive.Testing.Extensions
                 5,
                 new int[][]
                 {
-                    new int[]{ 0, 1, 2, 3, 4, },
-                    new int[]{ 5, 6, 7, 8, 9, },
-                    new int[]{ 10, 11, },
+                    [0, 1, 2, 3, 4,],
+                    [5, 6, 7, 8, 9,],
+                    [10, 11,],
                 }
             },
             {

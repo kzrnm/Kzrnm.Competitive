@@ -69,13 +69,13 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
         {
             var tree = Create(new int[10]);
             tree.AllProd.Should().Be(0);
-            tree.Should().Equal(new[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            tree.Should().Equal([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
             tree = tree.Apply(0, 3, 5);
-            tree.Should().Equal(new[] { 5, 5, 5, 0, 0, 0, 0, 0, 0, 0 });
+            tree.Should().Equal([5, 5, 5, 0, 0, 0, 0, 0, 0, 0]);
             tree.Prod(0, 1).Should().Be(5);
             tree.AllProd.Should().Be(15);
             tree = tree.Apply(2, 3, -10);
-            tree.Should().Equal(new[] { 5, 5, -5, 0, 0, 0, 0, 0, 0, 0 });
+            tree.Should().Equal([5, 5, -5, 0, 0, 0, 0, 0, 0, 0]);
             tree.Prod(2, 3).Should().Be(tree[2..3]).And.Be(-5);
             tree.Prod(2, 4).Should().Be(tree[2..4]).And.Be(-5);
             tree.Prod(1, 4).Should().Be(tree[1..4]).And.Be(0);
@@ -256,7 +256,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
 
             Test();
 
-            AddRange(new[] { 1, 2, 2, 3 });
+            AddRange([1, 2, 2, 3]);
             Test();
             var rnd = new Random(227);
             for (int q = 0; q < 50; q++)
@@ -295,7 +295,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
 
             Test();
 
-            InsertRange(1, new[] { 1, 2, 2, 3 });
+            InsertRange(1, [1, 2, 2, 3]);
             Test();
             var rnd = new Random(227);
             for (int q = 0; q < 100; q++)

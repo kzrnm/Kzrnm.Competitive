@@ -101,6 +101,7 @@ namespace Kzrnm.Competitive
             /// Gets the empty stack, upon which all stacks are built.
             /// </summary>
             [凾(256)]
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:メンバーを static に設定します", Justification = "いらん")]
             public LazyStack Clear()
             {
                 Debug.Assert(s_EmptyField.IsEmpty);

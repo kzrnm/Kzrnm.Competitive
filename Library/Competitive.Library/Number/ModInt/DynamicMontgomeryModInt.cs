@@ -195,7 +195,7 @@ namespace Kzrnm.Competitive
             if (s.Length > 0 && s[0] == '-')
             {
                 minus = true;
-                s = s.Slice(1);
+                s = s[1..];
             }
             for (int i = 0; i < s.Length; i++)
             {

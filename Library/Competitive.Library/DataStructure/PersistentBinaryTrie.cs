@@ -31,7 +31,7 @@ namespace Kzrnm.Competitive
         public PersistentBinaryTrie Add(ulong num, int delta = 1, int idx = -1, ulong xorVal = 0)
               => new PersistentBinaryTrie(Add(_root, num, idx, MaxDepth, delta, xorVal), MaxDepth + 1);
         [凾(256)]
-        Node Add(Node t, ulong bit, int idx, int depth, int x, ulong xorVal, bool need = true)
+        static Node Add(Node t, ulong bit, int idx, int depth, int x, ulong xorVal, bool need = true)
         {
             if (need) t = t.Clone();
             if (depth == -1)
@@ -71,7 +71,7 @@ namespace Kzrnm.Competitive
         public Node Find(ulong num, ulong xorVal = 0)
               => Find(_root, num, MaxDepth, xorVal);
         [凾(256)]
-        Node Find(Node t, ulong bit, int depth, ulong xorVal)
+        static Node Find(Node t, ulong bit, int depth, ulong xorVal)
         {
             if (depth == -1)
                 return t;
@@ -140,7 +140,7 @@ namespace Kzrnm.Competitive
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱う。</para>
         /// </summary>
         [凾(256)]
-        private (ulong Num, Node Node) KthElement(Node t, int k, int bitIndex, ulong xorVal)
+        private static (ulong Num, Node Node) KthElement(Node t, int k, int bitIndex, ulong xorVal)
         {
             if (bitIndex == -1)
                 return (0, t);
@@ -161,7 +161,7 @@ namespace Kzrnm.Competitive
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱う。</para>
         /// </summary>
         [凾(256)]
-        int CountLess(Node t, ulong num, int bitIndex, ulong xorVal)
+        static int CountLess(Node t, ulong num, int bitIndex, ulong xorVal)
         {
             if (bitIndex == -1) return 0;
             int ret = 0;

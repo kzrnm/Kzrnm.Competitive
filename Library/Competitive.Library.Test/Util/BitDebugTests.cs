@@ -38,10 +38,8 @@ namespace Kzrnm.Competitive.Testing.Util
     {
         public static BitDebugDebugItemAssertions Should(this BitDebug.DebugItem item) => new(item);
     }
-    internal class BitDebugDebugItemAssertions : FluentAssertions.Primitives.ObjectAssertions<BitDebug.DebugItem, BitDebugDebugItemAssertions>
+    internal class BitDebugDebugItemAssertions(BitDebug.DebugItem value) : FluentAssertions.Primitives.ObjectAssertions<BitDebug.DebugItem, BitDebugDebugItemAssertions>(value)
     {
-        public BitDebugDebugItemAssertions(BitDebug.DebugItem value) : base(value) { }
-
         [CustomAssertion]
         public void Be(string key, object value, string because = "", params object[] becauseArgs)
         {

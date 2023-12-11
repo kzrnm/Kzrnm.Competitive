@@ -18,11 +18,11 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(7, 3);
             var (from, edges) = gb.ToGraph().GetCycleDfs();
             from.Should().Be(3);
-            edges.Should().Equal(new GraphEdge[] {
+            edges.Should().Equal([
                 new GraphEdge(4),
                 new GraphEdge(7),
                 new GraphEdge(3),
-            });
+            ]);
         }
         [Fact]
         public void 重み付きグラフ()
@@ -39,11 +39,11 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(7, 3, 8);
             var (from, edges) = gb.ToGraph().GetCycleDfs();
             from.Should().Be(3);
-            edges.Should().Equal(new WEdge<int>[] {
+            edges.Should().Equal([
                 new WEdge<int>(4, 4),
                 new WEdge<int>(7, 7),
                 new WEdge<int>(3, 8),
-            });
+            ]);
         }
         [Fact]
         public void 無向グラフ()
@@ -59,11 +59,11 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 7);
             var (from, edges) = gb.ToGraph().GetCycleDfs();
             from.Should().Be(3);
-            edges.Should().Equal(new GraphEdge[] {
+            edges.Should().Equal([
                 new GraphEdge(5),
                 new GraphEdge(4),
                 new GraphEdge(3),
-            });
+            ]);
         }
     }
 }

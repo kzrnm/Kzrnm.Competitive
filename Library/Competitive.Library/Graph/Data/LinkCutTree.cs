@@ -52,21 +52,21 @@ namespace Kzrnm.Competitive
 
 
         [凾(256)]
-        private void Propagate(Node t, F x)
+        static void Propagate(Node t, F x)
         {
             t.lazy = op.Composition(x, t.lazy);
             t.Key = op.Mapping(x, t.Key, 1);
             t.Sum = op.Mapping(x, t.Sum, t.size);
         }
         [凾(256)]
-        private void Toggle(Node t)
+        static void Toggle(Node t)
         {
             (t.Right, t.Left) = (t.Left, t.Right);
             t.Sum = op.Inverse(t.Sum);
             t.rev = !t.rev;
         }
         [凾(256)]
-        private void Push(Node t)
+        static void Push(Node t)
         {
             if (t.Left != null) Propagate(t.Left, t.lazy);
             if (t.Right != null) Propagate(t.Right, t.lazy);
@@ -81,7 +81,7 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        private void Update(Node t)
+        static void Update(Node t)
         {
             t.size = 1;
             t.Sum = t.Key;
@@ -98,7 +98,7 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        private void RotationRight(Node t)
+        static void RotationRight(Node t)
         {
             var x = t.Parent;
             var y = x?.Parent;
@@ -119,7 +119,7 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        private void RotationLeft(Node t)
+        static void RotationLeft(Node t)
         {
             var x = t.Parent;
             var y = x?.Parent;
@@ -331,7 +331,7 @@ namespace Kzrnm.Competitive
         /// ID が <paramref name="idx"/> のノードを新しく生成する。
         /// </summary>
         [凾(256)]
-        public Node MakeNode(int idx) => new Node(idx, null);
+        public static Node MakeNode(int idx) => new Node(idx, null);
     }
     public readonly struct NullOperator : ILinkCutTreeOperator<object, object>
     {

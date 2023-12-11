@@ -79,12 +79,12 @@ namespace Kzrnm.Competitive
         class EulerianTourTree
         {
 #if DynamicConnectivity_TUPLEDIC
-            private Dictionary<(int, int), Node> ptr;
+            Dictionary<(int, int), Node> ptr;
 #else
-            private Dictionary<int, Node>[] ptr;
+            Dictionary<int, Node>[] ptr;
 #endif
             [凾(256)]
-            private Node GetNode(int l, int r)
+            Node GetNode(int l, int r)
             {
 #if DynamicConnectivity_TUPLEDIC
                 if (ptr.TryGetValue((l, r), out var node))
@@ -97,7 +97,7 @@ namespace Kzrnm.Competitive
                 return p[r] = new Node(l, r);
 #endif
             }
-            private Node Root(Node t)
+            static Node Root(Node t)
             {
                 if (t == null) return null;
                 while (t.parent != null) t = t.parent;
@@ -105,20 +105,20 @@ namespace Kzrnm.Competitive
             }
 
             [凾(256)]
-            bool Same(Node s, Node t)
+            static bool Same(Node s, Node t)
             {
                 if (s != null) Splay(s);
                 if (t != null) Splay(t);
                 return Root(s) == Root(t);
             }
             [凾(256)]
-            Node ReRoot(Node t)
+            static Node ReRoot(Node t)
             {
                 var (s1, s2) = Split(t);
                 return Merge(s2, s1);
             }
             [凾(256)]
-            (Node, Node) Split(Node s)
+            static (Node, Node) Split(Node s)
             {
                 Splay(s);
                 Node t = s.ch0;
@@ -127,7 +127,7 @@ namespace Kzrnm.Competitive
                 return (t, Update(s));
             }
             [凾(256)]
-            (Node, Node) Split2(Node s)
+            static (Node, Node) Split2(Node s)
             {
                 Splay(s);
                 Node t = s.ch0;
@@ -139,7 +139,7 @@ namespace Kzrnm.Competitive
                 return (t, u);
             }
             [凾(256)]
-            (Node, Node, Node) Split(Node s, Node t)
+            static (Node, Node, Node) Split(Node s, Node t)
             {
                 var (u1, u2) = Split2(s);
                 var same = Same(u1, t);
@@ -149,7 +149,7 @@ namespace Kzrnm.Competitive
                 else
                     return (u1, r1, r2);
             }
-            private Node Merge(Node s, Node t)
+            static Node Merge(Node s, Node t)
             {
                 if (s == null) return t;
                 if (t == null) return s;
@@ -161,9 +161,9 @@ namespace Kzrnm.Competitive
             }
 
             [凾(256)]
-            private int Size(Node t) => t != null ? t.size : 0;
+            static int Size(Node t) => t != null ? t.size : 0;
             [凾(256)]
-            private Node Update(Node t)
+            static Node Update(Node t)
             {
                 t.size = Size(t.ch0) + Size(t.ch1) + (t.l == t.r ? 1 : 0);
                 t.ChildEdgeConnected = (t.ch0 != null && t.ch0.ChildEdgeConnected) || (t.EdgeConnected) || (t.ch1 != null && t.ch1.ChildEdgeConnected);
@@ -171,12 +171,12 @@ namespace Kzrnm.Competitive
                 return t;
             }
             [System.Diagnostics.Conditional("DEBUG")]
-            private void Push(Node _)
+            static void Push(Node _)
             {
                 //遅延評価予定
             }
 
-            private void Rotate(Node t, bool b)
+            static void Rotate(Node t, bool b)
             {
                 Node x = t.parent, y = x.parent;
                 if (b)
@@ -202,7 +202,7 @@ namespace Kzrnm.Competitive
                     Update(y);
                 }
             }
-            private void Splay(Node t)
+            static void Splay(Node t)
             {
                 Push(t);
                 while (!t.IsRoot)
@@ -235,8 +235,8 @@ namespace Kzrnm.Competitive
                 }
             }
 
-            public List<(int f, int t)> Debug(Node n) => Debug(n, new List<(int f, int t)>());
-            private List<(int f, int t)> Debug(Node n, List<(int f, int t)> list)
+            public static List<(int f, int t)> Debug(Node n) => Debug(n, new List<(int f, int t)>());
+            static List<(int f, int t)> Debug(Node n, List<(int f, int t)> list)
             {
                 Debug(n.ch0, list);
                 list.Add((n.l, n.r));
@@ -364,9 +364,9 @@ namespace Kzrnm.Competitive
             }
         }
 
-        private int _size;
-        private List<EulerianTourTree> ett;
-        private List<HashSet<int>[]> edges;
+        int _size;
+        List<EulerianTourTree> ett;
+        List<HashSet<int>[]> edges;
 
         public DynamicConnectivity(int size)
         {
@@ -414,7 +414,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public int Size(int s) => ett[0].Size(s);
 
-        //private int[] GetVertex(int s)
+        //int[] GetVertex(int s)
         //{
         //    //return ett[0].vertex_list(s);
         //}
@@ -488,7 +488,7 @@ namespace Kzrnm.Competitive
                 {
                     used.Add(y);
                     var edgeY = edge[y];
-                    if (edgeY == null) edgeY = new HashSet<int>();
+                    edgeY ??= new HashSet<int>();
                     edgeX.Remove(y);
                     edgeY.Remove(x);
                     if (edgeX.Count == 0) etti.UpdateEdgeConnected(x, false);
@@ -515,7 +515,7 @@ namespace Kzrnm.Competitive
                 return false;
             }
         }
-        private bool TryReconnect(int s, int t, int k)
+        bool TryReconnect(int s, int t, int k)
         {
             for (int i = 0; i < k; i++)
                 ett[i].Cut(s, t);

@@ -31,7 +31,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
                 "dsjkf50000",
                 "BCD443",
                 "aaa31",
-            }.Sort().Should().Equal(new string[] {
+            }.Sort().Should().Equal([
                 "AB",
                 "BCD443",
                 "a",
@@ -39,7 +39,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
                 "aaa31",
                 "dsjkf50000",
                 "zzz14144",
-            });
+            ]);
         }
 
         [Fact]
@@ -53,7 +53,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
                 "dsjkf50000",
                 "BCD443",
                 "aaa31",
-            }.Sort(s => s.Length).Should().Equal(new string[] {
+            }.Sort(s => s.Length).Should().Equal([
                 "a",
                 "AB",
                 "aBc",
@@ -61,7 +61,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
                 "BCD443",
                 "zzz14144",
                 "dsjkf50000",
-            });
+            ]);
         }
 
         [Fact]
@@ -75,7 +75,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
                 "dsjkf50000",
                 "BCD443",
                 "aaa31",
-            }.Sort((s1, s2) => s1.Length.CompareTo(s2.Length)).Should().Equal(new string[] {
+            }.Sort((s1, s2) => s1.Length.CompareTo(s2.Length)).Should().Equal([
                 "a",
                 "AB",
                 "aBc",
@@ -83,7 +83,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
                 "BCD443",
                 "zzz14144",
                 "dsjkf50000",
-            });
+            ]);
         }
 
         [Fact]
@@ -97,7 +97,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
                 "dsjkf50000",
                 "BCD443",
                 "aaa31",
-            }.Sort(StringComparer.OrdinalIgnoreCase).Should().Equal(new string[] {
+            }.Sort(StringComparer.OrdinalIgnoreCase).Should().Equal([
                 "a",
                 "aaa31",
                 "AB",
@@ -105,7 +105,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
                 "BCD443",
                 "dsjkf50000",
                 "zzz14144",
-            });
+            ]);
         }
 
         [Fact]
@@ -119,7 +119,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
                 "dsjkf50000",
                 "BCD443",
                 "aaa31",
-            }.Reverse().Should().Equal(new string[] {
+            }.Reverse().Should().Equal([
                 "aaa31",
                 "BCD443",
                 "dsjkf50000",
@@ -127,7 +127,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
                 "AB",
                 "aBc",
                 "zzz14144",
-            });
+            ]);
         }
 
         [Fact]
@@ -215,8 +215,8 @@ namespace Kzrnm.Competitive.Testing.Extensions
         public void GetOrDummy2()
         {
             var arr = new long[][] {
-                new long[]{ 43, 24, 8373 },
-                new long[]{ -13, -4, 54},
+                [43, 24, 8373],
+                [-13, -4, 54],
             };
             arr.GetOrDummy(0, 0).Should().Be(43);
             arr.GetOrDummy(0, 1).Should().Be(24);
@@ -259,16 +259,14 @@ namespace Kzrnm.Competitive.Testing.Extensions
         public void GetOrDummy3()
         {
             var arr = new long[][][] {
-                new long[][]
-                {
-                    new long[] { 1, 2, },
-                    new long[] { 3, 4, },
-                },
-                new long[][]
-                {
-                    new long[] { 5, 6, },
-                    new long[] { 7, 8, },
-                },
+                [
+                    [1, 2,],
+                    [3, 4,],
+                ],
+                [
+                    [5, 6,],
+                    [7, 8,],
+                ],
             };
             arr.GetOrDummy(0, 0, 0).Should().Be(1);
             arr.GetOrDummy(0, 0, 1).Should().Be(2);

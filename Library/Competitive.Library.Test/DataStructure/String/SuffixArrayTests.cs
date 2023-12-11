@@ -100,13 +100,9 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
         }
 
         static SuffixArrayNative<T> GetNative<T>(ReadOnlySpan<T> str) => new(str);
-        private readonly ref struct SuffixArrayNative<T>
+        private readonly ref struct SuffixArrayNative<T>(ReadOnlySpan<T> str)
         {
-            private readonly ReadOnlySpan<T> str;
-            public SuffixArrayNative(ReadOnlySpan<T> str)
-            {
-                this.str = str;
-            }
+            private readonly ReadOnlySpan<T> str = str;
 
             public int GetLCP(int i, int j)
             {

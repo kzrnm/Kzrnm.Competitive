@@ -378,15 +378,15 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         {
             {
                 new PointDouble[0],
-                new (PointDouble, PointDouble, PointDouble)[0]
+                []
             },
             {
                 new PointDouble[1],
-                new (PointDouble, PointDouble, PointDouble)[0]
+                []
             },
             {
                 new PointDouble[2],
-                new (PointDouble, PointDouble, PointDouble)[0]
+                []
             },
             {
                 new PointDouble[3]

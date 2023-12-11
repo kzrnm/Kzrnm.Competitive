@@ -27,21 +27,14 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 for (int r = l; r <= 10; r++)
                     seg[l..r].sum.Should().Be(sums[l..r]);
         }
-        struct S
+        struct S(long num, int cnt = 1)
         {
-            public long max;
-            public long max2;
-            public long sum;
-            public int cnt;
-            public int maxCnt;
-            public S(long num, int cnt = 1)
-            {
-                max = num;
-                max2 = long.MinValue >> 2;
-                sum = num * cnt;
-                this.cnt = cnt;
-                maxCnt = cnt;
-            }
+            public long max = num;
+            public long max2 = long.MinValue >> 2;
+            public long sum = num * cnt;
+            public int cnt = cnt;
+            public int maxCnt = cnt;
+
             public override readonly string ToString() => $"max: {max}, max2: {max2}, sum: {sum}, cnt: {cnt}, maxCnt: {maxCnt}";
         }
 

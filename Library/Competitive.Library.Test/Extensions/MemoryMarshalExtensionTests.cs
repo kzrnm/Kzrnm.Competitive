@@ -11,7 +11,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
         {
             new List<long> {
                 43,24,8373,4,98,7,43,28,9470,71,431,45,23014,345,23614,1503,7,3401434,120,42314,3123
-            }.AsSpan()[18..].ToArray().Should().Equal(new long[] { 120, 42314, 3123 });
+            }.AsSpan()[18..].ToArray().Should().Equal([120, 42314, 3123]);
         }
 
         [Fact]

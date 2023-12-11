@@ -37,9 +37,9 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 v[2,0], v[2,1], v[2,2] };
 
             var expected = new PolynominalMatrix3x3<ModInt>(
-                new(new ModInt[] { -v[0, 0], 1 }), new(new ModInt[] { -v[0, 1] }), new(new ModInt[] { -v[0, 2] }),
-                new(new ModInt[] { -v[1, 0] }), new(new ModInt[] { -v[1, 1], 1 }), new(new ModInt[] { -v[1, 2] }),
-                new(new ModInt[] { -v[2, 0] }), new(new ModInt[] { -v[2, 1] }), new(new ModInt[] { -v[2, 2], 1 }))
+                new([-v[0, 0], 1]), new([-v[0, 1]]), new([-v[0, 2]]),
+                new([-v[1, 0]]), new([-v[1, 1], 1]), new([-v[1, 2]]),
+                new([-v[2, 0]]), new([-v[2, 1]]), new([-v[2, 2], 1]))
                 .Determinant();
             new ArrayMatrix<ModInt>(a, 3, 3).CharacteristricPolynomial().Should().Equal(expected.Coefficients);
             new ArrayMatrix<ModInt>(a, 3, 3).CharacteristricPolynomial(false).Should().Equal((-expected).Coefficients);
@@ -87,6 +87,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 V00, V01, V02,
                 V10, V11, V12,
                 V20, V21, V22;
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0290:プライマリ コンストラクターの使用", Justification = "いらん")]
             public PolynominalMatrix3x3(
                 Polynomial<ModInt> V00, Polynomial<ModInt> V01, Polynomial<ModInt> V02,
                 Polynomial<ModInt> V10, Polynomial<ModInt> V11, Polynomial<ModInt> V12,
@@ -117,6 +118,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 V10, V11, V12, V13,
                 V20, V21, V22, V23,
                 V30, V31, V32, V33;
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0290:プライマリ コンストラクターの使用", Justification = "いらん")]
             public PolynominalMatrix4x4(
                 Polynomial<ModInt> V00, Polynomial<ModInt> V01, Polynomial<ModInt> V02, Polynomial<ModInt> V03,
                 Polynomial<ModInt> V10, Polynomial<ModInt> V11, Polynomial<ModInt> V12, Polynomial<ModInt> V13,

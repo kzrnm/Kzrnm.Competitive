@@ -9,7 +9,7 @@ namespace Kzrnm.Competitive.Testing.Graph
         public void Zero()
         {
             var uf = new IntWeightedUnionFind(0);
-            uf.Groups().Should().Equal(Array.Empty<int[]>());
+            uf.Groups().Should().Equal([]);
         }
 
         [Fact]

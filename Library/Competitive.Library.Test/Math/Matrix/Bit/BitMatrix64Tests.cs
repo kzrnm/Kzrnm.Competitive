@@ -8,24 +8,20 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Normal")]
         public void Construct()
         {
-            new BitMatrix64(new bool[][]
-            {
-                new []{ true, false, true},
-                new []{ false, true, true },
-            })._v.Should().BeEquivalentTo(new ulong[]
-            {
+            new BitMatrix64([
+                [true, false, true],
+                [false, true, true],
+            ])._v.Should().BeEquivalentTo([
                 0b101ul,
                 0b110ul,
-            });
-            new BitMatrix64(new ulong[]
-            {
+            ]);
+            new BitMatrix64([
                 0b101ul,
                 0b110ul,
-            })._v.Should().BeEquivalentTo(new ulong[]
-            {
+            ])._v.Should().BeEquivalentTo([
                 0b101ul,
                 0b110ul,
-            });
+            ]);
         }
 
         public static TheoryData Parse_Data => new TheoryData<string, BitMatrix64>
@@ -35,22 +31,20 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 1010101010101010101010101010101010101010101010101010101010101010
                 0101010101010101010101010101010101010101010101010101010101010101
                 """,
-                new BitMatrix64(new ulong[]
-                {
+                new BitMatrix64([
                     0b0101010101010101010101010101010101010101010101010101010101010101,
                     0b1010101010101010101010101010101010101010101010101010101010101010,
-                })
+                ])
             },
             {
                 """
                 11001
                 10010
                 """,
-                new BitMatrix64(new ulong[]
-                {
+                new BitMatrix64([
                     0b10011,
                     0b01001,
-                })
+                ])
             },
         };
         [Theory]
@@ -64,13 +58,12 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         public static TheoryData String_Data => new TheoryData<BitMatrix64, string>
         {
             {
-                new BitMatrix64(new[]
-                {
-                    new[] {  true, false,  true },
-                    new[] { false, false, false },
-                    new[] { false, false,  true },
-                    new[] {  true,  true,  true },
-                }),
+                new BitMatrix64([
+                    [true, false,  true],
+                    [false, false, false],
+                    [false, false,  true],
+                    [true,  true,  true],
+                ]),
                 $$$"""
                 {{{"101".PadRight(64, '0')}}}
                 {{{"000".PadRight(64, '0')}}}
@@ -79,24 +72,21 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 """.Replace("\r\n", "\n")
             },
             {
-                new BitMatrix64(new[]
-                {
-                    new[] {  false },
-                }),
+                new BitMatrix64([
+                    [false],
+                ]),
                 "0".PadRight(64, '0')
             },
             {
-                new BitMatrix64(new[]
-                {
-                    new[] {  true },
-                }),
+                new BitMatrix64([
+                    [true],
+                ]),
                 "1".PadRight(64, '0')
             },
             {
-                new BitMatrix64(new[]
-                {
+                new BitMatrix64([
                     0b1100111ul,
-                }),
+                ]),
                 "1110011000000000000000000000000000000000000000000000000000000000"
             },
         };
@@ -113,20 +103,20 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Operator")]
         public void SingleMinus()
         {
-            var mat = BitMatrix64.Parse(new[]
-            {
+            var mat = BitMatrix64.Parse(
+            [
                 "101",
                 "000",
                 "001",
                 "111",
-            });
-            var expected = BitMatrix64.Parse(new[]
-            {
+            ]);
+            var expected = BitMatrix64.Parse(
+            [
                 "010".PadRight(64, '1'),
                 "111".PadRight(64, '1'),
                 "110".PadRight(64, '1'),
                 "000".PadRight(64, '1'),
-            });
+            ]);
             (-mat).Should().BeEquivalentTo(expected);
             (~mat).Should().BeEquivalentTo(expected);
         }
@@ -139,54 +129,54 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 BitMatrix64.Identity
             },
             {
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "101",
                     "000",
                     "001",
-                }),
-                BitMatrix64.Parse(new[]
-                {
+                ]),
+                BitMatrix64.Parse(
+                [
                     "100",
                     "010",
                     "101",
-                }),
-                BitMatrix64.Parse(new[]
-                {
+                ]),
+                BitMatrix64.Parse(
+                [
                     "001",
                     "010",
                     "100",
-                })
+                ])
             },
             {
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "101",
                     "000",
                     "001",
-                }),
+                ]),
                 BitMatrix64.Zero,
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "101",
                     "000",
                     "001",
-                })
+                ])
             },
             {
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "101",
                     "000",
                     "001",
-                }),
+                ]),
                 BitMatrix64.Identity,
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "001",
                     "010",
                     "000",
-                })
+                ])
             },
         };
 
@@ -209,48 +199,48 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 BitMatrix64.Zero
             },
             {
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "101",
                     "010",
-                }),
-                BitMatrix64.Parse(new[]
-                {
+                ]),
+                BitMatrix64.Parse(
+                [
                     "10",
                     "11",
                     "10",
-                }),
-                BitMatrix64.Parse(new[]
-                {
+                ]),
+                BitMatrix64.Parse(
+                [
                     "00",
                     "11",
-                })
+                ])
             },
             {
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "00",
                     "11",
-                }),
+                ]),
                 BitMatrix64.Zero,
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "00",
                     "00",
-                })
+                ])
             },
             {
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "00",
                     "11",
-                }),
+                ]),
                 BitMatrix64.Identity,
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "00",
                     "11",
-                })
+                ])
             },
         };
 
@@ -265,31 +255,31 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         public static TheoryData MultiplyVector_Data => new TheoryData<BitMatrix64, bool[], ulong, ulong>
         {
             {
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "101",
                     "010",
-                }),
+                ]),
                 new[]{ true, false, true},
                 0b101ul,
                 0b0ul
             },
             {
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "101",
                     "010",
-                }),
+                ]),
                 new[]{ true, true, true},
                 0b111ul,
                 0b10ul
             },
             {
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "101",
                     "010",
-                }),
+                ]),
                 new[]{ false, true, true},
                 0b110ul,
                 0b11ul
@@ -319,50 +309,50 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Normal")]
         public void Pow()
         {
-            var orig = BitMatrix64.Parse(new[]
-            {
+            var orig = BitMatrix64.Parse(
+            [
                 "111",
                 "101",
                 "011",
-            });
+            ]);
             var expecteds = new[]
             {
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "100",
                     "010",
                     "001",
-                }),
-                BitMatrix64.Parse(new[]
-                {
+                ]),
+                BitMatrix64.Parse(
+                [
                     "111",
                     "101",
                     "011",
-                }),
-                BitMatrix64.Parse(new[]
-                {
+                ]),
+                BitMatrix64.Parse(
+                [
                     "001",
                     "100",
                     "010",
-                }),
-                BitMatrix64.Parse(new[]
-                {
+                ]),
+                BitMatrix64.Parse(
+                [
                     "111",
                     "011",
                     "101",
-                }),
-                BitMatrix64.Parse(new[]
-                {
+                ]),
+                BitMatrix64.Parse(
+                [
                     "001",
                     "010",
                     "100",
-                }),
-                BitMatrix64.Parse(new[]
-                {
+                ]),
+                BitMatrix64.Parse(
+                [
                     "111",
                     "101",
                     "011",
-                }),
+                ]),
             };
             var cur = orig;
             for (int i = 1; i < expecteds.Length; i++)
@@ -380,56 +370,56 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         {
             {
                 false,
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "1001",
                     "0101",
                     "1111",
-                }),
-                BitMatrix64.Parse(new[]
-                {
+                ]),
+                BitMatrix64.Parse(
+                [
                     "1001",
                     "0101",
                     "0011",
-                })
+                ])
             },
             {
                 false,
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "1001",
                     "0101",
                     "1111",
                     "1110",
                     "1100",
-                }),
-                BitMatrix64.Parse(new[]
-                {
+                ]),
+                BitMatrix64.Parse(
+                [
                     "1001",
                     "0101",
                     "0011",
                     "0001",
                     "0000",
-                })
+                ])
             },
             {
                 true,
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "1001",
                     "0101",
                     "1111",
                     "1110",
                     "1100",
-                }),
-                BitMatrix64.Parse(new[]
-                {
+                ]),
+                BitMatrix64.Parse(
+                [
                     "1000",
                     "0100",
                     "0010",
                     "0001",
                     "0000",
-                })
+                ])
             },
         };
 
@@ -444,12 +434,12 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         public static TheoryData LinearSystem_Data => new TheoryData<BitMatrix64, ulong, ulong[]>
         {
             {
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "100",
                     "010",
                     "111",
-                }),
+                ]),
                 0b111ul,
                 new[]
                 {
@@ -457,12 +447,12 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 }
             },
             {
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "100",
                     "010",
                     "101",
-                }),
+                ]),
                 0b111ul,
                 new[]
                 {
@@ -470,22 +460,22 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 }
             },
             {
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "100",
                     "010",
                     "110",
-                }),
+                ]),
                 0b111ul,
-                new ulong[0]
+                []
             },
             {
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "100",
                     "010",
                     "110",
-                }),
+                ]),
                 0b110,
                 new[]
                 {
@@ -494,11 +484,11 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 }
             },
             {
-                BitMatrix64.Parse(new[]
-                {
+                BitMatrix64.Parse(
+                [
                     "000",
                     "000",
-                }),
+                ]),
                 0ul,
                 new[]
                 {

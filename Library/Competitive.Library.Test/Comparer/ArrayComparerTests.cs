@@ -9,14 +9,14 @@ namespace Kzrnm.Competitive.Testing.Comparer
         {
             var arr = new[]
             {
-                new[]{ 1,2,3, },
-                new[]{ 1,2,0, },
-                new[]{ 2,2,0, },
-                new[]{ 1,2,0, },
-                new[]{ 2,2, },
-                new[]{ 3, },
-                new[]{ 1,2, },
-                new[]{ 0, },
+                [1,2,3,],
+                [1,2,0,],
+                [2,2,0,],
+                [1,2,0,],
+                [2,2,],
+                [3,],
+                [1,2,],
+                [0,],
                 Array.Empty<int>(),
             };
             Array.Sort(arr, ArrayComparer<int>.Default);
@@ -24,14 +24,14 @@ namespace Kzrnm.Competitive.Testing.Comparer
             var expected = new[]
             {
                 Array.Empty<int>(),
-                new[]{ 0, },
-                new[]{ 1,2, },
-                new[]{ 1,2,0, },
-                new[]{ 1,2,0, },
-                new[]{ 1,2,3, },
-                new[]{ 2,2, },
-                new[]{ 2,2,0, },
-                new[]{ 3, },
+                [0,],
+                [1,2,],
+                [1,2,0,],
+                [1,2,0,],
+                [1,2,3,],
+                [2,2,],
+                [2,2,0,],
+                [3,],
             };
             arr.Should().HaveSameCount(expected);
             for (int i = 0; i < arr.Length; i++)
@@ -45,28 +45,28 @@ namespace Kzrnm.Competitive.Testing.Comparer
         {
             var arr = new[]
             {
-                new[]{ 1,2,3, },
-                new[]{ 1,2,0, },
-                new[]{ 2,2,0, },
-                new[]{ 1,2,0, },
-                new[]{ 2,2, },
-                new[]{ 3, },
-                new[]{ 1,2, },
-                new[]{ 0, },
+                [1,2,3,],
+                [1,2,0,],
+                [2,2,0,],
+                [1,2,0,],
+                [2,2,],
+                [3,],
+                [1,2,],
+                [0,],
                 Array.Empty<int>(),
             };
             Array.Sort(arr, ArrayComparer<int>.Reverse);
 
             var expected = new[]
             {
-                new[]{ 3, },
-                new[]{ 2,2,0, },
-                new[]{ 2,2, },
-                new[]{ 1,2,3, },
-                new[]{ 1,2,0, },
-                new[]{ 1,2,0, },
-                new[]{ 1,2, },
-                new[]{ 0, },
+                [3,],
+                [2,2,0,],
+                [2,2,],
+                [1,2,3,],
+                [1,2,0,],
+                [1,2,0,],
+                [1,2,],
+                [0,],
                 Array.Empty<int>(),
             };
             arr.Should().HaveSameCount(expected);

@@ -80,46 +80,41 @@ namespace Kzrnm.Competitive.Testing.Graph
                 6,
                 0);
 
-            graph.DijkstraWithRoute(0).Should().Equal(
-                new[] {
-                    (0, new WEdge<int>[0]),
-                    (1, new WEdge<int>[]{ new(1, 1) }),
-                    (6, new WEdge<int>[]{ new(2, 5), new(1, 1) }),
-                    (18, new WEdge<int>[]{ new(3, 6), new(4, 6), new(2, 5), new(1, 1) }),
-                    (12, new WEdge<int>[]{ new(4, 6), new(2, 5), new(1, 1) }),
-                }, ResultEqualityCompare);
-            graph.DijkstraWithRoute(1).Should().Equal(
-                new[] {
-                    (12, new WEdge<int>[]{ new(0, 1), new(4, 6), new(2, 5) }),
-                    (0, new WEdge<int>[0]),
-                    (5, new WEdge<int>[]{ new(2, 5) }),
-                    (17, new WEdge<int>[]{ new(3, 6), new(4, 6), new(2, 5) }),
-                    (11, new WEdge<int>[]{ new(4, 6), new(2, 5) }),
-                }, ResultEqualityCompare);
-            graph.DijkstraWithRoute(2).Should().Equal(
-                new[] {
-                    (7, new WEdge<int>[]{ new(0, 1), new(4, 6) }),
-                    (8, new WEdge<int>[]{ new(1, 1), new(0, 1), new(4, 6) }),
-                    (0, new WEdge<int>[0]),
-                    (12, new WEdge<int>[]{ new(3, 6), new(4, 6) }),
-                    (6, new WEdge<int>[]{ new(4, 6) }),
-                }, ResultEqualityCompare);
-            graph.DijkstraWithRoute(3).Should().Equal(
-                new[] {
-                    (int.MaxValue, null),
-                    (int.MaxValue, null),
-                    (int.MaxValue, null),
-                    (0, new WEdge<int>[0]),
-                    (int.MaxValue, null),
-                }, ResultEqualityCompare);
-            graph.DijkstraWithRoute(4).Should().Equal(
-                new[] {
-                    (1, new WEdge<int>[]{ new(0, 1) }),
-                    (2, new WEdge<int>[]{ new(1, 1), new(0, 1) }),
-                    (7, new WEdge<int>[]{ new(2, 5), new(1, 1), new(0, 1) }),
-                    (6, new WEdge<int>[]{ new(3, 6) }),
-                    (0, new WEdge<int>[0]),
-                }, ResultEqualityCompare);
+            graph.DijkstraWithRoute(0).Should().Equal([
+                (0, []),
+                (1, new WEdge<int>[] { new(1, 1) }),
+                (6, new WEdge<int>[] { new(2, 5), new(1, 1) }),
+                (18, new WEdge<int>[] { new(3, 6), new(4, 6), new(2, 5), new(1, 1) }),
+                (12, new WEdge<int>[] { new(4, 6), new(2, 5), new(1, 1) }),
+            ], ResultEqualityCompare);
+            graph.DijkstraWithRoute(1).Should().Equal([
+                (12, new WEdge<int>[] { new(0, 1), new(4, 6), new(2, 5) }),
+                (0, []),
+                (5, new WEdge<int>[] { new(2, 5) }),
+                (17, new WEdge<int>[] { new(3, 6), new(4, 6), new(2, 5) }),
+                (11, new WEdge<int>[] { new(4, 6), new(2, 5) }),
+            ], ResultEqualityCompare);
+            graph.DijkstraWithRoute(2).Should().Equal([
+                (7, new WEdge<int>[] { new(0, 1), new(4, 6) }),
+                (8, new WEdge<int>[] { new(1, 1), new(0, 1), new(4, 6) }),
+                (0, []),
+                (12, new WEdge<int>[] { new(3, 6), new(4, 6) }),
+                (6, new WEdge<int>[] { new(4, 6) }),
+            ], ResultEqualityCompare);
+            graph.DijkstraWithRoute(3).Should().Equal([
+                (int.MaxValue, null),
+                (int.MaxValue, null),
+                (int.MaxValue, null),
+                (0, Array.Empty<WEdge<int>>()),
+                (int.MaxValue, null),
+            ], ResultEqualityCompare);
+            graph.DijkstraWithRoute(4).Should().Equal([
+                (1, new WEdge<int>[] { new(0, 1) }),
+                (2, new WEdge<int>[] { new(1, 1), new(0, 1) }),
+                (7, new WEdge<int>[] { new(2, 5), new(1, 1), new(0, 1) }),
+                (6, new WEdge<int>[] { new(3, 6) }),
+                (0, []),
+            ], ResultEqualityCompare);
         }
 
         [Fact]
@@ -168,46 +163,41 @@ namespace Kzrnm.Competitive.Testing.Graph
                 1 * LARGE + 6,
                 0L);
 
-            graph.DijkstraWithRoute(0).Should().Equal(
-                new[] {
-                    (0, new WEdge<long>[0]),
-                    (1*LARGE+1, new WEdge<long>[]{ new(1, LARGE+1) }),
-                    (2*LARGE+6, new WEdge<long>[]{ new(2, LARGE+5), new(1, LARGE+1) }),
-                    (4*LARGE+18, new WEdge<long>[]{ new(3, LARGE+6), new(4, LARGE+6), new(2, LARGE+5), new(1, LARGE+1) }),
-                    (3*LARGE+12, new WEdge<long>[]{ new(4, LARGE+6), new(2, LARGE+5), new(1, LARGE+1) }),
-                }, ResultEqualityCompare);
-            graph.DijkstraWithRoute(1).Should().Equal(
-                new[] {
-                    (3*LARGE+12, new WEdge<long>[]{ new(0, LARGE+1), new(4, LARGE+6), new(2, LARGE+5) }),
-                    (0L, new WEdge<long>[0]),
-                    (1*LARGE+5, new WEdge<long>[]{ new(2, LARGE+5) }),
-                    (3*LARGE+17, new WEdge<long>[]{ new(3, LARGE+6), new(4, LARGE+6), new(2, LARGE+5) }),
-                    (2*LARGE+11, new WEdge<long>[]{ new(4, LARGE+6), new(2, LARGE+5) }),
-                }, ResultEqualityCompare);
-            graph.DijkstraWithRoute(2).Should().Equal(
-                new[] {
-                    (2*LARGE+7, new WEdge<long>[]{ new(0, LARGE+1), new(4, LARGE+6) }),
-                    (3*LARGE+8, new WEdge<long>[]{ new(1, LARGE+1), new(0, LARGE+1), new(4, LARGE+6) }),
-                    (0L, new WEdge<long>[0]),
-                    (2*LARGE+12, new WEdge<long>[]{ new(3, LARGE+6), new(4, LARGE+6) }),
-                    (1*LARGE+6, new WEdge<long>[]{ new(4, LARGE+6) }),
-                }, ResultEqualityCompare);
-            graph.DijkstraWithRoute(3).Should().Equal(
-                new[] {
-                    (long.MaxValue, null),
-                    (long.MaxValue, null),
-                    (long.MaxValue, null),
-                    (0L, new WEdge<long>[0]),
-                    (long.MaxValue, null),
-                }, ResultEqualityCompare);
-            graph.DijkstraWithRoute(4).Should().Equal(
-                new[] {
-                    (1*LARGE+1, new WEdge<long>[]{ new(0, LARGE+1) }),
-                    (2*LARGE+2, new WEdge<long>[]{ new(1, LARGE+1), new(0, LARGE+1) }),
-                    (3*LARGE+7, new WEdge<long>[]{ new(2, LARGE+5), new(1, LARGE+1), new(0, LARGE+1) }),
-                    (1*LARGE+6, new WEdge<long>[]{ new(3, LARGE+6) }),
-                    (0L, new WEdge<long>[0]),
-                }, ResultEqualityCompare);
+            graph.DijkstraWithRoute(0).Should().Equal([
+                (0, []),
+                (1 * LARGE + 1, new WEdge<long>[] { new(1, LARGE + 1) }),
+                (2 * LARGE + 6, new WEdge<long>[] { new(2, LARGE + 5), new(1, LARGE + 1) }),
+                (4 * LARGE + 18, new WEdge<long>[] { new(3, LARGE + 6), new(4, LARGE + 6), new(2, LARGE + 5), new(1, LARGE + 1) }),
+                (3 * LARGE + 12, new WEdge<long>[] { new(4, LARGE + 6), new(2, LARGE + 5), new(1, LARGE + 1) }),
+            ], ResultEqualityCompare);
+            graph.DijkstraWithRoute(1).Should().Equal([
+                (3 * LARGE + 12, new WEdge<long>[] { new(0, LARGE + 1), new(4, LARGE + 6), new(2, LARGE + 5) }),
+                (0L, []),
+                (1 * LARGE + 5, new WEdge<long>[] { new(2, LARGE + 5) }),
+                (3 * LARGE + 17, new WEdge<long>[] { new(3, LARGE + 6), new(4, LARGE + 6), new(2, LARGE + 5) }),
+                (2 * LARGE + 11, new WEdge<long>[] { new(4, LARGE + 6), new(2, LARGE + 5) }),
+            ], ResultEqualityCompare);
+            graph.DijkstraWithRoute(2).Should().Equal([
+                (2 * LARGE + 7, new WEdge<long>[] { new(0, LARGE + 1), new(4, LARGE + 6) }),
+                (3 * LARGE + 8, new WEdge<long>[] { new(1, LARGE + 1), new(0, LARGE + 1), new(4, LARGE + 6) }),
+                (0L, []),
+                (2 * LARGE + 12, new WEdge<long>[] { new(3, LARGE + 6), new(4, LARGE + 6) }),
+                (1 * LARGE + 6, new WEdge<long>[] { new(4, LARGE + 6) }),
+            ], ResultEqualityCompare);
+            graph.DijkstraWithRoute(3).Should().Equal([
+                (long.MaxValue, null),
+                (long.MaxValue, null),
+                (long.MaxValue, null),
+                (0L, Array.Empty<WEdge<long>>()),
+                (long.MaxValue, null),
+            ], ResultEqualityCompare);
+            graph.DijkstraWithRoute(4).Should().Equal([
+                (1 * LARGE + 1, new WEdge<long>[] { new(0, LARGE + 1) }),
+                (2 * LARGE + 2, new WEdge<long>[] { new(1, LARGE + 1), new(0, LARGE + 1) }),
+                (3 * LARGE + 7, new WEdge<long>[] { new(2, LARGE + 5), new(1, LARGE + 1), new(0, LARGE + 1) }),
+                (1 * LARGE + 6, new WEdge<long>[] { new(3, LARGE + 6) }),
+                (0L, []),
+            ], ResultEqualityCompare);
         }
 
         private static bool ResultEqualityCompare<T>(

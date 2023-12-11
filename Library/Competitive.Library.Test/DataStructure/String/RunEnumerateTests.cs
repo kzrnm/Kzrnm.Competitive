@@ -10,23 +10,23 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
         {
             yield return ("", new (int From, int ToExclusive)[1][]
             {
-                new (int From, int ToExclusive)[0],
+                [],
             });
             yield return ("mississippi", new (int From, int ToExclusive)[][]
             {
-                new (int From, int ToExclusive)[0],
-                new (int From, int ToExclusive)[3]{(2,4),(5,7),(8,10)},
-                new (int From, int ToExclusive)[0],
-                new (int From, int ToExclusive)[1]{(1,8)},
-                new (int From, int ToExclusive)[0],
-                new (int From, int ToExclusive)[0],
+                [],
+                [(2,4),(5,7),(8,10)],
+                [],
+                [(1,8)],
+                [],
+                [],
             });
             yield return ("aaaaaaa", new (int From, int ToExclusive)[][]
             {
-                new (int From, int ToExclusive)[0],
-                new (int From, int ToExclusive)[1]{(0,7)},
-                new (int From, int ToExclusive)[0],
-                new (int From, int ToExclusive)[0],
+                [],
+                [(0,7)],
+                [],
+                [],
             });
         }
 

@@ -320,15 +320,15 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         {
             {
                 new PointFraction[0],
-                new (PointFraction, PointFraction, PointFraction)[0]
+                []
             },
             {
                 new PointFraction[1],
-                new (PointFraction, PointFraction, PointFraction)[0]
+                []
             },
             {
                 new PointFraction[2],
-                new (PointFraction, PointFraction, PointFraction)[0]
+                []
             },
             {
                 new PointFraction[3]

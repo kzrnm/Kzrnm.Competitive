@@ -11,9 +11,9 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         [Fact]
         public void Invalid()
         {
-            ((Action)(() => _ = new DisjointSparseTable<short, MinOp>(Array.Empty<short>()))).Should().Throw<ContractAssertException>();
+            ((Action)(() => _ = new DisjointSparseTable<short, MinOp>([]))).Should().Throw<ContractAssertException>();
 
-            var s = new DisjointSparseTable<short, MinOp>(new short[] { 1, 2, 3 });
+            var s = new DisjointSparseTable<short, MinOp>([1, 2, 3]);
             s.Invoking(s => s[-1..3]).Should().Throw<ContractAssertException>();
             s.Invoking(s => s[0..4]).Should().Throw<ContractAssertException>();
             for (var i = 0; i < 5; i++)
@@ -56,13 +56,8 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         {
             public short Operate(short x, short y) => Math.Min(x, y);
         }
-        private class MinNaive
+        private class MinNaive(short[] array)
         {
-            private readonly short[] array;
-            public MinNaive(short[] array)
-            {
-                this.array = array;
-            }
 
             public short Prod(int l, int r)
             {

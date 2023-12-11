@@ -4,12 +4,10 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public readonly struct DefaultComparerStruct<T> : IComparer<T> where T : IComparable<T>
+    public readonly record struct DefaultComparerStruct<T> : IComparer<T> where T : IComparable<T>
     {
         public static DefaultComparerStruct<T> Default => default;
         [凾(256)]
         public int Compare(T x, T y) => x.CompareTo(y);
-        public override bool Equals(object obj) => obj is ReverseComparerStruct<T>;
-        public override int GetHashCode() => GetType().GetHashCode();
     }
 }

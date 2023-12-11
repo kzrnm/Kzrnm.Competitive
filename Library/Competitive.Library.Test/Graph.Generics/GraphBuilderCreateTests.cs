@@ -44,33 +44,28 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             var expectedChildren = new GraphEdge[5][]
             {
-                new GraphEdge[]
-                {
+                [
                     new(1),
-                },
-                new GraphEdge[]
-                {
+                ],
+                [
                     new(0),
                     new(2),
                     new(4),
-                },
-                new GraphEdge[]
-                {
+                ],
+                [
                     new(1),
                     new(3),
                     new(4),
-                },
-                new GraphEdge[]
-                {
+                ],
+                [
                     new(2),
                     new(4),
-                },
-                new GraphEdge[]
-                {
+                ],
+                [
                     new(2),
                     new(3),
                     new(1),
-                },
+                ],
             };
             var expectedParents = expectedChildren;
 
@@ -99,51 +94,40 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             var expectedChildren = new GraphEdge[5][]
             {
-                new GraphEdge[]
-                {
+                [
                     new(1),
-                },
-                new GraphEdge[]
-                {
+                ],
+                [
                     new(2),
-                },
-                new GraphEdge[]
-                {
+                ],
+                [
                     new(3),
                     new(4),
-                },
-                new GraphEdge[]
-                {
+                ],
+                [
                     new(4),
-                },
-                new GraphEdge[]
-                {
+                ],
+                [
                     new(1),
-                },
+                ],
             };
             var expectedParents = new GraphEdge[5][]
             {
-                new GraphEdge[]
-                {
-                },
-                new GraphEdge[]
-                {
+                [],
+                [
                     new(0),
                     new(4),
-                },
-                new GraphEdge[]
-                {
+                ],
+                [
                     new(1),
-                },
-                new GraphEdge[]
-                {
+                ],
+                [
                     new(2),
-                },
-                new GraphEdge[]
-                {
+                ],
+                [
                     new(2),
                     new(3),
-                },
+                ],
             };
 
             for (int i = 0; i < graph.Length; i++)
@@ -170,25 +154,18 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             var expectedChildren = new GraphEdge[5][]
             {
-                new GraphEdge[]
-                {
+                [
                     new(1),
-                },
-                new GraphEdge[]
-                {
+                ],
+                [
                     new(2),
                     new(4),
-                },
-                new GraphEdge[]
-                {
+                ],
+                [
                     new(3),
-                },
-                new GraphEdge[]
-                {
-                },
-                new GraphEdge[]
-                {
-                },
+                ],
+                [],
+                [],
             };
             var expectedParent = new GraphEdge[5]
             {
@@ -224,33 +201,28 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             var expectedChildren = new GraphEdge<int>[5][]
             {
-                new GraphEdge<int>[]
-                {
+                [
                     new (1, 0),
-                },
-                new GraphEdge<int>[]
-                {
+                ],
+                [
                     new (0, 0),
                     new (2, 1),
                     new (4, 5),
-                },
-                new GraphEdge<int>[]
-                {
+                ],
+                [
                     new (1, 1),
                     new (3, 2),
                     new (4, 4),
-                },
-                new GraphEdge<int>[]
-                {
+                ],
+                [
                     new (2, 2),
                     new (4, 3),
-                },
-                new GraphEdge<int>[]
-                {
+                ],
+                [
                     new (2, 4),
                     new (3, 3),
                     new (1, 5),
-                },
+                ],
             };
             var expectedParents = expectedChildren;
 
@@ -279,51 +251,40 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             var expectedChildren = new GraphEdge<int>[5][]
             {
-                new GraphEdge<int>[]
-                {
+                [
                     new(1, 0),
-                },
-                new GraphEdge<int>[]
-                {
+                ],
+                [
                     new(2, 1),
-                },
-                new GraphEdge<int>[]
-                {
+                ],
+                [
                     new(3, 2),
                     new(4, 4),
-                },
-                new GraphEdge<int>[]
-                {
+                ],
+                [
                     new(4, 3),
-                },
-                new GraphEdge<int>[]
-                {
+                ],
+                [
                     new(1, 5),
-                },
+                ],
             };
             var expectedParents = new GraphEdge<int>[5][]
             {
-                new GraphEdge<int>[]
-                {
-                },
-                new GraphEdge<int>[]
-                {
+                [],
+                [
                     new(0, 0),
                     new(4, 5),
-                },
-                new GraphEdge<int>[]
-                {
+                ],
+                [
                     new(1, 1),
-                },
-                new GraphEdge<int>[]
-                {
+                ],
+                [
                     new(2, 2),
-                },
-                new GraphEdge<int>[]
-                {
+                ],
+                [
                     new(2, 4),
                     new(3, 3),
-                },
+                ],
             };
 
             for (int i = 0; i < graph.Length; i++)

@@ -12,14 +12,14 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Normal")]
         public void Construct()
         {
-            new ArrayMatrix<int>(new int[][]
+            new ArrayMatrix<int>(
+            [
+                [1, 2, 3],
+                [4, 5, 6],
+            ]).ToArray().Should().BeEquivalentTo(new int[][]
             {
-                new int[]{ 1, 2, 3 },
-                new int[]{ 4, 5, 6 },
-            }).ToArray().Should().BeEquivalentTo(new int[][]
-            {
-                new int[] { 1, 2, 3 },
-                new int[] { 4, 5, 6 },
+                [1, 2, 3],
+                [4, 5, 6],
             });
             new ArrayMatrix<int>(new int[,]
             {
@@ -27,8 +27,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 { 4, 5, 6 },
             }).ToArray().Should().BeEquivalentTo(new int[][]
             {
-                new int[] { 1, 2, 3 },
-                new int[] { 4, 5, 6 },
+                [1, 2, 3],
+                [4, 5, 6],
             });
         }
 
@@ -36,50 +36,50 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Normal")]
         public void NormalIdentity()
         {
-            ArrayMatrix<int>.NormalIdentity(2).Should().Be(new ArrayMatrix<int>(new int[][]
-            {
-                new int[]{ 1, 0 },
-                new int[]{ 0, 1 },
-            }));
-            ArrayMatrix<int>.NormalIdentity(3).Should().Be(new ArrayMatrix<int>(new int[][]
-            {
-                new int[]{ 1, 0, 0 },
-                new int[]{ 0, 1, 0 },
-                new int[]{ 0, 0, 1 },
-            }));
+            ArrayMatrix<int>.NormalIdentity(2).Should().Be(new ArrayMatrix<int>(
+            [
+                [1, 0],
+                [0, 1],
+            ]));
+            ArrayMatrix<int>.NormalIdentity(3).Should().Be(new ArrayMatrix<int>(
+            [
+                [1, 0, 0],
+                [0, 1, 0],
+                [0, 0, 1],
+            ]));
 
-            ArrayMatrix<MontgomeryModInt<Mod1000000007>>.NormalIdentity(3).Should().Be(new ArrayMatrix<MontgomeryModInt<Mod1000000007>>(new MontgomeryModInt<Mod1000000007>[][]
-            {
-                new MontgomeryModInt<Mod1000000007>[]{ 1, 0, 0 },
-                new MontgomeryModInt<Mod1000000007>[]{ 0, 1, 0 },
-                new MontgomeryModInt<Mod1000000007>[]{ 0, 0, 1 },
-            }));
+            ArrayMatrix<MontgomeryModInt<Mod1000000007>>.NormalIdentity(3).Should().Be(new ArrayMatrix<MontgomeryModInt<Mod1000000007>>(
+            [
+                [1, 0, 0],
+                [0, 1, 0],
+                [0, 0, 1],
+            ]));
         }
 
         [Fact]
         [Trait("Category", "Normal")]
         public void Equal()
         {
-            new ArrayMatrix<int>(new int[][]
-            {
-                new int[]{ 1, 2, 3 },
-                new int[]{ 4, 5, 6 },
-            }).Should().Be(new ArrayMatrix<int>(new int[,]
+            new ArrayMatrix<int>(
+            [
+                [1, 2, 3],
+                [4, 5, 6],
+            ]).Should().Be(new ArrayMatrix<int>(new int[,]
             {
                 { 1, 2, 3 },
                 { 4, 5, 6 },
             }));
-            new ArrayMatrix<int>(new int[][]
-            {
-                new int[]{ 1, 2, 3 },
-                new int[]{ 4, 5, 6 },
-            }).Should().Be(new ArrayMatrix<int>(new int[] { 1, 2, 3, 4, 5, 6 }, 2, 3));
-            new ArrayMatrix<int>(new int[][]
-            {
-                new int[]{ 1, 2, },
-                new int[]{ 3, 4, },
-                new int[]{ 5, 6, },
-            }).Should().NotBe(new ArrayMatrix<int>(new int[,]
+            new ArrayMatrix<int>(
+            [
+                [1, 2, 3],
+                [4, 5, 6],
+            ]).Should().Be(new ArrayMatrix<int>(new int[] { 1, 2, 3, 4, 5, 6 }, 2, 3));
+            new ArrayMatrix<int>(
+            [
+                [1, 2,],
+                [3, 4,],
+                [5, 6,],
+            ]).Should().NotBe(new ArrayMatrix<int>(new int[,]
             {
                 { 1, 2, 3 },
                 { 4, 5, 6 },
@@ -96,8 +96,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 { 4, 5, 6 },
             })).ToArray().Should().BeEquivalentTo(new int[][]
             {
-                new int[] { -1, -2, -3 },
-                new int[] { -4, -5, -6 },
+                [-1, -2, -3],
+                [-4, -5, -6],
             });
         }
 
@@ -431,8 +431,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             });
             orig.Pow(5).ToArray().Should().BeEquivalentTo(new int[][]
             {
-                new[]{ 1069, 1558},
-                new[]{ 2337, 3406 },
+                [1069, 1558],
+                [2337, 3406],
             });
             var cur = orig;
             for (int i = 1; i < 10; i++)
@@ -575,15 +575,15 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             var inv = orig.Inv();
             inv.ToArray().Should().BeEquivalentTo(new Fraction[][]
             {
-                new[]{ new Fraction(-146,319), new Fraction(-93,319), new Fraction(-243,319)},
-                new[]{ new Fraction(-131,319), new Fraction(-90,319), new Fraction(-194,319)},
-                new[]{ new Fraction(-50,319), new Fraction(-10,319), new Fraction(-57,319)},
+                [new Fraction(-146,319), new Fraction(-93,319), new Fraction(-243,319)],
+                [new Fraction(-131,319), new Fraction(-90,319), new Fraction(-194,319)],
+                [new Fraction(-50,319), new Fraction(-10,319), new Fraction(-57,319)],
             });
             var id = new Fraction[][]
             {
-                new Fraction[]{1,0,0},
-                new Fraction[]{0,1,0},
-                new Fraction[]{0,0,1},
+                [1,0,0],
+                [0,1,0],
+                [0,0,1],
             };
             (orig * inv).ToArray().Should().BeEquivalentTo(id);
             (inv * orig).ToArray().Should().BeEquivalentTo(id);
@@ -725,8 +725,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 new Fraction[2] { 7, 2 },
                 new Fraction[][]
                 {
-                    new Fraction[]{ new(11,7), new(-19,14), 0 },
-                    new Fraction[]{-1, new(1,2), 1},
+                    [new(11,7), new(-19,14), 0],
+                    [-1, new(1,2), 1],
                 }
             },
             {
@@ -737,8 +737,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 new Fraction[2] { 1, 2 },
                 new Fraction[][]
                 {
-                    new Fraction[]{ 1, 0 },
-                    new Fraction[]{-2, 1 },
+                    [1, 0],
+                    [-2, 1],
                 }
             },
             {
@@ -747,7 +747,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     { 2,4 },
                 }),
                 new Fraction[2] { 1, 3 },
-                new Fraction[0][]
+                []
             },
             {
                 new(new Fraction[2,2]{
@@ -757,9 +757,9 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 new Fraction[2] { 0, 0 },
                 new Fraction[][]
                 {
-                    new Fraction[]{ 0, 0 },
-                    new Fraction[]{ 1, 0 },
-                    new Fraction[]{ 0, 1 },
+                    [0, 0],
+                    [1, 0],
+                    [0, 1],
                 }
             },
         };

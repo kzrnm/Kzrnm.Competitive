@@ -17,11 +17,11 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 3, 1);
             gb.Add(4, 0, 1);
             var graph = gb.ToGraph();
-            graph.ShortestPath01Bfs(0).Should().Equal(new int[] { 0, 1, 0, 1, 0 });
-            graph.ShortestPath01Bfs(1).Should().Equal(new int[] { 1, 0, 0, 1, 0 });
-            graph.ShortestPath01Bfs(2).Should().Equal(new int[] { 1, 2, 0, 1, 0 });
-            graph.ShortestPath01Bfs(3).Should().Equal(new int[] { int.MaxValue, int.MaxValue, int.MaxValue, 0, int.MaxValue });
-            graph.ShortestPath01Bfs(4).Should().Equal(new int[] { 1, 2, 1, 1, 0 });
+            graph.ShortestPath01Bfs(0).Should().Equal([0, 1, 0, 1, 0]);
+            graph.ShortestPath01Bfs(1).Should().Equal([1, 0, 0, 1, 0]);
+            graph.ShortestPath01Bfs(2).Should().Equal([1, 2, 0, 1, 0]);
+            graph.ShortestPath01Bfs(3).Should().Equal([int.MaxValue, int.MaxValue, int.MaxValue, 0, int.MaxValue]);
+            graph.ShortestPath01Bfs(4).Should().Equal([1, 2, 1, 1, 0]);
         }
 
         [Fact]
@@ -38,11 +38,11 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 3, 1);
             gb.Add(4, 0, 1);
             var graph = gb.ToGraph();
-            graph.ShortestPath01Bfs(0).Should().Equal(new long[] { 0, 1, 0, 1, 0 });
-            graph.ShortestPath01Bfs(1).Should().Equal(new long[] { 1, 0, 0, 1, 0 });
-            graph.ShortestPath01Bfs(2).Should().Equal(new long[] { 1, 2, 0, 1, 0 });
-            graph.ShortestPath01Bfs(3).Should().Equal(new long[] { long.MaxValue, long.MaxValue, long.MaxValue, 0, long.MaxValue });
-            graph.ShortestPath01Bfs(4).Should().Equal(new long[] { 1, 2, 1, 1, 0 });
+            graph.ShortestPath01Bfs(0).Should().Equal([0, 1, 0, 1, 0]);
+            graph.ShortestPath01Bfs(1).Should().Equal([1, 0, 0, 1, 0]);
+            graph.ShortestPath01Bfs(2).Should().Equal([1, 2, 0, 1, 0]);
+            graph.ShortestPath01Bfs(3).Should().Equal([long.MaxValue, long.MaxValue, long.MaxValue, 0, long.MaxValue]);
+            graph.ShortestPath01Bfs(4).Should().Equal([1, 2, 1, 1, 0]);
         }
     }
 }

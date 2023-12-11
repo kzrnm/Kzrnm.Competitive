@@ -256,7 +256,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
 
             Test();
 
-            AddRange(new[] { 1, 2, 2, 3 });
+            AddRange([1, 2, 2, 3]);
             Test();
             var rnd = new Random(227);
             for (int q = 0; q < 50; q++)
@@ -289,7 +289,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
 
             Test();
 
-            InsertRange(1, new[] { 1, 2, 2, 3 });
+            InsertRange(1, [1, 2, 2, 3]);
             Test();
             var rnd = new Random(227);
             for (int q = 0; q < 50; q++)

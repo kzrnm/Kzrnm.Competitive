@@ -73,10 +73,8 @@ namespace Kzrnm.Competitive.Testing.Collection
                     inner.EnqueueDequeueMax();
             }
         }
-        class RandomInner
+        class RandomInner(Random rnd)
         {
-            public RandomInner(Random rnd) { this.rnd = rnd; }
-            readonly Random rnd;
             PriorityDeque<int, ReverseComparerStruct<int>> pq = new();
             List<int> keyValues = new();
 

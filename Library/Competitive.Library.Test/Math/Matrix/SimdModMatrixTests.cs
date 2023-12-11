@@ -16,14 +16,14 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Normal")]
         public void Construct()
         {
-            new SimdModMatrix(new MontgomeryModInt[][]
+            new SimdModMatrix(
+            [
+                [1, 2, 3],
+                [4, 5, 6],
+            ]).ToArray().Should().BeEquivalentTo(new MontgomeryModInt[][]
             {
-                new MontgomeryModInt[]{ 1, 2, 3 },
-                new MontgomeryModInt[]{ 4, 5, 6 },
-            }).ToArray().Should().BeEquivalentTo(new MontgomeryModInt[][]
-            {
-                new MontgomeryModInt[] { 1, 2, 3 },
-                new MontgomeryModInt[] { 4, 5, 6 },
+                [1, 2, 3],
+                [4, 5, 6],
             });
             new SimdModMatrix(new MontgomeryModInt[,]
             {
@@ -31,8 +31,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 { 4, 5, 6 },
             }).ToArray().Should().BeEquivalentTo(new MontgomeryModInt[][]
             {
-                new MontgomeryModInt[] { 1, 2, 3 },
-                new MontgomeryModInt[] { 4, 5, 6 },
+                [1, 2, 3],
+                [4, 5, 6],
             });
         }
 
@@ -40,43 +40,43 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Normal")]
         public void NormalIdentity()
         {
-            SimdModMatrix.NormalIdentity(2).Should().Be(new SimdModMatrix(new MontgomeryModInt[][]
-            {
-                new MontgomeryModInt[]{ 1, 0 },
-                new MontgomeryModInt[]{ 0, 1 },
-            }));
-            SimdModMatrix.NormalIdentity(3).Should().Be(new SimdModMatrix(new MontgomeryModInt[][]
-            {
-                new MontgomeryModInt[]{ 1, 0, 0 },
-                new MontgomeryModInt[]{ 0, 1, 0 },
-                new MontgomeryModInt[]{ 0, 0, 1 },
-            }));
+            SimdModMatrix.NormalIdentity(2).Should().Be(new SimdModMatrix(
+            [
+                [1, 0],
+                [0, 1],
+            ]));
+            SimdModMatrix.NormalIdentity(3).Should().Be(new SimdModMatrix(
+            [
+                [1, 0, 0],
+                [0, 1, 0],
+                [0, 0, 1],
+            ]));
         }
 
         [Fact]
         [Trait("Category", "Normal")]
         public void Equal()
         {
-            new SimdModMatrix(new MontgomeryModInt[][]
-            {
-                new MontgomeryModInt[]{ 1, 2, 3 },
-                new MontgomeryModInt[]{ 4, 5, 6 },
-            }).Should().Be(new SimdModMatrix(new MontgomeryModInt[,]
+            new SimdModMatrix(
+            [
+                [1, 2, 3],
+                [4, 5, 6],
+            ]).Should().Be(new SimdModMatrix(new MontgomeryModInt[,]
             {
                 { 1, 2, 3 },
                 { 4, 5, 6 },
             }));
-            new SimdModMatrix(new MontgomeryModInt[][]
-            {
-                new MontgomeryModInt[]{ 1, 2, 3 },
-                new MontgomeryModInt[]{ 4, 5, 6 },
-            }).Should().Be(new SimdModMatrix(new MontgomeryModInt[] { 1, 2, 3, 4, 5, 6 }, 2, 3));
-            new SimdModMatrix(new MontgomeryModInt[][]
-            {
-                new MontgomeryModInt[]{ 1, 2, },
-                new MontgomeryModInt[]{ 3, 4, },
-                new MontgomeryModInt[]{ 5, 6, },
-            }).Should().NotBe(new SimdModMatrix(new MontgomeryModInt[,]
+            new SimdModMatrix(
+            [
+                [1, 2, 3],
+                [4, 5, 6],
+            ]).Should().Be(new SimdModMatrix(new MontgomeryModInt[] { 1, 2, 3, 4, 5, 6 }, 2, 3));
+            new SimdModMatrix(
+            [
+                [1, 2,],
+                [3, 4,],
+                [5, 6,],
+            ]).Should().NotBe(new SimdModMatrix(new MontgomeryModInt[,]
             {
                 { 1, 2, 3 },
                 { 4, 5, 6 },
@@ -93,8 +93,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 { 4, 5, 6 },
             })).ToArray().Should().BeEquivalentTo(new MontgomeryModInt[][]
             {
-                new MontgomeryModInt[] { -1, -2, -3 },
-                new MontgomeryModInt[] { -4, -5, -6 },
+                [-1, -2, -3],
+                [-4, -5, -6],
             });
         }
 
@@ -475,8 +475,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             });
             orig.Pow(5).ToArray().Should().BeEquivalentTo(new MontgomeryModInt[][]
             {
-                new MontgomeryModInt[]{ 1069, 1558},
-                new MontgomeryModInt[]{ 2337, 3406 },
+                [1069, 1558],
+                [2337, 3406],
             });
             var cur = orig;
             for (int i = 1; i < 10; i++)
@@ -625,9 +625,9 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             }));
             var id = new MontgomeryModInt[][]
             {
-                new MontgomeryModInt[]{1,0,0},
-                new MontgomeryModInt[]{0,1,0},
-                new MontgomeryModInt[]{0,0,1},
+                [1,0,0],
+                [0,1,0],
+                [0,0,1],
             };
             (orig * inv).ToArray().Should().BeEquivalentTo(id);
             (inv * orig).ToArray().Should().BeEquivalentTo(id);
@@ -769,8 +769,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 new MontgomeryModInt[2] { 7, 2 },
                 new MontgomeryModInt[][]
                 {
-                    new []{ (MontgomeryModInt)11/7, -(MontgomeryModInt)19/14, 0 },
-                    new []{-1, (MontgomeryModInt)1/2, 1},
+                    [(MontgomeryModInt)11/7, -(MontgomeryModInt)19/14, 0],
+                    [-1, (MontgomeryModInt)1/2, 1],
                 }
             },
             {
@@ -781,8 +781,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 new MontgomeryModInt[2] { 1, 2 },
                 new MontgomeryModInt[][]
                 {
-                    new MontgomeryModInt[]{ 1, 0 },
-                    new MontgomeryModInt[]{-2, 1 },
+                    [1, 0],
+                    [-2, 1],
                 }
             },
             {
@@ -791,7 +791,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     { 2,4 },
                 }),
                 new MontgomeryModInt[2] { 1, 3 },
-                new MontgomeryModInt[0][]
+                []
             },
             {
                 new(new MontgomeryModInt[2,2]{
@@ -801,9 +801,9 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 new MontgomeryModInt[2] { 0, 0 },
                 new MontgomeryModInt[][]
                 {
-                    new MontgomeryModInt[]{ 0, 0 },
-                    new MontgomeryModInt[]{ 1, 0 },
-                    new MontgomeryModInt[]{ 0, 1 },
+                    [0, 0],
+                    [1, 0],
+                    [0, 1],
                 }
             },
         };

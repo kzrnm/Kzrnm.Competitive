@@ -181,16 +181,16 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [Fact]
         public void DivisorLong()
         {
-            MathLibEx.Divisor(1L).Should().Equal(new long[] { 1 });
-            MathLibEx.Divisor(128100283921).Should().Equal(new long[] {
+            MathLibEx.Divisor(1L).Should().Equal([1]);
+            MathLibEx.Divisor(128100283921).Should().Equal([
                 1,
                 71,
                 5041,
                 357911,
                 25411681,
                 1804229351,
-                128100283921 });
-            MathLibEx.Divisor(132147483703).Should().Equal(new long[] { 1, 132147483703 });
+                128100283921]);
+            MathLibEx.Divisor(132147483703).Should().Equal([1, 132147483703]);
             MathLibEx.Divisor(963761198400).Should().HaveCount(6720); //高度合成数
         }
 

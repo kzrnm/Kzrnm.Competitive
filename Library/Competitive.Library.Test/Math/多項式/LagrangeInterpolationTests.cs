@@ -48,13 +48,13 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [Fact]
         public void Eval()
         {
-            RunTest<Mod998244353>(new[] { 1, 0, 2, 0, 3, 0, 4 }, 100);
-            RunTest<Mod998244353>(new[] { 1, 0, 2, 0, 3, 0, 4 }, 1000);
-            RunTest<Mod998244353>(new[] { 1, 0, 2, 0, 3, 0, 4 }, 10000);
+            RunTest<Mod998244353>([1, 0, 2, 0, 3, 0, 4], 100);
+            RunTest<Mod998244353>([1, 0, 2, 0, 3, 0, 4], 1000);
+            RunTest<Mod998244353>([1, 0, 2, 0, 3, 0, 4], 10000);
 
-            RunTest<Mod1000000007>(new[] { 1, 0, 2, 0, 3, 0, 4 }, 100);
-            RunTest<Mod1000000007>(new[] { 1, 0, 2, 0, 3, 0, 4 }, 1000);
-            RunTest<Mod1000000007>(new[] { 1, 0, 2, 0, 3, 0, 4 }, 10000);
+            RunTest<Mod1000000007>([1, 0, 2, 0, 3, 0, 4], 100);
+            RunTest<Mod1000000007>([1, 0, 2, 0, 3, 0, 4], 1000);
+            RunTest<Mod1000000007>([1, 0, 2, 0, 3, 0, 4], 10000);
 
             static void RunTest<T>(int[] y, long x) where T : struct, IStaticMod
             {

@@ -5,14 +5,9 @@ namespace Kzrnm.Competitive.Testing.GlobalNS
 {
     public class BinarySearchExTests
     {
-        private readonly struct DelegateOk<T> : IOk<T>
+        private readonly struct DelegateOk<T>(Predicate<T> predicate) : IOk<T>
         {
-            private readonly Predicate<T> predicate;
             public bool Ok(T value) => predicate(value);
-            public DelegateOk(Predicate<T> predicate)
-            {
-                this.predicate = predicate;
-            }
         }
         private readonly struct IntLower : IOk<int>
         {
@@ -124,10 +119,8 @@ namespace Kzrnm.Competitive.Testing.GlobalNS
 
 
 #pragma warning disable CS0649
-        private readonly struct FloatFull : IBinaryOk<float>
+        private readonly struct FloatFull(float th) : IBinaryOk<float>
         {
-            public FloatFull(float value) { th = value; }
-            public readonly float th;
             public bool Continue(float ok, float ng) => Math.Abs(ok - ng) > 50;
             public float Mid(float ok, float ng) => (ok + ng) / 2;
 

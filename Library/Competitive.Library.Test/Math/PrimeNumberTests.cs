@@ -9,13 +9,13 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [Fact]
         public void PrimeTest()
         {
-            new PrimeNumber(5).Should().Equal(new[] { 2, 3, 5 });
-            new PrimeNumber(6).Should().Equal(new[] { 2, 3, 5 });
-            new PrimeNumber(7).Should().Equal(new[] { 2, 3, 5, 7 });
-            new PrimeNumber(9).Should().Equal(new[] { 2, 3, 5, 7 });
-            new PrimeNumber(10).Should().Equal(new[] { 2, 3, 5, 7 });
-            new PrimeNumber(11).Should().Equal(new[] { 2, 3, 5, 7, 11 });
-            new PrimeNumber(20).Should().Equal(new[] { 2, 3, 5, 7, 11, 13, 17, 19 });
+            new PrimeNumber(5).Should().Equal([2, 3, 5]);
+            new PrimeNumber(6).Should().Equal([2, 3, 5]);
+            new PrimeNumber(7).Should().Equal([2, 3, 5, 7]);
+            new PrimeNumber(9).Should().Equal([2, 3, 5, 7]);
+            new PrimeNumber(10).Should().Equal([2, 3, 5, 7]);
+            new PrimeNumber(11).Should().Equal([2, 3, 5, 7, 11]);
+            new PrimeNumber(20).Should().Equal([2, 3, 5, 7, 11, 13, 17, 19]);
         }
 
 

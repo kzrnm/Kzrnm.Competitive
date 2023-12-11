@@ -30,33 +30,28 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             var expectedChildren = new WEdge<int>[5][]
             {
-                new WEdge<int>[]
-                {
+                [
                     new (1, -1),
-                },
-                new WEdge<int>[]
-                {
+                ],
+                [
                     new (0, -1),
                     new (2, 11),
                     new (4, 55),
-                },
-                new WEdge<int>[]
-                {
+                ],
+                [
                     new (1, 11),
                     new (3, 22),
                     new (4, 44),
-                },
-                new WEdge<int>[]
-                {
+                ],
+                [
                     new (2, 22),
                     new (4, 33),
-                },
-                new WEdge<int>[]
-                {
+                ],
+                [
                     new (2, 44),
                     new (3, 33),
                     new (1, 55),
-                },
+                ],
             };
             var expectedParents = expectedChildren;
 
@@ -85,51 +80,40 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             var expectedChildren = new WEdge<int>[5][]
             {
-                new WEdge<int>[]
-                {
+                [
                     new(1, -1),
-                },
-                new WEdge<int>[]
-                {
+                ],
+                [
                     new(2, 11),
-                },
-                new WEdge<int>[]
-                {
+                ],
+                [
                     new(3, 22),
                     new(4, 44),
-                },
-                new WEdge<int>[]
-                {
+                ],
+                [
                     new(4, 33),
-                },
-                new WEdge<int>[]
-                {
+                ],
+                [
                     new(1, 55),
-                },
+                ],
             };
             var expectedParents = new WEdge<int>[5][]
             {
-                new WEdge<int>[]
-                {
-                },
-                new WEdge<int>[]
-                {
+                [],
+                [
                     new(0, -1),
                     new(4, 55),
-                },
-                new WEdge<int>[]
-                {
+                ],
+                [
                     new(1, 11),
-                },
-                new WEdge<int>[]
-                {
+                ],
+                [
                     new(2, 22),
-                },
-                new WEdge<int>[]
-                {
+                ],
+                [
                     new(2, 44),
                     new(3, 33),
-                },
+                ],
             };
 
             for (int i = 0; i < graph.Length; i++)
@@ -156,25 +140,18 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             var expectedChildren = new WEdge<int>[5][]
             {
-                new WEdge<int>[]
-                {
+                [
                     new(1, -1),
-                },
-                new WEdge<int>[]
-                {
+                ],
+                [
                     new(2, 11),
                     new(4, 55),
-                },
-                new WEdge<int>[]
-                {
+                ],
+                [
                     new(3, 22),
-                },
-                new WEdge<int>[]
-                {
-                },
-                new WEdge<int>[]
-                {
-                },
+                ],
+                [],
+                [],
             };
             var expectedParent = new WEdge<int>[5]
             {
@@ -210,33 +187,28 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             var expectedChildren = new WEdge<int, int>[5][]
             {
-                new WEdge<int, int>[]
-                {
+                [
                     new (1, -1, 0),
-                },
-                new WEdge<int, int>[]
-                {
+                ],
+                [
                     new (0, -1, 0),
                     new (2, 11, 1),
                     new (4, 55, 5),
-                },
-                new WEdge<int, int>[]
-                {
+                ],
+                [
                     new (1, 11, 1),
                     new (3, 22, 2),
                     new (4, 44, 4),
-                },
-                new WEdge<int, int>[]
-                {
+                ],
+                [
                     new (2, 22, 2),
                     new (4, 33, 3),
-                },
-                new WEdge<int, int>[]
-                {
+                ],
+                [
                     new (2, 44, 4),
                     new (3, 33, 3),
                     new (1, 55, 5),
-                },
+                ],
             };
             var expectedParents = expectedChildren;
 
@@ -265,51 +237,40 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             var expectedChildren = new WEdge<int, int>[5][]
             {
-                new WEdge<int, int>[]
-                {
+                [
                     new(1, -1, 0),
-                },
-                new WEdge<int, int>[]
-                {
+                ],
+                [
                     new(2, 11, 1),
-                },
-                new WEdge<int, int>[]
-                {
+                ],
+                [
                     new(3, 22, 2),
                     new(4, 44, 4),
-                },
-                new WEdge<int, int>[]
-                {
+                ],
+                [
                     new(4, 33, 3),
-                },
-                new WEdge<int, int>[]
-                {
+                ],
+                [
                     new(1, 55, 5),
-                },
+                ],
             };
             var expectedParents = new WEdge<int, int>[5][]
             {
-                new WEdge<int, int>[]
-                {
-                },
-                new WEdge<int, int>[]
-                {
+                [],
+                [
                     new(0, -1, 0),
                     new(4, 55, 5),
-                },
-                new WEdge<int, int>[]
-                {
+                ],
+                [
                     new(1, 11, 1),
-                },
-                new WEdge<int, int>[]
-                {
+                ],
+                [
                     new(2, 22, 2),
-                },
-                new WEdge<int, int>[]
-                {
+                ],
+                [
                     new(2, 44, 4),
                     new(3, 33, 3),
-                },
+                ],
             };
 
             for (int i = 0; i < graph.Length; i++)
@@ -339,33 +300,28 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             var expectedChildren = new WEdge<long>[5][]
             {
-                new WEdge<long>[]
-                {
+                [
                     new (1, -1),
-                },
-                new WEdge<long>[]
-                {
+                ],
+                [
                     new (0, -1),
                     new (2, 11),
                     new (4, 55),
-                },
-                new WEdge<long>[]
-                {
+                ],
+                [
                     new (1, 11),
                     new (3, 22),
                     new (4, 44),
-                },
-                new WEdge<long>[]
-                {
+                ],
+                [
                     new (2, 22),
                     new (4, 33),
-                },
-                new WEdge<long>[]
-                {
+                ],
+                [
                     new (2, 44),
                     new (3, 33),
                     new (1, 55),
-                },
+                ],
             };
             var expectedParents = expectedChildren;
 
@@ -394,51 +350,40 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             var expectedChildren = new WEdge<long>[5][]
             {
-                new WEdge<long>[]
-                {
+                [
                     new(1, -1),
-                },
-                new WEdge<long>[]
-                {
+                ],
+                [
                     new(2, 11),
-                },
-                new WEdge<long>[]
-                {
+                ],
+                [
                     new(3, 22),
                     new(4, 44),
-                },
-                new WEdge<long>[]
-                {
+                ],
+                [
                     new(4, 33),
-                },
-                new WEdge<long>[]
-                {
+                ],
+                [
                     new(1, 55),
-                },
+                ],
             };
             var expectedParents = new WEdge<long>[5][]
             {
-                new WEdge<long>[]
-                {
-                },
-                new WEdge<long>[]
-                {
+                [],
+                [
                     new(0, -1),
                     new(4, 55),
-                },
-                new WEdge<long>[]
-                {
+                ],
+                [
                     new(1, 11),
-                },
-                new WEdge<long>[]
-                {
+                ],
+                [
                     new(2, 22),
-                },
-                new WEdge<long>[]
-                {
+                ],
+                [
                     new(2, 44),
                     new(3, 33),
-                },
+                ],
             };
 
             for (int i = 0; i < graph.Length; i++)
@@ -465,25 +410,18 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             var expectedChildren = new WEdge<long>[5][]
             {
-                new WEdge<long>[]
-                {
+                [
                     new(1, -1),
-                },
-                new WEdge<long>[]
-                {
+                ],
+                [
                     new(2, 11),
                     new(4, 55),
-                },
-                new WEdge<long>[]
-                {
+                ],
+                [
                     new(3, 22),
-                },
-                new WEdge<long>[]
-                {
-                },
-                new WEdge<long>[]
-                {
-                },
+                ],
+                [],
+                [],
             };
             var expectedParent = new WEdge<long>[5]
             {
@@ -519,33 +457,28 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             var expectedChildren = new WEdge<long, int>[5][]
             {
-                new WEdge<long, int>[]
-                {
+                [
                     new (1, -1, 0),
-                },
-                new WEdge<long, int>[]
-                {
+                ],
+                [
                     new (0, -1, 0),
                     new (2, 11, 1),
                     new (4, 55, 5),
-                },
-                new WEdge<long, int>[]
-                {
+                ],
+                [
                     new (1, 11, 1),
                     new (3, 22, 2),
                     new (4, 44, 4),
-                },
-                new WEdge<long, int>[]
-                {
+                ],
+                [
                     new (2, 22, 2),
                     new (4, 33, 3),
-                },
-                new WEdge<long, int>[]
-                {
+                ],
+                [
                     new (2, 44, 4),
                     new (3, 33, 3),
                     new (1, 55, 5),
-                },
+                ],
             };
             var expectedParents = expectedChildren;
 
@@ -574,51 +507,40 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             var expectedChildren = new WEdge<long, int>[5][]
             {
-                new WEdge<long, int>[]
-                {
+                [
                     new(1, -1, 0),
-                },
-                new WEdge<long, int>[]
-                {
+                ],
+                [
                     new(2, 11, 1),
-                },
-                new WEdge<long, int>[]
-                {
+                ],
+                [
                     new(3, 22, 2),
                     new(4, 44, 4),
-                },
-                new WEdge<long, int>[]
-                {
+                ],
+                [
                     new(4, 33, 3),
-                },
-                new WEdge<long, int>[]
-                {
+                ],
+                [
                     new(1, 55, 5),
-                },
+                ],
             };
             var expectedParents = new WEdge<long, int>[5][]
             {
-                new WEdge<long, int>[]
-                {
-                },
-                new WEdge<long, int>[]
-                {
+                [],
+                [
                     new(0, -1, 0),
                     new(4, 55, 5),
-                },
-                new WEdge<long, int>[]
-                {
+                ],
+                [
                     new(1, 11, 1),
-                },
-                new WEdge<long, int>[]
-                {
+                ],
+                [
                     new(2, 22, 2),
-                },
-                new WEdge<long, int>[]
-                {
+                ],
+                [
                     new(2, 44, 4),
                     new(3, 33, 3),
-                },
+                ],
             };
 
             for (int i = 0; i < graph.Length; i++)

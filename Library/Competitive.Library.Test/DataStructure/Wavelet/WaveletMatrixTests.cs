@@ -5,9 +5,19 @@ namespace Kzrnm.Competitive.Testing.DataStructure
 {
     public class WaveletMatrixTests
     {
-        public static long[] orig = new long[] {
-            1,-1,2,-2,3,3,-3,-2,4,5,6
-        };
+        public static long[] orig = [
+            1,
+            -1,
+            2,
+            -2,
+            3,
+            3,
+            -3,
+            -2,
+            4,
+            5,
+            6
+        ];
         public WaveletMatrix<long> matrix = new(orig);
 
         [Theory]

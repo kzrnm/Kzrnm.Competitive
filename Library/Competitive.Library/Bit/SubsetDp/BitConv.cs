@@ -53,7 +53,7 @@ namespace Kzrnm.Competitive.Internal
 
             return f;
 
-            static void ThrowLengthDiff() => throw new ArgumentException("All length of inputs must be same.", "b");
+            static void ThrowLengthDiff() => throw new ArgumentException("All length of inputs must be same.", nameof(b));
             static void ThrowNotPow2(string n) => throw new ArgumentException("A length of input must be power of 2.", n);
         }
     }

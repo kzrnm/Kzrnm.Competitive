@@ -123,14 +123,14 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 {
                     LinearRecurrence.Recurrence(
                         new MontgomeryModInt<Mod998244353>[] { a0, a1, a2 },
-                        new MontgomeryModInt<Mod998244353>[] { 1, 1, 1 }, len)
+                        [1, 1, 1], len)
                         .Should().HaveCount(len)
                         .And
                         .Equal(native998244353[..len]);
 
                     LinearRecurrence.Recurrence(
                         new MontgomeryModInt<Mod1000000007>[] { a0, a1, a2 },
-                        new MontgomeryModInt<Mod1000000007>[] { 1, 1, 1 }, len)
+                        [1, 1, 1], len)
                         .Should().HaveCount(len)
                         .And
                         .Equal(native1000000007[..len]);
@@ -149,14 +149,14 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 {
                     LinearRecurrence.Recurrence(
                         new MontgomeryModInt<Mod998244353>[] { a0, a1 },
-                        new MontgomeryModInt<Mod998244353>[] { 1, 1, 1 }, len)
+                        [1, 1, 1], len)
                         .Should().HaveCount(len)
                         .And
                         .Equal(native998244353[..len]);
 
                     LinearRecurrence.Recurrence(
                         new MontgomeryModInt<Mod1000000007>[] { a0, a1 },
-                        new MontgomeryModInt<Mod1000000007>[] { 1, 1, 1 }, len)
+                        [1, 1, 1], len)
                         .Should().HaveCount(len)
                         .And
                         .Equal(native1000000007[..len]);
@@ -175,14 +175,14 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 {
                     LinearRecurrence.Recurrence(
                         new MontgomeryModInt<Mod998244353>[] { a0 },
-                        new MontgomeryModInt<Mod998244353>[] { 1, 1, 1 }, len)
+                        [1, 1, 1], len)
                         .Should().HaveCount(len)
                         .And
                         .Equal(native998244353[..len]);
 
                     LinearRecurrence.Recurrence(
                         new MontgomeryModInt<Mod1000000007>[] { a0 },
-                        new MontgomeryModInt<Mod1000000007>[] { 1, 1, 1 }, len)
+                        [1, 1, 1], len)
                         .Should().HaveCount(len)
                         .And
                         .Equal(native1000000007[..len]);

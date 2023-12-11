@@ -5,10 +5,8 @@ using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive.Testing
 {
-    internal class TupleMemberDataAttribute : MemberDataAttributeBase
+    internal class TupleMemberDataAttribute(string memberName) : MemberDataAttributeBase(memberName, [])
     {
-        public TupleMemberDataAttribute(string memberName) : base(memberName, Array.Empty<object>()) { }
-
         public override IEnumerable<object[]> GetData(MethodInfo testMethod)
         {
             return base.GetData(testMethod);

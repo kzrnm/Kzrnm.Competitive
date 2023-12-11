@@ -55,51 +55,51 @@ namespace Kzrnm.Competitive.Testing.Graph
                 var list = new List<(int u, int v)>();
                 list.Clear();
                 tree.HlDecomposition.PathQuery(7, 5, false, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (4, 1),
                     (5, 6),
                     (7, 8),
-                });
+                ]);
 
                 list.Clear();
                 tree.HlDecomposition.PathQuery(7, 5, true, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (4, 1),
                     (0, 1),
                     (5, 6),
                     (7, 8),
-                });
+                ]);
 
                 list.Clear();
                 tree.HlDecomposition.PathQuery(7, 6, false, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (4, 1),
                     (5, 7),
-                });
+                ]);
 
                 list.Clear();
                 tree.HlDecomposition.PathQuery(7, 6, true, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (4, 1),
                     (0, 1),
                     (5, 7),
-                });
+                ]);
 
 
                 list.Clear();
                 tree.HlDecomposition.PathQuery(6, 7, false, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (7, 5),
                     (1, 4),
-                });
+                ]);
 
                 list.Clear();
                 tree.HlDecomposition.PathQuery(6, 7, true, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (7, 5),
                     (0, 1),
                     (1, 4),
-                });
+                ]);
             }
         }
 
@@ -115,99 +115,99 @@ namespace Kzrnm.Competitive.Testing.Graph
                 var list = new List<(int u, int v)>();
                 list.Clear();
                 tree.HlDecomposition.SubtreeQuery(0, false, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (1, 8),
-                });
+                ]);
 
                 list.Clear();
                 tree.HlDecomposition.SubtreeQuery(0, true, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (0, 8),
-                });
+                ]);
 
                 list.Clear();
                 tree.HlDecomposition.SubtreeQuery(1, false, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (2, 5),
-                });
+                ]);
 
                 list.Clear();
                 tree.HlDecomposition.SubtreeQuery(1, true, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (1, 5),
-                });
+                ]);
 
                 list.Clear();
                 tree.HlDecomposition.SubtreeQuery(2, false, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (6, 8),
-                });
+                ]);
 
                 list.Clear();
                 tree.HlDecomposition.SubtreeQuery(2, true, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (5, 8),
-                });
+                ]);
 
                 list.Clear();
                 tree.HlDecomposition.SubtreeQuery(3, false, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (3, 4),
-                });
+                ]);
 
                 list.Clear();
                 tree.HlDecomposition.SubtreeQuery(3, true, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (2, 4),
-                });
+                ]);
 
                 list.Clear();
                 tree.HlDecomposition.SubtreeQuery(4, false, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (5, 5),
-                });
+                ]);
 
                 list.Clear();
                 tree.HlDecomposition.SubtreeQuery(4, true, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (4, 5),
-                });
+                ]);
 
                 list.Clear();
                 tree.HlDecomposition.SubtreeQuery(5, false, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (8, 8),
-                });
+                ]);
 
                 list.Clear();
                 tree.HlDecomposition.SubtreeQuery(5, true, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (7, 8),
-                });
+                ]);
 
                 list.Clear();
                 tree.HlDecomposition.SubtreeQuery(6, false, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (7, 7),
-                });
+                ]);
 
                 list.Clear();
                 tree.HlDecomposition.SubtreeQuery(6, true, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (6, 7),
-                });
+                ]);
 
                 list.Clear();
                 tree.HlDecomposition.SubtreeQuery(7, false, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (4, 4),
-                });
+                ]);
 
                 list.Clear();
                 tree.HlDecomposition.SubtreeQuery(7, true, (u, v) => list.Add((u, v)));
-                list.Should().Equal(new (int u, int v)[] {
+                list.Should().Equal([
                     (3, 4),
-                });
+                ]);
             }
         }
     }

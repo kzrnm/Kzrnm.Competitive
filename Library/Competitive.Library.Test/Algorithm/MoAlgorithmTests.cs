@@ -37,15 +37,9 @@ namespace Kzrnm.Competitive.Testing.Algorithm
                 update: i => current2.Should().Be(expected[i]));
         }
     }
-    class St : IMoAlgorithmState<long>
+    class St(long[] array) : IMoAlgorithmState<long>
     {
         public long Current { get; private set; }
-        public readonly long[] array;
-
-        public St(long[] array)
-        {
-            this.array = array;
-        }
 
         public void Add(int idx) => Current += array[idx];
         public void Remove(int idx) => Current -= array[idx];
