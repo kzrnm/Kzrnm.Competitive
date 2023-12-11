@@ -2,15 +2,14 @@
 
   <PropertyGroup>
     <TargetFrameworks>net7.0</TargetFrameworks>
-
     <IsPackable>false</IsPackable>
     <RootNamespace>Kzrnm.Competitive.Testing</RootNamespace>
-    <LangVersion>11</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Configurations>Debug;Release;Library</Configurations>
   </PropertyGroup>
 
   <PropertyGroup>
-    <NoWarn>$(NoWarn);CA1822;CA1825;CA1032;IDE0028;IDE0018;IDE0044</NoWarn>
+    <NoWarn>$(NoWarn);CA1822;CA1825;CA1032;IDE0028;IDE0018;IDE0044;IDE0305</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Library'">
     <DefineConstants>$(DefineConstants);DEBUG;LIBRARY</DefineConstants>
