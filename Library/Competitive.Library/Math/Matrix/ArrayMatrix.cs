@@ -119,14 +119,19 @@ namespace Kzrnm.Competitive
         [凾(256)]
         private ArrayMatrix<T> Add(ArrayMatrix<T> other)
         {
-            Contract.Assert(_h == other._h && _w == other._w);
             if (_v.Length == 0) return new();
+            var m = new ArrayMatrix<T>(CloneArray(), _h, _w);
+            m.AddSelf(other);
+            return m;
+        }
+        [凾(256)]
+        internal void AddSelf(ArrayMatrix<T> other)
+        {
+            Contract.Assert(_h == other._h && _w == other._w);
             ref var op = ref other._v[0];
-            var arr = CloneArray();
-            for (int i = 0; i < arr.Length; i++)
-                arr[i] += Unsafe.Add(ref op, i);
-
-            return new(arr, _h, _w);
+            var v = _v;
+            for (int i = 0; i < v.Length; i++)
+                v[i] += Unsafe.Add(ref op, i);
         }
         [凾(256)]
         public static ArrayMatrix<T> operator +(ArrayMatrix<T> x, ArrayMatrix<T> y)
@@ -164,13 +169,19 @@ namespace Kzrnm.Competitive
         [凾(256)]
         private ArrayMatrix<T> Subtract(ArrayMatrix<T> other)
         {
-            Contract.Assert(_h == other._h && _w == other._w);
             if (_v.Length == 0) return new();
+            var m = new ArrayMatrix<T>(CloneArray(), _h, _w);
+            m.SubtractSelf(other);
+            return m;
+        }
+        [凾(256)]
+        internal void SubtractSelf(ArrayMatrix<T> other)
+        {
+            Contract.Assert(_h == other._h && _w == other._w);
             ref var op = ref other._v[0];
-            var arr = CloneArray();
-            for (int i = 0; i < arr.Length; i++)
-                arr[i] -= Unsafe.Add(ref op, i);
-            return new(arr, _h, _w);
+            var v = _v;
+            for (int i = 0; i < v.Length; i++)
+                v[i] -= Unsafe.Add(ref op, i);
         }
 
         [凾(256)] public static ArrayMatrix<T> operator +(ArrayMatrix<T> x) => x;

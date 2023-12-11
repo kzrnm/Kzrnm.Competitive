@@ -10,7 +10,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive.Internal
 {
     using static SimdMontgomery;
-    public readonly partial struct StrassenImpl<T> where T : struct, IStaticMod
+    public readonly partial struct SimdStrassenImpl<T> where T : struct, IStaticMod
     {
         private const int B = 1 << 7;
         private const int B8 = B / 8;
@@ -19,7 +19,7 @@ namespace Kzrnm.Competitive.Internal
         public readonly int S8;
         public int VectorSize => S8 * S;
         readonly Vector256<uint> R, M1, M2;
-        public StrassenImpl(int length)
+        public SimdStrassenImpl(int length)
         {
             S = Math.Max(1 << InternalBit.CeilPow2(length), B);
             S8 = S / 8;
@@ -27,6 +27,12 @@ namespace Kzrnm.Competitive.Internal
             M1 = Vector256.Create(new T().Mod);
             M2 = Vector256.Create(new T().Mod * 2);
         }
+        /// <summary>
+        /// Strassen のアルゴリズムで行列の積を求める。
+        /// </summary>
+        /// <remarks>
+        /// <para>計算量: O( N^log_2(7))</para>
+        /// </remarks>
         public Vector256<uint>[] Strassen(Vector256<uint>[] lhs, Vector256<uint>[] rhs)
         {
             var c = new Vector256<uint>[VectorSize];

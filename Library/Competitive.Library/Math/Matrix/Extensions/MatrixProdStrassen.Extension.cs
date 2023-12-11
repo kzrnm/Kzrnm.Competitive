@@ -1,9 +1,6 @@
 using AtCoder;
 using Kzrnm.Competitive.Internal;
 using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Runtime.Intrinsics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -23,7 +20,7 @@ namespace Kzrnm.Competitive
 
             var rh = m1.Height;
             var rw = m2.Width;
-            var impl = new StrassenImpl<T>(Math.Max(Math.Max(rh, m2.Height), Math.Max(m1.Width, rw)));
+            var impl = new SimdStrassenImpl<T>(Math.Max(Math.Max(rh, m2.Height), Math.Max(m1.Width, rw)));
             var rt = impl.Strassen(impl.ToVectorize(m1.AsSpan(), rh, m1.Width), impl.ToVectorize(m2.AsSpan(), m2.Height, rw));
             return new(impl.ToMatrix(rt, rh, rw), rh, rw);
         }

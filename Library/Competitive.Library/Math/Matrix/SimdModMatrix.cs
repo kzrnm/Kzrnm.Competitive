@@ -237,7 +237,7 @@ namespace Kzrnm.Competitive
         {
             var rh = Height;
             var rw = other.Width;
-            var impl = new StrassenImpl<T>(Math.Max(Math.Max(rh, other.Height), Math.Max(Width, rw)));
+            var impl = new SimdStrassenImpl<T>(Math.Max(Math.Max(rh, other.Height), Math.Max(Width, rw)));
             var rt = impl.Strassen(impl.ToVectorize(AsSpan(), rh, Width), impl.ToVectorize(other.AsSpan(), other.Height, rw));
             return new(impl.ToMatrix(rt, rh, rw), rh, rw);
         }

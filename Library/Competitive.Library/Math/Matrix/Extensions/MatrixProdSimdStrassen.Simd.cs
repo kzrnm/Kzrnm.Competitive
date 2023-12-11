@@ -10,7 +10,7 @@ namespace Kzrnm.Competitive.Internal
 {
 using static Avx2;
 using static SimdMontgomery;
-    public readonly partial struct StrassenImpl<T>
+    public readonly partial struct SimdStrassenImpl<T>
     {
         [凾(256|512)]
         private void MulSimd(Span<Vector256<uint>> s, Span<Vector256<uint>> t, Span<Vector256<uint>> u)
