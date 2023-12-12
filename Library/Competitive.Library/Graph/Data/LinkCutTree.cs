@@ -138,7 +138,7 @@ namespace Kzrnm.Competitive
             }
         }
         [凾(256)]
-        private void Splay(Node t)
+        static void Splay(Node t)
         {
             Push(t);
             while (!t.IsRoot)

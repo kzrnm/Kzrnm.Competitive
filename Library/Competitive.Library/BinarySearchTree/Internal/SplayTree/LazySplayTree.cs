@@ -40,7 +40,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
     public class LazySplayTreeNode<T, F, TOp>
         : SplayTreeNodeBase<LazySplayTreeNode<T, F, TOp>, T>
         , ILazyBbstNode<T, F, LazySplayTreeNode<T, F, TOp>>
-        , ISplayTreePusher<LazySplayTreeNode<T, F, TOp>>
+        , ISplayTreePusher<LazySplayTreeNode<T, F, TOp>, T>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
         static TOp op => new();
@@ -55,16 +55,6 @@ namespace Kzrnm.Competitive.Internal.Bbst
 
         [凾(256)]
         public static LazySplayTreeNode<T, F, TOp> Create(T v) => new(v);
-
-
-        [凾(256)]
-        public static LazySplayTreeNode<T, F, TOp> Update(LazySplayTreeNode<T, F, TOp> t)
-        {
-            if (t == null) return t;
-            t.Size = (t.left?.Size ?? 0) + (t.right?.Size ?? 0) + 1;
-            t.Sum = op.Operate(op.Operate(GetSum(t.left), t.Value), GetSum(t.right));
-            return t;
-        }
 
         [凾(256)]
         public static void Push(LazySplayTreeNode<T, F, TOp> t)
@@ -118,5 +108,6 @@ namespace Kzrnm.Competitive.Internal.Bbst
             => GetSum(t);
         public override string ToString() => $"Size = {Size}, Value = {Value}, Sum = {Sum}";
 
+        [凾(256)] static T ISplayTreePusher<LazySplayTreeNode<T, F, TOp>, T>.Operate(T x, T y) => op.Operate(x, y);
     }
 }

@@ -237,8 +237,7 @@ namespace Kzrnm.Competitive
             [凾(256)]
             static virtual void AddFirst(ref Node t, T item)
             {
-                Node.Propagate(ref t);
-                t = Node.Merge(Node.Create(item), t);
+                Node.AddFirst(ref t, Node.Create(item));
             }
 
             /// <summary>
@@ -257,8 +256,17 @@ namespace Kzrnm.Competitive
             [凾(256)]
             static virtual void AddLast(ref Node t, T item)
             {
+                Node.AddLast(ref t, Node.Create(item));
+            }
+
+            /// <summary>
+            /// 末尾に <paramref name="newNode"/> を追加します。
+            /// </summary>
+            [凾(256)]
+            static virtual void AddLast(ref Node t, Node newNode)
+            {
                 Node.Propagate(ref t);
-                t = Node.Merge(t, Node.Create(item));
+                t = Node.Merge(t, newNode);
             }
 
             /// <summary>

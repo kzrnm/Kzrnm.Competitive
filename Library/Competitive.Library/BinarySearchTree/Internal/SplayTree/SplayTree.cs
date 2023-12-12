@@ -40,7 +40,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
     public class SplayTreeNode<T, TOp>
         : SplayTreeNodeBase<SplayTreeNode<T, TOp>, T>
         , IBbstNode<T, SplayTreeNode<T, TOp>>
-        , ISplayTreePusher<SplayTreeNode<T, TOp>>
+        , ISplayTreePusher<SplayTreeNode<T, TOp>, T>
         where TOp : struct, ISegtreeOperator<T>
     {
         static TOp op => new();
@@ -53,16 +53,6 @@ namespace Kzrnm.Competitive.Internal.Bbst
         [凾(256)]
         public static SplayTreeNode<T, TOp> Create(T v) => new(v);
 
-
-        [凾(256)]
-        public static SplayTreeNode<T, TOp> Update(SplayTreeNode<T, TOp> t)
-        {
-            if (t == null) return t;
-            t.Size = (t.left?.Size ?? 0) + (t.right?.Size ?? 0) + 1;
-            t.Sum = op.Operate(op.Operate(GetSum(t.left), t.Value), GetSum(t.right));
-            return t;
-        }
-
         [凾(256)]
         public static void Push(SplayTreeNode<T, TOp> node) { }
         [凾(256)]
@@ -71,5 +61,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
         static T IBbstNode<T, SplayTreeNode<T, TOp>>.Sum(SplayTreeNode<T, TOp> t)
             => GetSum(t);
         public override string ToString() => $"Size = {Size}, Value = {Value}, Sum = {Sum}";
+
+        [凾(256)] static T ISplayTreePusher<SplayTreeNode<T, TOp>, T>.Operate(T x, T y) => op.Operate(x, y);
     }
 }

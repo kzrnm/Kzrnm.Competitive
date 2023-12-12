@@ -11,20 +11,25 @@ namespace Kzrnm.Competitive.Internal.Bbst
     /// <summary>
     /// なにかしらを遅延伝播させる
     /// </summary>
-    public interface ISplayTreePusher<Node>
+    public interface ISplayTreePusher<Node, T>
     {
         /// <summary>
         /// なにかしらを遅延伝播させる
         /// </summary>
         static abstract void Push(Node t);
+
+        /// <summary>
+        /// モノイドの加算
+        /// </summary>
+        static abstract T Operate(T x, T y);
     }
 
     // https://ei1333.github.io/library/structure/bbst/lazy-reversible-splay-tree.hpp
     public class SplayTreeNodeBase<TSelf, T>
-        where TSelf : SplayTreeNodeBase<TSelf, T>, IBbstNode<T, TSelf>, ISplayTreePusher<TSelf>
+        where TSelf : SplayTreeNodeBase<TSelf, T>, IBbstNode<T, TSelf>, ISplayTreePusher<TSelf, T>
     {
         public TSelf left, right;
-        TSelf Parent;
+        internal TSelf Parent;
         public int Size { get; protected set; }
         public T Value { get; protected set; }
         public T Sum { get; protected set; }
@@ -167,7 +172,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
                 Splay(t);
         }
         [凾(256)]
-        protected static void Splay(TSelf t)
+        internal static void Splay(TSelf t)
         {
             TSelf.Push(t);
             while (!t.IsRoot)
@@ -231,6 +236,16 @@ namespace Kzrnm.Competitive.Internal.Bbst
                 if (y.right == x) y.right = t;
                 TSelf.Update(y);
             }
+        }
+
+
+        [凾(256)]
+        public static TSelf Update(TSelf t)
+        {
+            if (t == null) return t;
+            t.Size = (t.left?.Size ?? 0) + (t.right?.Size ?? 0) + 1;
+            t.Sum = TSelf.Operate(TSelf.Operate(TSelf.Sum(t.left), t.Value), TSelf.Sum(t.right));
+            return t;
         }
 
         public Enumerator GetEnumerator() => new(Unsafe.As<TSelf>(this));
