@@ -91,11 +91,7 @@ namespace Kzrnm.Competitive
         [凾(256)] void IUtf8ConsoleWriterFormatter.Write(Utf8ConsoleWriter cw) => cw.Write(Value);
         [凾(256)] public static implicit operator ConsoleOutput(MontgomeryModInt<T> m) => m.ToConsoleOutput();
         [凾(256)] public static implicit operator MontgomeryModInt<T>(ConsoleReader r) => new MontgomeryModInt<T>(r.Long());
-
-
-
         [凾(256)] internal static uint Reduce(ulong b) => (uint)((b + (ulong)((uint)b * (uint)-(int)r) * op.Mod) >> 32);
-
 
 
         [凾(256)]
