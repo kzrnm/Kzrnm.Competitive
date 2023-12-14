@@ -10,7 +10,7 @@ namespace Kzrnm.Competitive
         /// <inheritdoc cref="Create{T}(ReadOnlySpan{T})"/>
         [凾(256)]
         public static SuffixArray Create(string s)
-            => Create((ReadOnlySpan<char>)s);
+            => Create<char>(s);
 
         /// <inheritdoc cref="Create{T}(ReadOnlySpan{T})"/>
         [凾(256)]

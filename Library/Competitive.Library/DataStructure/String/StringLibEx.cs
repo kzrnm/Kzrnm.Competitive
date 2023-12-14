@@ -89,11 +89,47 @@ namespace Kzrnm.Competitive
             return list.ToArray();
         }
 
+        /// <inheritdoc cref="Period{T}(ReadOnlySpan{T})"/>
+        [凾(256)]
+        public static int Period(string s)
+            => Period<char>(s);
+        /// <inheritdoc cref="Period{T}(ReadOnlySpan{T})"/>
+        [凾(256)]
+        public static int Period<T>(T[] s)
+            => Period((ReadOnlySpan<T>)s);
+        /// <inheritdoc cref="Period{T}(ReadOnlySpan{T})"/>
+        [凾(256)]
+        public static int Period<T>(Span<T> s)
+            => Period((ReadOnlySpan<T>)s);
+
+        /// <summary>
+        /// <paramref name="s"/> の最短の周期を返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>戻り値を r とすると、<paramref name="s"/>[..r] を何回か繰り返すと <paramref name="s"/> になります。</para>
+        /// </remarks>
+        /// <example>
+        /// aaa: 1
+        /// ababab: 2
+        /// abcabc: 3
+        /// abc: 3
+        /// </example>
+        [凾(256)]
+        public static int Period<T>(ReadOnlySpan<T> s)
+        {
+            var z = StringLib.ZAlgorithm(s);
+            for (int i = 1; i < z.Length; i++)
+            {
+                if (i + z[i] == s.Length && z[i] % i == 0)
+                    return i;
+            }
+            return s.Length;
+        }
 
         /// <inheritdoc cref="RunEnumerate{T}(ReadOnlySpan{T})"/>
         [凾(256)]
         public static (int From, int ToExclusive)[][] RunEnumerate(string s)
-            => RunEnumerate((ReadOnlySpan<char>)s);
+            => RunEnumerate<char>(s);
         /// <inheritdoc cref="RunEnumerate{T}(ReadOnlySpan{T})"/>
         [凾(256)]
         public static (int From, int ToExclusive)[][] RunEnumerate<T>(T[] s)
@@ -110,6 +146,7 @@ namespace Kzrnm.Competitive
         /// <para>戻り値を run とします。</para>
         /// <para>run[i] は長さ i の文字列の繰り返しの範囲を保持します。</para>
         /// <para>繰り返しは途中で終わることもできます。</para>
+        /// <para>計算量: |<paramref name="s"/>| log |<paramref name="s"/>|。</para>
         /// </remarks>
         /// <example>
         /// <code>

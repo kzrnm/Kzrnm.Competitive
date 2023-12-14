@@ -29,7 +29,7 @@ namespace Kzrnm.Competitive.Testing.Algorithm
                     foreach (ref var v in a.AsSpan())
                         v = (char)(rnd.Next(26) + 'A');
 
-                    InversionNumber.Inversion(a).Should().Be(Naive((ReadOnlySpan<char>)a));
+                    InversionNumber.Inversion(a).Should().Be(Naive<char>(a));
                 }
         }
 

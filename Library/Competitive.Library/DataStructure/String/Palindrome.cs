@@ -13,7 +13,7 @@ namespace Kzrnm.Competitive
     public static class Palindrome
     {
         /// <inheritdoc cref="IsPalindrome{T}(ReadOnlySpan{T})"/>
-        public static bool IsPalindrome(string s) => IsPalindrome((ReadOnlySpan<char>)s);
+        public static bool IsPalindrome(string s) => IsPalindrome<char>(s);
         /// <inheritdoc cref="IsPalindrome{T}(ReadOnlySpan{T})"/>
         public static bool IsPalindrome<T>(T[] s) => IsPalindrome((ReadOnlySpan<T>)s);
         /// <inheritdoc cref="IsPalindrome{T}(ReadOnlySpan{T})"/>
