@@ -22,7 +22,7 @@ namespace Kzrnm.Competitive
     [DebuggerTypeProxy(typeof(SLazySegtree<,,>.DebugView))]
     public class SLazySegtree<T, F, TOp> where TOp : struct, ISLazySegtreeOperator<T, F>
     {
-        private static readonly TOp op = default;
+        static readonly TOp op = default;
 
         /// <summary>
         /// 数列 a の長さ n を返します。
@@ -31,13 +31,12 @@ namespace Kzrnm.Competitive
 
         internal readonly int log;
         internal readonly int size;
-        private readonly T[] d;
-        private readonly int[] valSize;
-        private readonly F[] lz;
-
+        readonly T[] d;
+        readonly F[] lz;
+        readonly int[] valSize;
 
         /// <summary>
-        /// 長さ <paramref name="n"/> の数列 a　を持つ <see cref="SLazySegtree{TValue, F, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <c>Identity</c> です。
+        /// 長さ <paramref name="n"/> の数列 a　を持つ <see cref="SLazySegtree{T, F, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <c>Identity</c> です。
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
@@ -61,7 +60,7 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// 長さ n=<paramref name="v"/>.Length の数列 a　を持つ <see cref="SLazySegtree{TValue, F, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <paramref name="v"/> です。
+        /// 長さ n=<paramref name="v"/>.Length の数列 a　を持つ <see cref="SLazySegtree{T, F, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <paramref name="v"/> です。
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<c>n</c>≤10^8</para>
@@ -71,7 +70,7 @@ namespace Kzrnm.Competitive
         public SLazySegtree(T[] v) : this((ReadOnlySpan<T>)v) { }
 
         /// <summary>
-        /// 長さ n=<paramref name="v"/>.Length の数列 a　を持つ <see cref="SLazySegtree{TValue, F, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <paramref name="v"/> です。
+        /// 長さ n=<paramref name="v"/>.Length の数列 a　を持つ <see cref="SLazySegtree{T, F, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <paramref name="v"/> です。
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<c>n</c>≤10^8</para>
@@ -81,7 +80,7 @@ namespace Kzrnm.Competitive
         public SLazySegtree(Span<T> v) : this((ReadOnlySpan<T>)v) { }
 
         /// <summary>
-        /// 長さ n=<paramref name="v"/>.Length の数列 a　を持つ <see cref="SLazySegtree{TValue, F, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <paramref name="v"/> です。
+        /// 長さ n=<paramref name="v"/>.Length の数列 a　を持つ <see cref="SLazySegtree{T, F, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <paramref name="v"/> です。
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<c>n</c>≤10^8</para>
@@ -98,16 +97,16 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        private void Update(int k) => d[k] = op.Operate(d[2 * k], d[2 * k + 1]);
+        void Update(int k) => d[k] = op.Operate(d[2 * k], d[2 * k + 1]);
 
         [凾(256)]
-        private void AllApply(int k, F f)
+        void AllApply(int k, F f)
         {
             d[k] = op.Mapping(f, d[k], valSize[k]);
             if (k < size) lz[k] = op.Composition(f, lz[k]);
         }
         [凾(256)]
-        private void Push(int k)
+        void Push(int k)
         {
             AllApply(2 * k, lz[k]);
             AllApply(2 * k + 1, lz[k]);
@@ -403,9 +402,9 @@ namespace Kzrnm.Competitive
 #if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
 #endif
-        private class DebugView
+        class DebugView
         {
-            private readonly SLazySegtree<T, F, TOp> s;
+            readonly SLazySegtree<T, F, TOp> s;
             public DebugView(SLazySegtree<T, F, TOp> segtree)
             {
                 s = segtree;

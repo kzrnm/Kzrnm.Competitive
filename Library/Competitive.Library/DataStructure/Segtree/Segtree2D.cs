@@ -26,7 +26,7 @@ namespace Kzrnm.Competitive
     /// </summary>
     public class Segtree2D<TValue, TOp> where TOp : struct, ISegtreeOperator<TValue>
     {
-        private static readonly TOp op = default;
+        static readonly TOp op = default;
         internal readonly int logH, logW, H, W;
         public readonly TValue[] d;
 
@@ -68,7 +68,7 @@ namespace Kzrnm.Competitive
                     d[Index(h, w)] = op.Operate(d[Index(h, 2 * w + 0)], d[Index(h, 2 * w + 1)]);
         }
 
-        [凾(256)] private int Index(int h, int w) => 2 * h * W + w;
+        [凾(256)] int Index(int h, int w) => 2 * h * W + w;
 
         /// <summary>
         /// a[<paramref name="h"/>, <paramref name="w"/>] を返します。
@@ -126,7 +126,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(log W)</para>
         /// </remarks>
         [凾(256)]
-        private TValue Prod(int h, int w1, int w2)
+        TValue Prod(int h, int w1, int w2)
         {
             var res = op.Identity;
             for (; w1 < w2; w1 >>= 1, w2 >>= 1)

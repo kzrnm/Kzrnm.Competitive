@@ -54,7 +54,7 @@ namespace Kzrnm.Competitive
     [DebuggerTypeProxy(typeof(SegtreeBeats<,,>.DebugView))]
     public class SegtreeBeats<TValue, F, TOp> where TOp : struct, ISegtreeBeatsOperator<TValue, F>
     {
-        private static readonly TOp op = default;
+        static readonly TOp op = default;
 
         /// <summary>
         /// 数列 a の長さ n を返します。
@@ -416,9 +416,9 @@ namespace Kzrnm.Competitive
 #if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
 #endif
-        private class DebugView
+        class DebugView
         {
-            private readonly SegtreeBeats<TValue, F, TOp> segtree;
+            readonly SegtreeBeats<TValue, F, TOp> segtree;
             public DebugView(SegtreeBeats<TValue, F, TOp> segtree)
             {
                 this.segtree = segtree;
