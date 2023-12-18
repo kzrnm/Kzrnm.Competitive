@@ -79,7 +79,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 3, 6);
             gb.Add(4, 0, 1);
             var graph = gb.ToGraph();
-            var res = graph.Kruskal();
+            var res = graph.MinimumSpanningForestKruskal();
             res.Should().HaveCount(1);
             res[0].Should().Equal(
                 (0, new WEdge<int>(1, 1)),
@@ -102,7 +102,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 3, 6);
             gb.Add(4, 0, 1);
             var graph = gb.ToGraph();
-            var res = graph.Kruskal();
+            var res = graph.MinimumSpanningForestKruskal();
             res.Should().HaveCount(1);
             res[0].Should().Equal(
                 (0, new WEdge<long>(1, 1)),
@@ -123,7 +123,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(3, 7, 10);
             gb.Add(6, 5, 6);
             var graph = gb.ToGraph();
-            var res = graph.Kruskal();
+            var res = graph.MinimumSpanningForestKruskal();
             res.Should().HaveCount(3);
             res[0].Should().Equal(
                 (0, new WEdge<int>(1, 1)),
@@ -143,7 +143,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(1, 3, 1);
             gb.Add(2, 3, 10);
             var graph = gb.ToGraph();
-            var res = graph.Kruskal();
+            var res = graph.MinimumSpanningForestKruskal();
             res.Should().HaveCount(1);
             res[0].Should().Equal(
                 (0, new WEdge<int>(2, 1)),

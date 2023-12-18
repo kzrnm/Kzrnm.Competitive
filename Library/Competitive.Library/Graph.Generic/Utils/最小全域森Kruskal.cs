@@ -10,7 +10,7 @@ namespace Kzrnm.Competitive
         /// <para>最小全域森をKruskal法で求める。グラフが連結なら最小全域木となる。</para>
         /// <para>計算量: O(E log(E))</para>
         /// </summary>
-        public static (int from, TEdge edge)[][] Kruskal<T, TNode, TEdge>(this IWGraph<T, TNode, TEdge> graph)
+        public static (int from, TEdge edge)[][] MinimumSpanningForestKruskal<T, TNode, TEdge>(this IWGraph<T, TNode, TEdge> graph)
             where T : IComparable<T>
             where TNode : IGraphNode<TEdge>
             where TEdge : IWGraphEdge<T>
@@ -61,8 +61,8 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// <para>最小全域森をKruskal法で求める。グラフが連結なら最小全域木となる。</para>
-        /// <para>計算量: O(E log(E))</para>
+        /// <para>重みがないグラフの最小全域森をKruskal法で求める。グラフが連結なら最小全域木となる。</para>
+        /// <para>計算量: O(E α(E))</para>
         /// </summary>
         public static (int from, TEdge edge)[][] MinimumSpanningForestKruskal<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
             where TNode : IGraphNode<TEdge>
