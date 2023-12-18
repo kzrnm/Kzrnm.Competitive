@@ -52,7 +52,7 @@ namespace Kzrnm.Competitive
             return (maxIndex, max);
         }
         [凾(256)]
-        public static (TSource item, TMax max) MaxBy<TSource, TMax>
+        public static (TSource item, TMax max) MaxBy2<TSource, TMax>
             (this IEnumerable<TSource> source, Func<TSource, TMax> maxBySelector)
             where TMax : IComparable<TMax>
         {

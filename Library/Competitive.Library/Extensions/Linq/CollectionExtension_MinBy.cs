@@ -53,7 +53,7 @@ namespace Kzrnm.Competitive
             return (minIndex, min);
         }
         [凾(256)]
-        public static (TSource item, TMin min) MinBy<TSource, TMin>
+        public static (TSource item, TMin min) MinBy2<TSource, TMin>
             (this IEnumerable<TSource> source, Func<TSource, TMin> minBySelector)
             where TMin : IComparable<TMin>
         {
