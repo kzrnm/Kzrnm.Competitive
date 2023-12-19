@@ -18,7 +18,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: <paramref name="graph"/> の <paramref name="root"/> からすべての頂点に到達できる</para>
         /// </remarks>
         public static MstResult<T, TEdge> DirectedMinimumSpanningTree<T, TNode, TEdge>(this IWGraph<T, TNode, TEdge> graph, int root)
-            where T : IComparable<T>, IAdditionOperators<T, T, T>, IUnaryNegationOperators<T, T>
+            where T : IComparable<T>, IAdditionOperators<T, T, T>, IUnaryNegationOperators<T, T>, IAdditiveIdentity<T, T>
             where TNode : IGraphNode<TEdge>
             where TEdge : struct, IWGraphEdge<T>, IReversable<TEdge>
         {
@@ -72,8 +72,7 @@ namespace Kzrnm.Competitive
                 while (ins[x] != null && Go(x) == x)
                     ins[x] = heap.Pop(ins[x]);
             }
-            T cost = default;
-            var result = new List<(int from, TEdge edge)>(graph.Length - 1);
+            var b = new MstBuilder<T, TEdge>(graph.Length - 1);
             for (int i = root; i != -1; i = parents[i])
             {
                 visited[i] = true;
@@ -82,18 +81,14 @@ namespace Kzrnm.Competitive
             {
                 if (visited[i] == true) continue;
                 var p = ins[i].index;
-                result.Add(edges[p]);
-                cost += edges[p].edge.Value;
+
+                b.Add(edges[p]);
                 for (int j = edges[p].edge.To; j >= 0 && visited[j] == false; j = parents[j])
                 {
                     visited[j] = true;
                 }
             }
-            return new MstResult<T, TEdge>
-            {
-                Cost = cost,
-                Edges = result.ToArray()
-            };
+            return b.Build();
         }
         readonly struct HOp<T> : ISkewHeapOperator<T, T>
             where T : IComparable<T>, IAdditionOperators<T, T, T>

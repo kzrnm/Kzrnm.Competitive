@@ -11,7 +11,7 @@ namespace Kzrnm.Competitive
     {
         internal readonly int[] _parentOrSize;
         internal readonly T[] _datas;
-        internal readonly Func<T, T, T> _mergeDataFunc;
+        internal readonly Func<T, T, T> _merge;
 
         /// <summary>
         /// <see cref="UnionFind{T}"/> クラスの新しいインスタンスを、|<paramref name="datas"/>| 頂点 0 辺のグラフとして初期化します。
@@ -21,11 +21,11 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(|<paramref name="datas"/>|)</para>
         /// </remarks>
         /// <param name="datas">各頂点の初期値</param>
-        /// <param name="mergeFunc">頂点の持つ値のマージを行う関数</param>
+        /// <param name="mergeFunc">頂点の持つ値のマージを行う関数。第一引数の方が親になる。</param>
         public UnionFind(T[] datas, Func<T, T, T> mergeFunc)
         {
             _datas = (T[])datas.Clone();
-            _mergeDataFunc = mergeFunc;
+            _merge = mergeFunc;
             _parentOrSize = new int[_datas.Length];
             _parentOrSize.AsSpan().Fill(-1);
         }
@@ -47,7 +47,7 @@ namespace Kzrnm.Competitive
             if (_parentOrSize[x] > _parentOrSize[y]) (x, y) = (y, x);
             _parentOrSize[x] += _parentOrSize[y];
             _parentOrSize[y] = x;
-            _datas[x] = _mergeDataFunc(_datas[x], _datas[y]);
+            _datas[x] = _merge(_datas[x], _datas[y]);
             return true;
         }
 
@@ -107,10 +107,10 @@ namespace Kzrnm.Competitive
         /// <para>計算量: ならしO(a(n))</para>
         /// </remarks>
         [凾(256)]
-        public T Data(int a)
+        public ref T Data(int a)
         {
             Contract.Assert(0 <= a && a < _parentOrSize.Length);
-            return _datas[Leader(a)];
+            return ref _datas[Leader(a)];
         }
 
 

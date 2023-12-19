@@ -115,4 +115,3 @@ namespace Kzrnm.Competitive
         F Composition(F nf, F cf);
     }
 }
-// @brief マージ可能ヒープ
