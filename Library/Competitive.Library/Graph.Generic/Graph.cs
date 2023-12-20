@@ -18,10 +18,10 @@ namespace Kzrnm.Competitive
 
         public GraphNode<TEdge> this[int index] { [凾(256)] get => Nodes[index]; }
         public int Length => Nodes.Length;
-        public SimpleGraph(GraphNode<TEdge>[] array, Csr<TEdge> edges)
+        public SimpleGraph(GraphNode<TEdge>[] n, Csr<TEdge> e)
         {
-            Nodes = array;
-            Edges = edges;
+            Nodes = n;
+            Edges = e;
         }
     }
     public class TreeGraph<TNode, TEdge> : ITreeGraph<TreeGraph<TNode, TEdge>, TNode, TEdge>

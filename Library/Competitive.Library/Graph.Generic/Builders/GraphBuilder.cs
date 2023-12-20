@@ -1,4 +1,3 @@
-using AtCoder.Internal;
 using Kzrnm.Competitive.IO;
 using System;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
