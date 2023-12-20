@@ -9,9 +9,8 @@ namespace Kzrnm.Competitive
         /// <para>各頂点間の最短経路長をワーシャルフロイド法で求める。</para>
         /// <para>計算量: O(|V|^3)</para>
         /// </summary>
-        public static T[][] WarshallFloyd<T, TNode, TEdge>(this IWGraph<T, TNode, TEdge> graph)
+        public static T[][] WarshallFloyd<T, TEdge>(this IWGraph<T, TEdge> graph)
             where T : IMultiplicativeIdentity<T, T>, IMinMaxValue<T>, IIncrementOperators<T>, IAdditionOperators<T, T, T>, IDivisionOperators<T, T, T>, IComparable<T>
-            where TNode : IGraphNode<TEdge>
             where TEdge : IWGraphEdge<T>
         {
             var two = T.MultiplicativeIdentity + T.MultiplicativeIdentity;
@@ -24,9 +23,8 @@ namespace Kzrnm.Competitive
         /// <para>制約: 最短経路長が <paramref name="inf"/> 未満である</para>
         /// <para>計算量: O(|V|^3)</para>
         /// </summary>
-        public static T[][] WarshallFloyd<T, TNode, TEdge>(this IWGraph<T, TNode, TEdge> graph, T inf)
+        public static T[][] WarshallFloyd<T, TEdge>(this IWGraph<T, TEdge> graph, T inf)
             where T : IAdditionOperators<T, T, T>, IComparable<T>
-            where TNode : IGraphNode<TEdge>
             where TEdge : IWGraphEdge<T>
         {
             var graphArr = graph.AsArray();

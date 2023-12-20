@@ -7,8 +7,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 最小全域木をBfsで求める。長さを持たないグラフ用
         /// </summary>
-        public static MstResult<int, TEdge> MinimumSpanningTreeBfs<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
-            where TNode : IGraphNode<TEdge>
+        public static MstResult<int, TEdge> MinimumSpanningTreeBfs<TEdge>(this IGraph<TEdge> graph)
             where TEdge : IGraphEdge
         {
             var sumi = new bool[graph.Length];

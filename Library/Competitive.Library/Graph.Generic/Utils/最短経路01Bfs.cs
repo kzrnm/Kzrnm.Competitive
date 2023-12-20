@@ -11,9 +11,8 @@ namespace Kzrnm.Competitive
         /// <para><paramref name="from"/> からの最短経路長を01-BSFで求める。</para>
         /// <para>計算量: O(|E| + |V|)</para>
         /// </summary>
-        public static T[] ShortestPath01Bfs<T, TNode, TEdge>(this IWGraph<T, TNode, TEdge> graph, int from)
+        public static T[] ShortestPath01Bfs<T, TEdge>(this IWGraph<T, TEdge> graph, int from)
             where T : IMinMaxValue<T>, IIncrementOperators<T>, IComparable<T>
-            where TNode : IGraphNode<TEdge>
             where TEdge : IWGraphEdge<T>
         {
             var graphArr = graph.AsArray();

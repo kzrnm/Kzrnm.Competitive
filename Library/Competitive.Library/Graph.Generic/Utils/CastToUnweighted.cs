@@ -2,8 +2,7 @@ namespace Kzrnm.Competitive
 {
     public static class ___CastToUnweighted
     {
-        public static IGraph<TNode, TEdge> AsUnweighted<T, TNode, TEdge>(this IWGraph<T, TNode, TEdge> g)
-            where TNode : IGraphNode<TEdge>
+        public static IGraph<TEdge> AsUnweighted<T, TEdge>(this IWGraph<T, TEdge> g)
             where TEdge : IWGraphEdge<T>
             => g;
 

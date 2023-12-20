@@ -11,9 +11,8 @@ namespace Kzrnm.Competitive
         /// <para>また、最短経路となるルートをスタックに積んで返す</para>
         /// <para>計算量: O( (|E| + |V|) log |V| )</para>
         /// </summary>
-        public static (T Distance, ImmutableStack<TEdge> Route)[] DijkstraWithRoute<T, TNode, TEdge>(this IWGraph<T, TNode, TEdge> graph, int from)
+        public static (T Distance, ImmutableStack<TEdge> Route)[] DijkstraWithRoute<T, TEdge>(this IWGraph<T, TEdge> graph, int from)
             where T : IAdditionOperators<T, T, T>, IMinMaxValue<T>, IComparable<T>
-            where TNode : IGraphNode<TEdge>
             where TEdge : IWGraphEdge<T>
         {
             var graphArr = graph.AsArray();

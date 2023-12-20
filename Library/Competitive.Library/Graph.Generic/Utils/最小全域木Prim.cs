@@ -13,9 +13,8 @@ namespace Kzrnm.Competitive
         /// <para><paramref name="root"/>を根とする木を構築する。</para>
         /// <para>計算量は O(E + V log(V))</para>
         /// </summary>
-        public static MstResult<T, TEdge> MinimumSpanningTreePrim<T, TNode, TEdge>(this IWGraph<T, TNode, TEdge> graph, int root = 0)
+        public static MstResult<T, TEdge> MinimumSpanningTreePrim<T, TEdge>(this IWGraph<T, TEdge> graph, int root = 0)
             where T : IComparable<T>, IAdditionOperators<T, T, T>, IAdditiveIdentity<T, T>
-            where TNode : IGraphNode<TEdge>
             where TEdge : IWGraphEdge<T>
         {
             Contract.Assert(!graph[0].IsDirected, "有向グラフでは求められません");

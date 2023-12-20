@@ -17,10 +17,9 @@ namespace Kzrnm.Competitive
         /// <para>制約: <typeparamref name="T"/> は符号付き</para>
         /// <para>制約: <paramref name="graph"/> の <paramref name="root"/> からすべての頂点に到達できる</para>
         /// </remarks>
-        public static MstResult<T, TEdge> DirectedMinimumSpanningTree<T, TNode, TEdge>(this IWGraph<T, TNode, TEdge> graph, int root)
+        public static MstResult<T, TEdge> DirectedMinimumSpanningTree<T, TEdge>(this IWGraph<T, TEdge> graph, int root)
             where T : IComparable<T>, IAdditionOperators<T, T, T>, IUnaryNegationOperators<T, T>, IAdditiveIdentity<T, T>
-            where TNode : IGraphNode<TEdge>
-            where TEdge : struct, IWGraphEdge<T>, IReversable<TEdge>
+            where TEdge : struct, IWGraphEdge<T>, IGraphEdge<TEdge>
         {
             (int from, TEdge edge)[] edges = graph.AsArray()
                 .SelectMany((n, i) => n.Children.Select(e => (i, e)))

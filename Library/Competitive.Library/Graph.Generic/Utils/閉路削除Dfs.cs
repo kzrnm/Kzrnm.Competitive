@@ -11,8 +11,7 @@ namespace Kzrnm.Competitive
         /// 閉路に使わない辺を抽出して返します。
         /// </summary>
         [凾(256)]
-        public static (int from, TEdge edges)[] RemoveCycle<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
-             where TNode : IGraphNode<TEdge>
+        public static (int from, TEdge edges)[] RemoveCycle<TEdge>(this IGraph<TEdge> graph)
              where TEdge : IGraphEdge
         {
             var es = new List<(int from, TEdge edge)>();

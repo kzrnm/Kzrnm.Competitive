@@ -200,7 +200,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                     }
             }
         }
-        static (int lca, int distance) LcaDirect(TreeNode[] tree, int i, int j)
+        static (int lca, int distance) LcaDirect(TreeNode<GraphEdge>[] tree, int i, int j)
         {
             int distance = 0;
             while (tree[i].Depth > tree[j].Depth)

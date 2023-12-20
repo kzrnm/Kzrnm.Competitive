@@ -3,7 +3,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public class 帰りもあるオイラーツアー<TEdge> where TEdge : IGraphEdge, IReversable<TEdge>
+    public class 帰りもあるオイラーツアー<TEdge> where TEdge : IGraphEdge<TEdge>
     {
         public readonly struct Event
         {
@@ -97,6 +97,6 @@ namespace Kzrnm.Competitive
         /// </summary>
         public static 帰りもあるオイラーツアー<TEdge> EulerianTour<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
             where TNode : ITreeNode<TEdge>
-            where TEdge : IGraphEdge, IReversable<TEdge> => 帰りもあるオイラーツアー<TEdge>.Create(tree);
+            where TEdge : IGraphEdge<TEdge> => 帰りもあるオイラーツアー<TEdge>.Create(tree);
     }
 }

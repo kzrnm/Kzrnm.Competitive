@@ -26,8 +26,9 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(1)</para>
         /// </remarks>
         [凾(256)]
-        public static T DistanceLength<T, TEdge>(this IWTreeGraph<T, WTreeNode<T, TEdge>, TEdge> tree, int u, int v)
+        public static T DistanceLength<T, TNode, TEdge>(this IWTreeGraph<T, TNode, TEdge> tree, int u, int v)
             where T : struct, IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>
+            where TNode : ITreeNode<TEdge>, IWTreeNode<T>
             where TEdge : IWGraphEdge<T>
         {
             var l = tree.HlDecomposition.LowestCommonAncestor(u, v);

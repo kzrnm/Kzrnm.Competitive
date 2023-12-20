@@ -16,8 +16,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: <paramref name="graph"/> は無向グラフ</para>
         /// </remarks>
         [凾(256)]
-        public static LaplacianWrapper MatrixTreeTheorem<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
-            where TNode : IGraphNode<TEdge>
+        public static LaplacianWrapper MatrixTreeTheorem<TEdge>(this IGraph<TEdge> graph)
             where TEdge : IGraphEdge
         {
             if (graph.Length == 0) return new(new(Array.Empty<int>(), 0, 0));

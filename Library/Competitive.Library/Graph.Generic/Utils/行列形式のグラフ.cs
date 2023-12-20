@@ -7,8 +7,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// グラフの隣接行列を返します。
         /// </summary>
-        public static ArrayMatrix<int> Adjacency<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
-            where TNode : IGraphNode<TEdge>
+        public static ArrayMatrix<int> Adjacency<TEdge>(this IGraph<TEdge> graph)
             where TEdge : IGraphEdge
         {
             var g = graph.AsArray();
@@ -27,9 +26,8 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// グラフの隣接行列を返します。
         /// </summary>
-        public static ArrayMatrix<T> Adjacency<T, TNode, TEdge>(this IWGraph<T, TNode, TEdge> graph)
+        public static ArrayMatrix<T> Adjacency<T, TEdge>(this IWGraph<T, TEdge> graph)
             where T : INumberBase<T>
-            where TNode : IGraphNode<TEdge>
             where TEdge : IWGraphEdge<T>
         {
             var g = graph.AsArray();
@@ -48,8 +46,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// グラフのラプラシアン行列を返します。
         /// </summary>
-        public static ArrayMatrix<int> Laplacian<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
-            where TNode : IGraphNode<TEdge>
+        public static ArrayMatrix<int> Laplacian<TEdge>(this IGraph<TEdge> graph)
             where TEdge : IGraphEdge
         {
             var g = graph.AsArray();

@@ -8,8 +8,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="from"/> からの最短経路長をBfsで求める。到達判定にも有用
         /// </summary>
-        public static uint[] ShortestPathBfs<TNode, TEdge>(this IGraph<TNode, TEdge> graph, int from)
-            where TNode : IGraphNode<TEdge>
+        public static uint[] ShortestPathBfs<TEdge>(this IGraph<TEdge> graph, int from)
             where TEdge : IGraphEdge
         {
             var graphArr = graph.AsArray();
@@ -32,8 +31,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="from"/> から逆方向の最短経路長をBfsで求める。到達判定にも有用
         /// </summary>
-        public static uint[] ShortestPathBfsReverse<TNode, TEdge>(this IGraph<TNode, TEdge> graph, int from)
-            where TNode : IGraphNode<TEdge>
+        public static uint[] ShortestPathBfsReverse<TEdge>(this IGraph<TEdge> graph, int from)
             where TEdge : IGraphEdge
         {
             var graphArr = graph.AsArray();

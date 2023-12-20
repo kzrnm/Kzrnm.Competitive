@@ -2,7 +2,7 @@ namespace Kzrnm.Competitive
 {
     public static class ___GraphToWeighted
     {
-        public static WGraph<int, WGraphNode<int, WEdge<int>>, WEdge<int>> ToWeighted(this SimpleGraph<GraphNode, GraphEdge> graph)
+        public static WGraph<int, WEdge<int>> ToWeighted(this SimpleGraph<GraphEdge> graph)
         {
             var grrArr = graph.AsArray();
             var isDirected = graph.Nodes[0].IsDirected;

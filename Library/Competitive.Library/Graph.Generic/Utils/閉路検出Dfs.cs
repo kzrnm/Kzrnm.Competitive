@@ -11,8 +11,7 @@ namespace Kzrnm.Competitive
         /// 閉路があれば返す。なければ(-1, null)
         /// </summary>
         [凾(256)]
-        public static (int from, TEdge[] edges) GetCycleDfs<TNode, TEdge>(this IGraph<TNode, TEdge> graph)
-             where TNode : IGraphNode<TEdge>
+        public static (int from, TEdge[] edges) GetCycleDfs<TEdge>(this IGraph<TEdge> graph)
              where TEdge : IGraphEdge
         {
             var g = graph.AsArray();

@@ -11,9 +11,8 @@ namespace Kzrnm.Competitive
         /// <remarks>
         /// <para>計算量: O( (|E| + |V|) log |V| )</para>
         /// </remarks>
-        public static T[] Dijkstra<T, TNode, TEdge>(this IWGraph<T, TNode, TEdge> graph, int from)
+        public static T[] Dijkstra<T, TEdge>(this IWGraph<T, TEdge> graph, int from)
             where T : IAdditionOperators<T, T, T>, IMinMaxValue<T>, IComparable<T>
-            where TNode : IGraphNode<TEdge>
             where TEdge : IWGraphEdge<T>
         {
             var graphArr = graph.AsArray();
