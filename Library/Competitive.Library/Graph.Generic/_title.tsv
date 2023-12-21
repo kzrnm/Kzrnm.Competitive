@@ -1,3 +1,4 @@
 GraphGlobal.cs	グラフ汎用メソッド群
+Graph.cs	重みなしグラフ
 WGraph.cs	重み付きグラフ
 HeavyLightDecomposition.cs	HL分解
