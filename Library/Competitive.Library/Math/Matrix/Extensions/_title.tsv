@@ -1,1 +1,2 @@
-MatrixModMul.cs	高速な ModInt 行列の掛け算
+MatrixPow.cs	行列の冪乗
+SimdModMatrixPow.cs	SIMD 最適化した行列の冪乗

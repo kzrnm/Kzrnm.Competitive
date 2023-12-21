@@ -1,3 +1,4 @@
+using AtCoder;
 using AtCoder.Internal;
 using Kzrnm.Competitive.Internal;
 using System;
@@ -234,9 +235,19 @@ namespace Kzrnm.Competitive
             for (int i = 0; i < rh; i++)
                 for (int j = 0; j < rw; j++)
                 {
-                    ref var v = ref Unsafe.Add(ref rp, i * rw + j);
-                    for (var k = 0; k < mid; k++)
-                        v += Unsafe.Add(ref tp, i * mid + k) * Unsafe.Add(ref op, k * rw + j);
+                    if (typeof(IModInt<T>).IsAssignableFrom(typeof(T)))
+                    {
+                        ulong v = 0;
+                        for (var k = 0; k < mid; k++)
+                            v += (uint)((IModInt<T>)(Unsafe.Add(ref tp, i * mid + k) * Unsafe.Add(ref op, k * rw + j))).Value;
+                        Unsafe.Add(ref rp, i * rw + j) = T.CreateTruncating(v);
+                    }
+                    else
+                    {
+                        ref var v = ref Unsafe.Add(ref rp, i * rw + j);
+                        for (var k = 0; k < mid; k++)
+                            v += Unsafe.Add(ref tp, i * mid + k) * Unsafe.Add(ref op, k * rw + j);
+                    }
                 }
             return new(res, rh, rw);
         }

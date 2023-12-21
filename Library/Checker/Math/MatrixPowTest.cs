@@ -19,11 +19,6 @@ namespace Kzrnm.Competitive.MathNs
             var m1 = Static(N, a).Pow(K);
             var m2 = Montgomery(N, a).Pow(K);
 
-            if (K == 0)
-            {
-                cw.WriteGrid(ArrayMatrix<int>.NormalIdentity(N));
-                return null;
-            }
             ShouldEqual(m1, m2);
 
             cw.WriteGrid(m1);
