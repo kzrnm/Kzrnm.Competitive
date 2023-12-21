@@ -265,6 +265,98 @@ namespace Kzrnm.Competitive.Testing.Graph
         }
 
         [Fact]
+        public void TreeParent()
+        {
+            var cr = GetReader(
+                """
+                1 2 2 4 3
+                """);
+            var graph = cr.TreeParent(6).ToTree(0);
+            graph.Length.Should().Be(6);
+            graph.Root.Should().Be(0);
+
+            var expectedChildren = new GraphEdge[6][]
+            {
+                [
+                    new(1),
+                ],
+                [
+                    new(3),
+                    new(2),
+                ],
+                [
+                    new(5),
+                ],
+                [
+                    new(4),
+                ],
+                [],
+                [],
+            };
+            var expectedParent = new GraphEdge[6]
+            {
+                GraphEdge.None,
+                new(0),
+                new(1),
+                new(1),
+                new(3),
+                new(2),
+            };
+
+            for (int i = 0; i < graph.Length; i++)
+            {
+                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
+                graph[i].Parent.Should().BeEquivalentTo(expectedParent[i], "index: {0}", i);
+            }
+        }
+
+        [Fact]
+        public void TreeParentZeroBased()
+        {
+            var cr = GetReader(
+                """
+                0 1 1 3 2
+                """);
+            var graph = cr.TreeParent(6, based: 0).ToTree(0);
+            graph.Length.Should().Be(6);
+            graph.Root.Should().Be(0);
+
+            var expectedChildren = new GraphEdge[6][]
+            {
+                [
+                    new(1),
+                ],
+                [
+                    new(3),
+                    new(2),
+                ],
+                [
+                    new(5),
+                ],
+                [
+                    new(4),
+                ],
+                [],
+                [],
+            };
+            var expectedParent = new GraphEdge[6]
+            {
+                GraphEdge.None,
+                new(0),
+                new(1),
+                new(1),
+                new(3),
+                new(2),
+            };
+
+            for (int i = 0; i < graph.Length; i++)
+            {
+                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
+                graph[i].Parent.Should().BeEquivalentTo(expectedParent[i], "index: {0}", i);
+            }
+        }
+
+        [Fact]
         public void GraphWithEdgeIndexUndirected()
         {
             var cr = GetReader(

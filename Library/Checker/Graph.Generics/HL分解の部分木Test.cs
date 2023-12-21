@@ -10,10 +10,8 @@ namespace Kzrnm.Competitive.Graph
             int N = cr;
             int Q = cr;
             int[] a = cr.Repeat(N);
-            var gb = new GraphBuilder(N, false);
-            for (var i = 1; i < N; i++)
-                gb.Add(i, cr);
-            var tree = gb.ToTree();
+            var tree = cr.TreeParent(N, based: 0).ToTree();
+
             var fw = new LongFenwickTree(N);
             for (var i = 0; i < a.Length; i++)
                 fw.Add(tree.HlDecomposition.down[i], a[i]);

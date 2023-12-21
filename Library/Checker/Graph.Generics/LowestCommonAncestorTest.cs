@@ -9,11 +9,8 @@ namespace Kzrnm.Competitive.Graph
         {
             int N = cr;
             int Q = cr;
-            var gb = new GraphBuilder(N, false);
-            for (var i = 1; i < N; i++)
-                gb.Add(i, cr);
+            var tree = cr.TreeParent(N, based: 0).ToTree();
 
-            var tree = gb.ToTree(0);
             var hl = tree.HlDecomposition;
             var lca = tree.LowestCommonAncestorDoubling();
             for (int q = 0; q < Q; q++)

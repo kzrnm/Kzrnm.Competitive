@@ -1,3 +1,2 @@
 GraphBuilder.cs	重みなしグラフのBuilder
 GraphBuilderGeneric.cs	データ付き重みなしグラフのBuilder
-WGraphNode.cs	重み付きグラフのノード

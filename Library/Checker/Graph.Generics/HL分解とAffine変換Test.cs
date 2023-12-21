@@ -13,11 +13,8 @@ namespace Kzrnm.Competitive.Graph
             int N = cr;
             int Q = cr;
             var lines = cr.Repeat(N).Select<(int, int)>(cr => (cr, cr));
-            var gb = new GraphBuilder(N, false);
-            for (var i = 1; i < N; i++)
-                gb.Add(cr, cr);
+            var tree = cr.Tree(N, based: 0).ToTree();
 
-            var tree = gb.ToTree();
             var seg1 = new Segtree<Mod998244353AffineTransformation, Op1>(N);
             var seg2 = new Segtree<Mod998244353AffineTransformation, Op2>(N);
 
