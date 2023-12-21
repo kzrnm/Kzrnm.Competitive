@@ -1,21 +1,19 @@
+using AtCoder;
 using AtCoder.Internal;
-using Kzrnm.Competitive.IO;
 using Kzrnm.Competitive.Internal;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
-using AtCoder;
 using System.Runtime.Intrinsics;
+using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using Kd = ArrayMatrixKind;
     using static SimdMontgomery;
+    using Kd = ArrayMatrixKind;
     [DebuggerTypeProxy(typeof(SimdModMatrix<>.DebugView))]
     public readonly struct SimdModMatrix<T> : IMatrix<SimdModMatrix<T>, MontgomeryModInt<T>>
         , IMultiplyOperators<SimdModMatrix<T>, MontgomeryModInt<T>, SimdModMatrix<T>>

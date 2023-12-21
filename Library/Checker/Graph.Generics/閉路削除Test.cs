@@ -10,7 +10,7 @@ namespace Kzrnm.Competitive.Graph
             int N = cr;
             int M = cr;
             int Q = cr;
-            var g = GraphBuilder.Create(N, cr, M, false).ToGraph();
+            var g = cr.Graph(N, M, false).ToGraph();
             var es = g.RemoveCycle();
 
             var uf = new UnionFind(N);

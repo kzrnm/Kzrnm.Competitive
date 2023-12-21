@@ -10,7 +10,7 @@ namespace Kzrnm.Competitive.Graph.Generics
         public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
             int N = cr;
-            var tree = GraphBuilder.CreateTree(N, cr).ToTree();
+            var tree = cr.Tree(N).ToTree();
             var dp = tree.Rerooting().Run<bool, Op>().Select((b, i) => (b, i)).Where(t => !t.b).Select(t => t.i + 1).ToArray();
             cw.WriteLine(dp.Length);
             if (dp.Length > 0) cw.WriteLines(dp);

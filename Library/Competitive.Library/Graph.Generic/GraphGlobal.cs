@@ -15,7 +15,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         int To { get; }
     }
-    public interface IGraphEdge<TSelf> : IGraphEdge
+    public interface IGraphEdge<TSelf> : IGraphEdge where TSelf : IGraphEdge<TSelf>
     {
         /// <summary>
         /// <paramref name="from"/> と <see cref="IGraphEdge.To"/> を逆にします。
@@ -35,7 +35,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         T Data { get; }
     }
-    public interface IGraphNode<out TEdge> where TEdge : IGraphEdge
+    public interface IGraphNode<out TEdge>
     {
         /// <summary>
         /// ノードのインデックス
@@ -54,7 +54,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         bool IsDirected { get; }
     }
-    public interface ITreeNode<TEdge> where TEdge : IGraphEdge
+    public interface ITreeNode<TEdge>
     {
         /// <summary>
         /// ノードのインデックス
@@ -77,19 +77,19 @@ namespace Kzrnm.Competitive
         /// </summary>
         int Size { get; }
     }
-    public interface ITreeNode<TSelf, TEdge> : ITreeNode<TEdge> where TEdge : IGraphEdge
+    public interface ITreeNode<TSelf, TEdge> : ITreeNode<TEdge>
     {
         static abstract TSelf Node(int i, int size, TSelf parent, TEdge parentEdge, TEdge[] children);
         static abstract TSelf RootNode(int i, int size, TEdge[] children);
     }
-    public interface IGraph<TEdge> where TEdge : IGraphEdge
+    public interface IGraph<TEdge>
     {
         Csr<TEdge> Edges { get; }
         GraphNode<TEdge>[] AsArray();
         GraphNode<TEdge> this[int index] { get; }
         int Length { get; }
     }
-    public interface IGraph<TSelf, TEdge> : IGraph<TEdge> where TEdge : IGraphEdge
+    public interface IGraph<TSelf, TEdge> : IGraph<TEdge>
     {
         static abstract TSelf Graph(GraphNode<TEdge>[] nodes, Csr<TEdge> edges);
     }
@@ -112,7 +112,7 @@ namespace Kzrnm.Competitive
     #endregion Interfaces
 
     #region classes
-    public class EdgeContainer<TEdge> where TEdge : IGraphEdge
+    public class EdgeContainer<TEdge> where TEdge : IGraphEdge<TEdge>
     {
         public int Length { get; }
         public bool IsDirected { get; }
@@ -137,20 +137,15 @@ namespace Kzrnm.Competitive
 
         [凾(256)]
         public Csr<TEdge> ToCsr() => new Csr<TEdge>(Length, edges);
-    }
-    internal static class GraphBuilderLogic
-    {
-        [凾(512)]
-        public static TGraph ToGraph<TGraph, TEdge>(EdgeContainer<TEdge> edgeContainer)
-            where TGraph : IGraph<TGraph, TEdge>
-            where TEdge : IGraphEdge<TEdge>
+
+        public TGraph ToGraph<TGraph>() where TGraph : IGraph<TGraph, TEdge>
         {
-            var res = new GraphNode<TEdge>[edgeContainer.Length];
-            var csr = edgeContainer.ToCsr();
+            var res = new GraphNode<TEdge>[Length];
+            var csr = ToCsr();
             var counter = new int[res.Length];
-            var parentCounter = edgeContainer.IsDirected ? new int[res.Length] : counter;
-            var children = SizeToArray<TEdge>(edgeContainer.sizes);
-            var parents = edgeContainer.IsDirected ? SizeToArray<TEdge>(edgeContainer.parentSizes) : children;
+            var parentCounter = IsDirected ? new int[res.Length] : counter;
+            var children = SizeToArray<TEdge>(sizes);
+            var parents = IsDirected ? SizeToArray<TEdge>(parentSizes) : children;
             for (int i = 0; i < res.Length; i++)
             {
                 res[i] = new(i, parents[i], children[i]);
@@ -163,17 +158,16 @@ namespace Kzrnm.Competitive
             }
             return TGraph.Graph(res, csr);
         }
-        [凾(512)]
-        public static TGraph ToTree<TGraph, TNode, TEdge>(EdgeContainer<TEdge> edgeContainer, int root)
+
+        public TGraph ToTree<TGraph, TNode>(int root)
             where TGraph : ITreeGraph<TGraph, TNode, TEdge>
             where TNode : class, ITreeNode<TNode, TEdge>
-            where TEdge : IGraphEdge<TEdge>
         {
-            int size = edgeContainer.Length;
-            Contract.Assert(!edgeContainer.IsDirected, "木には無向グラフをしたほうが良い");
-            var edges = SizeToArray<TEdge>(edgeContainer.sizes);
+            int size = Length;
+            Contract.Assert(!IsDirected, "木には無向グラフをしたほうが良い");
+            var edges = SizeToArray<TEdge>(sizes);
             var idxs = new int[edges.Length];
-            foreach (var (from, e) in edgeContainer.edges.AsSpan())
+            foreach (var (from, e) in this.edges.AsSpan())
             {
                 var to = e.To;
                 edges[from][idxs[from]++] = e;
@@ -182,7 +176,7 @@ namespace Kzrnm.Competitive
 
             idxs.AsSpan().Clear();
             var sz = new int[size].Fill(1); // 部分木のサイズ
-            var children = SizeToArray<TEdge>(edgeContainer.sizes, -1, root);
+            var children = SizeToArray<TEdge>(sizes, -1, root);
 
             // 深さ優先探索で構築
             var parent = new int[size];
@@ -251,15 +245,29 @@ namespace Kzrnm.Competitive
             var hl = new HeavyLightDecomposition<TNode, TEdge>(nodes, nxt, down, up);
             return TGraph.Tree(nodes, root, hl);
         }
-        static T[][] SizeToArray<T>(int[] sizeArray, int offset = 0, int root = -1)
+
+        /// <summary>
+        /// a[i] の要素数が <paramref name="szs"/>[i] であるジャグ配列を返します。
+        /// </summary>
+        /// <param name="szs">サイズ配列</param>
+        /// <param name="offset"><paramref name="root"/> 以外のオフセット</param>
+        /// <param name="root">木の根</param>
+        /// <returns></returns>
+        static T[][] SizeToArray<T>(int[] szs, int offset = 0, int root = -1)
         {
-            var a = new T[sizeArray.Length][];
-            for (int i = 0; i < sizeArray.Length; i++)
-                a[i] = new T[sizeArray[i] + (root == i ? 0 : offset)];
+            int r = 0;
+            ref var sr = ref r;
+            if ((uint)root < (uint)szs.Length)
+                sr = ref szs[root];
+            sr -= offset;
+            var a = new T[szs.Length][];
+            for (int i = 0; i < szs.Length; i++)
+                a[i] = new T[szs[i] + offset];
+            sr += offset;
             return a;
         }
     }
-    public class GraphNode<TEdge> : IGraphNode<TEdge> where TEdge : IGraphEdge
+    public class GraphNode<TEdge> : IGraphNode<TEdge>
     {
         public GraphNode(int i, TEdge[] parents, TEdge[] children)
         {

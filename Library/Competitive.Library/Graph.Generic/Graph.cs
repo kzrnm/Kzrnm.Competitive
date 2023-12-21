@@ -5,7 +5,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive
 {
     public class SimpleGraph<TEdge> : IGraph<SimpleGraph<TEdge>, TEdge>
-        where TEdge : IGraphEdge<TEdge>
     {
         public Csr<TEdge> Edges { get; }
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
