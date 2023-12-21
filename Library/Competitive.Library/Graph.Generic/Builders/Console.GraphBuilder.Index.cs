@@ -8,7 +8,7 @@ namespace Kzrnm.Competitive
         {
             var gb = new GraphBuilder<int>(count, isDirected);
             for (var i = 0; i < edgeCount; i++)
-                gb.Add(cr.Int() - based, cr.Int() - based, i);
+                gb.Add(cr - based, cr - based, i);
             return gb;
         }
     }

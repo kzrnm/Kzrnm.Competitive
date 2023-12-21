@@ -10,7 +10,7 @@ namespace Kzrnm.Competitive
         {
             var gb = new WGraphBuilder<T, int>(count, isDirected);
             for (var i = 0; i < edgeCount; i++)
-                gb.Add(cr.Int() - based, cr.Int() - based, cr.Read<T>(), i);
+                gb.Add(cr - based, cr - based, cr.Read<T>(), i);
             return gb;
         }
     }
