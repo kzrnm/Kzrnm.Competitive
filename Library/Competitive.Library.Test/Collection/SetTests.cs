@@ -82,7 +82,7 @@ namespace Kzrnm.Competitive.Testing.Collection
             set.FindNodeReverseLowerBound(0).Should().BeNull();
             set.FindNodeReverseUpperBound(1).Should().BeNull();
 
-            set.Remove(set.FindNodeLowerBound(5));
+            set.RemoveNode(set.FindNodeLowerBound(5));
             set.Should().Equal(1, 2, 3, 4, 7, 8, 9);
 
             set.Reversed().Should().Equal(9, 8, 7, 4, 3, 2, 1);
@@ -90,10 +90,10 @@ namespace Kzrnm.Competitive.Testing.Collection
             set.EnumerateItem(set.FindNodeLowerBound(5)).Should().Equal(7, 8, 9);
             set.EnumerateItem(set.FindNodeLowerBound(5), true).Should().Equal(7, 4, 3, 2, 1);
 
-            set.Remove(set.FindNodeLowerBound(0));
+            set.RemoveNode(set.FindNodeLowerBound(0));
             set.Should().Equal(2, 3, 4, 7, 8, 9);
 
-            set.Remove(set.FindNodeLowerBound(9));
+            set.RemoveNode(set.FindNodeLowerBound(9));
             set.Should().Equal(2, 3, 4, 7, 8);
         }
         [Fact]

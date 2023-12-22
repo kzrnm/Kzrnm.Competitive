@@ -73,7 +73,7 @@ namespace Kzrnm.Competitive.Testing.Collection
             set.TryGetUpperBound(8, out _).Should().BeTrue();
             set.TryGetUpperBound(9, out _).Should().BeFalse();
 
-            set.Remove(set.FindNodeLowerBound(5));
+            set.RemoveNode(set.FindNodeLowerBound(5));
             set.ToArray().Should().Equal(new Dictionary<int, int>
             {
                 {1,5},
@@ -85,7 +85,7 @@ namespace Kzrnm.Competitive.Testing.Collection
                 {9,4},
             });
 
-            set.Remove(set.FindNodeLowerBound(0));
+            set.RemoveNode(set.FindNodeLowerBound(0));
             set.ToArray().Should().Equal(new Dictionary<int, int>
             {
                 {2,6},
@@ -96,7 +96,7 @@ namespace Kzrnm.Competitive.Testing.Collection
                 {9,4},
             });
 
-            set.Remove(set.FindNodeLowerBound(9));
+            set.RemoveNode(set.FindNodeLowerBound(9));
             set.ToArray().Should().Equal(new Dictionary<int, int>
             {
                 {2,6},

@@ -472,7 +472,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         /// <summary>
         /// 該当ノードを削除する。動作怪しい
         /// </summary>
-        internal void Remove(Node node)
+        internal void RemoveNode(Node node)
             => RemoveMatch(
                 match: node,
                 parentOfMatch: node.Parent,
