@@ -186,6 +186,18 @@ namespace Kzrnm.Competitive.Testing.Extensions
         }
 
         [Fact]
+        public void FlattenTuple2()
+        {
+            new[] { (1, 2), (3, 4), (5, 6) }.Flatten().Should().Equal(1, 2, 3, 4, 5, 6);
+        }
+
+        [Fact]
+        public void FlattenTuple3()
+        {
+            new[] { (1, 2, 3), (4, 5, 6) }.Flatten().Should().Equal(1, 2, 3, 4, 5, 6);
+        }
+
+        [Fact]
         public void MinMax()
         {
             new int[] {
