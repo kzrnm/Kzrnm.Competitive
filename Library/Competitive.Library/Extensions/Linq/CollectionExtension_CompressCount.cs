@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 
 namespace Kzrnm.Competitive
@@ -11,21 +12,22 @@ namespace Kzrnm.Competitive
         public static (T Value, int Count)[] CompressCount<T>(this IEnumerable<T> collection)
         {
             var e = collection.GetEnumerator();
-            var list = new List<(T Value, int Count)>();
+            var ls = new List<(T, int C)>();
             if (!e.MoveNext()) return Array.Empty<(T, int)>();
             var cur = e.Current;
-            list.Add((cur, 1));
+            ls.Add((cur, 1));
+            ref var t = ref ls.AsSpan()[^1].C;
             while (e.MoveNext())
             {
                 if (EqualityComparer<T>.Default.Equals(cur, e.Current))
-                    list.AsSpan()[^1].Count++;
+                    ++t;
                 else
                 {
-                    cur = e.Current;
-                    list.Add((cur, 1));
+                    ls.Add((cur = e.Current, 1));
+                    t = ref ls.AsSpan()[^1].C;
                 }
             }
-            return list.ToArray();
+            return ls.ToArray();
         }
     }
 }

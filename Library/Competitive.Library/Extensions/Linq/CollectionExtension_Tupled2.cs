@@ -8,23 +8,32 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// コレクションの要素2つずつをまとめた配列を返します。
         /// </summary>
+        /// <example>
+        /// [1, 2, 3] → [(1,2), (2,3)]
+        /// </example>
         [凾(256)]
-        public static (T, T)[] Tupled2<T>(this T[] collection) => Tupled2((ReadOnlySpan<T>)collection);
+        public static (T, T)[] Tupled2<T>(this T[] a) => Tupled2((ReadOnlySpan<T>)a);
         /// <summary>
         /// コレクションの要素2つずつをまとめた配列を返します。
         /// </summary>
+        /// <example>
+        /// [1, 2, 3] → [(1,2), (2,3)]
+        /// </example>
         [凾(256)]
-        public static (T, T)[] Tupled2<T>(this Span<T> collection) => Tupled2((ReadOnlySpan<T>)collection);
+        public static (T, T)[] Tupled2<T>(this Span<T> a) => Tupled2((ReadOnlySpan<T>)a);
         /// <summary>
         /// コレクションの要素2つずつをまとめた配列を返します。
         /// </summary>
+        /// <example>
+        /// [1, 2, 3] → [(1,2), (2,3)]
+        /// </example>
         [凾(256)]
-        public static (T, T)[] Tupled2<T>(this ReadOnlySpan<T> collection)
+        public static (T, T)[] Tupled2<T>(this ReadOnlySpan<T> a)
         {
-            var result = new (T, T)[collection.Length - 1];
-            for (int i = 0; i + 1 < collection.Length; i++)
-                result[i] = (collection[i], collection[i + 1]);
-            return result;
+            var r = new (T, T)[a.Length - 1];
+            for (int i = 0; i + 1 < a.Length; i++)
+                r[i] = (a[i], a[i + 1]);
+            return r;
         }
     }
 }
