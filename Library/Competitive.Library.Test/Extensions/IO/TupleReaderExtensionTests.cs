@@ -65,5 +65,23 @@ namespace Kzrnm.Competitive.Testing.IO
                 (-8, -9)
             );
         }
+
+        [Fact]
+        public void IntInt0()
+        {
+            var cr = GetReader(
+                """
+                1 2
+                13 14
+                -5 -6
+                -7 -8
+                """);
+            cr.Repeat(4).IntInt0().Should().Equal(
+                (1, 1),
+                (13, 13),
+                (-5, -7),
+                (-7, -9)
+            );
+        }
     }
 }
