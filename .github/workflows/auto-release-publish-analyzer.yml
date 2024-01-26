@@ -55,7 +55,7 @@ jobs:
         run: dotnet test ${{ env.WORKFLOW_BUILD_SLN }} --no-build --logger GitHubActions -c Release
       - name: Pack
         run: dotnet pack ${{ env.PACK_CSPROJ }} --no-build -c Release -o Analyzer/bin/Packages/Release
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: dist
           path: Analyzer/bin/Packages/Release
