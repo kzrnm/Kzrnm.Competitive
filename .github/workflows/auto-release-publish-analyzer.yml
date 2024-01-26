@@ -23,13 +23,13 @@ env:
 
 jobs:
   get-version:
-    uses: kzrnm/dotnet-actions/.github/workflows/get-version.yml@v1
+    uses: kzrnm/dotnet-actions/.github/workflows/get-version.yml@v2
     with:
       project-path: Analyzer/Kzrnm.Competitive.Analyzer/Kzrnm.Competitive.Analyzer.csproj
       prefix: Analyzer-v
 
   format:
-    uses: kzrnm/dotnet-actions/.github/workflows/format.yml@v1
+    uses: kzrnm/dotnet-actions/.github/workflows/format.yml@v2
     with:
       target: Analyzer/Competitive.Analyzer.sln
       dotnet-version: 7.0.x
