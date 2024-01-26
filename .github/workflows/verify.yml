@@ -168,7 +168,7 @@ jobs:
         with:
           file: ${{runner.temp}}/verify_files.json
       - name: Upload binaries
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: binary-${{github.sha}}
           path: Library/Checker/bin/Release
@@ -248,7 +248,7 @@ jobs:
         env:
           YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
       - name: Upload result artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Result-${{ runner.os }}-${{ matrix.index }}
           path: ${{runner.temp}}/result.json
