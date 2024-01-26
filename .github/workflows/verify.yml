@@ -52,7 +52,7 @@ jobs:
         with:
           dotnet-version: |
             7.0.x
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
@@ -73,7 +73,7 @@ jobs:
         with:
           dotnet-version: |
             7.0.x
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
@@ -194,7 +194,7 @@ jobs:
 
       - name: Restore cached results
         if: ${{ ! inputs.ignore_prev_result }}
-        uses: actions/cache/restore@v3
+        uses: actions/cache/restore@v4
         id: restore-cached-results
         with:
           path: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
@@ -301,7 +301,7 @@ jobs:
           output-path: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
       - name: Save cached results
         if: ${{ ! inputs.ignore_prev_result }}
-        uses: actions/cache/save@v3
+        uses: actions/cache/save@v4
         with:
           path: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
           key: ${{ runner.os }}-verify-result-${{ hashFiles('Library/**/*.cs') }}
