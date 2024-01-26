@@ -103,7 +103,7 @@ jobs:
           FRAMEWORK: net7.0
 
       - name: cs-resolve
-        uses: competitive-verifier/actions/cs-resolve@v1
+        uses: competitive-verifier/actions/cs-resolve@v2
         with:
           working-directory: Library
           solution: ${{ env.WORKFLOW_BUILD_SLN }}
@@ -164,7 +164,7 @@ jobs:
           print(ver_json)
 
       - name: Upload verify_files.json
-        uses: competitive-verifier/actions/upload-verify-artifact@v1
+        uses: competitive-verifier/actions/upload-verify-artifact@v2
         with:
           file: ${{runner.temp}}/verify_files.json
       - name: Upload binaries
@@ -212,12 +212,12 @@ jobs:
         run: cp ${{github.workspace}}/Library/.competitive-verifier/merged-result.json prev-result.json
 
       - name: Set up competitive-verifier
-        uses: competitive-verifier/actions/setup@v1
+        uses: competitive-verifier/actions/setup@v2
         with:
           cache-pip: true
 
       - name: Download verify_files.json
-        uses: competitive-verifier/actions/download-verify-artifact@v1
+        uses: competitive-verifier/actions/download-verify-artifact@v2
 
       - uses: actions/setup-dotnet@v4
         with:
@@ -237,7 +237,7 @@ jobs:
           done
 
       - name: Verify
-        uses: competitive-verifier/actions/verify@v1
+        uses: competitive-verifier/actions/verify@v2
         with:
           working-directory: Library
           prev-result: .competitive-verifier/prev-result.json
@@ -269,7 +269,7 @@ jobs:
 
       - name: Download verify_files.json and all artifacts
         id: all-artifacts
-        uses: competitive-verifier/actions/download-verify-artifact@v1
+        uses: competitive-verifier/actions/download-verify-artifact@v2
         with:
           working-directory: Library
           download-all: true
@@ -289,12 +289,12 @@ jobs:
           SRCDIR: .artifacts/Bundled-${{ runner.os }}
 
       - name: Set up competitive-verifier
-        uses: competitive-verifier/actions/setup@v1
+        uses: competitive-verifier/actions/setup@v2
         with:
           cache-pip: true
 
       - name: Merge results
-        uses: competitive-verifier/actions/merge-result@v1
+        uses: competitive-verifier/actions/merge-result@v2
         with:
           working-directory: Library/.competitive-verifier
           result-files: ${{ steps.all-artifacts.outputs.artifacts-root }}/Result-*/result.json
@@ -307,7 +307,7 @@ jobs:
           key: ${{ runner.os }}-verify-result-${{ hashFiles('Library/**/*.cs') }}
 
       - name: Docs
-        uses: competitive-verifier/actions/docs@v1
+        uses: competitive-verifier/actions/docs@v2
         with:
           working-directory: Library
           verify-result: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
@@ -330,7 +330,7 @@ jobs:
           path: _site
 
       - name: Check
-        uses: competitive-verifier/actions/check@v1
+        uses: competitive-verifier/actions/check@v2
         with:
           verify-result: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
   deploy:
