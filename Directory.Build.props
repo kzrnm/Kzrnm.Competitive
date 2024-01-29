@@ -3,7 +3,7 @@
     <CompilerVisibleProperty Include="CompetitiveAnalyzer_UseMethodImplNumeric" />
   </ItemGroup>
   <PropertyGroup>
-    <SourceExpanderVersion>5.5.1</SourceExpanderVersion>
+    <SourceExpanderVersion>6.0.0</SourceExpanderVersion>
     <CompetitiveAnalyzer_UseMethodImplNumeric>True</CompetitiveAnalyzer_UseMethodImplNumeric>
   </PropertyGroup>
 </Project>

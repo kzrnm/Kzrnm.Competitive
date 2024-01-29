@@ -25,6 +25,7 @@ using static Kzrnm.Competitive.__BinarySearchEx;
 using static Kzrnm.Competitive.Palindrome;
 using static Program;
 using BitArray = System.Collections.BitArray;
+using BigInteger = Kzrnm.Numerics.BigInteger;
 #endregion
 using ModInt = AtCoder.StaticModInt<AtCoder.Mod998244353>;
 using ModIntFactor = Kzrnm.Competitive.ModIntFactor<AtCoder.StaticModInt<AtCoder.Mod998244353>>;
