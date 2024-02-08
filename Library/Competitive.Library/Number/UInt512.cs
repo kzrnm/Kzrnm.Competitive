@@ -5,6 +5,8 @@ using System.Globalization;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Kzrnm.Numerics.Logic;
+using BigInteger = Kzrnm.Numerics.BigInteger;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -70,8 +72,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             this.v7 = v7;
         }
 
-        [凾(256)] internal static ReadOnlySpan<ulong> AsULongSpan(in UInt512 v) => MemoryMarshal.Cast<UInt512, ulong>(MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in v), 1));
-        [凾(256)] internal static ReadOnlySpan<byte> AsByteSpan(in UInt512 v) => MemoryMarshal.AsBytes(AsULongSpan(v));
+        [凾(256)] internal static Span<ulong> AsULongSpan(in UInt512 v) => MemoryMarshal.Cast<UInt512, ulong>(MemoryMarshal.CreateSpan(ref Unsafe.AsRef(in v), 1));
+        [凾(256)] internal static Span<uint> AsUIntSpan(in UInt512 v) => MemoryMarshal.Cast<UInt512, uint>(MemoryMarshal.CreateSpan(ref Unsafe.AsRef(in v), 1));
+        [凾(256)] internal static Span<byte> AsByteSpan(in UInt512 v) => MemoryMarshal.AsBytes(AsULongSpan(v));
 
         static readonly UInt512 _one = new(0, 0, 0, 0, 0, 0, 0, 1);
         public static UInt512 One => _one;
@@ -362,21 +365,53 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         [凾(256)]
         public static UInt512 operator *(UInt512 left, UInt512 right)
         {
-            return (UInt512)(new BigInteger(AsByteSpan(left), isUnsigned: true) * new BigInteger(AsByteSpan(right), isUnsigned: true));
+            var lb = AsUIntSpan(left).TrimEnd(0u);
+            var rb = AsUIntSpan(right).TrimEnd(0u);
+            Span<uint> bits = stackalloc uint[32];
+            bits.Clear();
+            if (lb.Length < rb.Length)
+                BigIntegerCalculator.Multiply(rb, lb, bits[..(lb.Length + rb.Length)]);
+            else
+                BigIntegerCalculator.Multiply(lb, rb, bits[..(lb.Length + rb.Length)]);
+            UInt512 rt = default;
+            bits[..16].CopyTo(AsUIntSpan(rt));
+            return rt;
         }
 
         [凾(256)]
         public static UInt512 operator /(UInt512 left, UInt512 right)
         {
-            return (UInt512)(new BigInteger(AsByteSpan(left), isUnsigned: true) / new BigInteger(AsByteSpan(right), isUnsigned: true));
+            return DivRem(left, right).Quotient;
         }
 
         [凾(256)]
         public static UInt512 operator %(UInt512 left, UInt512 right)
         {
-            return (UInt512)(new BigInteger(AsByteSpan(left), isUnsigned: true) / new BigInteger(AsByteSpan(right), isUnsigned: true));
+            return DivRem(left, right).Remainder;
         }
 
+        [凾(256)]
+        public static (UInt512 Quotient, UInt512 Remainder) DivRem(UInt512 left, UInt512 right)
+        {
+            static void ThrowDivideByZeroException() => throw new DivideByZeroException();
+            var lb = AsUIntSpan(left).TrimEnd(0u);
+            var rb = AsUIntSpan(right).TrimEnd(0u);
+            if (rb.Length == 0)
+                ThrowDivideByZeroException();
+            if (lb.Length < rb.Length)
+                return (Zero, left);
+            Span<uint> quo = stackalloc uint[16];
+            Span<uint> rem = stackalloc uint[16];
+            quo.Clear();
+            rem.Clear();
+            BigIntegerCalculator.Divide(lb, rb, quo[..(lb.Length - rb.Length + 1)], rem[..lb.Length]);
+
+            UInt512 q = default;
+            UInt512 r = default;
+            quo.CopyTo(AsUIntSpan(q));
+            rem.CopyTo(AsUIntSpan(r));
+            return (q, r);
+        }
 
         [凾(256)]
         public static UInt512 operator ~(UInt512 value)

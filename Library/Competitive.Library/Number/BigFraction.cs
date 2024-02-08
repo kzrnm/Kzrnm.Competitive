@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Numerics;
+using BigInteger = Kzrnm.Numerics.BigInteger;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive

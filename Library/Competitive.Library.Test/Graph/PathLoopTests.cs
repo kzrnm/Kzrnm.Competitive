@@ -26,6 +26,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 for (int i = 0; i < N; i++)
                 {
                     pl[i].Move(k).Should().Be((int)(((uint)i + k) % (uint)arr.Length));
+                    pl[i].Move((BigInteger)k).Should().Be((int)(((uint)i + k) % (uint)arr.Length));
                     if ((long)k >= 0)
                         pl[i].Move((long)k).Should().Be((int)(((uint)i + k) % (uint)arr.Length));
                 }

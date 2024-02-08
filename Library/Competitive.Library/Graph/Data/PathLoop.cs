@@ -47,36 +47,17 @@ namespace Kzrnm.Competitive
         /// <para><paramref name="moveNum"/>: 移動回数</para>
         /// </summary>
         /// <param name="moveNum">: 移動回数</param>
-        /// <returns></returns>
+        /// <returns>移動後の遷移先</returns>
         [凾(256)]
-        public int Move(long moveNum) => Move((ulong)moveNum);
-        /// <summary>
-        /// <para><paramref name="moveNum"/>: 移動回数</para>
-        /// </summary>
-        /// <param name="moveNum">: 移動回数</param>
-        /// <returns></returns>
-        [凾(256)]
-        public int Move(ulong moveNum)
+        public int Move<T>(T moveNum) where T : IBinaryInteger<T>
         {
-            if (moveNum < (ulong)Straight.Length)
-                return Straight[(int)moveNum];
+            int t = int.CreateSaturating(moveNum);
+            if ((uint)t < (uint)Straight.Length)
+                return Straight[t];
             if (Loop.Length == 0) return -1;
-            moveNum -= (ulong)Straight.Length;
-            return Loop[(int)(moveNum % (ulong)Loop.Length)];
-        }
-        /// <summary>
-        /// <para><paramref name="moveNum"/>: 移動回数</para>
-        /// </summary>
-        /// <param name="moveNum">: 移動回数</param>
-        /// <returns></returns>
-        [凾(256)]
-        public int Move(BigInteger moveNum)
-        {
-            if (moveNum < Straight.Length)
-                return Straight[(int)moveNum];
-            if (Loop.Length == 0) return -1;
-            moveNum -= Straight.Length;
-            return Loop[(int)(moveNum % Loop.Length)];
+            moveNum -= T.CreateChecked(Straight.Length);
+            moveNum %= T.CreateChecked(Loop.Length);
+            return Loop[int.CreateChecked(moveNum)];
         }
     }
 }

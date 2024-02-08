@@ -23,3 +23,4 @@ global using LongWaveletMatrixWithSums = Kzrnm.Competitive.WaveletMatrixWithSums
 global using IntWeightedUnionFind = Kzrnm.Competitive.WeightedUnionFind<int>;
 global using WIntGraphBuilder = Kzrnm.Competitive.WGraphBuilder<int>;
 global using WLongGraphBuilder = Kzrnm.Competitive.WGraphBuilder<long>;
+global using BigInteger = Kzrnm.Numerics.BigInteger;

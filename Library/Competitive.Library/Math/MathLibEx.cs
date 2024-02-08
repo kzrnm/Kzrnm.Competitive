@@ -49,24 +49,6 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// 最大公約数
-        /// </summary>
-        [凾(256)]
-        public static BigInteger Gcd(BigInteger a, BigInteger b) => BigInteger.GreatestCommonDivisor(a, b);
-
-        /// <summary>
-        /// 最大公約数
-        /// </summary>
-        [凾(256)]
-        public static BigInteger Gcd(params BigInteger[] nums)
-        {
-            var gcd = nums[0];
-            for (var i = 1; i < nums.Length; i++)
-                gcd = Gcd(nums[i], gcd);
-            return gcd;
-        }
-
-        /// <summary>
         /// 最小公倍数
         /// </summary>
         [凾(256)]
@@ -80,24 +62,6 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static T Lcm<T>(params T[] nums)
             where T : IBinaryInteger<T>
-        {
-            var lcm = nums[0];
-            for (var i = 1; i < nums.Length; i++)
-                lcm = Lcm(lcm, nums[i]);
-            return lcm;
-        }
-
-        /// <summary>
-        /// 最小公倍数
-        /// </summary>
-        [凾(256)]
-        public static BigInteger Lcm(BigInteger a, BigInteger b) => a / Gcd(a, b) * b;
-
-        /// <summary>
-        /// 最小公倍数
-        /// </summary>
-        [凾(256)]
-        public static BigInteger Lcm(params BigInteger[] nums)
         {
             var lcm = nums[0];
             for (var i = 1; i < nums.Length; i++)
