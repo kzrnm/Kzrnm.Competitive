@@ -48,11 +48,11 @@ jobs:
         working-directory: Library
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: |
             7.0.x
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
@@ -69,11 +69,11 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: |
             7.0.x
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
@@ -103,7 +103,7 @@ jobs:
           FRAMEWORK: net7.0
 
       - name: cs-resolve
-        uses: competitive-verifier/actions/cs-resolve@v1
+        uses: competitive-verifier/actions/cs-resolve@v2
         with:
           working-directory: Library
           solution: ${{ env.WORKFLOW_BUILD_SLN }}
@@ -164,11 +164,11 @@ jobs:
           print(ver_json)
 
       - name: Upload verify_files.json
-        uses: competitive-verifier/actions/upload-verify-artifact@v1
+        uses: competitive-verifier/actions/upload-verify-artifact@v2
         with:
           file: ${{runner.temp}}/verify_files.json
       - name: Upload binaries
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: binary-${{github.sha}}
           path: Library/Checker/bin/Release
@@ -194,7 +194,7 @@ jobs:
 
       - name: Restore cached results
         if: ${{ ! inputs.ignore_prev_result }}
-        uses: actions/cache/restore@v3
+        uses: actions/cache/restore@v4
         id: restore-cached-results
         with:
           path: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
@@ -212,19 +212,19 @@ jobs:
         run: cp ${{github.workspace}}/Library/.competitive-verifier/merged-result.json prev-result.json
 
       - name: Set up competitive-verifier
-        uses: competitive-verifier/actions/setup@v1
+        uses: competitive-verifier/actions/setup@v2
         with:
           cache-pip: true
 
       - name: Download verify_files.json
-        uses: competitive-verifier/actions/download-verify-artifact@v1
+        uses: competitive-verifier/actions/download-verify-artifact@v2
 
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: |
             7.0.x
       - name: Download binaries
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: binary-${{github.sha}}
           path: Library/Checker/bin/Release
@@ -237,7 +237,7 @@ jobs:
           done
 
       - name: Verify
-        uses: competitive-verifier/actions/verify@v1
+        uses: competitive-verifier/actions/verify@v2
         with:
           working-directory: Library
           prev-result: .competitive-verifier/prev-result.json
@@ -248,7 +248,7 @@ jobs:
         env:
           YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
       - name: Upload result artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Result-${{ runner.os }}-${{ matrix.index }}
           path: ${{runner.temp}}/result.json
@@ -269,7 +269,7 @@ jobs:
 
       - name: Download verify_files.json and all artifacts
         id: all-artifacts
-        uses: competitive-verifier/actions/download-verify-artifact@v1
+        uses: competitive-verifier/actions/download-verify-artifact@v2
         with:
           working-directory: Library
           download-all: true
@@ -289,25 +289,25 @@ jobs:
           SRCDIR: .artifacts/Bundled-${{ runner.os }}
 
       - name: Set up competitive-verifier
-        uses: competitive-verifier/actions/setup@v1
+        uses: competitive-verifier/actions/setup@v2
         with:
           cache-pip: true
 
       - name: Merge results
-        uses: competitive-verifier/actions/merge-result@v1
+        uses: competitive-verifier/actions/merge-result@v2
         with:
           working-directory: Library/.competitive-verifier
           result-files: ${{ steps.all-artifacts.outputs.artifacts-root }}/Result-*/result.json
           output-path: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
       - name: Save cached results
         if: ${{ ! inputs.ignore_prev_result }}
-        uses: actions/cache/save@v3
+        uses: actions/cache/save@v4
         with:
           path: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
           key: ${{ runner.os }}-verify-result-${{ hashFiles('Library/**/*.cs') }}
 
       - name: Docs
-        uses: competitive-verifier/actions/docs@v1
+        uses: competitive-verifier/actions/docs@v2
         with:
           working-directory: Library
           verify-result: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
@@ -325,12 +325,12 @@ jobs:
           destination: _site
       - name: Upload artifact
         id: upload-pages
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
           path: _site
 
       - name: Check
-        uses: competitive-verifier/actions/check@v1
+        uses: competitive-verifier/actions/check@v2
         with:
           verify-result: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
   deploy:
@@ -343,4 +343,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4

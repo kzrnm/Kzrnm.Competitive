@@ -53,11 +53,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: |
             7.0.x
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ${{ github.workspace }}/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
@@ -69,14 +69,14 @@ jobs:
         run: dotnet test ${{ env.WORKFLOW_BUILD_SLN }} --no-build --logger GitHubActions -c Release
       - name: Pack
         run: dotnet pack ${{ env.PACK_CSPROJ }} --no-build -c Release -o bin/Packages/Release -p:Version=$VERSION
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: dist
           path: bin/Packages/Release
 
   publish:
     needs: [get-version, build]
-    uses: kzrnm/dotnet-actions/.github/workflows/publish.yml@v1
+    uses: kzrnm/dotnet-actions/.github/workflows/publish.yml@v2
     if: fromJson(needs.get-version.outputs.release)
     with:
       artifact-name: dist

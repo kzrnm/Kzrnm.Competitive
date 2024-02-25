@@ -23,13 +23,13 @@ env:
 
 jobs:
   get-version:
-    uses: kzrnm/dotnet-actions/.github/workflows/get-version.yml@v1
+    uses: kzrnm/dotnet-actions/.github/workflows/get-version.yml@v2
     with:
       project-path: Analyzer/Kzrnm.Competitive.Analyzer/Kzrnm.Competitive.Analyzer.csproj
       prefix: Analyzer-v
 
   format:
-    uses: kzrnm/dotnet-actions/.github/workflows/format.yml@v1
+    uses: kzrnm/dotnet-actions/.github/workflows/format.yml@v2
     with:
       target: Analyzer/Competitive.Analyzer.sln
       dotnet-version: 7.0.x
@@ -40,10 +40,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 7.0.x
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ${{ github.workspace }}/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
@@ -55,7 +55,7 @@ jobs:
         run: dotnet test ${{ env.WORKFLOW_BUILD_SLN }} --no-build --logger GitHubActions -c Release
       - name: Pack
         run: dotnet pack ${{ env.PACK_CSPROJ }} --no-build -c Release -o Analyzer/bin/Packages/Release
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: dist
           path: Analyzer/bin/Packages/Release
@@ -68,7 +68,7 @@ jobs:
       contents: write
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist
