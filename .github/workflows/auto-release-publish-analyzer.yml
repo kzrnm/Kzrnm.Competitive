@@ -76,7 +76,7 @@ jobs:
         run: dotnet nuget push "./dist/*.nupkg" --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_KEY }}
       - name: Push tag
         id: tag-version
-        uses: mathieudutour/github-tag-action@v6.1
+        uses: mathieudutour/github-tag-action@v6.2
         with:
           github_token: ${{github.token}}
           custom_tag: ${{ needs.get-version.outputs.version }}
