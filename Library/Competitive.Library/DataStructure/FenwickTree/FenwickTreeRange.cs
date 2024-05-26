@@ -20,7 +20,7 @@ namespace Kzrnm.Competitive
     /// </summary>
     [DebuggerTypeProxy(typeof(FenwickTreeRange<>.DebugView))]
     public class FenwickTreeRange<T>
-        where T : IBinaryInteger<T>
+        where T : INumberBase<T>
     {
         private readonly T[] data1;
         private readonly T[] data2;
