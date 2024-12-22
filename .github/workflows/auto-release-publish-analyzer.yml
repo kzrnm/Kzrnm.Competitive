@@ -32,7 +32,9 @@ jobs:
     uses: kzrnm/dotnet-actions/.github/workflows/format.yml@v2
     with:
       target: Analyzer/Competitive.Analyzer.sln
-      dotnet-version: 7.0.x
+      dotnet-version: |
+        7.0.x
+        8.0.x
 
   build:
     runs-on: ubuntu-latest
@@ -42,7 +44,9 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 7.0.x
+          dotnet-version: |
+            7.0.x
+            8.0.x
       - uses: actions/cache@v4
         with:
           path: ${{ github.workspace }}/.nuget/packages
