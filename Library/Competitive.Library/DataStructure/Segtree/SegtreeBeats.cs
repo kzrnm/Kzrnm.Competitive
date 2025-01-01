@@ -5,10 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    using static Math;
     /// <summary>
     /// モノイドを定義するインターフェイスです。
     /// </summary>
@@ -39,6 +41,153 @@ namespace Kzrnm.Competitive
         /// </summary>
         F Composition(F nf, F cf);
     }
+    public class SegtreeBeats : SegtreeBeats<SegtreeBeats.Value, SegtreeBeats.F, SegtreeBeats.Op>
+    {
+        /// <inheritdoc cref="SegtreeBeats{TValue, F, TOp}.SegtreeBeats(int)"/>
+        public SegtreeBeats(int n) : base(n) { }
+        /// <inheritdoc cref="SegtreeBeats{TValue, F, TOp}.SegtreeBeats(TValue[])"/>
+        public SegtreeBeats(Value[] v) : base(v) { }
+        /// <inheritdoc cref="SegtreeBeats{TValue, F, TOp}.SegtreeBeats(TValue[])"/>
+        public SegtreeBeats(IEnumerable<long> v) : base(v.Select(v => new Value(v)).ToArray()) { }
+
+        [凾(256)]
+        public static F MinOp(long num) => new F { min = num, max = long.MinValue >> 2 };
+        [凾(256)]
+        public static F MaxOp(long num) => new F { min = long.MaxValue >> 2, max = num };
+        [凾(256)]
+        public static F AddOp(long num) => new F { min = long.MaxValue >> 2, max = long.MinValue >> 2, sum = num };
+
+        public struct Value
+        {
+            public long min;
+            public long max;
+            public long max2;
+            public long min2;
+            public long sum;
+            public int cnt;
+            public int minCnt;
+            public int maxCnt;
+            public Value(long num, int cnt = 1)
+            {
+                min = num;
+                max = num;
+                min2 = long.MaxValue >> 2;
+                max2 = long.MinValue >> 2;
+                sum = num * cnt;
+                this.cnt = cnt;
+                minCnt = cnt;
+                maxCnt = cnt;
+            }
+        }
+        public struct F
+        {
+            public long min;
+            public long max;
+            public long sum;
+        }
+        public readonly struct Op : ISegtreeBeatsOperator<Value, F>
+        {
+            public Value Identity => new Value
+            {
+                min = long.MaxValue >> 2,
+                max = long.MinValue >> 2,
+                min2 = long.MaxValue >> 2,
+                max2 = long.MinValue >> 2,
+            };
+
+            public F FIdentity => new F
+            {
+                min = long.MaxValue >> 2,
+                max = long.MinValue >> 2,
+            };
+
+            [凾(256)]
+            public Value Operate(Value x, Value y) =>
+                x.min > x.max ? y :
+                y.min > y.max ? x :
+                new Value
+                {
+                    min = Min(x.min, y.min),
+                    max = Max(x.max, y.max),
+                    min2 = Min2(x.min, x.min2, y.min, y.min2),
+                    max2 = Max2(x.max, x.max2, y.max, y.max2),
+                    sum = x.sum + y.sum,
+                    cnt = x.cnt + y.cnt,
+                    minCnt = x.min == y.min ? x.minCnt + y.minCnt : x.min < y.min ? x.minCnt : y.minCnt,
+                    maxCnt = x.max == y.max ? x.maxCnt + y.maxCnt : x.max > y.max ? x.maxCnt : y.maxCnt,
+                };
+
+            [凾(256)]
+            static long Min2(long u1, long u2, long v1, long v2)
+            {
+                Contract.Assert(u1 <= u2);
+                Contract.Assert(v1 <= v2);
+                if (u1 == v1) return Min(u2, v2);
+                if (u1 < v1)
+                    return Min(u2, v1);
+                else
+                    return Min(u1, v2);
+            }
+
+            [凾(256)]
+            static long Max2(long u1, long u2, long v1, long v2)
+            {
+                Contract.Assert(u1 >= u2);
+                Contract.Assert(v1 >= v2);
+                if (u1 == v1) return Max(u2, v2);
+                if (u1 > v1)
+                    return Max(u2, v1);
+                else
+                    return Max(u1, v2);
+            }
+
+            [凾(256)]
+            public bool Mapping(F f, Value x, out Value res)
+            {
+                if (x.cnt == 0)
+                {
+                    res = Identity;
+                    return true;
+                }
+                if (x.min == x.max || f.max == f.min || f.max >= x.max || f.min <= x.min)
+                {
+                    res = new Value(Min(f.min, Max(x.min, f.max)) + f.sum, x.cnt);
+                    return true;
+                }
+                if (x.min2 == x.max)
+                {
+                    x.min = x.max2 = Max(x.min, f.max) + f.sum;
+                    x.max = x.min2 = Min(x.max, f.min) + f.sum;
+                    x.sum = x.min * x.minCnt + x.max * x.maxCnt;
+                    res = x;
+                    return true;
+                }
+                if (f.max < x.min2 && f.min > x.max2)
+                {
+                    var nxt_lo = Max(x.min, f.max);
+                    var nxt_hi = Min(x.max, f.min);
+                    x.sum += (nxt_lo - x.min) * x.minCnt - (x.max - nxt_hi) * x.maxCnt + f.sum * x.cnt;
+                    x.min = nxt_lo + f.sum;
+                    x.max = nxt_hi + f.sum;
+                    x.min2 += f.sum;
+                    x.max2 += f.sum;
+                    res = x;
+                    return true;
+                }
+                res = x;
+                return false;
+            }
+
+            [凾(256)]
+            public F Composition(F nf, F cf) => new F
+            {
+                max = Max(nf.max, Min(cf.max + cf.sum, nf.min)) - cf.sum,
+                min = Min(nf.min, Max(cf.min + cf.sum, nf.max)) - cf.sum,
+                sum = cf.sum + nf.sum,
+            };
+        }
+    }
+
     /// <summary>
     /// 長さ N の配列に対し、
     /// <list type="bullet">
@@ -54,7 +203,7 @@ namespace Kzrnm.Competitive
     [DebuggerTypeProxy(typeof(SegtreeBeats<,,>.DebugView))]
     public class SegtreeBeats<TValue, F, TOp> where TOp : struct, ISegtreeBeatsOperator<TValue, F>
     {
-        static readonly TOp op = default;
+        static TOp op => new();
 
         /// <summary>
         /// 数列 a の長さ n を返します。
@@ -435,7 +584,7 @@ namespace Kzrnm.Competitive
                         for (int i = 0; i < len; i++)
                         {
                             int l = i * unit;
-                            int r = Math.Min(l + unit, segtree.Length);
+                            int r = Min(l + unit, segtree.Length);
                             if (l < segtree.Length)
                             {
                                 int dataIndex = i + len;

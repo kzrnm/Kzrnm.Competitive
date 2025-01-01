@@ -5,7 +5,7 @@
     <LangVersion Condition="'$(TargetFramework)' == 'net7.0'">11</LangVersion>
     <RootNamespace>Kzrnm.Competitive</RootNamespace>
     <OutputType>Library</OutputType>
-    <NoWarn>$(NoWarn);1701;1702;CA1034;CA1036;CA1815;CA2211;CS1591;IDE1006;IDE0034;IDE0305;IDE0044;IDE0062;EMBED0004;EMBED0010</NoWarn>
+    <NoWarn>$(NoWarn);1701;1702;CA1034;CA1036;CA1815;CA2211;CS1591;IDE1006;IDE0034;IDE0305;IDE0044;IDE0062;IDE0130;EMBED0004;EMBED0010</NoWarn>
     <DefineConstants>$(DefineConstants);ATCODER_CONTRACT</DefineConstants>
     <Configurations>Debug;Release;Library</Configurations>
     <CompetitiveAnalyzer_UseMethodImplNumeric>True</CompetitiveAnalyzer_UseMethodImplNumeric>
