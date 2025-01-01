@@ -18,7 +18,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)]
         public static T ParseNumber<T>(ReadOnlySpan<char> s) where T : IBinaryInteger<T>
-            => T.Parse(s, System.Globalization.NumberStyles.BinaryNumber);
+            => T.Parse(s, System.Globalization.NumberStyles.BinaryNumber, null);
 #elif NET7_0_OR_GREATER
         /// <summary>
         /// 2進数表記の数値を <typeparamref name="T"/> に変換します。

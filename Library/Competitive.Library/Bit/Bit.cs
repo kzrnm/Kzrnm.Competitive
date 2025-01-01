@@ -2,6 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+#if NET8_0_OR_GREATER
+using System.Runtime.CompilerServices;
+#endif
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -16,34 +19,34 @@ namespace Kzrnm.Competitive
         public static string ToBitString<T>(this T num) where T : IBinaryInteger<T>
             => ToBitString(num, Unsafe.SizeOf<T>() * 8);
         /// <summary>
-        /// <paramref name="num"/> を長さ <paramref name="padLeft"/> の 2 進数文字列にします。
+        /// <paramref name="num"/> を長さ <paramref name="size"/> 以上の 2 進数文字列にします。
         /// </summary>
         [凾(256)]
-        public static string ToBitString<T>(this T num, int padLeft) where T : IBinaryInteger<T>
+        public static string ToBitString<T>(this T num, int size) where T : IBinaryInteger<T>
         {
-            return num.ToString("B", CultureInfo.InvariantCulture);
+            return num.ToString($"B{size}", null);
         }
 #else
         /// <summary>
-        /// <paramref name="num"/> を長さ <paramref name="padLeft"/> の 2 進数文字列にします。
+        /// <paramref name="num"/> を長さ <paramref name="size"/> 以上の 2 進数文字列にします。
         /// </summary>
         [凾(256)]
-        public static string ToBitString(this int num, int padLeft = sizeof(int) * 8) => Convert.ToString(num, 2).PadLeft(padLeft, '0');
+        public static string ToBitString(this int num, int size = sizeof(int) * 8) => Convert.ToString(num, 2).PadLeft(size, '0');
         /// <summary>
-        /// <paramref name="num"/> を長さ <paramref name="padLeft"/> の 2 進数文字列にします。
+        /// <paramref name="num"/> を長さ <paramref name="size"/> 以上の 2 進数文字列にします。
         /// </summary>
         [凾(256)]
-        public static string ToBitString(this uint num, int padLeft = sizeof(uint) * 8) => Convert.ToString((int)num, 2).PadLeft(padLeft, '0');
+        public static string ToBitString(this uint num, int size = sizeof(uint) * 8) => Convert.ToString((int)num, 2).PadLeft(size, '0');
         /// <summary>
-        /// <paramref name="num"/> を長さ <paramref name="padLeft"/> の 2 進数文字列にします。
+        /// <paramref name="num"/> を長さ <paramref name="size"/> 以上の 2 進数文字列にします。
         /// </summary>
         [凾(256)]
-        public static string ToBitString(this long num, int padLeft = sizeof(long) * 8) => Convert.ToString(num, 2).PadLeft(padLeft, '0');
+        public static string ToBitString(this long num, int size = sizeof(long) * 8) => Convert.ToString(num, 2).PadLeft(size, '0');
         /// <summary>
-        /// <paramref name="num"/> を長さ <paramref name="padLeft"/> の 2 進数文字列にします。
+        /// <paramref name="num"/> を長さ <paramref name="size"/> 以上の 2 進数文字列にします。
         /// </summary>
         [凾(256)]
-        public static string ToBitString(this ulong num, int padLeft = sizeof(ulong) * 8) => Convert.ToString(unchecked((long)num), 2).PadLeft(padLeft, '0');
+        public static string ToBitString(this ulong num, int size = sizeof(ulong) * 8) => Convert.ToString(unchecked((long)num), 2).PadLeft(size, '0');
 #endif
 
         /// <summary>

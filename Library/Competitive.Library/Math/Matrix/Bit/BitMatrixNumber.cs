@@ -1,8 +1,10 @@
 using AtCoder.Internal;
 using System;
 using System.Buffers;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -11,6 +13,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    using static Kzrnm.Competitive.SegtreeBeats;
     using Kd = Internal.ArrayMatrixKind;
     /// <summary>
     /// Mod2 の行列。+: xor *: and
@@ -52,7 +55,7 @@ namespace Kzrnm.Competitive
         }
         static BitMatrix<T> ThrowNotSupportResponse() => throw new NotSupportedException();
         [凾(256)]
-        static int BitSize() => int.CreateTruncating(Unsafe.SizeOf<T>() << 3);
+        static int BitSize() => Unsafe.SizeOf<T>() << 3;
 
 
         /// <summary>
@@ -361,12 +364,22 @@ namespace Kzrnm.Competitive
             if (kind != Kd.Normal) return kind.ToString();
             var bitSize = BitSize();
             var sb = new StringBuilder(_v.Length * (bitSize + 2));
-            var charsSize = (bitSize + 63) / 64;
+            var charsSize = (bitSize + 63) >> 6;
+
+            char[] bufArray = null;
+            Span<char> buf = bitSize <= 256
+                ? stackalloc char[512]
+                : (bufArray = ArrayPool<char>.Shared.Rent(bitSize));
 
             foreach (var row in _v)
             {
-                // TODO: .NET 8 か 9 以降では 2 進数の Parse/Format ができるようになりそう
-                // https://github.com/dotnet/runtime/issues/83619
+#if NET8_0_OR_GREATER
+                row.TryFormat(buf[256..], out var cw, "B", null);
+                var rt = buf.Slice(256 - bitSize + cw, bitSize);
+                rt[..^cw].Fill('0');
+                rt.Reverse();
+                sb.Append(rt);
+#else
                 var v = row;
                 for (int i = 0; i < charsSize; i++)
                 {
@@ -375,9 +388,12 @@ namespace Kzrnm.Competitive
                     sb.Append(chars).Append('0', 64 - chars.Length);
                     v >>= 64;
                 }
-
+#endif
                 sb.Append('\n');
             }
+
+            if (bufArray != null)
+                ArrayPool<char>.Shared.Return(bufArray);
             return sb.Remove(sb.Length - 1, 1).ToString();
         }
         /// <summary>
@@ -420,11 +436,23 @@ namespace Kzrnm.Competitive
             {
                 public override string ToString()
                 {
-                    // TODO: .NET 8 か 9 以降では 2 進数の Parse/Format ができるようになりそう
-                    // https://github.com/dotnet/runtime/issues/83619
                     var v = Value;
                     var bitSize = BitSize();
-                    var charsSize = (bitSize + 63) / 64;
+#if NET8_0_OR_GREATER
+                    char[] bufArray = null;
+                    Span<char> buf = bitSize <= 256
+                        ? stackalloc char[512]
+                        : (bufArray = ArrayPool<char>.Shared.Rent(bitSize));
+                    Value.TryFormat(buf[256..], out var cw, "B", null);
+                    var rt = buf.Slice(256 - bitSize + cw, bitSize);
+                    rt[..^cw].Fill('0');
+                    rt.Reverse();
+                    var rs = new string(rt);
+                    if (bufArray != null)
+                        ArrayPool<char>.Shared.Return(bufArray);
+                    return rs;
+#else
+                    var charsSize = (bitSize + 63) >> 6;
                     var sb = new StringBuilder(bitSize + 2);
                     for (int i = 0; i < charsSize; i++)
                     {
@@ -436,6 +464,7 @@ namespace Kzrnm.Competitive
                     while (sb.Length > bitSize)
                         sb.Remove(sb.Length - 1, 1);
                     return sb.ToString();
+#endif
                 }
             }
         }
