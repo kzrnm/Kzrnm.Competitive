@@ -24,8 +24,8 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             p2.Distance(p1).Should().Be(distance);
         }
 
-        public static PointDouble[] SortedPoints => new PointDouble[]
-        {
+        public static PointDouble[] SortedPoints =>
+        [
             new (0, 0),
             new (1, 0),
             new (5, 0),
@@ -49,7 +49,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             new (0, -2000),
             new (1, -10),
             new (100000, -1),
-        };
+        ];
         [Fact]
         public void CompareTo()
         {

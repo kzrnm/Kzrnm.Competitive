@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net7.0</TargetFrameworks>
+    <TargetFrameworks>net8.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <RootNamespace>Kzrnm.Competitive.Testing</RootNamespace>
     <LangVersion>latest</LangVersion>
@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <NoWarn>$(NoWarn);CA1822;CA1825;CA1032;IDE0028;IDE0018;IDE0044;IDE0305</NoWarn>
+    <NoWarn>$(NoWarn);CA1822;CA1825;CA1032;IDE0028;IDE0018;IDE0044;IDE0305;xUnit1037</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Library'">
     <DefineConstants>$(DefineConstants);DEBUG;LIBRARY</DefineConstants>
@@ -22,11 +22,12 @@
   </ItemGroup>
   
   <ItemGroup>
+    <PackageReference Include="ac-library-csharp" Version="3.9.1" />
     <PackageReference Include="CompetitiveVerifierResolverTestLogger" Version="*">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="GitHubActionsTestLogger" Version="2.3.3">
+    <PackageReference Include="GitHubActionsTestLogger" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -34,18 +35,18 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
     <PackageReference Include="SourceExpander.Embedder.Testing" Version="$(SourceExpanderVersion)" />
-    <PackageReference Include="xunit" Version="2.6.6" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.6">
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="6.0.0">
+    <PackageReference Include="coverlet.collector" Version="6.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    <PackageReference Include="FluentAssertions" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
