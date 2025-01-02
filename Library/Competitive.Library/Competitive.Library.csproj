@@ -37,7 +37,7 @@
   <ItemGroup>
     <InternalsVisibleTo Include="Competitive.Library.Test" />
     <PackageReference Include="ac-library-csharp" Version="3.9.0" />
-    <PackageReference Include="Kzrnm.BigInteger" Version="0.3.1-embedded" />
+    <PackageReference Include="Kzrnm.BigInteger" Version="0.3.3-embedded" />
     <PackageReference Include="Kzrnm.Competitive.Analyzer" Version="1.1.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
