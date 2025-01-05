@@ -25,6 +25,9 @@ namespace Kzrnm.Competitive.Testing.IO
         {
             var cr = GetReader("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
             cr.AsciiToNum('A').Should().Equal(Enumerable.Range(0, 26).Select(v => (short)v));
+
+            cr = GetReader("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+            cr.AsciiToNum().Should().Equal(Enumerable.Range(0, 26).Select(v => (short)v));
         }
 
         [Fact]

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net8.0</TargetFrameworks>
+    <TargetFrameworks>net7.0</TargetFrameworks>
     <LangVersion Condition="'$(TargetFramework)' == 'net7.0'">11</LangVersion>
     <NoWarn>$(NoWarn);CS8019;CA1050;CA1822;IDE0005;IDE0051;IDE0059</NoWarn>
   </PropertyGroup>

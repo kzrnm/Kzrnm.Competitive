@@ -17,3 +17,12 @@ dotnet_diagnostic.IDE0090.severity = silent
 
 # 有効にすると dotnet format で未使用の using を消せる
 # dotnet_diagnostic.IDE0005.severity = warning
+
+# IDE0130: Namespace がフォルダー構造と一致しません
+dotnet_style_namespace_match_folder = false
+
+# CS9195: 引数は 'in' キーワードと共に渡す必要があります
+dotnet_diagnostic.CS9195.severity = none
+
+# CS9192: 引数は 'ref' キーワードまたは 'in' キーワードと共に渡す必要があります
+dotnet_diagnostic.CS9192.severity = none
