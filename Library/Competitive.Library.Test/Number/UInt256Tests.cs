@@ -232,6 +232,12 @@ namespace Kzrnm.Competitive.Testing.Number
 
             Impl(UInt256.MaxValue, UInt256.MaxValue);
 
+            for (int i = 0; i < 4; i++)
+            {
+                Impl((UInt256)(BigInteger.One << (64 * i)), 1);
+                Impl((UInt256)((BigInteger.One << (64 * i)) - 1), 1);
+            }
+
             var s = new ulong[1000].AsSpan();
             rnd.NextBytes(MemoryMarshal.AsBytes(s));
             for (; UInt256.ULongCount < s.Length; s = s[1..])
@@ -282,6 +288,12 @@ namespace Kzrnm.Competitive.Testing.Number
             Impl(UInt256.One, UInt256.MaxValue);
 
             Impl(UInt256.MaxValue, UInt256.MaxValue);
+
+            for (int i = 0; i < 4; i++)
+            {
+                Impl((UInt256)(BigInteger.One << (64 * i)), 1);
+                Impl((UInt256)((BigInteger.One << (64 * i)) - 1), 1);
+            }
 
             var s = new ulong[1000].AsSpan();
             rnd.NextBytes(MemoryMarshal.AsBytes(s));
