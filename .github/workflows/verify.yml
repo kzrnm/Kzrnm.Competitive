@@ -52,7 +52,7 @@ jobs:
         with:
           dotnet-version: |
             7.0.x
-            8.0.x
+            9.0.x
       - uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
@@ -74,7 +74,7 @@ jobs:
         with:
           dotnet-version: |
             7.0.x
-            8.0.x
+            9.0.x
       - uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
@@ -225,7 +225,7 @@ jobs:
         with:
           dotnet-version: |
             7.0.x
-            8.0.x
+            9.0.x
       - name: Download binaries
         uses: actions/download-artifact@v4
         with:

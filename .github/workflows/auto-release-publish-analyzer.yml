@@ -34,7 +34,7 @@ jobs:
       target: Analyzer/Competitive.Analyzer.sln
       dotnet-version: |
         7.0.x
-        8.0.x
+        9.0.x
 
   build:
     runs-on: ubuntu-latest
