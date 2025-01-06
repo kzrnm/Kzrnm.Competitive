@@ -23,24 +23,8 @@ namespace Competitive.Runner
             if (args.Length > 0 && args[0] == "expand")
             {
                 Console.WriteLine("expand mode");
-                string? expandedCode = null;
 #if DEBUG
-                expandedCode = GetSourceCode(BasePath.Replace("HandMadeMain.cs", "Program.cs"))
-                    ?.Code
-                    ?.Replace("\r\n", "\n")
-                    ?.Replace("using MI=System.Runtime.CompilerServices.MethodImplAttribute;", "");
-                if (expandedCode == null)
-                    ThrowEmptyExpanded();
-
-                expandedCode = Regex.Replace(expandedCode, @"\[(MI|MethodImpl)\(((MethodImplOptions\.)?AggressiveInlining|256)", "[凾(256");
-
-                if (expandedCode.Replace("namespace AtCoder.Extension", "namespace MyAtCoder.Extension") is var rep && rep.Length != expandedCode.Length)
-                {
-                    expandedCode = rep;
-                    expandedCode = expandedCode.Replace("using AtCoder.Extension", "using MyAtCoder.Extension");
-                }
-
-                Expand(args.AsSpan(1), expandedCode);
+                Expand(args.AsSpan(1));
 #else
                 ThrowEmptyExpanded();
 #endif
@@ -109,6 +93,35 @@ namespace Competitive.Runner
                 }
             }
         }
+
+        static void Expand(ReadOnlySpan<string> args)
+        {
+            var expandedCode = GetSourceCode(BasePath.Replace("HandMadeMain.cs", "Program.cs"))
+                ?.Code
+                ?.Replace("\r\n", "\n")
+                ?.Replace("using MI=System.Runtime.CompilerServices.MethodImplAttribute;", "");
+            if (expandedCode == null)
+                ThrowEmptyExpanded();
+
+            expandedCode = NotLocalRunning().Replace(expandedCode, "$1");
+            expandedCode = AggressiveInliningRegex().Replace(expandedCode, "[凾(256");
+#if NET9_0_OR_GREATER
+            expandedCode = ArrayEmptyRegex().Replace(expandedCode, "[]");
+#endif
+
+            if (expandedCode.Replace("namespace AtCoder.Extension", "namespace MyAtCoder.Extension") is var rep && rep.Length != expandedCode.Length)
+            {
+                expandedCode = rep.Replace("using AtCoder.Extension", "using MyAtCoder.Extension");
+            }
+
+            Expand(args, expandedCode);
+        }
+        [GeneratedRegex(@"#if !LOCAL_RUNNING\n(.*)#endif\n", RegexOptions.Singleline)]
+        private static partial Regex NotLocalRunning();
+        [GeneratedRegex(@"\[(MI|MethodImpl)\(((MethodImplOptions\.)?AggressiveInlining|256)")]
+        private static partial Regex AggressiveInliningRegex();
+        [GeneratedRegex(@"(?<![a-zA-Z0-9])(System\.)?Array\.Empty<[^\(]+\(\)>")]
+        private static partial Regex ArrayEmptyRegex();
 
         static void Expand(ReadOnlySpan<string> args, string expandedCode)
         {
