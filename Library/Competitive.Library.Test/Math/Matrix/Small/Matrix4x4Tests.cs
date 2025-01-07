@@ -328,5 +328,41 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (orig * inv).Should().Be(FractionMatrix4x4.MultiplicativeIdentity);
             (inv * orig).Should().Be(FractionMatrix4x4.MultiplicativeIdentity);
         }
+
+        [Fact]
+        [Trait("Category", "Normal")]
+        public void AsSpan()
+        {
+            var mat = new LongMatrix4x4(
+                (1, 2, 3, 4),
+                (5, 6, 7, 8),
+                (9, 10, 11, 12),
+                (13, 14, 15, 16)
+            );
+            mat.AsSpan().ToArray().Should().Equal([
+                1,  2, 3, 4,
+                5,  6, 7, 8,
+                9, 10,11,12,
+                13,14,15,16
+            ]);
+        }
+
+        [Fact]
+        [Trait("Category", "Normal")]
+        public void AsSpan3Bytes()
+        {
+            var mat = new Matrix4x4<UInt24>(
+                ((UInt24)1, (UInt24)2, (UInt24)3, (UInt24)4),
+                ((UInt24)5, (UInt24)6, (UInt24)7, (UInt24)8),
+                ((UInt24)9, (UInt24)10, (UInt24)11, (UInt24)12),
+                ((UInt24)13, (UInt24)14, (UInt24)15, (UInt24)16)
+            );
+            mat.AsSpan().ToArray().Should().Equal([
+                (UInt24)1, (UInt24)2, (UInt24)3, (UInt24)4,
+                (UInt24)5, (UInt24)6, (UInt24)7, (UInt24)8,
+                (UInt24)9, (UInt24)10,(UInt24)11,(UInt24)12,
+                (UInt24)13,(UInt24)14,(UInt24)15,(UInt24)16
+            ]);
+        }
     }
 }

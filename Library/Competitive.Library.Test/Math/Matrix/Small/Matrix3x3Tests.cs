@@ -296,5 +296,37 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (orig * inv).Should().Be(FractionMatrix3x3.MultiplicativeIdentity);
             (inv * orig).Should().Be(FractionMatrix3x3.MultiplicativeIdentity);
         }
+
+        [Fact]
+        [Trait("Category", "Normal")]
+        public void AsSpan()
+        {
+            var mat = new LongMatrix3x3(
+                (1, 2, 3),
+                (4, 5, 6),
+                (7, 8, 9)
+            );
+            mat.AsSpan().ToArray().Should().Equal([
+                1, 2, 3,
+                4, 5, 6,
+                7, 8, 9
+            ]);
+        }
+
+        [Fact]
+        [Trait("Category", "Normal")]
+        public void AsSpan3Bytes()
+        {
+            var mat = new Matrix3x3<UInt24>(
+                ((UInt24)1, (UInt24)2, (UInt24)3),
+                ((UInt24)4, (UInt24)5, (UInt24)6),
+                ((UInt24)7, (UInt24)8, (UInt24)9)
+            );
+            mat.AsSpan().ToArray().Should().Equal([
+                (UInt24)1, (UInt24)2, (UInt24)3,
+                (UInt24)4, (UInt24)5, (UInt24)6,
+                (UInt24)7, (UInt24)8, (UInt24)9
+            ]);
+        }
     }
 }
