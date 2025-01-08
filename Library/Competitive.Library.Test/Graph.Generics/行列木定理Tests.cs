@@ -29,7 +29,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 while (uf.Groups().Length > 1)
                     for (int j = 0; j < n; j++)
                     {
-                        var (u, v) = rnd.NextInt2(0, n);
+                        var (u, v) = rnd.Choice2(0, n);
                         hs.Add((u, v));
                         uf.Merge(u, v);
                     }

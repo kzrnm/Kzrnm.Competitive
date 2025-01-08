@@ -35,7 +35,7 @@ namespace Competitive.Runner
             ++max;
             for (int i = 0; i < count; i++)
             {
-                var (a, b) = rnd.NextInt2(1, max);
+                var (a, b) = rnd.Choice2(1, max);
                 sb.Add(a, b);
             }
             return sb;

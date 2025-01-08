@@ -1,7 +1,7 @@
 using AtCoder.Internal;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using System.Diagnostics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 
@@ -130,32 +130,17 @@ namespace Kzrnm.Competitive
     /// グラフのノードを表す
     /// </summary>
     /// <typeparam name="Te">辺の型</typeparam>
-    public class GraphNode<Te> : IGraphNode<GraphNode<Te>, Te>
+    /// <param name="Index">ノードのインデックス</param>
+    /// <param name="Parents">入ってくる辺の向いてる先</param>
+    /// <param name="Children">出ている辺の向いてる先</param>
+    [DebuggerDisplay(nameof(Children) + ": {string.Join(\", \", System.Linq.Enumerable.Select(" + nameof(Children) + ", e=>((" + nameof(IGraphEdge) + ")(object)e).To)),nq}")]
+    public record GraphNode<Te>(int Index, Te[] Parents, Te[] Children) : IGraphNode<GraphNode<Te>, Te>
     {
-        public GraphNode(int i, Te[] parents, Te[] children)
-        {
-            Index = i;
-            Parents = parents;
-            Children = children;
-        }
-        /// <summary>
-        /// ノードのインデックス
-        /// </summary>
-        public int Index { get; }
-        /// <summary>
-        /// 入ってくる辺の向いてる先
-        /// </summary>
-        public Te[] Parents { get; }
-        /// <summary>
-        /// 出ている辺の向いてる先
-        /// </summary>
-        public Te[] Children { get; }
         /// <summary>
         /// 有向グラフかどうか
         /// </summary>
         public bool IsDirected => Parents != Children;
 
-        public override string ToString() => $"children: {string.Join(",", Children)}";
         public override int GetHashCode() => Index;
         static GraphNode<Te> IGraphNode<GraphNode<Te>, Te>.Node(int i, Te[] parents, Te[] children)
             => new(i, parents, children);
@@ -164,6 +149,10 @@ namespace Kzrnm.Competitive
     /// 木のノードを表す
     /// </summary>
     /// <typeparam name="Te">辺の型</typeparam>
+    [DebuggerDisplay(
+        nameof(Parent) + ": {(((" + nameof(IGraphEdge) + ")(object)" + nameof(Parent) + ").To<0?"
+        + "\"\"" + ":((" + nameof(IGraphEdge) + ")(object)" + nameof(Parent) + ").To.ToString()),nq} "
+        + nameof(Children) + ": {string.Join(\", \", System.Linq.Enumerable.Select(" + nameof(Children) + ", e=>((" + nameof(IGraphEdge) + ")(object)e).To)),nq}")]
     public class TreeNode<Te> : ITreeNode<TreeNode<Te>, Te> where Te : IGraphEdge<Te>
     {
         public TreeNode(int i, int size, Te parent, int depth, Te[] children)

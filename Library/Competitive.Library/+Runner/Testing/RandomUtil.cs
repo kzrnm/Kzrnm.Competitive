@@ -44,7 +44,7 @@ namespace Kzrnm.Competitive.Testing
         /// <summary>
         /// [<paramref name="minValue"/>, <paramref name="maxValue"/>) かつ a &lt; b を満たす値 a, b を返します。
         /// </summary>
-        public static (int, int) NextInt2(this Random rnd, int minValue, int maxValue)
+        public static (int, int) Choice2(this Random rnd, int minValue, int maxValue)
         {
             Contract.Assert(maxValue - minValue > 1);
             int a, b;
