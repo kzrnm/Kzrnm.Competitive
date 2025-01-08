@@ -65,14 +65,10 @@ namespace Kzrnm.Competitive.Testing
             var r = maxValue - minValue;
             Contract.Assert(n <= r);
             var list = new List<int>(Enumerable.Range(minValue, r));
-            for (int i = 0; i < n; i++)
-            {
-                var ri = rnd.Next(list.Count);
-                list[ri] = list[^1];
-                list.RemoveAt(list.Count - 1);
-            }
-            list.Sort();
-            return list.ToArray();
+            rnd.Shuffle(list.AsSpan());
+            var span = list.AsSpan()[..n];
+            span.Sort();
+            return span.ToArray();
         }
 
         /// <summary>
