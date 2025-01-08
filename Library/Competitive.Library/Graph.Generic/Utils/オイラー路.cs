@@ -158,16 +158,9 @@ namespace Kzrnm.Competitive
             Array.Reverse(resArr);
             return resArr;
         }
-        private class EdgeInternal<TEdge> where TEdge : IGraphEdge<TEdge>
+        private record EdgeInternal<TEdge>(int From, TEdge ToEdge) where TEdge : IGraphEdge<TEdge>
         {
-            public readonly int From;
-            public readonly TEdge ToEdge;
             public bool Used = false;
-            public EdgeInternal(int from, TEdge edge)
-            {
-                From = from;
-                ToEdge = edge;
-            }
 
             public TEdge Edge(int from)
             {

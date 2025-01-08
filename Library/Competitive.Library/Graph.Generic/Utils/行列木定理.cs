@@ -24,11 +24,8 @@ namespace Kzrnm.Competitive
             return new(graph.Laplacian());
         }
 
-        public readonly struct LaplacianWrapper
+        public readonly record struct LaplacianWrapper(ArrayMatrix<int> Matrix)
         {
-            readonly ArrayMatrix<int> Matrix;
-            public LaplacianWrapper(ArrayMatrix<int> m) { Matrix = m; }
-
             /// <summary>
             /// 全域木の個数を返します。
             /// </summary>
