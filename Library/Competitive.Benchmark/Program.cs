@@ -76,7 +76,7 @@ public class Benchmark
     [BenchmarkCategory("ListAdd")]
     public long NewListAdd()
     {
-        var list = new RedBlackTree<long>();
+        var list = new Kzrnm.Competitive.RedBlackTree<long>();
         for (int i = 0; i < N; i++)
             list.AddLast(rnd.Next());
         return list[^1];
