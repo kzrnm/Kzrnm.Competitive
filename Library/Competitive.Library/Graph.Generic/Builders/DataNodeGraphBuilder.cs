@@ -8,10 +8,10 @@ namespace Kzrnm.Competitive
     /// ノードにデータを持つグラフを構築する
     /// </summary>
     /// <typeparam name="T">データの型</typeparam>
-    public class GraphBuilderNode<T> : Internal.Graph.BuilderBase<SimpleGraph<GraphNodeData<T>, Gde>, TreeGraph<TreeNodeData<T>, Gde>, GraphNodeData<T>, TreeNodeData<T>, Gde>
+    public class DataNodeGraphBuilder<T> : Internal.Graph.BuilderBase<SimpleGraph<GraphNodeData<T>, Gde>, TreeGraph<TreeNodeData<T>, Gde>, GraphNodeData<T>, TreeNodeData<T>, Gde>
     {
         private readonly T[] vals;
-        public GraphBuilderNode(T[] values, bool isDirected) : base(values.Length, isDirected)
+        public DataNodeGraphBuilder(T[] values, bool isDirected) : base(values.Length, isDirected)
         {
             vals = values;
         }
@@ -32,7 +32,7 @@ namespace Kzrnm.Competitive
     /// データ付きのノード
     /// </summary>
     /// <typeparam name="T">データの型</typeparam>
-    public class GraphNodeData<T> : GraphNode<Gde>, IGraphNode<Gde>
+    public record GraphNodeData<T> : GraphNode<Gde>, IGraphNode<Gde>
     {
         public GraphNodeData(int i, Gde[] parents, Gde[] children, T value)
             : base(i, parents, children)

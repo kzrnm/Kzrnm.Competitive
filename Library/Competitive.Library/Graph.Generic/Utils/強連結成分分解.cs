@@ -23,8 +23,9 @@ namespace Kzrnm.Competitive
             int groupNum = 0;
             var visited = new Stack<int>(graphArr.Length);
             var low = new int[graphArr.Length];
-            var ord = Enumerable.Repeat(-1, graphArr.Length).ToArray();
             var ids = new int[graphArr.Length];
+            var ord = new int[graphArr.Length];
+            ord.AsSpan().Fill(-1);
 
             for (int i = 0; i < ord.Length; i++)
             {
@@ -46,11 +47,11 @@ namespace Kzrnm.Competitive
             {
                 var stack = new Stack<(int v, int childIndex, bool childOk)>();
                 stack.Push((v, g.Start[v], false));
-                while (stack.Count > 0)
+                while (stack.TryPop(out var z))
                 {
                     int ci;
                     bool childOk;
-                    (v, ci, childOk) = stack.Pop();
+                    (v, ci, childOk) = z;
 
                     if (!childOk && ci == g.Start[v])
                     {
@@ -114,7 +115,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         public static int[][] Scc<TEdge>(this IGraph<TEdge> graph)
             where TEdge : IGraphEdge
-            => SccGroupsAndIds(graph).groups;
+            => SccGroupsAndIds(graph).Groups;
 
         /// <summary>
         /// 強連結成分ごとに ID を割り振り、各頂点の所属する強連結成分の ID が記録された配列と「頂点のリスト」のリストを取得します。
@@ -125,7 +126,7 @@ namespace Kzrnm.Competitive
         /// <para>- リストはトポロジカルソートされています。異なる強連結成分の頂点 u, v について、u から v に到達できる時、u の属するリストは v の属するリストよりも前です。</para>
         /// <para>計算量: 追加された辺の本数を m として O(n+m)</para>
         /// </remarks>
-        public static (int[][] groups, int[] ids) SccGroupsAndIds<TEdge>(this IGraph<TEdge> graph)
+        public static (int[][] Groups, int[] Ids) SccGroupsAndIds<TEdge>(this IGraph<TEdge> graph)
             where TEdge : IGraphEdge
         {
             var (groupNum, ids) = SccIds(graph);
@@ -143,6 +144,39 @@ namespace Kzrnm.Competitive
                 groups[ids[i]][seen[ids[i]]++] = i;
 
             return (groups, ids);
+        }
+
+        /// <summary>
+        /// 強連結成分ごとに ID を割り振り、各頂点の所属する強連結成分の ID を元に圧縮したグラフを構築します。
+        /// </summary>
+        /// <remarks>
+        /// <para>- 全ての頂点がちょうど1つずつ、どれかのリストに含まれます。</para>
+        /// <para>- 内側のリストと強連結成分が一対一に対応します。リスト内での頂点の順序は未定義です。</para>
+        /// <para>- リストはトポロジカルソートされています。異なる強連結成分の頂点 u, v について、u から v に到達できる時、u の属するリストは v の属するリストよりも前です。</para>
+        /// <para>- 構築されたグラフの各ノードは元のグラフのノードを保持します。</para>
+        /// <para>計算量: 追加された辺の本数を m として O(n+m)</para>
+        /// </remarks>
+        /// <typeparam name="TEdge">辺の型</typeparam>
+        /// <param name="graph">元になるグラフ</param>
+        /// <param name="isDirected">新しく作るグラフを有向辺にするか。木にするなら <see langword="false"/> </param>
+        /// <returns></returns>
+        public static DataNodeGraphBuilder<int[]> SccNewGraph<TEdge>(this IGraph<TEdge> graph, bool isDirected = true)
+            where TEdge : IGraphEdge
+        {
+            var (groups, ids) = SccGroupsAndIds(graph);
+            DataNodeGraphBuilder<int[]> g = new(groups, isDirected);
+            var ss = new SortedSet<(int, int)>();
+            foreach (var (f, e) in graph.Edges)
+            {
+                var u = ids[f];
+                var v = ids[e.To];
+                if (u != v && ss.Add((u, v)))
+                {
+                    g.Add(u, v);
+                }
+            }
+
+            return g;
         }
     }
 }
