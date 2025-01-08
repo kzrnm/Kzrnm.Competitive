@@ -1,27 +1,25 @@
-using Kzrnm.Competitive.IO;
 using System.Diagnostics;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public class WGraphBuilder<T> where T : IAdditionOperators<T, T, T>
+    /// <summary>
+    /// 重み付きのグラフを構築する
+    /// </summary>
+    /// <typeparam name="T">辺の重みの型</typeparam>
+    public class WGraphBuilder<T> : Internal.Graph.Builder<WGraph<T, GraphNode<WEdge<T>>, WEdge<T>>, WTreeGraph<T, WTreeNode<T, WEdge<T>>, WEdge<T>>, GraphNode<WEdge<T>>, WTreeNode<T, WEdge<T>>, WEdge<T>>
+        where T : IAdditionOperators<T, T, T>
     {
-        internal readonly EdgeContainer<WEdge<T>> edgeContainer;
-        public WGraphBuilder(int size, bool isDirected)
-        {
-            edgeContainer = new(size, isDirected);
-        }
+        public WGraphBuilder(int size, bool isDirected) : base(size, isDirected) { }
         [凾(256)]
-        public void Add(int from, int to, T value) => edgeContainer.Add(from, new(to, value));
-
-        public WGraph<T, WEdge<T>> ToGraph()
-            => edgeContainer.ToGraph<WGraph<T, WEdge<T>>>();
-
-        public WTreeGraph<T, WTreeNode<T, WEdge<T>>, WEdge<T>> ToTree(int root = 0)
-            => edgeContainer.ToTree<WTreeGraph<T, WTreeNode<T, WEdge<T>>, WEdge<T>>, WTreeNode<T, WEdge<T>>>(root);
+        public void Add(int from, int to, T value) => edges.Add(from, new(to, value));
     }
 
+    /// <summary>
+    /// 重み付きの辺
+    /// </summary>
+    /// <typeparam name="T">辺の重みの型</typeparam>
     [DebuggerDisplay(nameof(To) + " = {" + nameof(To) + "}, " + nameof(Value) + " = {" + nameof(Value) + "}")]
     public readonly record struct WEdge<T>(int To, T Value) : IWGraphEdge<T>, IGraphEdge<WEdge<T>>
     {

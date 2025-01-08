@@ -25,7 +25,7 @@ namespace Kzrnm.Competitive
             [凾(256)] public OneEdge Reversed(int from) => new(from);
             uint IWGraphEdge<uint>.Value => 1;
         }
-        private class Weighted : SimpleGraph<OneEdge>, IWGraph<uint, OneEdge>
+        private class Weighted : SimpleGraph<GraphNode<OneEdge>, OneEdge>, IWGraph<uint, OneEdge>
         {
             public Weighted(GraphNode<OneEdge>[] array, Csr<OneEdge> edges) : base(array, edges)
             {

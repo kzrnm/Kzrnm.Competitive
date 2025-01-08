@@ -8,8 +8,8 @@ namespace Kzrnm.Competitive
         public static MfGraph<T> ToMFGraph<T>(this WGraphBuilder<T> gb)
             where T : INumber<T>, IMinMaxValue<T>
         {
-            var mfg = new MfGraph<T>(gb.edgeContainer.Length);
-            foreach (var (i, e) in gb.edgeContainer.edges)
+            var mfg = new MfGraph<T>(gb.edges.Length);
+            foreach (var (i, e) in gb.edges.edges)
                 mfg.AddEdge(i, e.To, e.Value);
             return mfg;
         }

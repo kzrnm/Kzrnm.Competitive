@@ -5,12 +5,16 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public interface IWGraph<T, TEdge> : IGraph<TEdge>
-        where TEdge : IWGraphEdge<T>
+    public interface IWGraph<T, Te> : IGraph<Te>
+        where Te : IWGraphEdge<T>
     { }
-    public interface IWTreeGraph<T, TNode, TEdge> : ITreeGraph<TNode, TEdge>
-        where TNode : ITreeNode<TEdge>
-        where TEdge : IWGraphEdge<T>
+    public interface IWGraph<T, Tn, Te> : IWGraph<T, Te>, IGraph<Tn, Te>
+        where Tn : GraphNode<Te>
+        where Te : IWGraphEdge<T>
+    { }
+    public interface IWTreeGraph<T, Tn, Te> : ITreeGraph<Tn, Te>
+        where Tn : ITreeNode<Te>
+        where Te : IWGraphEdge<T>
     { }
 
     public interface IWGraphEdge<T> : IGraphEdge
@@ -27,24 +31,25 @@ namespace Kzrnm.Competitive
         /// </summary>
         public T DepthLength { get; }
     }
-    
-    public class WGraph<T, TEdge> : IWGraph<T, TEdge>, IGraph<WGraph<T, TEdge>, TEdge>
-        where TEdge : IWGraphEdge<T>
+
+    public class WGraph<T, Tn, Te> : IWGraph<T, Tn, Te>, IGraph<WGraph<T, Tn, Te>, Tn, Te>
+        where Te : IWGraphEdge<T>
+        where Tn : GraphNode<Te>
     {
-        public Csr<TEdge> Edges { get; }
+        public Csr<Te> Edges { get; }
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-        internal GraphNode<TEdge>[] Nodes { get; }
+        internal Tn[] Nodes { get; }
         [凾(256)]
-        public GraphNode<TEdge>[] AsArray() => Nodes;
-        public GraphNode<TEdge> this[int index] { [凾(256)] get => Nodes[index]; }
+        public Tn[] AsArray() => Nodes;
+        public Tn this[int index] { [凾(256)] get => Nodes[index]; }
         public int Length => Nodes.Length;
-        public WGraph(GraphNode<TEdge>[] array, Csr<TEdge> edges)
+        public WGraph(Tn[] array, Csr<Te> edges)
         {
             Nodes = array;
             Edges = edges;
         }
         [凾(256)]
-        static WGraph<T, TEdge> IGraph<WGraph<T, TEdge>, TEdge>.Graph(GraphNode<TEdge>[] nodes, Csr<TEdge> edges)
+        static WGraph<T, Tn, Te> IGraph<WGraph<T, Tn, Te>, Tn, Te>.Graph(Tn[] nodes, Csr<Te> edges)
             => new(nodes, edges);
     }
     public class WTreeGraph<T, TNode, TEdge> : IWTreeGraph<T, TNode, TEdge>, ITreeGraph<WTreeGraph<T, TNode, TEdge>, TNode, TEdge>
@@ -73,11 +78,11 @@ namespace Kzrnm.Competitive
         }
     }
 
-    public class WTreeNode<T, TEdge> : TreeNode<TEdge>, ITreeNode<WTreeNode<T, TEdge>, TEdge>, IWTreeNode<T>
+    public class WTreeNode<T, Te> : TreeNode<Te>, ITreeNode<WTreeNode<T, Te>, Te>, IWTreeNode<T>
         where T : IAdditionOperators<T, T, T>
-        where TEdge : IWGraphEdge<T>, IGraphEdge<TEdge>
+        where Te : IWGraphEdge<T>, IGraphEdge<Te>
     {
-        public WTreeNode(int i, int size, TEdge parent, int depth, T depthLength, TEdge[] children)
+        public WTreeNode(int i, int size, Te parent, int depth, T depthLength, Te[] children)
             : base(i, size, parent, depth, children)
         {
             DepthLength = depthLength;
@@ -85,11 +90,11 @@ namespace Kzrnm.Competitive
         public T DepthLength { get; }
 
         [凾(256)]
-        static WTreeNode<T, TEdge> ITreeNode<WTreeNode<T, TEdge>, TEdge>.Node(int i, int size, WTreeNode<T, TEdge> parent, TEdge parentEdge, TEdge[] children)
+        static WTreeNode<T, Te> ITreeNode<WTreeNode<T, Te>, Te>.Node(int i, int size, WTreeNode<T, Te> parent, Te parentEdge, Te[] children)
             => new(i, size, parentEdge.Reversed(parent.Index), parent.Depth + 1, parent.DepthLength + parentEdge.Value, children);
 
         [凾(256)]
-        static WTreeNode<T, TEdge> ITreeNode<WTreeNode<T, TEdge>, TEdge>.RootNode(int i, int size, TEdge[] children)
-            => new(i, size, TEdge.None, 0, default, children);
+        static WTreeNode<T, Te> ITreeNode<WTreeNode<T, Te>, Te>.RootNode(int i, int size, Te[] children)
+            => new(i, size, Te.None, 0, default, children);
     }
 }

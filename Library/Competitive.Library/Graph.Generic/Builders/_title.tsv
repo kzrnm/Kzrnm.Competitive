@@ -1,4 +1,5 @@
-GraphBuilder.cs	重みなしグラフのBuilder
-GraphBuilderGeneric.cs	データ付き重みなしグラフのBuilder
-WGraphBuilder.cs	重み付きグラフのBuilder
-WGraphBuilderGeneric.cs	データ付き重み付きグラフのBuilder
+GraphBuilder.cs	重みなし辺グラフのBuilder
+GraphBuilderGeneric.cs	データ付き重みなし辺グラフのBuilder
+GraphBuilderNode.cs	重みなし辺データ付きノードグラフのBuilder
+WGraphBuilder.cs	重み付き辺グラフのBuilder
+WGraphBuilderGeneric.cs	データ付き重み付き辺グラフのBuilder

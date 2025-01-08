@@ -4,24 +4,27 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public class WGraphBuilder<T, S>
+    /// <summary>
+    /// 辺にデータを持つ重み付きデータ付きのグラフを構築する
+    /// </summary>
+    /// <typeparam name="T">辺の重みの型</typeparam>
+    /// <typeparam name="S">辺のデータ型</typeparam>
+    public class WGraphBuilder<T, S> : Internal.Graph.Builder<WGraph<T, GraphNode<WEdge<T, S>>, WEdge<T, S>>, WTreeGraph<T, WTreeNode<T, WEdge<T, S>>, WEdge<T, S>>, GraphNode<WEdge<T, S>>, WTreeNode<T, WEdge<T, S>>, WEdge<T, S>>
         where T : IAdditionOperators<T, T, T>
     {
-        readonly EdgeContainer<WEdge<T, S>> edgeContainer;
-        public WGraphBuilder(int size, bool isDirected)
-        {
-            edgeContainer = new(size, isDirected);
-        }
+        public WGraphBuilder(int size, bool isDirected) : base(size, isDirected) { }
         [凾(256)]
-        public void Add(int from, int to, T value, S data) => edgeContainer.Add(from, new(to, value, data));
-
-        public WGraph<T, WEdge<T, S>> ToGraph()
-            => edgeContainer.ToGraph<WGraph<T, WEdge<T, S>>>();
-
-        public WTreeGraph<T, WTreeNode<T, WEdge<T, S>>, WEdge<T, S>> ToTree(int root = 0)
-            => edgeContainer.ToTree<WTreeGraph<T, WTreeNode<T, WEdge<T, S>>, WEdge<T, S>>, WTreeNode<T, WEdge<T, S>>>(root);
+        public void Add(int from, int to, T value, S data) => edges.Add(from, new(to, value, data));
     }
 
+    /// <summary>
+    /// 重み付きデータ付きの辺
+    /// </summary>
+    /// <typeparam name="T">辺の重みの型</typeparam>
+    /// <typeparam name="S">辺のデータ型</typeparam>
+    /// <param name="To">行き先</param>
+    /// <param name="Value">辺の重み</param>
+    /// <param name="Data">データ</param>
     [DebuggerDisplay(nameof(To) + " = {" + nameof(To) + "}, " + nameof(Value) + " = {" + nameof(Value) + "}, " + nameof(Data) + " = {" + nameof(Data) + "}")]
     public readonly record struct WEdge<T, S>(int To, T Value, S Data) : IWGraphEdge<T>, IGraphData<S>, IGraphEdge<WEdge<T, S>>
     {

@@ -3,22 +3,23 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public class GraphBuilder<T>
+    /// <summary>
+    /// 辺にデータを持つグラフを構築する
+    /// </summary>
+    /// <typeparam name="T">辺のデータ型</typeparam>
+    public class GraphBuilder<T> : Internal.Graph.Builder<SimpleGraph<GraphNode<GraphEdge<T>>, GraphEdge<T>>, TreeGraph<TreeNode<GraphEdge<T>>, GraphEdge<T>>, GraphNode<GraphEdge<T>>, TreeNode<GraphEdge<T>>, GraphEdge<T>>
     {
-        readonly EdgeContainer<GraphEdge<T>> edgeContainer;
-        public GraphBuilder(int size, bool isDirected)
-        {
-            edgeContainer = new(size, isDirected);
-        }
+        public GraphBuilder(int size, bool isDirected) : base(size, isDirected) { }
         [凾(256)]
-        public void Add(int from, int to, T data) => edgeContainer.Add(from, new(to, data));
-
-        public SimpleGraph<GraphEdge<T>> ToGraph()
-            => edgeContainer.ToGraph<SimpleGraph<GraphEdge<T>>>();
-        public TreeGraph<TreeNode<GraphEdge<T>>, GraphEdge<T>> ToTree(int root = 0)
-            => edgeContainer.ToTree<TreeGraph<TreeNode<GraphEdge<T>>, GraphEdge<T>>, TreeNode<GraphEdge<T>>>(root);
+        public void Add(int from, int to, T data) => edges.Add(from, new(to, data));
     }
 
+    /// <summary>
+    /// データ付きの辺
+    /// </summary>
+    /// <typeparam name="T">辺のデータ型</typeparam>
+    /// <param name="To">行き先</param>
+    /// <param name="Data">データ</param>
     [DebuggerDisplay(nameof(To) + " = {" + nameof(To) + "}, " + nameof(Data) + " = {" + nameof(Data) + "}")]
     public readonly record struct GraphEdge<T>(int To, T Data) : IGraphData<T>, IGraphEdge<GraphEdge<T>>
     {
