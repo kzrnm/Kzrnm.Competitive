@@ -160,10 +160,7 @@ namespace Kzrnm.Competitive.Testing
             throw new NotImplementedException();
         }
 
-        public int CompareTo(object obj)
-        {
-            throw new NotImplementedException();
-        }
+        public int CompareTo(object obj) => ((uint)this).CompareTo(obj);
 
         public int CompareTo(UInt24 other) => ((uint)this).CompareTo(other);
 

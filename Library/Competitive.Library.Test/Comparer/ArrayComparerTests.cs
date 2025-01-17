@@ -33,10 +33,10 @@ namespace Kzrnm.Competitive.Testing.Comparer
                 [2,2,0,],
                 [3,],
             };
-            arr.Should().HaveSameCount(expected);
+            arr.Length.ShouldBe(expected.Length);
             for (int i = 0; i < arr.Length; i++)
             {
-                arr[i].Should().BeEquivalentTo(expected[i], "Index: {0}", i);
+                arr[i].ShouldBe(expected[i], $"Index: {i}");
             }
         }
 
@@ -69,10 +69,10 @@ namespace Kzrnm.Competitive.Testing.Comparer
                 [0,],
                 Array.Empty<int>(),
             };
-            arr.Should().HaveSameCount(expected);
+            arr.Length.ShouldBe(expected.Length);
             for (int i = 0; i < arr.Length; i++)
             {
-                arr[i].Should().BeEquivalentTo(expected[i], "Index: {0}", i);
+                arr[i].ShouldBe(expected[i], $"Index: {i}");
             }
         }
     }

@@ -33,7 +33,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             var b = (MontgomeryModInt<Mod998244353>[])a.Clone();
             NumberTheoreticTransform<Mod998244353>.Ntt(a);
             NumberTheoreticTransform<Mod998244353>.NttLogical(b);
-            a.Should().Equal(b);
+            a.ShouldBe(b);
         }
 
         [Theory]
@@ -50,7 +50,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             var b = (MontgomeryModInt<Mod998244353>[])a.Clone();
             NumberTheoreticTransform<Mod998244353>.INtt(a);
             NumberTheoreticTransform<Mod998244353>.INttLogical(b);
-            a.Should().Equal(b);
+            a.ShouldBe(b);
         }
 
         [Theory]
@@ -65,8 +65,8 @@ namespace Kzrnm.Competitive.Testing.MathNS
             for (int i = 0; i < n; i++) a[i] = rnd.NextUInt();
             for (int i = 0; i < m; i++) b[i] = rnd.NextUInt();
             var expected = ConvNative(a, b);
-            NumberTheoreticTransform<Mod998244353>.MultiplyLogical(a, b).Should().Equal(expected);
-            NumberTheoreticTransform<Mod998244353>.Multiply(a, b).Should().Equal(expected);
+            NumberTheoreticTransform<Mod998244353>.MultiplyLogical(a, b).ShouldBe(expected);
+            NumberTheoreticTransform<Mod998244353>.Multiply(a, b).ShouldBe(expected);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Kzrnm.Competitive.Testing.Number
                 var arrMod = arrInt.Select(T.CreateTruncating).ToArray();
                 for (int i = 0; i < 10; i++)
                     for (int j = i; j < 10; j++)
-                        arrMod[i..j].Sum().Value.Should().Be(arrInt[i..j].Sum());
+                        arrMod[i..j].Sum().Value.ShouldBe(arrInt[i..j].Sum());
             }
         }
         [Fact]
@@ -43,7 +43,7 @@ namespace Kzrnm.Competitive.Testing.Number
                     {
                         arrMod[i] = rnd.NextInt32(1000000007);
                     }
-                    arrMod.Sum().Value.Should().Be((int)(arrMod.Select(m => (long)m.Value).Sum() % 1000000007));
+                    arrMod.Sum().Value.ShouldBe((int)(arrMod.Select(m => (long)m.Value).Sum() % 1000000007));
                 }
             }
         }

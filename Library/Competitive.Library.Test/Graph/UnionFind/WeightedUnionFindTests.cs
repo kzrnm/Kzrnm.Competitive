@@ -9,19 +9,19 @@ namespace Kzrnm.Competitive.Testing.Graph
         public void Zero()
         {
             var uf = new IntWeightedUnionFind(0);
-            uf.Groups().Should().Equal([]);
+            uf.Groups().ShouldBe([]);
         }
 
         [Fact]
         public void Simple()
         {
             var uf = new IntWeightedUnionFind(2);
-            uf.Same(0, 1).Should().BeFalse();
-            uf.Merge(0, 1, 5).Should().BeTrue();
-            uf.Same(0, 1).Should().BeTrue();
-            uf.Size(0).Should().Be(2);
-            uf.WeightDiff(0, 1).Should().Be(5);
-            uf.WeightDiff(1, 0).Should().Be(-5);
+            uf.Same(0, 1).ShouldBeFalse();
+            uf.Merge(0, 1, 5).ShouldBeTrue();
+            uf.Same(0, 1).ShouldBeTrue();
+            uf.Size(0).ShouldBe(2);
+            uf.WeightDiff(0, 1).ShouldBe(5);
+            uf.WeightDiff(1, 0).ShouldBe(-5);
         }
 
         [Fact]
@@ -35,11 +35,11 @@ namespace Kzrnm.Competitive.Testing.Graph
             }
             for (int i = 0; i < n; i++)
             {
-                uf.WeightDiff(0, i).Should().Be(i);
-                uf.WeightDiff(10, i).Should().Be(i - 10);
+                uf.WeightDiff(0, i).ShouldBe(i);
+                uf.WeightDiff(10, i).ShouldBe(i - 10);
             }
-            uf.Size(0).Should().Be(n);
-            uf.Groups().Should().HaveCount(1);
+            uf.Size(0).ShouldBe(n);
+            uf.Groups().Length.ShouldBe(1);
         }
 
         [Fact]
@@ -53,11 +53,11 @@ namespace Kzrnm.Competitive.Testing.Graph
             }
             for (int i = 0; i < n; i++)
             {
-                uf.WeightDiff(0, i).Should().Be(i);
-                uf.WeightDiff(10, i).Should().Be(i - 10);
+                uf.WeightDiff(0, i).ShouldBe(i);
+                uf.WeightDiff(10, i).ShouldBe(i - 10);
             }
-            uf.Size(0).Should().Be(n);
-            uf.Groups().Should().HaveCount(1);
+            uf.Size(0).ShouldBe(n);
+            uf.Groups().Length.ShouldBe(1);
         }
     }
 }

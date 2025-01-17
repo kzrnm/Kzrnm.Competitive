@@ -18,18 +18,18 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         [Fact]
         public void Zero()
         {
-            new DualSegtree<ModInt, Multiply>(0).d.Should().Equal(Enumerable.Repeat(ModInt.One, 2));
-            new DualSegtree<ModInt, Multiply>(20).d.Should().Equal(Enumerable.Repeat(ModInt.One, 64));
+            new DualSegtree<ModInt, Multiply>(0).d.ShouldBe(Enumerable.Repeat(ModInt.One, 2));
+            new DualSegtree<ModInt, Multiply>(20).d.ShouldBe(Enumerable.Repeat(ModInt.One, 64));
         }
 
         [Fact]
         public void Invalid()
         {
             var s = new DualSegtree<ModInt, Multiply>(10);
-            s.Invoking(s => s[-1]).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s[10]).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s[0]).Should().NotThrow();
-            s.Invoking(s => s[9]).Should().NotThrow();
+            Should.Throw<ContractAssertException>(() => s[-1]);
+            Should.Throw<ContractAssertException>(() => s[10]);
+            Should.NotThrow(() => s[0]);
+            Should.NotThrow(() => s[9]);
         }
 
         [Fact]
@@ -54,7 +54,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
 
                         for (int i = 0; i < p.Length; i++)
                         {
-                            seg[i].Should().Be(p[i]);
+                            seg[i].ShouldBe(p[i]);
                         }
                     }
                 }
@@ -83,7 +83,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
 
                         for (int i = 0; i < p.Length; i++)
                         {
-                            seg[i].Should().Be(p[i]);
+                            seg[i].ShouldBe(p[i]);
                         }
                     }
                 }
@@ -94,25 +94,25 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         public void Usage()
         {
             var seg = new DualSegtree<ModInt, Multiply>([1, 2, 3]);
-            seg.d.Should().Equal([1, 1, 1, 1, 1, 2, 3, 1]);
+            seg.d.ShouldBe([1, 1, 1, 1, 1, 2, 3, 1]);
 
             seg[0] = 4;
-            seg.d.Should().Equal([1, 1, 1, 1, 4, 2, 3, 1]);
+            seg.d.ShouldBe([1, 1, 1, 1, 4, 2, 3, 1]);
 
             seg.Apply(0, 2);
-            seg.d.Should().Equal([1, 1, 1, 1, 8, 2, 3, 1]);
+            seg.d.ShouldBe([1, 1, 1, 1, 8, 2, 3, 1]);
 
             seg.Apply(0, 1, 2);
-            seg.d.Should().Equal([1, 1, 1, 1, 16, 2, 3, 1]);
+            seg.d.ShouldBe([1, 1, 1, 1, 16, 2, 3, 1]);
 
             seg.Apply(0, 2, 2);
-            seg.d.Should().Equal([1, 1, 2, 1, 16, 2, 3, 1]);
+            seg.d.ShouldBe([1, 1, 2, 1, 16, 2, 3, 1]);
 
             seg.Apply(0, 3, 2);
-            seg.d.Should().Equal([1, 1, 4, 1, 16, 2, 6, 1]);
+            seg.d.ShouldBe([1, 1, 4, 1, 16, 2, 6, 1]);
 
-            seg.ToArray().Should().Equal([64, 8, 6]);
-            seg.d.Should().Equal([1, 1, 1, 1, 64, 8, 6, 1]);
+            seg.ToArray().ShouldBe([64, 8, 6]);
+            seg.d.ShouldBe([1, 1, 1, 1, 64, 8, 6, 1]);
         }
     }
 }

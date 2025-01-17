@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             [
                 [1, 2, 3],
                 [4, 5, 6],
-            ]).ToArray().Should().BeEquivalentTo(new int[][]
+            ]).ToArray().ShouldBe(new int[][]
             {
                 [1, 2, 3],
                 [4, 5, 6],
@@ -25,7 +25,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             {
                 { 1, 2, 3 },
                 { 4, 5, 6 },
-            }).ToArray().Should().BeEquivalentTo(new int[][]
+            }).ToArray().ShouldBe(new int[][]
             {
                 [1, 2, 3],
                 [4, 5, 6],
@@ -36,19 +36,19 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Normal")]
         public void NormalIdentity()
         {
-            ArrayMatrix<int>.NormalIdentity(2).Should().Be(new ArrayMatrix<int>(
+            ArrayMatrix<int>.NormalIdentity(2).ShouldBe(new ArrayMatrix<int>(
             [
                 [1, 0],
                 [0, 1],
             ]));
-            ArrayMatrix<int>.NormalIdentity(3).Should().Be(new ArrayMatrix<int>(
+            ArrayMatrix<int>.NormalIdentity(3).ShouldBe(new ArrayMatrix<int>(
             [
                 [1, 0, 0],
                 [0, 1, 0],
                 [0, 0, 1],
             ]));
 
-            ArrayMatrix<MontgomeryModInt<Mod1000000007>>.NormalIdentity(3).Should().Be(new ArrayMatrix<MontgomeryModInt<Mod1000000007>>(
+            ArrayMatrix<MontgomeryModInt<Mod1000000007>>.NormalIdentity(3).ShouldBe(new ArrayMatrix<MontgomeryModInt<Mod1000000007>>(
             [
                 [1, 0, 0],
                 [0, 1, 0],
@@ -64,7 +64,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             [
                 [1, 2, 3],
                 [4, 5, 6],
-            ]).Should().Be(new ArrayMatrix<int>(new int[,]
+            ]).ShouldBe(new ArrayMatrix<int>(new int[,]
             {
                 { 1, 2, 3 },
                 { 4, 5, 6 },
@@ -73,13 +73,13 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             [
                 [1, 2, 3],
                 [4, 5, 6],
-            ]).Should().Be(new ArrayMatrix<int>(new int[] { 1, 2, 3, 4, 5, 6 }, 2, 3));
+            ]).ShouldBe(new ArrayMatrix<int>(new int[] { 1, 2, 3, 4, 5, 6 }, 2, 3));
             new ArrayMatrix<int>(
             [
                 [1, 2,],
                 [3, 4,],
                 [5, 6,],
-            ]).Should().NotBe(new ArrayMatrix<int>(new int[,]
+            ]).ShouldNotBe(new ArrayMatrix<int>(new int[,]
             {
                 { 1, 2, 3 },
                 { 4, 5, 6 },
@@ -94,7 +94,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             {
                 { 1, 2, 3 },
                 { 4, 5, 6 },
-            })).ToArray().Should().BeEquivalentTo(new int[][]
+            })).ToArray().ShouldBe(new int[][]
             {
                 [-1, -2, -3],
                 [-4, -5, -6],
@@ -158,8 +158,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(Add_Data))]
         public void Add(ArrayMatrix<int> mat1, ArrayMatrix<int> mat2, ArrayMatrix<int> expected)
         {
-            (mat1 + mat2).Should().Be(expected);
-            (mat2 + mat1).Should().Be(expected);
+            (mat1 + mat2).ShouldBe(expected);
+            (mat2 + mat1).ShouldBe(expected);
         }
 
         public static TheoryData Subtract_Data => new TheoryData<ArrayMatrix<int>, ArrayMatrix<int>, ArrayMatrix<int>>
@@ -244,7 +244,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(Subtract_Data))]
         public void Subtract(ArrayMatrix<int> mat1, ArrayMatrix<int> mat2, ArrayMatrix<int> expected)
         {
-            (mat1 - mat2).Should().Be(expected);
+            (mat1 - mat2).ShouldBe(expected);
         }
 
         public static TheoryData Multiply_Data => new TheoryData<ArrayMatrix<int>, ArrayMatrix<int>, ArrayMatrix<int>>
@@ -305,7 +305,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(Multiply_Data))]
         public void Multiply(ArrayMatrix<int> mat1, ArrayMatrix<int> mat2, ArrayMatrix<int> expected)
         {
-            (mat1 * mat2).Should().Be(expected);
+            (mat1 * mat2).ShouldBe(expected);
         }
 
         [Theory]
@@ -316,7 +316,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             var mat1 = Int2ModInt(matInt1);
             var mat2 = Int2ModInt(matInt2);
             var expected = Int2ModInt(expectedInt);
-            (mat1 * mat2).Should().Be(expected);
+            (mat1 * mat2).ShouldBe(expected);
         }
 
         [Theory]
@@ -327,8 +327,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             var mat1 = Int2MontgomeryModInt(matInt1);
             var mat2 = Int2MontgomeryModInt(matInt2);
             var expected = Int2MontgomeryModInt(expectedInt);
-            (mat1 * mat2).Should().Be(expected);
-            mat1.Strassen(mat2).Should().Be(expected);
+            (mat1 * mat2).ShouldBe(expected);
+            mat1.Strassen(mat2).ShouldBe(expected);
         }
 
 
@@ -384,7 +384,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(MultiplyScalar_Data))]
         public void MultiplyScalar(int a, ArrayMatrix<int> mat, ArrayMatrix<int> expected)
         {
-            (mat * a).Should().BeEquivalentTo(expected);
+            (mat * a).ShouldBe(expected);
         }
 
         public static TheoryData MultiplyVector_Data => new TheoryData<ArrayMatrix<long>, long[], long[]>
@@ -416,8 +416,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(MultiplyVector_Data))]
         public void MultiplyVector(ArrayMatrix<long> mat, long[] vector, long[] expected)
         {
-            (mat * vector).Should().Equal(expected);
-            mat.Multiply(vector).Should().Equal(expected);
+            (mat * vector).ShouldBe(expected);
+            mat.Multiply(vector).ShouldBe(expected);
         }
 
         [Fact]
@@ -429,7 +429,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 { 1, 2 },
                 { 3, 4 },
             });
-            orig.Pow(5).ToArray().Should().BeEquivalentTo(new int[][]
+            orig.Pow(5).ToArray().ShouldBe(new int[][]
             {
                 [1069, 1558],
                 [2337, 3406],
@@ -437,7 +437,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             var cur = orig;
             for (int i = 1; i < 10; i++)
             {
-                orig.Pow(i).Should().BeEquivalentTo(cur);
+                orig.Pow(i).ShouldBe(cur);
                 cur *= orig;
             }
         }
@@ -489,7 +489,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Normal")]
         public void Determinant(Fraction[,] array, Fraction expected)
         {
-            new ArrayMatrix<Fraction>(array).Determinant().Should().Be(expected);
+            new ArrayMatrix<Fraction>(array).Determinant().ShouldBe(expected);
         }
 
         [Fact]
@@ -503,7 +503,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 {
                     array[i, 0] = array[0, i] = array[i, i] = 1;
                 }
-                new ArrayMatrix<Fraction>(array).Determinant().Should().Be(-(n - 2));
+                new ArrayMatrix<Fraction>(array).Determinant().ShouldBe(-(n - 2));
             }
         }
 
@@ -517,7 +517,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             {
                 array[i, 0] = array[0, i] = array[i, i] = 1;
             }
-            new ArrayMatrix<Fraction>(array).Determinant().Should().Be(-(n - 2));
+            new ArrayMatrix<Fraction>(array).Determinant().ShouldBe(-(n - 2));
         }
 
         public static IEnumerable<(Fraction[,] array, int i, int j, Fraction expected)> Cofactor_Data()
@@ -559,7 +559,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Normal")]
         public void Cofactor(Fraction[,] array, int i, int j, Fraction expected)
         {
-            new ArrayMatrix<Fraction>(array).Cofactor(i, j).Should().Be(expected);
+            new ArrayMatrix<Fraction>(array).Cofactor(i, j).ShouldBe(expected);
         }
 
         [Fact]
@@ -573,7 +573,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 {-10, 10, 3}
             });
             var inv = orig.Inv();
-            inv.ToArray().Should().BeEquivalentTo(new Fraction[][]
+            inv.ToArray().ShouldBe(new Fraction[][]
             {
                 [new Fraction(-146,319), new Fraction(-93,319), new Fraction(-243,319)],
                 [new Fraction(-131,319), new Fraction(-90,319), new Fraction(-194,319)],
@@ -585,8 +585,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 [0,1,0],
                 [0,0,1],
             };
-            (orig * inv).ToArray().Should().BeEquivalentTo(id);
-            (inv * orig).ToArray().Should().BeEquivalentTo(id);
+            (orig * inv).ToArray().ShouldBe(id);
+            (inv * orig).ToArray().ShouldBe(id);
         }
 
 
@@ -620,7 +620,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Normal")]
         public void Transpose(ArrayMatrix<int> orig, ArrayMatrix<int> expected)
         {
-            orig.Transpose().Should().Be(expected);
+            orig.Transpose().ShouldBe(expected);
         }
 
 
@@ -709,7 +709,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         public void GaussianElimination(ArrayMatrix<Fraction> orig, ArrayMatrix<Fraction> expected)
         {
             var got = orig.GaussianElimination();
-            got.Should().Be(expected);
+            got.ShouldBe(expected);
         }
 
         public static TheoryData LinearSystem_Data => new TheoryData<
@@ -769,9 +769,9 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         public void LinearSystem(ArrayMatrix<Fraction> matrix, Fraction[] vector, Fraction[][] expected)
         {
             var got = matrix.LinearSystem(vector);
-            got.Should().HaveSameCount(expected);
+            got.Length.ShouldBe(expected.Length);
             for (int i = 0; i < got.Length; i++)
-                got[i].Should().Equal(expected[i], because: "got[{0}]", i);
+                got[i].ShouldBe(expected[i], $"got[{i}]");
         }
     }
 }

@@ -18,12 +18,13 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 0);
             var graph = gb.ToGraph();
             var res = graph.MinimumSpanningForestKruskal();
-            res.Should().HaveCount(1);
-            res[0].Should().Equal(
+            res.Length.ShouldBe(1);
+            res[0].ShouldBe([
                 (0, new GraphEdge(1)),
                 (0, new GraphEdge(2)),
                 (0, new GraphEdge(3)),
-                (0, new GraphEdge(4)));
+                (0, new GraphEdge(4)),
+            ]);
         }
 
         [Fact]
@@ -38,15 +39,18 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(6, 5);
             var graph = gb.ToGraph();
             var res = graph.MinimumSpanningForestKruskal();
-            res.Should().HaveCount(3);
-            res[0].Should().Equal(
+            res.Length.ShouldBe(3);
+            res[0].ShouldBe([
                 (0, new GraphEdge(1)),
-                (0, new GraphEdge(2)));
-            res[1].Should().Equal(
+                (0, new GraphEdge(2)),
+            ]);
+            res[1].ShouldBe([
                 (3, new GraphEdge(4)),
-                (4, new GraphEdge(7)));
-            res[2].Should().Equal(
-                (5, new GraphEdge(6)));
+                (4, new GraphEdge(7)),
+            ]);
+            res[2].ShouldBe([
+                (5, new GraphEdge(6)),
+            ]);
         }
 
         [Fact]
@@ -58,11 +62,12 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(2, 3);
             var graph = gb.ToGraph();
             var res = graph.MinimumSpanningForestKruskal();
-            res.Should().HaveCount(1);
-            res[0].Should().Equal(
+            res.Length.ShouldBe(1);
+            res[0].ShouldBe([
                 (0, new GraphEdge(2)),
                 (1, new GraphEdge(3)),
-                (2, new GraphEdge(3)));
+                (2, new GraphEdge(3)),
+            ]);
         }
 
         [Fact]
@@ -80,12 +85,13 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 0, 1);
             var graph = gb.ToGraph();
             var res = graph.MinimumSpanningForestKruskal();
-            res.Should().HaveCount(1);
-            res[0].Should().Equal(
+            res.Length.ShouldBe(1);
+            res[0].ShouldBe([
                 (0, new WEdge<int>(1, 1)),
                 (0, new WEdge<int>(4, 1)),
                 (1, new WEdge<int>(2, 5)),
-                (4, new WEdge<int>(3, 6)));
+                (4, new WEdge<int>(3, 6)),
+            ]);
         }
 
         [Fact]
@@ -103,12 +109,13 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 0, 1);
             var graph = gb.ToGraph();
             var res = graph.MinimumSpanningForestKruskal();
-            res.Should().HaveCount(1);
-            res[0].Should().Equal(
+            res.Length.ShouldBe(1);
+            res[0].ShouldBe([
                 (0, new WEdge<long>(1, 1)),
                 (0, new WEdge<long>(4, 1)),
                 (1, new WEdge<long>(2, 5)),
-                (4, new WEdge<long>(3, 6)));
+                (4, new WEdge<long>(3, 6)),
+            ]);
         }
 
         [Fact]
@@ -124,15 +131,18 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(6, 5, 6);
             var graph = gb.ToGraph();
             var res = graph.MinimumSpanningForestKruskal();
-            res.Should().HaveCount(3);
-            res[0].Should().Equal(
+            res.Length.ShouldBe(3);
+            res[0].ShouldBe([
                 (0, new WEdge<int>(1, 1)),
-                (0, new WEdge<int>(2, 2)));
-            res[1].Should().Equal(
+                (0, new WEdge<int>(2, 2)),
+            ]);
+            res[1].ShouldBe([
                 (3, new WEdge<int>(4, 4)),
-                (4, new WEdge<int>(7, 5)));
-            res[2].Should().Equal(
-                (5, new WEdge<int>(6, 6)));
+                (4, new WEdge<int>(7, 5)),
+            ]);
+            res[2].ShouldBe([
+                (5, new WEdge<int>(6, 6)),
+            ]);
         }
 
         [Fact]
@@ -144,11 +154,12 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(2, 3, 10);
             var graph = gb.ToGraph();
             var res = graph.MinimumSpanningForestKruskal();
-            res.Should().HaveCount(1);
-            res[0].Should().Equal(
+            res.Length.ShouldBe(1);
+            res[0].ShouldBe([
                 (0, new WEdge<int>(2, 1)),
                 (1, new WEdge<int>(3, 1)),
-                (2, new WEdge<int>(3, 10)));
+                (2, new WEdge<int>(3, 10)),
+            ]);
         }
     }
 }

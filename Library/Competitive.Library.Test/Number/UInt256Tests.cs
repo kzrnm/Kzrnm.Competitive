@@ -41,7 +41,7 @@ namespace Kzrnm.Competitive.Testing.Number
             }
             static void Impl(UInt256 value, BigInteger bi)
             {
-                ((BigInteger)value).Should().Be(bi);
+                ((BigInteger)value).ShouldBe(bi);
             }
         }
 
@@ -58,11 +58,11 @@ namespace Kzrnm.Competitive.Testing.Number
                 {
                     value = new(0, 0, s[1], s[0]);
                     var other128 = new UInt128(s[1], s[0]);
-                    ((UInt128)value).Should().Be(other128);
+                    ((UInt128)value).ShouldBe(other128);
 
                     value = new(0, 0, 0, s[0]);
                     var other64 = s[0];
-                    ((UInt64)value).Should().Be(other64);
+                    ((UInt64)value).ShouldBe(other64);
 
 
                     ulong s0 = s[0];
@@ -70,53 +70,53 @@ namespace Kzrnm.Competitive.Testing.Number
                     s0 &= uint.MaxValue;
                     value = new(0, 0, 0, s0);
                     var other32 = (UInt32)s0;
-                    ((UInt32)value).Should().Be(other32);
+                    ((UInt32)value).ShouldBe(other32);
 
                     s0 &= ushort.MaxValue;
                     value = new(0, 0, 0, s0);
                     var other16 = (UInt16)s0;
-                    ((UInt16)value).Should().Be(other16);
+                    ((UInt16)value).ShouldBe(other16);
 
                     s0 &= byte.MaxValue;
                     value = new(0, 0, 0, s0);
                     var other8 = (byte)s0;
-                    ((byte)value).Should().Be(other8);
+                    ((byte)value).ShouldBe(other8);
                 }
                 unchecked
                 {
                     value = new(0, 0, 0, s[0]);
                     var other32 = (UInt32)s[0];
-                    ((UInt32)value).Should().Be(other32);
+                    ((UInt32)value).ShouldBe(other32);
 
                     value = new(0, 0, 0, s[0]);
                     var other16 = (UInt16)s[0];
-                    ((UInt16)value).Should().Be(other16);
+                    ((UInt16)value).ShouldBe(other16);
 
                     value = new(0, 0, 0, s[0]);
                     var other8 = (byte)s[0];
-                    ((byte)value).Should().Be(other8);
+                    ((byte)value).ShouldBe(other8);
                 }
             }
 
             checked
             {
                 UInt256 value = ulong.MaxValue;
-                value.Invoking(v => _ = (UInt32)v).Should().Throw<OverflowException>();
-                value.Invoking(v => _ = (UInt16)v).Should().Throw<OverflowException>();
-                value.Invoking(v => _ = (byte)v).Should().Throw<OverflowException>();
+                Should.Throw<OverflowException>(() => _ = (UInt32)value);
+                Should.Throw<OverflowException>(() => _ = (UInt16)value);
+                Should.Throw<OverflowException>(() => _ = (byte)value);
 
                 value = new(0, 0, 1, 0);
-                value.Invoking(v => _ = (UInt64)v).Should().Throw<OverflowException>();
-                value.Invoking(v => _ = (UInt32)v).Should().Throw<OverflowException>();
-                value.Invoking(v => _ = (UInt16)v).Should().Throw<OverflowException>();
-                value.Invoking(v => _ = (byte)v).Should().Throw<OverflowException>();
+                Should.Throw<OverflowException>(() => _ = (UInt64)value);
+                Should.Throw<OverflowException>(() => _ = (UInt32)value);
+                Should.Throw<OverflowException>(() => _ = (UInt16)value);
+                Should.Throw<OverflowException>(() => _ = (byte)value);
 
                 value = new(0, 1, 0, 0);
-                value.Invoking(v => _ = (UInt128)v).Should().Throw<OverflowException>();
-                value.Invoking(v => _ = (UInt64)v).Should().Throw<OverflowException>();
-                value.Invoking(v => _ = (UInt32)v).Should().Throw<OverflowException>();
-                value.Invoking(v => _ = (UInt16)v).Should().Throw<OverflowException>();
-                value.Invoking(v => _ = (byte)v).Should().Throw<OverflowException>();
+                Should.Throw<OverflowException>(() => _ = (UInt128)value);
+                Should.Throw<OverflowException>(() => _ = (UInt64)value);
+                Should.Throw<OverflowException>(() => _ = (UInt32)value);
+                Should.Throw<OverflowException>(() => _ = (UInt16)value);
+                Should.Throw<OverflowException>(() => _ = (byte)value);
             }
         }
 
@@ -146,7 +146,7 @@ namespace Kzrnm.Competitive.Testing.Number
             }
             static void Impl(UInt256 value, BigInteger bi)
             {
-                ((UInt256)bi).Should().Be(value);
+                ((UInt256)bi).ShouldBe(value);
             }
         }
 
@@ -161,23 +161,23 @@ namespace Kzrnm.Competitive.Testing.Number
                 UInt256 value;
                 value = new(0, 0, s[1], s[0]);
                 UInt256 other128 = new UInt128(s[1], s[0]);
-                other128.Should().Be(value);
+                other128.ShouldBe(value);
 
                 value = new(0, 0, 0, s[0]);
                 UInt256 other64 = s[0];
-                other64.Should().Be(value);
+                other64.ShouldBe(value);
 
                 value = new(0, 0, 0, (uint)s[0]);
                 UInt256 other32 = (UInt32)s[0];
-                other32.Should().Be(value);
+                other32.ShouldBe(value);
 
                 value = new(0, 0, 0, (ushort)s[0]);
                 UInt256 other16 = (UInt16)s[0];
-                other16.Should().Be(value);
+                other16.ShouldBe(value);
 
                 value = new(0, 0, 0, (byte)s[0]);
                 UInt256 other8 = (byte)s[0];
-                other8.Should().Be(value);
+                other8.ShouldBe(value);
             }
         }
 
@@ -193,7 +193,7 @@ namespace Kzrnm.Competitive.Testing.Number
         [Trait("Category", "String")]
         public void Parse(string input, UInt256 expected)
         {
-            UInt256.Parse(input).Should().Be(expected);
+            UInt256.Parse(input).ShouldBe(expected);
         }
 
         [Fact]
@@ -214,7 +214,7 @@ namespace Kzrnm.Competitive.Testing.Number
             static void Impl(UInt256 value)
             {
                 var bi = (BigInteger)value;
-                value.ToString().Should().Be(bi.ToString());
+                value.ToString().ShouldBe(bi.ToString());
             }
         }
 
@@ -271,8 +271,8 @@ namespace Kzrnm.Competitive.Testing.Number
             {
                 var bi0 = (BigInteger)value0;
                 var bi1 = (BigInteger)value1;
-                ((BigInteger)(value0 + value1)).Should().Be(biMask & (bi0 + bi1));
-                ((BigInteger)(value1 + value0)).Should().Be(biMask & (bi0 + bi1));
+                ((BigInteger)(value0 + value1)).ShouldBe(biMask & (bi0 + bi1));
+                ((BigInteger)(value1 + value0)).ShouldBe(biMask & (bi0 + bi1));
             }
         }
 
@@ -328,8 +328,8 @@ namespace Kzrnm.Competitive.Testing.Number
             {
                 var bi0 = (BigInteger)value0;
                 var bi1 = (BigInteger)value1;
-                ((BigInteger)(value0 - value1)).Should().Be(biMask & (bi0 - bi1));
-                ((BigInteger)(value1 - value0)).Should().Be(biMask & (bi1 - bi0));
+                ((BigInteger)(value0 - value1)).ShouldBe(biMask & (bi0 - bi1));
+                ((BigInteger)(value1 - value0)).ShouldBe(biMask & (bi1 - bi0));
             }
         }
 
@@ -379,8 +379,8 @@ namespace Kzrnm.Competitive.Testing.Number
             {
                 var bi0 = (BigInteger)value0;
                 var bi1 = (BigInteger)value1;
-                ((BigInteger)(value0 * value1)).Should().Be(biMask & (bi0 * bi1));
-                ((BigInteger)(value1 * value0)).Should().Be(biMask & (bi0 * bi1));
+                ((BigInteger)(value0 * value1)).ShouldBe(biMask & (bi0 * bi1));
+                ((BigInteger)(value1 * value0)).ShouldBe(biMask & (bi0 * bi1));
             }
         }
 
@@ -430,8 +430,8 @@ namespace Kzrnm.Competitive.Testing.Number
             {
                 var bi0 = (BigInteger)value0;
                 var bi1 = (BigInteger)value1;
-                if (value1 != 0) ((BigInteger)(value0 / value1)).Should().Be(biMask & (bi0 / bi1));
-                if (value0 != 0) ((BigInteger)(value1 / value0)).Should().Be(biMask & (bi1 / bi0));
+                if (value1 != 0) ((BigInteger)(value0 / value1)).ShouldBe(biMask & (bi0 / bi1));
+                if (value0 != 0) ((BigInteger)(value1 / value0)).ShouldBe(biMask & (bi1 / bi0));
             }
         }
 
@@ -456,7 +456,7 @@ namespace Kzrnm.Competitive.Testing.Number
             static void Impl(UInt256 value)
             {
                 var bi = (BigInteger)value;
-                if (bi != 0) ((BigInteger)(-value)).Should().Be((bi ^ biMask) + 1);
+                if (bi != 0) ((BigInteger)(-value)).ShouldBe((bi ^ biMask) + 1);
             }
         }
 
@@ -494,8 +494,8 @@ namespace Kzrnm.Competitive.Testing.Number
             {
                 var bi0 = (BigInteger)value0;
                 var bi1 = (BigInteger)value1;
-                ((BigInteger)(value0 & value1)).Should().Be(bi0 & bi1);
-                ((BigInteger)(value1 & value0)).Should().Be(bi0 & bi1);
+                ((BigInteger)(value0 & value1)).ShouldBe(bi0 & bi1);
+                ((BigInteger)(value1 & value0)).ShouldBe(bi0 & bi1);
             }
         }
 
@@ -531,8 +531,8 @@ namespace Kzrnm.Competitive.Testing.Number
             {
                 var bi0 = (BigInteger)value0;
                 var bi1 = (BigInteger)value1;
-                ((BigInteger)(value0 | value1)).Should().Be(bi0 | bi1);
-                ((BigInteger)(value1 | value0)).Should().Be(bi0 | bi1);
+                ((BigInteger)(value0 | value1)).ShouldBe(bi0 | bi1);
+                ((BigInteger)(value1 | value0)).ShouldBe(bi0 | bi1);
             }
         }
 
@@ -570,8 +570,8 @@ namespace Kzrnm.Competitive.Testing.Number
             {
                 var bi0 = (BigInteger)value0;
                 var bi1 = (BigInteger)value1;
-                ((BigInteger)(value0 ^ value1)).Should().Be(bi0 ^ bi1);
-                ((BigInteger)(value1 ^ value0)).Should().Be(bi0 ^ bi1);
+                ((BigInteger)(value0 ^ value1)).ShouldBe(bi0 ^ bi1);
+                ((BigInteger)(value1 ^ value0)).ShouldBe(bi0 ^ bi1);
             }
         }
 
@@ -594,7 +594,7 @@ namespace Kzrnm.Competitive.Testing.Number
             static void Impl(UInt256 value)
             {
                 var bi = (BigInteger)value;
-                ((BigInteger)~value).Should().Be(bi ^ biMask);
+                ((BigInteger)~value).ShouldBe(bi ^ biMask);
             }
         }
 
@@ -626,7 +626,7 @@ namespace Kzrnm.Competitive.Testing.Number
             static void Impl(UInt256 value, int shift)
             {
                 var bi = (BigInteger)value;
-                ((BigInteger)(value << shift)).Should().Be((bi << shift) & biMask);
+                ((BigInteger)(value << shift)).ShouldBe((bi << shift) & biMask);
             }
         }
         [Fact]
@@ -656,7 +656,7 @@ namespace Kzrnm.Competitive.Testing.Number
             static void Impl(UInt256 value, int shift)
             {
                 var bi = (BigInteger)value;
-                ((BigInteger)(value >> shift)).Should().Be((bi >> shift) & biMask);
+                ((BigInteger)(value >> shift)).ShouldBe((bi >> shift) & biMask);
             }
         }
 
@@ -684,7 +684,7 @@ namespace Kzrnm.Competitive.Testing.Number
 
             static void Impl(UInt256 value)
             {
-                UInt256.LeadingZeroCount(value).Should().Be((UInt256)Naive(value));
+                UInt256.LeadingZeroCount(value).ShouldBe((UInt256)Naive(value));
             }
             static int Naive(UInt256 value)
             {
@@ -723,7 +723,7 @@ namespace Kzrnm.Competitive.Testing.Number
 
             static void Impl(UInt256 value)
             {
-                UInt256.PopCount(value).Should().Be((UInt256)Naive(value));
+                UInt256.PopCount(value).ShouldBe((UInt256)Naive(value));
             }
             static int Naive(UInt256 value)
             {
@@ -759,7 +759,7 @@ namespace Kzrnm.Competitive.Testing.Number
         [Trait("Category", "BinaryInteger")]
         public void TrailingZeroCount(UInt256 input, UInt256 expected)
         {
-            UInt256.TrailingZeroCount(input).Should().Be(expected);
+            UInt256.TrailingZeroCount(input).ShouldBe(expected);
         }
 
         public static IEnumerable<(UInt256, UInt256)> Log2_Data()
@@ -786,7 +786,7 @@ namespace Kzrnm.Competitive.Testing.Number
         [Trait("Category", "BinaryInteger")]
         public void Log2(UInt256 input, UInt256 expected)
         {
-            UInt256.Log2(input).Should().Be(expected);
+            UInt256.Log2(input).ShouldBe(expected);
         }
 
 
@@ -794,19 +794,19 @@ namespace Kzrnm.Competitive.Testing.Number
         [Trait("Category", "Compare")]
         public void Compare()
         {
-            (UInt256.Zero < UInt256.One).Should().BeTrue();
-            (UInt256.Zero < UInt256.MaxValue).Should().BeTrue();
-            (UInt256.One < UInt256.MaxValue).Should().BeTrue();
-            (UInt256.Zero > UInt256.One).Should().BeFalse();
-            (UInt256.Zero > UInt256.MaxValue).Should().BeFalse();
-            (UInt256.One > UInt256.MaxValue).Should().BeFalse();
+            (UInt256.Zero < UInt256.One).ShouldBeTrue();
+            (UInt256.Zero < UInt256.MaxValue).ShouldBeTrue();
+            (UInt256.One < UInt256.MaxValue).ShouldBeTrue();
+            (UInt256.Zero > UInt256.One).ShouldBeFalse();
+            (UInt256.Zero > UInt256.MaxValue).ShouldBeFalse();
+            (UInt256.One > UInt256.MaxValue).ShouldBeFalse();
 
-            (UInt256.One < UInt256.Zero).Should().BeFalse();
-            (UInt256.MaxValue < UInt256.Zero).Should().BeFalse();
-            (UInt256.MaxValue < UInt256.One).Should().BeFalse();
-            (UInt256.One > UInt256.Zero).Should().BeTrue();
-            (UInt256.MaxValue > UInt256.Zero).Should().BeTrue();
-            (UInt256.MaxValue > UInt256.One).Should().BeTrue();
+            (UInt256.One < UInt256.Zero).ShouldBeFalse();
+            (UInt256.MaxValue < UInt256.Zero).ShouldBeFalse();
+            (UInt256.MaxValue < UInt256.One).ShouldBeFalse();
+            (UInt256.One > UInt256.Zero).ShouldBeTrue();
+            (UInt256.MaxValue > UInt256.Zero).ShouldBeTrue();
+            (UInt256.MaxValue > UInt256.One).ShouldBeTrue();
 
             var s = new ulong[1000].AsSpan();
             rnd.NextBytes(MemoryMarshal.AsBytes(s));
@@ -827,27 +827,27 @@ namespace Kzrnm.Competitive.Testing.Number
             {
                 if (value == 0 || value == UInt256.MaxValue) return;
 
-                (UInt256.Zero < value).Should().BeTrue();
-                (value < UInt256.MaxValue).Should().BeTrue();
-                (UInt256.Zero <= value).Should().BeTrue();
-                (value <= UInt256.MaxValue).Should().BeTrue();
+                (UInt256.Zero < value).ShouldBeTrue();
+                (value < UInt256.MaxValue).ShouldBeTrue();
+                (UInt256.Zero <= value).ShouldBeTrue();
+                (value <= UInt256.MaxValue).ShouldBeTrue();
 
-                (UInt256.Zero > value).Should().BeFalse();
-                (value > UInt256.MaxValue).Should().BeFalse();
-                (UInt256.Zero >= value).Should().BeFalse();
-                (value >= UInt256.MaxValue).Should().BeFalse();
+                (UInt256.Zero > value).ShouldBeFalse();
+                (value > UInt256.MaxValue).ShouldBeFalse();
+                (UInt256.Zero >= value).ShouldBeFalse();
+                (value >= UInt256.MaxValue).ShouldBeFalse();
 
-                (UInt256.Zero != value).Should().BeTrue();
-                (value != UInt256.MaxValue).Should().BeTrue();
+                (UInt256.Zero != value).ShouldBeTrue();
+                (value != UInt256.MaxValue).ShouldBeTrue();
 
-                (UInt256.Zero == value).Should().BeFalse();
-                (value == UInt256.MaxValue).Should().BeFalse();
+                (UInt256.Zero == value).ShouldBeFalse();
+                (value == UInt256.MaxValue).ShouldBeFalse();
 
-                (value - 1 <= value).Should().BeTrue();
-                (value <= value + 1).Should().BeTrue();
+                (value - 1 <= value).ShouldBeTrue();
+                (value <= value + 1).ShouldBeTrue();
 
-                (value - 1 >= value).Should().BeFalse();
-                (value >= value + 1).Should().BeFalse();
+                (value - 1 >= value).ShouldBeFalse();
+                (value >= value + 1).ShouldBeFalse();
             }
         }
     }

@@ -8,9 +8,9 @@ namespace Kzrnm.Competitive.Testing.Graph
             var ufs = new PersistentUnionFind[2];
             ufs[0] = new PersistentUnionFind(2);
             ufs[1] = ufs[0].Merge(0, 1);
-            ufs[0].Same(0, 1).Should().BeFalse();
-            ufs[1].Same(0, 1).Should().BeTrue();
-            ufs[1].Size(0).Should().Be(2);
+            ufs[0].Same(0, 1).ShouldBeFalse();
+            ufs[1].Same(0, 1).ShouldBeTrue();
+            ufs[1].Size(0).ShouldBe(2);
         }
 
         [Fact]
@@ -25,10 +25,10 @@ namespace Kzrnm.Competitive.Testing.Graph
             }
             for (int i = 0; i < n - 1; i++)
             {
-                ufs[i].Size(0).Should().Be(i + 1);
-                ufs[i].Size(i).Should().Be(i + 1);
+                ufs[i].Size(0).ShouldBe(i + 1);
+                ufs[i].Size(i).ShouldBe(i + 1);
             }
-            ufs[^1].Size(0).Should().Be(n);
+            ufs[^1].Size(0).ShouldBe(n);
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             {
                 ufs[i] = ufs[i + 1].Merge(i, i + 1);
             }
-            ufs[0].Size(0).Should().Be(n);
+            ufs[0].Size(0).ShouldBe(n);
         }
     }
 }

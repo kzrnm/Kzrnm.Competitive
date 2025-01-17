@@ -250,7 +250,7 @@ namespace Kzrnm.Competitive.Testing.Collection
         [MemberData(nameof(Add_Data))]
         public void Contructor((int from, int to)[] arg, (int from, int to)[] result)
         {
-            new SetIntervalInt(arg).Should().Equal(result);
+            new SetIntervalInt(arg).ShouldBe(result);
         }
 
         [Theory]
@@ -260,70 +260,70 @@ namespace Kzrnm.Competitive.Testing.Collection
             var set = new SetIntervalInt();
             foreach (var (f, t) in arg)
                 set.Add(f, t);
-            set.Should().Equal(result);
+            set.ShouldBe(result);
         }
         [Fact]
         public void Add()
         {
             var set = new SetIntervalInt();
-            set.Should().Equal([]);
+            set.ShouldBe([]);
 
             set.Add(50, 60);
-            set.Should().Equal(new (int, int)[] {
+            set.ShouldBe(new (int, int)[] {
                 (50, 60),
             });
 
             set.Add(10, 20);
-            set.Should().Equal(new (int, int)[] {
+            set.ShouldBe(new (int, int)[] {
                 (10, 20),
                 (50, 60),
             });
 
             set.Add(30, 40);
-            set.Should().Equal(new (int, int)[] {
+            set.ShouldBe(new (int, int)[] {
                 (10, 20),
                 (30, 40),
                 (50, 60),
             });
 
             set.Add(15, 25);
-            set.Should().Equal(new (int, int)[] {
+            set.ShouldBe(new (int, int)[] {
                 (10, 25),
                 (30, 40),
                 (50, 60),
             });
 
             set.Add(25, 35);
-            set.Should().Equal(new (int, int)[] {
+            set.ShouldBe(new (int, int)[] {
                 (10, 40),
                 (50, 60),
             });
 
             set.Add(10, 41);
-            set.Should().Equal(new (int, int)[] {
+            set.ShouldBe(new (int, int)[] {
                 (10, 41),
                 (50, 60),
             });
 
             set.Add(49, 60);
-            set.Should().Equal(new (int, int)[] {
+            set.ShouldBe(new (int, int)[] {
                 (10, 41),
                 (49, 60),
             });
 
             set.Add(9, 61);
-            set.Should().Equal(new (int, int)[] {
+            set.ShouldBe(new (int, int)[] {
                 (9, 61),
             });
 
             set.Add(70, 80);
-            set.Should().Equal(new (int, int)[] {
+            set.ShouldBe(new (int, int)[] {
                 (9, 61),
                 (70,80),
             });
 
             set.Add(5, 70);
-            set.Should().Equal(new (int, int)[] {
+            set.ShouldBe(new (int, int)[] {
                 (5,80),
             });
         }
@@ -332,33 +332,33 @@ namespace Kzrnm.Competitive.Testing.Collection
         public void MinMax()
         {
             var set = new SetIntervalInt();
-            set.Should().Equal([]);
-            set.Min.Should().Be(default);
-            set.Max.Should().Be(default);
+            set.ShouldBe([]);
+            set.Min.ShouldBe(default);
+            set.Max.ShouldBe(default);
             set.Add(50, 60);
-            set.Min.Should().Be((50, 60));
-            set.Max.Should().Be((50, 60));
+            set.Min.ShouldBe((50, 60));
+            set.Max.ShouldBe((50, 60));
             set.Add(10, 20);
-            set.Min.Should().Be((10, 20));
-            set.Max.Should().Be((50, 60));
+            set.Min.ShouldBe((10, 20));
+            set.Max.ShouldBe((50, 60));
             set.Add(30, 40);
-            set.Min.Should().Be((10, 20));
-            set.Max.Should().Be((50, 60));
+            set.Min.ShouldBe((10, 20));
+            set.Max.ShouldBe((50, 60));
             set.Add(15, 25);
-            set.Min.Should().Be((10, 25));
-            set.Max.Should().Be((50, 60));
+            set.Min.ShouldBe((10, 25));
+            set.Max.ShouldBe((50, 60));
             set.Add(25, 35);
-            set.Min.Should().Be((10, 40));
-            set.Max.Should().Be((50, 60));
+            set.Min.ShouldBe((10, 40));
+            set.Max.ShouldBe((50, 60));
             set.Add(10, 41);
-            set.Min.Should().Be((10, 41));
-            set.Max.Should().Be((50, 60));
+            set.Min.ShouldBe((10, 41));
+            set.Max.ShouldBe((50, 60));
             set.Add(49, 60);
-            set.Min.Should().Be((10, 41));
-            set.Max.Should().Be((49, 60));
+            set.Min.ShouldBe((10, 41));
+            set.Max.ShouldBe((49, 60));
             set.Add(9, 61);
-            set.Min.Should().Be((9, 61));
-            set.Max.Should().Be((9, 61));
+            set.Min.ShouldBe((9, 61));
+            set.Max.ShouldBe((9, 61));
         }
 
 
@@ -388,8 +388,8 @@ namespace Kzrnm.Competitive.Testing.Collection
                 (25, 30),
                 (35, 40),
                 (50, 60)});
-            set.Remove(from, to).Should().Be(success);
-            set.Should().Equal(result);
+            set.Remove(from, to).ShouldBe(success);
+            set.ShouldBe(result);
         }
 
         [Theory]
@@ -420,11 +420,11 @@ namespace Kzrnm.Competitive.Testing.Collection
                 (10, 20),
                 (30, 40),
                 (50, 60)});
-            set.Contains(value).Should().Be(isContains);
+            set.Contains(value).ShouldBe(isContains);
             if (isContains)
-                set.FindNode(value).Should().NotBeNull();
+                set.FindNode(value).ShouldNotBeNull();
             else
-                set.FindNode(value).Should().BeNull();
+                set.FindNode(value).ShouldBeNull();
         }
 
 
@@ -442,7 +442,7 @@ namespace Kzrnm.Competitive.Testing.Collection
                 (10, 20),
                 (30, 40),
                 (50, 60)});
-            ((ICollection<(int, int)>)set).Contains((from, to)).Should().Be(isContains);
+            ((ICollection<(int, int)>)set).Contains((from, to)).ShouldBe(isContains);
         }
 
         public static TheoryData RangeTruncate_Data => new TheoryData<int, int, (int From, int ToExclusive)[]>
@@ -465,7 +465,7 @@ namespace Kzrnm.Competitive.Testing.Collection
                 (10, 20),
                 (30, 40),
                 (50, 60)});
-            set.RangeTruncate(from, to).Should().Equal(expected);
+            set.RangeTruncate(from, to).ShouldBe(expected);
         }
 
         public static TheoryData RangeAll_Data => new TheoryData<int, int, (int From, int ToExclusive)[]>
@@ -488,72 +488,78 @@ namespace Kzrnm.Competitive.Testing.Collection
                 (10, 20),
                 (30, 40),
                 (50, 60)});
-            set.RangeAll(from, to).Should().Equal(expected);
+            set.RangeAll(from, to).ShouldBe(expected);
         }
 
         [Fact]
         public void UnionWith()
         {
-            var set = new SetIntervalInt(new[] {
+            var set = new SetIntervalInt([
                 (10, 20),
                 (30, 40),
                 (50, 60),
-                (100, 115)});
-            set.UnionWith(new[] {
+                (100, 115),
+            ]);
+            set.UnionWith([
                 (7, 12),
                 (22, 25),
                 (40, 75),
-            });
-            set.Should().Equal(
+            ]);
+            set.ShouldBe([
                 (7, 20),
                 (22, 25),
                 (30, 75),
-                (100, 115));
+                (100, 115),
+            ]);
         }
 
         [Fact]
         public void ExceptWith()
         {
-            var set = new SetIntervalInt(new[] {
+            var set = new SetIntervalInt([
                 (-10,-4),
                 (10, 20),
                 (30, 40),
                 (50, 60),
-                (100, 115)});
-            set.ExceptWith(new[] {
+                (100, 115),
+            ]);
+            set.ExceptWith([
                 (-10,-4),
                 (7, 12),
                 (22, 25),
                 (26, 44),
                 (49, 105),
-            });
-            set.Should().Equal(
+            ]);
+            set.ShouldBe([
                 (12, 20),
-                (105, 115));
+                (105, 115),
+            ]);
         }
 
         [Fact]
         public void IntersectWith()
         {
-            var set = new SetIntervalInt(new[] {
+            var set = new SetIntervalInt([
                 (-10,-4),
                 (10, 20),
                 (30, 40),
                 (50, 60),
-                (100, 115)});
-            set.IntersectWith(new[] {
+                (100, 115),
+            ]);
+            set.IntersectWith([
                 (-10,-4),
                 (7, 12),
                 (22, 25),
                 (26, 44),
                 (49, 105),
-            });
-            set.Should().Equal(
+            ]);
+            set.ShouldBe([
                 (-10, -4),
                 (10, 12),
                 (30, 40),
                 (50, 60),
-                (100, 105));
+                (100, 105),
+            ]);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Kzrnm.Competitive.Testing.IO
                 cw.WriteTuples<int, string>(arr.AsSpan());
                 cw.WriteTuples(arr.AsEnumerable().Reverse());
             }
-            utf8Wrapper.Read().Should().Be("""
+            utf8Wrapper.Read().ShouldBe("""
             1 Red
             3 Blue
             5 Green
@@ -51,7 +51,7 @@ namespace Kzrnm.Competitive.Testing.IO
                 cw.WriteTuples<int, string, char>(arr.AsSpan());
                 cw.WriteTuples(arr.AsEnumerable().Reverse());
             }
-            utf8Wrapper.Read().Should().Be("""
+            utf8Wrapper.Read().ShouldBe("""
             1 Red r
             3 Blue b
             5 Green g
@@ -80,7 +80,7 @@ namespace Kzrnm.Competitive.Testing.IO
                 cw.WriteTuples<int, string, char, decimal>(arr.AsSpan());
                 cw.WriteTuples(arr.AsEnumerable().Reverse());
             }
-            utf8Wrapper.Read().Should().Be("""
+            utf8Wrapper.Read().ShouldBe("""
             1 Red r 0.50000000000000000000
             3 Blue b 0.75000000000000000000
             5 Green g 0.25000000000000000000

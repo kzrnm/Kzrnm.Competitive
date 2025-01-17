@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
                         {
                             if (str[l1..r1].Equals(str[l2..r2], StringComparison.Ordinal))
                             {
-                                rh[l1..r1].Should().Be(rh[l2..r2]);
+                                rh[l1..r1].ShouldBe(rh[l2..r2]);
                             }
                             else
                             {
@@ -32,7 +32,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
                                     notMatchHashNotMatchCount++;
                             }
                         }
-            ((double)notMatchHashNotMatchCount / notMatchCount).Should().BeGreaterThan(0.9999);
+            ((double)notMatchHashNotMatchCount / notMatchCount).ShouldBeGreaterThan(0.9999);
         }
         [Fact]
         public void Repeat()
@@ -50,7 +50,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
                         {
                             if (str[l1..r1].Equals(str[l2..r2], StringComparison.Ordinal))
                             {
-                                rh[l1..r1].Should().Be(rh[l2..r2]);
+                                rh[l1..r1].ShouldBe(rh[l2..r2]);
                             }
                             else
                             {
@@ -59,7 +59,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
                                     notMatchHashNotMatchCount++;
                             }
                         }
-           ((double)notMatchHashNotMatchCount / notMatchCount).Should().BeGreaterThan(0.9999);
+           ((double)notMatchHashNotMatchCount / notMatchCount).ShouldBeGreaterThan(0.9999);
         }
         [Fact]
         public void Large()
@@ -77,7 +77,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
                         {
                             if (str[l1..r1].SequenceEqual(str[l2..r2]))
                             {
-                                rh[l1..r1].Should().Be(rh[l2..r2]);
+                                rh[l1..r1].ShouldBe(rh[l2..r2]);
                             }
                             else
                             {
@@ -86,7 +86,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
                                     notMatchHashNotMatchCount++;
                             }
                         }
-           ((double)notMatchHashNotMatchCount / notMatchCount).Should().BeGreaterThan(0.9999);
+           ((double)notMatchHashNotMatchCount / notMatchCount).ShouldBeGreaterThan(0.9999);
         }
     }
 }

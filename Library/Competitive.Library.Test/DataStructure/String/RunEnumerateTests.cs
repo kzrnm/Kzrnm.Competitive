@@ -39,10 +39,10 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
 
             static void ShouldEqual((int From, int ToExclusive)[][] got, (int From, int ToExclusive)[][] expected)
             {
-                got.Should().HaveSameCount(expected);
+                got.Length.ShouldBe(expected.Length);
                 for (int i = 0; i < got.Length; i++)
                 {
-                    got[i].Should().Equal(expected[i], "i = {0}", i);
+                    got[i].ShouldBe(expected[i], $"i={i}");
                 }
             }
         }

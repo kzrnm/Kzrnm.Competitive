@@ -26,7 +26,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             DoubleAffineTransformation b,
             DoubleAffineTransformation expected)
         {
-            b.Apply(a).Should().Be(expected);
+            b.Apply(a).ShouldBe(expected);
         }
 
         public static TheoryData<DoubleAffineTransformation, double, double> ApplyNumber_Data => new()
@@ -50,7 +50,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         public void ApplyNumber(
             DoubleAffineTransformation a, double x, double expected)
         {
-            a.Apply(x).Should().Be(expected);
+            a.Apply(x).ShouldBe(expected);
         }
     }
 }

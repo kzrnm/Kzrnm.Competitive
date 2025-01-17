@@ -16,22 +16,22 @@ namespace Kzrnm.Competitive.Testing.Collection
             pq.Enqueue(4);
             pq.Enqueue(2);
 
-            pq.Count.Should().Be(4);
-            pq.TryDequeueMin(out var data).Should().BeTrue();
-            data.Should().Be(1);
-            pq.Count.Should().Be(3);
-            pq.TryDequeueMax(out data).Should().BeTrue();
-            data.Should().Be(5);
-            pq.Count.Should().Be(2);
-            pq.TryDequeueMin(out data).Should().BeTrue();
-            data.Should().Be(2);
-            pq.Count.Should().Be(1);
-            pq.TryDequeueMin(out data).Should().BeTrue();
-            data.Should().Be(4);
+            pq.Count.ShouldBe(4);
+            pq.TryDequeueMin(out var data).ShouldBeTrue();
+            data.ShouldBe(1);
+            pq.Count.ShouldBe(3);
+            pq.TryDequeueMax(out data).ShouldBeTrue();
+            data.ShouldBe(5);
+            pq.Count.ShouldBe(2);
+            pq.TryDequeueMin(out data).ShouldBeTrue();
+            data.ShouldBe(2);
+            pq.Count.ShouldBe(1);
+            pq.TryDequeueMin(out data).ShouldBeTrue();
+            data.ShouldBe(4);
 
-            pq.Count.Should().Be(0);
-            pq.TryDequeueMin(out _).Should().BeFalse();
-            pq.TryDequeueMax(out _).Should().BeFalse();
+            pq.Count.ShouldBe(0);
+            pq.TryDequeueMin(out _).ShouldBeFalse();
+            pq.TryDequeueMax(out _).ShouldBeFalse();
         }
 
         [Fact]
@@ -99,40 +99,40 @@ namespace Kzrnm.Competitive.Testing.Collection
                 keyValues.Sort();
                 keyValues.Reverse();
 
-                pq.Count.Should().Be(keyValues.Count);
-                pq.PeekMin.Should().Be(keyValues[0]);
-                pq.PeekMax.Should().Be(keyValues[^1]);
+                pq.Count.ShouldBe(keyValues.Count);
+                pq.PeekMin.ShouldBe(keyValues[0]);
+                pq.PeekMax.ShouldBe(keyValues[^1]);
             }
             public void DequeueMin()
             {
                 var k = pq.DequeueMin();
 
-                k.Should().Be(keyValues[0]);
+                k.ShouldBe(keyValues[0]);
                 keyValues.RemoveAt(0);
                 keyValues.Sort();
                 keyValues.Reverse();
 
-                pq.Count.Should().Be(keyValues.Count);
+                pq.Count.ShouldBe(keyValues.Count);
                 if (Count > 0)
                 {
-                    pq.PeekMin.Should().Be(keyValues[0]);
-                    pq.PeekMax.Should().Be(keyValues[^1]);
+                    pq.PeekMin.ShouldBe(keyValues[0]);
+                    pq.PeekMax.ShouldBe(keyValues[^1]);
                 }
             }
             public void DequeueMax()
             {
                 var k = pq.DequeueMax();
 
-                k.Should().Be(keyValues[^1]);
+                k.ShouldBe(keyValues[^1]);
                 keyValues.RemoveAt(keyValues.Count - 1);
                 keyValues.Sort();
                 keyValues.Reverse();
 
-                pq.Count.Should().Be(keyValues.Count);
+                pq.Count.ShouldBe(keyValues.Count);
                 if (Count > 0)
                 {
-                    pq.PeekMin.Should().Be(keyValues[0]);
-                    pq.PeekMax.Should().Be(keyValues[^1]);
+                    pq.PeekMin.ShouldBe(keyValues[0]);
+                    pq.PeekMax.ShouldBe(keyValues[^1]);
                 }
             }
 
@@ -144,12 +144,12 @@ namespace Kzrnm.Competitive.Testing.Collection
                 keyValues.Add(inKey);
                 keyValues.Sort();
                 keyValues.Reverse();
-                k.Should().Be(keyValues[0]);
+                k.ShouldBe(keyValues[0]);
                 keyValues.RemoveAt(0);
 
-                pq.Count.Should().Be(keyValues.Count);
-                pq.PeekMin.Should().Be(keyValues[0]);
-                pq.PeekMax.Should().Be(keyValues[^1]);
+                pq.Count.ShouldBe(keyValues.Count);
+                pq.PeekMin.ShouldBe(keyValues[0]);
+                pq.PeekMax.ShouldBe(keyValues[^1]);
             }
             public void EnqueueDequeueMax()
             {
@@ -159,14 +159,14 @@ namespace Kzrnm.Competitive.Testing.Collection
                 keyValues.Add(inKey);
                 keyValues.Sort();
                 keyValues.Reverse();
-                k.Should().Be(keyValues[^1]);
+                k.ShouldBe(keyValues[^1]);
                 keyValues.RemoveAt(keyValues.Count - 1);
 
-                pq.Count.Should().Be(keyValues.Count);
+                pq.Count.ShouldBe(keyValues.Count);
                 if (Count > 0)
                 {
-                    pq.PeekMin.Should().Be(keyValues[0]);
-                    pq.PeekMax.Should().Be(keyValues[^1]);
+                    pq.PeekMin.ShouldBe(keyValues[0]);
+                    pq.PeekMax.ShouldBe(keyValues[^1]);
                 }
             }
         }

@@ -15,10 +15,9 @@ namespace Kzrnm.Competitive.Testing.Extensions
             b[64] = false;
 
             var arr = b.GetArray();
-            arr.Should().HaveCount(3)
-                .And
-                .StartWith(new int[] { -2, -1 });
-            (arr[2] & 0b111111).Should().Be(0b111110);
+            arr.Length.ShouldBe(3);
+            arr[..2].ShouldBe([-2, -1]);
+            (arr[2] & 0b111111).ShouldBe(0b111110);
         }
 
         [Fact]
@@ -38,7 +37,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
             b[32 * 3 - 1] = true;
             b[99] = true;
             b.CopyTo(arr);
-            arr.Should().Equal(1, 3, int.MinValue, 8);
+            arr.ShouldBe([1, 3, int.MinValue, 8]);
         }
         [Fact]
         public void CopyToUInt()
@@ -51,7 +50,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
             b[32 * 3 - 1] = true;
             b[99] = true;
             b.CopyTo(arr);
-            arr.Should().Equal(1, 3, ((uint)int.MaxValue) + 1, 8);
+            arr.ShouldBe([1, 3, ((uint)int.MaxValue) + 1, 8]);
         }
         [Fact]
         public void CopyToBool()
@@ -71,7 +70,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
             exp[33] = true;
             exp[32 * 3 - 1] = true;
             exp[99] = true;
-            arr.Should().Equal(exp);
+            arr.ShouldBe(exp);
         }
         [Fact]
         public void ToUInt32Array()
@@ -82,7 +81,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
             b[33] = true;
             b[32 * 3 - 1] = true;
             b[99] = true;
-            b.ToUInt32Array().Should().Equal(1, 3, ((uint)int.MaxValue) + 1, 8);
+            b.ToUInt32Array().ShouldBe([1, 3, ((uint)int.MaxValue) + 1, 8]);
         }
 
         [Fact]
@@ -94,11 +93,11 @@ namespace Kzrnm.Competitive.Testing.Extensions
             b[33] = true;
             b[32 * 3 - 1] = true;
             b[99] = true;
-            b.OnBits().Should().Equal(0, 32, 33, 95, 99);
+            b.OnBits().ShouldBe([0, 32, 33, 95, 99]);
 
             b.Length = 129;
             b[128] = true;
-            b.OnBits().Should().Equal(0, 32, 33, 95, 99, 128);
+            b.OnBits().ShouldBe([0, 32, 33, 95, 99, 128]);
         }
 
         [Fact]
@@ -115,13 +114,13 @@ namespace Kzrnm.Competitive.Testing.Extensions
                 {
                     if (bbs.Length > 0 && bbs[0] == i)
                     {
-                        b[i].Should().BeTrue();
+                        b[i].ShouldBeTrue();
                         bbs = bbs[1..];
                     }
                     else
-                        b[i].Should().BeFalse();
+                        b[i].ShouldBeFalse();
                 }
-                bbs.Length.Should().Be(0);
+                bbs.Length.ShouldBe(0);
             }
         }
 
@@ -134,9 +133,9 @@ namespace Kzrnm.Competitive.Testing.Extensions
         {
             var rnd = new Random(227);
             var b = new BitArray(size);
-            b.PopCount().Should().Be(0);
+            b.PopCount().ShouldBe(0);
             b[size - 1] = true;
-            b.PopCount().Should().Be(1);
+            b.PopCount().ShouldBe(1);
             for (int n = 0; n < 300; n++)
             {
                 var ix = rnd.Next(size);
@@ -145,7 +144,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
                 for (int i = 0; i < size; i++)
                     if (b[i])
                         ++c;
-                b.PopCount().Should().Be(c);
+                b.PopCount().ShouldBe(c);
             }
         }
 
@@ -163,13 +162,13 @@ namespace Kzrnm.Competitive.Testing.Extensions
         public void Lsb(int len)
         {
             var b = new BitArray(Enumerable.Repeat(false, len).Concat(Enumerable.Repeat(true, 2)).ToArray());
-            b.Lsb().Should().Be(len);
+            b.Lsb().ShouldBe(len);
 
             b = new BitArray(Enumerable.Repeat(false, len).Concat(Enumerable.Repeat(true, 2)).Concat(Enumerable.Repeat(false, 2)).ToArray());
-            b.Lsb().Should().Be(len);
+            b.Lsb().ShouldBe(len);
 
             b = new BitArray(Enumerable.Repeat(false, len).Prepend(true).ToArray());
-            b.Lsb().Should().Be(0);
+            b.Lsb().ShouldBe(0);
         }
 
         [Theory]
@@ -177,13 +176,13 @@ namespace Kzrnm.Competitive.Testing.Extensions
         public void Msb(int len)
         {
             var b = new BitArray(Enumerable.Repeat(false, len).Concat(Enumerable.Repeat(true, 1)).ToArray());
-            b.Msb().Should().Be(len);
+            b.Msb().ShouldBe(len);
 
             b = new BitArray(Enumerable.Repeat(false, len).Concat(Enumerable.Repeat(true, 1)).Concat(Enumerable.Repeat(false, 2)).ToArray());
-            b.Msb().Should().Be(len);
+            b.Msb().ShouldBe(len);
 
             b = new BitArray(Enumerable.Repeat(false, len).Prepend(true).ToArray());
-            b.Msb().Should().Be(0);
+            b.Msb().ShouldBe(0);
         }
     }
 }

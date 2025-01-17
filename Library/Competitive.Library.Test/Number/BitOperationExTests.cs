@@ -13,9 +13,9 @@ namespace Kzrnm.Competitive.Testing.Number
         [InlineData(0, 0, 0, 32)]
         public void BitOperationInt32(int input, int popCount, int msb, int lsb)
         {
-            BitOperationsEx.PopCount(input).Should().Be(popCount);
-            BitOperationsEx.Msb(input).Should().Be(msb);
-            BitOperationsEx.Lsb(input).Should().Be(lsb);
+            BitOperationsEx.PopCount(input).ShouldBe(popCount);
+            BitOperationsEx.Msb(input).ShouldBe(msb);
+            BitOperationsEx.Lsb(input).ShouldBe(lsb);
         }
 
         [Theory]
@@ -26,9 +26,9 @@ namespace Kzrnm.Competitive.Testing.Number
         [InlineData(0, 0, 0, 64)]
         public void BitOperationInt64(long input, int popCount, int msb, int lsb)
         {
-            BitOperationsEx.PopCount(input).Should().Be(popCount);
-            BitOperationsEx.Msb(input).Should().Be(msb);
-            BitOperationsEx.Lsb(input).Should().Be(lsb);
+            BitOperationsEx.PopCount(input).ShouldBe(popCount);
+            BitOperationsEx.Msb(input).ShouldBe(msb);
+            BitOperationsEx.Lsb(input).ShouldBe(lsb);
         }
 
         [Theory]
@@ -38,7 +38,7 @@ namespace Kzrnm.Competitive.Testing.Number
         [InlineData(0b1101, 0b11110, 0b11010)]
         public void ParallelBitDepositInt32(int input, int mask, int res)
         {
-            BitOperationsEx.ParallelBitDeposit(input, mask).Should().Be(res);
+            BitOperationsEx.ParallelBitDeposit(input, mask).ShouldBe(res);
         }
 
         [Theory]
@@ -48,8 +48,8 @@ namespace Kzrnm.Competitive.Testing.Number
         [InlineData(0b1101, 0b11110, 0b11010)]
         public void ParallelBitDepositUInt32(uint input, uint mask, uint res)
         {
-            BitOperationsEx.ParallelBitDeposit(input, mask).Should().Be(res);
-            BitOperationsEx.ParallelBitDepositLogic(input, mask).Should().Be(res);
+            BitOperationsEx.ParallelBitDeposit(input, mask).ShouldBe(res);
+            BitOperationsEx.ParallelBitDepositLogic(input, mask).ShouldBe(res);
         }
 
         [Theory]
@@ -59,7 +59,7 @@ namespace Kzrnm.Competitive.Testing.Number
         [InlineData(0b101101, 0b011110, 0b110)]
         public void ParallelBitExtractInt32(int input, int mask, int res)
         {
-            BitOperationsEx.ParallelBitExtract(input, mask).Should().Be(res);
+            BitOperationsEx.ParallelBitExtract(input, mask).ShouldBe(res);
         }
 
         [Theory]
@@ -69,8 +69,8 @@ namespace Kzrnm.Competitive.Testing.Number
         [InlineData(0b101101, 0b011110, 0b110)]
         public void ParallelBitExtractUInt32(uint input, uint mask, uint res)
         {
-            BitOperationsEx.ParallelBitExtract(input, mask).Should().Be(res);
-            BitOperationsEx.ParallelBitExtractLogic(input, mask).Should().Be(res);
+            BitOperationsEx.ParallelBitExtract(input, mask).ShouldBe(res);
+            BitOperationsEx.ParallelBitExtractLogic(input, mask).ShouldBe(res);
         }
 
         [Theory]
@@ -83,10 +83,10 @@ namespace Kzrnm.Competitive.Testing.Number
         public void BitReverseUInt32(uint a, uint b)
         {
             new string(System.Convert.ToString(a, 2).PadLeft(32, '0').Reverse().ToArray())
-                .Should().Be(System.Convert.ToString(b, 2).PadLeft(32, '0'));
+                .ShouldBe(System.Convert.ToString(b, 2).PadLeft(32, '0'));
 
-            BitOperationsEx.BitReverse(a).Should().Be(b);
-            BitOperationsEx.BitReverse(b).Should().Be(a);
+            BitOperationsEx.BitReverse(a).ShouldBe(b);
+            BitOperationsEx.BitReverse(b).ShouldBe(a);
         }
 
         [Theory]
@@ -97,10 +97,10 @@ namespace Kzrnm.Competitive.Testing.Number
         public void BitReverseUInt64(ulong a, ulong b)
         {
             new string(System.Convert.ToString((long)a, 2).PadLeft(64, '0').Reverse().ToArray())
-                .Should().Be(System.Convert.ToString((long)b, 2).PadLeft(64, '0'));
+                .ShouldBe(System.Convert.ToString((long)b, 2).PadLeft(64, '0'));
 
-            BitOperationsEx.BitReverse(a).Should().Be(b);
-            BitOperationsEx.BitReverse(b).Should().Be(a);
+            BitOperationsEx.BitReverse(a).ShouldBe(b);
+            BitOperationsEx.BitReverse(b).ShouldBe(a);
         }
     }
 }

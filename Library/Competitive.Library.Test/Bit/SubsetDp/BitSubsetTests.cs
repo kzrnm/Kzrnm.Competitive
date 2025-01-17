@@ -53,15 +53,15 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
         [TupleMemberData(nameof(Int32_Data))]
         public void Int32(Int32 num, Int32[] expected)
         {
-            num.BitSubset(false).Should().Equal(expected);
-            num.BitSubset().Should().Equal(expected.Skip(1));
+            num.BitSubset(false).ShouldBe(expected);
+            num.BitSubset().ShouldBe(expected.Skip(1));
 
-            num.BitSubset(false).ToArray().Should().Equal(expected);
-            num.BitSubset().ToArray().Should().Equal(expected.Skip(1));
+            num.BitSubset(false).ToArray().ShouldBe(expected);
+            num.BitSubset().ToArray().ShouldBe(expected.Skip(1));
 
-            Combinations(num.BitSubsetCombination(false)).Should().Equal(
+            Combinations(num.BitSubsetCombination(false)).ShouldBe(
                 expected.Take(expected.Length / 2).Select(b => (b, num & ~b)));
-            Combinations(num.BitSubsetCombination()).Should().Equal(
+            Combinations(num.BitSubsetCombination()).ShouldBe(
                 expected.Take(expected.Length / 2).Skip(1).Select(b => (b, num & ~b)));
         }
 
@@ -96,15 +96,15 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
         [TupleMemberData(nameof(UInt32_Data))]
         public void UInt32(UInt32 num, UInt32[] expected)
         {
-            num.BitSubset(false).Should().Equal(expected);
-            num.BitSubset().Should().Equal(expected.Skip(1));
+            num.BitSubset(false).ShouldBe(expected);
+            num.BitSubset().ShouldBe(expected.Skip(1));
 
-            num.BitSubset(false).ToArray().Should().Equal(expected);
-            num.BitSubset().ToArray().Should().Equal(expected.Skip(1));
+            num.BitSubset(false).ToArray().ShouldBe(expected);
+            num.BitSubset().ToArray().ShouldBe(expected.Skip(1));
 
-            Combinations(num.BitSubsetCombination(false)).Should().Equal(
+            Combinations(num.BitSubsetCombination(false)).ShouldBe(
                 expected.Take(expected.Length / 2).Select(b => (b, num & ~b)));
-            Combinations(num.BitSubsetCombination()).Should().Equal(
+            Combinations(num.BitSubsetCombination()).ShouldBe(
                 expected.Take(expected.Length / 2).Skip(1).Select(b => (b, num & ~b)));
         }
 
@@ -138,15 +138,15 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
         [TupleMemberData(nameof(Int64_Data))]
         public void Int64(Int64 num, Int64[] expected)
         {
-            num.BitSubset(false).Should().Equal(expected);
-            num.BitSubset().Should().Equal(expected.Skip(1));
+            num.BitSubset(false).ShouldBe(expected);
+            num.BitSubset().ShouldBe(expected.Skip(1));
 
-            num.BitSubset(false).ToArray().Should().Equal(expected);
-            num.BitSubset().ToArray().Should().Equal(expected.Skip(1));
+            num.BitSubset(false).ToArray().ShouldBe(expected);
+            num.BitSubset().ToArray().ShouldBe(expected.Skip(1));
 
-            Combinations(num.BitSubsetCombination(false)).Should().Equal(
+            Combinations(num.BitSubsetCombination(false)).ShouldBe(
                 expected.Take(expected.Length / 2).Select(b => (b, num & ~b)));
-            Combinations(num.BitSubsetCombination()).Should().Equal(
+            Combinations(num.BitSubsetCombination()).ShouldBe(
                 expected.Take(expected.Length / 2).Skip(1).Select(b => (b, num & ~b)));
         }
 
@@ -180,15 +180,15 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
         [TupleMemberData(nameof(UInt64_Data))]
         public void UInt64(UInt64 num, UInt64[] expected)
         {
-            num.BitSubset(false).Should().Equal(expected);
-            num.BitSubset().Should().Equal(expected.Skip(1));
+            num.BitSubset(false).ShouldBe(expected);
+            num.BitSubset().ShouldBe(expected.Skip(1));
 
-            num.BitSubset(false).ToArray().Should().Equal(expected);
-            num.BitSubset().ToArray().Should().Equal(expected.Skip(1));
+            num.BitSubset(false).ToArray().ShouldBe(expected);
+            num.BitSubset().ToArray().ShouldBe(expected.Skip(1));
 
-            Combinations(num.BitSubsetCombination(false)).Should().Equal(
+            Combinations(num.BitSubsetCombination(false)).ShouldBe(
                 expected.Take(expected.Length / 2).Select(b => (b, num & ~b)));
-            Combinations(num.BitSubsetCombination()).Should().Equal(
+            Combinations(num.BitSubsetCombination()).ShouldBe(
                 expected.Take(expected.Length / 2).Skip(1).Select(b => (b, num & ~b)));
         }
     }

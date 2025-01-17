@@ -6,10 +6,10 @@ namespace Kzrnm.Competitive.Testing.Graph
         public void Simple()
         {
             var uf = new PartiallyPersistentUnionFind(2);
-            uf.Merge(0, 1).Should().BeTrue();
-            uf.Same(0, 1, 0).Should().BeFalse();
-            uf.Same(0, 1, 1).Should().BeTrue();
-            uf.Size(0, 1).Should().Be(2);
+            uf.Merge(0, 1).ShouldBeTrue();
+            uf.Same(0, 1, 0).ShouldBeFalse();
+            uf.Same(0, 1, 1).ShouldBeTrue();
+            uf.Size(0, 1).ShouldBe(2);
         }
 
         [Fact]
@@ -23,11 +23,11 @@ namespace Kzrnm.Competitive.Testing.Graph
             }
             for (int i = 0; i < n - 1; i++)
             {
-                uf.Size(0, i).Should().Be(i + 1);
-                uf.Size(i, i).Should().Be(i + 1);
+                uf.Size(0, i).ShouldBe(i + 1);
+                uf.Size(i, i).ShouldBe(i + 1);
             }
-            uf.Version.Should().Be(n - 1);
-            uf.Size(0, uf.Version).Should().Be(n);
+            uf.Version.ShouldBe(n - 1);
+            uf.Size(0, uf.Version).ShouldBe(n);
         }
 
         [Fact]
@@ -39,8 +39,8 @@ namespace Kzrnm.Competitive.Testing.Graph
             {
                 uf.Merge(i, i + 1);
             }
-            uf.Version.Should().Be(n - 1);
-            uf.Size(0, uf.Version).Should().Be(n);
+            uf.Version.ShouldBe(n - 1);
+            uf.Size(0, uf.Version).ShouldBe(n);
         }
     }
 }

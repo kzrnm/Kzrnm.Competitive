@@ -10,47 +10,52 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         public void Invalid()
         {
             var s = new PersistentSegtree<string, MonoidOperator>(10);
-            s.Invoking(s => s[-1]).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s[10]).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s[0]).Should().NotThrow();
-            s.Invoking(s => s[9]).Should().NotThrow();
+            Should.Throw<ContractAssertException>(() => s[-1]);
+            Should.Throw<ContractAssertException>(() => s[10]);
+            Should.NotThrow(() => s[0]);
+            Should.NotThrow(() => s[9]);
 
-            s.Invoking(s => s.Prod(-1, -1)).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s.Prod(3, 2)).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s.Prod(0, 11)).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s.Prod(-1, 11)).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s.Prod(0, 0)).Should().NotThrow();
-            s.Invoking(s => s.Prod(10, 10)).Should().NotThrow();
-            s.Invoking(s => s.Prod(0, 10)).Should().NotThrow();
+            Should.Throw<ContractAssertException>(() => s.Prod(-1, -1));
+            Should.Throw<ContractAssertException>(() => s.Prod(3, 2));
+            Should.Throw<ContractAssertException>(() => s.Prod(0, 11));
+            Should.Throw<ContractAssertException>(() => s.Prod(-1, 11));
+            Should.NotThrow(() => s.Prod(0, 0));
+            Should.NotThrow(() => s.Prod(10, 10));
+            Should.NotThrow(() => s.Prod(0, 10));
 
-            //s.Invoking(s => s.MaxRight(11, s => true)).Should().Throw<ContractAssertException>();
-            //s.Invoking(s => s.MaxRight(-1, s => true)).Should().Throw<ContractAssertException>();
-            //s.Invoking(s => s.MaxRight(0, s => false)).Should().Throw<ContractAssertException>();
-            //s.Invoking(s => s.MaxRight(0, s => true)).Should().NotThrow();
-            //s.Invoking(s => s.MaxRight(10, s => true)).Should().NotThrow();
+            //Should.Throw<ContractAssertException>(() => s.MaxRight(11, s => true));
+            //Should.Throw<ContractAssertException>(() => s.MaxRight(-1, s => true));
+            //Should.Throw<ContractAssertException>(() => s.MaxRight(0, s => false));
+            //Should.NotThrow(() => s.MaxRight(0, s => true));
+            //Should.NotThrow(() => s.MaxRight(10, s => true));
 
-            //s.Invoking(s => s.MinLeft(11, s => true)).Should().Throw<ContractAssertException>();
-            //s.Invoking(s => s.MinLeft(-1, s => true)).Should().Throw<ContractAssertException>();
-            //s.Invoking(s => s.MinLeft(0, s => false)).Should().Throw<ContractAssertException>();
-            //s.Invoking(s => s.MinLeft(0, s => true)).Should().NotThrow();
-            //s.Invoking(s => s.MinLeft(10, s => true)).Should().NotThrow();
+            //Should.Throw<ContractAssertException>(() => s.MinLeft(11, s => true));
+            //Should.Throw<ContractAssertException>(() => s.MinLeft(-1, s => true));
+            //Should.Throw<ContractAssertException>(() => s.MinLeft(0, s => false));
+            //Should.NotThrow(() => s.MinLeft(0, s => true));
+            //Should.NotThrow(() => s.MinLeft(10, s => true));
         }
 
         [Fact]
         public void One()
         {
             var s = new PersistentSegtree<string, MonoidOperator>(1);
-            s.AllProd.Should().Be("$");
-            s[0].Should().Be("$");
-            s.Prod(0, 1).Should().Be(s[0..1]).And.Be("$");
+            s.AllProd.ShouldBe("$");
+            s[0].ShouldBe("$");
+            s.Prod(0, 1).ShouldBe("$");
+            s[0..1].ShouldBe("$");
             var ns = s.SetItem(0, "dummy");
-            s.AllProd.Should().Be("$");
-            s[0].Should().Be("$");
-            s.Prod(0, 1).Should().Be(s[0..1]).And.Be("$");
-            ns[0].Should().Be("dummy");
-            ns.Prod(0, 0).Should().Be(ns[0..0]).And.Be("$");
-            ns.Prod(0, 1).Should().Be(ns[0..1]).And.Be("dummy");
-            ns.Prod(1, 1).Should().Be(ns[1..1]).And.Be("$");
+            s.AllProd.ShouldBe("$");
+            s[0].ShouldBe("$");
+            s.Prod(0, 1).ShouldBe("$");
+            s[0..1].ShouldBe("$");
+            ns[0].ShouldBe("dummy");
+            ns.Prod(0, 0).ShouldBe("$");
+            ns.Prod(0, 1).ShouldBe("dummy");
+            ns.Prod(1, 1).ShouldBe("$");
+            ns[0..0].ShouldBe("$");
+            ns[0..1].ShouldBe("dummy");
+            ns[1..1].ShouldBe("$");
         }
 
         [Fact]
@@ -73,7 +78,8 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 {
                     for (int r = l; r <= n; r++)
                     {
-                        seg1.Prod(l, r).Should().Be(seg1[l..r]).And.Be(seg0.Prod(l, r));
+                        seg1.Prod(l, r).ShouldBe(seg0.Prod(l, r));
+                        seg1[l..r].ShouldBe(seg0.Prod(l, r));
                     }
                 }
 
@@ -82,7 +88,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 //    for (int r = l; r <= n; r++)
                 //    {
                 //        var y = seg1.Prod(l, r);
-                //        seg1.MaxRight(l, x => x.Length <= y.Length).Should().Be(seg0.MaxRight(l, x => x.Length <= y.Length));
+                //        seg1.MaxRight(l, x => x.Length <= y.Length).ShouldBe(seg0.MaxRight(l, x => x.Length <= y.Length));
                 //    }
                 //}
 
@@ -92,7 +98,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 //    for (int l = 0; l <= r; l++)
                 //    {
                 //        var y = seg1.Prod(l, r);
-                //        seg1.MinLeft(l, x => x.Length <= y.Length).Should().Be(seg0.MinLeft(l, x => x.Length <= y.Length));
+                //        seg1.MinLeft(l, x => x.Length <= y.Length).ShouldBe(seg0.MinLeft(l, x => x.Length <= y.Length));
                 //    }
                 //}
             }
@@ -140,7 +146,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             public int MaxRight(int l, Predicate<string> f)
             {
                 var sum = op.Identity;
-                f(sum).Should().BeTrue();
+                f(sum).ShouldBeTrue();
                 for (int i = l; i < n; i++)
                 {
                     sum = op.Operate(sum, d[i]);
@@ -151,7 +157,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             public int MinLeft(int r, Predicate<string> f)
             {
                 var sum = op.Identity;
-                f(sum).Should().BeTrue();
+                f(sum).ShouldBeTrue();
                 for (int i = r - 1; i >= 0; i--)
                 {
                     sum = op.Operate(d[i], sum);

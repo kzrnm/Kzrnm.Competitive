@@ -59,7 +59,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         public void EmptyInt(int[] a, int[] b, uint[] expected)
         {
             for (int i = 2; i < 10; i++)
-                NumberTheoreticTransform.Convolution(a, b, i).Should().Equal(expected);
+                NumberTheoreticTransform.Convolution(a, b, i).ShouldBe(expected);
         }
 
         [Fact]
@@ -77,9 +77,9 @@ namespace Kzrnm.Competitive.Testing.MathNS
             {
                 b[i] = rnd.NextUInt();
             }
-            NumberTheoreticTransform.Convolution<Mod998244353>(a, b).Should().Equal(ConvNative(a, b, 998244353));
-            NumberTheoreticTransform.Convolution<Mod1000000000>(a, b).Should().Equal(ConvNative(a, b, 1000000000));
-            NumberTheoreticTransform.Convolution<Mod1000000007>(a, b).Should().Equal(ConvNative(a, b, 1000000007));
+            NumberTheoreticTransform.Convolution<Mod998244353>(a, b).ShouldBe(ConvNative(a, b, 998244353));
+            NumberTheoreticTransform.Convolution<Mod1000000000>(a, b).ShouldBe(ConvNative(a, b, 1000000000));
+            NumberTheoreticTransform.Convolution<Mod1000000007>(a, b).ShouldBe(ConvNative(a, b, 1000000007));
         }
 
 
@@ -99,7 +99,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 b[i] = rnd.NextUInt();
             }
             for (int i = 0; i < 50; i++)
-                NumberTheoreticTransform.Convolution(a, b, 5 + i).Should().Equal(ConvNative(a, b, 5 + i));
+                NumberTheoreticTransform.Convolution(a, b, 5 + i).ShouldBe(ConvNative(a, b, 5 + i));
         }
 
         [Fact]
@@ -118,7 +118,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 b[i] = rnd.NextUInt();
             }
             for (int i = 0; i < 50; i++)
-                NumberTheoreticTransform.Convolution(a, b, 1000000005 + i).Should().Equal(ConvNative(a, b, 1000000005 + i));
+                NumberTheoreticTransform.Convolution(a, b, 1000000005 + i).ShouldBe(ConvNative(a, b, 1000000005 + i));
         }
 
         [Fact]
@@ -141,7 +141,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
                         {
                             b[i] = rnd.NextUInt();
                         }
-                        NumberTheoreticTransform.Convolution(a, b, 1000000000 + c).Should().Equal(ConvNative(a, b, 1000000000 + c));
+                        NumberTheoreticTransform.Convolution(a, b, 1000000000 + c).ShouldBe(ConvNative(a, b, 1000000000 + c));
                     }
                 }
         }
@@ -165,7 +165,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
                     {
                         b[i] = rnd.NextUInt();
                     }
-                    NumberTheoreticTransform.Convolution<Mod113>(a, b).Should().Equal(ConvNative(a, b, 113));
+                    NumberTheoreticTransform.Convolution<Mod113>(a, b).ShouldBe(ConvNative(a, b, 113));
                 }
             }
         }
@@ -198,7 +198,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
                     {
                         b[i] = (uint)rnd.Next(int.MaxValue);
                     }
-                    NumberTheoreticTransform.ConvolutionULong(a, b).Should().Equal(ConvNative(a, b));
+                    NumberTheoreticTransform.ConvolutionULong(a, b).ShouldBe(ConvNative(a, b));
                 }
             }
 
@@ -235,7 +235,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
                     {
                         b[i] = rnd.NextUInt();
                     }
-                    NumberTheoreticTransform.ConvolutionUInt128(a, b).Should().Equal(ConvNative(a, b));
+                    NumberTheoreticTransform.ConvolutionUInt128(a, b).ShouldBe(ConvNative(a, b));
                 }
             }
 

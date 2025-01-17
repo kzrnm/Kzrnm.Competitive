@@ -15,8 +15,8 @@ namespace Kzrnm.Competitive.Testing.Number
         [InlineData(1000000007, 5)]
         public void Solve(int p, int expected)
         {
-            PrimitiveRoot.Solve(p).Should().Be(expected);
-            PrimitiveRoot.Solve((uint)p).Should().Be((uint)expected);
+            PrimitiveRoot.Solve(p).ShouldBe(expected);
+            PrimitiveRoot.Solve((uint)p).ShouldBe((uint)expected);
         }
     }
 }

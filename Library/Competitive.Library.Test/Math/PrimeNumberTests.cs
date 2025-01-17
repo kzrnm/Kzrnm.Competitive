@@ -9,13 +9,13 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [Fact]
         public void PrimeTest()
         {
-            new PrimeNumber(5).Should().Equal([2, 3, 5]);
-            new PrimeNumber(6).Should().Equal([2, 3, 5]);
-            new PrimeNumber(7).Should().Equal([2, 3, 5, 7]);
-            new PrimeNumber(9).Should().Equal([2, 3, 5, 7]);
-            new PrimeNumber(10).Should().Equal([2, 3, 5, 7]);
-            new PrimeNumber(11).Should().Equal([2, 3, 5, 7, 11]);
-            new PrimeNumber(20).Should().Equal([2, 3, 5, 7, 11, 13, 17, 19]);
+            new PrimeNumber(5).ShouldBe([2, 3, 5]);
+            new PrimeNumber(6).ShouldBe([2, 3, 5]);
+            new PrimeNumber(7).ShouldBe([2, 3, 5, 7]);
+            new PrimeNumber(9).ShouldBe([2, 3, 5, 7]);
+            new PrimeNumber(10).ShouldBe([2, 3, 5, 7]);
+            new PrimeNumber(11).ShouldBe([2, 3, 5, 7, 11]);
+            new PrimeNumber(20).ShouldBe([2, 3, 5, 7, 11, 13, 17, 19]);
         }
 
 
@@ -70,7 +70,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [MemberData(nameof(PrimeFactoringInt_Data))]
         public void PrimeFactoringInt(int num, Dictionary<int, int> expected)
         {
-            primes.PrimeFactoring(num).Should().Equal(expected);
+            primes.PrimeFactoring(num).ShouldBe(expected);
         }
 
         public static TheoryData PrimeFactoringLong_Data => new TheoryData<long, Dictionary<long, int>>
@@ -117,7 +117,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [MemberData(nameof(PrimeFactoringLong_Data))]
         public void PrimeFactoringLong(long num, Dictionary<long, int> expected)
         {
-            primes.PrimeFactoring(num).Should().Equal(expected);
+            primes.PrimeFactoring(num).ShouldBe(expected);
         }
 
         [Fact]
@@ -130,7 +130,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             };
             for (int i = 0; i <= 3001; i++)
             {
-                primes.IsPrime(i).Should().Be(hs.Contains(i));
+                primes.IsPrime(i).ShouldBe(hs.Contains(i));
             }
         }
     }

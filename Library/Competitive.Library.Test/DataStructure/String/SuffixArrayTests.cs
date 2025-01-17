@@ -18,7 +18,10 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
 
                 for (int i = 0; i < str.Length; i++)
                     for (int j = i; j < str.Length; j++)
-                        sa.LongestCommonPrefix(i, j).Should().Be(sa.LongestCommonPrefix(j, i)).And.Be(saNative.GetLCP(i, j));
+                    {
+                        sa.LongestCommonPrefix(i, j).ShouldBe(saNative.GetLCP(i, j));
+                        sa.LongestCommonPrefix(j, i).ShouldBe(saNative.GetLCP(i, j));
+                    }
             }
             {
                 var str = Enumerable.Repeat(1, 50).ToArray();
@@ -27,7 +30,10 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
 
                 for (int i = 0; i < str.Length; i++)
                     for (int j = i; j < str.Length; j++)
-                        sa.LongestCommonPrefix(i, j).Should().Be(sa.LongestCommonPrefix(j, i)).And.Be(saNative.GetLCP(i, j));
+                    {
+                        sa.LongestCommonPrefix(i, j).ShouldBe(saNative.GetLCP(i, j));
+                        sa.LongestCommonPrefix(j, i).ShouldBe(saNative.GetLCP(i, j));
+                    }
             }
             {
                 var str = Enumerable.Range(0, 50).ToArray();
@@ -36,18 +42,24 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
 
                 for (int i = 0; i < str.Length; i++)
                     for (int j = i; j < str.Length; j++)
-                        sa.LongestCommonPrefix(i, j).Should().Be(sa.LongestCommonPrefix(j, i)).And.Be(saNative.GetLCP(i, j));
+                    {
+                        sa.LongestCommonPrefix(i, j).ShouldBe(saNative.GetLCP(i, j));
+                        sa.LongestCommonPrefix(j, i).ShouldBe(saNative.GetLCP(i, j));
+                    }
             }
             {
                 var str = new[] { -4210, 4219014, -5, -4210, -4210, 4219014, -5, -4210 };
                 var sa = SuffixArray.Create(str);
                 var saNative = GetNative((ReadOnlySpan<int>)str);
-                sa.LongestCommonPrefix(0, 3).Should().Be(1);
-                sa.LongestCommonPrefix(0, 4).Should().Be(4);
+                sa.LongestCommonPrefix(0, 3).ShouldBe(1);
+                sa.LongestCommonPrefix(0, 4).ShouldBe(4);
 
                 for (int i = 0; i < str.Length; i++)
                     for (int j = i; j < str.Length; j++)
-                        sa.LongestCommonPrefix(i, j).Should().Be(sa.LongestCommonPrefix(j, i)).And.Be(saNative.GetLCP(i, j));
+                    {
+                        sa.LongestCommonPrefix(i, j).ShouldBe(saNative.GetLCP(i, j));
+                        sa.LongestCommonPrefix(j, i).ShouldBe(saNative.GetLCP(i, j));
+                    }
             }
         }
 
@@ -63,16 +75,19 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
 
                 for (int i = 0; i < str.Length; i++)
                     for (int j = i; j < str.Length; j++)
-                        sa.LongestCommonPrefix(i, j).Should().Be(sa.LongestCommonPrefix(j, i)).And.Be(saNative.GetLCP(i, j));
+                    {
+                        sa.LongestCommonPrefix(i, j).ShouldBe(saNative.GetLCP(i, j));
+                        sa.LongestCommonPrefix(j, i).ShouldBe(saNative.GetLCP(i, j));
+                    }
             }
             {
                 var str = "abcaabca";
                 var sa = SuffixArray.Create(str);
                 var saNative = GetNative(str.AsSpan());
-                sa.LongestCommonPrefix(0, 3).Should().Be(1);
-                sa.LongestCommonPrefix(0, 4).Should().Be(4);
+                sa.LongestCommonPrefix(0, 3).ShouldBe(1);
+                sa.LongestCommonPrefix(0, 4).ShouldBe(4);
 
-                sa.SA.Should().Equal(
+                sa.SA.ShouldBe([
                     7, // a
                     3, // aabca
                     4, // abca
@@ -80,22 +95,25 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
                     5, // bca
                     1, // bcaabca
                     6, // ca
-                    2  // caabca
-                    );
-                sa.LcpArray.Should().Equal(
+                    2,  // caabca
+                ]);
+                sa.LcpArray.ShouldBe([
                     1, // a - aabca
                     1, // aabca - abca
                     4, // abca - abcaabca
                     0, // abcaabca - bca
                     3, // bca - bcaabca
                     0, // bcaabca - ca
-                    2  // ca - caabca
-                    );
-                sa.Rank.Should().Equal(3, 5, 7, 1, 2, 4, 6, 0);
+                    2,  // ca - caabca
+                ]);
+                sa.Rank.ShouldBe([3, 5, 7, 1, 2, 4, 6, 0]);
 
                 for (int i = 0; i < str.Length; i++)
                     for (int j = i; j < str.Length; j++)
-                        sa.LongestCommonPrefix(i, j).Should().Be(sa.LongestCommonPrefix(j, i)).And.Be(saNative.GetLCP(i, j));
+                    {
+                        sa.LongestCommonPrefix(i, j).ShouldBe(saNative.GetLCP(i, j));
+                        sa.LongestCommonPrefix(j, i).ShouldBe(saNative.GetLCP(i, j));
+                    }
             }
         }
 

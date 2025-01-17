@@ -10,34 +10,34 @@ namespace Kzrnm.Competitive.Testing.Collection
         {
             var ss = new PersistentSet<int>[100];
             ss[0] = PersistentSet<int>.Empty();
-            ss[0].Should().BeEmpty();
+            ss[0].ShouldBeEmpty();
             for (int i = 1; i < ss.Length; i++)
             {
                 ss[i] = ss[i - 1].Add(i);
-                ss[i].Should().Equal(Enumerable.Range(1, i));
-                ss[i].Count.Should().Be(i);
-                ss[i].Reverse().Should().Equal(Enumerable.Range(1, i).Reverse());
+                ss[i].ShouldBe(Enumerable.Range(1, i));
+                ss[i].Count.ShouldBe(i);
+                ss[i].Reverse().ShouldBe(Enumerable.Range(1, i).Reverse());
             }
 
             for (int i = ss.Length - 1; i >= 0; i--)
             {
-                ss[i].Should().Equal(Enumerable.Range(1, i));
-                ss[i].Count.Should().Be(i);
+                ss[i].ShouldBe(Enumerable.Range(1, i));
+                ss[i].Count.ShouldBe(i);
 
                 var other0 = ss[i].Remove(0);
-                other0.Should().Equal(Enumerable.Range(1, i));
-                other0.Count.Should().Be(i);
+                other0.ShouldBe(Enumerable.Range(1, i));
+                other0.Count.ShouldBe(i);
 
                 if (i > 0)
                 {
                     var other1 = ss[i].Remove(1);
-                    other1.Should().Equal(Enumerable.Range(2, i - 1));
-                    other1.Count.Should().Be(i - 1);
+                    other1.ShouldBe(Enumerable.Range(2, i - 1));
+                    other1.Count.ShouldBe(i - 1);
                 }
 
                 var add2 = ss[i].Add(i).Add(i);
-                add2.Count.Should().Be(i + 2);
-                add2.Should().Equal(Enumerable.Range(1, i).Append(i).Append(i).OrderBy(i => i).ToArray());
+                add2.Count.ShouldBe(i + 2);
+                add2.ShouldBe(Enumerable.Range(1, i).Append(i).Append(i).OrderBy(i => i).ToArray());
             }
         }
         [Fact]
@@ -45,34 +45,34 @@ namespace Kzrnm.Competitive.Testing.Collection
         {
             var ss = new PersistentSetDictionary<int, string>[100];
             ss[0] = PersistentSetDictionary<int, string>.Empty();
-            ss[0].Should().BeEmpty();
+            ss[0].ShouldBeEmpty();
             for (int i = 1; i < ss.Length; i++)
             {
                 ss[i] = ss[i - 1].Add(i, i.ToString());
-                ss[i].Should().Equal(Enumerable.Range(1, i).Select(i => KeyValuePair.Create(i, i.ToString())));
-                ss[i].Count.Should().Be(i);
-                ss[i].Reverse().Should().Equal(Enumerable.Range(1, i).Select(i => KeyValuePair.Create(i, i.ToString())).Reverse());
+                ss[i].ShouldBe(Enumerable.Range(1, i).Select(i => KeyValuePair.Create(i, i.ToString())));
+                ss[i].Count.ShouldBe(i);
+                ss[i].Reverse().ShouldBe(Enumerable.Range(1, i).Select(i => KeyValuePair.Create(i, i.ToString())).Reverse());
             }
 
             for (int i = ss.Length - 1; i >= 0; i--)
             {
-                ss[i].Should().Equal(Enumerable.Range(1, i).Select(i => KeyValuePair.Create(i, i.ToString())));
-                ss[i].Count.Should().Be(i);
+                ss[i].ShouldBe(Enumerable.Range(1, i).Select(i => KeyValuePair.Create(i, i.ToString())));
+                ss[i].Count.ShouldBe(i);
 
                 var other0 = ss[i].Remove(0);
-                other0.Should().Equal(Enumerable.Range(1, i).Select(i => KeyValuePair.Create(i, i.ToString())));
-                other0.Count.Should().Be(i);
+                other0.ShouldBe(Enumerable.Range(1, i).Select(i => KeyValuePair.Create(i, i.ToString())));
+                other0.Count.ShouldBe(i);
 
                 if (i > 0)
                 {
                     var other1 = ss[i].Remove(1);
-                    other1.Should().Equal(Enumerable.Range(2, i - 1).Select(i => KeyValuePair.Create(i, i.ToString())));
-                    other1.Count.Should().Be(i - 1);
+                    other1.ShouldBe(Enumerable.Range(2, i - 1).Select(i => KeyValuePair.Create(i, i.ToString())));
+                    other1.Count.ShouldBe(i - 1);
                 }
 
                 var add2 = ss[i].Add(i, i.ToString()).Add(i, i.ToString());
-                add2.Count.Should().Be(i + 2);
-                add2.Should().Equal(Enumerable.Range(1, i).Append(i).Append(i).OrderBy(i => i).Select(i => KeyValuePair.Create(i, i.ToString())).ToArray());
+                add2.Count.ShouldBe(i + 2);
+                add2.ShouldBe(Enumerable.Range(1, i).Append(i).Append(i).OrderBy(i => i).Select(i => KeyValuePair.Create(i, i.ToString())).ToArray());
             }
         }
 
@@ -81,33 +81,33 @@ namespace Kzrnm.Competitive.Testing.Collection
         public void RemoveMinMax()
         {
             var sd = PersistentSetDictionary<int, int>.Empty(isMulti: true);
-            sd.Should().Equal();
+            sd.ShouldBeEmpty();
             sd = sd.Add(1, 1);
             sd = sd.Add(1, 2);
             sd = sd.Add(2, 1);
             sd = sd.Add(2, 2);
-            sd.Should().Equal(new[] {
+            sd.ShouldBe(new[] {
                 KeyValuePair.Create(1, 2),
                 KeyValuePair.Create(1, 1),
                 KeyValuePair.Create(2, 2),
                 KeyValuePair.Create(2, 1),
             });
 
-            sd.Min.Should().Be(KeyValuePair.Create(1, 2));
-            sd.RemoveMin(out var min).Should().Equal(new[] {
+            sd.Min.ShouldBe(KeyValuePair.Create(1, 2));
+            sd.RemoveMin(out var min).ShouldBe(new[] {
                 KeyValuePair.Create(1, 1),
                 KeyValuePair.Create(2, 2),
                 KeyValuePair.Create(2, 1),
             });
-            min.Should().Be(KeyValuePair.Create(1, 2));
+            min.ShouldBe(KeyValuePair.Create(1, 2));
 
-            sd.Max.Should().Be(KeyValuePair.Create(2, 1));
-            sd.RemoveMax(out var max).Should().Equal(new[] {
+            sd.Max.ShouldBe(KeyValuePair.Create(2, 1));
+            sd.RemoveMax(out var max).ShouldBe(new[] {
                 KeyValuePair.Create(1, 2),
                 KeyValuePair.Create(1, 1),
                 KeyValuePair.Create(2, 2),
             });
-            max.Should().Be(KeyValuePair.Create(2, 1));
+            max.ShouldBe(KeyValuePair.Create(2, 1));
         }
     }
 }

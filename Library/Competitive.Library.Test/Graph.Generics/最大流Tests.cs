@@ -17,8 +17,8 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 3, 6);
             gb.Add(4, 0, 1);
             var graph = gb.ToMFGraph();
-            graph.Flow(0, 1).Should().Be(1);
-            graph.Flow(0, 3).Should().Be(46);
+            graph.Flow(0, 1).ShouldBe(1);
+            graph.Flow(0, 3).ShouldBe(46);
         }
 
         [Fact]
@@ -35,8 +35,8 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 3, 6);
             gb.Add(4, 0, 1);
             var graph = gb.ToMFGraph();
-            graph.Flow(0, 1).Should().Be(1);
-            graph.Flow(0, 3).Should().Be(46);
+            graph.Flow(0, 1).ShouldBe(1);
+            graph.Flow(0, 3).ShouldBe(46);
         }
     }
 }

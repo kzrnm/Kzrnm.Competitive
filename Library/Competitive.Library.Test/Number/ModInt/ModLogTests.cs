@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive.Testing.Number
         [InlineData(2, 3, 4, -1)]
         public void Solve(long a, long b, long p, long expected)
         {
-            ModLog.Solve(a, b, p).Should().Be(expected, "a={0}, b={1}, p={2}, expected={3}", a, b, p, expected);
+            ModLog.Solve(a, b, p).ShouldBe(expected, $"a={a}, b={b}, p={p}, expected={expected}");
         }
 
         [Fact]
@@ -37,7 +37,7 @@ namespace Kzrnm.Competitive.Testing.Number
                 long b = 1;
                 for (int i = 0; i < 10; i++)
                 {
-                    ModLog.Solve(a, b, p).Should().Be(i, "a={0}, b={1}, p={2}, expected={3}", a, b, p, i);
+                    ModLog.Solve(a, b, p).ShouldBe(i, $"a={a}, b={b}, p={p}, expected={i}");
                     b = b * a % p;
                 }
             }
@@ -46,8 +46,8 @@ namespace Kzrnm.Competitive.Testing.Number
         [Fact]
         public void Mod1()
         {
-            ModLog.Solve(0, 0, 1).Should().Be(0);
-            ModLog.Solve(0, 0, 1, false).Should().Be(1);
+            ModLog.Solve(0, 0, 1).ShouldBe(0);
+            ModLog.Solve(0, 0, 1, false).ShouldBe(1);
         }
 
         [Fact]
@@ -58,10 +58,10 @@ namespace Kzrnm.Competitive.Testing.Number
                     for (int b = 0; b < p; b++)
                     {
                         var expected = Native(a, b, p, true);
-                        ModLog.Solve(a, b, p).Should().Be(expected, "a={0}, b={1}, p={2}, expected={3}", a, b, p, expected);
+                        ModLog.Solve(a, b, p).ShouldBe(expected, $"a={a}, b={b}, p={p}, expected={expected}");
 
                         expected = Native(a, b, p, false);
-                        ModLog.Solve(a, b, p, false).Should().Be(expected, "a={0}, b={1}, p={2}, expected={3}", a, b, p, expected);
+                        ModLog.Solve(a, b, p, false).ShouldBe(expected, $"a={a}, b={b}, p={p}, expected={expected}");
                     }
         }
 

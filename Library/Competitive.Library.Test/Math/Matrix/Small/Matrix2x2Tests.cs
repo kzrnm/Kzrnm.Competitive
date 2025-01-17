@@ -7,8 +7,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         public void Property()
         {
             var mat = new LongMatrix2x2((1, 2), (3, 4));
-            mat.Row0.Should().Be((1, 2));
-            mat.Row1.Should().Be((3, 4));
+            mat.Row0.ShouldBe((1, 2));
+            mat.Row1.ShouldBe((3, 4));
         }
 
         [Fact]
@@ -18,7 +18,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (-new LongMatrix2x2(
                 (1, 2),
                 (5, 6)
-            )).Should().Be(new LongMatrix2x2(
+            )).ShouldBe(new LongMatrix2x2(
                 (-1, -2),
                 (-5, -6)
             ));
@@ -58,8 +58,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(Add_Data))]
         public void Add(LongMatrix2x2 mat1, LongMatrix2x2 mat2, LongMatrix2x2 expected)
         {
-            (mat1 + mat2).Should().Be(expected);
-            (mat2 + mat1).Should().Be(expected);
+            (mat1 + mat2).ShouldBe(expected);
+            (mat2 + mat1).ShouldBe(expected);
         }
 
         public static TheoryData Subtract_Data => new TheoryData<LongMatrix2x2, LongMatrix2x2, LongMatrix2x2>
@@ -106,7 +106,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(Subtract_Data))]
         public void Subtract(LongMatrix2x2 mat1, LongMatrix2x2 mat2, LongMatrix2x2 expected)
         {
-            (mat1 - mat2).Should().Be(expected);
+            (mat1 - mat2).ShouldBe(expected);
         }
 
         public static TheoryData Multiply_Data => new TheoryData<LongMatrix2x2, LongMatrix2x2, LongMatrix2x2>
@@ -154,7 +154,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(Multiply_Data))]
         public void Multiply(LongMatrix2x2 mat1, LongMatrix2x2 mat2, LongMatrix2x2 expected)
         {
-            (mat1 * mat2).Should().Be(expected);
+            (mat1 * mat2).ShouldBe(expected);
         }
 
         public static TheoryData MultiplyScalar_Data => new TheoryData<long, LongMatrix2x2, LongMatrix2x2>
@@ -185,7 +185,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(MultiplyScalar_Data))]
         public void MultiplyScalar(long a, LongMatrix2x2 mat, LongMatrix2x2 expected)
         {
-            (mat * a).Should().Be(expected);
+            (mat * a).ShouldBe(expected);
         }
 
         public static TheoryData MultiplyVector_Data => new TheoryData<LongMatrix2x2, (long, long), (long, long)>
@@ -213,9 +213,9 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(MultiplyVector_Data))]
         public void MultiplyVector(LongMatrix2x2 mat, (long v0, long v1) vector, (long, long) expected)
         {
-            (mat * vector).Should().Be(expected);
-            mat.Multiply(vector).Should().Be(expected);
-            mat.Multiply(vector.v0, vector.v1).Should().Be(expected);
+            (mat * vector).ShouldBe(expected);
+            mat.Multiply(vector).ShouldBe(expected);
+            mat.Multiply(vector.v0, vector.v1).ShouldBe(expected);
         }
 
         [Fact]
@@ -226,14 +226,14 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     (1, -2),
                     (5, 6)
                 );
-            orig.Pow(7).Should().Be(new LongMatrix2x2(
+            orig.Pow(7).ShouldBe(new LongMatrix2x2(
                     (-6959, 6526),
                     (-16315, -23274)
                 ));
             var cur = orig;
             for (int i = 1; i < 10; i++)
             {
-                orig.Pow(i).Should().Be(cur);
+                orig.Pow(i).ShouldBe(cur);
                 cur *= orig;
             }
         }
@@ -245,7 +245,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             new FractionMatrix2x2(
                 (10, -9),
                 (7, -12)
-            ).Determinant().Should().Be(-57);
+            ).Determinant().ShouldBe(-57);
         }
 
         [Fact]
@@ -257,12 +257,12 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 (7, -12)
             );
             var inv = orig.Inv();
-            inv.Should().Be(new FractionMatrix2x2(
+            inv.ShouldBe(new FractionMatrix2x2(
                 (12, -9),
                 (7, -10)
             ) * new Fraction(1, 57));
-            (orig * inv).Should().Be(FractionMatrix2x2.MultiplicativeIdentity);
-            (inv * orig).Should().Be(FractionMatrix2x2.MultiplicativeIdentity);
+            (orig * inv).ShouldBe(FractionMatrix2x2.MultiplicativeIdentity);
+            (inv * orig).ShouldBe(FractionMatrix2x2.MultiplicativeIdentity);
         }
 
         [Fact]
@@ -273,7 +273,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 (1, 2),
                 (3, 4)
             );
-            mat.AsSpan().ToArray().Should().Equal([
+            mat.AsSpan().ToArray().ShouldBe([
                 1, 2,
                 3, 4
             ]);
@@ -287,7 +287,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 ((UInt24)1, (UInt24)2),
                 ((UInt24)3, (UInt24)4)
             );
-            mat.AsSpan().ToArray().Should().Equal([
+            mat.AsSpan().ToArray().ShouldBe([
                 (UInt24)1, (UInt24)2,
                 (UInt24)3, (UInt24)4
             ]);

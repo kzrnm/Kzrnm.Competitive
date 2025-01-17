@@ -23,10 +23,10 @@ namespace Kzrnm.Competitive.Testing.Comparer
                 new BitArray((int[])(object)new uint[] { 0xFF153215, 0x0 }),
                 new BitArray((int[])(object)new uint[] { 0xFF153215, 0x1 }),
             };
-            arr.Should().HaveSameCount(expected);
+            arr.Length.ShouldBe(expected.Length);
             for (int i = 0; i < arr.Length; i++)
             {
-                arr[i].Should().BeEquivalentTo(expected[i], "Index: {0}", i);
+                arr[i].ShouldBe(expected[i], $"Index: {i}");
             }
         }
 
@@ -48,10 +48,10 @@ namespace Kzrnm.Competitive.Testing.Comparer
                 new BitArray((int[])(object)new uint[] { 0xFF153215 }),
                 new BitArray((int[])(object)new uint[] { 0x0F153215 }),
             };
-            arr.Should().HaveSameCount(expected);
+            arr.Length.ShouldBe(expected.Length);
             for (int i = 0; i < arr.Length; i++)
             {
-                arr[i].Should().BeEquivalentTo(expected[i], "Index: {0}", i);
+                arr[i].ShouldBe(expected[i], $"Index: {i}");
             }
         }
     }

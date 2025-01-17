@@ -15,7 +15,7 @@ namespace Kzrnm.Competitive.Testing.Algorithm
                     foreach (ref var v in a.AsSpan())
                         v = rnd.Next(len) + 1;
 
-                    InversionNumber.Inversion(a).Should().Be(Naive((ReadOnlySpan<int>)a));
+                    InversionNumber.Inversion(a).ShouldBe(Naive((ReadOnlySpan<int>)a));
                 }
         }
         [Fact]
@@ -29,7 +29,7 @@ namespace Kzrnm.Competitive.Testing.Algorithm
                     foreach (ref var v in a.AsSpan())
                         v = (char)(rnd.Next(26) + 'A');
 
-                    InversionNumber.Inversion(a).Should().Be(Naive<char>(a));
+                    InversionNumber.Inversion(a).ShouldBe(Naive<char>(a));
                 }
         }
 

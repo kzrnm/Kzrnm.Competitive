@@ -22,15 +22,15 @@ namespace Kzrnm.Competitive.Testing.Collection
                 for (int j = i + 1; j < N; j++)
                 {
                     queues[i + 1][j] = queues[i][j].Dequeue(out var v);
-                    v.Should().Be(i);
+                    v.ShouldBe(i);
                 }
             }
             for (int i = 0; i + 1 < N; i++)
             {
-                queues[i][i].Should().BeSameAs(BankersQueue<int>.Empty);
+                queues[i][i].ShouldBeSameAs(BankersQueue<int>.Empty);
                 for (int j = i + 1; j < N; j++)
                 {
-                    queues[i][j].Should().Equal(Enumerable.Range(i, j - i));
+                    queues[i][j].ShouldBe(Enumerable.Range(i, j - i));
                 }
             }
         }

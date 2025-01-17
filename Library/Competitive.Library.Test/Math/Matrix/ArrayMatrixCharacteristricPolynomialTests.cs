@@ -41,8 +41,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 new([-v[1, 0]]), new([-v[1, 1], 1]), new([-v[1, 2]]),
                 new([-v[2, 0]]), new([-v[2, 1]]), new([-v[2, 2], 1]))
                 .Determinant();
-            new ArrayMatrix<ModInt>(a, 3, 3).CharacteristricPolynomial().Should().Equal(expected.Coefficients);
-            new ArrayMatrix<ModInt>(a, 3, 3).CharacteristricPolynomial(false).Should().Equal((-expected).Coefficients);
+            new ArrayMatrix<ModInt>(a, 3, 3).CharacteristricPolynomial().ShouldBe(expected.Coefficients);
+            new ArrayMatrix<ModInt>(a, 3, 3).CharacteristricPolynomial(false).ShouldBe((-expected).Coefficients);
         }
 
         public static IEnumerable<Tuple<int[,]>> Size4_Data()
@@ -78,7 +78,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 new(new ModInt[] { -v[2, 0] }), new(new ModInt[] { -v[2, 1] }), new(new ModInt[] { -v[2, 2], 1 }), new(new ModInt[] { -v[2, 3] }),
                 new(new ModInt[] { -v[3, 0] }), new(new ModInt[] { -v[3, 1] }), new(new ModInt[] { -v[3, 2] }), new(new ModInt[] { -v[3, 3], 1 }))
                 .Determinant();
-            new ArrayMatrix<ModInt>(a, 4, 4).CharacteristricPolynomial().Should().Equal(expected.Coefficients);
+            new ArrayMatrix<ModInt>(a, 4, 4).CharacteristricPolynomial().ShouldBe(expected.Coefficients);
         }
 
         class PolynominalMatrix3x3<T> where T : INumberBase<T>

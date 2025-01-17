@@ -17,10 +17,10 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [MemberData(nameof(Distance_Data))]
         public void Distance(PointFraction p1, PointFraction p2, Fraction d2, double distance)
         {
-            p1.Distance2(p2).Should().Be(d2);
-            p2.Distance2(p1).Should().Be(d2);
-            p1.Distance(p2).Should().Be(distance);
-            p2.Distance(p1).Should().Be(distance);
+            p1.Distance2(p2).ShouldBe(d2);
+            p2.Distance2(p1).ShouldBe(d2);
+            p1.Distance(p2).ShouldBe(distance);
+            p2.Distance(p1).ShouldBe(distance);
         }
 
         public static PointFraction[] SortedPoints => new PointFraction[]
@@ -54,9 +54,8 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         {
             for (int i = 0; i < SortedPoints.Length; i++)
                 for (int j = 0; j < SortedPoints.Length; j++)
-                    SortedPoints[i].CompareTo(SortedPoints[j]).Should()
-                        .Be(i.CompareTo(j), "({0}).CompareTo(({1})) == {2}.CompareTo({3})",
-                        SortedPoints[i], SortedPoints[j], i, j);
+                    SortedPoints[i].CompareTo(SortedPoints[j])
+                        .ShouldBe(i.CompareTo(j), $"({SortedPoints[i]}).CompareTo(({SortedPoints[j]})) == {i}.CompareTo({j})");
         }
 
         public static TheoryData Inner_Data => new TheoryData<PointFraction, PointFraction, Fraction>
@@ -71,7 +70,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [MemberData(nameof(Inner_Data))]
         public void Inner(PointFraction p1, PointFraction p2, Fraction expected)
         {
-            p1.Inner(p2).Should().Be(expected);
+            p1.Inner(p2).ShouldBe(expected);
         }
 
         public static TheoryData Cross_Data => new TheoryData<PointFraction, PointFraction, Fraction>
@@ -86,7 +85,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [MemberData(nameof(Cross_Data))]
         public void Cross(PointFraction p1, PointFraction p2, Fraction expected)
         {
-            p1.Cross(p2).Should().Be(expected);
+            p1.Cross(p2).ShouldBe(expected);
         }
 
         public static TheoryData Area_Data => new TheoryData<PointFraction[], Fraction>
@@ -127,8 +126,8 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [MemberData(nameof(Area_Data))]
         public void Area(PointFraction[] points, Fraction expected)
         {
-            PointFraction.Area2(points).Should().Be(expected);
-            PointFraction.Area(points).Should().Be(expected / 2);
+            PointFraction.Area2(points).ShouldBe(expected);
+            PointFraction.Area(points).ShouldBe(expected / 2);
         }
 
         [Fact]
@@ -151,7 +150,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             };
             PointFraction.ConvexHull(points)
                 .Select(i => points[i])
-                .Should().Equal(
+                .ShouldBe([
                     (10000000, -10000000),
                     (40000000, 20000000),
                     (80000000, 60000000),
@@ -159,8 +158,8 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                     (110000000, 100000000),
                     (100000000, 100000000),
                     (40000000, 80000000),
-                    (-10000000, 50000000)
-                );
+                    (-10000000, 50000000),
+                ]);
         }
 
         [Fact]
@@ -185,7 +184,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             };
             PointFraction.ConvexHull(points)
                 .Select(i => points[i])
-                .Should().Equal(
+                .ShouldBe([
                     (0, 0),
                     (4, 0),
                     (10, 8),
@@ -194,8 +193,8 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                     (1, 8),
                     (-6, 6),
                     (-4, 4),
-                    (-1, 1)
-                );
+                    (-1, 1),
+                ]);
         }
 
         public static TheoryData 直線との距離_Data => new TheoryData<PointFraction, Fraction, Fraction, Fraction, double>
@@ -210,7 +209,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [MemberData(nameof(直線との距離_Data))]
         public void 直線との距離(PointFraction p, Fraction a, Fraction b, Fraction c, double expected)
         {
-            p.直線との距離(a, b, c).Should().Be(expected);
+            p.直線との距離(a, b, c).ShouldBe(expected);
         }
 
         public static TheoryData 直線_Data => new TheoryData<PointFraction, PointFraction, (Fraction, Fraction, Fraction)>
@@ -224,7 +223,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [MemberData(nameof(直線_Data))]
         public void 直線(PointFraction p1, PointFraction p2, (Fraction, Fraction, Fraction) expected)
         {
-            p1.直線(p2).Should().Be(expected);
+            p1.直線(p2).ShouldBe(expected);
         }
 
         public static TheoryData 垂直二等分線_Data => new TheoryData<PointFraction, PointFraction, (Fraction, Fraction, Fraction)>
@@ -238,7 +237,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [MemberData(nameof(垂直二等分線_Data))]
         public void 垂直二等分線(PointFraction p1, PointFraction p2, (Fraction, Fraction, Fraction) expected)
         {
-            p1.垂直二等分線(p2).Should().Be(expected);
+            p1.垂直二等分線(p2).ShouldBe(expected);
         }
 
         public static TheoryData 直線と直線の交点_Data => new TheoryData<Fraction, Fraction, Fraction, Fraction, Fraction, Fraction, PointFraction>
@@ -250,7 +249,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [MemberData(nameof(直線と直線の交点_Data))]
         public void 直線と直線の交点(Fraction a, Fraction b, Fraction c, Fraction u, Fraction v, Fraction w, PointFraction expected)
         {
-            PointFraction.直線と直線の交点(a, b, c, u, v, w).Should().Be(expected);
+            PointFraction.直線と直線の交点(a, b, c, u, v, w).ShouldBe(expected);
         }
 
         public static TheoryData 直線の垂線_Data => new TheoryData<Fraction, Fraction, PointFraction, (Fraction, Fraction, Fraction)>
@@ -264,7 +263,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [MemberData(nameof(直線の垂線_Data))]
         public void 直線の垂線(Fraction a, Fraction b, PointFraction p, (Fraction, Fraction, Fraction) expected)
         {
-            PointFraction.直線の垂線(a, b, p).Should().Be(expected);
+            PointFraction.直線の垂線(a, b, p).ShouldBe(expected);
         }
 
         public static TheoryData 円の位置関係_Data => new TheoryData<PointFraction, Fraction, PointFraction, Fraction, CirclePosition>
@@ -280,7 +279,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [MemberData(nameof(円の位置関係_Data))]
         public void 円の位置関係(PointFraction p1, Fraction r1, PointFraction p2, Fraction r2, CirclePosition expected)
         {
-            PointFraction.円の位置関係(p1, r1, p2, r2).Should().Be(expected);
+            PointFraction.円の位置関係(p1, r1, p2, r2).ShouldBe(expected);
         }
 
         public static TheoryData 線分が交差しているか_Data => new TheoryData<PointFraction, PointFraction, PointFraction, PointFraction, int>
@@ -305,15 +304,15 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [MemberData(nameof(線分が交差しているか_Data))]
         public void 線分が交差しているか(PointFraction a1, PointFraction b1, PointFraction a2, PointFraction b2, int expected)
         {
-            PointFraction.線分が交差しているか(a1, b1, a2, b2).Should().Be(expected);
-            PointFraction.線分が交差しているか(b1, a1, a2, b2).Should().Be(expected);
-            PointFraction.線分が交差しているか(a1, b1, b2, a2).Should().Be(expected);
-            PointFraction.線分が交差しているか(b1, a1, b2, a2).Should().Be(expected);
+            PointFraction.線分が交差しているか(a1, b1, a2, b2).ShouldBe(expected);
+            PointFraction.線分が交差しているか(b1, a1, a2, b2).ShouldBe(expected);
+            PointFraction.線分が交差しているか(a1, b1, b2, a2).ShouldBe(expected);
+            PointFraction.線分が交差しているか(b1, a1, b2, a2).ShouldBe(expected);
 
-            PointFraction.線分が交差しているか(a2, b2, a1, b1).Should().Be(expected);
-            PointFraction.線分が交差しているか(b2, a2, a1, b1).Should().Be(expected);
-            PointFraction.線分が交差しているか(a2, b2, b1, a1).Should().Be(expected);
-            PointFraction.線分が交差しているか(b2, a2, b1, a1).Should().Be(expected);
+            PointFraction.線分が交差しているか(a2, b2, a1, b1).ShouldBe(expected);
+            PointFraction.線分が交差しているか(b2, a2, a1, b1).ShouldBe(expected);
+            PointFraction.線分が交差しているか(a2, b2, b1, a1).ShouldBe(expected);
+            PointFraction.線分が交差しているか(b2, a2, b1, a1).ShouldBe(expected);
         }
 
         public static TheoryData 三角形に分割_Data => new TheoryData<PointFraction[], (PointFraction, PointFraction, PointFraction)[]>
@@ -363,7 +362,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [MemberData(nameof(三角形に分割_Data))]
         public void 三角形に分割(PointFraction[] s, (PointFraction, PointFraction, PointFraction)[] expected)
         {
-            PointFraction.三角形に分割(s).Should().Equal(expected);
+            PointFraction.三角形に分割(s).ShouldBe(expected);
         }
 
         [Fact]
@@ -379,7 +378,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                 };
                 cw.WriteLines(arr);
             }
-            utf8Wrapper.Read().Should().Be("""
+            utf8Wrapper.Read().ShouldBe("""
             1/1 2/1
             1/2 4/3
 

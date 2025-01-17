@@ -5,17 +5,8 @@ namespace Kzrnm.Competitive
 {
     public class 帰りもあるオイラーツアー<TEdge> where TEdge : IGraphEdge<TEdge>
     {
-        public readonly struct Event
+        public readonly record struct Event(int Parent, TEdge Edge, bool IsDown)
         {
-            public readonly bool IsDown;
-            public readonly int Parent;
-            public readonly TEdge Edge;
-            public Event(int parent, TEdge edge, bool isDown)
-            {
-                Parent = parent;
-                Edge = edge;
-                IsDown = isDown;
-            }
             [凾(256)]
             public Event Reverse() => new Event(Parent, Edge, !IsDown);
             [凾(256)]

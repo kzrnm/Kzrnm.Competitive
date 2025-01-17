@@ -13,16 +13,16 @@ namespace Kzrnm.Competitive.Testing.Collection
             pq.Enqueue(4, ("C", 'G'));
             pq.Enqueue(2, ("D", 'H'));
 
-            pq.TryDequeue(out var key, out var a, out var b).Should().BeTrue();
-            key.Should().Be(1); a.Should().Be("A"); b.Should().Be('E');
-            pq.TryDequeue(out key, out a, out b).Should().BeTrue();
-            key.Should().Be(2); a.Should().Be("D"); b.Should().Be('H');
-            pq.TryDequeue(out key, out a, out b).Should().BeTrue();
-            key.Should().Be(4); a.Should().Be("C"); b.Should().Be('G');
-            pq.TryDequeue(out key, out a, out b).Should().BeTrue();
-            key.Should().Be(5); a.Should().Be("B"); b.Should().Be('F');
+            pq.TryDequeue(out var key, out var a, out var b).ShouldBeTrue();
+            key.ShouldBe(1); a.ShouldBe("A"); b.ShouldBe('E');
+            pq.TryDequeue(out key, out a, out b).ShouldBeTrue();
+            key.ShouldBe(2); a.ShouldBe("D"); b.ShouldBe('H');
+            pq.TryDequeue(out key, out a, out b).ShouldBeTrue();
+            key.ShouldBe(4); a.ShouldBe("C"); b.ShouldBe('G');
+            pq.TryDequeue(out key, out a, out b).ShouldBeTrue();
+            key.ShouldBe(5); a.ShouldBe("B"); b.ShouldBe('F');
 
-            pq.TryDequeue(out _, out _, out _).Should().BeFalse();
+            pq.TryDequeue(out _, out _, out _).ShouldBeFalse();
         }
     }
 }

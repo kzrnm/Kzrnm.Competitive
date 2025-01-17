@@ -14,7 +14,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
         public void Match(string pattern, string target, int index)
         {
             var bm = BoyerMoore.Create(pattern);
-            bm.Match(target).Should().Be(index);
+            bm.Match(target).ShouldBe(index);
         }
     }
 }

@@ -33,7 +33,7 @@ namespace Kzrnm.Competitive.Testing.Algorithm
                 -4611686018427386836,
             };
 
-            Knapsack.SmallWeight(w.Zip(v).ToArray(), W).Should().Equal(expected[..(W + 1)]);
+            Knapsack.SmallWeight(w.Zip(v).ToArray(), W).ShouldBe(expected[..(W + 1)]);
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace Kzrnm.Competitive.Testing.Algorithm
                 11,
             };
 
-            Knapsack.SmallValue(w.Zip(v).ToArray()).Should().Equal(expected);
+            Knapsack.SmallValue(w.Zip(v).ToArray()).ShouldBe(expected);
         }
     }
 }

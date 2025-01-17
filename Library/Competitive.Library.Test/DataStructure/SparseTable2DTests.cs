@@ -11,8 +11,8 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         [Fact]
         public void Invalid()
         {
-            ((Action)(() => _ = new SparseTable2D<short, MinOp>([]))).Should().Throw<ContractAssertException>();
-            ((Action)(() => _ = new SparseTable2D<short, MinOp>([[]]))).Should().Throw<ContractAssertException>();
+            ((Action)(() => _ = new SparseTable2D<short, MinOp>([]))).ShouldThrow<ContractAssertException>();
+            ((Action)(() => _ = new SparseTable2D<short, MinOp>([[]]))).ShouldThrow<ContractAssertException>();
 
             var s = new SparseTable2D<short, MinOp>(Grid.Create(new[]
             {
@@ -21,25 +21,25 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 [7,8,9],
                 [10,11,12],
             }));
-            s.Invoking(s => s[-1..3][0..1]).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s[0..5][0..1]).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s[0..1][-1..]).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s[0..1][..5]).Should().Throw<ContractAssertException>();
+            Should.Throw<ContractAssertException>(() => s[-1..3][0..1]);
+            Should.Throw<ContractAssertException>(() => s[0..5][0..1]);
+            Should.Throw<ContractAssertException>(() => s[0..1][-1..]);
+            Should.Throw<ContractAssertException>(() => s[0..1][..5]);
             for (var i = 0; i < 5; i++)
             {
-                s.Invoking(s => s[i..i][0..1]).Should().Throw<ContractAssertException>();
-                s.Invoking(s => s[0..1][i..i]).Should().Throw<ContractAssertException>();
+                Should.Throw<ContractAssertException>(() => s[i..i][0..1]);
+                Should.Throw<ContractAssertException>(() => s[0..1][i..i]);
             }
 
 
-            s.Invoking(s => s.Prod(-1, 3, 0, 1)).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s.Prod(0, 5, 0, 1)).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s.Prod(0, 1, -1, 1)).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s.Prod(0, 1, 0, 5)).Should().Throw<ContractAssertException>();
+            Should.Throw<ContractAssertException>(() => s.Prod(-1, 3, 0, 1));
+            Should.Throw<ContractAssertException>(() => s.Prod(0, 5, 0, 1));
+            Should.Throw<ContractAssertException>(() => s.Prod(0, 1, -1, 1));
+            Should.Throw<ContractAssertException>(() => s.Prod(0, 1, 0, 5));
             for (var i = 0; i < 5; i++)
             {
-                s.Invoking(s => s.Prod(i, i, 0, 1)).Should().Throw<ContractAssertException>();
-                s.Invoking(s => s.Prod(0, 1, i, i)).Should().Throw<ContractAssertException>();
+                Should.Throw<ContractAssertException>(() => s.Prod(i, i, 0, 1));
+                Should.Throw<ContractAssertException>(() => s.Prod(0, 1, i, i));
             }
         }
 
@@ -64,8 +64,8 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                                 for (var rw = lw + 1; rw <= lenW; rw++)
                                 {
                                     var expected = native.Prod(lh, rh, lw, rw);
-                                    st[lh..rh][lw..rw].Should().Be(expected);
-                                    st.Prod(lh, rh, lw, rw).Should().Be(expected);
+                                    st[lh..rh][lw..rw].ShouldBe(expected);
+                                    st.Prod(lh, rh, lw, rw).ShouldBe(expected);
                                 }
                 }
         }

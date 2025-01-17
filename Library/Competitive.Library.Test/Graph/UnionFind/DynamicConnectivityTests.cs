@@ -11,7 +11,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             {
                 for (int i = 0; i < 5; i++)
                     for (int j = 0; j < 5; j++)
-                        dc.Same(i, j).Should().Be(connect[i, j], "connect[{0}, {1}] should be ", i, j, connect[i, j]);
+                        dc.Same(i, j).ShouldBe(connect[i, j], $"connect[{i}, {j}] should be {connect[i, j]}");
             }
 
             ShouldConnectEqual(new bool[5, 5]

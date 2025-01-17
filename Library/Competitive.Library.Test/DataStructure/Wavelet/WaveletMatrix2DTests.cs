@@ -22,10 +22,10 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 for (int r = l + 1; r <= orig.Length; r++)
                     for (int u = 0; u <= 7; u++)
                     {
-                        matrix.RectSum(l, r, u).Should().Be(RectSumNative(l, r, u));
+                        matrix.RectSum(l, r, u).ShouldBe(RectSumNative(l, r, u));
                         for (int d = 0; d <= u; d++)
                         {
-                            matrix.RectSum(l, r, d, u).Should().Be(RectSumNative2(l, r, d, u));
+                            matrix.RectSum(l, r, d, u).ShouldBe(RectSumNative2(l, r, d, u));
                         }
                     }
             //matrix.RectSum(0, 1, 
@@ -66,10 +66,10 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 for (int r = l + 1; r <= orig.Length; r++)
                     for (int u = 0; u <= 7; u++)
                     {
-                        matrix.RectSum(l, r, u).Should().Be(RectSumNative(l, r, u));
+                        matrix.RectSum(l, r, u).ShouldBe(RectSumNative(l, r, u));
                         for (int d = 0; d <= u; d++)
                         {
-                            matrix.RectSum(l, r, d, u).Should().Be(RectSumNative2(l, r, d, u));
+                            matrix.RectSum(l, r, d, u).ShouldBe(RectSumNative2(l, r, d, u));
                         }
                     }
 
@@ -83,10 +83,10 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 for (int r = l + 1; r <= orig.Length; r++)
                     for (int u = 0; u <= 7; u++)
                     {
-                        matrix.RectSum(l, r, u).Should().Be(RectSumNative(l, r, u));
+                        matrix.RectSum(l, r, u).ShouldBe(RectSumNative(l, r, u));
                         for (int d = 0; d <= u; d++)
                         {
-                            matrix.RectSum(l, r, d, u).Should().Be(RectSumNative2(l, r, d, u));
+                            matrix.RectSum(l, r, d, u).ShouldBe(RectSumNative2(l, r, d, u));
                         }
                     }
 

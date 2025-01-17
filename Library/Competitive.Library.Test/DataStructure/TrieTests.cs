@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         public void GetChildTest()
         {
             var trie = new Trie<int, int>();
-            trie.GetChild(stackalloc int[] { 1, 2, 3 }).Should().BeNull();
+            trie.GetChild(stackalloc int[] { 1, 2, 3 }).ShouldBeNull();
         }
 
         [Fact]
@@ -24,48 +24,51 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         {
             var trie = new Trie<int, int>();
             trie.Add(stackalloc int[] { 1, 2, 3 }, -1);
-            trie.GetChild(stackalloc int[] { 1, 2, 3 }).Value.Should().Be(-1);
-            trie.HasValue.Should().BeFalse();
+            trie.GetChild(stackalloc int[] { 1, 2, 3 }).Value.ShouldBe(-1);
+            trie.HasValue.ShouldBeFalse();
 
             SortedDictionary<int, Trie<int, int>> dic;
 
             dic = TrieDic(trie);
-            dic.Should().ContainKey(1).And.HaveCount(1);
+            dic.ShouldContainKey(1);
+            dic.Count.ShouldBe(1);
 
             trie = dic[1];
-            trie.HasValue.Should().BeFalse();
+            trie.HasValue.ShouldBeFalse();
             dic = TrieDic(trie);
-            dic.Should().ContainKey(2).And.HaveCount(1);
+            dic.ShouldContainKey(2);
+            dic.Count.ShouldBe(1);
 
             trie = dic[2];
-            trie.HasValue.Should().BeFalse();
+            trie.HasValue.ShouldBeFalse();
             dic = TrieDic(trie);
-            dic.Should().ContainKey(3).And.HaveCount(1);
+            dic.ShouldContainKey(3);
+            dic.Count.ShouldBe(1);
 
             trie = dic[3];
-            trie.HasValue.Should().BeTrue();
-            trie.Value.Should().Be(-1);
+            trie.HasValue.ShouldBeTrue();
+            trie.Value.ShouldBe(-1);
             dic = TrieDic(trie);
-            dic.Should().BeEmpty();
+            dic.ShouldBeEmpty();
         }
 
         [Fact]
         public void GetTest()
         {
             var trie = new Trie<int, int>();
-            trie.Add(stackalloc int[] { 1, 2, 3 }, -1);
+            trie.Add([1, 2, 3], -1);
 
-            trie.TryGet(stackalloc int[] { 1, 2 }, out _).Should().BeFalse();
-            trie.TryGet(stackalloc int[] { 1, 2, 2 }, out _).Should().BeFalse();
-            trie.TryGet(stackalloc int[] { 1, 2, 3, 4 }, out _).Should().BeFalse();
+            trie.TryGet([1, 2], out _).ShouldBeFalse();
+            trie.TryGet([1, 2, 2], out _).ShouldBeFalse();
+            trie.TryGet([1, 2, 3, 4], out _).ShouldBeFalse();
 
-            trie.Invoking(trie => trie[stackalloc int[] { 1, 2 }]).Should().Throw<KeyNotFoundException>();
-            trie.Invoking(trie => trie[stackalloc int[] { 1, 2, 2 }]).Should().Throw<KeyNotFoundException>();
-            trie.Invoking(trie => trie[stackalloc int[] { 1, 2, 3, 4 }]).Should().Throw<KeyNotFoundException>();
+            Should.Throw<KeyNotFoundException>(() => trie[[1, 2]]);
+            Should.Throw<KeyNotFoundException>(() => trie[[1, 2, 2]]);
+            Should.Throw<KeyNotFoundException>(() => trie[[1, 2, 3, 4]]);
 
-            trie.TryGet(stackalloc int[] { 1, 2, 3 }, out var val).Should().BeTrue();
-            val.Should().Be(-1);
-            trie[stackalloc int[] { 1, 2, 3 }].Should().Be(-1);
+            trie.TryGet([1, 2, 3], out var val).ShouldBeTrue();
+            val.ShouldBe(-1);
+            trie[[1, 2, 3]].ShouldBe(-1);
         }
 
 
@@ -81,10 +84,10 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             trie.Add(stackalloc int[] { 3, 2, 1 }, 5);
 
             for (int i = 0; i < 6; i++)
-                trie[i].Should().Be(i);
+                trie[i].ShouldBe(i);
 
-            trie.Invoking(trie => trie[-1]).Should().Throw<IndexOutOfRangeException>();
-            trie.Invoking(trie => trie[6]).Should().Throw<IndexOutOfRangeException>();
+            Should.Throw<IndexOutOfRangeException>(() => trie[-1]);
+            Should.Throw<IndexOutOfRangeException>(() => trie[6]);
         }
 
         [Fact]
@@ -93,51 +96,56 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             var trie = new Trie<int, int>();
             trie.Add(stackalloc int[] { 1, 2 }, 10);
             trie.Add(stackalloc int[] { 1, 2, 3 }, -1);
-            trie.GetChild(stackalloc int[] { 1, 2 }).Value.Should().Be(10);
-            trie.GetChild(stackalloc int[] { 1, 2, 3 }).Value.Should().Be(-1);
-            trie.HasValue.Should().BeFalse();
+            trie.GetChild(stackalloc int[] { 1, 2 }).Value.ShouldBe(10);
+            trie.GetChild(stackalloc int[] { 1, 2, 3 }).Value.ShouldBe(-1);
+            trie.HasValue.ShouldBeFalse();
 
             Trie<int, int> tt;
             SortedDictionary<int, Trie<int, int>> dic;
 
             tt = trie;
             dic = TrieDic(tt);
-            dic.Should().ContainKey(1).And.HaveCount(1);
+            dic.ShouldContainKey(1);
+            dic.Count.ShouldBe(1);
 
             tt = dic[1];
-            tt.HasValue.Should().BeFalse();
+            tt.HasValue.ShouldBeFalse();
             dic = TrieDic(tt);
-            dic.Should().ContainKey(2).And.HaveCount(1);
+            dic.ShouldContainKey(2);
+            dic.Count.ShouldBe(1);
 
             tt = dic[2];
-            tt.HasValue.Should().BeTrue();
-            tt.Value.Should().Be(10);
+            tt.HasValue.ShouldBeTrue();
+            tt.Value.ShouldBe(10);
             dic = TrieDic(tt);
-            dic.Should().ContainKey(3).And.HaveCount(1);
+            dic.ShouldContainKey(3);
+            dic.Count.ShouldBe(1);
 
             tt = dic[3];
-            tt.HasValue.Should().BeTrue();
-            tt.Value.Should().Be(-1);
+            tt.HasValue.ShouldBeTrue();
+            tt.Value.ShouldBe(-1);
             dic = TrieDic(tt);
-            dic.Should().BeEmpty();
+            dic.ShouldBeEmpty();
 
             // remove last
             trie.Remove(stackalloc int[] { 1, 2, 3 });
 
             tt = trie;
             dic = TrieDic(tt);
-            dic.Should().ContainKey(1).And.HaveCount(1);
+            dic.ShouldContainKey(1);
+            dic.Count.ShouldBe(1);
 
             tt = dic[1];
-            tt.HasValue.Should().BeFalse();
+            tt.HasValue.ShouldBeFalse();
             dic = TrieDic(tt);
-            dic.Should().ContainKey(2).And.HaveCount(1);
+            dic.ShouldContainKey(2);
+            dic.Count.ShouldBe(1);
 
             tt = dic[2];
-            tt.HasValue.Should().BeTrue();
-            tt.Value.Should().Be(10);
+            tt.HasValue.ShouldBeTrue();
+            tt.Value.ShouldBe(10);
             dic = TrieDic(tt);
-            dic.Should().BeEmpty();
+            dic.ShouldBeEmpty();
 
 
             // remove mid
@@ -146,23 +154,26 @@ namespace Kzrnm.Competitive.Testing.DataStructure
 
             tt = trie;
             dic = TrieDic(tt);
-            dic.Should().ContainKey(1).And.HaveCount(1);
+            dic.ShouldContainKey(1);
+            dic.Count.ShouldBe(1);
 
             tt = dic[1];
-            tt.HasValue.Should().BeFalse();
+            tt.HasValue.ShouldBeFalse();
             dic = TrieDic(tt);
-            dic.Should().ContainKey(2).And.HaveCount(1);
+            dic.ShouldContainKey(2);
+            dic.Count.ShouldBe(1);
 
             tt = dic[2];
-            tt.HasValue.Should().BeFalse();
+            tt.HasValue.ShouldBeFalse();
             dic = TrieDic(tt);
-            dic.Should().ContainKey(3).And.HaveCount(1);
+            dic.ShouldContainKey(3);
+            dic.Count.ShouldBe(1);
 
             tt = dic[3];
-            tt.HasValue.Should().BeTrue();
-            tt.Value.Should().Be(-2);
+            tt.HasValue.ShouldBeTrue();
+            tt.Value.ShouldBe(-2);
             dic = TrieDic(tt);
-            dic.Should().BeEmpty();
+            dic.ShouldBeEmpty();
 
 
             // remove last one
@@ -170,7 +181,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
 
             tt = trie;
             dic = TrieDic(tt);
-            dic.Should().BeEmpty();
+            dic.ShouldBeEmpty();
         }
 
 
@@ -178,23 +189,23 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         public void CountTest()
         {
             var trie = new Trie<int, int>();
-            trie.Count.Should().Be(0);
+            trie.Count.ShouldBe(0);
             trie.Add(stackalloc int[] { 1, 2, 3 }, -1);
             trie.Add(stackalloc int[] { 1, 2 }, -1);
             trie.Add(stackalloc int[] { 2, 2, 4 }, -1);
-            trie.Count.Should().Be(3);
-            trie.GetChild(stackalloc int[] { 1, 2, 3 }).Count.Should().Be(1);
-            trie.GetChild(stackalloc int[] { 1, 2 }).Count.Should().Be(2);
+            trie.Count.ShouldBe(3);
+            trie.GetChild(stackalloc int[] { 1, 2, 3 }).Count.ShouldBe(1);
+            trie.GetChild(stackalloc int[] { 1, 2 }).Count.ShouldBe(2);
 
             trie.Remove(stackalloc int[] { 2, 2, 4 });
-            trie.Count.Should().Be(2);
-            trie.GetChild(stackalloc int[] { 1, 2, 3 }).Count.Should().Be(1);
-            trie.GetChild(stackalloc int[] { 1, 2 }).Count.Should().Be(2);
+            trie.Count.ShouldBe(2);
+            trie.GetChild(stackalloc int[] { 1, 2, 3 }).Count.ShouldBe(1);
+            trie.GetChild(stackalloc int[] { 1, 2 }).Count.ShouldBe(2);
 
             trie.Remove(stackalloc int[] { 1, 2 });
-            trie.Count.Should().Be(1);
-            trie.GetChild(stackalloc int[] { 1, 2, 3 }).Count.Should().Be(1);
-            trie.GetChild(stackalloc int[] { 1, 2 }).Count.Should().Be(1);
+            trie.Count.ShouldBe(1);
+            trie.GetChild(stackalloc int[] { 1, 2, 3 }).Count.ShouldBe(1);
+            trie.GetChild(stackalloc int[] { 1, 2 }).Count.ShouldBe(1);
         }
 
 
@@ -221,12 +232,12 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         };
             foreach (var (exKey, exVal) in expected)
             {
-                all.MoveNext().Should().BeTrue();
+                all.MoveNext().ShouldBeTrue();
                 var (key, val) = all.Current;
-                key.Should().Equal(exKey);
-                val.Should().Be(exVal);
+                key.ShouldBe(exKey);
+                val.ShouldBe(exVal);
             }
-            all.MoveNext().Should().BeFalse();
+            all.MoveNext().ShouldBeFalse();
         }
 
         [Fact]
@@ -249,12 +260,12 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             };
             foreach (var (exKey, exVal) in expected)
             {
-                greedy.MoveNext().Should().BeTrue();
+                greedy.MoveNext().ShouldBeTrue();
                 var (key, val) = greedy.Current;
-                key.ToArray().Should().Equal(exKey);
-                val.Should().Be(exVal);
+                key.ToArray().ShouldBe(exKey);
+                val.ShouldBe(exVal);
             }
-            greedy.MoveNext().Should().BeFalse();
+            greedy.MoveNext().ShouldBeFalse();
         }
     }
 }

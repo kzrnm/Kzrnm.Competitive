@@ -14,7 +14,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
         [InlineData(17, 0, 1)]
         public void Pow(long x, int y, long expected)
         {
-            x.Pow(y).Should().Be(expected);
+            x.Pow(y).ShouldBe(expected);
         }
     }
 }

@@ -35,13 +35,13 @@ namespace Kzrnm.Competitive.Testing.Number
             {
                 for (int j = 0; j < 100; j++)
                 {
-                    (new DynamicMontgomeryModInt<Mod1ID>(i) * j).Value.Should().Be(0);
+                    (new DynamicMontgomeryModInt<Mod1ID>(i) * j).Value.ShouldBe(0);
                 }
             }
-            (new DynamicMontgomeryModInt<Mod1ID>(1234) + 5678).Value.Should().Be(0);
-            (new DynamicMontgomeryModInt<Mod1ID>(1234) - 5678).Value.Should().Be(0);
-            (new DynamicMontgomeryModInt<Mod1ID>(1234) * 5678).Value.Should().Be(0);
-            (new DynamicMontgomeryModInt<Mod1ID>(0).Inv()).Value.Should().Be(0);
+            (new DynamicMontgomeryModInt<Mod1ID>(1234) + 5678).Value.ShouldBe(0);
+            (new DynamicMontgomeryModInt<Mod1ID>(1234) - 5678).Value.ShouldBe(0);
+            (new DynamicMontgomeryModInt<Mod1ID>(1234) * 5678).Value.ShouldBe(0);
+            (new DynamicMontgomeryModInt<Mod1ID>(0).Inv()).Value.ShouldBe(0);
         }
 
         [Fact]
@@ -61,7 +61,7 @@ namespace Kzrnm.Competitive.Testing.Number
                 {
                     if (Gcd(i, mod) != 1) continue;
                     int x = new DynamicMontgomeryModInt<T>(i).Inv().Value;
-                    ((long)x * i % mod).Should().Be(1);
+                    ((long)x * i % mod).ShouldBe(1);
                 }
             }
         }
@@ -72,27 +72,27 @@ namespace Kzrnm.Competitive.Testing.Number
         {
             DynamicMontgomeryModInt<IncrementID> a;
             a = 8;
-            (++a).Value.Should().Be(9);
-            (++a).Value.Should().Be(10);
-            (++a).Value.Should().Be(0);
-            (++a).Value.Should().Be(1);
+            (++a).Value.ShouldBe(9);
+            (++a).Value.ShouldBe(10);
+            (++a).Value.ShouldBe(0);
+            (++a).Value.ShouldBe(1);
             a = 3;
-            (--a).Value.Should().Be(2);
-            (--a).Value.Should().Be(1);
-            (--a).Value.Should().Be(0);
-            (--a).Value.Should().Be(10);
+            (--a).Value.ShouldBe(2);
+            (--a).Value.ShouldBe(1);
+            (--a).Value.ShouldBe(0);
+            (--a).Value.ShouldBe(10);
             a = 8;
-            (a++).Value.Should().Be(8);
-            (a++).Value.Should().Be(9);
-            (a++).Value.Should().Be(10);
-            (a++).Value.Should().Be(0);
-            a.Value.Should().Be(1);
+            (a++).Value.ShouldBe(8);
+            (a++).Value.ShouldBe(9);
+            (a++).Value.ShouldBe(10);
+            (a++).Value.ShouldBe(0);
+            a.Value.ShouldBe(1);
             a = 3;
-            (a--).Value.Should().Be(3);
-            (a--).Value.Should().Be(2);
-            (a--).Value.Should().Be(1);
-            (a--).Value.Should().Be(0);
-            a.Value.Should().Be(10);
+            (a--).Value.ShouldBe(3);
+            (a--).Value.ShouldBe(2);
+            (a--).Value.ShouldBe(1);
+            (a--).Value.ShouldBe(0);
+            a.Value.ShouldBe(10);
         }
 
         [Fact]
@@ -122,28 +122,28 @@ namespace Kzrnm.Competitive.Testing.Number
                 {
                     var s = n.ToString();
                     var expected = (n % mod + mod) % mod;
-                    DynamicMontgomeryModInt<T>.TryParse(s, out var num1).Should().BeTrue();
+                    DynamicMontgomeryModInt<T>.TryParse(s, out var num1).ShouldBeTrue();
                     var num2 = DynamicMontgomeryModInt<T>.Parse(s);
 
-                    num1.Value.Should().Be(expected);
-                    num2.Value.Should().Be(expected);
+                    num1.Value.ShouldBe(expected);
+                    num2.Value.ShouldBe(expected);
                 }
 
                 foreach (var n in bigs)
                 {
                     var s = n.ToString();
                     var expected = (int)(n % mod + mod) % mod;
-                    DynamicMontgomeryModInt<T>.TryParse(s, out var num1).Should().BeTrue();
+                    DynamicMontgomeryModInt<T>.TryParse(s, out var num1).ShouldBeTrue();
                     var num2 = DynamicMontgomeryModInt<T>.Parse(s);
 
-                    num1.Value.Should().Be(expected);
-                    num2.Value.Should().Be(expected);
+                    num1.Value.ShouldBe(expected);
+                    num2.Value.ShouldBe(expected);
                 }
 
                 foreach (var s in invalids)
                 {
-                    DynamicMontgomeryModInt<T>.TryParse(s, out _).Should().BeFalse();
-                    s.Invoking(s => DynamicMontgomeryModInt<T>.Parse(s)).Should().ThrowExactly<FormatException>();
+                    DynamicMontgomeryModInt<T>.TryParse(s, out _).ShouldBeFalse();
+                    Should.Throw<FormatException>(() => DynamicMontgomeryModInt<T>.Parse(s));
                 }
             }
         }
@@ -151,9 +151,9 @@ namespace Kzrnm.Competitive.Testing.Number
         [Fact]
         public void ConstructorStatic()
         {
-            new DynamicMontgomeryModInt<ConstructorID>(3).Value.Should().Be(3);
-            new DynamicMontgomeryModInt<ConstructorID>(-10).Value.Should().Be(1);
-            (1 + new DynamicMontgomeryModInt<ConstructorID>(1)).Value.Should().Be(2);
+            new DynamicMontgomeryModInt<ConstructorID>(3).Value.ShouldBe(3);
+            new DynamicMontgomeryModInt<ConstructorID>(-10).Value.ShouldBe(1);
+            (1 + new DynamicMontgomeryModInt<ConstructorID>(1)).Value.ShouldBe(2);
         }
 
         [Fact]
@@ -171,7 +171,7 @@ namespace Kzrnm.Competitive.Testing.Number
                     expected[i] = v % 101;
                 }
                 arr.Select(m => m.Value).ToArray()
-                    .Should().Equal(expected);
+                    .ShouldBe(expected);
             }
         }
 
@@ -191,7 +191,7 @@ namespace Kzrnm.Competitive.Testing.Number
                 foreach (var i in cases)
                 {
                     int x = (-new DynamicMontgomeryModInt<T>(i)).Value;
-                    x.Should().Be((mod - i) % mod);
+                    x.ShouldBe((mod - i) % mod);
                 }
             }
         }
@@ -214,9 +214,9 @@ namespace Kzrnm.Competitive.Testing.Number
                 {
                     var m = new DynamicMontgomeryModInt<T>(i);
                     var expected = (i % mod).ToString();
-                    m.ToString().Should().Be(expected);
-                    m.TryFormat(chars, out var charsWritten, "", null).Should().BeTrue();
-                    new string(chars[..charsWritten]).Should().Be(expected);
+                    m.ToString().ShouldBe(expected);
+                    m.TryFormat(chars, out var charsWritten, "", null).ShouldBeTrue();
+                    new string(chars[..charsWritten]).ShouldBe(expected);
                 }
             }
         }

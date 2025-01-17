@@ -43,8 +43,8 @@ namespace Kzrnm.Competitive.Testing.Graph
         [MemberData(nameof(BfsData))]
         public void Bfs(int root, int[] expected)
         {
-            gb.ToTree(root).BfsDescendant().Should().Equal(expected);
-            wgb.ToTree(root).BfsDescendant().Should().Equal(expected);
+            gb.ToTree(root).BfsDescendant().ShouldBe(expected);
+            wgb.ToTree(root).BfsDescendant().ShouldBe(expected);
         }
 
         public static TheoryData DfsData => new TheoryData<int, int[]>
@@ -63,8 +63,8 @@ namespace Kzrnm.Competitive.Testing.Graph
         [MemberData(nameof(DfsData))]
         public void Dfs(int root, int[] expected)
         {
-            gb.ToTree(root).DfsDescendant().Should().Equal(expected);
-            wgb.ToTree(root).DfsDescendant().Should().Equal(expected);
+            gb.ToTree(root).DfsDescendant().ShouldBe(expected);
+            wgb.ToTree(root).DfsDescendant().ShouldBe(expected);
         }
 
         public static TheoryData DfsLeafData => new TheoryData<int, int[]>
@@ -83,8 +83,8 @@ namespace Kzrnm.Competitive.Testing.Graph
         [MemberData(nameof(DfsLeafData))]
         public void DfsLeaf(int root, int[] expected)
         {
-            gb.ToTree(root).DfsDescendantLeaf().Should().Equal(expected);
-            wgb.ToTree(root).DfsDescendantLeaf().Should().Equal(expected);
+            gb.ToTree(root).DfsDescendantLeaf().ShouldBe(expected);
+            wgb.ToTree(root).DfsDescendantLeaf().ShouldBe(expected);
         }
 
         public static TheoryData DfsEventsData => new TheoryData<int, int[]>
@@ -103,8 +103,8 @@ namespace Kzrnm.Competitive.Testing.Graph
         [MemberData(nameof(DfsEventsData))]
         public void DfsEvents(int root, int[] expected)
         {
-            gb.ToTree(root).DfsDescendantEvents().Should().Equal(expected);
-            wgb.ToTree(root).DfsDescendantEvents().Should().Equal(expected);
+            gb.ToTree(root).DfsDescendantEvents().ShouldBe(expected);
+            wgb.ToTree(root).DfsDescendantEvents().ShouldBe(expected);
         }
     }
 }

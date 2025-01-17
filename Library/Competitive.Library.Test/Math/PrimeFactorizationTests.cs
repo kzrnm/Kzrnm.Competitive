@@ -20,14 +20,14 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 })
                 {
                     var x = start + i;
-                    PrimeFactorization.IsPrime(x).Should().Be(p.IsPrime(x), "Value: {0}", x);
+                    PrimeFactorization.IsPrime(x).ShouldBe(p.IsPrime(x), $"Value: {x}");
                 }
             }
-            PrimeFactorization.IsPrime(200560490131).Should().Be(true);
-            PrimeFactorization.IsPrime(92709568269121).Should().Be(true);
-            PrimeFactorization.IsPrime(9007199254740997).Should().Be(true);
-            PrimeFactorization.IsPrime(1162193L * 1347377).Should().Be(false);
-            PrimeFactorization.IsPrime(89652331L * 96325939).Should().Be(false);
+            PrimeFactorization.IsPrime(200560490131).ShouldBe(true);
+            PrimeFactorization.IsPrime(92709568269121).ShouldBe(true);
+            PrimeFactorization.IsPrime(9007199254740997).ShouldBe(true);
+            PrimeFactorization.IsPrime(1162193L * 1347377).ShouldBe(false);
+            PrimeFactorization.IsPrime(89652331L * 96325939).ShouldBe(false);
         }
 
         public static TheoryData DivisorInt_Data => new TheoryData<int, int[]>
@@ -67,26 +67,24 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [MemberData(nameof(DivisorInt_Data))]
         public void DivisorInt(int num, int[] expected)
         {
-            PrimeFactorization.Divisor(num).Should().Equal(expected);
+            PrimeFactorization.Divisor(num).ShouldBe(expected);
         }
 
         [Fact]
         public void DivisorIntLarge()
         {
-            PrimeFactorization.Divisor(6480).Should()
-                .StartWith(new int[] { 1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 27, 30, 36, 40, 45, 48, 54, 60, 72, 80, 81 })
-                .And
-                .EndWith(new int[] { 1620, 2160, 3240, 6480 })
-                .And
-                .HaveCount(50);
+            var divisor6480 = PrimeFactorization.Divisor(6480);
+            divisor6480.Length.ShouldBe(50);
+            divisor6480[..26].ShouldBe([1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 27, 30, 36, 40, 45, 48, 54, 60, 72, 80, 81]);
+            divisor6480[^4..].ShouldBe([1620, 2160, 3240, 6480]);
 
-            PrimeFactorization.Divisor(2095133040).Should().HaveCount(1600); //高度合成数
+            PrimeFactorization.Divisor(2095133040).Length.ShouldBe(1600); //高度合成数
         }
         [Fact]
         public void DivisorLong()
         {
-            PrimeFactorization.Divisor(1L).Should().Equal([1]);
-            PrimeFactorization.Divisor(128100283921).Should().Equal([
+            PrimeFactorization.Divisor(1L).ShouldBe([1]);
+            PrimeFactorization.Divisor(128100283921).ShouldBe([
                 1,
                 71,
                 5041,
@@ -94,12 +92,12 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 25411681,
                 1804229351,
                 128100283921]);
-            PrimeFactorization.Divisor(132147483703).Should().Equal([1, 132147483703]);
-            PrimeFactorization.Divisor(963761198400).Should().HaveCount(6720); //高度合成数
-            PrimeFactorization.Divisor(897612484786617600).Should().HaveCount(103680); //高度合成数
+            PrimeFactorization.Divisor(132147483703).ShouldBe([1, 132147483703]);
+            PrimeFactorization.Divisor(963761198400).Length.ShouldBe(6720); //高度合成数
+            PrimeFactorization.Divisor(897612484786617600).Length.ShouldBe(103680); //高度合成数
 
-            PrimeFactorization.Divisor(9007199254740997).Should().Equal([1, 9007199254740997]);
-            PrimeFactorization.Divisor(89652331L * 96325939).Should().Equal([
+            PrimeFactorization.Divisor(9007199254740997).ShouldBe([1, 9007199254740997]);
+            PrimeFactorization.Divisor(89652331L * 96325939).ShouldBe([
                 1,
                 89652331,
                 96325939,
@@ -158,7 +156,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [MemberData(nameof(PrimeFactoringInt_Data))]
         public void PrimeFactoringInt(int num, Dictionary<int, int> expected)
         {
-            PrimeFactorization.PrimeFactoring(num).Should().Equal(expected);
+            PrimeFactorization.PrimeFactoring(num).ShouldBe(expected);
         }
 
         public static TheoryData PrimeFactoringLong_Data => new TheoryData<long, Dictionary<long, int>>
@@ -235,7 +233,13 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [MemberData(nameof(PrimeFactoringLong_Data))]
         public void PrimeFactoringLong(long num, Dictionary<long, int> expected)
         {
-            PrimeFactorization.PrimeFactoring(num).Should().Equal(expected);
+            PrimeFactorization.PrimeFactoring(num).ShouldSatisfyAllConditions([
+                p => p.Count.ShouldBe(expected.Count),
+                p => {
+                    foreach (var (k,v) in expected)
+                        p.ShouldContainKeyAndValue(k, v);
+                },
+            ]);
         }
 
         public static IEnumerable<object[]> StressDivisor_Data()
@@ -249,15 +253,15 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [MemberData(nameof(StressDivisor_Data))]
         public void StressDivisor(long n)
         {
-            PrimeFactorization.Divisor(n).Should().Equal(NaiveDivisor(n));
+            PrimeFactorization.Divisor(n).ShouldBe(NaiveDivisor(n));
         }
 
         [Fact]
         public void SmallDivisor()
         {
             for (int i = 1; i < 257 * 257 + 50; i++)
-                PrimeFactorization.Divisor(i).Should()
-                    .Equal(NaiveDivisor(i).Select(n => checked((int)n)), "Value: {0}", i);
+                PrimeFactorization.Divisor(i)
+                    .ShouldBe(NaiveDivisor(i).Select(n => checked((int)n)), $"Value: {i}");
         }
 
 

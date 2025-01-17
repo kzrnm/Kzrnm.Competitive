@@ -1,3 +1,4 @@
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [MemberData(nameof(GcdInt_Data))]
         public void GcdIntTest(int num1, int num2, int expected)
         {
-            MathLibEx.Gcd(num1, num2).Should().Be(expected);
+            MathLibEx.Gcd(num1, num2).ShouldBe(expected);
         }
         public static TheoryData GcdIntParams_Data => new TheoryData<int[], int>
         {
@@ -37,7 +38,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [MemberData(nameof(GcdIntParams_Data))]
         public void GcdIntParamsTest(int[] nums, int expected)
         {
-            MathLibEx.Gcd(nums).Should().Be(expected);
+            MathLibEx.Gcd(nums).ShouldBe(expected);
         }
 
         public static TheoryData GcdLong_Data => new TheoryData<long, long, long>
@@ -52,7 +53,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [MemberData(nameof(GcdLong_Data))]
         public void GcdLongTest(long num1, long num2, long expected)
         {
-            MathLibEx.Gcd(num1, num2).Should().Be(expected);
+            MathLibEx.Gcd(num1, num2).ShouldBe(expected);
         }
         public static TheoryData GcdLongParams_Data => new TheoryData<long[], long>
         {
@@ -66,7 +67,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [MemberData(nameof(GcdLongParams_Data))]
         public void GcdLongParamsTest(long[] nums, long expected)
         {
-            MathLibEx.Gcd(nums).Should().Be(expected);
+            MathLibEx.Gcd(nums).ShouldBe(expected);
         }
 
 
@@ -81,7 +82,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [MemberData(nameof(LcmInt_Data))]
         public void LcmIntTest(int num1, int num2, int expected)
         {
-            MathLibEx.Lcm(num1, num2).Should().Be(expected);
+            MathLibEx.Lcm(num1, num2).ShouldBe(expected);
         }
         public static TheoryData LcmIntParams_Data => new TheoryData<int[], int>
         {
@@ -94,7 +95,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [MemberData(nameof(LcmIntParams_Data))]
         public void LcmIntParamsTest(int[] nums, int expected)
         {
-            MathLibEx.Lcm(nums).Should().Be(expected);
+            MathLibEx.Lcm(nums).ShouldBe(expected);
         }
 
         public static TheoryData LcmLong_Data => new TheoryData<long, long, long>
@@ -108,7 +109,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [MemberData(nameof(LcmLong_Data))]
         public void LcmLongTest(long num1, long num2, long expected)
         {
-            MathLibEx.Lcm(num1, num2).Should().Be(expected);
+            MathLibEx.Lcm(num1, num2).ShouldBe(expected);
         }
         public static TheoryData LcmLongParams_Data => new TheoryData<long[], long>
         {
@@ -123,7 +124,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [MemberData(nameof(LcmLongParams_Data))]
         public void LcmLongParamsTest(long[] nums, long expected)
         {
-            MathLibEx.Lcm(nums).Should().Be(expected);
+            MathLibEx.Lcm(nums).ShouldBe(expected);
         }
 
         public static TheoryData DivisorInt_Data => new TheoryData<int, int[]>
@@ -163,26 +164,24 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [MemberData(nameof(DivisorInt_Data))]
         public void DivisorInt(int num, int[] expected)
         {
-            MathLibEx.Divisor(num).Should().Equal(expected);
+            MathLibEx.Divisor(num).ShouldBe(expected);
         }
 
         [Fact]
         public void DivisorIntLarge()
         {
-            MathLibEx.Divisor(6480).Should()
-                .StartWith(new int[] { 1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 27, 30, 36, 40, 45, 48, 54, 60, 72, 80, 81 })
-                .And
-                .EndWith(new int[] { 1620, 2160, 3240, 6480 })
-                .And
-                .HaveCount(50);
+            var divisor6480 = MathLibEx.Divisor(6480);
+            divisor6480.Length.ShouldBe(50);
+            divisor6480[..26].ShouldBe([1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 27, 30, 36, 40, 45, 48, 54, 60, 72, 80, 81]);
+            divisor6480[^4..].ShouldBe([1620, 2160, 3240, 6480]);
 
-            MathLibEx.Divisor(2095133040).Should().HaveCount(1600); //高度合成数
+            MathLibEx.Divisor(2095133040).Length.ShouldBe(1600); //高度合成数
         }
         [Fact]
         public void DivisorLong()
         {
-            MathLibEx.Divisor(1L).Should().Equal([1]);
-            MathLibEx.Divisor(128100283921).Should().Equal([
+            MathLibEx.Divisor(1L).ShouldBe([1]);
+            MathLibEx.Divisor(128100283921).ShouldBe([
                 1,
                 71,
                 5041,
@@ -190,8 +189,8 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 25411681,
                 1804229351,
                 128100283921]);
-            MathLibEx.Divisor(132147483703).Should().Equal([1, 132147483703]);
-            MathLibEx.Divisor(963761198400).Should().HaveCount(6720); //高度合成数
+            MathLibEx.Divisor(132147483703).ShouldBe([1, 132147483703]);
+            MathLibEx.Divisor(963761198400).Length.ShouldBe(6720); //高度合成数
         }
 
         public static TheoryData PrimeFactoringInt_Data => new TheoryData<int, Dictionary<int, int>>
@@ -245,7 +244,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [MemberData(nameof(PrimeFactoringInt_Data))]
         public void PrimeFactoringInt(int num, Dictionary<int, int> expected)
         {
-            MathLibEx.PrimeFactoring(num).Should().Equal(expected);
+            MathLibEx.PrimeFactoring(num).ShouldBe(expected);
         }
 
         public static IEnumerable<object[]> PrimeFactoringIntStress_Data()
@@ -274,7 +273,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             long x = 1;
             foreach (var (p, c) in MathLibEx.PrimeFactoring(num))
                 x *= ((long)p).Pow(c);
-            x.Should().Be(num);
+            x.ShouldBe(num);
         }
 
         public static TheoryData PrimeFactoringLong_Data => new TheoryData<long, Dictionary<long, int>>
@@ -321,7 +320,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [MemberData(nameof(PrimeFactoringLong_Data))]
         public void PrimeFactoringLong(long num, Dictionary<long, int> expected)
         {
-            MathLibEx.PrimeFactoring(num).Should().Equal(expected);
+            MathLibEx.PrimeFactoring(num).ShouldBe(expected);
         }
 
         [Fact]
@@ -336,7 +335,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
                         n *= i - k;
                         d *= k + 1;
                     }
-                    MathLibEx.Combination(i, j).Should().Be(n / d);
+                    MathLibEx.Combination(i, j).ShouldBe(n / d);
                 }
         }
 
@@ -353,7 +352,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
                         n *= i - k;
                         d *= k + 1;
                     }
-                    c[i][j].Should().Be(n / d);
+                    c[i][j].ShouldBe(n / d);
                 }
         }
     }

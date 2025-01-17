@@ -10,7 +10,7 @@ namespace Kzrnm.Competitive.Testing.Collection
         {
             for (int i = 0; i < 64; i++)
                 new Set<int>(Enumerable.Range(0, i).Reverse().Concat(Enumerable.Range(0, i)))
-                    .Should().Equal(Enumerable.Range(0, i));
+                    .ShouldBe(Enumerable.Range(0, i));
         }
 
         [Fact]
@@ -18,7 +18,7 @@ namespace Kzrnm.Competitive.Testing.Collection
         {
             for (int i = 0; i < 64; i++)
                 new Set<int>(Enumerable.Range(0, i).Reverse().Concat(Enumerable.Range(0, i)), true)
-                    .Should().Equal(Enumerable.Range(0, i).SelectMany(n => new[] { n, n }));
+                    .ShouldBe(Enumerable.Range(0, i).SelectMany(n => new[] { n, n }));
         }
 
         [Fact]
@@ -30,71 +30,71 @@ namespace Kzrnm.Competitive.Testing.Collection
             });
             set.Add(9);
             set.Add(5);
-            set.Should().Equal(1, 2, 3, 4, 5, 6, 7, 8, 9);
-            set.Should().HaveCount(9);
+            set.ShouldBe(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+            set.Count.ShouldBe(9);
             set.Remove(5);
-            set.Should().HaveCount(8);
-            set.Should().Equal(1, 2, 3, 4, 6, 7, 8, 9);
-            set.FindByIndex(8).Should().BeNull();
-            set.FindByIndex(7).Value.Should().Be(9);
-            set.FindNode(5).Should().BeNull();
+            set.Count.ShouldBe(8);
+            set.ShouldBe(new[] { 1, 2, 3, 4, 6, 7, 8, 9 });
+            set.FindByIndex(8).ShouldBeNull();
+            set.FindByIndex(7).Value.ShouldBe(9);
+            set.FindNode(5).ShouldBeNull();
 
-            set.FindNodeLowerBound(4).Value.Should().Be(4);
-            set.FindNodeUpperBound(4).Value.Should().Be(6);
-            set.FindNodeReverseUpperBound(4).Value.Should().Be(3);
-            set.FindNodeReverseLowerBound(4).Value.Should().Be(4);
-            set.FindNodeLowerBound(5).Value.Should().Be(6);
-            set.FindNodeUpperBound(5).Value.Should().Be(6);
-            set.FindNodeReverseUpperBound(5).Value.Should().Be(4);
-            set.FindNodeReverseUpperBound(5).Value.Should().Be(4);
+            set.FindNodeLowerBound(4).Value.ShouldBe(4);
+            set.FindNodeUpperBound(4).Value.ShouldBe(6);
+            set.FindNodeReverseUpperBound(4).Value.ShouldBe(3);
+            set.FindNodeReverseLowerBound(4).Value.ShouldBe(4);
+            set.FindNodeLowerBound(5).Value.ShouldBe(6);
+            set.FindNodeUpperBound(5).Value.ShouldBe(6);
+            set.FindNodeReverseUpperBound(5).Value.ShouldBe(4);
+            set.FindNodeReverseUpperBound(5).Value.ShouldBe(4);
 
             int v;
-            set.TryGetLowerBound(4, out v).Should().BeTrue(); v.Should().Be(4);
-            set.TryGetUpperBound(4, out v).Should().BeTrue(); v.Should().Be(6);
-            set.TryGetReverseLowerBound(4, out v).Should().BeTrue(); v.Should().Be(4);
-            set.TryGetReverseUpperBound(4, out v).Should().BeTrue(); v.Should().Be(3);
-            set.TryGetLowerBound(5, out v).Should().BeTrue(); v.Should().Be(6);
-            set.TryGetUpperBound(5, out v).Should().BeTrue(); v.Should().Be(6);
-            set.TryGetReverseLowerBound(5, out v).Should().BeTrue(); v.Should().Be(4);
-            set.TryGetReverseUpperBound(5, out v).Should().BeTrue(); v.Should().Be(4);
+            set.TryGetLowerBound(4, out v).ShouldBeTrue(); v.ShouldBe(4);
+            set.TryGetUpperBound(4, out v).ShouldBeTrue(); v.ShouldBe(6);
+            set.TryGetReverseLowerBound(4, out v).ShouldBeTrue(); v.ShouldBe(4);
+            set.TryGetReverseUpperBound(4, out v).ShouldBeTrue(); v.ShouldBe(3);
+            set.TryGetLowerBound(5, out v).ShouldBeTrue(); v.ShouldBe(6);
+            set.TryGetUpperBound(5, out v).ShouldBeTrue(); v.ShouldBe(6);
+            set.TryGetReverseLowerBound(5, out v).ShouldBeTrue(); v.ShouldBe(4);
+            set.TryGetReverseUpperBound(5, out v).ShouldBeTrue(); v.ShouldBe(4);
 
-            set.LowerBoundIndex(4).Should().Be(3);
-            set.UpperBoundIndex(4).Should().Be(4);
-            set.TryGetReverseLowerBound(4, out v).Should().BeTrue(); v.Should().Be(4);
-            set.TryGetReverseUpperBound(4, out v).Should().BeTrue(); v.Should().Be(3);
-            set.LowerBoundIndex(5).Should().Be(4);
-            set.UpperBoundIndex(5).Should().Be(4);
-            set.TryGetReverseLowerBound(5, out v).Should().BeTrue(); v.Should().Be(4);
-            set.TryGetReverseUpperBound(5, out v).Should().BeTrue(); v.Should().Be(4);
+            set.LowerBoundIndex(4).ShouldBe(3);
+            set.UpperBoundIndex(4).ShouldBe(4);
+            set.TryGetReverseLowerBound(4, out v).ShouldBeTrue(); v.ShouldBe(4);
+            set.TryGetReverseUpperBound(4, out v).ShouldBeTrue(); v.ShouldBe(3);
+            set.LowerBoundIndex(5).ShouldBe(4);
+            set.UpperBoundIndex(5).ShouldBe(4);
+            set.TryGetReverseLowerBound(5, out v).ShouldBeTrue(); v.ShouldBe(4);
+            set.TryGetReverseUpperBound(5, out v).ShouldBeTrue(); v.ShouldBe(4);
 
-            set.TryGetLowerBound(9, out _).Should().BeTrue();
-            set.TryGetLowerBound(10, out _).Should().BeFalse();
-            set.TryGetUpperBound(8, out _).Should().BeTrue();
-            set.TryGetUpperBound(9, out _).Should().BeFalse();
+            set.TryGetLowerBound(9, out _).ShouldBeTrue();
+            set.TryGetLowerBound(10, out _).ShouldBeFalse();
+            set.TryGetUpperBound(8, out _).ShouldBeTrue();
+            set.TryGetUpperBound(9, out _).ShouldBeFalse();
 
-            set.TryGetReverseLowerBound(1, out _).Should().BeTrue();
-            set.TryGetReverseLowerBound(0, out _).Should().BeFalse();
-            set.TryGetReverseUpperBound(2, out _).Should().BeTrue();
-            set.TryGetReverseUpperBound(1, out _).Should().BeFalse();
+            set.TryGetReverseLowerBound(1, out _).ShouldBeTrue();
+            set.TryGetReverseLowerBound(0, out _).ShouldBeFalse();
+            set.TryGetReverseUpperBound(2, out _).ShouldBeTrue();
+            set.TryGetReverseUpperBound(1, out _).ShouldBeFalse();
 
-            set.FindNodeLowerBound(10).Should().BeNull();
-            set.FindNodeUpperBound(10).Should().BeNull();
-            set.FindNodeReverseLowerBound(0).Should().BeNull();
-            set.FindNodeReverseUpperBound(1).Should().BeNull();
+            set.FindNodeLowerBound(10).ShouldBeNull();
+            set.FindNodeUpperBound(10).ShouldBeNull();
+            set.FindNodeReverseLowerBound(0).ShouldBeNull();
+            set.FindNodeReverseUpperBound(1).ShouldBeNull();
 
             set.RemoveNode(set.FindNodeLowerBound(5));
-            set.Should().Equal(1, 2, 3, 4, 7, 8, 9);
+            set.ShouldBe(new[] { 1, 2, 3, 4, 7, 8, 9 });
 
-            set.Reversed().Should().Equal(9, 8, 7, 4, 3, 2, 1);
-            set.EnumerateItem().Should().Equal(1, 2, 3, 4, 7, 8, 9);
-            set.EnumerateItem(set.FindNodeLowerBound(5)).Should().Equal(7, 8, 9);
-            set.EnumerateItem(set.FindNodeLowerBound(5), true).Should().Equal(7, 4, 3, 2, 1);
+            set.Reversed().ShouldBe(new[] { 9, 8, 7, 4, 3, 2, 1 });
+            set.EnumerateItem().ShouldBe(new[] { 1, 2, 3, 4, 7, 8, 9 });
+            set.EnumerateItem(set.FindNodeLowerBound(5)).ShouldBe(new[] { 7, 8, 9 });
+            set.EnumerateItem(set.FindNodeLowerBound(5), true).ShouldBe(new[] { 7, 4, 3, 2, 1 });
 
             set.RemoveNode(set.FindNodeLowerBound(0));
-            set.Should().Equal(2, 3, 4, 7, 8, 9);
+            set.ShouldBe(new[] { 2, 3, 4, 7, 8, 9 });
 
             set.RemoveNode(set.FindNodeLowerBound(9));
-            set.Should().Equal(2, 3, 4, 7, 8);
+            set.ShouldBe(new[] { 2, 3, 4, 7, 8 });
         }
         [Fact]
         public void MultiSet()
@@ -105,50 +105,50 @@ namespace Kzrnm.Competitive.Testing.Collection
             }, true);
             set.Add(9);
             set.Add(5);
-            set.Should().Equal(1, 1, 2, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9);
-            set.Should().HaveCount(13);
+            set.ShouldBe(new int[] { 1, 1, 2, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9 });
+            set.Count.ShouldBe(13);
             set.Remove(5);
-            set.Should().HaveCount(12);
-            set.Should().Equal(1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9);
-            set.FindByIndex(12).Should().BeNull();
-            set.FindByIndex(11).Value.Should().Be(9);
-            set.FindNode(5).Should().NotBeNull();
+            set.Count.ShouldBe(12);
+            set.ShouldBe(new int[] { 1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9 });
+            set.FindByIndex(12).ShouldBeNull();
+            set.FindByIndex(11).Value.ShouldBe(9);
+            set.FindNode(5).ShouldNotBeNull();
 
-            set.Reversed().Should().Equal(9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1);
-            set.EnumerateItem().Should().Equal(1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9);
-            set.EnumerateItem(set.FindNodeLowerBound(6)).Should().Equal(6, 7, 8, 9);
-            set.EnumerateItem(set.FindNodeLowerBound(6), true).Should().Equal(6, 5, 4, 3, 3, 2, 2, 1, 1);
+            set.Reversed().ShouldBe(new[] { 9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1 });
+            set.EnumerateItem().ShouldBe(new[] { 1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9 });
+            set.EnumerateItem(set.FindNodeLowerBound(6)).ShouldBe(new[] { 6, 7, 8, 9 });
+            set.EnumerateItem(set.FindNodeLowerBound(6), true).ShouldBe(new[] { 6, 5, 4, 3, 3, 2, 2, 1, 1 });
 
-            set.FindNodeLowerBound(3).Value.Should().Be(3);
-            set.FindNodeUpperBound(3).Value.Should().Be(4);
-            set.FindNodeReverseLowerBound(3).Value.Should().Be(3);
-            set.FindNodeReverseUpperBound(3).Value.Should().Be(2);
+            set.FindNodeLowerBound(3).Value.ShouldBe(3);
+            set.FindNodeUpperBound(3).Value.ShouldBe(4);
+            set.FindNodeReverseLowerBound(3).Value.ShouldBe(3);
+            set.FindNodeReverseUpperBound(3).Value.ShouldBe(2);
 
             int v;
-            set.TryGetLowerBound(3, out v).Should().BeTrue(); v.Should().Be(3);
-            set.TryGetUpperBound(3, out v).Should().BeTrue(); v.Should().Be(4);
-            set.TryGetReverseLowerBound(3, out v).Should().BeTrue(); v.Should().Be(3);
-            set.TryGetReverseUpperBound(3, out v).Should().BeTrue(); v.Should().Be(2);
+            set.TryGetLowerBound(3, out v).ShouldBeTrue(); v.ShouldBe(3);
+            set.TryGetUpperBound(3, out v).ShouldBeTrue(); v.ShouldBe(4);
+            set.TryGetReverseLowerBound(3, out v).ShouldBeTrue(); v.ShouldBe(3);
+            set.TryGetReverseUpperBound(3, out v).ShouldBeTrue(); v.ShouldBe(2);
 
-            set.TryGetLowerBound(9, out _).Should().BeTrue();
-            set.TryGetLowerBound(10, out _).Should().BeFalse();
-            set.TryGetUpperBound(8, out _).Should().BeTrue();
-            set.TryGetUpperBound(9, out _).Should().BeFalse();
+            set.TryGetLowerBound(9, out _).ShouldBeTrue();
+            set.TryGetLowerBound(10, out _).ShouldBeFalse();
+            set.TryGetUpperBound(8, out _).ShouldBeTrue();
+            set.TryGetUpperBound(9, out _).ShouldBeFalse();
 
-            set.TryGetReverseLowerBound(1, out _).Should().BeTrue();
-            set.TryGetReverseLowerBound(0, out _).Should().BeFalse();
-            set.TryGetReverseUpperBound(2, out _).Should().BeTrue();
-            set.TryGetReverseUpperBound(1, out _).Should().BeFalse();
+            set.TryGetReverseLowerBound(1, out _).ShouldBeTrue();
+            set.TryGetReverseLowerBound(0, out _).ShouldBeFalse();
+            set.TryGetReverseUpperBound(2, out _).ShouldBeTrue();
+            set.TryGetReverseUpperBound(1, out _).ShouldBeFalse();
 
-            set.LowerBoundIndex(3).Should().Be(4);
-            set.UpperBoundIndex(3).Should().Be(6);
-            set.ReverseLowerBoundIndex(3).Should().Be(5);
-            set.ReverseUpperBoundIndex(3).Should().Be(3);
+            set.LowerBoundIndex(3).ShouldBe(4);
+            set.UpperBoundIndex(3).ShouldBe(6);
+            set.ReverseLowerBoundIndex(3).ShouldBe(5);
+            set.ReverseUpperBoundIndex(3).ShouldBe(3);
 
-            set.FindNodeLowerBound(10).Should().BeNull();
-            set.FindNodeUpperBound(10).Should().BeNull();
-            set.FindNodeReverseLowerBound(0).Should().BeNull();
-            set.FindNodeReverseUpperBound(1).Should().BeNull();
+            set.FindNodeLowerBound(10).ShouldBeNull();
+            set.FindNodeUpperBound(10).ShouldBeNull();
+            set.FindNodeReverseLowerBound(0).ShouldBeNull();
+            set.FindNodeReverseUpperBound(1).ShouldBeNull();
         }
         [Fact]
         public void ReverseComparer()
@@ -159,43 +159,43 @@ namespace Kzrnm.Competitive.Testing.Collection
             });
             set.Add(9);
             set.Add(5);
-            set.Should().Equal(9, 8, 7, 6, 5, 4, 3, 2, 1);
-            set.Should().HaveCount(9);
+            set.ShouldBe(new[] { 9, 8, 7, 6, 5, 4, 3, 2, 1 });
+            set.Count.ShouldBe(9);
             set.Remove(5);
-            set.Should().HaveCount(8);
-            set.Should().Equal(9, 8, 7, 6, 4, 3, 2, 1);
-            set.FindByIndex(8).Should().BeNull();
-            set.FindByIndex(7).Value.Should().Be(1);
-            set.FindNode(5).Should().BeNull();
+            set.Count.ShouldBe(8);
+            set.ShouldBe(new[] { 9, 8, 7, 6, 4, 3, 2, 1 });
+            set.FindByIndex(8).ShouldBeNull();
+            set.FindByIndex(7).Value.ShouldBe(1);
+            set.FindNode(5).ShouldBeNull();
 
-            set.FindNodeLowerBound(6).Value.Should().Be(6);
-            set.FindNodeUpperBound(6).Value.Should().Be(4);
-            set.FindNodeLowerBound(5).Value.Should().Be(4);
-            set.FindNodeUpperBound(5).Value.Should().Be(4);
+            set.FindNodeLowerBound(6).Value.ShouldBe(6);
+            set.FindNodeUpperBound(6).Value.ShouldBe(4);
+            set.FindNodeLowerBound(5).Value.ShouldBe(4);
+            set.FindNodeUpperBound(5).Value.ShouldBe(4);
 
             int v;
-            set.TryGetLowerBound(6, out v).Should().BeTrue(); v.Should().Be(6);
-            set.TryGetUpperBound(6, out v).Should().BeTrue(); v.Should().Be(4);
-            set.TryGetLowerBound(5, out v).Should().BeTrue(); v.Should().Be(4);
-            set.TryGetUpperBound(5, out v).Should().BeTrue(); v.Should().Be(4);
+            set.TryGetLowerBound(6, out v).ShouldBeTrue(); v.ShouldBe(6);
+            set.TryGetUpperBound(6, out v).ShouldBeTrue(); v.ShouldBe(4);
+            set.TryGetLowerBound(5, out v).ShouldBeTrue(); v.ShouldBe(4);
+            set.TryGetUpperBound(5, out v).ShouldBeTrue(); v.ShouldBe(4);
 
-            set.TryGetLowerBound(1, out _).Should().BeTrue();
-            set.TryGetLowerBound(0, out _).Should().BeFalse();
-            set.TryGetUpperBound(2, out _).Should().BeTrue();
-            set.TryGetUpperBound(1, out _).Should().BeFalse();
+            set.TryGetLowerBound(1, out _).ShouldBeTrue();
+            set.TryGetLowerBound(0, out _).ShouldBeFalse();
+            set.TryGetUpperBound(2, out _).ShouldBeTrue();
+            set.TryGetUpperBound(1, out _).ShouldBeFalse();
 
-            set.TryGetReverseLowerBound(9, out _).Should().BeTrue();
-            set.TryGetReverseLowerBound(10, out _).Should().BeFalse();
-            set.TryGetReverseUpperBound(8, out _).Should().BeTrue();
-            set.TryGetReverseUpperBound(9, out _).Should().BeFalse();
+            set.TryGetReverseLowerBound(9, out _).ShouldBeTrue();
+            set.TryGetReverseLowerBound(10, out _).ShouldBeFalse();
+            set.TryGetReverseUpperBound(8, out _).ShouldBeTrue();
+            set.TryGetReverseUpperBound(9, out _).ShouldBeFalse();
 
-            set.LowerBoundIndex(6).Should().Be(3);
-            set.UpperBoundIndex(6).Should().Be(4);
-            set.LowerBoundIndex(5).Should().Be(4);
-            set.UpperBoundIndex(5).Should().Be(4);
+            set.LowerBoundIndex(6).ShouldBe(3);
+            set.UpperBoundIndex(6).ShouldBe(4);
+            set.LowerBoundIndex(5).ShouldBe(4);
+            set.UpperBoundIndex(5).ShouldBe(4);
 
-            set.FindNodeLowerBound(0).Should().BeNull();
-            set.FindNodeUpperBound(0).Should().BeNull();
+            set.FindNodeLowerBound(0).ShouldBeNull();
+            set.FindNodeUpperBound(0).ShouldBeNull();
         }
 
         [Fact]
@@ -207,7 +207,7 @@ namespace Kzrnm.Competitive.Testing.Collection
                 var set = new Set<int>(arr);
                 for (int i = 0; i < count; i++)
                 {
-                    set.FindByIndex(i).Value.Should().Be(i, "Index: {0}", i);
+                    set.FindByIndex(i).Value.ShouldBe(i, $"Index: {i}");
                 }
             }
         }
@@ -219,15 +219,15 @@ namespace Kzrnm.Competitive.Testing.Collection
             {
                 IList<int> arr = Enumerable.Range(0, count).ToArray();
                 var set = new Set<int>(arr);
-                set.Reversed().Should().Equal(arr.Reverse());
-                set.EnumerateItem().Should().Equal(arr);
-                set.EnumerateItem(reverse: true).Should().Equal(arr.Reverse());
+                set.Reversed().ShouldBe(arr.Reverse());
+                set.EnumerateItem().ShouldBe(arr);
+                set.EnumerateItem(reverse: true).ShouldBe(arr.Reverse());
 
                 for (int i = 0; i < count; i++)
                 {
-                    set.EnumerateItem(set.FindByIndex(i)).Should().Equal(arr.Skip(i), "Index: {0}", i);
-                    set.EnumerateItem(set.FindByIndex(i), true).Should()
-                        .Equal(arr.Take(i + 1).Reverse(), "Index: {0} Reverse", i);
+                    set.EnumerateItem(set.FindByIndex(i)).ShouldBe(arr.Skip(i), $"Index: {i}");
+                    set.EnumerateItem(set.FindByIndex(i), true)
+                        .ShouldBe(arr.Take(i + 1).Reverse(), $"Index: {i} Reverse");
                 }
             }
         }
@@ -237,15 +237,15 @@ namespace Kzrnm.Competitive.Testing.Collection
         {
             var arr = new[] { 1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9 };
             var set = new Set<int>(arr, true);
-            set.Reversed().Should().Equal(9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1);
-            set.EnumerateItem().Should().Equal(1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9);
-            set.EnumerateItem(reverse: true).Should().Equal(9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1);
+            set.Reversed().ShouldBe(new[] { 9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1 });
+            set.EnumerateItem().ShouldBe(new[] { 1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9 });
+            set.EnumerateItem(reverse: true).ShouldBe(new[] { 9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1 });
 
             for (int i = 0; i < arr.Length; i++)
             {
-                set.EnumerateItem(set.FindByIndex(i)).Should().Equal(arr.Skip(i), "Index: {0}", i);
-                set.EnumerateItem(set.FindByIndex(i), true).Should()
-                    .Equal(arr.Take(i + 1).Reverse(), "Index: {0} Reverse", i);
+                set.EnumerateItem(set.FindByIndex(i)).ShouldBe(arr.Skip(i), $"Index: {i}");
+                set.EnumerateItem(set.FindByIndex(i), true)
+                    .ShouldBe(arr.Take(i + 1).Reverse(), $"Index: {i} Reverse");
             }
         }
     }

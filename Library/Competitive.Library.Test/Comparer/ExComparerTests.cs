@@ -31,7 +31,7 @@ namespace Kzrnm.Competitive.Testing.Comparer
                 382174879
             };
             Array.Sort(arr, ExComparer<int>.CreateExp(i => Math.Abs(i)));
-            arr.Should().Equal(
+            arr.ShouldBe([
                 -49770599,
                 -98686814,
                 216600710,
@@ -51,7 +51,8 @@ namespace Kzrnm.Competitive.Testing.Comparer
                 -1790270117,
                 -1850902760,
                 1983045250,
-                2014529243);
+                2014529243
+            ]);
         }
     }
 }

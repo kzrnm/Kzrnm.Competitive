@@ -35,13 +35,13 @@ namespace Kzrnm.Competitive.Testing.Graph
                 var ids = g.SccIds().ids;
                 foreach (var (f, e) in g.Edges)
                 {
-                    ids[f].Should().BeLessThanOrEqualTo(ids[e.To]);
+                    ids[f].ShouldBeLessThanOrEqualTo(ids[e.To]);
                 }
 
                 var gs = g.SccNewGraph().ToGraph().AsArray();
                 for (int i = 0; i < gs.Length; i++)
                 {
-                    gs[i].Value.Should().Equal(ids.Indexed().Where(t => t.Value == i).Select(t => t.Index));
+                    gs[i].Value.ShouldBe(ids.Indexed().Where(t => t.Value == i).Select(t => t.Index));
                 }
             }
         }
@@ -62,51 +62,51 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 6);
             var g = gb.ToGraph();
             var (groupNum, ids) = g.SccIds();
-            groupNum.Should().Be(6);
+            groupNum.ShouldBe(6);
             var scc = g.Scc();
 
             for (int i = 0; i < 2; i++)
             {
-                ids.Should().Equal(0, 1, 2, 3, 3, 4, 5, 3);
-                scc[0].Should().Equal(0);
-                scc[1].Should().Equal(1);
-                scc[2].Should().Equal(2);
-                scc[3].Should().Equal(3, 4, 7);
-                scc[4].Should().Equal(5);
-                scc[5].Should().Equal(6);
+                ids.ShouldBe([0, 1, 2, 3, 3, 4, 5, 3]);
+                scc[0].ShouldBe([0]);
+                scc[1].ShouldBe([1]);
+                scc[2].ShouldBe([2]);
+                scc[3].ShouldBe([3, 4, 7]);
+                scc[4].ShouldBe([5]);
+                scc[5].ShouldBe([6]);
 
                 (scc, ids) = g.SccGroupsAndIds();
             }
 
             var newGraph = g.SccNewGraph().ToGraph();
-            newGraph[0].Value.Should().Equal(0);
-            newGraph[1].Value.Should().Equal(1);
-            newGraph[2].Value.Should().Equal(2);
-            newGraph[3].Value.Should().Equal(3, 4, 7);
-            newGraph[4].Value.Should().Equal(5);
-            newGraph[5].Value.Should().Equal(6);
+            newGraph[0].Value.ShouldBe([0]);
+            newGraph[1].Value.ShouldBe([1]);
+            newGraph[2].Value.ShouldBe([2]);
+            newGraph[3].Value.ShouldBe([3, 4, 7]);
+            newGraph[4].Value.ShouldBe([5]);
+            newGraph[5].Value.ShouldBe([6]);
 
-            newGraph[0].Children.Should().Equal(new GraphEdge(1));
-            newGraph[1].Children.Should().Equal(new GraphEdge(2));
-            newGraph[2].Children.Should().Equal(new GraphEdge(3));
-            newGraph[3].Children.Should().Equal(new GraphEdge(4), new GraphEdge(5));
-            newGraph[4].Children.Should().Equal(new GraphEdge(5));
-            newGraph[5].Children.Should().BeEmpty();
+            newGraph[0].Children.ShouldBe([new GraphEdge(1)]);
+            newGraph[1].Children.ShouldBe([new GraphEdge(2)]);
+            newGraph[2].Children.ShouldBe([new GraphEdge(3)]);
+            newGraph[3].Children.ShouldBe([new GraphEdge(4), new GraphEdge(5)]);
+            newGraph[4].Children.ShouldBe([new GraphEdge(5)]);
+            newGraph[5].Children.ShouldBeEmpty();
 
             newGraph = g.SccNewGraph(false).ToGraph();
-            newGraph[0].Value.Should().Equal(0);
-            newGraph[1].Value.Should().Equal(1);
-            newGraph[2].Value.Should().Equal(2);
-            newGraph[3].Value.Should().Equal(3, 4, 7);
-            newGraph[4].Value.Should().Equal(5);
-            newGraph[5].Value.Should().Equal(6);
+            newGraph[0].Value.ShouldBe([0]);
+            newGraph[1].Value.ShouldBe([1]);
+            newGraph[2].Value.ShouldBe([2]);
+            newGraph[3].Value.ShouldBe([3, 4, 7]);
+            newGraph[4].Value.ShouldBe([5]);
+            newGraph[5].Value.ShouldBe([6]);
 
-            newGraph[0].Children.Should().Equal(new GraphEdge(1));
-            newGraph[1].Children.Should().Equal(new GraphEdge(0), new GraphEdge(2));
-            newGraph[2].Children.Should().Equal(new GraphEdge(1), new GraphEdge(3));
-            newGraph[3].Children.Should().Equal(new GraphEdge(2), new GraphEdge(4), new GraphEdge(5));
-            newGraph[4].Children.Should().Equal(new GraphEdge(3), new GraphEdge(5));
-            newGraph[5].Children.Should().Equal(new GraphEdge(3), new GraphEdge(4));
+            newGraph[0].Children.ShouldBe([new GraphEdge(1)]);
+            newGraph[1].Children.ShouldBe([new GraphEdge(0), new GraphEdge(2)]);
+            newGraph[2].Children.ShouldBe([new GraphEdge(1), new GraphEdge(3)]);
+            newGraph[3].Children.ShouldBe([new GraphEdge(2), new GraphEdge(4), new GraphEdge(5)]);
+            newGraph[4].Children.ShouldBe([new GraphEdge(3), new GraphEdge(5)]);
+            newGraph[5].Children.ShouldBe([new GraphEdge(3), new GraphEdge(4)]);
         }
         [Fact]
         public void 重み付きグラフ()
@@ -124,51 +124,51 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 6, 2);
             var g = gb.ToGraph();
             var (groupNum, ids) = g.SccIds();
-            groupNum.Should().Be(6);
+            groupNum.ShouldBe(6);
             var scc = g.Scc();
 
             for (int i = 0; i < 2; i++)
             {
-                ids.Should().Equal(0, 1, 2, 3, 3, 4, 5, 3);
-                scc[0].Should().Equal(0);
-                scc[1].Should().Equal(1);
-                scc[2].Should().Equal(2);
-                scc[3].Should().Equal(3, 4, 7);
-                scc[4].Should().Equal(5);
-                scc[5].Should().Equal(6);
+                ids.ShouldBe([0, 1, 2, 3, 3, 4, 5, 3]);
+                scc[0].ShouldBe([0]);
+                scc[1].ShouldBe([1]);
+                scc[2].ShouldBe([2]);
+                scc[3].ShouldBe([3, 4, 7]);
+                scc[4].ShouldBe([5]);
+                scc[5].ShouldBe([6]);
 
                 (scc, ids) = g.SccGroupsAndIds();
             }
 
             var newGraph = g.SccNewGraph().ToGraph();
-            newGraph[0].Value.Should().Equal(0);
-            newGraph[1].Value.Should().Equal(1);
-            newGraph[2].Value.Should().Equal(2);
-            newGraph[3].Value.Should().Equal(3, 4, 7);
-            newGraph[4].Value.Should().Equal(5);
-            newGraph[5].Value.Should().Equal(6);
+            newGraph[0].Value.ShouldBe([0]);
+            newGraph[1].Value.ShouldBe([1]);
+            newGraph[2].Value.ShouldBe([2]);
+            newGraph[3].Value.ShouldBe([3, 4, 7]);
+            newGraph[4].Value.ShouldBe([5]);
+            newGraph[5].Value.ShouldBe([6]);
 
-            newGraph[0].Children.Should().Equal(new GraphEdge(1));
-            newGraph[1].Children.Should().Equal(new GraphEdge(2));
-            newGraph[2].Children.Should().Equal(new GraphEdge(3));
-            newGraph[3].Children.Should().Equal(new GraphEdge(4), new GraphEdge(5));
-            newGraph[4].Children.Should().Equal(new GraphEdge(5));
-            newGraph[5].Children.Should().BeEmpty();
+            newGraph[0].Children.ShouldBe([new GraphEdge(1)]);
+            newGraph[1].Children.ShouldBe([new GraphEdge(2)]);
+            newGraph[2].Children.ShouldBe([new GraphEdge(3)]);
+            newGraph[3].Children.ShouldBe([new GraphEdge(4), new GraphEdge(5)]);
+            newGraph[4].Children.ShouldBe([new GraphEdge(5)]);
+            newGraph[5].Children.ShouldBeEmpty();
 
             newGraph = g.SccNewGraph(false).ToGraph();
-            newGraph[0].Value.Should().Equal(0);
-            newGraph[1].Value.Should().Equal(1);
-            newGraph[2].Value.Should().Equal(2);
-            newGraph[3].Value.Should().Equal(3, 4, 7);
-            newGraph[4].Value.Should().Equal(5);
-            newGraph[5].Value.Should().Equal(6);
+            newGraph[0].Value.ShouldBe([0]);
+            newGraph[1].Value.ShouldBe([1]);
+            newGraph[2].Value.ShouldBe([2]);
+            newGraph[3].Value.ShouldBe([3, 4, 7]);
+            newGraph[4].Value.ShouldBe([5]);
+            newGraph[5].Value.ShouldBe([6]);
 
-            newGraph[0].Children.Should().Equal(new GraphEdge(1));
-            newGraph[1].Children.Should().Equal(new GraphEdge(0), new GraphEdge(2));
-            newGraph[2].Children.Should().Equal(new GraphEdge(1), new GraphEdge(3));
-            newGraph[3].Children.Should().Equal(new GraphEdge(2), new GraphEdge(4), new GraphEdge(5));
-            newGraph[4].Children.Should().Equal(new GraphEdge(3), new GraphEdge(5));
-            newGraph[5].Children.Should().Equal(new GraphEdge(3), new GraphEdge(4));
+            newGraph[0].Children.ShouldBe([new GraphEdge(1)]);
+            newGraph[1].Children.ShouldBe([new GraphEdge(0), new GraphEdge(2)]);
+            newGraph[2].Children.ShouldBe([new GraphEdge(1), new GraphEdge(3)]);
+            newGraph[3].Children.ShouldBe([new GraphEdge(2), new GraphEdge(4), new GraphEdge(5)]);
+            newGraph[4].Children.ShouldBe([new GraphEdge(3), new GraphEdge(5)]);
+            newGraph[5].Children.ShouldBe([new GraphEdge(3), new GraphEdge(4)]);
         }
     }
 }

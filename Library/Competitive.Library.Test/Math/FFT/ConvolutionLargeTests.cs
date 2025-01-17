@@ -20,16 +20,16 @@ namespace Kzrnm.Competitive.Testing.MathNS
             var a = Enumerable.Repeat(1, len).ToArray();
             var b = Enumerable.Repeat((0, 1), 1000).SelectMany(t => new[] { t.Item1, t.Item2 }).ToArray();
             var ret = ConvolutionLarge.Convolution<Mod998244353>(a, b);
-            ret[0].Should().Be(0);
+            ret[0].ShouldBe(0u);
             for (int i = 1; i < 2000; i += 2)
             {
                 var expected = (uint)(i + 1) >> 1;
-                ret[i].Should().Be(expected);
-                ret[i + 1].Should().Be(expected);
-                ret[ret.Length - i - 1].Should().Be(expected);
-                ret[^i].Should().Be(expected);
+                ret[i].ShouldBe(expected);
+                ret[i + 1].ShouldBe(expected);
+                ret[ret.Length - i - 1].ShouldBe(expected);
+                ret[^i].ShouldBe(expected);
             }
-            ret.Skip(1999).SkipLast(1998).Should().AllBeEquivalentTo(1000);
+            ret.Skip(1999).SkipLast(1998).ShouldAllBe(v => v == 1000);
         }
 
         [HeavyFact]
@@ -39,14 +39,14 @@ namespace Kzrnm.Competitive.Testing.MathNS
             var a = Enumerable.Repeat(1, len).ToArray();
             var b = Enumerable.Repeat((0, 1), len / 2).SelectMany(t => new[] { t.Item1, t.Item2 }).ToArray();
             var ret = ConvolutionLarge.Convolution<Mod998244353>(a, b);
-            ret[0].Should().Be(0);
+            ret[0].ShouldBe(0u);
             for (int i = 1; i < len; i += 2)
             {
                 var expected = (uint)(i + 1) >> 1;
-                ret[i].Should().Be(expected);
-                ret[i + 1].Should().Be(expected);
-                ret[ret.Length - i - 1].Should().Be(expected);
-                ret[^i].Should().Be(expected);
+                ret[i].ShouldBe(expected);
+                ret[i + 1].ShouldBe(expected);
+                ret[ret.Length - i - 1].ShouldBe(expected);
+                ret[^i].ShouldBe(expected);
             }
         }
 
@@ -77,7 +77,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [MemberData(nameof(EmptyIntTestData))]
         public void EmptyInt(int[] a, int[] b, uint[] expected)
         {
-            ConvolutionLarge.Convolution<Mod998244353>(a, b).Should().Equal(expected);
+            ConvolutionLarge.Convolution<Mod998244353>(a, b).ShouldBe(expected);
         }
 
         [Fact]
@@ -99,7 +99,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
                         b[i] = rnd.NextUInt() % 998244353;
                     }
 
-                    ConvolutionLarge.Convolution<Mod998244353>(a, b).Should().Equal(ConvNative(a, b, 998244353));
+                    ConvolutionLarge.Convolution<Mod998244353>(a, b).ShouldBe(ConvNative(a, b, 998244353));
                 }
         }
     }

@@ -14,7 +14,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 var seg = new Segtree<int, Op>(i);
                 for (int j = 0; j < i; j++)
                     seg[j] = j;
-                seg.ToArray().Should().Equal(Enumerable.Range(0, i));
+                seg.ToArray().ShouldBe(Enumerable.Range(0, i));
             }
         }
         readonly struct Op : ISegtreeOperator<int>

@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
         [Fact]
         public void Zero()
         {
-            Create().AllProd.Should().Be(0);
+            Create().AllProd.ShouldBe(0);
         }
 
         [Fact]
@@ -41,14 +41,17 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
                 {
                     for (int l = 0; l <= n; l++)
                         for (int r = l; r <= n; r++)
-                            tree.Prod(l, r).Should().Be(tree[l..r]).And.Be(expected[l..r]);
+                        {
+                            tree.Prod(l, r).ShouldBe(expected[l..r]);
+                            tree[l..r].ShouldBe(expected[l..r]);
+                        }
                     for (int i = 0; i < n; i++)
                     {
-                        tree[i..(i + 1)].Should().Be(expected[i]);
-                        tree[i].Should().Be(expected[i]);
+                        tree[i..(i + 1)].ShouldBe(expected[i]);
+                        tree[i].ShouldBe(expected[i]);
                     }
                 }
-                tree.Should().Equal(p);
+                tree.ShouldBe(p);
                 Test();
 
 
@@ -65,17 +68,17 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
         public void Usage()
         {
             var tree = Create(new int[10]);
-            tree.AllProd.Should().Be(0);
-            tree.Should().Equal([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+            tree.AllProd.ShouldBe(0);
+            tree.ShouldBe([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
             tree[0] = tree[1] = tree[2] = 5;
-            tree.Should().Equal([5, 5, 5, 0, 0, 0, 0, 0, 0, 0]);
-            tree.Prod(0, 1).Should().Be(5);
-            tree.Prod(0, 2).Should().Be(10);
-            tree.Prod(0, 3).Should().Be(15);
-            tree.Prod(1, 2).Should().Be(5);
-            tree.Prod(1, 3).Should().Be(10);
-            tree.Prod(2, 3).Should().Be(5);
-            tree.AllProd.Should().Be(15);
+            tree.ShouldBe([5, 5, 5, 0, 0, 0, 0, 0, 0, 0]);
+            tree.Prod(0, 1).ShouldBe(5);
+            tree.Prod(0, 2).ShouldBe(10);
+            tree.Prod(0, 3).ShouldBe(15);
+            tree.Prod(1, 2).ShouldBe(5);
+            tree.Prod(1, 3).ShouldBe(10);
+            tree.Prod(2, 3).ShouldBe(5);
+            tree.AllProd.ShouldBe(15);
         }
 
         [Fact]
@@ -90,9 +93,9 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
             }
             void Test()
             {
-                tree.Should().Equal(list);
+                tree.ShouldBe(list);
                 for (int i = 0; i < list.Count; i++)
-                    tree[i].Should().Be(list[i]);
+                    tree[i].ShouldBe(list[i]);
             }
 
 
@@ -138,9 +141,9 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
             }
             void Test()
             {
-                tree.Should().Equal(list);
+                tree.ShouldBe(list);
                 for (int i = 0; i < list.Count; i++)
-                    tree[i].Should().Be(list[i]);
+                    tree[i].ShouldBe(list[i]);
             }
 
 
@@ -173,9 +176,9 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
             }
             void Test()
             {
-                tree.Should().Equal(list);
+                tree.ShouldBe(list);
                 for (int i = 0; i < list.Count; i++)
-                    tree[i].Should().Be(list[i]);
+                    tree[i].ShouldBe(list[i]);
             }
 
 
@@ -206,9 +209,9 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
             }
             void Test()
             {
-                tree.Should().Equal(list);
+                tree.ShouldBe(list);
                 for (int i = 0; i < list.Count; i++)
-                    tree[i].Should().Be(list[i]);
+                    tree[i].ShouldBe(list[i]);
             }
 
 
@@ -245,9 +248,9 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
                 }
                 void Test()
                 {
-                    tree.Should().Equal(list);
+                    tree.ShouldBe(list);
                     for (int i = 0; i < list.Count; i++)
-                        tree[i].Should().Be(list[i]);
+                        tree[i].ShouldBe(list[i]);
                 }
 
                 var rnd = new Random(227);
@@ -277,9 +280,9 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
             }
             void Test()
             {
-                tree.Should().Equal(list);
+                tree.ShouldBe(list);
                 for (int i = 0; i < list.Count; i++)
-                    tree[i].Should().Be(list[i]);
+                    tree[i].ShouldBe(list[i]);
             }
 
             var rnd = new Random(227);

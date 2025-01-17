@@ -28,8 +28,8 @@ namespace Kzrnm.Competitive.Testing.Number
         public void ConstructTest(long 分子in, long 分母in, long 分子out, long 分母out)
         {
             var f = new Fraction(分子in, 分母in);
-            f.Numerator.Should().Be(分子out);
-            f.Denominator.Should().Be(分母out);
+            f.Numerator.ShouldBe(分子out);
+            f.Denominator.ShouldBe(分母out);
         }
 
         public static TheoryData ToString_Data => new TheoryData<Fraction, string>
@@ -47,7 +47,7 @@ namespace Kzrnm.Competitive.Testing.Number
         [Trait("Category", "Normal")]
         public void ToStringTest(Fraction num, string expected)
         {
-            num.ToString().Should().Be(expected);
+            num.ToString().ShouldBe(expected);
         }
         [Fact]
         [Trait("Category", "Normal")]
@@ -56,7 +56,7 @@ namespace Kzrnm.Competitive.Testing.Number
             foreach (var num in Enumerable.Repeat(new Random(150), 1000).Select(rnd => rnd.Next()))
             {
                 Fraction f = num;
-                f.Should().Be(new Fraction(num, 1));
+                f.ShouldBe(new Fraction(num, 1));
             }
         }
 
@@ -67,15 +67,15 @@ namespace Kzrnm.Competitive.Testing.Number
             foreach (var f in RandomFractions(new Random(3153)))
             {
                 var f2 = f;
-                (f == f2).Should().BeTrue();
-                (f != f2).Should().BeFalse();
-                (f >= f2).Should().BeTrue();
-                (f <= f2).Should().BeTrue();
-                (f > f2).Should().BeFalse();
-                (f < f2).Should().BeFalse();
-                f.Equals(f2).Should().BeTrue();
-                f.Equals((object)f2).Should().BeTrue();
-                f.CompareTo(f2).Should().Be(0);
+                (f == f2).ShouldBeTrue();
+                (f != f2).ShouldBeFalse();
+                (f >= f2).ShouldBeTrue();
+                (f <= f2).ShouldBeTrue();
+                (f > f2).ShouldBeFalse();
+                (f < f2).ShouldBeFalse();
+                f.Equals(f2).ShouldBeTrue();
+                f.Equals((object)f2).ShouldBeTrue();
+                f.CompareTo(f2).ShouldBe(0);
             }
         }
 
@@ -90,16 +90,16 @@ namespace Kzrnm.Competitive.Testing.Number
         [Trait("Category", "Normal")]
         public void GreaterThanTest(Fraction left, Fraction right)
         {
-            (left == right).Should().BeFalse();
-            (left != right).Should().BeTrue();
-            (left >= right).Should().BeTrue();
-            (left <= right).Should().BeFalse();
-            (left > right).Should().BeTrue();
-            (left < right).Should().BeFalse();
-            left.Equals(right).Should().BeFalse();
-            left.Equals((object)right).Should().BeFalse();
-            left.CompareTo(right).Should().BeGreaterThan(0);
-            right.CompareTo(left).Should().BeLessThan(0);
+            (left == right).ShouldBeFalse();
+            (left != right).ShouldBeTrue();
+            (left >= right).ShouldBeTrue();
+            (left <= right).ShouldBeFalse();
+            (left > right).ShouldBeTrue();
+            (left < right).ShouldBeFalse();
+            left.Equals(right).ShouldBeFalse();
+            left.Equals((object)right).ShouldBeFalse();
+            left.CompareTo(right).ShouldBeGreaterThan(0);
+            right.CompareTo(left).ShouldBeLessThan(0);
         }
 
         [Fact]
@@ -108,7 +108,7 @@ namespace Kzrnm.Competitive.Testing.Number
         {
             foreach (var f in RandomFractions(new Random(13)))
             {
-                (-f).Should().Be(new Fraction(-f.Numerator, f.Denominator));
+                (-f).ShouldBe(new Fraction(-f.Numerator, f.Denominator));
             }
         }
 
@@ -124,7 +124,7 @@ namespace Kzrnm.Competitive.Testing.Number
         [MemberData(nameof(Add_Data))]
         public void AddTest(Fraction num1, Fraction num2, Fraction expected)
         {
-            (num1 + num2).Should().Be(expected);
+            (num1 + num2).ShouldBe(expected);
         }
 
         public static TheoryData Subtract_Data => new TheoryData<Fraction, Fraction, Fraction>
@@ -139,7 +139,7 @@ namespace Kzrnm.Competitive.Testing.Number
         [MemberData(nameof(Subtract_Data))]
         public void SubtractTest(Fraction num1, Fraction num2, Fraction expected)
         {
-            (num1 - num2).Should().Be(expected);
+            (num1 - num2).ShouldBe(expected);
         }
 
         public static TheoryData Multiply_Data => new TheoryData<Fraction, Fraction, Fraction>
@@ -154,7 +154,7 @@ namespace Kzrnm.Competitive.Testing.Number
         [MemberData(nameof(Multiply_Data))]
         public void MultiplyTest(Fraction num1, Fraction num2, Fraction expected)
         {
-            (num1 * num2).Should().Be(expected);
+            (num1 * num2).ShouldBe(expected);
         }
 
         public static TheoryData Divide_Data => new TheoryData<Fraction, Fraction, Fraction>
@@ -169,7 +169,7 @@ namespace Kzrnm.Competitive.Testing.Number
         [MemberData(nameof(Divide_Data))]
         public void DivideTest(Fraction num1, Fraction num2, Fraction expected)
         {
-            (num1 / num2).Should().Be(expected);
+            (num1 / num2).ShouldBe(expected);
         }
 
         [Fact]
@@ -177,7 +177,7 @@ namespace Kzrnm.Competitive.Testing.Number
         {
             foreach (var f in RandomFractions(new Random(48463)))
             {
-                f.Inverse().Should().Be(new Fraction(f.Denominator, f.Numerator));
+                f.Inverse().ShouldBe(new Fraction(f.Denominator, f.Numerator));
             }
         }
 

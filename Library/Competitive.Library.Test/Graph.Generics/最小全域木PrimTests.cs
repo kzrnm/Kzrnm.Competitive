@@ -18,12 +18,13 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 0, 1);
             var graph = gb.ToGraph();
             var mst = graph.MinimumSpanningTreePrim();
-            mst.Cost.Should().Be(13);
-            mst.Edges.Should().Equal(
+            mst.Cost.ShouldBe(13);
+            mst.Edges.ShouldBe([
                 (0, new WEdge<int>(1, 1)),
                 (0, new WEdge<int>(4, 1)),
                 (1, new WEdge<int>(2, 5)),
-                (4, new WEdge<int>(3, 6)));
+                (4, new WEdge<int>(3, 6)),
+            ]);
         }
 
         [Fact]
@@ -36,29 +37,33 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(0, 3, 5);
             var graph = gb.ToGraph();
             var mst = graph.MinimumSpanningTreePrim();
-            mst.Cost.Should().Be(7);
-            mst.Edges.Should().Equal(
+            mst.Cost.ShouldBe(7);
+            mst.Edges.ShouldBe([
                 (0, new WEdge<int>(1, 1)),
                 (0, new WEdge<int>(2, 1)),
-                (0, new WEdge<int>(3, 5)));
+                (0, new WEdge<int>(3, 5)),
+            ]);
             mst = graph.MinimumSpanningTreePrim(1);
-            mst.Cost.Should().Be(7);
-            mst.Edges.Should().Equal(
+            mst.Cost.ShouldBe(7);
+            mst.Edges.ShouldBe([
                 (1, new WEdge<int>(0, 1)),
                 (1, new WEdge<int>(2, 1)),
-                (0, new WEdge<int>(3, 5)));
+                (0, new WEdge<int>(3, 5)),
+            ]);
             mst = graph.MinimumSpanningTreePrim(2);
-            mst.Cost.Should().Be(7);
-            mst.Edges.Should().Equal(
+            mst.Cost.ShouldBe(7);
+            mst.Edges.ShouldBe([
                 (2, new WEdge<int>(0, 1)),
                 (2, new WEdge<int>(1, 1)),
-                (0, new WEdge<int>(3, 5)));
+                (0, new WEdge<int>(3, 5)),
+            ]);
             mst = graph.MinimumSpanningTreePrim(3);
-            mst.Cost.Should().Be(7);
-            mst.Edges.Should().Equal(
+            mst.Cost.ShouldBe(7);
+            mst.Edges.ShouldBe([
                 (3, new WEdge<int>(0, 5)),
                 (0, new WEdge<int>(1, 1)),
-                (0, new WEdge<int>(2, 1)));
+                (0, new WEdge<int>(2, 1)),
+            ]);
         }
 
         [Fact]
@@ -76,12 +81,13 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 0, 1);
             var graph = gb.ToGraph();
             var mst = graph.MinimumSpanningTreePrim(0);
-            mst.Cost.Should().Be(13);
-            mst.Edges.Should().Equal(
+            mst.Cost.ShouldBe(13);
+            mst.Edges.ShouldBe([
                 (0, new WEdge<long>(1, 1)),
                 (0, new WEdge<long>(4, 1)),
                 (1, new WEdge<long>(2, 5)),
-                (4, new WEdge<long>(3, 6)));
+                (4, new WEdge<long>(3, 6)),
+            ]);
         }
     }
 }

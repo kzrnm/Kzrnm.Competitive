@@ -33,17 +33,17 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                     sums[i] += sums[i - 1];
 
                 var max = sums[^1] + 2;
-                fw.LowerBound(0).Should().Be(0);
+                fw.LowerBound(0).ShouldBe(0);
                 for (int v = 1; v < max; v++)
                 {
                     var expected = sums.LowerBound(v) + 1;
-                    fw.LowerBound(v).Should().Be(expected, "v={0}", v);
+                    fw.LowerBound(v).ShouldBe(expected, $"v={v}");
                     if (expected - 1 == sums.Length)
-                        fw[..].Should().BeLessThan(v);
+                        fw[..].ShouldBeLessThan(v);
                     else
                     {
-                        fw[..expected].Should().BeGreaterThanOrEqualTo(v);
-                        fw[..(expected - 1)].Should().BeLessThan(v);
+                        fw[..expected].ShouldBeGreaterThanOrEqualTo(v);
+                        fw[..(expected - 1)].ShouldBeLessThan(v);
                     }
                 }
             }
@@ -77,13 +77,13 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 for (int v = 0; v < max; v++)
                 {
                     var expected = sums.UpperBound(v) + 1;
-                    fw.UpperBound(v).Should().Be(expected, "v={0}", v);
+                    fw.UpperBound(v).ShouldBe(expected, $"v={v}");
                     if (expected - 1 == sums.Length)
-                        fw[..].Should().BeLessThanOrEqualTo(v);
+                        fw[..].ShouldBeLessThanOrEqualTo(v);
                     else
                     {
-                        fw[..expected].Should().BeGreaterThan(v);
-                        fw[..(expected - 1)].Should().BeLessThanOrEqualTo(v);
+                        fw[..expected].ShouldBeGreaterThan(v);
+                        fw[..(expected - 1)].ShouldBeLessThanOrEqualTo(v);
                     }
                 }
             }
@@ -111,7 +111,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 for (int i = 0; i < array.Length; i++)
                     fw.Add(i, array[i]);
                 for (int i = 0; i < array.Length; i++)
-                    fw.Get(i).Should().Be(array[i]);
+                    fw.Get(i).ShouldBe(array[i]);
             }
         }
 
@@ -124,17 +124,17 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             {
                 var fw1 = new IntFenwickTree(n);
                 var fw2 = new IntFenwickTree(n);
-                fw1.data.Should().Equal(fw2.data);
+                fw1.data.ShouldBe(fw2.data);
 
                 fw1.Add(nums[..n]);
                 for (int i = 0; i < n; i++)
                     fw2.Add(i, i + 1);
-                fw1.data.Should().Equal(fw2.data);
+                fw1.data.ShouldBe(fw2.data);
 
                 fw1.Add(nums[..(n / 2)]);
                 for (int i = 0; i < (n / 2); i++)
                     fw2.Add(i, i + 1);
-                fw1.data.Should().Equal(fw2.data);
+                fw1.data.ShouldBe(fw2.data);
             }
         }
 
@@ -164,7 +164,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 {
                     expected[i].Sum += expected[i - 1].Sum;
                 }
-                fw.ToArray().Should().Equal(expected);
+                fw.ToArray().ShouldBe(expected);
             }
         }
     }

@@ -16,22 +16,22 @@ namespace Kzrnm.Competitive.Testing.Collection
             pq.Enqueue(4, ("C", 'G'));
             pq.Enqueue(2, ("D", 'H'));
 
-            pq.Count.Should().Be(4);
-            pq.TryDequeueMin(out var key, out var a, out var b).Should().BeTrue();
-            key.Should().Be(1); a.Should().Be("A"); b.Should().Be('E');
-            pq.Count.Should().Be(3);
-            pq.TryDequeueMax(out key, out a, out b).Should().BeTrue();
-            key.Should().Be(5); a.Should().Be("B"); b.Should().Be('F');
-            pq.Count.Should().Be(2);
-            pq.TryDequeueMin(out key, out a, out b).Should().BeTrue();
-            key.Should().Be(2); a.Should().Be("D"); b.Should().Be('H');
-            pq.Count.Should().Be(1);
-            pq.TryDequeueMin(out key, out a, out b).Should().BeTrue();
-            key.Should().Be(4); a.Should().Be("C"); b.Should().Be('G');
+            pq.Count.ShouldBe(4);
+            pq.TryDequeueMin(out var key, out var a, out var b).ShouldBeTrue();
+            key.ShouldBe(1); a.ShouldBe("A"); b.ShouldBe('E');
+            pq.Count.ShouldBe(3);
+            pq.TryDequeueMax(out key, out a, out b).ShouldBeTrue();
+            key.ShouldBe(5); a.ShouldBe("B"); b.ShouldBe('F');
+            pq.Count.ShouldBe(2);
+            pq.TryDequeueMin(out key, out a, out b).ShouldBeTrue();
+            key.ShouldBe(2); a.ShouldBe("D"); b.ShouldBe('H');
+            pq.Count.ShouldBe(1);
+            pq.TryDequeueMin(out key, out a, out b).ShouldBeTrue();
+            key.ShouldBe(4); a.ShouldBe("C"); b.ShouldBe('G');
 
-            pq.Count.Should().Be(0);
-            pq.TryDequeueMin(out _, out _, out _).Should().BeFalse();
-            pq.TryDequeueMax(out _, out _, out _).Should().BeFalse();
+            pq.Count.ShouldBe(0);
+            pq.TryDequeueMin(out _, out _, out _).ShouldBeFalse();
+            pq.TryDequeueMax(out _, out _, out _).ShouldBeFalse();
         }
 
         [Fact]
@@ -106,40 +106,40 @@ namespace Kzrnm.Competitive.Testing.Collection
                 keyValues.Sort();
                 keyValues.Reverse();
 
-                pq.Count.Should().Be(keyValues.Count);
-                pq.PeekMin.Should().Be(ToKeyValue(keyValues[0]));
-                pq.PeekMax.Should().Be(ToKeyValue(keyValues[^1]));
+                pq.Count.ShouldBe(keyValues.Count);
+                pq.PeekMin.ShouldBe(ToKeyValue(keyValues[0]));
+                pq.PeekMax.ShouldBe(ToKeyValue(keyValues[^1]));
             }
             public void DequeueMin()
             {
                 var (k, v) = pq.DequeueMin();
 
-                (k, v).Should().Be(keyValues[0]);
+                (k, v).ShouldBe(keyValues[0]);
                 keyValues.RemoveAt(0);
                 keyValues.Sort();
                 keyValues.Reverse();
 
-                pq.Count.Should().Be(keyValues.Count);
+                pq.Count.ShouldBe(keyValues.Count);
                 if (Count > 0)
                 {
-                    pq.PeekMin.Should().Be(ToKeyValue(keyValues[0]));
-                    pq.PeekMax.Should().Be(ToKeyValue(keyValues[^1]));
+                    pq.PeekMin.ShouldBe(ToKeyValue(keyValues[0]));
+                    pq.PeekMax.ShouldBe(ToKeyValue(keyValues[^1]));
                 }
             }
             public void DequeueMax()
             {
                 var (k, v) = pq.DequeueMax();
 
-                (k, v).Should().Be(keyValues[^1]);
+                (k, v).ShouldBe(keyValues[^1]);
                 keyValues.RemoveAt(keyValues.Count - 1);
                 keyValues.Sort();
                 keyValues.Reverse();
 
-                pq.Count.Should().Be(keyValues.Count);
+                pq.Count.ShouldBe(keyValues.Count);
                 if (Count > 0)
                 {
-                    pq.PeekMin.Should().Be(ToKeyValue(keyValues[0]));
-                    pq.PeekMax.Should().Be(ToKeyValue(keyValues[^1]));
+                    pq.PeekMin.ShouldBe(ToKeyValue(keyValues[0]));
+                    pq.PeekMax.ShouldBe(ToKeyValue(keyValues[^1]));
                 }
             }
 
@@ -151,12 +151,12 @@ namespace Kzrnm.Competitive.Testing.Collection
                 keyValues.Add((key, tup));
                 keyValues.Sort();
                 keyValues.Reverse();
-                (k, v).Should().Be(keyValues[0]);
+                (k, v).ShouldBe(keyValues[0]);
                 keyValues.RemoveAt(0);
 
-                pq.Count.Should().Be(keyValues.Count);
-                pq.PeekMin.Should().Be(ToKeyValue(keyValues[0]));
-                pq.PeekMax.Should().Be(ToKeyValue(keyValues[^1]));
+                pq.Count.ShouldBe(keyValues.Count);
+                pq.PeekMin.ShouldBe(ToKeyValue(keyValues[0]));
+                pq.PeekMax.ShouldBe(ToKeyValue(keyValues[^1]));
             }
             public void EnqueueDequeueMax()
             {
@@ -166,14 +166,14 @@ namespace Kzrnm.Competitive.Testing.Collection
                 keyValues.Add((key, tup));
                 keyValues.Sort();
                 keyValues.Reverse();
-                (k, v).Should().Be(keyValues[^1]);
+                (k, v).ShouldBe(keyValues[^1]);
                 keyValues.RemoveAt(keyValues.Count - 1);
 
-                pq.Count.Should().Be(keyValues.Count);
+                pq.Count.ShouldBe(keyValues.Count);
                 if (Count > 0)
                 {
-                    pq.PeekMin.Should().Be(ToKeyValue(keyValues[0]));
-                    pq.PeekMax.Should().Be(ToKeyValue(keyValues[^1]));
+                    pq.PeekMin.ShouldBe(ToKeyValue(keyValues[0]));
+                    pq.PeekMax.ShouldBe(ToKeyValue(keyValues[^1]));
                 }
             }
         }

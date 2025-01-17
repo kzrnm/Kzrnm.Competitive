@@ -36,7 +36,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
 
             var expected = ModInt2Int(mat1 * mat2);
 
-            ModInt2Int(mat1.Strassen(mat2)).Should().Be(expected);
+            ModInt2Int(mat1.Strassen(mat2)).ShouldBe(expected);
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
 
                 var got = ModInt2Int(mat1.Strassen(mat2));
                 var expected = ModInt2Int(mat1 * mat2);
-                got.Should().Be(expected);
+                got.ShouldBe(expected);
             }
         }
 
@@ -84,7 +84,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             var cur = orig;
             for (int i = 1; i < 10; i++)
             {
-                orig.Pow(i).Should().BeEquivalentTo(cur);
+                orig.Pow(i).ShouldBe(cur);
                 cur *= orig;
             }
         }

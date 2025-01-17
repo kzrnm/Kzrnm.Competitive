@@ -25,7 +25,7 @@ namespace Kzrnm.Competitive.Testing.Bits
         [Trait("Category", "BitString")]
         public void BitStringInt32(int num, int len, string expected)
         {
-            num.ToBitString(len).Should().Be(expected);
+            num.ToBitString(len).ShouldBe(expected);
         }
 
         public static TheoryData BitStringInt64_Data => new TheoryData<long, int, string>
@@ -46,7 +46,7 @@ namespace Kzrnm.Competitive.Testing.Bits
         [Trait("Category", "BitString")]
         public void BitStringInt64(long num, int len, string expected)
         {
-            num.ToBitString(len).Should().Be(expected);
+            num.ToBitString(len).ShouldBe(expected);
         }
 
         public static TheoryData BitStringUInt64_Data => new TheoryData<ulong, int, string>
@@ -65,16 +65,16 @@ namespace Kzrnm.Competitive.Testing.Bits
         [Trait("Category", "BitString")]
         public void BitStringUInt64(ulong num, int len, string expected)
         {
-            num.ToBitString(len).Should().Be(expected);
+            num.ToBitString(len).ShouldBe(expected);
         }
 
         [Fact]
         [Trait("Category", "BitString")]
         public void BitStringDefault()
         {
-            0.ToBitString().Should().Be(new string('0', 32));
-            0L.ToBitString().Should().Be(new string('0', 64));
-            0UL.ToBitString().Should().Be(new string('0', 64));
+            0.ToBitString().ShouldBe(new string('0', 32));
+            0L.ToBitString().ShouldBe(new string('0', 64));
+            0UL.ToBitString().ShouldBe(new string('0', 64));
         }
 
         public static IEnumerable<(uint, int[])> BitEnumerateByte_Data()
@@ -105,8 +105,8 @@ namespace Kzrnm.Competitive.Testing.Bits
         [Trait("Category", "BitEnumerate")]
         public void BitEnumerateByte(uint num, int[] expected)
         {
-            num.Bits().Should().Equal(expected);
-            num.Bits().ToArray().Should().Equal(expected);
+            num.Bits().ShouldBe(expected);
+            num.Bits().ToArray().ShouldBe(expected);
         }
 
         public static TheoryData BitEnumerateInt32_Data => new TheoryData<int, int[]>
@@ -128,8 +128,8 @@ namespace Kzrnm.Competitive.Testing.Bits
         [Trait("Category", "BitEnumerate")]
         public void BitEnumerateInt32(int num, int[] expected)
         {
-            num.Bits().Should().Equal(expected);
-            num.Bits().ToArray().Should().Equal(expected);
+            num.Bits().ShouldBe(expected);
+            num.Bits().ToArray().ShouldBe(expected);
         }
 
         public static TheoryData BitEnumerateUInt32_Data => new TheoryData<uint, int[]>
@@ -151,8 +151,8 @@ namespace Kzrnm.Competitive.Testing.Bits
         [Trait("Category", "BitEnumerate")]
         public void BitEnumerateUInt32(uint num, int[] expected)
         {
-            num.Bits().Should().Equal(expected);
-            num.Bits().ToArray().Should().Equal(expected);
+            num.Bits().ShouldBe(expected);
+            num.Bits().ToArray().ShouldBe(expected);
         }
 
         public static TheoryData BitEnumerateInt64_Data => new TheoryData<long, int[]>
@@ -177,8 +177,8 @@ namespace Kzrnm.Competitive.Testing.Bits
         [Trait("Category", "BitEnumerate")]
         public void BitEnumerateInt64(long num, int[] expected)
         {
-            num.Bits().Should().Equal(expected);
-            num.Bits().ToArray().Should().Equal(expected);
+            num.Bits().ShouldBe(expected);
+            num.Bits().ToArray().ShouldBe(expected);
         }
 
         public static TheoryData BitEnumerateUInt64_Data => new TheoryData<ulong, int[]>
@@ -203,8 +203,8 @@ namespace Kzrnm.Competitive.Testing.Bits
         [Trait("Category", "BitEnumerate")]
         public void BitEnumerateUInt64(ulong num, int[] expected)
         {
-            num.Bits().Should().Equal(expected);
-            num.Bits().ToArray().Should().Equal(expected);
+            num.Bits().ShouldBe(expected);
+            num.Bits().ToArray().ShouldBe(expected);
         }
 
         [Fact]
@@ -221,14 +221,14 @@ namespace Kzrnm.Competitive.Testing.Bits
                 Array.Reverse(binary);
                 foreach (var b in value.Bits())
                 {
-                    binary[b].Should().Be('1');
+                    binary[b].ShouldBe('1');
                     binary[b] = '0';
                 }
 
-                new string(binary).Should().Be(zeroBinary);
+                new string(binary).ShouldBe(zeroBinary);
 
                 value.Bits().ToArray()
-                    .Should().Equal(value.Bits().Cast<int>().ToArray());
+                    .ShouldBe(value.Bits().Cast<int>().ToArray());
             }
         }
     }

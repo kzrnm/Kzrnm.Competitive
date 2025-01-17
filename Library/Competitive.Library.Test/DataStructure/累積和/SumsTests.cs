@@ -14,7 +14,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             var sums = Sums.Create(arr);
             for (int l = 0; l <= arr.Length; l++)
                 for (int r = l; r <= arr.Length; r++)
-                    sums[l..r].Should().Be(arr[l..r].Sum());
+                    sums[l..r].ShouldBe(arr[l..r].Sum());
         }
         [Fact]
         public void LongSums()
@@ -24,7 +24,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             var sums = Sums.Create(arr);
             for (int l = 0; l <= arr.Length; l++)
                 for (int r = l; r <= arr.Length; r++)
-                    sums[l..r].Should().Be(arr[l..r].Sum());
+                    sums[l..r].ShouldBe(arr[l..r].Sum());
         }
         [Fact]
         public void ModSums()
@@ -34,7 +34,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             var sums = Sums.Create(arr);
             for (int l = 0; l <= arr.Length; l++)
                 for (int r = l; r <= arr.Length; r++)
-                    sums[l..r].Should().Be(arr[l..r].Sum());
+                    sums[l..r].ShouldBe(arr[l..r].Sum());
         }
         readonly struct Mod100 : IStaticMod
         {

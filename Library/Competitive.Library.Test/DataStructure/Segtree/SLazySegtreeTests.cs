@@ -21,38 +21,38 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         [Fact]
         public void Zero()
         {
-            new SLazySegtree<int, int, Starry>(0).AllProd.Should().Be(-1_000_000_000);
-            new SLazySegtree<int, int, Starry>(10).AllProd.Should().Be(-1_000_000_000);
+            new SLazySegtree<int, int, Starry>(0).AllProd.ShouldBe(-1_000_000_000);
+            new SLazySegtree<int, int, Starry>(10).AllProd.ShouldBe(-1_000_000_000);
         }
 
         [Fact]
         public void Invalid()
         {
             var s = new SLazySegtree<int, int, Starry>(10);
-            s.Invoking(s => s[-1]).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s[10]).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s[0]).Should().NotThrow();
-            s.Invoking(s => s[9]).Should().NotThrow();
+            Should.Throw<ContractAssertException>(() => s[-1]);
+            Should.Throw<ContractAssertException>(() => s[10]);
+            Should.NotThrow(() => s[0]);
+            Should.NotThrow(() => s[9]);
 
-            s.Invoking(s => s.Prod(-1, -1)).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s.Prod(3, 2)).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s.Prod(0, 11)).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s.Prod(-1, 11)).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s.Prod(0, 0)).Should().NotThrow();
-            s.Invoking(s => s.Prod(10, 10)).Should().NotThrow();
-            s.Invoking(s => s.Prod(0, 10)).Should().NotThrow();
+            Should.Throw<ContractAssertException>(() => s.Prod(-1, -1));
+            Should.Throw<ContractAssertException>(() => s.Prod(3, 2));
+            Should.Throw<ContractAssertException>(() => s.Prod(0, 11));
+            Should.Throw<ContractAssertException>(() => s.Prod(-1, 11));
+            Should.NotThrow(() => s.Prod(0, 0));
+            Should.NotThrow(() => s.Prod(10, 10));
+            Should.NotThrow(() => s.Prod(0, 10));
 
-            s.Invoking(s => s.MaxRight(11, s => true)).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s.MaxRight(-1, s => true)).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s.MaxRight(0, s => false)).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s.MaxRight(0, s => true)).Should().NotThrow();
-            s.Invoking(s => s.MaxRight(10, s => true)).Should().NotThrow();
+            Should.Throw<ContractAssertException>(() => s.MaxRight(11, s => true));
+            Should.Throw<ContractAssertException>(() => s.MaxRight(-1, s => true));
+            Should.Throw<ContractAssertException>(() => s.MaxRight(0, s => false));
+            Should.NotThrow(() => s.MaxRight(0, s => true));
+            Should.NotThrow(() => s.MaxRight(10, s => true));
 
-            s.Invoking(s => s.MinLeft(11, s => true)).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s.MinLeft(-1, s => true)).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s.MinLeft(0, s => false)).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s.MinLeft(0, s => true)).Should().NotThrow();
-            s.Invoking(s => s.MinLeft(10, s => true)).Should().NotThrow();
+            Should.Throw<ContractAssertException>(() => s.MinLeft(11, s => true));
+            Should.Throw<ContractAssertException>(() => s.MinLeft(-1, s => true));
+            Should.Throw<ContractAssertException>(() => s.MinLeft(0, s => false));
+            Should.NotThrow(() => s.MinLeft(0, s => true));
+            Should.NotThrow(() => s.MinLeft(10, s => true));
         }
 
         [Fact]
@@ -76,7 +76,8 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                         {
                             e = Math.Max(e, p[i]);
                         }
-                        seg.Prod(l, r).Should().Be(seg[l..r]).And.Be(e);
+                        seg.Prod(l, r).ShouldBe(e);
+                        seg[l..r].ShouldBe(e);
                     }
                 }
             }
@@ -86,12 +87,14 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         public void Usage()
         {
             var seg = new SLazySegtree<int, int, Starry>(new int[10]);
-            seg.AllProd.Should().Be(0);
+            seg.AllProd.ShouldBe(0);
             seg.Apply(0, 3, 5);
-            seg.AllProd.Should().Be(5);
+            seg.AllProd.ShouldBe(5);
             seg.Apply(2, -10);
-            seg.Prod(2, 3).Should().Be(seg[2..3]).And.Be(-5);
-            seg.Prod(2, 4).Should().Be(seg[2..4]).And.Be(0);
+            seg.Prod(2, 3).ShouldBe(-5);
+            seg[2..3].ShouldBe(-5);
+            seg.Prod(2, 4).ShouldBe(0);
+            seg[2..4].ShouldBe(0);
         }
 
 
@@ -103,7 +106,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 var seg = new SLazySegtree<int, int, Starry>(new int[i]);
                 for (int j = 0; j < seg.Length - j; j++)
                     seg.Apply(j, seg.Length - j, 1);
-                seg.ToArray().Should().Equal(CreateExpected(i));
+                seg.ToArray().ShouldBe(CreateExpected(i));
             }
 
             static int[] CreateExpected(int length)

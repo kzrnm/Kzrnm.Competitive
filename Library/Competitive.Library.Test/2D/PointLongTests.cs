@@ -17,10 +17,10 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [MemberData(nameof(Distance_Data))]
         public void Distance(PointLong p1, PointLong p2, long d2, double distance)
         {
-            p1.Distance2(p2).Should().Be(d2);
-            p2.Distance2(p1).Should().Be(d2);
-            p1.Distance(p2).Should().Be(distance);
-            p2.Distance(p1).Should().Be(distance);
+            p1.Distance2(p2).ShouldBe(d2);
+            p2.Distance2(p1).ShouldBe(d2);
+            p1.Distance(p2).ShouldBe(distance);
+            p2.Distance(p1).ShouldBe(distance);
         }
 
         public static PointLong[] SortedPoints =>
@@ -54,9 +54,8 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         {
             for (int i = 0; i < SortedPoints.Length; i++)
                 for (int j = 0; j < SortedPoints.Length; j++)
-                    SortedPoints[i].CompareTo(SortedPoints[j]).Should()
-                        .Be(i.CompareTo(j), "({0}).CompareTo(({1})) == {2}.CompareTo({3})",
-                        SortedPoints[i], SortedPoints[j], i, j);
+                    SortedPoints[i].CompareTo(SortedPoints[j]).ShouldBe(i.CompareTo(j),
+                        $"({SortedPoints[i]}).CompareTo(({SortedPoints[j]})) == {i}.CompareTo({j})");
         }
 
         public static TheoryData Inner_Data => new TheoryData<PointLong, PointLong, long>
@@ -71,7 +70,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [MemberData(nameof(Inner_Data))]
         public void Inner(PointLong p1, PointLong p2, long expected)
         {
-            p1.Inner(p2).Should().Be(expected);
+            p1.Inner(p2).ShouldBe(expected);
         }
 
         public static TheoryData Cross_Data => new TheoryData<PointLong, PointLong, long>
@@ -86,7 +85,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [MemberData(nameof(Cross_Data))]
         public void Cross(PointLong p1, PointLong p2, long expected)
         {
-            p1.Cross(p2).Should().Be(expected);
+            p1.Cross(p2).ShouldBe(expected);
         }
 
         public static TheoryData Area_Data => new TheoryData<PointLong[], long>
@@ -127,8 +126,8 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [MemberData(nameof(Area_Data))]
         public void Area(PointLong[] points, long expected)
         {
-            PointLong.Area2(points).Should().Be(expected);
-            PointLong.Area(points).Should().Be(expected / 2.0);
+            PointLong.Area2(points).ShouldBe(expected);
+            PointLong.Area(points).ShouldBe(expected / 2.0);
         }
 
         [Fact]
@@ -151,7 +150,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             };
             PointLong.ConvexHull(points)
                 .Select(i => points[i])
-                .Should().Equal(
+                .ShouldBe([
                     (10000000, -10000000),
                     (40000000, 20000000),
                     (80000000, 60000000),
@@ -159,8 +158,8 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                     (110000000, 100000000),
                     (100000000, 100000000),
                     (40000000, 80000000),
-                    (-10000000, 50000000)
-                );
+                    (-10000000, 50000000),
+               ]);
         }
 
         [Fact]
@@ -185,7 +184,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             };
             PointLong.ConvexHull(points)
                 .Select(i => points[i])
-                .Should().Equal(
+                .ShouldBe([
                     (0, 0),
                     (4, 0),
                     (10, 8),
@@ -194,8 +193,8 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                     (1, 8),
                     (-6, 6),
                     (-4, 4),
-                    (-1, 1)
-                );
+                    (-1, 1),
+                ]);
         }
 
         [Fact]
@@ -213,7 +212,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                 };
                 cw.WriteLines(arr);
             }
-            utf8Wrapper.Read().Should().Be("""
+            utf8Wrapper.Read().ShouldBe("""
             1 -9223372036854775808
             3 -9223372036854775807
             5 -9223372036854775806

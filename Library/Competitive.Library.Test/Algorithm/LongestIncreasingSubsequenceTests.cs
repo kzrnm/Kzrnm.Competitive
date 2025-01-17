@@ -14,8 +14,8 @@ namespace Kzrnm.Competitive.Testing.Algorithm
             };
 
             var (lis, idxs) = LongestIncreasingSubsequence.Lis(a);
-            lis.Should().Equal(1, 2, 3, 4, 5, 6);
-            idxs.Should().Equal(3, 4, 5, 7, 8, 9);
+            lis.ShouldBe([1, 2, 3, 4, 5, 6]);
+            idxs.ShouldBe([3, 4, 5, 7, 8, 9]);
         }
         [Fact]
         public void NotStrictly()
@@ -26,8 +26,8 @@ namespace Kzrnm.Competitive.Testing.Algorithm
             };
 
             var (lis, idxs) = LongestIncreasingSubsequence.Lis(a, false);
-            lis.Should().Equal(1, 1, 2, 3, 4, 4, 5, 6);
-            idxs.Should().Equal(1, 3, 4, 5, 6, 7, 8, 9);
+            lis.ShouldBe([1, 1, 2, 3, 4, 4, 5, 6]);
+            idxs.ShouldBe([1, 3, 4, 5, 6, 7, 8, 9]);
         }
     }
 }

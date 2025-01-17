@@ -6,10 +6,10 @@ namespace Kzrnm.Competitive.Testing.MathNS
         public void Table()
         {
             var t = EulerPhi.Table(20);
-            t.Should().Equal(0, 1, 1, 2, 2, 4, 2, 6, 4, 6, 4, 10, 4, 12, 6, 8, 8, 16, 6, 18, 8);
+            t.ShouldBe([0, 1, 1, 2, 2, 4, 2, 6, 4, 6, 4, 10, 4, 12, 6, 8, 8, 16, 6, 18, 8]);
             for (int i = 1; i < t.Length; i++)
             {
-                EulerPhi.Solve(i).Should().Be(t[i]);
+                EulerPhi.Solve(i).ShouldBe(t[i]);
             }
         }
 
@@ -20,7 +20,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [InlineData(43243242343, 37065636288)]
         public void F(long n, long expected)
         {
-            EulerPhi.Solve(n).Should().Be(expected);
+            EulerPhi.Solve(n).ShouldBe(expected);
         }
     }
 }

@@ -22,12 +22,12 @@ namespace Kzrnm.Competitive.Testing.IO
                 -5 -6
                 -7 -8
                 """);
-            cr.Repeat(4).IntInt().Should().Equal(
+            cr.Repeat(4).IntInt().ShouldBe([
                 (1, 2),
                 (13, 14),
                 (-5, -6),
-                (-7, -8)
-            );
+                (-7, -8),
+            ]);
         }
 
         [Fact]
@@ -40,12 +40,12 @@ namespace Kzrnm.Competitive.Testing.IO
                 -5 -6
                 -7 -8
                 """);
-            cr.Repeat(4).Int0Int().Should().Equal(
+            cr.Repeat(4).Int0Int().ShouldBe([
                 (0, 2),
                 (12, 14),
                 (-6, -6),
-                (-8, -8)
-            );
+                (-8, -8),
+            ]);
         }
 
         [Fact]
@@ -58,12 +58,12 @@ namespace Kzrnm.Competitive.Testing.IO
                 -5 -6
                 -7 -8
                 """);
-            cr.Repeat(4).Int0Int0().Should().Equal(
+            cr.Repeat(4).Int0Int0().ShouldBe([
                 (0, 1),
                 (12, 13),
                 (-6, -7),
-                (-8, -9)
-            );
+                (-8, -9),
+            ]);
         }
 
         [Fact]
@@ -76,12 +76,12 @@ namespace Kzrnm.Competitive.Testing.IO
                 -5 -6
                 -7 -8
                 """);
-            cr.Repeat(4).IntInt0().Should().Equal(
+            cr.Repeat(4).IntInt0().ShouldBe([
                 (1, 1),
                 (13, 13),
                 (-5, -7),
-                (-7, -9)
-            );
+                (-7, -9),
+            ]);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 var seg = new LazySegtree<int, int, Op>(i);
                 for (int j = 0; j < seg.Length - j; j++)
                     seg.Apply(j, seg.Length - j, 1);
-                seg.ToArray().Should().Equal(CreateExpected(i));
+                seg.ToArray().ShouldBe(CreateExpected(i));
             }
 
             static int[] CreateExpected(int length)

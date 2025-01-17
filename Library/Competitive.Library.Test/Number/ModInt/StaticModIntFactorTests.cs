@@ -11,8 +11,8 @@ namespace Kzrnm.Competitive.Testing.Number
             var factor = new StaticModInt1000000007Factor(10);
             for (int i = 0; i <= 10; i++)
                 for (int j = 0; j <= 10; j++)
-                    factor.Combination(i, j).Value.Should().Be((int)MathLibEx.Combination(i, j));
-            factor.Invoking(factor => factor.Combination(11, 0)).Should().Throw<Exception>();
+                    factor.Combination(i, j).Value.ShouldBe((int)MathLibEx.Combination(i, j));
+            Should.Throw<Exception>(() => factor.Combination(11, 0));
         }
 
         [Fact]
@@ -21,8 +21,8 @@ namespace Kzrnm.Competitive.Testing.Number
             var factor = new StaticModInt1000000007Factor(30);
             for (int i = 0; i <= 10; i++)
                 for (int j = 0; j <= 20; j++)
-                    factor.Homogeneous(i, j).Should().Be(factor.Combination(i + j - 1, j));
-            factor.Invoking(factor => factor.Homogeneous(10, 22)).Should().Throw<Exception>();
+                    factor.Homogeneous(i, j).ShouldBe(factor.Combination(i + j - 1, j));
+            Should.Throw<Exception>(() => factor.Homogeneous(10, 22));
         }
 
         [Fact]
@@ -40,9 +40,9 @@ namespace Kzrnm.Competitive.Testing.Number
                     int expected = 1;
                     for (int k = 0; k < j; k++)
                         expected *= i - k;
-                    factor.Permutation(i, j).Value.Should().Be(expected);
+                    factor.Permutation(i, j).Value.ShouldBe(expected);
                 }
-            factor.Invoking(factor => factor.Permutation(11, 0)).Should().Throw<Exception>();
+            Should.Throw<Exception>(() => factor.Permutation(11, 0));
         }
 
         [Fact]
@@ -50,15 +50,15 @@ namespace Kzrnm.Competitive.Testing.Number
         {
             var factor = new StaticModInt1000000007Factor(10);
             int expected = 1;
-            factor.Factorial(0).Value.Should().Be(1);
-            factor.FactorialInverse(0).Value.Should().Be(1);
+            factor.Factorial(0).Value.ShouldBe(1);
+            factor.FactorialInverse(0).Value.ShouldBe(1);
             for (int i = 1; i <= 10; i++)
             {
                 expected *= i;
-                factor.Factorial(i).Value.Should().Be(expected);
-                factor.FactorialInverse(i).Should().Be(StaticModInt<Mod1000000007>.One / expected);
+                factor.Factorial(i).Value.ShouldBe(expected);
+                factor.FactorialInverse(i).ShouldBe(StaticModInt<Mod1000000007>.One / expected);
             }
-            factor.Invoking(factor => factor.Factorial(11)).Should().Throw<Exception>();
+            Should.Throw<Exception>(() => factor.Factorial(11));
         }
 
         [Fact]
@@ -69,9 +69,9 @@ namespace Kzrnm.Competitive.Testing.Number
             for (int i = 1; i <= 10; i += 2)
             {
                 expected *= i;
-                factor.DoubleFactorial(i).Value.Should().Be(expected);
+                factor.DoubleFactorial(i).Value.ShouldBe(expected);
             }
-            factor.Invoking(factor => factor.Factorial(11)).Should().Throw<Exception>();
+            Should.Throw<Exception>(() => factor.Factorial(11));
         }
 
         [Fact]
@@ -79,13 +79,13 @@ namespace Kzrnm.Competitive.Testing.Number
         {
             var factor = new StaticModInt1000000007Factor(10);
             int expected = 1;
-            factor.DoubleFactorial(0).Value.Should().Be(1);
+            factor.DoubleFactorial(0).Value.ShouldBe(1);
             for (int i = 2; i <= 10; i += 2)
             {
                 expected *= i;
-                factor.DoubleFactorial(i).Value.Should().Be(expected);
+                factor.DoubleFactorial(i).Value.ShouldBe(expected);
             }
-            factor.Invoking(factor => factor.Factorial(12)).Should().Throw<Exception>();
+            Should.Throw<Exception>(() => factor.Factorial(12));
         }
     }
 }

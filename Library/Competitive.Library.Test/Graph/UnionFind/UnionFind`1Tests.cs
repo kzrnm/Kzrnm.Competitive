@@ -10,24 +10,24 @@ namespace Kzrnm.Competitive.Testing.Graph
         public void Zero()
         {
             var uf = new UnionFind<int>([], (a, b) => a + b);
-            uf.Groups().Should().Equal([]);
+            uf.Groups().ShouldBe([]);
         }
 
         [Fact]
         public void Simple()
         {
             var uf = new UnionFind<int>([1, 2], (a, b) => a + b);
-            uf.Same(0, 1).Should().BeFalse();
+            uf.Same(0, 1).ShouldBeFalse();
 
-            uf.Data(0).Should().Be(1);
-            uf.Data(1).Should().Be(2);
+            uf.Data(0).ShouldBe(1);
+            uf.Data(1).ShouldBe(2);
 
-            uf.Merge(0, 1).Should().BeTrue();
-            uf.Same(0, 1).Should().BeTrue();
-            uf.Size(0).Should().Be(2);
+            uf.Merge(0, 1).ShouldBeTrue();
+            uf.Same(0, 1).ShouldBeTrue();
+            uf.Size(0).ShouldBe(2);
 
-            uf.Data(0).Should().Be(3);
-            uf.Data(1).Should().Be(3);
+            uf.Data(0).ShouldBe(3);
+            uf.Data(1).ShouldBe(3);
         }
 
         [Fact]
@@ -39,9 +39,9 @@ namespace Kzrnm.Competitive.Testing.Graph
             {
                 uf.Merge(i, i + 1);
             }
-            uf.Size(0).Should().Be(n);
-            uf.Groups().Should().HaveCount(1);
-            uf.Data(0).Should().Be((long)n * (n - 1) / 2);
+            uf.Size(0).ShouldBe(n);
+            uf.Groups().Length.ShouldBe(1);
+            uf.Data(0).ShouldBe((long)n * (n - 1) / 2);
         }
 
         [Fact]
@@ -53,9 +53,9 @@ namespace Kzrnm.Competitive.Testing.Graph
             {
                 uf.Merge(i, i + 1);
             }
-            uf.Size(0).Should().Be(n);
-            uf.Groups().Should().HaveCount(1);
-            uf.Data(0).Should().Be((long)n * (n - 1) / 2);
+            uf.Size(0).ShouldBe(n);
+            uf.Groups().Length.ShouldBe(1);
+            uf.Data(0).ShouldBe((long)n * (n - 1) / 2);
         }
     }
 }

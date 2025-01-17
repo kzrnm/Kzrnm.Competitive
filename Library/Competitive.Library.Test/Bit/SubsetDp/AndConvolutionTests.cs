@@ -22,7 +22,7 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
                     a[i] = (uint)rnd.Next(100);
                     b[i] = (uint)rnd.Next(100);
                 }
-                AndConvolution.Convolution(a, b).Should().Equal(Naive(a, b));
+                AndConvolution.Convolution(a, b).ShouldBe(Naive(a, b));
             }
         }
 
@@ -41,7 +41,7 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
                     a[i] = rnd.Next(int.MaxValue / len);
                     b[i] = rnd.Next(int.MaxValue / len);
                 }
-                AndConvolution.Convolution(a, b).Should().Equal(Naive(a, b));
+                AndConvolution.Convolution(a, b).ShouldBe(Naive(a, b));
             }
         }
 
@@ -59,7 +59,7 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
                     a[i] = rnd.Next();
                     b[i] = rnd.Next();
                 }
-                AndConvolution.Convolution(a, b).Should().Equal(Naive(a, b));
+                AndConvolution.Convolution(a, b).ShouldBe(Naive(a, b));
             }
         }
 
@@ -77,7 +77,7 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
                     a[i] = rnd.Next();
                     b[i] = rnd.Next();
                 }
-                AndConvolution.Convolution(a, b).Should().Equal(Naive(a, b));
+                AndConvolution.Convolution(a, b).ShouldBe(Naive(a, b));
             }
         }
 
@@ -97,10 +97,7 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
                 }
                 AndConvolution.Convolution(a, b)
                     .Zip(Naive(a, b), (a, b) => Math.Abs(a - b))
-                    .Should().AllSatisfy(diff =>
-                    {
-                        diff.Should().BeLessThan(1e-10);
-                    });
+                    .ShouldAllBe(diff => diff < 1e-10);
             }
         }
 

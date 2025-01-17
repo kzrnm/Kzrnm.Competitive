@@ -1,4 +1,6 @@
 
+using System.Linq;
+
 namespace Kzrnm.Competitive.Testing.Graph
 {
     public class 閉路削除DfsTests
@@ -17,14 +19,14 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 7);
             gb.Add(7, 3);
             var es = gb.ToGraph().RemoveCycle();
-            es.Should().BeEquivalentTo(new (int, GraphEdge)[] {
+            es.Order().ShouldBe(new (int, GraphEdge)[] {
                 (4, new(5)),
                 (3, new(5)),
                 (5, new(6)),
                 (2, new(3)),
                 (1, new(2)),
                 (0, new(1)),
-            });
+            }.Order());
         }
         [Fact]
         public void 重み付きグラフ()
@@ -40,14 +42,14 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 7, 7);
             gb.Add(7, 3, 8);
             var es = gb.ToGraph().RemoveCycle();
-            es.Should().BeEquivalentTo(new (int, WEdge<int>)[] {
+            es.Order().ShouldBe(new (int, WEdge<int>)[] {
                 (4, new(5, 5)),
                 (3, new(5, 5)),
                 (5, new(6, 6)),
                 (2, new(3, 3)),
                 (1, new(2, 2)),
                 (0, new(1, 1)),
-            });
+            }.Order());
         }
         [Fact]
         public void 無向グラフ()
@@ -62,13 +64,13 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(5, 6);
             gb.Add(4, 7);
             var es = gb.ToGraph().RemoveCycle();
-            es.Should().BeEquivalentTo(new (int, GraphEdge)[] {
+            es.Order().ShouldBe(new (int, GraphEdge)[] {
                 (4, new(7)),
                 (5, new(6)),
                 (2, new(3)),
                 (1, new(2)),
                 (0, new(1)),
-            });
+            }.Order());
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 for (int w = w1; w < w2; w++)
                     native += array[h][w];
 
-            seg.Prod(h1, w1, h2, w2).Should().Be(native);
+            seg.Prod(h1, w1, h2, w2).ShouldBe(native);
         }
 
         [Fact]

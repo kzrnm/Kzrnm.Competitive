@@ -9,15 +9,15 @@ namespace Kzrnm.Competitive.Testing.MathNS
         {
             var naiveCounting = new uint[10001];
             var p = new PrimeNumber(10000).ToHashSet();
-            PrimeCounting.Count(0).Should().Be(0);
-            PrimeCounting.Count(1).Should().Be(0);
+            PrimeCounting.Count(0).ShouldBe(0);
+            PrimeCounting.Count(1).ShouldBe(0);
             for (int i = 2; i < naiveCounting.Length; i++)
             {
                 naiveCounting[i] = naiveCounting[i - 1];
                 if (p.Contains(i))
                     naiveCounting[i]++;
 
-                PrimeCounting.Count(i).Should().Be(naiveCounting[i], "Number: {0}", i);
+                PrimeCounting.Count(i).ShouldBe(naiveCounting[i], $"Number: {i}");
             }
         }
 
@@ -29,7 +29,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [InlineData(5233235398, 245387790)]
         public void PrimeCountLarge(ulong num, ulong expected)
         {
-            PrimeCounting.Count(num).Should().Be(expected);
+            PrimeCounting.Count(num).ShouldBe(expected);
         }
     }
 }

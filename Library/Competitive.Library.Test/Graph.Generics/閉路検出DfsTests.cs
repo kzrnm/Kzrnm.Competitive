@@ -17,8 +17,8 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 7);
             gb.Add(7, 3);
             var (from, edges) = gb.ToGraph().GetCycleDfs();
-            from.Should().Be(3);
-            edges.Should().Equal([
+            from.ShouldBe(3);
+            edges.ShouldBe([
                 new GraphEdge(4),
                 new GraphEdge(7),
                 new GraphEdge(3),
@@ -38,8 +38,8 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 7, 7);
             gb.Add(7, 3, 8);
             var (from, edges) = gb.ToGraph().GetCycleDfs();
-            from.Should().Be(3);
-            edges.Should().Equal([
+            from.ShouldBe(3);
+            edges.ShouldBe([
                 new WEdge<int>(4, 4),
                 new WEdge<int>(7, 7),
                 new WEdge<int>(3, 8),
@@ -58,8 +58,8 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(5, 6);
             gb.Add(4, 7);
             var (from, edges) = gb.ToGraph().GetCycleDfs();
-            from.Should().Be(3);
-            edges.Should().Equal([
+            from.ShouldBe(3);
+            edges.ShouldBe([
                 new GraphEdge(5),
                 new GraphEdge(4),
                 new GraphEdge(3),

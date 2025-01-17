@@ -18,8 +18,8 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 7);
             gb.Add(7, 0);
             var (from, edges) = gb.ToGraph().EulerianTrail();
-            from.Should().Be(0);
-            edges.Should().Equal([
+            from.ShouldBe(0);
+            edges.ShouldBe([
                 new GraphEdge(1),
                 new GraphEdge(2),
                 new GraphEdge(3),
@@ -48,8 +48,8 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 7);
             gb.Add(7, 0);
             var (from, edges) = gb.ToGraph().EulerianTrail();
-            from.Should().Be(0);
-            edges.Should().Equal([
+            from.ShouldBe(0);
+            edges.ShouldBe([
                 new GraphEdge(1),
                 new GraphEdge(2),
                 new GraphEdge(3),
@@ -78,8 +78,8 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 7, 9);
             gb.Add(7, 0, 10);
             var (from, edges) = gb.ToGraph().EulerianTrail();
-            from.Should().Be(0);
-            edges.Should().Equal([
+            from.ShouldBe(0);
+            edges.ShouldBe([
                 new WEdge<int>(1, 1),
                 new WEdge<int>(2, 2),
                 new WEdge<int>(3, 3),

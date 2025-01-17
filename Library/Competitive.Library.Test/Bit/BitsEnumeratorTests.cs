@@ -33,8 +33,8 @@ namespace Kzrnm.Competitive.Testing.Bits
         [TupleMemberData(nameof(BitEnumerateByte_Data))]
         public void BitEnumerateByte(byte num, int[] expected)
         {
-            new BitsEnumerator<byte>(num).Should().Equal(expected);
-            new BitsEnumerator<byte>(num).ToArray().Should().Equal(expected);
+            new BitsEnumerator<byte>(num).ShouldBe(expected);
+            new BitsEnumerator<byte>(num).ToArray().ShouldBe(expected);
         }
 
         public static TheoryData BitEnumerateInt128_Data => new TheoryData<Int128, int[]>
@@ -54,8 +54,8 @@ namespace Kzrnm.Competitive.Testing.Bits
         [MemberData(nameof(BitEnumerateInt128_Data))]
         public void BitEnumerateInt128(Int128 num, int[] expected)
         {
-            new BitsEnumerator<Int128>(num).Should().Equal(expected);
-            new BitsEnumerator<Int128>(num).ToArray().Should().Equal(expected);
+            new BitsEnumerator<Int128>(num).ShouldBe(expected);
+            new BitsEnumerator<Int128>(num).ToArray().ShouldBe(expected);
         }
 
         public static TheoryData BitEnumerateUInt128_Data => new TheoryData<UInt128, int[]>
@@ -73,8 +73,8 @@ namespace Kzrnm.Competitive.Testing.Bits
         [MemberData(nameof(BitEnumerateUInt128_Data))]
         public void BitEnumerateUInt128(UInt128 num, int[] expected)
         {
-            new BitsEnumerator<UInt128>(num).Should().Equal(expected);
-            new BitsEnumerator<UInt128>(num).ToArray().Should().Equal(expected);
+            new BitsEnumerator<UInt128>(num).ShouldBe(expected);
+            new BitsEnumerator<UInt128>(num).ToArray().ShouldBe(expected);
         }
     }
 }

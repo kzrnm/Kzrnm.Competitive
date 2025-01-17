@@ -1,4 +1,5 @@
 using AtCoder;
+using Shouldly;
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -47,9 +48,9 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 var expected = NativeDp<Mod1000000007>(arrModInt, crrModInt);
                 for (int l = 0; l < 40; l++)
                 {
-                    LinearRecurrence.Kitamasa<Mod1000000007>(arrInt, crrInt, l).Should().Be(expected[l]);
-                    LinearRecurrence.Kitamasa<Mod1000000007>(arrUInt, crrUInt, l).Should().Be(expected[l]);
-                    LinearRecurrence.Kitamasa(arrModInt, crrModInt, l).Should().Be(expected[l]);
+                    LinearRecurrence.Kitamasa<Mod1000000007>(arrInt, crrInt, l).ShouldBe(expected[l]);
+                    LinearRecurrence.Kitamasa<Mod1000000007>(arrUInt, crrUInt, l).ShouldBe(expected[l]);
+                    LinearRecurrence.Kitamasa(arrModInt, crrModInt, l).ShouldBe(expected[l]);
                 }
             }
         }
@@ -69,9 +70,9 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 var expected = NativeDp<Mod998244353>(arrModInt, crrModInt);
                 for (int l = 0; l < 40; l++)
                 {
-                    LinearRecurrence.Kitamasa<Mod998244353>(arrInt, crrInt, l).Should().Be(expected[l]);
-                    LinearRecurrence.Kitamasa<Mod998244353>(arrUInt, crrUInt, l).Should().Be(expected[l]);
-                    LinearRecurrence.Kitamasa(arrModInt, crrModInt, l).Should().Be(expected[l]);
+                    LinearRecurrence.Kitamasa<Mod998244353>(arrInt, crrInt, l).ShouldBe(expected[l]);
+                    LinearRecurrence.Kitamasa<Mod998244353>(arrUInt, crrUInt, l).ShouldBe(expected[l]);
+                    LinearRecurrence.Kitamasa(arrModInt, crrModInt, l).ShouldBe(expected[l]);
                 }
             }
         }
@@ -100,7 +101,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 LinearRecurrence.Kitamasa<T>(
                     stackalloc MontgomeryModInt<T>[2] { a0, a1 },
                     stackalloc MontgomeryModInt<T>[2] { 1, 1 }, n)
-                    .Should().Be(mat.Pow(n).Multiply(a0, a1).v0);
+                    .ShouldBe(mat.Pow(n).Multiply(a0, a1).v0);
             }
         }
 
@@ -121,19 +122,17 @@ namespace Kzrnm.Competitive.Testing.MathNS
 
                 for (int len = 0; len < 80; len++)
                 {
-                    LinearRecurrence.Recurrence(
-                        new MontgomeryModInt<Mod998244353>[] { a0, a1, a2 },
-                        [1, 1, 1], len)
-                        .Should().HaveCount(len)
-                        .And
-                        .Equal(native998244353[..len]);
+                    {
+                        var recurrence = LinearRecurrence.Recurrence(
+                            new MontgomeryModInt<Mod998244353>[] { a0, a1, a2 }, [1, 1, 1], len);
+                        recurrence.ShouldBe(native998244353[..len]);
+                    }
 
-                    LinearRecurrence.Recurrence(
-                        new MontgomeryModInt<Mod1000000007>[] { a0, a1, a2 },
-                        [1, 1, 1], len)
-                        .Should().HaveCount(len)
-                        .And
-                        .Equal(native1000000007[..len]);
+                    {
+                        var recurrence = LinearRecurrence.Recurrence(
+                            new MontgomeryModInt<Mod1000000007>[] { a0, a1, a2 }, [1, 1, 1], len);
+                        recurrence.ShouldBe(native1000000007[..len]);
+                    }
                 }
             }
             for (int n = 0; n < 4; n++)
@@ -147,19 +146,17 @@ namespace Kzrnm.Competitive.Testing.MathNS
 
                 for (int len = 0; len < 80; len++)
                 {
-                    LinearRecurrence.Recurrence(
-                        new MontgomeryModInt<Mod998244353>[] { a0, a1 },
-                        [1, 1, 1], len)
-                        .Should().HaveCount(len)
-                        .And
-                        .Equal(native998244353[..len]);
+                    {
+                        var recurrence = LinearRecurrence.Recurrence(
+                            new MontgomeryModInt<Mod998244353>[] { a0, a1 }, [1, 1, 1], len);
+                        recurrence.ShouldBe(native998244353[..len]);
+                    }
 
-                    LinearRecurrence.Recurrence(
-                        new MontgomeryModInt<Mod1000000007>[] { a0, a1 },
-                        [1, 1, 1], len)
-                        .Should().HaveCount(len)
-                        .And
-                        .Equal(native1000000007[..len]);
+                    {
+                        var recurrence = LinearRecurrence.Recurrence(
+                            new MontgomeryModInt<Mod1000000007>[] { a0, a1 }, [1, 1, 1], len);
+                        recurrence.ShouldBe(native1000000007[..len]);
+                    }
                 }
             }
             for (int n = 0; n < 4; n++)
@@ -173,19 +170,18 @@ namespace Kzrnm.Competitive.Testing.MathNS
 
                 for (int len = 0; len < 80; len++)
                 {
-                    LinearRecurrence.Recurrence(
-                        new MontgomeryModInt<Mod998244353>[] { a0 },
-                        [1, 1, 1], len)
-                        .Should().HaveCount(len)
-                        .And
-                        .Equal(native998244353[..len]);
+                    {
+                        var recurrence = LinearRecurrence.Recurrence(
+                            new MontgomeryModInt<Mod998244353>[] { a0 }, [1, 1, 1], len);
+                        recurrence.ShouldBe(native998244353[..len]);
 
-                    LinearRecurrence.Recurrence(
-                        new MontgomeryModInt<Mod1000000007>[] { a0 },
-                        [1, 1, 1], len)
-                        .Should().HaveCount(len)
-                        .And
-                        .Equal(native1000000007[..len]);
+                    }
+                    {
+                        var recurrence = LinearRecurrence.Recurrence(
+                            new MontgomeryModInt<Mod1000000007>[] { a0 }, [1, 1, 1], len);
+                        recurrence.ShouldBe(native1000000007[..len]);
+                    }
+
                 }
             }
 

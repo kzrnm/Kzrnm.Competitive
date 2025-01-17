@@ -19,20 +19,22 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 1, 4424223);
             var graph = gb.ToGraph();
             var mst = graph.DirectedMinimumSpanningTree(0);
-            mst.Edges.Should().Equal(
+            mst.Edges.ShouldBe([
                 (0, new WEdge<int>(4, 423)),
                 (0, new WEdge<int>(3, 16)),
                 (0, new WEdge<int>(2, 104)),
-                (0, new WEdge<int>(1, 442)));
-            mst.Cost.Should().Be(423 + 16 + 104 + 442);
+                (0, new WEdge<int>(1, 442)),
+            ]);
+            mst.Cost.ShouldBe(423 + 16 + 104 + 442);
 
             mst = graph.DirectedMinimumSpanningTree(3);
-            mst.Edges.Should().Equal(
+            mst.Edges.ShouldBe([
                 (3, new WEdge<int>(4, 5024224)),
                 (0, new WEdge<int>(2, 104)),
                 (0, new WEdge<int>(1, 442)),
-                (4, new WEdge<int>(0, 14214)));
-            mst.Cost.Should().Be(5024224 + 104 + 442 + 14214);
+                (4, new WEdge<int>(0, 14214)),
+            ]);
+            mst.Cost.ShouldBe(5024224 + 104 + 442 + 14214);
         }
 
         [Fact]
@@ -51,20 +53,22 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 1, 4424223);
             var graph = gb.ToGraph();
             var mst = graph.DirectedMinimumSpanningTree(0);
-            mst.Edges.Should().Equal(
+            mst.Edges.ShouldBe([
                 (0, new WEdge<long>(4, 423)),
                 (0, new WEdge<long>(3, 16)),
                 (0, new WEdge<long>(2, 104)),
-                (0, new WEdge<long>(1, 442)));
-            mst.Cost.Should().Be(423 + 16 + 104 + 442);
+                (0, new WEdge<long>(1, 442)),
+            ]);
+            mst.Cost.ShouldBe(423 + 16 + 104 + 442);
 
             mst = graph.DirectedMinimumSpanningTree(3);
-            mst.Edges.Should().Equal(
+            mst.Edges.ShouldBe([
                 (3, new WEdge<long>(4, 5024224)),
                 (0, new WEdge<long>(2, 104)),
                 (0, new WEdge<long>(1, 442)),
-                (4, new WEdge<long>(0, 14214)));
-            mst.Cost.Should().Be(5024224 + 104 + 442 + 14214);
+                (4, new WEdge<long>(0, 14214)),
+            ]);
+            mst.Cost.ShouldBe(5024224 + 104 + 442 + 14214);
         }
     }
 }

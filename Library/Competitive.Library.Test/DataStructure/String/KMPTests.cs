@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
         public void Matches(string pattern, string target, IEnumerable<int> indexes)
         {
             var kmp = KMP.Create(pattern);
-            kmp.Matches(target).ToList().Should().Equal(indexes);
+            kmp.Matches(target).ToList().ShouldBe(indexes);
         }
     }
 }

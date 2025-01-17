@@ -17,12 +17,13 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 0);
             var graph = gb.ToGraph();
             var mst = graph.MinimumSpanningTreeBfs();
-            mst.Cost.Should().Be(4);
-            mst.Edges.Should().Equal(
+            mst.Cost.ShouldBe(4);
+            mst.Edges.ShouldBe([
                 (0, new GraphEdge(1)),
                 (0, new GraphEdge(2)),
                 (0, new GraphEdge(3)),
-                (0, new GraphEdge(4)));
+                (0, new GraphEdge(4)),
+            ]);
         }
         [Fact]
         public void 重み付きグラフ()
@@ -39,12 +40,13 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 0, 1);
             var graph = gb.ToGraph();
             var mst = graph.MinimumSpanningTreeBfs();
-            mst.Cost.Should().Be(4);
-            mst.Edges.Should().Equal(
+            mst.Cost.ShouldBe(4);
+            mst.Edges.ShouldBe([
                 (0, new WEdge<int>(1, 1)),
                 (0, new WEdge<int>(2, 10)),
                 (0, new WEdge<int>(3, 30)),
-                (0, new WEdge<int>(4, 40)));
+                (0, new WEdge<int>(4, 40)),
+            ]);
         }
     }
 }

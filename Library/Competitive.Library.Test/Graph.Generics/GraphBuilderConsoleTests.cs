@@ -28,7 +28,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 5 2
                 """);
             var graph = cr.Graph(5, 6, false).ToGraph();
-            graph.Length.Should().Be(5);
+            graph.Length.ShouldBe(5);
             var expectedChildren = new GraphEdge[5][]
             {
                 [
@@ -58,9 +58,9 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].IsDirected.Should().BeFalse("index: {0}", i);
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parents.Should().Equal(expectedParents[i], "index: {0}", i);
+                graph[i].IsDirected.ShouldBeFalse($"index: {i}");
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
             }
         }
 
@@ -77,7 +77,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 4 1
                 """);
             var graph = cr.Graph(5, 6, false, based: 0).ToGraph();
-            graph.Length.Should().Be(5);
+            graph.Length.ShouldBe(5);
             var expectedChildren = new GraphEdge[5][]
             {
                 [
@@ -107,9 +107,9 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].IsDirected.Should().BeFalse("index: {0}", i);
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parents.Should().Equal(expectedParents[i], "index: {0}", i);
+                graph[i].IsDirected.ShouldBeFalse($"index: {i}");
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
             }
         }
 
@@ -126,7 +126,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 5 2
                 """);
             var graph = cr.Graph(5, 6, true).ToGraph();
-            graph.Length.Should().Be(5);
+            graph.Length.ShouldBe(5);
 
             var expectedChildren = new GraphEdge[5][]
             {
@@ -168,9 +168,9 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].IsDirected.Should().BeTrue("index: {0}", i);
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parents.Should().Equal(expectedParents[i], "index: {0}", i);
+                graph[i].IsDirected.ShouldBeTrue($"index: {i}");
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
             }
         }
 
@@ -185,8 +185,8 @@ namespace Kzrnm.Competitive.Testing.Graph
                 5 2
                 """);
             var graph = cr.Tree(5).ToTree(0);
-            graph.Length.Should().Be(5);
-            graph.Root.Should().Be(0);
+            graph.Length.ShouldBe(5);
+            graph.Root.ShouldBe(0);
 
             var expectedChildren = new GraphEdge[5][]
             {
@@ -214,8 +214,8 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parent.Should().BeEquivalentTo(expectedParent[i], "index: {0}", i);
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parent.ShouldBe(expectedParent[i], $"index: {i}");
             }
         }
 
@@ -230,8 +230,8 @@ namespace Kzrnm.Competitive.Testing.Graph
                 4 1
                 """);
             var graph = cr.Tree(5, based: 0).ToTree(0);
-            graph.Length.Should().Be(5);
-            graph.Root.Should().Be(0);
+            graph.Length.ShouldBe(5);
+            graph.Root.ShouldBe(0);
 
             var expectedChildren = new GraphEdge[5][]
             {
@@ -259,8 +259,8 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parent.Should().BeEquivalentTo(expectedParent[i], "index: {0}", i);
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parent.ShouldBe(expectedParent[i], $"index: {i}");
             }
         }
 
@@ -272,8 +272,8 @@ namespace Kzrnm.Competitive.Testing.Graph
                 1 2 2 4 3
                 """);
             var graph = cr.TreeParent(6).ToTree(0);
-            graph.Length.Should().Be(6);
-            graph.Root.Should().Be(0);
+            graph.Length.ShouldBe(6);
+            graph.Root.ShouldBe(0);
 
             var expectedChildren = new GraphEdge[6][]
             {
@@ -305,8 +305,8 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parent.Should().BeEquivalentTo(expectedParent[i], "index: {0}", i);
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parent.ShouldBe(expectedParent[i], $"index: {i}");
             }
         }
 
@@ -318,8 +318,8 @@ namespace Kzrnm.Competitive.Testing.Graph
                 0 1 1 3 2
                 """);
             var graph = cr.TreeParent(6, based: 0).ToTree(0);
-            graph.Length.Should().Be(6);
-            graph.Root.Should().Be(0);
+            graph.Length.ShouldBe(6);
+            graph.Root.ShouldBe(0);
 
             var expectedChildren = new GraphEdge[6][]
             {
@@ -351,8 +351,8 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parent.Should().BeEquivalentTo(expectedParent[i], "index: {0}", i);
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parent.ShouldBe(expectedParent[i], $"index: {i}");
             }
         }
 
@@ -369,7 +369,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 5 2
                 """);
             var graph = cr.GraphWithEdgeIndex(5, 6, false).ToGraph();
-            graph.Length.Should().Be(5);
+            graph.Length.ShouldBe(5);
 
             var expectedChildren = new GraphEdge<int>[5][]
             {
@@ -400,9 +400,9 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].IsDirected.Should().BeFalse("index: {0}", i);
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parents.Should().Equal(expectedParents[i], "index: {0}", i);
+                graph[i].IsDirected.ShouldBeFalse($"index: {i}");
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
             }
         }
 
@@ -419,7 +419,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 5 2
                 """);
             var graph = cr.GraphWithEdgeIndex(5, 6, true).ToGraph();
-            graph.Length.Should().Be(5);
+            graph.Length.ShouldBe(5);
 
             var expectedChildren = new GraphEdge<int>[5][]
             {
@@ -461,9 +461,9 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].IsDirected.Should().BeTrue("index: {0}", i);
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parents.Should().Equal(expectedParents[i], "index: {0}", i);
+                graph[i].IsDirected.ShouldBeTrue($"index: {i}");
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
             }
         }
 
@@ -481,7 +481,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 4 1
                 """);
             var graph = cr.GraphWithEdgeIndex(5, 6, true, based: 0).ToGraph();
-            graph.Length.Should().Be(5);
+            graph.Length.ShouldBe(5);
 
             var expectedChildren = new GraphEdge<int>[5][]
             {
@@ -523,9 +523,9 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].IsDirected.Should().BeTrue("index: {0}", i);
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parents.Should().Equal(expectedParents[i], "index: {0}", i);
+                graph[i].IsDirected.ShouldBeTrue($"index: {i}");
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
             }
         }
     }
@@ -546,7 +546,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 5 2 55
                 """);
             var graph = cr.Graph<int>(5, 6, false).ToGraph();
-            graph.Length.Should().Be(5);
+            graph.Length.ShouldBe(5);
 
             var expectedChildren = new WEdge<int>[5][]
             {
@@ -577,9 +577,9 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].IsDirected.Should().BeFalse("index: {0}", i);
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parents.Should().Equal(expectedParents[i], "index: {0}", i);
+                graph[i].IsDirected.ShouldBeFalse($"index: {i}");
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
             }
         }
 
@@ -596,7 +596,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 5 2 55
                 """);
             var graph = cr.Graph<int>(5, 6, true).ToGraph();
-            graph.Length.Should().Be(5);
+            graph.Length.ShouldBe(5);
 
             var expectedChildren = new WEdge<int>[5][]
             {
@@ -638,9 +638,9 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].IsDirected.Should().BeTrue("index: {0}", i);
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parents.Should().Equal(expectedParents[i], "index: {0}", i);
+                graph[i].IsDirected.ShouldBeTrue($"index: {i}");
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
             }
         }
 
@@ -657,7 +657,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 4 1 55
                 """);
             var graph = cr.Graph<int>(5, 6, true, based: 0).ToGraph();
-            graph.Length.Should().Be(5);
+            graph.Length.ShouldBe(5);
 
             var expectedChildren = new WEdge<int>[5][]
             {
@@ -699,9 +699,9 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].IsDirected.Should().BeTrue("index: {0}", i);
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parents.Should().Equal(expectedParents[i], "index: {0}", i);
+                graph[i].IsDirected.ShouldBeTrue($"index: {i}");
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
             }
         }
 
@@ -716,8 +716,8 @@ namespace Kzrnm.Competitive.Testing.Graph
                 5 2 55
                 """);
             var graph = cr.Tree<int>(5).ToTree(0);
-            graph.Length.Should().Be(5);
-            graph.Root.Should().Be(0);
+            graph.Length.ShouldBe(5);
+            graph.Root.ShouldBe(0);
 
             var expectedChildren = new WEdge<int>[5][]
             {
@@ -745,8 +745,8 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parent.Should().BeEquivalentTo(expectedParent[i], "index: {0}", i);
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parent.ShouldBe(expectedParent[i], $"index: {i}");
             }
         }
 
@@ -761,8 +761,8 @@ namespace Kzrnm.Competitive.Testing.Graph
                 4 1 55
                 """);
             var graph = cr.Tree<int>(5, based: 0).ToTree(0);
-            graph.Length.Should().Be(5);
-            graph.Root.Should().Be(0);
+            graph.Length.ShouldBe(5);
+            graph.Root.ShouldBe(0);
 
             var expectedChildren = new WEdge<int>[5][]
             {
@@ -790,8 +790,8 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parent.Should().BeEquivalentTo(expectedParent[i], "index: {0}", i);
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parent.ShouldBe(expectedParent[i], $"index: {i}");
             }
         }
 
@@ -808,7 +808,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 5 2 55
                 """);
             var graph = cr.GraphWithEdgeIndex<int>(5, 6, false).ToGraph();
-            graph.Length.Should().Be(5);
+            graph.Length.ShouldBe(5);
 
             var expectedChildren = new WEdge<int, int>[5][]
             {
@@ -839,9 +839,9 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].IsDirected.Should().BeFalse("index: {0}", i);
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parents.Should().Equal(expectedParents[i], "index: {0}", i);
+                graph[i].IsDirected.ShouldBeFalse($"index: {i}");
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
             }
         }
 
@@ -858,7 +858,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 5 2 55
                 """);
             var graph = cr.GraphWithEdgeIndex<int>(5, 6, true).ToGraph();
-            graph.Length.Should().Be(5);
+            graph.Length.ShouldBe(5);
 
             var expectedChildren = new WEdge<int, int>[5][]
             {
@@ -900,9 +900,9 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].IsDirected.Should().BeTrue("index: {0}", i);
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parents.Should().Equal(expectedParents[i], "index: {0}", i);
+                graph[i].IsDirected.ShouldBeTrue($"index: {i}");
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
             }
         }
 
@@ -919,7 +919,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 4 1 55
                 """);
             var graph = cr.GraphWithEdgeIndex<int>(5, 6, true, based: 0).ToGraph();
-            graph.Length.Should().Be(5);
+            graph.Length.ShouldBe(5);
 
             var expectedChildren = new WEdge<int, int>[5][]
             {
@@ -961,9 +961,9 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].IsDirected.Should().BeTrue("index: {0}", i);
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parents.Should().Equal(expectedParents[i], "index: {0}", i);
+                graph[i].IsDirected.ShouldBeTrue($"index: {i}");
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
             }
         }
     }
@@ -983,7 +983,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 5 2 55
                 """);
             var graph = cr.Graph<long>(5, 6, false).ToGraph();
-            graph.Length.Should().Be(5);
+            graph.Length.ShouldBe(5);
 
             var expectedChildren = new WEdge<long>[5][]
             {
@@ -1014,9 +1014,9 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].IsDirected.Should().BeFalse("index: {0}", i);
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parents.Should().Equal(expectedParents[i], "index: {0}", i);
+                graph[i].IsDirected.ShouldBeFalse($"index: {i}");
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
             }
         }
 
@@ -1033,7 +1033,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 5 2 55
                 """);
             var graph = cr.Graph<long>(5, 6, true).ToGraph();
-            graph.Length.Should().Be(5);
+            graph.Length.ShouldBe(5);
 
             var expectedChildren = new WEdge<long>[5][]
             {
@@ -1075,9 +1075,9 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].IsDirected.Should().BeTrue("index: {0}", i);
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parents.Should().Equal(expectedParents[i], "index: {0}", i);
+                graph[i].IsDirected.ShouldBeTrue($"index: {i}");
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
             }
         }
 
@@ -1092,8 +1092,8 @@ namespace Kzrnm.Competitive.Testing.Graph
                 5 2 55
                 """);
             var graph = cr.Tree<long>(5).ToTree(0);
-            graph.Length.Should().Be(5);
-            graph.Root.Should().Be(0);
+            graph.Length.ShouldBe(5);
+            graph.Root.ShouldBe(0);
 
             var expectedChildren = new WEdge<long>[5][]
             {
@@ -1121,8 +1121,8 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parent.Should().BeEquivalentTo(expectedParent[i], "index: {0}", i);
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parent.ShouldBe(expectedParent[i], $"index: {i}");
             }
         }
 
@@ -1140,7 +1140,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 5 2 55
                 """);
             var graph = cr.GraphWithEdgeIndex<long>(5, 6, false).ToGraph();
-            graph.Length.Should().Be(5);
+            graph.Length.ShouldBe(5);
 
             var expectedChildren = new WEdge<long, int>[5][]
             {
@@ -1171,9 +1171,9 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].IsDirected.Should().BeFalse("index: {0}", i);
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parents.Should().Equal(expectedParents[i], "index: {0}", i);
+                graph[i].IsDirected.ShouldBeFalse($"index: {i}");
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
             }
         }
 
@@ -1190,7 +1190,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 5 2 55
                 """);
             var graph = cr.GraphWithEdgeIndex<long>(5, 6, true).ToGraph();
-            graph.Length.Should().Be(5);
+            graph.Length.ShouldBe(5);
 
             var expectedChildren = new WEdge<long, int>[5][]
             {
@@ -1232,9 +1232,9 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < graph.Length; i++)
             {
-                graph[i].IsDirected.Should().BeTrue("index: {0}", i);
-                graph[i].Children.Should().Equal(expectedChildren[i], "index: {0}", i);
-                graph[i].Parents.Should().Equal(expectedParents[i], "index: {0}", i);
+                graph[i].IsDirected.ShouldBeTrue($"index: {i}");
+                graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
+                graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
             }
         }
     }

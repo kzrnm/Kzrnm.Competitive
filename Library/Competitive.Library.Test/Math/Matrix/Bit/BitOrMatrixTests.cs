@@ -12,7 +12,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             {
                 [true, false, true],
                 [false, true, true],
-            })._v.Should().BeEquivalentTo(new BitArray[]
+            })._v.ShouldBe(new BitArray[]
             {
                 new BitArray(new[]{ true, false, true }),
                 new BitArray(new[]{ false, true, true }),
@@ -21,7 +21,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             {
                 new BitArray(new[]{ true, false, true }),
                 new BitArray(new[]{ false, true, true }),
-            })._v.Should().BeEquivalentTo(new BitArray[]
+            })._v.ShouldBe(new BitArray[]
             {
                 new BitArray(new[]{ true, false, true }),
                 new BitArray(new[]{ false, true, true }),
@@ -65,8 +65,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(String_Data))]
         public void String(BitOrMatrix mat, string text)
         {
-            mat.ToString().Replace("\r\n", "\n").Should().Be(text);
-            BitOrMatrix.Parse(text.Split('\n')).Should().BeEquivalentTo(mat);
+            mat.ToString().Replace("\r\n", "\n").ShouldBe(text);
+            BitOrMatrix.Parse(text.Split('\n')).ShouldBe(mat);
         }
 
         public static TheoryData Add_Data => new TheoryData<BitOrMatrix, BitOrMatrix, BitOrMatrix>
@@ -133,8 +133,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(Add_Data))]
         public void Add(BitOrMatrix mat1, BitOrMatrix mat2, BitOrMatrix expected)
         {
-            (mat1 + mat2).Should().BeEquivalentTo(expected);
-            (mat2 + mat1).Should().BeEquivalentTo(expected);
+            (mat1 + mat2).ShouldBe(expected);
+            (mat2 + mat1).ShouldBe(expected);
         }
 
         public static TheoryData Multiply_Data => new TheoryData<BitOrMatrix, BitOrMatrix, BitOrMatrix>
@@ -212,7 +212,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(Multiply_Data))]
         public void Multiply(BitOrMatrix mat1, BitOrMatrix mat2, BitOrMatrix expected)
         {
-            (mat1 * mat2).Should().BeEquivalentTo(expected);
+            (mat1 * mat2).ShouldBe(expected);
         }
 
         public static TheoryData MultiplyVector_Data => new TheoryData<BitOrMatrix, bool[], BitArray>
@@ -242,9 +242,9 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(MultiplyVector_Data))]
         public void MultiplyVector(BitOrMatrix mat, bool[] vector, BitArray expected)
         {
-            (mat * vector).Should().BeEquivalentTo(expected);
-            (mat * new BitArray(vector)).Should().BeEquivalentTo(expected);
-            mat.Multiply(new BitArray(vector)).Should().BeEquivalentTo(expected);
+            (mat * vector).ShouldBe(expected);
+            (mat * new BitArray(vector)).ShouldBe(expected);
+            mat.Multiply(new BitArray(vector)).ShouldBe(expected);
         }
 
         [Fact]
@@ -287,8 +287,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             var cur = orig;
             for (int i = 1; i < expecteds.Length; i++)
             {
-                cur.Should().BeEquivalentTo(expecteds[i]);
-                orig.Pow(i).Should().BeEquivalentTo(cur);
+                cur.ShouldBe(expecteds[i]);
+                orig.Pow(i).ShouldBe(cur);
                 cur *= orig;
             }
         }

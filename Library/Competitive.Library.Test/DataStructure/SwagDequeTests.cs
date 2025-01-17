@@ -12,21 +12,21 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         public void AddLastAndPopFirst()
         {
             var swag = new SwagDeque<int, SlideMinOp>();
-            swag.AllProd.Should().Be(int.MaxValue);
+            swag.AllProd.ShouldBe(int.MaxValue);
             swag.AddLast(1);
-            swag.AllProd.Should().Be(1);
+            swag.AllProd.ShouldBe(1);
             swag.PopFirst();
-            swag.AllProd.Should().Be(int.MaxValue);
+            swag.AllProd.ShouldBe(int.MaxValue);
         }
         [Fact]
         public void AddFirstAndPopLast()
         {
             var swag = new SwagDeque<int, SlideMinOp>();
-            swag.AllProd.Should().Be(int.MaxValue);
+            swag.AllProd.ShouldBe(int.MaxValue);
             swag.AddFirst(1);
-            swag.AllProd.Should().Be(1);
+            swag.AllProd.ShouldBe(1);
             swag.PopLast();
-            swag.AllProd.Should().Be(int.MaxValue);
+            swag.AllProd.ShouldBe(int.MaxValue);
         }
 
         Random rnd = new(227);
@@ -149,10 +149,9 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 var swag = new SwagDeque<T, TOp>();
                 var deque = new Deque<T>();
 
-                swag.AllProd.Should().Be(op.Identity);
-                swag.Invoking(swag => Pop(deque, swag)).Should()
-                    .ThrowExactly<ContractAssertException>()
-                    .WithMessage("data is empty.");
+                swag.AllProd.ShouldBe(op.Identity);
+                Should.Throw<ContractAssertException>(() => Pop(deque, swag))
+                    .Message.ShouldBe("data is empty.");
 
                 for (int q = 0; q < 2000; q++)
                 {
@@ -160,13 +159,13 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                     {
                         var next = nextProvider(Rnd);
                         Add(deque, swag, next);
-                        swag.AllProd.Should().Be(deque.Aggregate(op.Operate));
+                        swag.AllProd.ShouldBe(deque.Aggregate(op.Operate));
                     }
 
                     Pop(deque, swag);
-                    swag.AllProd.Should().Be(deque.Aggregate(op.Operate));
+                    swag.AllProd.ShouldBe(deque.Aggregate(op.Operate));
                     Pop(deque, swag);
-                    swag.AllProd.Should().Be(op.Identity);
+                    swag.AllProd.ShouldBe(op.Identity);
                 }
             }
 
@@ -176,26 +175,25 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 var swag = new SwagDeque<T, TOp>();
                 var deque = new Deque<T>();
 
-                swag.AllProd.Should().Be(op.Identity);
+                swag.AllProd.ShouldBe(op.Identity);
 
                 for (int i = 0; i < 200; i++)
                 {
                     var next = nextProvider(Rnd);
                     Add(deque, swag, next);
-                    swag.AllProd.Should().Be(deque.Aggregate(op.Operate));
+                    swag.AllProd.ShouldBe(deque.Aggregate(op.Operate));
                 }
 
                 for (int i = 1; i < 200; i++)
                 {
                     Pop(deque, swag);
-                    swag.AllProd.Should().Be(deque.Aggregate(op.Operate));
+                    swag.AllProd.ShouldBe(deque.Aggregate(op.Operate));
                 }
 
                 Pop(deque, swag);
-                swag.AllProd.Should().Be(op.Identity);
-                swag.Invoking(swag => Pop(deque, swag)).Should()
-                    .ThrowExactly<ContractAssertException>()
-                    .WithMessage("data is empty.");
+                swag.AllProd.ShouldBe(op.Identity);
+                Should.Throw<ContractAssertException>(() => Pop(deque, swag))
+                    .Message.ShouldBe("data is empty.");
 
                 for (int i = 0; i < 200; i++)
                 {
@@ -209,20 +207,20 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             {
                 var op = new TOp();
                 var swag = new SwagDeque<T, TOp>(deque.ToArray());
-                swag.AllProd.Should().Be(deque.Aggregate(op.Operate));
+                swag.AllProd.ShouldBe(deque.Aggregate(op.Operate));
 
                 for (int i = 0; i < 2000; i++)
                 {
                     if (deque.Count > 0 && Rnd.Next(2) != 0)
                     {
                         Pop(deque, swag);
-                        swag.AllProd.Should().Be(deque.Aggregate(op.Operate));
+                        swag.AllProd.ShouldBe(deque.Aggregate(op.Operate));
                     }
                     else
                     {
                         var next = nextProvider(Rnd);
                         Add(deque, swag, next);
-                        swag.AllProd.Should().Be(deque.Aggregate(op.Operate));
+                        swag.AllProd.ShouldBe(deque.Aggregate(op.Operate));
                     }
                 }
             }

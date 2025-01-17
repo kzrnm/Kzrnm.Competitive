@@ -20,7 +20,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             [
                 [1, 2, 3],
                 [4, 5, 6],
-            ]).ToArray().Should().BeEquivalentTo(new MontgomeryModInt[][]
+            ]).ToArray().ShouldBe(new MontgomeryModInt[][]
             {
                 [1, 2, 3],
                 [4, 5, 6],
@@ -29,7 +29,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             {
                 { 1, 2, 3 },
                 { 4, 5, 6 },
-            }).ToArray().Should().BeEquivalentTo(new MontgomeryModInt[][]
+            }).ToArray().ShouldBe(new MontgomeryModInt[][]
             {
                 [1, 2, 3],
                 [4, 5, 6],
@@ -40,12 +40,12 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Normal")]
         public void NormalIdentity()
         {
-            SimdModMatrix.NormalIdentity(2).Should().Be(new SimdModMatrix(
+            SimdModMatrix.NormalIdentity(2).ShouldBe(new SimdModMatrix(
             [
                 [1, 0],
                 [0, 1],
             ]));
-            SimdModMatrix.NormalIdentity(3).Should().Be(new SimdModMatrix(
+            SimdModMatrix.NormalIdentity(3).ShouldBe(new SimdModMatrix(
             [
                 [1, 0, 0],
                 [0, 1, 0],
@@ -61,7 +61,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             [
                 [1, 2, 3],
                 [4, 5, 6],
-            ]).Should().Be(new SimdModMatrix(new MontgomeryModInt[,]
+            ]).ShouldBe(new SimdModMatrix(new MontgomeryModInt[,]
             {
                 { 1, 2, 3 },
                 { 4, 5, 6 },
@@ -70,13 +70,13 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             [
                 [1, 2, 3],
                 [4, 5, 6],
-            ]).Should().Be(new SimdModMatrix(new MontgomeryModInt[] { 1, 2, 3, 4, 5, 6 }, 2, 3));
+            ]).ShouldBe(new SimdModMatrix(new MontgomeryModInt[] { 1, 2, 3, 4, 5, 6 }, 2, 3));
             new SimdModMatrix(
             [
                 [1, 2,],
                 [3, 4,],
                 [5, 6,],
-            ]).Should().NotBe(new SimdModMatrix(new MontgomeryModInt[,]
+            ]).ShouldNotBe(new SimdModMatrix(new MontgomeryModInt[,]
             {
                 { 1, 2, 3 },
                 { 4, 5, 6 },
@@ -91,7 +91,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             {
                 { 1, 2, 3 },
                 { 4, 5, 6 },
-            })).ToArray().Should().BeEquivalentTo(new MontgomeryModInt[][]
+            })).ToArray().ShouldBe(new MontgomeryModInt[][]
             {
                 [-1, -2, -3],
                 [-4, -5, -6],
@@ -155,8 +155,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(Add_Data))]
         public void Add(SimdModMatrix mat1, SimdModMatrix mat2, SimdModMatrix expected)
         {
-            (mat1 + mat2).Should().Be(expected);
-            (mat2 + mat1).Should().Be(expected);
+            (mat1 + mat2).ShouldBe(expected);
+            (mat2 + mat1).ShouldBe(expected);
         }
 
         public static IEnumerable<ValueTuple<int, int>> AddRandom_Data()
@@ -186,9 +186,9 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 var got = new SimdModMatrix(a, h, w) + new SimdModMatrix(b, h, w);
                 var expected = new ArrayMatrix(a, h, w) + new ArrayMatrix(b, h, w);
 
-                got.Height.Should().Be(expected.Height);
-                got.Width.Should().Be(expected.Width);
-                got._v.Should().Equal(expected._v);
+                got.Height.ShouldBe(expected.Height);
+                got.Width.ShouldBe(expected.Width);
+                got._v.ShouldBe(expected._v);
             }
         }
 
@@ -274,7 +274,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(Subtract_Data))]
         public void Subtract(SimdModMatrix mat1, SimdModMatrix mat2, SimdModMatrix expected)
         {
-            (mat1 - mat2).Should().Be(expected);
+            (mat1 - mat2).ShouldBe(expected);
         }
 
         [Theory]
@@ -293,9 +293,9 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 var got = new SimdModMatrix(a, h, w) - new SimdModMatrix(b, h, w);
                 var expected = new ArrayMatrix(a, h, w) - new ArrayMatrix(b, h, w);
 
-                got.Height.Should().Be(expected.Height);
-                got.Width.Should().Be(expected.Width);
-                got._v.Should().Equal(expected._v);
+                got.Height.ShouldBe(expected.Height);
+                got.Width.ShouldBe(expected.Width);
+                got._v.ShouldBe(expected._v);
             }
         }
 
@@ -357,7 +357,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(Multiply_Data))]
         public void Multiply(SimdModMatrix mat1, SimdModMatrix mat2, SimdModMatrix expected)
         {
-            (mat1 * mat2).Should().Be(expected);
+            (mat1 * mat2).ShouldBe(expected);
         }
 
         public static IEnumerable<ValueTuple<int, int, int>> MultiplyRandom_Data()
@@ -387,9 +387,9 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 var got = new SimdModMatrix(a, h, mid) * new SimdModMatrix(b, mid, w);
                 var expected = new ArrayMatrix(a, h, mid) * new ArrayMatrix(b, mid, w);
 
-                got.Height.Should().Be(expected.Height);
-                got.Width.Should().Be(expected.Width);
-                got._v.Should().Equal(expected._v);
+                got.Height.ShouldBe(expected.Height);
+                got.Width.ShouldBe(expected.Width);
+                got._v.ShouldBe(expected._v);
             }
         }
 
@@ -428,7 +428,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(MultiplyScalar_Data))]
         public void MultiplyScalar(int a, SimdModMatrix mat, SimdModMatrix expected)
         {
-            (mat * a).Should().BeEquivalentTo(expected);
+            (mat * a).ShouldBe(expected);
         }
 
         public static TheoryData MultiplyVector_Data => new TheoryData<SimdModMatrix, MontgomeryModInt[], MontgomeryModInt[]>
@@ -460,8 +460,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(MultiplyVector_Data))]
         public void MultiplyVector(SimdModMatrix mat, MontgomeryModInt[] vector, MontgomeryModInt[] expected)
         {
-            (mat * vector).Should().Equal(expected);
-            mat.Multiply(vector).Should().Equal(expected);
+            (mat * vector).ShouldBe(expected);
+            mat.Multiply(vector).ShouldBe(expected);
         }
 
         [Fact]
@@ -473,7 +473,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 { 1, 2 },
                 { 3, 4 },
             });
-            orig.Pow(5).ToArray().Should().BeEquivalentTo(new MontgomeryModInt[][]
+            orig.Pow(5).ToArray().ShouldBe(new MontgomeryModInt[][]
             {
                 [1069, 1558],
                 [2337, 3406],
@@ -481,7 +481,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             var cur = orig;
             for (int i = 1; i < 10; i++)
             {
-                orig.Pow(i).Should().BeEquivalentTo(cur);
+                orig.Pow(i).ShouldBe(cur);
                 cur *= orig;
             }
         }
@@ -533,7 +533,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Normal")]
         public void Determinant(MontgomeryModInt[,] array, MontgomeryModInt expected)
         {
-            new SimdModMatrix(array).Determinant().Should().Be(expected);
+            new SimdModMatrix(array).Determinant().ShouldBe(expected);
         }
 
         [Fact]
@@ -547,7 +547,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 {
                     array[i, 0] = array[0, i] = array[i, i] = 1;
                 }
-                new SimdModMatrix(array).Determinant().Should().Be(-(MontgomeryModInt)(n - 2));
+                new SimdModMatrix(array).Determinant().ShouldBe(-(MontgomeryModInt)(n - 2));
             }
         }
 
@@ -561,7 +561,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             {
                 array[i, 0] = array[0, i] = array[i, i] = 1;
             }
-            new SimdModMatrix(array).Determinant().Should().Be(-(MontgomeryModInt)(n - 2));
+            new SimdModMatrix(array).Determinant().ShouldBe(-(MontgomeryModInt)(n - 2));
         }
 
         public static IEnumerable<(MontgomeryModInt[,] array, int i, int j, MontgomeryModInt expected)> Cofactor_Data()
@@ -603,7 +603,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Normal")]
         public void Cofactor(MontgomeryModInt[,] array, int i, int j, MontgomeryModInt expected)
         {
-            new SimdModMatrix(array).Cofactor(i, j).Should().Be(expected);
+            new SimdModMatrix(array).Cofactor(i, j).ShouldBe(expected);
         }
 
         [Fact]
@@ -617,7 +617,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 {-10, 10, 3},
             });
             var inv = orig.Inv();
-            inv.Should().Be(new SimdModMatrix(new MontgomeryModInt[,]
+            inv.ShouldBe(new SimdModMatrix(new MontgomeryModInt[,]
             {
                 { -(MontgomeryModInt)146/ 319, -(MontgomeryModInt)93/319, -(MontgomeryModInt)243/319 },
                 { -(MontgomeryModInt)131/319, -(MontgomeryModInt)90/319, -(MontgomeryModInt)194/319 },
@@ -629,8 +629,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 [0,1,0],
                 [0,0,1],
             };
-            (orig * inv).ToArray().Should().BeEquivalentTo(id);
-            (inv * orig).ToArray().Should().BeEquivalentTo(id);
+            (orig * inv).ToArray().ShouldBe(id);
+            (inv * orig).ToArray().ShouldBe(id);
         }
 
 
@@ -664,7 +664,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Normal")]
         public void Transpose(SimdModMatrix orig, SimdModMatrix expected)
         {
-            orig.Transpose().Should().Be(expected);
+            orig.Transpose().ShouldBe(expected);
         }
 
 
@@ -753,7 +753,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         public void GaussianElimination(SimdModMatrix orig, SimdModMatrix expected)
         {
             var got = orig.GaussianElimination();
-            got.Should().Be(expected);
+            got.ShouldBe(expected);
         }
 
         public static TheoryData LinearSystem_Data => new TheoryData<
@@ -813,9 +813,9 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         public void LinearSystem(SimdModMatrix matrix, MontgomeryModInt[] vector, MontgomeryModInt[][] expected)
         {
             var got = matrix.LinearSystem(vector);
-            got.Should().HaveSameCount(expected);
+            got.Length.ShouldBe(expected.Length);
             for (int i = 0; i < got.Length; i++)
-                got[i].Should().Equal(expected[i], because: "got[{0}]", i);
+                got[i].ShouldBe(expected[i], $"got[{i}]");
         }
     }
 }

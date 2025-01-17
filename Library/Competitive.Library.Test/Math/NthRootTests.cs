@@ -19,6 +19,6 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [InlineData(18446744073709551615, 64, 1)]
         [InlineData(1796495231553, 3, 12156)]
         public void IntegerRoot(ulong num, long n, ulong expected)
-            => NthRoots.IntegerRoot(num, n).Should().Be(expected);
+            => NthRoots.IntegerRoot(num, n).ShouldBe(expected);
     }
 }

@@ -43,13 +43,13 @@ namespace Kzrnm.Competitive.Testing.Graph
         [MemberData(nameof(Data))]
         public void 重みなしグラフ(int root, int[] expected)
         {
-            gb.ToTree(root).DescendantsCounts().Should().Equal(expected);
+            gb.ToTree(root).DescendantsCounts().ShouldBe(expected);
         }
         [Theory]
         [MemberData(nameof(Data))]
         public void 重み付きグラフ(int root, int[] expected)
         {
-            wgb.ToTree(root).DescendantsCounts().Should().Equal(expected);
+            wgb.ToTree(root).DescendantsCounts().ShouldBe(expected);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
             var rhe = RollingHashWritable.Create(str);
             for (int l1 = 0; l1 < str.Length; l1++)
                 for (int r1 = l1 + 1; r1 <= str.Length; r1++)
-                    rhe[l1..r1].Should().Be(rh[l1..r1]);
+                    rhe[l1..r1].ShouldBe(rh[l1..r1]);
         }
 
         [Fact]
@@ -35,10 +35,10 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
                 }
                 var re = RollingHash.Create(str);
 
-                rh.Length.Should().Be(re.Length);
+                rh.Length.ShouldBe(re.Length);
                 for (int l = 0; l < rh.Length; l++)
                     for (int r = l + 1; r <= rh.Length; r++)
-                        rh[l..r].Should().Be(re[l..r]);
+                        rh[l..r].ShouldBe(re[l..r]);
             }
         }
     }

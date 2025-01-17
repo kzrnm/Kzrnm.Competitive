@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive.Testing.Graph
 
             for (int i = 0; i < N; i++)
                 for (int k = 0; k < 20; k++)
-                    db.Move(i, k).Should().Be((i + k) % arr.Length);
+                    db.Move(i, k).ShouldBe((i + k) % arr.Length);
             Span<ulong> ks = stackalloc ulong[1];
             for (int t = 0; t < 64; t++)
             {
@@ -24,9 +24,9 @@ namespace Kzrnm.Competitive.Testing.Graph
                 var k = ks[0];
                 for (int i = 0; i < N; i++)
                 {
-                    db.Move(i, k).Should().Be((int)(((uint)i + k) % (uint)arr.Length));
+                    db.Move(i, k).ShouldBe((int)(((uint)i + k) % (uint)arr.Length));
                     if ((long)k >= 0)
-                        db.Move(i, (long)k).Should().Be((int)(((uint)i + k) % (uint)arr.Length));
+                        db.Move(i, (long)k).ShouldBe((int)(((uint)i + k) % (uint)arr.Length));
                 }
             }
         }
@@ -45,53 +45,53 @@ namespace Kzrnm.Competitive.Testing.Graph
                 1,
             };
             var db = new PathDoubling(arr);
-            db.Move(0, 1).Should().Be(-1);
-            db.Move(1, 1).Should().Be(0);
-            db.Move(2, 1).Should().Be(2);
-            db.Move(3, 1).Should().Be(1);
-            db.Move(4, 1).Should().Be(3);
-            db.Move(5, 1).Should().Be(2);
-            db.Move(6, 1).Should().Be(1);
+            db.Move(0, 1).ShouldBe(-1);
+            db.Move(1, 1).ShouldBe(0);
+            db.Move(2, 1).ShouldBe(2);
+            db.Move(3, 1).ShouldBe(1);
+            db.Move(4, 1).ShouldBe(3);
+            db.Move(5, 1).ShouldBe(2);
+            db.Move(6, 1).ShouldBe(1);
 
-            db.Move(0, 2).Should().Be(-1);
-            db.Move(1, 2).Should().Be(-1);
-            db.Move(2, 2).Should().Be(2);
-            db.Move(3, 2).Should().Be(0);
-            db.Move(4, 2).Should().Be(1);
-            db.Move(5, 2).Should().Be(2);
-            db.Move(6, 2).Should().Be(0);
+            db.Move(0, 2).ShouldBe(-1);
+            db.Move(1, 2).ShouldBe(-1);
+            db.Move(2, 2).ShouldBe(2);
+            db.Move(3, 2).ShouldBe(0);
+            db.Move(4, 2).ShouldBe(1);
+            db.Move(5, 2).ShouldBe(2);
+            db.Move(6, 2).ShouldBe(0);
 
-            db.Move(0, 3).Should().Be(-1);
-            db.Move(1, 3).Should().Be(-1);
-            db.Move(2, 3).Should().Be(2);
-            db.Move(3, 3).Should().Be(-1);
-            db.Move(4, 3).Should().Be(0);
-            db.Move(5, 3).Should().Be(2);
-            db.Move(6, 3).Should().Be(-1);
+            db.Move(0, 3).ShouldBe(-1);
+            db.Move(1, 3).ShouldBe(-1);
+            db.Move(2, 3).ShouldBe(2);
+            db.Move(3, 3).ShouldBe(-1);
+            db.Move(4, 3).ShouldBe(0);
+            db.Move(5, 3).ShouldBe(2);
+            db.Move(6, 3).ShouldBe(-1);
 
-            db.Move(0, 4).Should().Be(-1);
-            db.Move(1, 4).Should().Be(-1);
-            db.Move(2, 4).Should().Be(2);
-            db.Move(3, 4).Should().Be(-1);
-            db.Move(4, 4).Should().Be(-1);
-            db.Move(5, 4).Should().Be(2);
-            db.Move(6, 4).Should().Be(-1);
+            db.Move(0, 4).ShouldBe(-1);
+            db.Move(1, 4).ShouldBe(-1);
+            db.Move(2, 4).ShouldBe(2);
+            db.Move(3, 4).ShouldBe(-1);
+            db.Move(4, 4).ShouldBe(-1);
+            db.Move(5, 4).ShouldBe(2);
+            db.Move(6, 4).ShouldBe(-1);
 
-            db.Move(0, 5).Should().Be(-1);
-            db.Move(1, 5).Should().Be(-1);
-            db.Move(2, 5).Should().Be(2);
-            db.Move(3, 5).Should().Be(-1);
-            db.Move(4, 5).Should().Be(-1);
-            db.Move(5, 5).Should().Be(2);
-            db.Move(6, 5).Should().Be(-1);
+            db.Move(0, 5).ShouldBe(-1);
+            db.Move(1, 5).ShouldBe(-1);
+            db.Move(2, 5).ShouldBe(2);
+            db.Move(3, 5).ShouldBe(-1);
+            db.Move(4, 5).ShouldBe(-1);
+            db.Move(5, 5).ShouldBe(2);
+            db.Move(6, 5).ShouldBe(-1);
 
-            db.Move(0, 1L << 20).Should().Be(-1);
-            db.Move(1, 1L << 20).Should().Be(-1);
-            db.Move(2, 1L << 20).Should().Be(2);
-            db.Move(3, 1L << 20).Should().Be(-1);
-            db.Move(4, 1L << 20).Should().Be(-1);
-            db.Move(5, 1L << 20).Should().Be(2);
-            db.Move(6, 1L << 20).Should().Be(-1);
+            db.Move(0, 1L << 20).ShouldBe(-1);
+            db.Move(1, 1L << 20).ShouldBe(-1);
+            db.Move(2, 1L << 20).ShouldBe(2);
+            db.Move(3, 1L << 20).ShouldBe(-1);
+            db.Move(4, 1L << 20).ShouldBe(-1);
+            db.Move(5, 1L << 20).ShouldBe(2);
+            db.Move(6, 1L << 20).ShouldBe(-1);
         }
     }
 }

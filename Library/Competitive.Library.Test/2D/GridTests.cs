@@ -15,32 +15,32 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                 ".#.#.",
                 ".#..."
             ]);
-            grid.H.Should().Be(3);
-            grid.W.Should().Be(5);
-            grid[0, 0].Should().Be('.');
-            grid[0, 1].Should().Be('.');
-            grid[0, 2].Should().Be('.');
-            grid[0, 3].Should().Be('#');
-            grid[0, 4].Should().Be('.');
-            grid[1, 0].Should().Be('.');
-            grid[1, 1].Should().Be('#');
-            grid[1, 2].Should().Be('.');
-            grid[1, 3].Should().Be('#');
-            grid[1, 4].Should().Be('.');
-            grid[2, 0].Should().Be('.');
-            grid[2, 1].Should().Be('#');
-            grid[2, 2].Should().Be('.');
-            grid[2, 3].Should().Be('.');
-            grid[2, 4].Should().Be('.');
-            grid[-1, 0].Should().Be('\0');
-            grid[3, 0].Should().Be('\0');
-            grid[-1, -1].Should().Be('\0');
-            grid[-1, 5].Should().Be('\0');
-            grid[0, 5].Should().Be('\0');
-            grid[3, 5].Should().Be('\0');
-            grid[0, -1].Should().Be('\0');
-            grid[3, -1].Should().Be('\0');
-            grid[5, 5].Should().Be('\0');
+            grid.H.ShouldBe(3);
+            grid.W.ShouldBe(5);
+            grid[0, 0].ShouldBe('.');
+            grid[0, 1].ShouldBe('.');
+            grid[0, 2].ShouldBe('.');
+            grid[0, 3].ShouldBe('#');
+            grid[0, 4].ShouldBe('.');
+            grid[1, 0].ShouldBe('.');
+            grid[1, 1].ShouldBe('#');
+            grid[1, 2].ShouldBe('.');
+            grid[1, 3].ShouldBe('#');
+            grid[1, 4].ShouldBe('.');
+            grid[2, 0].ShouldBe('.');
+            grid[2, 1].ShouldBe('#');
+            grid[2, 2].ShouldBe('.');
+            grid[2, 3].ShouldBe('.');
+            grid[2, 4].ShouldBe('.');
+            grid[-1, 0].ShouldBe('\0');
+            grid[3, 0].ShouldBe('\0');
+            grid[-1, -1].ShouldBe('\0');
+            grid[-1, 5].ShouldBe('\0');
+            grid[0, 5].ShouldBe('\0');
+            grid[3, 5].ShouldBe('\0');
+            grid[0, -1].ShouldBe('\0');
+            grid[3, -1].ShouldBe('\0');
+            grid[5, 5].ShouldBe('\0');
         }
         [Fact]
         public void StringDefault()
@@ -51,32 +51,32 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                 ".#.#.",
                 ".#..."
             }, '-');
-            grid.H.Should().Be(3);
-            grid.W.Should().Be(5);
-            grid[0, 0].Should().Be('.');
-            grid[0, 1].Should().Be('.');
-            grid[0, 2].Should().Be('.');
-            grid[0, 3].Should().Be('#');
-            grid[0, 4].Should().Be('.');
-            grid[1, 0].Should().Be('.');
-            grid[1, 1].Should().Be('#');
-            grid[1, 2].Should().Be('.');
-            grid[1, 3].Should().Be('#');
-            grid[1, 4].Should().Be('.');
-            grid[2, 0].Should().Be('.');
-            grid[2, 1].Should().Be('#');
-            grid[2, 2].Should().Be('.');
-            grid[2, 3].Should().Be('.');
-            grid[2, 4].Should().Be('.');
-            grid[-1, 0].Should().Be('-');
-            grid[3, 0].Should().Be('-');
-            grid[-1, -1].Should().Be('-');
-            grid[-1, 5].Should().Be('-');
-            grid[0, 5].Should().Be('-');
-            grid[3, 5].Should().Be('-');
-            grid[0, -1].Should().Be('-');
-            grid[3, -1].Should().Be('-');
-            grid[5, 5].Should().Be('-');
+            grid.H.ShouldBe(3);
+            grid.W.ShouldBe(5);
+            grid[0, 0].ShouldBe('.');
+            grid[0, 1].ShouldBe('.');
+            grid[0, 2].ShouldBe('.');
+            grid[0, 3].ShouldBe('#');
+            grid[0, 4].ShouldBe('.');
+            grid[1, 0].ShouldBe('.');
+            grid[1, 1].ShouldBe('#');
+            grid[1, 2].ShouldBe('.');
+            grid[1, 3].ShouldBe('#');
+            grid[1, 4].ShouldBe('.');
+            grid[2, 0].ShouldBe('.');
+            grid[2, 1].ShouldBe('#');
+            grid[2, 2].ShouldBe('.');
+            grid[2, 3].ShouldBe('.');
+            grid[2, 4].ShouldBe('.');
+            grid[-1, 0].ShouldBe('-');
+            grid[3, 0].ShouldBe('-');
+            grid[-1, -1].ShouldBe('-');
+            grid[-1, 5].ShouldBe('-');
+            grid[0, 5].ShouldBe('-');
+            grid[3, 5].ShouldBe('-');
+            grid[0, -1].ShouldBe('-');
+            grid[3, -1].ShouldBe('-');
+            grid[5, 5].ShouldBe('-');
         }
 
         [Fact]
@@ -88,27 +88,27 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                 [7, 8, 9],
                 [10, 11, 12],
             ]);
-            grid.H.Should().Be(4);
-            grid.W.Should().Be(3);
-            grid[0, 0].Should().Be(1);
-            grid[0, 1].Should().Be(2);
-            grid[0, 2].Should().Be(3);
-            grid[1, 0].Should().Be(4);
-            grid[1, 1].Should().Be(5);
-            grid[1, 2].Should().Be(6);
-            grid[2, 0].Should().Be(7);
-            grid[2, 1].Should().Be(8);
-            grid[2, 2].Should().Be(9);
-            grid[3, 0].Should().Be(10);
-            grid[3, 1].Should().Be(11);
-            grid[3, 2].Should().Be(12);
+            grid.H.ShouldBe(4);
+            grid.W.ShouldBe(3);
+            grid[0, 0].ShouldBe(1);
+            grid[0, 1].ShouldBe(2);
+            grid[0, 2].ShouldBe(3);
+            grid[1, 0].ShouldBe(4);
+            grid[1, 1].ShouldBe(5);
+            grid[1, 2].ShouldBe(6);
+            grid[2, 0].ShouldBe(7);
+            grid[2, 1].ShouldBe(8);
+            grid[2, 2].ShouldBe(9);
+            grid[3, 0].ShouldBe(10);
+            grid[3, 1].ShouldBe(11);
+            grid[3, 2].ShouldBe(12);
 
-            grid[-1, 0].Should().Be(0);
-            grid[4, 0].Should().Be(0);
-            grid[0, -1].Should().Be(0);
-            grid[0, 3].Should().Be(0);
-            grid[-1, -1].Should().Be(0);
-            grid[4, 3].Should().Be(0);
+            grid[-1, 0].ShouldBe(0);
+            grid[4, 0].ShouldBe(0);
+            grid[0, -1].ShouldBe(0);
+            grid[0, 3].ShouldBe(0);
+            grid[-1, -1].ShouldBe(0);
+            grid[4, 3].ShouldBe(0);
         }
         [Fact]
         public void IntArrayDefault()
@@ -120,27 +120,27 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                 [7, 8, 9],
                 [10, 11, 12],
             ], -1);
-            grid.H.Should().Be(4);
-            grid.W.Should().Be(3);
-            grid[0, 0].Should().Be(1);
-            grid[0, 1].Should().Be(2);
-            grid[0, 2].Should().Be(3);
-            grid[1, 0].Should().Be(4);
-            grid[1, 1].Should().Be(5);
-            grid[1, 2].Should().Be(6);
-            grid[2, 0].Should().Be(7);
-            grid[2, 1].Should().Be(8);
-            grid[2, 2].Should().Be(9);
-            grid[3, 0].Should().Be(10);
-            grid[3, 1].Should().Be(11);
-            grid[3, 2].Should().Be(12);
+            grid.H.ShouldBe(4);
+            grid.W.ShouldBe(3);
+            grid[0, 0].ShouldBe(1);
+            grid[0, 1].ShouldBe(2);
+            grid[0, 2].ShouldBe(3);
+            grid[1, 0].ShouldBe(4);
+            grid[1, 1].ShouldBe(5);
+            grid[1, 2].ShouldBe(6);
+            grid[2, 0].ShouldBe(7);
+            grid[2, 1].ShouldBe(8);
+            grid[2, 2].ShouldBe(9);
+            grid[3, 0].ShouldBe(10);
+            grid[3, 1].ShouldBe(11);
+            grid[3, 2].ShouldBe(12);
 
-            grid[-1, 0].Should().Be(-1);
-            grid[4, 0].Should().Be(-1);
-            grid[0, -1].Should().Be(-1);
-            grid[0, 3].Should().Be(-1);
-            grid[-1, -1].Should().Be(-1);
-            grid[4, 3].Should().Be(-1);
+            grid[-1, 0].ShouldBe(-1);
+            grid[4, 0].ShouldBe(-1);
+            grid[0, -1].ShouldBe(-1);
+            grid[0, 3].ShouldBe(-1);
+            grid[-1, -1].ShouldBe(-1);
+            grid[4, 3].ShouldBe(-1);
         }
 
         [Fact]
@@ -155,17 +155,17 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             ], -1);
             for (int h = 0; h < 4; h++)
                 for (int w = 0; w < 3; w++)
-                    grid.Index(h, w).Should().Be(3 * h + w);
+                    grid.Index(h, w).ShouldBe(3 * h + w);
 
             for (int h = 0; h < 4; h++)
             {
-                grid.Index(h, -1).Should().Be(-1);
-                grid.Index(h, 3).Should().Be(-1);
+                grid.Index(h, -1).ShouldBe(-1);
+                grid.Index(h, 3).ShouldBe(-1);
             }
             for (int w = 0; w < 3; w++)
             {
-                grid.Index(-1, w).Should().Be(-1);
-                grid.Index(4, w).Should().Be(-1);
+                grid.Index(-1, w).ShouldBe(-1);
+                grid.Index(4, w).ShouldBe(-1);
             }
         }
 
@@ -179,18 +179,18 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                 [7, 8, 9],
                 [10, 11, 12],
             ], -1);
-            grid.Moves(0, 0).Select(ToTuples).Should().Equal((0, 1), (1, 0));
-            grid.Moves(0, 1).Select(ToTuples).Should().Equal((0, 0), (0, 2), (1, 1));
-            grid.Moves(0, 2).Select(ToTuples).Should().Equal((0, 1), (1, 2));
-            grid.Moves(1, 0).Select(ToTuples).Should().Equal((0, 0), (1, 1), (2, 0));
-            grid.Moves(1, 1).Select(ToTuples).Should().Equal((1, 0), (0, 1), (1, 2), (2, 1));
-            grid.Moves(1, 2).Select(ToTuples).Should().Equal((1, 1), (0, 2), (2, 2));
-            grid.Moves(2, 0).Select(ToTuples).Should().Equal((1, 0), (2, 1), (3, 0));
-            grid.Moves(2, 1).Select(ToTuples).Should().Equal((2, 0), (1, 1), (2, 2), (3, 1));
-            grid.Moves(2, 2).Select(ToTuples).Should().Equal((2, 1), (1, 2), (3, 2));
-            grid.Moves(3, 0).Select(ToTuples).Should().Equal((2, 0), (3, 1));
-            grid.Moves(3, 1).Select(ToTuples).Should().Equal((3, 0), (2, 1), (3, 2));
-            grid.Moves(3, 2).Select(ToTuples).Should().Equal((3, 1), (2, 2));
+            grid.Moves(0, 0).Select(ToTuples).ShouldBe([(0, 1), (1, 0)]);
+            grid.Moves(0, 1).Select(ToTuples).ShouldBe([(0, 0), (0, 2), (1, 1)]);
+            grid.Moves(0, 2).Select(ToTuples).ShouldBe([(0, 1), (1, 2)]);
+            grid.Moves(1, 0).Select(ToTuples).ShouldBe([(0, 0), (1, 1), (2, 0)]);
+            grid.Moves(1, 1).Select(ToTuples).ShouldBe([(1, 0), (0, 1), (1, 2), (2, 1)]);
+            grid.Moves(1, 2).Select(ToTuples).ShouldBe([(1, 1), (0, 2), (2, 2)]);
+            grid.Moves(2, 0).Select(ToTuples).ShouldBe([(1, 0), (2, 1), (3, 0)]);
+            grid.Moves(2, 1).Select(ToTuples).ShouldBe([(2, 0), (1, 1), (2, 2), (3, 1)]);
+            grid.Moves(2, 2).Select(ToTuples).ShouldBe([(2, 1), (1, 2), (3, 2)]);
+            grid.Moves(3, 0).Select(ToTuples).ShouldBe([(2, 0), (3, 1)]);
+            grid.Moves(3, 1).Select(ToTuples).ShouldBe([(3, 0), (2, 1), (3, 2)]);
+            grid.Moves(3, 2).Select(ToTuples).ShouldBe([(3, 1), (2, 2)]);
 
             static (int, int) ToTuples(Grid<int>.Position p)
             {
@@ -198,18 +198,18 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                 return (h, w);
             }
 
-            grid.Moves(0).Select(ToInt).Should().Equal(1, 3);
-            grid.Moves(1).Select(ToInt).Should().Equal(0, 2, 4);
-            grid.Moves(2).Select(ToInt).Should().Equal(1, 5);
-            grid.Moves(3).Select(ToInt).Should().Equal(0, 4, 6);
-            grid.Moves(4).Select(ToInt).Should().Equal(3, 1, 5, 7);
-            grid.Moves(5).Select(ToInt).Should().Equal(4, 2, 8);
-            grid.Moves(6).Select(ToInt).Should().Equal(3, 7, 9);
-            grid.Moves(7).Select(ToInt).Should().Equal(6, 4, 8, 10);
-            grid.Moves(8).Select(ToInt).Should().Equal(7, 5, 11);
-            grid.Moves(9).Select(ToInt).Should().Equal(6, 10);
-            grid.Moves(10).Select(ToInt).Should().Equal(9, 7, 11);
-            grid.Moves(11).Select(ToInt).Should().Equal(10, 8);
+            grid.Moves(0).Select(ToInt).ShouldBe([1, 3]);
+            grid.Moves(1).Select(ToInt).ShouldBe([0, 2, 4]);
+            grid.Moves(2).Select(ToInt).ShouldBe([1, 5]);
+            grid.Moves(3).Select(ToInt).ShouldBe([0, 4, 6]);
+            grid.Moves(4).Select(ToInt).ShouldBe([3, 1, 5, 7]);
+            grid.Moves(5).Select(ToInt).ShouldBe([4, 2, 8]);
+            grid.Moves(6).Select(ToInt).ShouldBe([3, 7, 9]);
+            grid.Moves(7).Select(ToInt).ShouldBe([6, 4, 8, 10]);
+            grid.Moves(8).Select(ToInt).ShouldBe([7, 5, 11]);
+            grid.Moves(9).Select(ToInt).ShouldBe([6, 10]);
+            grid.Moves(10).Select(ToInt).ShouldBe([9, 7, 11]);
+            grid.Moves(11).Select(ToInt).ShouldBe([10, 8]);
 
             static int ToInt(Grid<int>.Position p)
             {
@@ -219,14 +219,14 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             var q = new int[] { 3, 1, 5, 7 }.AsSpan();
             foreach (int ix in grid.Moves(1, 1))
             {
-                ix.Should().Be(q[0]);
+                ix.ShouldBe(q[0]);
                 q = q[1..];
             }
 
             var r = new (int, int)[] { (1, 0), (0, 1), (1, 2), (2, 1) }.AsSpan();
             foreach (var (h, w) in grid.Moves(4))
             {
-                (h, w).Should().Be(r[0]);
+                (h, w).ShouldBe(r[0]);
                 r = r[1..];
             }
         }
@@ -243,17 +243,17 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             ], -1);
             var clone = grid.Clone();
 
-            grid.data.Should().Equal(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
-            clone.data.Should().Equal(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
-            grid[-1].Should().Be(-1);
-            clone[-1].Should().Be(-1);
+            grid.data.ShouldBe([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+            clone.data.ShouldBe([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+            grid[-1].ShouldBe(-1);
+            clone[-1].ShouldBe(-1);
 
             grid[0, 0] = 100;
             grid[1, 0] = 200;
-            grid.data.Should().Equal(100, 2, 3, 200, 5, 6, 7, 8, 9, 10, 11, 12);
-            clone.data.Should().Equal(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
-            grid[-1].Should().Be(-1);
-            clone[-1].Should().Be(-1);
+            grid.data.ShouldBe([100, 2, 3, 200, 5, 6, 7, 8, 9, 10, 11, 12]);
+            clone.data.ShouldBe([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+            grid[-1].ShouldBe(-1);
+            clone[-1].ShouldBe(-1);
         }
 
         [Fact]
@@ -268,13 +268,13 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             ], -1);
 
             var rot = grid.Rotate90();
-            rot.data.Should().Equal(Grid.Create([
+            rot.data.ShouldBe(Grid.Create([
                 [10, 7, 4, 1],
                 [11, 8, 5, 2],
                 [12, 9, 6, 3],
             ]).data);
-            rot.defaultValue.Should().Be(grid.defaultValue);
-            grid.data.Should().Equal(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+            rot.defaultValue.ShouldBe(grid.defaultValue);
+            grid.data.ShouldBe([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
         }
 
 
@@ -290,14 +290,14 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             ], -1);
 
             var rot = grid.Rotate180();
-            rot.data.Should().Equal(Grid.Create([
+            rot.data.ShouldBe(Grid.Create([
                 [12, 11, 10],
                 [9, 8, 7],
                 [6, 5, 4],
                 [3, 2, 1],
             ]).data);
-            rot.defaultValue.Should().Be(grid.defaultValue);
-            grid.data.Should().Equal(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+            rot.defaultValue.ShouldBe(grid.defaultValue);
+            grid.data.ShouldBe([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
         }
 
         [Fact]
@@ -312,13 +312,13 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             ], -1);
 
             var rot = grid.Rotate270();
-            rot.data.Should().Equal(Grid.Create([
+            rot.data.ShouldBe(Grid.Create([
                 [3, 6, 9, 12],
                 [2, 5, 8, 11],
                 [1, 4, 7, 10],
             ]).data);
-            rot.defaultValue.Should().Be(grid.defaultValue);
-            grid.data.Should().Equal(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+            rot.defaultValue.ShouldBe(grid.defaultValue);
+            grid.data.ShouldBe([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
         }
 
         [Fact]
@@ -333,13 +333,13 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             ], -1);
 
             var tr = grid.Transpose();
-            tr.data.Should().Equal(Grid.Create([
+            tr.data.ShouldBe(Grid.Create([
                 [1, 4, 7, 10],
                 [2, 5, 8, 11],
                 [3, 6, 9, 12],
             ]).data);
-            tr.defaultValue.Should().Be(grid.defaultValue);
-            grid.data.Should().Equal(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+            tr.defaultValue.ShouldBe(grid.defaultValue);
+            grid.data.ShouldBe([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
         }
 
         [Fact]
@@ -354,7 +354,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             foreach (var tuple in grid)
                 lst.Add(tuple);
 
-            lst.Should().Equal(
+            lst.ShouldBe(
             [
                 ('1', 0, 0),
                 ('2', 0, 1),

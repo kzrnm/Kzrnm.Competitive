@@ -35,7 +35,7 @@ namespace Kzrnm.Competitive.Testing.Number
             var amf = new ArbitraryModIntFactor(mod);
             for (int n = 0; n < table.Length; n++)
                 for (int k = 0; k <= n; k++)
-                    amf.Combination(n, k).Should().Be((uint)(table[n][k] % mod), "Combination(n={0}, k={1})", n, k);
+                    amf.Combination(n, k).ShouldBe((uint)(table[n][k] % mod), $"Combination(n={n}, k={k})");
         }
     }
 }

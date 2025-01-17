@@ -33,8 +33,8 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 var expected = NativeDp(arr, crr, 1000000007);
                 for (int l = 0; l < 40; l++)
                 {
-                    Kitamasa.FastKitamasa<Mod1000000007>(arr, crr, l).Should().Be(expected[l]);
-                    Kitamasa.FastKitamasa(arr, crr, l, 1000000007).Should().Be(expected[l]);
+                    Kitamasa.FastKitamasa<Mod1000000007>(arr, crr, l).ShouldBe(expected[l]);
+                    Kitamasa.FastKitamasa(arr, crr, l, 1000000007).ShouldBe(expected[l]);
                 }
             }
         }
@@ -50,8 +50,8 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 var expected = NativeDp(arr, crr, 998244353);
                 for (int l = 0; l < 40; l++)
                 {
-                    Kitamasa.FastKitamasa<Mod998244353>(arr, crr, l).Should().Be(expected[l]);
-                    Kitamasa.FastKitamasa(arr, crr, l, 998244353).Should().Be(expected[l]);
+                    Kitamasa.FastKitamasa<Mod998244353>(arr, crr, l).ShouldBe(expected[l]);
+                    Kitamasa.FastKitamasa(arr, crr, l, 998244353).ShouldBe(expected[l]);
                 }
             }
         }

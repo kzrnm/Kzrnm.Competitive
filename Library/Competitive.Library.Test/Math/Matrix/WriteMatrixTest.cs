@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             {
                 cw.WriteGrid(new Matrix2x2<int>((1, 2), (3, 4)));
             }
-            utf8Wrapper.Read().Should().Be("""
+            utf8Wrapper.Read().ShouldBe("""
             1 2
             3 4
 
@@ -33,7 +33,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     { -1, -2, -3, },
                 }));
             }
-            utf8Wrapper.Read().Should().Be("""
+            utf8Wrapper.Read().ShouldBe("""
             1 2 3
             -1 -2 -3
 

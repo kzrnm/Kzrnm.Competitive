@@ -18,18 +18,12 @@ namespace Kzrnm.Competitive
         Array a;
 
 
-        [DebuggerDisplay("{" + nameof(value) + ",nq}", Name = "{" + nameof(key) + ",nq}")]
-        public struct DebugItem
+        [DebuggerDisplay("{" + nameof(Value) + ",nq}", Name = "{" + nameof(Key) + ",nq}")]
+        public record struct DebugItem(
+            [property: DebuggerBrowsable(Never)] string Key,
+            [property: DebuggerBrowsable(RootHidden)] object Value)
         {
-            public DebugItem(int index, int len, object value)
-            {
-                key = $"{Convert.ToString(index, 2).PadLeft(len, '0')} [{index}]";
-                this.value = value;
-            }
-            [DebuggerBrowsable(Never)]
-            internal string key;
-            [DebuggerBrowsable(RootHidden)]
-            internal object value;
+            public DebugItem(int index, int len, object value) : this($"{Convert.ToString(index, 2).PadLeft(len, '0')} [{index}]", value) { }
         }
         [DebuggerBrowsable(RootHidden)]
         public DebugItem[] Items

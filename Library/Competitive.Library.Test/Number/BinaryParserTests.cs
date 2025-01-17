@@ -25,7 +25,7 @@ namespace Kzrnm.Competitive.Testing.Number
         public void ParseUInt32(uint num)
         {
             var str = System.Convert.ToString(num, 2);
-            BinaryParser.ParseUInt32(str).Should().Be(num);
+            BinaryParser.ParseUInt32(str).ShouldBe(num);
         }
 
         public static IEnumerable<Tuple<ulong>> ParseUInt64_Data()
@@ -47,7 +47,7 @@ namespace Kzrnm.Competitive.Testing.Number
         public void ParseUInt64(ulong num)
         {
             var str = System.Convert.ToString((long)num, 2);
-            BinaryParser.ParseUInt64(str).Should().Be(num);
+            BinaryParser.ParseUInt64(str).ShouldBe(num);
         }
 
 
@@ -84,7 +84,7 @@ namespace Kzrnm.Competitive.Testing.Number
         public void ParseBitArray(string input)
         {
             var naive = input.Select(c => c != '0').ToArray();
-            BinaryParser.ParseBitArray(input).Cast<bool>().Should().Equal(naive);
+            BinaryParser.ParseBitArray(input).Cast<bool>().ShouldBe(naive);
         }
 
     }

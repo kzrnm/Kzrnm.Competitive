@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
         [TupleMemberData(nameof(PeriodInt_Data))]
         public void PeriodInt(int[] s, int expected)
         {
-            StringLibEx.Period(s).Should().Be(expected);
+            StringLibEx.Period(s).ShouldBe(expected);
             var ss = s.AsSpan()[..expected];
             for (int i = 0; i < expected; i++)
             {
@@ -31,7 +31,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
 
                     for (int j = expected; j < s.Length; j += expected)
                     {
-                        s.AsSpan(j, expected).StartsWith(ss).Should().BeTrue();
+                        s.AsSpan(j, expected).StartsWith(ss).ShouldBeTrue();
                     }
             }
         }
@@ -39,11 +39,11 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
         [Fact]
         public void PeriodString()
         {
-            StringLibEx.Period("aaa").Should().Be(1);
-            StringLibEx.Period("ababababab").Should().Be(2);
-            StringLibEx.Period("abc").Should().Be(3);
-            StringLibEx.Period("abcabc").Should().Be(3);
-            StringLibEx.Period("ababa").Should().Be(5);
+            StringLibEx.Period("aaa").ShouldBe(1);
+            StringLibEx.Period("ababababab").ShouldBe(2);
+            StringLibEx.Period("abc").ShouldBe(3);
+            StringLibEx.Period("abcabc").ShouldBe(3);
+            StringLibEx.Period("ababa").ShouldBe(5);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
         [InlineData("bacds", "ababcsd", "bacd")]
         public void String(string s, string t, string expected)
         {
-            StringLibEx.Lcs(s, t).Should().Equal(expected.ToCharArray());
+            StringLibEx.Lcs(s, t).ShouldBe(expected.ToCharArray());
         }
 
         [Theory]
@@ -19,7 +19,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
         [InlineData(new[] { 1, 2, 3, 4, 5, 6, 7 }, new[] { 2, 3, 7, 6, 5, 4 }, new[] { 2, 3, 4 })]
         public void Int(int[] s, int[] t, int[] expected)
         {
-            StringLibEx.Lcs(s, t).Should().Equal(expected);
+            StringLibEx.Lcs(s, t).ShouldBe(expected);
         }
     }
 }

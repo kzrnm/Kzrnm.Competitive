@@ -17,9 +17,9 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
                     chrs[i] = chrs[^(i + 1)] = (char)(rnd.Next(26) + 'A');
                 }
 
-                Palindrome.IsPalindrome(new string(chrs)).Should().BeTrue();
-                Palindrome.IsPalindrome(chrs).Should().BeTrue();
-                Palindrome.IsPalindrome(chrs.AsSpan()).Should().BeTrue();
+                Palindrome.IsPalindrome(new string(chrs)).ShouldBeTrue();
+                Palindrome.IsPalindrome(chrs).ShouldBeTrue();
+                Palindrome.IsPalindrome(chrs.AsSpan()).ShouldBeTrue();
             }
 
             for (int len = 2; len < 20; len++)
@@ -36,9 +36,9 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
                     chrs[i] = char.ToLower(chrs[i]);
 
                     var expected = 2 * i + 1 == len;
-                    Palindrome.IsPalindrome(new string(chrs)).Should().Be(expected);
-                    Palindrome.IsPalindrome(chrs).Should().Be(expected);
-                    Palindrome.IsPalindrome(chrs.AsSpan()).Should().Be(expected);
+                    Palindrome.IsPalindrome(new string(chrs)).ShouldBe(expected);
+                    Palindrome.IsPalindrome(chrs).ShouldBe(expected);
+                    Palindrome.IsPalindrome(chrs.AsSpan()).ShouldBe(expected);
                 }
             }
         }
@@ -49,9 +49,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
         [InlineData("aaaaa", new int[] { 1, 2, 3, 2, 1, })]
         public void Manacher(string s, int[] expected)
         {
-            Palindrome.Manacher(s).Should()
-                .HaveCount(s.Length)
-                .And.Equal(expected);
+            Palindrome.Manacher(s).ShouldBe(expected);
         }
 
         [Theory]
@@ -60,9 +58,8 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
         [InlineData("aaaaa", new int[] { 1, 2, 3, 4, 5, 4, 3, 2, 1, })]
         public void Manacher2(string s, int[] expected)
         {
-            Palindrome.Manacher2(s).Should()
-                .HaveCount(Math.Max(s.Length * 2 - 1, 0))
-                .And.Equal(expected);
+            Palindrome.Manacher2(s).ShouldBe(expected);
+            expected.Length.ShouldBe(Math.Max(s.Length * 2 - 1, 0));
         }
     }
 }

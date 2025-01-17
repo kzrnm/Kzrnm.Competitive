@@ -11,24 +11,24 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         [Fact]
         public void Invalid()
         {
-            ((Action)(() => _ = new DisjointSparseTable<short, MinOp>([]))).Should().Throw<ContractAssertException>();
+            ((Action)(() => _ = new DisjointSparseTable<short, MinOp>([]))).ShouldThrow<ContractAssertException>();
 
             var s = new DisjointSparseTable<short, MinOp>([1, 2, 3]);
-            s.Invoking(s => s[-1..3]).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s[0..4]).Should().Throw<ContractAssertException>();
+            Should.Throw<ContractAssertException>(() => s[-1..3]);
+            Should.Throw<ContractAssertException>(() => s[0..4]);
             for (var i = 0; i < 5; i++)
-                s.Invoking(s => s[0..0]).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s.Prod(-1, 3)).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s.Prod(0, 4)).Should().Throw<ContractAssertException>();
+                Should.Throw<ContractAssertException>(() => s[0..0]);
+            Should.Throw<ContractAssertException>(() => s.Prod(-1, 3));
+            Should.Throw<ContractAssertException>(() => s.Prod(0, 4));
             for (var i = 0; i < 5; i++)
-                s.Invoking(s => s.Prod(0, 0)).Should().Throw<ContractAssertException>();
+                Should.Throw<ContractAssertException>(() => s.Prod(0, 0));
 
 
             for (var i = 0; i < 3; i++)
                 for (var j = i + 1; j <= 3; j++)
                 {
-                    s.Invoking(s => s[i..j]).Should().NotThrow();
-                    s.Invoking(s => s.Prod(i, j)).Should().NotThrow();
+                    Should.NotThrow(() => s[i..j]);
+                    Should.NotThrow(() => s.Prod(i, j));
                 }
         }
 
@@ -46,8 +46,8 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                     for (var j = i + 1; j <= len; j++)
                     {
                         var expected = naive.Prod(i, j);
-                        st[i..j].Should().Be(expected);
-                        st.Prod(i, j).Should().Be(expected);
+                        st[i..j].ShouldBe(expected);
+                        st.Prod(i, j).ShouldBe(expected);
                     }
             }
         }
@@ -85,8 +85,8 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                     for (var j = i + 1; j <= len; j++)
                     {
                         var expected = sums[i..j];
-                        st[i..j].Should().Be(expected);
-                        st.Prod(i, j).Should().Be(expected);
+                        st[i..j].ShouldBe(expected);
+                        st.Prod(i, j).ShouldBe(expected);
                     }
             }
         }

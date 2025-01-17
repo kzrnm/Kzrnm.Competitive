@@ -11,21 +11,21 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         [Fact]
         public void Invalid()
         {
-            ((Action)(() => _ = new SparseTable<short, MinOp>([]))).Should().Throw<ContractAssertException>();
+            ((Action)(() => _ = new SparseTable<short, MinOp>([]))).ShouldThrow<ContractAssertException>();
 
             var s = new SparseTable<short, MinOp>([1, 2, 3]);
-            s.Invoking(s => s[-1..3]).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s[0..4]).Should().Throw<ContractAssertException>();
+            Should.Throw<ContractAssertException>(() => s[-1..3]);
+            Should.Throw<ContractAssertException>(() => s[0..4]);
             for (var i = 0; i < 5; i++)
-                s.Invoking(s => s[i..i]).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s.Prod(-1, 3)).Should().Throw<ContractAssertException>();
-            s.Invoking(s => s.Prod(0, 4)).Should().Throw<ContractAssertException>();
+                Should.Throw<ContractAssertException>(() => s[i..i]);
+            Should.Throw<ContractAssertException>(() => s.Prod(-1, 3));
+            Should.Throw<ContractAssertException>(() => s.Prod(0, 4));
 
             for (var i = 0; i < 3; i++)
                 for (var j = i + 1; j <= 3; j++)
                 {
-                    s.Invoking(s => s[i..j]).Should().NotThrow();
-                    s.Invoking(s => s.Prod(i, j)).Should().NotThrow();
+                    Should.NotThrow(() => s[i..j]);
+                    Should.NotThrow(() => s.Prod(i, j));
                 }
         }
 
@@ -43,8 +43,8 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                     for (var j = i + 1; j <= len; j++)
                     {
                         var expected = native.Prod(i, j);
-                        st[i..j].Should().Be(expected);
-                        st.Prod(i, j).Should().Be(expected);
+                        st[i..j].ShouldBe(expected);
+                        st.Prod(i, j).ShouldBe(expected);
                     }
             }
         }

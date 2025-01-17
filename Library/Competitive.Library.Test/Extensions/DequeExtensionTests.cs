@@ -19,12 +19,12 @@ namespace Kzrnm.Competitive.Testing.Extensions
 
             void Impl(Deque<int> deque)
             {
-                deque.Count.Should().Be(length);
+                deque.Count.ShouldBe(length);
                 for (int i = 0; i < orig.Length; i++)
                 {
-                    deque[i].Should().Be(orig[i]);
+                    deque[i].ShouldBe(orig[i]);
                 }
-                deque.Should().BeEquivalentTo(orig);
+                deque.ShouldBe(orig);
             }
         }
         [Fact]
@@ -37,9 +37,9 @@ namespace Kzrnm.Competitive.Testing.Extensions
 
             static void Impl(Deque<int> deque)
             {
-                deque.Count.Should().Be(0);
-                deque.Should().BeEmpty();
-                deque.Should().Equal(new int[0]);
+                deque.Count.ShouldBe(0);
+                deque.ShouldBeEmpty();
+                deque.ShouldBe(new int[0]);
             }
         }
 
@@ -50,7 +50,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
             {
                 var deque = new Deque<int> { 1, 2, 3, 4, 5, 6, 7, };
                 deque.RemoveFirst(i);
-                deque.Should().Equal(Enumerable.Range(i + 1, 7 - i));
+                deque.ShouldBe(Enumerable.Range(i + 1, 7 - i));
             }
         }
 
@@ -61,7 +61,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
             {
                 var deque = new Deque<int> { 1, 2, 3, 4, 5, 6, 7, };
                 deque.RemoveLast(i);
-                deque.Should().Equal(Enumerable.Range(1, 7 - i));
+                deque.ShouldBe(Enumerable.Range(1, 7 - i));
             }
         }
     }

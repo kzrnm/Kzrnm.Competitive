@@ -11,8 +11,8 @@ namespace Kzrnm.Competitive.Testing.Extensions
             twoSat.And(0, true, 1, true);
             twoSat.And(2, true, 1, true);
 
-            twoSat.Satisfiable().Should().BeTrue();
-            twoSat.Answer().Should().Equal(true, true, true);
+            twoSat.Satisfiable().ShouldBeTrue();
+            twoSat.Answer().ShouldBe([true, true, true]);
         }
         [Fact]
         public void And_set1()
@@ -21,7 +21,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
             twoSat.And(0, true, 1, true);
             twoSat.Set(1, false);
 
-            twoSat.Satisfiable().Should().BeFalse();
+            twoSat.Satisfiable().ShouldBeFalse();
         }
         [Fact]
         public void And_set2()
@@ -30,8 +30,8 @@ namespace Kzrnm.Competitive.Testing.Extensions
             twoSat.And(0, true, 1, true);
             twoSat.Set(2, false);
 
-            twoSat.Satisfiable().Should().BeTrue();
-            twoSat.Answer().Should().Equal(true, true, false);
+            twoSat.Satisfiable().ShouldBeTrue();
+            twoSat.Answer().ShouldBe([true, true, false]);
         }
         [Fact]
         public void Same()
@@ -40,8 +40,8 @@ namespace Kzrnm.Competitive.Testing.Extensions
             twoSat.Same(0, 1);
             twoSat.And(1, true, 2, false);
 
-            twoSat.Satisfiable().Should().BeTrue();
-            twoSat.Answer().Should().Equal(true, true, false);
+            twoSat.Satisfiable().ShouldBeTrue();
+            twoSat.Answer().ShouldBe([true, true, false]);
         }
         [Fact]
         public void NotSame()
@@ -50,8 +50,8 @@ namespace Kzrnm.Competitive.Testing.Extensions
             twoSat.NotSame(0, 1);
             twoSat.And(1, true, 2, false);
 
-            twoSat.Satisfiable().Should().BeTrue();
-            twoSat.Answer().Should().Equal(false, true, false);
+            twoSat.Satisfiable().ShouldBeTrue();
+            twoSat.Answer().ShouldBe([false, true, false]);
         }
         [Fact]
         public void IfThen1()
@@ -60,8 +60,8 @@ namespace Kzrnm.Competitive.Testing.Extensions
             twoSat.IfThen(0, true, 1, false);
             twoSat.And(0, true, 2, false);
 
-            twoSat.Satisfiable().Should().BeTrue();
-            twoSat.Answer().Should().Equal(true, false, false);
+            twoSat.Satisfiable().ShouldBeTrue();
+            twoSat.Answer().ShouldBe([true, false, false]);
         }
         [Fact]
         public void IfThen2()
@@ -70,8 +70,8 @@ namespace Kzrnm.Competitive.Testing.Extensions
             twoSat.IfThen(0, true, 1, false);
             twoSat.And(1, true, 2, false);
 
-            twoSat.Satisfiable().Should().BeTrue();
-            twoSat.Answer().Should().Equal(false, true, false);
+            twoSat.Satisfiable().ShouldBeTrue();
+            twoSat.Answer().ShouldBe([false, true, false]);
         }
     }
 }

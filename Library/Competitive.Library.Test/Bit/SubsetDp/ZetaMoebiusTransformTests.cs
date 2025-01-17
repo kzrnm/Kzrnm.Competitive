@@ -28,8 +28,8 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
             ZetaMoebiusTransform.SupersetZetaTransform(a2);
             ZetaMoebiusTransform.SupersetMoebiusTransform(b2);
 
-            a2.Should().Equal(b);
-            b2.Should().Equal(a);
+            a2.ShouldBe(b);
+            b2.ShouldBe(a);
         }
 
         [Theory]
@@ -55,8 +55,8 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
             ZetaMoebiusTransform.SubsetZetaTransform(a2);
             ZetaMoebiusTransform.SubsetMoebiusTransform(b2);
 
-            a2.Should().Equal(b);
-            b2.Should().Equal(a);
+            a2.ShouldBe(b);
+            b2.ShouldBe(a);
         }
     }
 }

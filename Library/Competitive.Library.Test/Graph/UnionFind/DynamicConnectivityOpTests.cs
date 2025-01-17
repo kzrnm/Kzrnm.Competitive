@@ -13,23 +13,23 @@ namespace Kzrnm.Competitive.Testing.Graph
             {
                 for (int i = 0; i < 5; i++)
                     for (int j = 0; j < 5; j++)
-                        dc.Same(i, j).Should().Be(connect[i, j], "connect[{0}, {1}] should be ", i, j, connect[i, j]);
+                        dc.Same(i, j).ShouldBe(connect[i, j], $"connect[{i}, {j}] should be {connect[i, j]}");
             }
             dc[0] = 1;
             dc[1] = 10;
             dc[2] = 100;
             dc[3] = 1000;
             dc[4] = 10000;
-            dc[0].Should().Be(1);
-            dc[1].Should().Be(10);
-            dc[2].Should().Be(100);
-            dc[3].Should().Be(1000);
-            dc[4].Should().Be(10000);
-            dc.Prod(0).Should().Be(1);
-            dc.Prod(1).Should().Be(10);
-            dc.Prod(2).Should().Be(100);
-            dc.Prod(3).Should().Be(1000);
-            dc.Prod(4).Should().Be(10000);
+            dc[0].ShouldBe(1);
+            dc[1].ShouldBe(10);
+            dc[2].ShouldBe(100);
+            dc[3].ShouldBe(1000);
+            dc[4].ShouldBe(10000);
+            dc.Prod(0).ShouldBe(1);
+            dc.Prod(1).ShouldBe(10);
+            dc.Prod(2).ShouldBe(100);
+            dc.Prod(3).ShouldBe(1000);
+            dc.Prod(4).ShouldBe(10000);
             ShouldConnectEqual(new bool[5, 5]
             {
                 {true,false,false,false,false },
@@ -40,16 +40,16 @@ namespace Kzrnm.Competitive.Testing.Graph
             });
 
             dc.Link(0, 1);
-            dc[0].Should().Be(1);
-            dc[1].Should().Be(10);
-            dc[2].Should().Be(100);
-            dc[3].Should().Be(1000);
-            dc[4].Should().Be(10000);
-            dc.Prod(0).Should().Be(11);
-            dc.Prod(1).Should().Be(11);
-            dc.Prod(2).Should().Be(100);
-            dc.Prod(3).Should().Be(1000);
-            dc.Prod(4).Should().Be(10000);
+            dc[0].ShouldBe(1);
+            dc[1].ShouldBe(10);
+            dc[2].ShouldBe(100);
+            dc[3].ShouldBe(1000);
+            dc[4].ShouldBe(10000);
+            dc.Prod(0).ShouldBe(11);
+            dc.Prod(1).ShouldBe(11);
+            dc.Prod(2).ShouldBe(100);
+            dc.Prod(3).ShouldBe(1000);
+            dc.Prod(4).ShouldBe(10000);
             ShouldConnectEqual(new bool[5, 5]
             {
                 {true,true,false,false,false },
@@ -60,16 +60,16 @@ namespace Kzrnm.Competitive.Testing.Graph
             });
 
             dc.Link(1, 2);
-            dc[0].Should().Be(1);
-            dc[1].Should().Be(10);
-            dc[2].Should().Be(100);
-            dc[3].Should().Be(1000);
-            dc[4].Should().Be(10000);
-            dc.Prod(0).Should().Be(111);
-            dc.Prod(1).Should().Be(111);
-            dc.Prod(2).Should().Be(111);
-            dc.Prod(3).Should().Be(1000);
-            dc.Prod(4).Should().Be(10000);
+            dc[0].ShouldBe(1);
+            dc[1].ShouldBe(10);
+            dc[2].ShouldBe(100);
+            dc[3].ShouldBe(1000);
+            dc[4].ShouldBe(10000);
+            dc.Prod(0).ShouldBe(111);
+            dc.Prod(1).ShouldBe(111);
+            dc.Prod(2).ShouldBe(111);
+            dc.Prod(3).ShouldBe(1000);
+            dc.Prod(4).ShouldBe(10000);
             ShouldConnectEqual(new bool[5, 5]
             {
                 {true,true,true,false,false },
@@ -80,16 +80,16 @@ namespace Kzrnm.Competitive.Testing.Graph
             });
 
             dc.Link(2, 3);
-            dc[0].Should().Be(1);
-            dc[1].Should().Be(10);
-            dc[2].Should().Be(100);
-            dc[3].Should().Be(1000);
-            dc[4].Should().Be(10000);
-            dc.Prod(0).Should().Be(1111);
-            dc.Prod(1).Should().Be(1111);
-            dc.Prod(2).Should().Be(1111);
-            dc.Prod(3).Should().Be(1111);
-            dc.Prod(4).Should().Be(10000);
+            dc[0].ShouldBe(1);
+            dc[1].ShouldBe(10);
+            dc[2].ShouldBe(100);
+            dc[3].ShouldBe(1000);
+            dc[4].ShouldBe(10000);
+            dc.Prod(0).ShouldBe(1111);
+            dc.Prod(1).ShouldBe(1111);
+            dc.Prod(2).ShouldBe(1111);
+            dc.Prod(3).ShouldBe(1111);
+            dc.Prod(4).ShouldBe(10000);
             ShouldConnectEqual(new bool[5, 5]
             {
                 {true,true,true,true,false },
@@ -100,16 +100,16 @@ namespace Kzrnm.Competitive.Testing.Graph
             });
 
             dc.Link(3, 4);
-            dc[0].Should().Be(1);
-            dc[1].Should().Be(10);
-            dc[2].Should().Be(100);
-            dc[3].Should().Be(1000);
-            dc[4].Should().Be(10000);
-            dc.Prod(0).Should().Be(11111);
-            dc.Prod(1).Should().Be(11111);
-            dc.Prod(2).Should().Be(11111);
-            dc.Prod(3).Should().Be(11111);
-            dc.Prod(4).Should().Be(11111);
+            dc[0].ShouldBe(1);
+            dc[1].ShouldBe(10);
+            dc[2].ShouldBe(100);
+            dc[3].ShouldBe(1000);
+            dc[4].ShouldBe(10000);
+            dc.Prod(0).ShouldBe(11111);
+            dc.Prod(1).ShouldBe(11111);
+            dc.Prod(2).ShouldBe(11111);
+            dc.Prod(3).ShouldBe(11111);
+            dc.Prod(4).ShouldBe(11111);
             ShouldConnectEqual(new bool[5, 5]
             {
                 {true,true,true,true,true },
@@ -120,16 +120,16 @@ namespace Kzrnm.Competitive.Testing.Graph
             });
 
             dc.Link(0, 4);
-            dc[0].Should().Be(1);
-            dc[1].Should().Be(10);
-            dc[2].Should().Be(100);
-            dc[3].Should().Be(1000);
-            dc[4].Should().Be(10000);
-            dc.Prod(0).Should().Be(11111);
-            dc.Prod(1).Should().Be(11111);
-            dc.Prod(2).Should().Be(11111);
-            dc.Prod(3).Should().Be(11111);
-            dc.Prod(4).Should().Be(11111);
+            dc[0].ShouldBe(1);
+            dc[1].ShouldBe(10);
+            dc[2].ShouldBe(100);
+            dc[3].ShouldBe(1000);
+            dc[4].ShouldBe(10000);
+            dc.Prod(0).ShouldBe(11111);
+            dc.Prod(1).ShouldBe(11111);
+            dc.Prod(2).ShouldBe(11111);
+            dc.Prod(3).ShouldBe(11111);
+            dc.Prod(4).ShouldBe(11111);
             ShouldConnectEqual(new bool[5, 5]
             {
                 {true,true,true,true,true },
@@ -140,16 +140,16 @@ namespace Kzrnm.Competitive.Testing.Graph
             });
 
             dc.Cut(1, 2);
-            dc[0].Should().Be(1);
-            dc[1].Should().Be(10);
-            dc[2].Should().Be(100);
-            dc[3].Should().Be(1000);
-            dc[4].Should().Be(10000);
-            dc.Prod(0).Should().Be(11111);
-            dc.Prod(1).Should().Be(11111);
-            dc.Prod(2).Should().Be(11111);
-            dc.Prod(3).Should().Be(11111);
-            dc.Prod(4).Should().Be(11111);
+            dc[0].ShouldBe(1);
+            dc[1].ShouldBe(10);
+            dc[2].ShouldBe(100);
+            dc[3].ShouldBe(1000);
+            dc[4].ShouldBe(10000);
+            dc.Prod(0).ShouldBe(11111);
+            dc.Prod(1).ShouldBe(11111);
+            dc.Prod(2).ShouldBe(11111);
+            dc.Prod(3).ShouldBe(11111);
+            dc.Prod(4).ShouldBe(11111);
             ShouldConnectEqual(new bool[5, 5]
             {
                 {true,true,true,true,true },
@@ -160,16 +160,16 @@ namespace Kzrnm.Competitive.Testing.Graph
             });
 
             dc.Cut(3, 4);
-            dc[0].Should().Be(1);
-            dc[1].Should().Be(10);
-            dc[2].Should().Be(100);
-            dc[3].Should().Be(1000);
-            dc[4].Should().Be(10000);
-            dc.Prod(0).Should().Be(10011);
-            dc.Prod(1).Should().Be(10011);
-            dc.Prod(2).Should().Be(1100);
-            dc.Prod(3).Should().Be(1100);
-            dc.Prod(4).Should().Be(10011);
+            dc[0].ShouldBe(1);
+            dc[1].ShouldBe(10);
+            dc[2].ShouldBe(100);
+            dc[3].ShouldBe(1000);
+            dc[4].ShouldBe(10000);
+            dc.Prod(0).ShouldBe(10011);
+            dc.Prod(1).ShouldBe(10011);
+            dc.Prod(2).ShouldBe(1100);
+            dc.Prod(3).ShouldBe(1100);
+            dc.Prod(4).ShouldBe(10011);
             ShouldConnectEqual(new bool[5, 5]
             {
                 {true,true,false,false,true },
@@ -180,16 +180,16 @@ namespace Kzrnm.Competitive.Testing.Graph
             });
 
             dc.Apply(1, 100000);
-            dc[0].Should().Be(1);
-            dc[1].Should().Be(100010);
-            dc[2].Should().Be(100);
-            dc[3].Should().Be(1000);
-            dc[4].Should().Be(10000);
-            dc.Prod(0).Should().Be(110011);
-            dc.Prod(1).Should().Be(110011);
-            dc.Prod(2).Should().Be(1100);
-            dc.Prod(3).Should().Be(1100);
-            dc.Prod(4).Should().Be(110011);
+            dc[0].ShouldBe(1);
+            dc[1].ShouldBe(100010);
+            dc[2].ShouldBe(100);
+            dc[3].ShouldBe(1000);
+            dc[4].ShouldBe(10000);
+            dc.Prod(0).ShouldBe(110011);
+            dc.Prod(1).ShouldBe(110011);
+            dc.Prod(2).ShouldBe(1100);
+            dc.Prod(3).ShouldBe(1100);
+            dc.Prod(4).ShouldBe(110011);
             ShouldConnectEqual(new bool[5, 5]
             {
                 {true,true,false,false,true },
@@ -200,16 +200,16 @@ namespace Kzrnm.Competitive.Testing.Graph
             });
 
             dc.Link(1, 4);
-            dc[0].Should().Be(1);
-            dc[1].Should().Be(100010);
-            dc[2].Should().Be(100);
-            dc[3].Should().Be(1000);
-            dc[4].Should().Be(10000);
-            dc.Prod(0).Should().Be(110011);
-            dc.Prod(1).Should().Be(110011);
-            dc.Prod(2).Should().Be(1100);
-            dc.Prod(3).Should().Be(1100);
-            dc.Prod(4).Should().Be(110011);
+            dc[0].ShouldBe(1);
+            dc[1].ShouldBe(100010);
+            dc[2].ShouldBe(100);
+            dc[3].ShouldBe(1000);
+            dc[4].ShouldBe(10000);
+            dc.Prod(0).ShouldBe(110011);
+            dc.Prod(1).ShouldBe(110011);
+            dc.Prod(2).ShouldBe(1100);
+            dc.Prod(3).ShouldBe(1100);
+            dc.Prod(4).ShouldBe(110011);
             ShouldConnectEqual(new bool[5, 5]
             {
                 {true,true,false,false,true },
@@ -220,16 +220,16 @@ namespace Kzrnm.Competitive.Testing.Graph
             });
 
             dc.Link(3, 4);
-            dc[0].Should().Be(1);
-            dc[1].Should().Be(100010);
-            dc[2].Should().Be(100);
-            dc[3].Should().Be(1000);
-            dc[4].Should().Be(10000);
-            dc.Prod(0).Should().Be(111111);
-            dc.Prod(1).Should().Be(111111);
-            dc.Prod(2).Should().Be(111111);
-            dc.Prod(3).Should().Be(111111);
-            dc.Prod(4).Should().Be(111111);
+            dc[0].ShouldBe(1);
+            dc[1].ShouldBe(100010);
+            dc[2].ShouldBe(100);
+            dc[3].ShouldBe(1000);
+            dc[4].ShouldBe(10000);
+            dc.Prod(0).ShouldBe(111111);
+            dc.Prod(1).ShouldBe(111111);
+            dc.Prod(2).ShouldBe(111111);
+            dc.Prod(3).ShouldBe(111111);
+            dc.Prod(4).ShouldBe(111111);
             ShouldConnectEqual(new bool[5, 5]
             {
                 {true,true,true,true,true },

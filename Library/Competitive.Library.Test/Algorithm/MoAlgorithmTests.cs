@@ -24,17 +24,17 @@ namespace Kzrnm.Competitive.Testing.Algorithm
                 mo.AddQuery(l, r);
                 expected[i] = fw[l..r];
             }
-            mo.Solve<long, St>(new St(array)).Should().Equal(expected);
+            mo.Solve<long, St>(new St(array)).ShouldBe(expected);
 
             long current1 = 0;
             mo.Solve(i => current1 += array[i], i => current1 -= array[i],
-                update: i => current1.Should().Be(expected[i]));
+                update: i => current1.ShouldBe(expected[i]));
 
             long current2 = 0;
             mo.SolveStrict(
                 i => current2 += array[i], i => current2 += array[i],
                 i => current2 -= array[i], i => current2 -= array[i],
-                update: i => current2.Should().Be(expected[i]));
+                update: i => current2.ShouldBe(expected[i]));
         }
     }
     class St(long[] array) : IMoAlgorithmState<long>

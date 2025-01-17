@@ -18,11 +18,11 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 3, 6);
             gb.Add(4, 0, 1);
             var graph = gb.ToGraph();
-            graph.BellmanFord(0).Should().Equal([0, 1, 6, 18, 12]);
-            graph.BellmanFord(1).Should().Equal([12, 0, 5, 17, 11]);
-            graph.BellmanFord(2).Should().Equal([7, 8, 0, 12, 6]);
-            graph.BellmanFord(3).Should().Equal([1073741823, 1073741823, 1073741823, 0, 1073741823]);
-            graph.BellmanFord(4).Should().Equal([1, 2, 7, 6, 0]);
+            graph.BellmanFord(0).ShouldBe([0, 1, 6, 18, 12]);
+            graph.BellmanFord(1).ShouldBe([12, 0, 5, 17, 11]);
+            graph.BellmanFord(2).ShouldBe([7, 8, 0, 12, 6]);
+            graph.BellmanFord(3).ShouldBe([1073741823, 1073741823, 1073741823, 0, 1073741823]);
+            graph.BellmanFord(4).ShouldBe([1, 2, 7, 6, 0]);
         }
 
         [Fact]
@@ -39,11 +39,11 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 3, 6);
             gb.Add(4, 0, 1);
             var graph = gb.ToGraph();
-            graph.BellmanFord(0).Should().Equal([0, 1, 6, 18, 12]);
-            graph.BellmanFord(1).Should().Equal([12, 0, 5, 17, 11]);
-            graph.BellmanFord(2).Should().Equal([7, 8, 0, 12, 6]);
-            graph.BellmanFord(3).Should().Equal([4611686018427387903, 4611686018427387903, 4611686018427387903, 0, 4611686018427387903]);
-            graph.BellmanFord(4).Should().Equal([1, 2, 7, 6, 0]);
+            graph.BellmanFord(0).ShouldBe([0, 1, 6, 18, 12]);
+            graph.BellmanFord(1).ShouldBe([12, 0, 5, 17, 11]);
+            graph.BellmanFord(2).ShouldBe([7, 8, 0, 12, 6]);
+            graph.BellmanFord(3).ShouldBe([4611686018427387903, 4611686018427387903, 4611686018427387903, 0, 4611686018427387903]);
+            graph.BellmanFord(4).ShouldBe([1, 2, 7, 6, 0]);
         }
 
         [Fact]
@@ -60,11 +60,11 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 3, 6);
             gb.Add(4, 0, 1);
             var graph = gb.ToGraph();
-            graph.BellmanFord(0).Should().Equal([0, 1, 6, -599, 12]);
-            graph.BellmanFord(1).Should().Equal([12, 0, 5, -600, 11]);
-            graph.BellmanFord(2).Should().Equal([7, 8, 0, -605, 6]);
-            graph.BellmanFord(3).Should().Equal([4611686018427387903, 4611686018427387903, 4611686018427387903, 0, 4611686018427387903]);
-            graph.BellmanFord(4).Should().Equal([1, 2, 7, -598, 0]);
+            graph.BellmanFord(0).ShouldBe([0, 1, 6, -599, 12]);
+            graph.BellmanFord(1).ShouldBe([12, 0, 5, -600, 11]);
+            graph.BellmanFord(2).ShouldBe([7, 8, 0, -605, 6]);
+            graph.BellmanFord(3).ShouldBe([4611686018427387903, 4611686018427387903, 4611686018427387903, 0, 4611686018427387903]);
+            graph.BellmanFord(4).ShouldBe([1, 2, 7, -598, 0]);
         }
 
         [Fact]
@@ -81,11 +81,11 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(4, 3, 6);
             gb.Add(4, 0, -1);
             var graph = gb.ToGraph();
-            graph.Invoking(graph => graph.BellmanFord(0)).Should().Throw<InvalidOperationException>();
-            graph.Invoking(graph => graph.BellmanFord(1)).Should().Throw<InvalidOperationException>();
-            graph.Invoking(graph => graph.BellmanFord(2)).Should().Throw<InvalidOperationException>();
-            graph.Invoking(graph => graph.BellmanFord(3)).Should().Throw<InvalidOperationException>();
-            graph.Invoking(graph => graph.BellmanFord(4)).Should().Throw<InvalidOperationException>();
+            Should.Throw<InvalidOperationException>(() => graph.BellmanFord(0));
+            Should.Throw<InvalidOperationException>(() => graph.BellmanFord(1));
+            Should.Throw<InvalidOperationException>(() => graph.BellmanFord(2));
+            Should.Throw<InvalidOperationException>(() => graph.BellmanFord(3));
+            Should.Throw<InvalidOperationException>(() => graph.BellmanFord(4));
         }
     }
 }

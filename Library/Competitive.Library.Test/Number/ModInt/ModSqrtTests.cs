@@ -14,9 +14,9 @@ namespace Kzrnm.Competitive.Testing.Number
                 for (int i = 0; i < mod; i++)
                 {
                     if (hs[i].Count == 0)
-                        ModSqrt.Solve(i, mod).Should().Be(-1, "nothing^2 ≡ {0} mod {1}", i, mod);
+                        ModSqrt.Solve(i, mod).ShouldBe(-1, $"nothing^2 ≡ {i} mod {mod}");
                     else
-                        hs[i].Should().Contain(ModSqrt.Solve(i, mod), "result^2 ≡ {0} mod {1}", i, mod);
+                        hs[i].ShouldContain(ModSqrt.Solve(i, mod), $"result^2 ≡ {i} mod {mod}");
                 }
             }
         }
@@ -30,9 +30,9 @@ namespace Kzrnm.Competitive.Testing.Number
                 for (int i = 0; i < mod; i++)
                 {
                     if (hs[i].Count == 0)
-                        ModSqrt.Solve(DynamicModInt<bool>.Raw(i)).Should().Be(-1, "nothing^2 ≡ {0} mod {1}", i, mod);
+                        ModSqrt.Solve(DynamicModInt<bool>.Raw(i)).ShouldBe(-1, $"nothing^2 ≡ {i} mod {mod}");
                     else
-                        hs[i].Should().Contain(ModSqrt.Solve(DynamicModInt<bool>.Raw(i)), "result^2 ≡ {0} mod {1}", i, mod);
+                        hs[i].ShouldContain(ModSqrt.Solve(DynamicModInt<bool>.Raw(i)), $"result^2 ≡ {i} mod {mod}");
                 }
             }
         }
@@ -55,9 +55,9 @@ namespace Kzrnm.Competitive.Testing.Number
             for (int i = 0; i < mod; i++)
             {
                 if (hs[i].Count == 0)
-                    ModSqrt.Solve(StaticModInt<Mod6221>.Raw(i)).Should().Be(-1, "nothing^2 ≡ {0} mod {1}", i, mod);
+                    ModSqrt.Solve(StaticModInt<Mod6221>.Raw(i)).ShouldBe(-1, $"nothing^2 ≡ {i} mod {mod}");
                 else
-                    hs[i].Should().Contain(ModSqrt.Solve(StaticModInt<Mod6221>.Raw(i)), "result^2 ≡ {0} mod {1}", i, mod);
+                    hs[i].ShouldContain(ModSqrt.Solve(StaticModInt<Mod6221>.Raw(i)), $"result^2 ≡ {i} mod {mod}");
             }
 
             mod = 1097;
@@ -65,9 +65,9 @@ namespace Kzrnm.Competitive.Testing.Number
             for (int i = 0; i < mod; i++)
             {
                 if (hs[i].Count == 0)
-                    ModSqrt.Solve(StaticModInt<Mod1097>.Raw(i)).Should().Be(-1, "nothing^2 ≡ {0} mod {1}", i, mod);
+                    ModSqrt.Solve(StaticModInt<Mod1097>.Raw(i)).ShouldBe(-1, $"nothing^2 ≡ {i} mod {mod}");
                 else
-                    hs[i].Should().Contain(ModSqrt.Solve(StaticModInt<Mod1097>.Raw(i)), "result^2 ≡ {0} mod {1}", i, mod);
+                    hs[i].ShouldContain(ModSqrt.Solve(StaticModInt<Mod1097>.Raw(i)), $"result^2 ≡ {i} mod {mod}");
             }
         }
 
@@ -79,9 +79,9 @@ namespace Kzrnm.Competitive.Testing.Number
             for (int i = 0; i < mod; i++)
             {
                 if (hs[i].Count == 0)
-                    ModSqrt.Solve((MontgomeryModInt<Mod6221>)i).Should().Be(-1, "nothing^2 ≡ {0} mod {1}", i, mod);
+                    ModSqrt.Solve((MontgomeryModInt<Mod6221>)i).ShouldBe(-1, $"nothing^2 ≡ {i} mod {mod}");
                 else
-                    hs[i].Should().Contain(ModSqrt.Solve((MontgomeryModInt<Mod6221>)i), "result^2 ≡ {0} mod {1}", i, mod);
+                    hs[i].ShouldContain(ModSqrt.Solve((MontgomeryModInt<Mod6221>)i), $"result^2 ≡ {i} mod {mod}");
             }
 
             mod = 1097;
@@ -89,9 +89,9 @@ namespace Kzrnm.Competitive.Testing.Number
             for (int i = 0; i < mod; i++)
             {
                 if (hs[i].Count == 0)
-                    ModSqrt.Solve((MontgomeryModInt<Mod1097>)i).Should().Be(-1, "nothing^2 ≡ {0} mod {1}", i, mod);
+                    ModSqrt.Solve((MontgomeryModInt<Mod1097>)i).ShouldBe(-1, $"nothing^2 ≡ {i} mod {mod}");
                 else
-                    hs[i].Should().Contain(ModSqrt.Solve((MontgomeryModInt<Mod1097>)i), "result^2 ≡ {0} mod {1}", i, mod);
+                    hs[i].ShouldContain(ModSqrt.Solve((MontgomeryModInt<Mod1097>)i), $"result^2 ≡ {i} mod {mod}");
             }
         }
 

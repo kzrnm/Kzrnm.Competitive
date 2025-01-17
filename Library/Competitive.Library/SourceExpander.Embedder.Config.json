@@ -3,9 +3,6 @@
   "enabled": true,
   "embedding-type": "gzipBase32768",
   "minify-level": "full",
-  "embedding-source-class": {
-    "enabled": false
-  },
   "remove-conditional": [
     "DEBUG",
     "ATCODER_CONTRACT"

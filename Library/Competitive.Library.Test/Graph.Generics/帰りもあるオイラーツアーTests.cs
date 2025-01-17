@@ -17,7 +17,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(3, 7);
             var tree = gb.ToTree();
             var tour = tree.EulerianTour();
-            tour.Events.Should().Equal(
+            tour.Events.ShouldBe([
                 new 帰りもあるオイラーツアー<GraphEdge>.Event(-1, new GraphEdge(0), true),
                 new 帰りもあるオイラーツアー<GraphEdge>.Event(0, new GraphEdge(1), true),
                 new 帰りもあるオイラーツアー<GraphEdge>.Event(1, new GraphEdge(3), true),
@@ -33,9 +33,11 @@ namespace Kzrnm.Competitive.Testing.Graph
                 new 帰りもあるオイラーツアー<GraphEdge>.Event(2, new GraphEdge(5), true),
                 new 帰りもあるオイラーツアー<GraphEdge>.Event(2, new GraphEdge(5), false),
                 new 帰りもあるオイラーツアー<GraphEdge>.Event(0, new GraphEdge(2), false),
-                new 帰りもあるオイラーツアー<GraphEdge>.Event(-1, new GraphEdge(0), false));
-            Enumerable.Range(0, 8).Select(i => tour[i]).Should().Equal(
-                (0, 15), (1, 8), (9, 14), (2, 5), (6, 7), (12, 13), (10, 11), (3, 4));
+                new 帰りもあるオイラーツアー<GraphEdge>.Event(-1, new GraphEdge(0), false)
+            ]);
+            Enumerable.Range(0, 8).Select(i => tour[i]).ShouldBe([
+                (0, 15), (1, 8), (9, 14), (2, 5), (6, 7), (12, 13), (10, 11), (3, 4)
+            ]);
         }
         [Fact]
         public void 重み付きグラフ()
@@ -50,7 +52,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(3, 7, 7);
             var tree = gb.ToTree();
             var tour = tree.EulerianTour();
-            tour.Events.Should().Equal(
+            tour.Events.ShouldBe([
                 new 帰りもあるオイラーツアー<WEdge<int>>.Event(-1, new WEdge<int>(0, 0), true),
                 new 帰りもあるオイラーツアー<WEdge<int>>.Event(0, new WEdge<int>(1, 1), true),
                 new 帰りもあるオイラーツアー<WEdge<int>>.Event(1, new WEdge<int>(3, 3), true),
@@ -66,10 +68,11 @@ namespace Kzrnm.Competitive.Testing.Graph
                 new 帰りもあるオイラーツアー<WEdge<int>>.Event(2, new WEdge<int>(5, 5), true),
                 new 帰りもあるオイラーツアー<WEdge<int>>.Event(2, new WEdge<int>(5, 5), false),
                 new 帰りもあるオイラーツアー<WEdge<int>>.Event(0, new WEdge<int>(2, 2), false),
-                new 帰りもあるオイラーツアー<WEdge<int>>.Event(-1, new WEdge<int>(0, 0), false));
-            Enumerable.Range(0, 8).Select(i => tour[i]).Should().Equal(
-                (0, 15),
-                (1, 8), (9, 14), (2, 5), (6, 7), (12, 13), (10, 11), (3, 4));
+                new 帰りもあるオイラーツアー<WEdge<int>>.Event(-1, new WEdge<int>(0, 0), false)
+            ]);
+            Enumerable.Range(0, 8).Select(i => tour[i]).ShouldBe([
+                (0, 15), (1, 8), (9, 14), (2, 5), (6, 7), (12, 13), (10, 11), (3, 4)
+            ]);
         }
     }
 }

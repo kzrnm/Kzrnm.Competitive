@@ -13,19 +13,19 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             sums = Sums.Create(new long[] { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 });
             for (int l = 0; l < 10; l++)
                 for (int r = l; r <= 10; r++)
-                    seg[l..r].sum.Should().Be(sums[l..r]);
+                    seg[l..r].sum.ShouldBe(sums[l..r]);
 
             seg.Apply(0, 3, 5);
             sums = Sums.Create(new long[] { 5, 5, 5, 1, 1, 1, 1, 1, 0, 0 });
             for (int l = 0; l < 10; l++)
                 for (int r = l; r <= 10; r++)
-                    seg[l..r].sum.Should().Be(sums[l..r]);
+                    seg[l..r].sum.ShouldBe(sums[l..r]);
 
             seg.Apply(2, 5, 2);
             sums = Sums.Create(new long[] { 5, 5, 5, 2, 2, 1, 1, 1, 0, 0 });
             for (int l = 0; l < 10; l++)
                 for (int r = l; r <= 10; r++)
-                    seg[l..r].sum.Should().Be(sums[l..r]);
+                    seg[l..r].sum.ShouldBe(sums[l..r]);
         }
         struct S(long num, int cnt = 1)
         {

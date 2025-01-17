@@ -5,7 +5,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
 {
     public class WaveletMatrixTests
     {
-        public static long[] orig = [
+        public static readonly long[] orig = [
             1,
             -1,
             2,
@@ -34,7 +34,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         [InlineData(10, 6)]
         public void Indexer(int index, long expected)
         {
-            matrix[index].Should().Be(expected);
+            matrix[index].ShouldBe(expected);
         }
 
 
@@ -55,9 +55,9 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             {
                 for (int r = 0; r <= orig.Length; r++)
                 {
-                    matrix.Rank(r, x).Should().Be(Native(r, x));
+                    matrix.Rank(r, x).ShouldBe(Native(r, x));
                     for (int l = 0; l < r; l++)
-                        matrix.Rank(l, r, x).Should().Be(Native(r, x) - Native(l, x));
+                        matrix.Rank(l, r, x).ShouldBe(Native(r, x) - Native(l, x));
                 }
             }
         }
@@ -72,7 +72,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                     Array.Sort(rangeItems);
                     for (int k = 0; k < r - l; k++)
                     {
-                        matrix.KthSmallest(l, r, k).Should().Be(rangeItems[k]);
+                        matrix.KthSmallest(l, r, k).ShouldBe(rangeItems[k]);
                     }
                 }
         }
@@ -88,7 +88,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                     Array.Reverse(rangeItems);
                     for (int k = 0; k < r - l; k++)
                     {
-                        matrix.KthLargest(l, r, k).Should().Be(rangeItems[k]);
+                        matrix.KthLargest(l, r, k).ShouldBe(rangeItems[k]);
                     }
                 }
         }
@@ -110,9 +110,9 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 for (int r = l + 1; r <= orig.Length; r++)
                     for (int upper = -8; upper <= 8; upper++)
                     {
-                        matrix.RangeFreq(l, r, upper).Should().Be(Native(l, r, long.MinValue, upper));
+                        matrix.RangeFreq(l, r, upper).ShouldBe(Native(l, r, long.MinValue, upper));
                         for (int lower = -8; lower < upper; lower++)
-                            matrix.RangeFreq(l, r, lower, upper).Should().Be(Native(l, r, lower, upper), "{0}, {1}, {2}, {3}", l, r, lower, upper);
+                            matrix.RangeFreq(l, r, lower, upper).ShouldBe(Native(l, r, lower, upper), $"{l}, {r}, {lower}, {upper}");
                     }
         }
 
@@ -123,10 +123,10 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 for (int r = l + 1; r <= orig.Length; r++)
                     for (int upper = -8; upper <= 8; upper++)
                     {
-                        matrix.PrevValue(l, r, upper).Should().Be(
+                        matrix.PrevValue(l, r, upper).ShouldBe(
                             orig.AsSpan()[l..r].ToArray().Where(v => v < upper)
                             .Select(v => (long?)v)
-                            .DefaultIfEmpty(null).Max(), "{0}, {1}, {2}", l, r, upper);
+                            .DefaultIfEmpty(null).Max(), $"{l}, {r}, {upper}");
                     }
         }
 
@@ -137,10 +137,10 @@ namespace Kzrnm.Competitive.Testing.DataStructure
                 for (int r = l + 1; r <= orig.Length; r++)
                     for (int lower = -8; lower <= 8; lower++)
                     {
-                        matrix.NextValue(l, r, lower).Should().Be(
+                        matrix.NextValue(l, r, lower).ShouldBe(
                             orig.AsSpan()[l..r].ToArray().Where(v => v >= lower)
                             .Select(v => (long?)v)
-                            .DefaultIfEmpty(null).Min(), "{0}, {1}, {2}", l, r, lower);
+                            .DefaultIfEmpty(null).Min(), $"{l}, {r}, {lower}");
                     }
         }
     }

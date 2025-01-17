@@ -27,9 +27,9 @@ namespace Kzrnm.Competitive.Testing.Extensions
         [MemberData(nameof(Arrays))]
         public void ToBoolArray(int[] array, int length, bool[] expected)
         {
-            array.ToBoolArray(length).Should().Equal(expected);
-            array.AsSpan().ToBoolArray(length).Should().Equal(expected);
-            array.AsEnumerable().ToBoolArray(length).Should().Equal(expected);
+            array.ToBoolArray(length).ShouldBe(expected);
+            array.AsSpan().ToBoolArray(length).ShouldBe(expected);
+            array.AsEnumerable().ToBoolArray(length).ShouldBe(expected);
         }
     }
 }

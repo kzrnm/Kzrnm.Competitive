@@ -11,7 +11,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(1, 3);
             gb.Add(3, 2);
             gb.Add(4, 2);
-            gb.ToGraph().ToWeighted().Dijkstra(0).Should().Equal(0u, 1u, 3u, 2u, uint.MaxValue);
+            gb.ToGraph().ToWeighted().Dijkstra(0).ShouldBe([0u, 1u, 3u, 2u, uint.MaxValue]);
         }
 
         [Fact]
@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             gb.Add(1, 3);
             gb.Add(3, 2);
             gb.Add(4, 2);
-            gb.ToGraph().ToWeighted().SccIds().ids.Should().Equal(1, 2, 2, 2, 0);
+            gb.ToGraph().ToWeighted().SccIds().ids.ShouldBe([1, 2, 2, 2, 0]);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             {
                 [true, false, true],
                 [false, true, true],
-            })._v.Should().BeEquivalentTo(new UInt128[]
+            })._v.ShouldBe(new UInt128[]
             {
                 0b101ul,
                 0b110ul,
@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             {
                 0b101ul,
                 0b110ul,
-            })._v.Should().BeEquivalentTo(new UInt128[]
+            })._v.ShouldBe(new UInt128[]
             {
                 0b101ul,
                 0b110ul,
@@ -62,7 +62,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(Parse_Data))]
         public void Parse(string text, BitMatrix128 mat)
         {
-            BitMatrix128.Parse(text.Split('\n')).Should().BeEquivalentTo(mat);
+            BitMatrix128.Parse(text.Split('\n')).ShouldBe(mat);
         }
 
         public static TheoryData String_Data => new TheoryData<BitMatrix128, string>
@@ -108,8 +108,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(String_Data))]
         public void String(BitMatrix128 mat, string text)
         {
-            mat.ToString().Replace("\r\n", "\n").Should().Be(text);
-            BitMatrix128.Parse(text.Split('\n')).Should().BeEquivalentTo(mat);
+            mat.ToString().Replace("\r\n", "\n").ShouldBe(text);
+            BitMatrix128.Parse(text.Split('\n')).ShouldBe(mat);
         }
 
         [Fact]
@@ -130,8 +130,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 "110".PadRight(128, '1'),
                 "000".PadRight(128, '1'),
             ]);
-            (-mat).Should().BeEquivalentTo(expected);
-            (~mat).Should().BeEquivalentTo(expected);
+            (-mat).ShouldBe(expected);
+            (~mat).ShouldBe(expected);
         }
 
         public static TheoryData Add_Data => new TheoryData<BitMatrix128, BitMatrix128, BitMatrix128>
@@ -198,10 +198,10 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(Add_Data))]
         public void Add(BitMatrix128 mat1, BitMatrix128 mat2, BitMatrix128 expected)
         {
-            (mat1 + mat2).Should().BeEquivalentTo(expected);
-            (mat2 + mat1).Should().BeEquivalentTo(expected);
-            (mat1 - mat2).Should().BeEquivalentTo(expected);
-            (mat1 ^ mat2).Should().BeEquivalentTo(expected);
+            (mat1 + mat2).ShouldBe(expected);
+            (mat2 + mat1).ShouldBe(expected);
+            (mat1 - mat2).ShouldBe(expected);
+            (mat1 ^ mat2).ShouldBe(expected);
         }
 
         public static TheoryData Multiply_Data => new TheoryData<BitMatrix128, BitMatrix128, BitMatrix128>
@@ -262,7 +262,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(Multiply_Data))]
         public void Multiply(BitMatrix128 mat1, BitMatrix128 mat2, BitMatrix128 expected)
         {
-            (mat1 * mat2).Should().BeEquivalentTo(expected);
+            (mat1 * mat2).ShouldBe(expected);
         }
 
         public static TheoryData MultiplyVector_Data => new TheoryData<BitMatrix128, bool[], UInt128, UInt128>
@@ -314,8 +314,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [MemberData(nameof(MultiplyVector_Data))]
         public void MultiplyVector(BitMatrix128 mat, bool[] vector, UInt128 vectorArray, UInt128 expected)
         {
-            (mat * vector).Should().Be(expected);
-            (mat * vectorArray).Should().Be(expected);
+            (mat * vector).ShouldBe(expected);
+            (mat * vectorArray).ShouldBe(expected);
         }
 
         [Fact]
@@ -370,8 +370,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             var cur = orig;
             for (int i = 1; i < expecteds.Length; i++)
             {
-                cur.Should().BeEquivalentTo(expecteds[i]);
-                orig.Pow(i).Should().BeEquivalentTo(cur);
+                cur.ShouldBe(expecteds[i]);
+                orig.Pow(i).ShouldBe(cur);
                 cur *= orig;
             }
         }
@@ -441,7 +441,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         public void GaussianElimination(bool isReduced, BitMatrix128 orig, BitMatrix128 expected)
         {
             var got = orig.GaussianElimination(isReduced);
-            got.Should().BeEquivalentTo(expected);
+            got.ShouldBe(expected);
         }
     }
 }

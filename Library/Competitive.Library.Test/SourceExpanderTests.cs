@@ -19,40 +19,30 @@ namespace Embedding
 #elif NET9_0
             const string expected = "13.0";
 #endif
-            embedded.AssemblyMetadatas
-                .Should().ContainKey("SourceExpander.EmbeddedLanguageVersion")
-                .WhoseValue.Should().Be(expected);
+            embedded.AssemblyMetadatas.ShouldContainKeyAndValue("SourceExpander.EmbeddedLanguageVersion", expected);
         }
 
         [Fact]
         public async Task EmbeddedSource()
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Global));
-            embedded.AssemblyMetadatas.Should().ContainKey("SourceExpander.EmbeddedSourceCode.GZipBase32768");
-            embedded.SourceFiles.Select(s => s.FileName)
-                .Should()
-                .HaveCountGreaterThan(2)
-                .And
-                .OnlyContain(name => name.StartsWith("Competitive.Library>"));
-            embedded.SourceFiles.SelectMany(s => s.TypeNames)
-                .Should()
-                .Contain(
-                    "Kzrnm.Competitive.Global",
-                    "Kzrnm.Competitive.FenwickTreeExtension");
+            embedded.AssemblyMetadatas.ShouldContainKey("SourceExpander.EmbeddedSourceCode.GZipBase32768");
+            embedded.SourceFiles.Select(s => s.FileName).Count().ShouldBeGreaterThan(2);
+            embedded.SourceFiles.Select(s => s.FileName).ShouldAllBe(name => name.StartsWith("Competitive.Library>"));
+
+            embedded.SourceFiles.SelectMany(s => s.TypeNames).ShouldContain("Kzrnm.Competitive.Global");
+            embedded.SourceFiles.SelectMany(s => s.TypeNames).ShouldContain("Kzrnm.Competitive.__FenwickTreeExtension");
         }
 
         [Fact]
         public async Task EmbeddedNamespaces()
         {
             var embedded = await EmbeddedData.LoadFromAssembly(typeof(Global));
-            embedded.AssemblyMetadatas.Should().ContainKey("SourceExpander.EmbeddedNamespaces");
-            embedded.EmbeddedNamespaces
-                .Should()
-                .Contain(
-                    "Kzrnm.Competitive.Internal",
-                    "Kzrnm.Competitive");
+            embedded.AssemblyMetadatas.ShouldContainKey("SourceExpander.EmbeddedNamespaces");
+            embedded.EmbeddedNamespaces.ShouldContain("Kzrnm.Competitive");
+            embedded.EmbeddedNamespaces.ShouldContain("Kzrnm.Competitive.Internal");
 
         }
     }
 #endif
-        }
+}

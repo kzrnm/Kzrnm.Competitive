@@ -43,7 +43,7 @@ namespace Kzrnm.Competitive.Testing.Algorithm
         [MemberData(nameof(Permutations_Data))]
         public void Permutations(int[] collection, int[][] expected)
         {
-            IterTools.Permutations(collection).Should().BeEquivalentTo(expected);
+            IterTools.Permutations(collection).ShouldBe(expected);
         }
 
         public static TheoryData<int[], int, int[][]> Combinations_Data => new()
@@ -95,7 +95,7 @@ namespace Kzrnm.Competitive.Testing.Algorithm
         [MemberData(nameof(Combinations_Data))]
         public void Combinations(int[] collection, int k, int[][] expected)
         {
-            IterTools.Combinations(collection, k).Should().BeEquivalentTo(expected);
+            IterTools.Combinations(collection, k).ShouldBe(expected);
         }
 
 
@@ -206,7 +206,7 @@ namespace Kzrnm.Competitive.Testing.Algorithm
         [MemberData(nameof(CombinationsWithReplacement_Data))]
         public void CombinationsWithReplacement(int[] collection, int k, int[][] expected)
         {
-            IterTools.CombinationsWithReplacement(collection, k).Should().BeEquivalentTo(expected);
+            IterTools.CombinationsWithReplacement(collection, k).ShouldBe(expected);
         }
     }
 }

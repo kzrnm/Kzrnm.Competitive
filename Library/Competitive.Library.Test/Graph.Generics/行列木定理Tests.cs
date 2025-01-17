@@ -13,7 +13,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             var gb = new GraphBuilder(1, false);
             var g = gb.ToGraph();
             g.MatrixTreeTheorem().Calc<StaticModInt<Mod1000000007>>()
-                .Value.Should().Be(1);
+                .Value.ShouldBe(1);
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace Kzrnm.Competitive.Testing.Graph
 
                 var g = gb.ToGraph();
                 g.MatrixTreeTheorem().Calc<StaticModInt<Mod1000000007>>()
-                    .Value.Should().Be(Naive(n, hs.ToArray()));
+                    .Value.ShouldBe(Naive(n, hs.ToArray()));
             }
         }
 
