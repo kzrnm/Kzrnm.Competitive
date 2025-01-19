@@ -287,13 +287,8 @@ namespace Kzrnm.Competitive
         //        private static bool NgOrThrow<T>(IOk<T> op, T val) { try { return !op.Ok(val); } catch { return true; } }
         //#pragma warning restore CA1031
 
-        private readonly struct FuncOk<T> : IOk<T>
+        private readonly record struct FuncOk<T>(Func<T, bool> ok) : IOk<T>
         {
-            readonly Func<T, bool> ok;
-            public FuncOk(Func<T, bool> ok)
-            {
-                this.ok = ok;
-            }
             [凾(256)]
             public bool Ok(T value) => ok(value);
         }
@@ -326,17 +321,8 @@ namespace Kzrnm.Competitive
             }
             return ok;
         }
-        private readonly struct FuncBinaryOk<T> : IBinaryOk<T>
+        private readonly record struct FuncBinaryOk<T>(Func<T, bool> ok, Func<T, T, T> mid, Func<T, T, bool> continueFunc) : IBinaryOk<T>
         {
-            readonly Func<T, bool> ok;
-            readonly Func<T, T, T> mid;
-            readonly Func<T, T, bool> continueFunc;
-            public FuncBinaryOk(Func<T, bool> ok, Func<T, T, T> mid, Func<T, T, bool> continueFunc)
-            {
-                this.ok = ok;
-                this.mid = mid;
-                this.continueFunc = continueFunc;
-            }
             [凾(256)]
             public bool Ok(T value) => ok(value);
             [凾(256)]
