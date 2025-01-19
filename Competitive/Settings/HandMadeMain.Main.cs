@@ -98,13 +98,15 @@ namespace Competitive.Runner
         {
             var expandedCode = GetSourceCode(BasePath.Replace("HandMadeMain.cs", "Program.cs"))
                 ?.Code
-                ?.Replace("\r\n", "\n")
-                ?.Replace("using MI=System.Runtime.CompilerServices.MethodImplAttribute;", "");
+                ?.Replace("\r\n", "\n");
             if (expandedCode == null)
                 ThrowEmptyExpanded();
 
+            expandedCode = expandedCode.Replace("using 凾", "using MAttribute")
+                .Replace("using M=MethodImplAttribute;", "")
+                .Replace("using MI=System.Runtime.CompilerServices.MethodImplAttribute;", "");
             expandedCode = NotLocalRunning().Replace(expandedCode, "$1");
-            expandedCode = AggressiveInliningRegex().Replace(expandedCode, "[凾(256");
+            expandedCode = AggressiveInliningRegex().Replace(expandedCode, "[M(256");
 #if NET9_0_OR_GREATER
             expandedCode = ArrayEmptyRegex().Replace(expandedCode, "[]");
 #endif
@@ -118,7 +120,7 @@ namespace Competitive.Runner
         }
         [GeneratedRegex(@"#if !LOCAL_RUNNING\n(.*)#endif\n", RegexOptions.Singleline)]
         private static partial Regex NotLocalRunning();
-        [GeneratedRegex(@"\[(MI|MethodImpl)\(((MethodImplOptions\.)?AggressiveInlining|256)")]
+        [GeneratedRegex(@"\[(MI|MethodImpl|凾)\(((MethodImplOptions\.)?AggressiveInlining|256)")]
         private static partial Regex AggressiveInliningRegex();
         [GeneratedRegex(@"(?<![a-zA-Z0-9])(System\.)?Array\.Empty<[^\(]+\(\)>")]
         private static partial Regex ArrayEmptyRegex();
