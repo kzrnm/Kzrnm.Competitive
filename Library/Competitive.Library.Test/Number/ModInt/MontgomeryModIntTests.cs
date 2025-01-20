@@ -1,8 +1,6 @@
 using AtCoder;
-using Kzrnm.Competitive.Internal.PrimeId;
 using System;
 using System.Linq;
-using System.Numerics;
 
 namespace Kzrnm.Competitive.Testing.Number
 {

@@ -3,7 +3,6 @@ using AtCoder;
 using AtCoder.Internal;
 using Kzrnm.Competitive.IO;
 using System;
-using System.Globalization;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -12,7 +11,9 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 奇数オンリーの ModInt
     /// </summary>
-    public readonly struct MontgomeryModInt<T> : IUtf8ConsoleWriterFormatter, IEquatable<MontgomeryModInt<T>>, IFormattable, IModInt<MontgomeryModInt<T>>
+    public readonly struct MontgomeryModInt<T> : IUtf8ConsoleWriterFormatter, IEquatable<MontgomeryModInt<T>>, IFormattable,
+        INumKz<MontgomeryModInt<T>>,
+        IModInt<MontgomeryModInt<T>>
         where T : struct, IStaticMod
     {
         internal readonly uint _v;
@@ -65,15 +66,15 @@ namespace Kzrnm.Competitive
         [凾(256)]
         internal static MontgomeryModInt<T> Raw(uint a) => new(a);
 
-        [凾(256)] public static implicit operator MontgomeryModInt<T>(ulong value) => new MontgomeryModInt<T>(value);
-        [凾(256)] public static implicit operator MontgomeryModInt<T>(uint value) => new MontgomeryModInt<T>((ulong)value);
-        [凾(256)] public static implicit operator MontgomeryModInt<T>(long value) => new MontgomeryModInt<T>(value);
-        [凾(256)] public static implicit operator MontgomeryModInt<T>(int value) => new MontgomeryModInt<T>(value);
+        [凾(256)] public static implicit operator MontgomeryModInt<T>(ulong n) => new MontgomeryModInt<T>(n);
+        [凾(256)] public static implicit operator MontgomeryModInt<T>(uint n) => new MontgomeryModInt<T>((ulong)n);
+        [凾(256)] public static implicit operator MontgomeryModInt<T>(long n) => new MontgomeryModInt<T>(n);
+        [凾(256)] public static implicit operator MontgomeryModInt<T>(int n) => new MontgomeryModInt<T>(n);
 
-        [凾(256)] public static explicit operator ulong(MontgomeryModInt<T> value) => (ulong)value.Value;
-        [凾(256)] public static explicit operator uint(MontgomeryModInt<T> value) => (uint)value.Value;
-        [凾(256)] public static explicit operator long(MontgomeryModInt<T> value) => value.Value;
-        [凾(256)] public static explicit operator int(MontgomeryModInt<T> value) => value.Value;
+        [凾(256)] public static explicit operator ulong(MontgomeryModInt<T> n) => (ulong)n.Value;
+        [凾(256)] public static explicit operator uint(MontgomeryModInt<T> n) => (uint)n.Value;
+        [凾(256)] public static explicit operator long(MontgomeryModInt<T> n) => n.Value;
+        [凾(256)] public static explicit operator int(MontgomeryModInt<T> n) => n.Value;
 
         /// <summary>
         /// 格納されている値を返します。
@@ -97,8 +98,9 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static MontgomeryModInt<T> operator +(MontgomeryModInt<T> a, MontgomeryModInt<T> b)
         {
-            uint r = a._v + b._v - 2 * op.Mod;
-            if ((int)r < 0) r += 2 * op.Mod;
+            var mm = 2 * op.Mod;
+            var r = a._v + b._v - mm;
+            if ((int)r < 0) r += mm;
             return new MontgomeryModInt<T>(r);
         }
         [凾(256)]
@@ -124,9 +126,9 @@ namespace Kzrnm.Competitive
             return new MontgomeryModInt<T>(r);
         }
         [凾(256)]
-        public static MontgomeryModInt<T> operator ++(MontgomeryModInt<T> a) => a + 1;
+        public static MontgomeryModInt<T> operator ++(MontgomeryModInt<T> a) => a + One;
         [凾(256)]
-        public static MontgomeryModInt<T> operator --(MontgomeryModInt<T> a) => a - 1;
+        public static MontgomeryModInt<T> operator --(MontgomeryModInt<T> a) => a - One;
 
         /// <summary>
         /// 自身を x として、x^<paramref name="n"/> を返します。
@@ -138,7 +140,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public MontgomeryModInt<T> Pow(ulong n)
         {
-            MontgomeryModInt<T> x = this, r = 1;
+            MontgomeryModInt<T> x = this, r = One;
 
             while (n > 0)
             {
@@ -174,7 +176,7 @@ namespace Kzrnm.Competitive
         /// <para>制約: gcd(x, mod) = 1</para>
         /// </remarks>
         [凾(256)]
-        public MontgomeryModInt<T> Inv() => this.Pow(op.Mod - 2);
+        public MontgomeryModInt<T> Inv() => Pow(op.Mod - 2);
 
         [凾(256)] public override bool Equals(object obj) => obj is MontgomeryModInt<T> m && Equals(m);
         [凾(256)]
@@ -212,49 +214,22 @@ namespace Kzrnm.Competitive
             return true;
         }
         public static MontgomeryModInt<T> Parse(ReadOnlySpan<char> s)
-        {
-            if (!TryParse(s, out var r))
-                Throw();
-            return r;
-            void Throw() => throw new FormatException();
-        }
+            => TryParse(s, out MontgomeryModInt<T> r) ? r : throw new FormatException();
+
         public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => Value.TryFormat(destination, out charsWritten, format, provider);
         public string ToString(string format, IFormatProvider formatProvider) => Value.ToString(format, formatProvider);
-        static int INumberBase<MontgomeryModInt<T>>.Radix => 2;
-        static MontgomeryModInt<T> IAdditiveIdentity<MontgomeryModInt<T>, MontgomeryModInt<T>>.AdditiveIdentity => default;
-        static MontgomeryModInt<T> IMultiplicativeIdentity<MontgomeryModInt<T>, MontgomeryModInt<T>>.MultiplicativeIdentity => _One;
         static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.Abs(MontgomeryModInt<T> v) => v;
-        static bool INumberBase<MontgomeryModInt<T>>.IsCanonical(MontgomeryModInt<T> v) => true;
-        static bool INumberBase<MontgomeryModInt<T>>.IsComplexNumber(MontgomeryModInt<T> v) => false;
-        static bool INumberBase<MontgomeryModInt<T>>.IsRealNumber(MontgomeryModInt<T> v) => true;
-        static bool INumberBase<MontgomeryModInt<T>>.IsImaginaryNumber(MontgomeryModInt<T> v) => false;
         static bool INumberBase<MontgomeryModInt<T>>.IsEvenInteger(MontgomeryModInt<T> v) => int.IsEvenInteger(v.Value);
         static bool INumberBase<MontgomeryModInt<T>>.IsOddInteger(MontgomeryModInt<T> v) => int.IsOddInteger(v.Value);
-        static bool INumberBase<MontgomeryModInt<T>>.IsFinite(MontgomeryModInt<T> v) => true;
-        static bool INumberBase<MontgomeryModInt<T>>.IsInfinity(MontgomeryModInt<T> v) => false;
         static bool INumberBase<MontgomeryModInt<T>>.IsInteger(MontgomeryModInt<T> v) => true;
         static bool INumberBase<MontgomeryModInt<T>>.IsPositive(MontgomeryModInt<T> v) => true;
         static bool INumberBase<MontgomeryModInt<T>>.IsNegative(MontgomeryModInt<T> v) => false;
-        static bool INumberBase<MontgomeryModInt<T>>.IsPositiveInfinity(MontgomeryModInt<T> v) => false;
-        static bool INumberBase<MontgomeryModInt<T>>.IsNegativeInfinity(MontgomeryModInt<T> v) => false;
         static bool INumberBase<MontgomeryModInt<T>>.IsNormal(MontgomeryModInt<T> v) => v.Value != 0;
-        static bool INumberBase<MontgomeryModInt<T>>.IsSubnormal(MontgomeryModInt<T> v) => false;
-        static bool INumberBase<MontgomeryModInt<T>>.IsZero(MontgomeryModInt<T> v) => v.Value == 0;
         static bool INumberBase<MontgomeryModInt<T>>.IsNaN(MontgomeryModInt<T> v) => false;
         static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.MaxMagnitude(MontgomeryModInt<T> x, MontgomeryModInt<T> y) => new MontgomeryModInt<T>(int.Max(x.Value, y.Value));
         static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.MaxMagnitudeNumber(MontgomeryModInt<T> x, MontgomeryModInt<T> y) => new MontgomeryModInt<T>(int.Max(x.Value, y.Value));
         static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.MinMagnitude(MontgomeryModInt<T> x, MontgomeryModInt<T> y) => new MontgomeryModInt<T>(int.Min(x.Value, y.Value));
         static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.MinMagnitudeNumber(MontgomeryModInt<T> x, MontgomeryModInt<T> y) => new MontgomeryModInt<T>(int.Min(x.Value, y.Value));
-
-        static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider) => Parse(s);
-        static MontgomeryModInt<T> INumberBase<MontgomeryModInt<T>>.Parse(string s, NumberStyles style, IFormatProvider provider) => Parse(s);
-        static MontgomeryModInt<T> ISpanParsable<MontgomeryModInt<T>>.Parse(ReadOnlySpan<char> s, IFormatProvider provider) => Parse(s);
-        static MontgomeryModInt<T> IParsable<MontgomeryModInt<T>>.Parse(string s, IFormatProvider provider) => Parse(s);
-        static bool ISpanParsable<MontgomeryModInt<T>>.TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out MontgomeryModInt<T> result) => TryParse(s, out result);
-        static bool IParsable<MontgomeryModInt<T>>.TryParse(string s, IFormatProvider provider, out MontgomeryModInt<T> result) => TryParse(s, out result);
-        static bool INumberBase<MontgomeryModInt<T>>.TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider, out MontgomeryModInt<T> result) => TryParse(s, out result);
-        static bool INumberBase<MontgomeryModInt<T>>.TryParse(string s, NumberStyles style, IFormatProvider provider, out MontgomeryModInt<T> result) => TryParse(s, out result);
-
 
         static bool INumberBase<MontgomeryModInt<T>>.TryConvertFromChecked<TOther>(TOther v, out MontgomeryModInt<T> r)
         {

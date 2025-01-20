@@ -20,7 +20,7 @@ namespace Kzrnm.Competitive
     /// 符号なし 512 bit 整数
     /// <see cref="UInt128"/> の実装をもとにしている。
     /// </summary>
-    public readonly partial struct UInt512 : IBinaryInteger<UInt512>, IEquatable<UInt512>, IMinMaxValue<UInt512>
+    public readonly partial struct UInt512 : IBinaryInteger<UInt512>, IEquatable<UInt512>, IMinMaxValue<UInt512>, INumKz<UInt512>
     {
         /*
          * Original is UInt128
@@ -78,32 +78,19 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 
         static readonly UInt512 _one = new(0, 0, 0, 0, 0, 0, 0, 1);
         public static UInt512 One => _one;
-        public static int Radix => 2;
         public static UInt512 Zero => default;
-        public static UInt512 AdditiveIdentity => Zero;
-        public static UInt512 MultiplicativeIdentity => _one;
         public static UInt512 MaxValue => new(~0ul, ~0ul, ~0ul, ~0ul, ~0ul, ~0ul, ~0ul, ~0ul);
         public static UInt512 MinValue => default;
 
         [凾(256)]
         public static UInt512 Abs(UInt512 value) => value;
-        static bool INumberBase<UInt512>.IsCanonical(UInt512 value) => true;
-        static bool INumberBase<UInt512>.IsComplexNumber(UInt512 value) => false;
         public static bool IsEvenInteger(UInt512 value) => (value.v0 & 1) == 0;
-        static bool INumberBase<UInt512>.IsFinite(UInt512 value) => true;
-        static bool INumberBase<UInt512>.IsImaginaryNumber(UInt512 value) => false;
-        static bool INumberBase<UInt512>.IsInfinity(UInt512 value) => false;
         static bool INumberBase<UInt512>.IsInteger(UInt512 value) => true;
         static bool INumberBase<UInt512>.IsNaN(UInt512 value) => false;
         static bool INumberBase<UInt512>.IsNegative(UInt512 value) => false;
-        static bool INumberBase<UInt512>.IsNegativeInfinity(UInt512 value) => false;
         static bool INumberBase<UInt512>.IsNormal(UInt512 value) => value != default;
         public static bool IsOddInteger(UInt512 value) => (value.v0 & 1) != 0;
         static bool INumberBase<UInt512>.IsPositive(UInt512 value) => true;
-        static bool INumberBase<UInt512>.IsPositiveInfinity(UInt512 value) => false;
-        static bool INumberBase<UInt512>.IsRealNumber(UInt512 value) => true;
-        static bool INumberBase<UInt512>.IsSubnormal(UInt512 value) => false;
-        static bool INumberBase<UInt512>.IsZero(UInt512 value) => (value == default);
         static UInt512 INumberBase<UInt512>.MaxMagnitude(UInt512 x, UInt512 y) => Max(x, y);
         static UInt512 INumberBase<UInt512>.MaxMagnitudeNumber(UInt512 x, UInt512 y) => Max(x, y);
         static UInt512 INumberBase<UInt512>.MinMagnitude(UInt512 x, UInt512 y) => Min(x, y);

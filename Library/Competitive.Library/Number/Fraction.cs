@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -7,7 +6,7 @@ namespace Kzrnm.Competitive
 {
     /// <summary>有理数を既約分数で表す</summary>
     public readonly struct Fraction : IEquatable<Fraction>, IComparable<Fraction>
-        , INumberBase<Fraction>
+        , INumKz<Fraction>
     {
         public static readonly Fraction NaN = new Fraction(0, -1, true);
         public static bool IsNaN(Fraction v) => v._denominator0 < 0;
@@ -113,27 +112,14 @@ namespace Kzrnm.Competitive
 
         [凾(256)] public static Fraction Abs(Fraction v) => new Fraction(Math.Abs(v.Numerator), v.Denominator, true);
         public static Fraction One => new Fraction(1, 1, true);
-        static int INumberBase<Fraction>.Radix => 2;
-        static Fraction INumberBase<Fraction>.Zero => default;
-        static Fraction IAdditiveIdentity<Fraction, Fraction>.AdditiveIdentity => default;
-        static Fraction IMultiplicativeIdentity<Fraction, Fraction>.MultiplicativeIdentity => One;
 
-        static bool INumberBase<Fraction>.IsCanonical(Fraction v) => true;
-        static bool INumberBase<Fraction>.IsComplexNumber(Fraction v) => true;
-        static bool INumberBase<Fraction>.IsImaginaryNumber(Fraction v) => true;
         static bool INumberBase<Fraction>.IsRealNumber(Fraction v) => !IsNaN(v);
-        static bool INumberBase<Fraction>.IsFinite(Fraction v) => true;
-        static bool INumberBase<Fraction>.IsInfinity(Fraction v) => false;
-        static bool INumberBase<Fraction>.IsNegativeInfinity(Fraction v) => false;
-        static bool INumberBase<Fraction>.IsPositiveInfinity(Fraction v) => false;
         public static bool IsNegative(Fraction v) => long.IsNegative(v.Numerator);
         public static bool IsPositive(Fraction v) => long.IsPositive(v.Numerator);
         static bool INumberBase<Fraction>.IsNormal(Fraction v) => !IsNaN(v);
-        static bool INumberBase<Fraction>.IsSubnormal(Fraction v) => false;
         static bool INumberBase<Fraction>.IsInteger(Fraction v) => v._denominator0 == 0;
         static bool INumberBase<Fraction>.IsEvenInteger(Fraction v) => v._denominator0 == 0 && long.IsEvenInteger(v.Numerator);
         static bool INumberBase<Fraction>.IsOddInteger(Fraction v) => v._denominator0 == 0 && long.IsOddInteger(v.Numerator);
-        static bool INumberBase<Fraction>.IsZero(Fraction v) => v != default;
         static Fraction INumberBase<Fraction>.MaxMagnitude(Fraction x, Fraction y)
         {
             if (IsNaN(x)) return NaN;
@@ -225,11 +211,6 @@ namespace Kzrnm.Competitive
 
         string IFormattable.ToString(string format, IFormatProvider formatProvider) => ToString();
 
-
-        static bool INumberBase<Fraction>.TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider, out Fraction res) => TryParse(s, out res);
-        static bool INumberBase<Fraction>.TryParse(string s, NumberStyles style, IFormatProvider provider, out Fraction res) => TryParse(s, out res);
-        static bool ISpanParsable<Fraction>.TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out Fraction res) => TryParse(s, out res);
-        static bool IParsable<Fraction>.TryParse(string s, IFormatProvider provider, out Fraction res) => TryParse(s, out res);
         public static bool TryParse(ReadOnlySpan<char> s, out Fraction res)
         {
             var ok = false;
@@ -250,10 +231,5 @@ namespace Kzrnm.Competitive
             }
             return ok;
         }
-
-        static Fraction INumberBase<Fraction>.Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider) => TryParse(s, out var res) ? res : throw new FormatException();
-        static Fraction INumberBase<Fraction>.Parse(string s, NumberStyles style, IFormatProvider provider) => TryParse(s, out var res) ? res : throw new FormatException();
-        static Fraction ISpanParsable<Fraction>.Parse(ReadOnlySpan<char> s, IFormatProvider provider) => TryParse(s, out var res) ? res : throw new FormatException();
-        static Fraction IParsable<Fraction>.Parse(string s, IFormatProvider provider) => TryParse(s, out var res) ? res : throw new FormatException();
     }
 }

@@ -8,7 +8,7 @@ using Xunit.Sdk;
 
 namespace Kzrnm.Competitive.Testing
 {
-    public readonly struct UInt24(byte v2, byte v1, byte v0) : INumber<UInt24>
+    public readonly struct UInt24(byte v2, byte v1, byte v0) : INumber<UInt24>, INumKz<UInt24>
     {
 
 #if BIGENDIAN
@@ -27,24 +27,9 @@ namespace Kzrnm.Competitive.Testing
         public override int GetHashCode() => (int)this;
 
         public static UInt24 One => (UInt24)1;
-        public static int Radix => 2;
-        public static UInt24 Zero => default;
-        public static UInt24 AdditiveIdentity => default;
-        public static UInt24 MultiplicativeIdentity => (UInt24)1;
-
         public static UInt24 Abs(UInt24 value) => value;
 
-        public static bool IsCanonical(UInt24 value) => true;
-
-        public static bool IsComplexNumber(UInt24 value) => false;
-
         public static bool IsEvenInteger(UInt24 value) => uint.IsEvenInteger((uint)value);
-
-        public static bool IsFinite(UInt24 value) => true;
-
-        public static bool IsImaginaryNumber(UInt24 value) => false;
-
-        public static bool IsInfinity(UInt24 value) => false;
 
         public static bool IsInteger(UInt24 value) => true;
 
@@ -52,21 +37,11 @@ namespace Kzrnm.Competitive.Testing
 
         public static bool IsNegative(UInt24 value) => false;
 
-        public static bool IsNegativeInfinity(UInt24 value) => false;
-
         public static bool IsNormal(UInt24 value) => true;
 
         public static bool IsOddInteger(UInt24 value) => uint.IsOddInteger((uint)value);
 
         public static bool IsPositive(UInt24 value) => 0 < (uint)value;
-
-        public static bool IsPositiveInfinity(UInt24 value) => false;
-
-        public static bool IsRealNumber(UInt24 value) => true;
-
-        public static bool IsSubnormal(UInt24 value) => false;
-
-        public static bool IsZero(UInt24 value) => 0 == (uint)value;
 
         public static UInt24 MaxMagnitude(UInt24 x, UInt24 y) => (UInt24)uint.Max(x, y);
 
@@ -124,6 +99,17 @@ namespace Kzrnm.Competitive.Testing
         public static bool TryParse([NotNullWhen(true)] string s, IFormatProvider provider, [MaybeNullWhen(false)] out UInt24 result)
         {
             if (uint.TryParse(s, provider, out var v))
+            {
+                result = (UInt24)v;
+                return true;
+            }
+            result = default;
+            return false;
+        }
+
+        public static bool TryParse(ReadOnlySpan<char> s, out UInt24 result)
+        {
+            if (uint.TryParse(s, out var v))
             {
                 result = (UInt24)v;
                 return true;

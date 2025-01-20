@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 using System.Numerics;
 using BigInteger = Kzrnm.Numerics.BigInteger;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -8,7 +7,7 @@ namespace Kzrnm.Competitive
 {
     /// <summary>有理数を既約分数で表す</summary>
     public readonly struct BigFraction : IEquatable<BigFraction>, IComparable<BigFraction>
-        , INumberBase<BigFraction>
+        , INumKz<BigFraction>
     {
         public static readonly BigFraction NaN = new BigFraction(0, -1, true);
         public static bool IsNaN(BigFraction v) => v._denominator0 < 0;
@@ -112,27 +111,15 @@ namespace Kzrnm.Competitive
         [凾(256)] public static BigFraction Abs(BigFraction v) => new BigFraction(BigInteger.Abs(v.Numerator), v.Denominator, true);
 
         public static BigFraction One => new BigFraction(1, 1, true);
-        static int INumberBase<BigFraction>.Radix => 2;
-        static BigFraction INumberBase<BigFraction>.Zero => default;
-        static BigFraction IAdditiveIdentity<BigFraction, BigFraction>.AdditiveIdentity => default;
-        static BigFraction IMultiplicativeIdentity<BigFraction, BigFraction>.MultiplicativeIdentity => One;
 
-        static bool INumberBase<BigFraction>.IsCanonical(BigFraction v) => true;
-        static bool INumberBase<BigFraction>.IsComplexNumber(BigFraction v) => true;
-        static bool INumberBase<BigFraction>.IsImaginaryNumber(BigFraction v) => true;
+
+        static bool INumberBase<BigFraction>.IsInteger(BigFraction v) => false;
         static bool INumberBase<BigFraction>.IsRealNumber(BigFraction v) => !IsNaN(v);
-        static bool INumberBase<BigFraction>.IsFinite(BigFraction v) => true;
-        static bool INumberBase<BigFraction>.IsInfinity(BigFraction v) => false;
-        static bool INumberBase<BigFraction>.IsNegativeInfinity(BigFraction v) => false;
-        static bool INumberBase<BigFraction>.IsPositiveInfinity(BigFraction v) => false;
         static bool INumberBase<BigFraction>.IsNegative(BigFraction v) => BigInteger.IsNegative(v.Numerator);
         static bool INumberBase<BigFraction>.IsPositive(BigFraction v) => BigInteger.IsPositive(v.Numerator);
         static bool INumberBase<BigFraction>.IsNormal(BigFraction v) => !IsNaN(v);
-        static bool INumberBase<BigFraction>.IsSubnormal(BigFraction v) => false;
-        static bool INumberBase<BigFraction>.IsInteger(BigFraction v) => v._denominator0 == 0;
         static bool INumberBase<BigFraction>.IsEvenInteger(BigFraction v) => v._denominator0 == 0 && BigInteger.IsEvenInteger(v.Numerator);
         static bool INumberBase<BigFraction>.IsOddInteger(BigFraction v) => v._denominator0 == 0 && BigInteger.IsOddInteger(v.Numerator);
-        static bool INumberBase<BigFraction>.IsZero(BigFraction v) => v != default;
         static BigFraction INumberBase<BigFraction>.MaxMagnitude(BigFraction x, BigFraction y)
         {
             if (IsNaN(x)) return NaN;
@@ -225,10 +212,6 @@ namespace Kzrnm.Competitive
         string IFormattable.ToString(string format, IFormatProvider formatProvider) => ToString();
 
 
-        static bool INumberBase<BigFraction>.TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider, out BigFraction res) => TryParse(s, out res);
-        static bool INumberBase<BigFraction>.TryParse(string s, NumberStyles style, IFormatProvider provider, out BigFraction res) => TryParse(s, out res);
-        static bool ISpanParsable<BigFraction>.TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out BigFraction res) => TryParse(s, out res);
-        static bool IParsable<BigFraction>.TryParse(string s, IFormatProvider provider, out BigFraction res) => TryParse(s, out res);
         public static bool TryParse(ReadOnlySpan<char> s, out BigFraction res)
         {
             var ok = false;
@@ -249,10 +232,5 @@ namespace Kzrnm.Competitive
             }
             return ok;
         }
-
-        static BigFraction INumberBase<BigFraction>.Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider) => TryParse(s, out var res) ? res : throw new FormatException();
-        static BigFraction INumberBase<BigFraction>.Parse(string s, NumberStyles style, IFormatProvider provider) => TryParse(s, out var res) ? res : throw new FormatException();
-        static BigFraction ISpanParsable<BigFraction>.Parse(ReadOnlySpan<char> s, IFormatProvider provider) => TryParse(s, out var res) ? res : throw new FormatException();
-        static BigFraction IParsable<BigFraction>.Parse(string s, IFormatProvider provider) => TryParse(s, out var res) ? res : throw new FormatException();
     }
 }

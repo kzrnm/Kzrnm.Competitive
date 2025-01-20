@@ -1,10 +1,10 @@
+using Kzrnm.Numerics.Logic;
 using System;
 using System.Buffers.Binary;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using Kzrnm.Numerics.Logic;
 using System.Runtime.InteropServices;
 using BigInteger = Kzrnm.Numerics.BigInteger;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -20,7 +20,7 @@ namespace Kzrnm.Competitive
     /// 符号なし 256 bit 整数
     /// <see cref="UInt128"/> の実装をもとにしている。
     /// </summary>
-    public readonly partial struct UInt256 : IBinaryInteger<UInt256>, IEquatable<UInt256>, IMinMaxValue<UInt256>
+    public readonly partial struct UInt256 : IBinaryInteger<UInt256>, IEquatable<UInt256>, IMinMaxValue<UInt256>, INumKz<UInt256>
     {
         /*
          * Original is UInt128
@@ -66,32 +66,19 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 
         static readonly UInt256 _one = new(0, 0, 0, 1);
         public static UInt256 One => _one;
-        public static int Radix => 2;
         public static UInt256 Zero => default;
-        public static UInt256 AdditiveIdentity => Zero;
-        public static UInt256 MultiplicativeIdentity => _one;
         public static UInt256 MaxValue => new(~0ul, ~0ul, ~0ul, ~0ul);
         public static UInt256 MinValue => default;
 
         [凾(256)]
         public static UInt256 Abs(UInt256 value) => value;
-        static bool INumberBase<UInt256>.IsCanonical(UInt256 value) => true;
-        static bool INumberBase<UInt256>.IsComplexNumber(UInt256 value) => false;
         public static bool IsEvenInteger(UInt256 value) => (value.v0 & 1) == 0;
-        static bool INumberBase<UInt256>.IsFinite(UInt256 value) => true;
-        static bool INumberBase<UInt256>.IsImaginaryNumber(UInt256 value) => false;
-        static bool INumberBase<UInt256>.IsInfinity(UInt256 value) => false;
         static bool INumberBase<UInt256>.IsInteger(UInt256 value) => true;
         static bool INumberBase<UInt256>.IsNaN(UInt256 value) => false;
         static bool INumberBase<UInt256>.IsNegative(UInt256 value) => false;
-        static bool INumberBase<UInt256>.IsNegativeInfinity(UInt256 value) => false;
         static bool INumberBase<UInt256>.IsNormal(UInt256 value) => value != default;
         public static bool IsOddInteger(UInt256 value) => (value.v0 & 1) != 0;
         static bool INumberBase<UInt256>.IsPositive(UInt256 value) => true;
-        static bool INumberBase<UInt256>.IsPositiveInfinity(UInt256 value) => false;
-        static bool INumberBase<UInt256>.IsRealNumber(UInt256 value) => true;
-        static bool INumberBase<UInt256>.IsSubnormal(UInt256 value) => false;
-        static bool INumberBase<UInt256>.IsZero(UInt256 value) => (value == default);
         static UInt256 INumberBase<UInt256>.MaxMagnitude(UInt256 x, UInt256 y) => Max(x, y);
         static UInt256 INumberBase<UInt256>.MaxMagnitudeNumber(UInt256 x, UInt256 y) => Max(x, y);
         static UInt256 INumberBase<UInt256>.MinMagnitude(UInt256 x, UInt256 y) => Min(x, y);

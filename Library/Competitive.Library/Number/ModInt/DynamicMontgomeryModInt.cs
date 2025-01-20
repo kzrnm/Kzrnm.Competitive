@@ -3,7 +3,6 @@ using AtCoder;
 using AtCoder.Internal;
 using Kzrnm.Competitive.IO;
 using System;
-using System.Globalization;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -15,7 +14,7 @@ namespace Kzrnm.Competitive
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "気にしない")]
     public struct DynamicMontgomeryModInt<T> : IUtf8ConsoleWriterFormatter, IEquatable<DynamicMontgomeryModInt<T>>, IFormattable, IModInt<DynamicMontgomeryModInt<T>>
-        , INumberBase<DynamicMontgomeryModInt<T>>
+        , INumKz<DynamicMontgomeryModInt<T>>
         where T : struct
     {
         internal static uint n2;
@@ -208,49 +207,22 @@ namespace Kzrnm.Competitive
             return true;
         }
         public static DynamicMontgomeryModInt<T> Parse(ReadOnlySpan<char> s)
-        {
-            if (!TryParse(s, out var r))
-                Throw();
-            return r;
-            void Throw() => throw new FormatException();
-        }
+            => TryParse(s, out DynamicMontgomeryModInt<T> r) ? r : throw new FormatException();
 
         public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => Value.TryFormat(destination, out charsWritten, format, provider);
         public string ToString(string format, IFormatProvider formatProvider) => Value.ToString(format, formatProvider);
-        static int INumberBase<DynamicMontgomeryModInt<T>>.Radix => 2;
-        static DynamicMontgomeryModInt<T> IAdditiveIdentity<DynamicMontgomeryModInt<T>, DynamicMontgomeryModInt<T>>.AdditiveIdentity => default;
-        static DynamicMontgomeryModInt<T> IMultiplicativeIdentity<DynamicMontgomeryModInt<T>, DynamicMontgomeryModInt<T>>.MultiplicativeIdentity => _One;
         static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.Abs(DynamicMontgomeryModInt<T> v) => v;
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsCanonical(DynamicMontgomeryModInt<T> v) => true;
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsComplexNumber(DynamicMontgomeryModInt<T> v) => false;
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsRealNumber(DynamicMontgomeryModInt<T> v) => true;
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsImaginaryNumber(DynamicMontgomeryModInt<T> v) => false;
         static bool INumberBase<DynamicMontgomeryModInt<T>>.IsEvenInteger(DynamicMontgomeryModInt<T> v) => int.IsEvenInteger(v.Value);
         static bool INumberBase<DynamicMontgomeryModInt<T>>.IsOddInteger(DynamicMontgomeryModInt<T> v) => int.IsOddInteger(v.Value);
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsFinite(DynamicMontgomeryModInt<T> v) => true;
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsInfinity(DynamicMontgomeryModInt<T> v) => false;
         static bool INumberBase<DynamicMontgomeryModInt<T>>.IsInteger(DynamicMontgomeryModInt<T> v) => true;
         static bool INumberBase<DynamicMontgomeryModInt<T>>.IsPositive(DynamicMontgomeryModInt<T> v) => true;
         static bool INumberBase<DynamicMontgomeryModInt<T>>.IsNegative(DynamicMontgomeryModInt<T> v) => false;
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsPositiveInfinity(DynamicMontgomeryModInt<T> v) => false;
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsNegativeInfinity(DynamicMontgomeryModInt<T> v) => false;
         static bool INumberBase<DynamicMontgomeryModInt<T>>.IsNormal(DynamicMontgomeryModInt<T> v) => v.Value != 0;
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsSubnormal(DynamicMontgomeryModInt<T> v) => false;
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsZero(DynamicMontgomeryModInt<T> v) => v.Value == 0;
         static bool INumberBase<DynamicMontgomeryModInt<T>>.IsNaN(DynamicMontgomeryModInt<T> v) => false;
         static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.MaxMagnitude(DynamicMontgomeryModInt<T> x, DynamicMontgomeryModInt<T> y) => new DynamicMontgomeryModInt<T>(int.Max(x.Value, y.Value));
         static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.MaxMagnitudeNumber(DynamicMontgomeryModInt<T> x, DynamicMontgomeryModInt<T> y) => new DynamicMontgomeryModInt<T>(int.Max(x.Value, y.Value));
         static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.MinMagnitude(DynamicMontgomeryModInt<T> x, DynamicMontgomeryModInt<T> y) => new DynamicMontgomeryModInt<T>(int.Min(x.Value, y.Value));
         static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.MinMagnitudeNumber(DynamicMontgomeryModInt<T> x, DynamicMontgomeryModInt<T> y) => new DynamicMontgomeryModInt<T>(int.Min(x.Value, y.Value));
-
-        static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.Parse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider) => Parse(s);
-        static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.Parse(string s, NumberStyles style, IFormatProvider provider) => Parse(s);
-        static DynamicMontgomeryModInt<T> ISpanParsable<DynamicMontgomeryModInt<T>>.Parse(ReadOnlySpan<char> s, IFormatProvider provider) => Parse(s);
-        static DynamicMontgomeryModInt<T> IParsable<DynamicMontgomeryModInt<T>>.Parse(string s, IFormatProvider provider) => Parse(s);
-        static bool ISpanParsable<DynamicMontgomeryModInt<T>>.TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out DynamicMontgomeryModInt<T> result) => TryParse(s, out result);
-        static bool IParsable<DynamicMontgomeryModInt<T>>.TryParse(string s, IFormatProvider provider, out DynamicMontgomeryModInt<T> result) => TryParse(s, out result);
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider provider, out DynamicMontgomeryModInt<T> result) => TryParse(s, out result);
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.TryParse(string s, NumberStyles style, IFormatProvider provider, out DynamicMontgomeryModInt<T> result) => TryParse(s, out result);
 
         static bool INumberBase<DynamicMontgomeryModInt<T>>.TryConvertFromChecked<TOther>(TOther v, out DynamicMontgomeryModInt<T> r)
         {
