@@ -5,7 +5,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
 {
     public class PointLongTests
     {
-        public static TheoryData Distance_Data => new TheoryData<PointLong, PointLong, long, double>
+        public static TheoryData<PointLong, PointLong, long, double> Distance_Data => new()
         {
             { new (0,0), new (0,0), 0, 0 },
             { new (1,1), new (1,1), 0, 0 },
@@ -58,7 +58,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                         $"({SortedPoints[i]}).CompareTo(({SortedPoints[j]})) == {i}.CompareTo({j})");
         }
 
-        public static TheoryData Inner_Data => new TheoryData<PointLong, PointLong, long>
+        public static TheoryData<PointLong, PointLong, long> Inner_Data => new()
         {
             { new (0,0), new (0,0), 0 },
             { new (0,1), new (1,0), 0 },
@@ -73,7 +73,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             p1.Inner(p2).ShouldBe(expected);
         }
 
-        public static TheoryData Cross_Data => new TheoryData<PointLong, PointLong, long>
+        public static TheoryData<PointLong, PointLong, long> Cross_Data => new()
         {
             { new (0,0), new (0,0), 0 },
             { new (0,1), new (1,0), -1 },
@@ -88,7 +88,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             p1.Cross(p2).ShouldBe(expected);
         }
 
-        public static TheoryData Area_Data => new TheoryData<PointLong[], long>
+        public static TheoryData<PointLong[], long> Area_Data => new()
         {
             {
                 new PointLong[]

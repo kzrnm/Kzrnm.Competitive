@@ -28,7 +28,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             });
         }
 
-        public static TheoryData Parse_Data => new TheoryData<string, BitMatrix>
+        public static TheoryData<string, BitMatrix> Parse_Data => new()
         {
             {
                 """
@@ -37,8 +37,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 """,
                 new BitMatrix(new BitArray[]
                 {
-                    new BitArray(new[]{ true, false, false, false, true }),
-                    new BitArray(new[]{ false, false, true, true, false }),
+                    new BitArray([true, false, false, false, true ]),
+                    new BitArray([false, false, true, true, false ]),
                 })
             },
             {
@@ -74,7 +74,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             BitMatrix.Parse(text.Split('\n')).ShouldBe(mat);
         }
 
-        public static TheoryData String_Data => new TheoryData<BitMatrix, string>
+        public static TheoryData<BitMatrix, string> String_Data => new()
         {
             {
                 new BitMatrix(new bool[][]{
@@ -136,7 +136,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (~mat).ShouldBe(expected);
         }
 
-        public static TheoryData Add_Data => new TheoryData<BitMatrix, BitMatrix, BitMatrix>
+        public static TheoryData<BitMatrix, BitMatrix, BitMatrix> Add_Data => new()
         {
             {
                 BitMatrix.Zero,
@@ -206,7 +206,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat1 ^ mat2).ShouldBe(expected);
         }
 
-        public static TheoryData Multiply_Data => new TheoryData<BitMatrix, BitMatrix, BitMatrix>
+        public static TheoryData<BitMatrix, BitMatrix, BitMatrix> Multiply_Data => new()
         {
             {
                 BitMatrix.Identity,
@@ -267,7 +267,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat1 * mat2).ShouldBe(expected);
         }
 
-        public static TheoryData MultiplyVector_Data => new TheoryData<BitMatrix, bool[], BitArray>
+        public static TheoryData<BitMatrix, bool[], BitArray> MultiplyVector_Data => new()
         {
             {
                 BitMatrix.Parse(
@@ -275,8 +275,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "101",
                     "010",
                 ]),
-                new[]{ true, false, true},
-                new BitArray(new[]{ false, false})
+                [true, false, true],
+                new BitArray([false, false])
             },
             {
                 BitMatrix.Parse(
@@ -284,8 +284,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "101",
                     "010",
                 ]),
-                new[]{ true, true, true},
-                new BitArray(new[]{ false, true})
+                [true, true, true],
+                new BitArray([false, true])
             },
         };
 
@@ -357,7 +357,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             }
         }
 
-        public static TheoryData Inv_Data => new TheoryData<BitMatrix>
+        public static TheoryData<BitMatrix> Inv_Data => new()
         {
             {
                 BitMatrix.Parse(
@@ -401,10 +401,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (inv * mat).ShouldBe(expected);
         }
 
-        public static TheoryData GaussianElimination_Data => new TheoryData<
-            bool,
-            BitMatrix,
-            BitMatrix>
+        public static TheoryData<bool, BitMatrix, BitMatrix> GaussianElimination_Data => new()
         {
             {
                 false,
@@ -469,10 +466,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             got.ShouldBe(expected);
         }
 
-        public static TheoryData LinearSystem_Data => new TheoryData<
-            BitMatrix,
-            bool[],
-            BitArray[]>
+        public static TheoryData<BitMatrix, bool[], BitArray[]> LinearSystem_Data => new()
         {
             {
                 BitMatrix.Parse(
@@ -481,10 +475,10 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "010",
                     "111",
                 ]),
-                new[] { true, true, true, },
+                [true, true, true,],
                 new[]
                 {
-                    new BitArray(new[]{ true, true, true, })
+                    new BitArray([true, true, true, ]),
                 }
             },
             {
@@ -494,10 +488,10 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "010",
                     "101",
                 ]),
-                new[] { true, true, true, },
+                [true, true, true,],
                 new[]
                 {
-                    new BitArray(new[]{ true, true, false, })
+                    new BitArray([true, true, false, ]),
                 }
             },
             {
@@ -507,7 +501,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "010",
                     "110",
                 ]),
-                new[] { true, true, true, },
+                [true, true, true,],
                 []
             },
             {
@@ -517,11 +511,11 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "010",
                     "110",
                 ]),
-                new[] { true, true, false, },
+                [true, true, false,],
                 new[]
                 {
-                    new BitArray(new[]{ true, true, false, }),
-                    new BitArray(new[]{ false, false, true, }),
+                    new BitArray([true, true, false, ]),
+                    new BitArray([false, false, true, ]),
                 }
             },
             {
@@ -533,10 +527,10 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 new[] { false, false, },
                 new[]
                 {
-                    new BitArray(new[]{ false, false, false, }),
-                    new BitArray(new[]{ true, false, false, }),
-                    new BitArray(new[]{ false, true, false, }),
-                    new BitArray(new[]{ false, false, true, }),
+                    new BitArray([false, false, false, ]),
+                    new BitArray([true, false, false, ]),
+                    new BitArray([false, true, false, ]),
+                    new BitArray([false, false, true, ]),
                 }
             },
         };

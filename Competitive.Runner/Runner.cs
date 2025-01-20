@@ -46,7 +46,7 @@ namespace Competitive.Runner
                 Assert.Equal(Normalize(output), Normalize(result));
 
             static string Normalize(string s) => s.Replace("\r\n", "\n").Trim();
-        });
+        }, TestContext.Current.CancellationToken);
         [GeneratedRegex("^-?\\d+\\.\\d+$", RegexOptions.IgnoreCase, "ja-JP")]
         private static partial Regex DoubleRegex();
     }

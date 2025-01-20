@@ -5,7 +5,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
 {
     public class PointDoubleTests
     {
-        public static TheoryData Distance_Data => new TheoryData<PointDouble, PointDouble, double, double>
+        public static TheoryData<PointDouble, PointDouble, double, double> Distance_Data => new()
         {
             { new (0,0), new (0,0), 0, 0 },
             { new (1,1), new (1,1), 0, 0 },
@@ -59,7 +59,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                         .ShouldBe(i.CompareTo(j), $"({SortedPoints[i]}).CompareTo(({SortedPoints[j]})) == {i}.CompareTo({j})");
         }
 
-        public static TheoryData Inner_Data => new TheoryData<PointDouble, PointDouble, long>
+        public static TheoryData<PointDouble, PointDouble, int> Inner_Data => new()
         {
             { new (0,0), new (0,0), 0 },
             { new (0,1), new (1,0), 0 },
@@ -69,12 +69,12 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         };
         [Theory]
         [MemberData(nameof(Inner_Data))]
-        public void Inner(PointDouble p1, PointDouble p2, double expected)
+        public void Inner(PointDouble p1, PointDouble p2, int expected)
         {
             p1.Inner(p2).ShouldBe(expected);
         }
 
-        public static TheoryData Cross_Data => new TheoryData<PointDouble, PointDouble, long>
+        public static TheoryData<PointDouble, PointDouble, int> Cross_Data => new()
         {
             { new (0,0), new (0,0), 0 },
             { new (0,1), new (1,0), -1 },
@@ -84,12 +84,12 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         };
         [Theory]
         [MemberData(nameof(Cross_Data))]
-        public void Cross(PointDouble p1, PointDouble p2, double expected)
+        public void Cross(PointDouble p1, PointDouble p2, int expected)
         {
             p1.Cross(p2).ShouldBe(expected);
         }
 
-        public static TheoryData Area_Data => new TheoryData<PointDouble[], double>
+        public static TheoryData<PointDouble[], double> Area_Data => new()
         {
             {
                 new PointDouble[]
@@ -198,7 +198,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                 ]);
         }
 
-        public static TheoryData 外心_Data => new TheoryData<PointDouble, PointDouble, PointDouble, PointDouble>
+        public static TheoryData<PointDouble, PointDouble, PointDouble, PointDouble> 外心_Data => new()
         {
             { new (0,0), new (1,0), new (0,1), new (0.5000000000000001,0.5000000000000001) },
             { new (-11,4), new (-0.2,60), new (62,-10), new (30.86367239101717, 24.967720324589546) },
@@ -210,7 +210,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             PointDouble.外心(p1, p2, p3).ShouldBe(expected);
         }
 
-        public static TheoryData 直線との距離_Data => new TheoryData<PointDouble, double, double, double, double>
+        public static TheoryData<PointDouble, double, double, double, double> 直線との距離_Data => new()
         {
             { new (0,0), 1, 1, -1, 0.7071067811865475 },
             { new (0,0), -1, -1, 2, 1.414213562373095 },
@@ -225,7 +225,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             p.直線との距離(a, b, c).ShouldBe(expected);
         }
 
-        public static TheoryData 直線_Data => new TheoryData<PointDouble, PointDouble, (double, double, double)>
+        public static TheoryData<PointDouble, PointDouble, (double, double, double)> 直線_Data => new()
         {
             { new (0,0), new (1,1), (1, -1, 0) },
             { new (1,0), new (1,1), (1, 0, -1) },
@@ -239,7 +239,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             p1.直線(p2).ShouldBe(expected);
         }
 
-        public static TheoryData 垂直二等分線_Data => new TheoryData<PointDouble, PointDouble, (double, double, double)>
+        public static TheoryData<PointDouble, PointDouble, (double, double, double)> 垂直二等分線_Data => new()
         {
             { new (0,0), new (1,1), (-1, -1, 1) },
             { new (1,0), new (1,1), (0, -1, 0.5) },
@@ -253,7 +253,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             p1.垂直二等分線(p2).ShouldBe(expected);
         }
 
-        public static TheoryData 直線と直線の交点_Data => new TheoryData<double, double, double, double, double, double, PointDouble>
+        public static TheoryData<double, double, double, double, double, double, PointDouble> 直線と直線の交点_Data => new()
         {
             { 1, 1, 1, -1, 1, 2, new (0.5, -1.5) },
             { -1, 5, .5, -7, 7, 5.8, new (0.9107142857142857, 0.08214285714285714) },
@@ -265,7 +265,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             PointDouble.直線と直線の交点(a, b, c, u, v, w).ShouldBe(expected);
         }
 
-        public static TheoryData 直線の垂線_Data => new TheoryData<double, double, PointDouble, (double, double, double)>
+        public static TheoryData<double, double, PointDouble, (double, double, double)> 直線の垂線_Data => new()
         {
             { 1, 1, new (0.5, -1.5), (1, -1, -2) },
             { 4, 7, new (-10, 2), (7, -4, 78) },
@@ -279,7 +279,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             PointDouble.直線の垂線(a, b, p).ShouldBe(expected);
         }
 
-        public static TheoryData 直線と円の交点_Data => new TheoryData<double, double, double, PointDouble, double, PointDouble[]>
+        public static TheoryData<double, double, double, PointDouble, double, PointDouble[]> 直線と円の交点_Data => new()
         {
             { 1, -1, 1, new (0, 0), 0.1, Array.Empty<PointDouble>() },
             { 0, -1, 1, new (0, 0), 1, new PointDouble[]{ new (0, 1) } },
@@ -292,7 +292,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             PointDouble.直線と円の交点(a, b, c, p, r).Order().ShouldBe(expected.Order());
         }
 
-        public static TheoryData 円の交点_Data => new TheoryData<PointDouble, double, PointDouble, double, PointDouble[]>
+        public static TheoryData<PointDouble, double, PointDouble, double, PointDouble[]> 円の交点_Data => new()
         {
             { new (-1, -1), 10, new (1, 2), 1, Array.Empty<PointDouble>() },
             { new (5, 0), 5, new (1, 0), 1, new PointDouble[]{ new (0, 0) } },
@@ -308,7 +308,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             PointDouble.円の交点(p1, r1, p2, r2).Order().ShouldBe(expected.Order());
         }
 
-        public static TheoryData 円の位置関係_Data => new TheoryData<PointDouble, double, PointDouble, double, CirclePosition>
+        public static TheoryData<PointDouble, double, PointDouble, double, CirclePosition> 円の位置関係_Data => new()
         {
             { new (-1, -1), 10, new (1, 2), 1, CirclePosition.Inner },
             { new (5, 0), 5, new (1, 0), 1, CirclePosition.Inscribed },
@@ -324,7 +324,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             PointDouble.円の位置関係(p1, r1, p2, r2).ShouldBe(expected);
         }
 
-        public static TheoryData 円の距離_Data => new TheoryData<PointDouble, double, PointDouble, double, double>
+        public static TheoryData<PointDouble, double, PointDouble, double, double> 円の距離_Data => new()
         {
             { new (-1, -1), 10, new (1, 2), 1, 5.39444872453601 },
             { new (5, 0), 5, new (1, 0), 1, 0 },
@@ -340,7 +340,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             PointDouble.円の距離(p1, r1, p2, r2).ShouldBe(expected, 1e-9);
         }
 
-        public static TheoryData 線分が交差しているか_Data => new TheoryData<PointDouble, PointDouble, PointDouble, PointDouble, int>
+        public static TheoryData<PointDouble, PointDouble, PointDouble, PointDouble, int> 線分が交差しているか_Data => new()
         {
             { new (-1, -1), new (1, 1), new (-1, 0), new (0, 0.001), -1 },
             { new (-1, -1), new (1, 1), new (-1, 0), new (0, -0.001), 1 },
@@ -373,7 +373,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             PointDouble.線分が交差しているか(b2, a2, b1, a1).ShouldBe(expected);
         }
 
-        public static TheoryData 三角形に分割_Data => new TheoryData<PointDouble[], (PointDouble, PointDouble, PointDouble)[]>
+        public static TheoryData<PointDouble[], (PointDouble, PointDouble, PointDouble)[]> 三角形に分割_Data => new()
         {
             {
                 new PointDouble[0],

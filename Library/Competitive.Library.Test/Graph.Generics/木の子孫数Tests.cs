@@ -27,7 +27,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             wgb.Add(3, 7, 7);
         }
 
-        public static TheoryData Data => new TheoryData<int, int[]>
+        public static TheoryData<int, int[]> Data => new()
         {
             { 0, new[] { 8, 4, 3, 2, 1, 1, 1, 1 }},
             { 1, new[] { 4, 8, 3, 2, 1, 1, 1, 1 }},

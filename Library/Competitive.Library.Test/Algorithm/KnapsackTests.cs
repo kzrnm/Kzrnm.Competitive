@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,11 +5,11 @@ namespace Kzrnm.Competitive.Testing.Algorithm
 {
     public class KnapsackTests
     {
-        public static IEnumerable<Tuple<int>> SmallWeight_Data()
-            => Enumerable.Range(0, 14).Select(Tuple.Create<int>).ToArray();
+        public static IEnumerable<TheoryDataRow<int>> SmallWeight_Data()
+            => Enumerable.Range(0, 14).Select(i => new TheoryDataRow<int>(i)).ToArray();
 
         [Theory]
-        [TupleMemberData(nameof(SmallWeight_Data))]
+        [MemberData(nameof(SmallWeight_Data))]
         public void SmallWeight(int W)
         {
             var w = new int[4] { 2, 2, 3, 4 };

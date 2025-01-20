@@ -19,7 +19,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         }
 
 
-        public static TheoryData PrimeFactoringInt_Data => new TheoryData<int, Dictionary<int, int>>
+        public static TheoryData<int, Dictionary<int, int>> PrimeFactoringInt_Data => new()
         {
             {
                 1,
@@ -73,7 +73,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             primes.PrimeFactoring(num).ShouldBe(expected);
         }
 
-        public static TheoryData PrimeFactoringLong_Data => new TheoryData<long, Dictionary<long, int>>
+        public static TheoryData<long, Dictionary<long, int>> PrimeFactoringLong_Data => new()
         {
             {
                 1,

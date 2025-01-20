@@ -193,7 +193,7 @@ namespace Kzrnm.Competitive.Testing.Number
         }
 
         [Theory]
-        [TupleMemberData(nameof(Parse_Data))]
+        [MemberData(nameof(Parse_Data))]
         [Trait("Category", "String")]
         public void Parse(string input, UInt512 expected)
         {
@@ -767,7 +767,7 @@ namespace Kzrnm.Competitive.Testing.Number
         }
 
         [Theory]
-        [TupleMemberData(nameof(TrailingZeroCount_Data))]
+        [MemberData(nameof(TrailingZeroCount_Data))]
         [Trait("Category", "BinaryInteger")]
         public void TrailingZeroCount(UInt512 input, UInt512 expected)
         {
@@ -802,7 +802,7 @@ namespace Kzrnm.Competitive.Testing.Number
         }
 
         [Theory]
-        [TupleMemberData(nameof(Log2_Data))]
+        [MemberData(nameof(Log2_Data))]
         [Trait("Category", "BinaryInteger")]
         public void Log2(UInt512 input, UInt512 expected)
         {

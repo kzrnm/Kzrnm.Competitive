@@ -5,58 +5,58 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [Fact]
         public void Add()
         {
-            (new IntPolynomial(new int[] { 1, 2, 3 })
-                + new IntPolynomial(new int[] { 0, 5, 0, 2 }))
+            (new IntPolynomial([1, 2, 3])
+                + new IntPolynomial([0, 5, 0, 2]))
                 .Coefficients.ShouldBe([1, 7, 3, 2]);
-            (new IntPolynomial(new int[] { 0, 5, 0, 2 })
-                + new IntPolynomial(new int[] { 1, 2, 3 }))
+            (new IntPolynomial([0, 5, 0, 2])
+                + new IntPolynomial([1, 2, 3]))
                 .Coefficients.ShouldBe([1, 7, 3, 2]);
         }
         [Fact]
         public void Subtract()
         {
-            (new IntPolynomial(new int[] { 1, 2, 3 })
-                - new IntPolynomial(new int[] { 0, 5, 0, 2 }))
+            (new IntPolynomial([1, 2, 3])
+                - new IntPolynomial([0, 5, 0, 2]))
                 .Coefficients.ShouldBe([1, -3, 3, -2]);
-            (new IntPolynomial(new int[] { 0, 5, 0, 2 })
-                - new IntPolynomial(new int[] { 1, 2, 3 }))
+            (new IntPolynomial([0, 5, 0, 2])
+                - new IntPolynomial([1, 2, 3]))
                 .Coefficients.ShouldBe([-1, 3, -3, 2]);
         }
         [Fact]
         public void Minus()
         {
-            (-new IntPolynomial(new int[] { 1, 2, 3 }))
+            (-new IntPolynomial([1, 2, 3]))
                 .Coefficients.ShouldBe([-1, -2, -3]);
-            (-new IntPolynomial(new int[] { -1, -2, -3 }))
+            (-new IntPolynomial([-1, -2, -3]))
                 .Coefficients.ShouldBe([1, 2, 3]);
         }
         [Fact]
         public void Multiply()
         {
-            (new IntPolynomial(new int[] { 1, 2, 3 })
-                * new IntPolynomial(new int[] { 0, 5, 0, 2 }))
+            (new IntPolynomial([1, 2, 3])
+                * new IntPolynomial([0, 5, 0, 2]))
                 .Coefficients.ShouldBe([0, 5, 10, 17, 4, 6]);
-            (new IntPolynomial(new int[] { 0, 5, 0, 2 })
-                * new IntPolynomial(new int[] { 1, 2, 3 }))
+            (new IntPolynomial([0, 5, 0, 2])
+                * new IntPolynomial([1, 2, 3]))
                 .Coefficients.ShouldBe([0, 5, 10, 17, 4, 6]);
         }
         [Fact]
         public void Divide()
         {
-            (new IntPolynomial(new int[] { 0, 5, 10, 17, 4, 6 })
-                / new IntPolynomial(new int[] { 0, 5, 0, 2 }))
+            (new IntPolynomial([0, 5, 10, 17, 4, 6])
+                / new IntPolynomial([0, 5, 0, 2]))
                 .Coefficients.ShouldBe([1, 2, 3]);
-            (new IntPolynomial(new int[] { 0, 5, 10, 17, 4, 6 })
-                / new IntPolynomial(new int[] { 1, 2, 3 }))
+            (new IntPolynomial([0, 5, 10, 17, 4, 6])
+                / new IntPolynomial([1, 2, 3]))
                 .Coefficients.ShouldBe([0, 5, 0, 2]);
-            (new IntPolynomial(new int[] { 1, 2, 3 })
-                / new IntPolynomial(new int[] { 0, 5, 10, 17, 4, 6 }))
+            (new IntPolynomial([1, 2, 3])
+                / new IntPolynomial([0, 5, 10, 17, 4, 6]))
                 .Coefficients.ShouldBeEmpty();
         }
         [Fact]
         public void Derivative()
         {
-            new IntPolynomial(new int[] { 0, 5, 10, 17, 4, 6 })
+            new IntPolynomial([0, 5, 10, 17, 4, 6])
                 .Derivative()
                 .Coefficients
                 .ShouldBe([5, 20, 51, 16, 30]);
@@ -64,7 +64,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [Fact]
         public void Integrate()
         {
-            new DoublePolynomial(new double[] { 0, 5, 10, 17, 4, 6 })
+            new DoublePolynomial([0, 5, 10, 17, 4, 6])
                 .Integrate()
                 .Coefficients
                 .ShouldBe([0, 0, 5 / 2.0, 10 / 3.0, 17 / 4.0, 4 / 5.0, 6 / 6.0]);
@@ -72,15 +72,15 @@ namespace Kzrnm.Competitive.Testing.MathNS
         [Fact]
         public void Eval()
         {
-            new IntPolynomial(new int[] { 0, 5, 10, 17, 4, 6 })
+            new IntPolynomial([0, 5, 10, 17, 4, 6])
                 .Eval(1)
                 .ShouldBe(42);
-            new IntPolynomial(new int[] { 0, 5, 10, 17, 4, 6 })
+            new IntPolynomial([0, 5, 10, 17, 4, 6])
                 .Eval(2)
                 .ShouldBe(442);
         }
 
-        public static TheoryData LagrangeInterpolation_Data => new TheoryData<(double, double)[]>
+        public static TheoryData<(double x, double y)[]> LagrangeInterpolation_Data => new()
         {
             new (double, double)[]
             {

@@ -43,7 +43,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
 
 
         [Theory]
-        [TupleMemberData(nameof(CreateTestData))]
+        [MemberData(nameof(CreateTestData))]
         public void AffineTransformation(PopAdd pop, PopAdd add)
         {
             var inner = new Inner<Mod998244353AffineTransformation, AffineTransformationOp>(rnd, pop, add);
@@ -52,7 +52,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         }
 
         [Theory]
-        [TupleMemberData(nameof(CreateTestData))]
+        [MemberData(nameof(CreateTestData))]
         public void SlideMin(PopAdd pop, PopAdd add)
         {
             var inner = new Inner<int, SlideMinOp>(rnd, pop, add);
@@ -61,7 +61,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         }
 
         [Theory]
-        [TupleMemberData(nameof(CreateTestData))]
+        [MemberData(nameof(CreateTestData))]
         public void SlideMax(PopAdd pop, PopAdd add)
         {
             var inner = new Inner<int, SlideMaxOp>(rnd, pop, add);

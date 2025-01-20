@@ -30,7 +30,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             ));
         }
 
-        public static TheoryData Add_Data => new TheoryData<LongMatrix4x4, LongMatrix4x4, LongMatrix4x4>
+        public static TheoryData<LongMatrix4x4, LongMatrix4x4, LongMatrix4x4> Add_Data => new()
         {
             {
                 new LongMatrix4x4(
@@ -78,7 +78,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat2 + mat1).ShouldBe(expected);
         }
 
-        public static TheoryData Subtract_Data => new TheoryData<LongMatrix4x4, LongMatrix4x4, LongMatrix4x4>
+        public static TheoryData<LongMatrix4x4, LongMatrix4x4, LongMatrix4x4> Subtract_Data => new()
         {
             {
                 new LongMatrix4x4(
@@ -139,7 +139,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat1 - mat2).ShouldBe(expected);
         }
 
-        public static TheoryData Multiply_Data => new TheoryData<LongMatrix4x4, LongMatrix4x4, LongMatrix4x4>
+        public static TheoryData<LongMatrix4x4, LongMatrix4x4, LongMatrix4x4> Multiply_Data => new()
         {
             {
                 new LongMatrix4x4(
@@ -201,7 +201,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat1 * mat2).ShouldBe(expected);
         }
 
-        public static TheoryData MultiplyScalar_Data => new TheoryData<long, LongMatrix4x4, LongMatrix4x4>
+        public static TheoryData<long, LongMatrix4x4, LongMatrix4x4> MultiplyScalar_Data => new()
         {
             {
                 3,
@@ -238,7 +238,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat * a).ShouldBe(expected);
         }
 
-        public static TheoryData MultiplyVector_Data => new TheoryData<LongMatrix4x4, (long, long, long, long), (long, long, long, long)>
+        public static TheoryData<LongMatrix4x4, (long, long, long, long), (long, long, long, long)> MultiplyVector_Data => new()
         {
             {
                 new LongMatrix4x4(

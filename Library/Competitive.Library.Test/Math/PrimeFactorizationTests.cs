@@ -30,11 +30,11 @@ namespace Kzrnm.Competitive.Testing.MathNS
             PrimeFactorization.IsPrime(89652331L * 96325939).ShouldBe(false);
         }
 
-        public static TheoryData DivisorInt_Data => new TheoryData<int, int[]>
+        public static TheoryData<int, int[]> DivisorInt_Data => new()
         {
             {
                 1,
-                new [] { 1 }
+                [1]
             },
             {
                 1 << 16,
@@ -42,24 +42,24 @@ namespace Kzrnm.Competitive.Testing.MathNS
             },
             {
                 49,
-                new [] { 1, 7, 49, }
+                [1, 7, 49,]
             },
             {
                 2 * 3 * 5,
-                new [] { 1, 2, 3, 5, 6, 10, 15, 30, }
+                [1, 2, 3, 5, 6, 10, 15, 30,]
             },
             {
                 720,
-                new [] {
+                [
                     1, 2, 3, 4, 5, 6, 8, 9, 10,
                     12, 15, 16, 18, 20, 24, 30,
                     36, 40, 45, 48, 60, 72, 80,
-                    90, 120, 144, 180, 240, 360, 720
-                }
+                    90, 120, 144, 180, 240, 360, 720,
+                ]
             },
             {
                 2147483647,
-                new [] { 1, 2147483647, }
+                [1, 2147483647,]
             },
         };
 
@@ -105,7 +105,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             ]);
         }
 
-        public static TheoryData PrimeFactoringInt_Data => new TheoryData<int, Dictionary<int, int>>
+        public static TheoryData<int, Dictionary<int, int>> PrimeFactoringInt_Data => new()
         {
             {
                 1,
@@ -159,7 +159,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             PrimeFactorization.PrimeFactoring(num).ShouldBe(expected);
         }
 
-        public static TheoryData PrimeFactoringLong_Data => new TheoryData<long, Dictionary<long, int>>
+        public static TheoryData<long, Dictionary<long, int>> PrimeFactoringLong_Data => new()
         {
             {
                 1,

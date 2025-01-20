@@ -8,28 +8,24 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Normal")]
         public void Construct()
         {
-            new BitOrMatrix(new bool[][]
-            {
+            new BitOrMatrix([
                 [true, false, true],
                 [false, true, true],
-            })._v.ShouldBe(new BitArray[]
-            {
-                new BitArray(new[]{ true, false, true }),
-                new BitArray(new[]{ false, true, true }),
-            });
-            new BitOrMatrix(new BitArray[]
-            {
-                new BitArray(new[]{ true, false, true }),
-                new BitArray(new[]{ false, true, true }),
-            })._v.ShouldBe(new BitArray[]
-            {
-                new BitArray(new[]{ true, false, true }),
-                new BitArray(new[]{ false, true, true }),
-            });
+            ])._v.ShouldBe([
+                new BitArray([true, false, true]),
+                new BitArray([false, true, true]),
+            ]);
+            new BitOrMatrix([
+                new BitArray([true, false, true]),
+                new BitArray([false, true, true]),
+            ])._v.ShouldBe([
+                new BitArray([true, false, true]),
+                new BitArray([false, true, true]),
+            ]);
         }
 
 
-        public static TheoryData String_Data => new TheoryData<BitOrMatrix, string>
+        public static TheoryData<BitOrMatrix, string> String_Data => new()
         {
             {
                 new BitOrMatrix(new bool[][]{
@@ -69,7 +65,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             BitOrMatrix.Parse(text.Split('\n')).ShouldBe(mat);
         }
 
-        public static TheoryData Add_Data => new TheoryData<BitOrMatrix, BitOrMatrix, BitOrMatrix>
+        public static TheoryData<BitOrMatrix, BitOrMatrix, BitOrMatrix> Add_Data => new()
         {
             {
                 BitOrMatrix.Zero,
@@ -137,7 +133,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat2 + mat1).ShouldBe(expected);
         }
 
-        public static TheoryData Multiply_Data => new TheoryData<BitOrMatrix, BitOrMatrix, BitOrMatrix>
+        public static TheoryData<BitOrMatrix, BitOrMatrix, BitOrMatrix> Multiply_Data => new()
         {
             {
                 BitOrMatrix.Identity,
@@ -215,7 +211,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat1 * mat2).ShouldBe(expected);
         }
 
-        public static TheoryData MultiplyVector_Data => new TheoryData<BitOrMatrix, bool[], BitArray>
+        public static TheoryData<BitOrMatrix, bool[], BitArray> MultiplyVector_Data => new()
         {
             {
                 BitOrMatrix.Parse(
@@ -223,8 +219,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "101",
                     "010",
                 ]),
-                new[]{ true, false, true},
-                new BitArray(new[]{ true, false})
+                [true, false, true],
+                new BitArray([true, false])
             },
             {
                 BitOrMatrix.Parse(
@@ -232,8 +228,8 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "101",
                     "010",
                 ]),
-                new[]{ true, true, true},
-                new BitArray(new[]{ true, true})
+                [true, true, true],
+                new BitArray([true, true])
             },
         };
 

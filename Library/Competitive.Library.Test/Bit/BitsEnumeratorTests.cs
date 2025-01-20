@@ -6,7 +6,7 @@ namespace Kzrnm.Competitive.Testing.Bits
 {
     public class BitsEnumeratorTests
     {
-        public static IEnumerable<(byte, int[])> BitEnumerateByte_Data()
+        public static IEnumerable<TheoryDataRow<byte, int[]>> BitEnumerateByte_Data()
         {
             var s = new int[8];
             for (s[0] = 0; s[0] < 2; s[0]++)
@@ -30,25 +30,25 @@ namespace Kzrnm.Competitive.Testing.Bits
                                         }
         }
         [Theory]
-        [TupleMemberData(nameof(BitEnumerateByte_Data))]
+        [MemberData(nameof(BitEnumerateByte_Data))]
         public void BitEnumerateByte(byte num, int[] expected)
         {
             new BitsEnumerator<byte>(num).ShouldBe(expected);
             new BitsEnumerator<byte>(num).ToArray().ShouldBe(expected);
         }
 
-        public static TheoryData BitEnumerateInt128_Data => new TheoryData<Int128, int[]>
+        public static TheoryData<Int128, int[]> BitEnumerateInt128_Data => new()
         {
             { -1, Enumerable.Range(0,128).ToArray() },
             { Int128.MaxValue, Enumerable.Range(0,127).ToArray() },
-            { Int128.MinValue, new[]{ 127 } },
-            { 1, new[]{ 0 } },
-            { 3, new[]{ 0, 1  } },
-            { 10, new[]{ 1, 3 } },
-            { 1 << 20, new[]{ 20 } },
-            { Int128.One << 120, new[]{ 120 } },
-            { new(1, 1), new[]{ 0, 64 } },
-            { 0, Array.Empty<int>() },
+            { Int128.MinValue, [127] },
+            { 1, [0] },
+            { 3, [0, 1 ] },
+            { 10, [1, 3] },
+            { 1 << 20, [20] },
+            { Int128.One << 120, [120] },
+            { new(1, 1), [0, 64] },
+            { 0, [] },
         };
         [Theory]
         [MemberData(nameof(BitEnumerateInt128_Data))]
@@ -58,16 +58,16 @@ namespace Kzrnm.Competitive.Testing.Bits
             new BitsEnumerator<Int128>(num).ToArray().ShouldBe(expected);
         }
 
-        public static TheoryData BitEnumerateUInt128_Data => new TheoryData<UInt128, int[]>
+        public static TheoryData<UInt128, int[]> BitEnumerateUInt128_Data => new()
         {
             { UInt128.MaxValue, Enumerable.Range(0,128).ToArray() },
-            { 1, new[]{ 0 } },
-            { 3, new[]{ 0, 1  } },
-            { 10, new[]{ 1, 3 } },
-            { 1 << 20, new[]{ 20 } },
-            { UInt128.One << 120, new[]{ 120 } },
-            { new(1, 1), new[]{ 0, 64 } },
-            { 0, Array.Empty<int>() },
+            { 1, [0] },
+            { 3, [0, 1 ] },
+            { 10, [1, 3] },
+            { 1 << 20, [20] },
+            { UInt128.One << 120, [120] },
+            { new(1, 1), [0, 64] },
+            { 0, [] },
         };
         [Theory]
         [MemberData(nameof(BitEnumerateUInt128_Data))]

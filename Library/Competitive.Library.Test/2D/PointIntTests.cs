@@ -5,7 +5,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
 {
     public class PointIntTests
     {
-        public static TheoryData Distance_Data => new TheoryData<PointInt, PointInt, long, double>
+        public static TheoryData<PointInt, PointInt, long, double> Distance_Data => new()
         {
             { new (0,0), new (0,0), 0, 0 },
             { new (1,1), new (1,1), 0, 0 },
@@ -58,7 +58,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                         .ShouldBe(i.CompareTo(j), $"({SortedPoints[i]}).CompareTo(({SortedPoints[j]})) == {i}.CompareTo({j})");
         }
 
-        public static TheoryData Inner_Data => new TheoryData<PointInt, PointInt, long>
+        public static TheoryData<PointInt, PointInt, int> Inner_Data => new()
         {
             { new (0,0), new (0,0), 0 },
             { new (0,1), new (1,0), 0 },
@@ -73,7 +73,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             p1.Inner(p2).ShouldBe(expected);
         }
 
-        public static TheoryData Cross_Data => new TheoryData<PointInt, PointInt, long>
+        public static TheoryData<PointInt, PointInt, int> Cross_Data => new()
         {
             { new (0,0), new (0,0), 0 },
             { new (0,1), new (1,0), -1 },
@@ -88,7 +88,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             p1.Cross(p2).ShouldBe(expected);
         }
 
-        public static TheoryData Area_Data => new TheoryData<PointInt[], long>
+        public static TheoryData<PointInt[], long> Area_Data => new()
         {
             {
                 new PointInt[]

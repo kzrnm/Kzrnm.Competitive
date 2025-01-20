@@ -27,7 +27,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             wgb.Add(3, 7, 7);
         }
 
-        public static TheoryData BfsData => new TheoryData<int, int[]>
+        public static TheoryData<int, int[]> BfsData => new()
         {
             { 0, new[] { 0, 1, 2, 3, 4, 6, 5, 7 }},
             { 1, new[] { 1, 0, 3, 4, 2, 7, 6, 5 }},
@@ -47,7 +47,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             wgb.ToTree(root).BfsDescendant().ShouldBe(expected);
         }
 
-        public static TheoryData DfsData => new TheoryData<int, int[]>
+        public static TheoryData<int, int[]> DfsData => new()
         {
             { 0, new[] { 0, 1, 3, 7, 4, 2, 6, 5 }},
             { 1, new[] { 1, 0, 2, 6, 5, 3, 7, 4 }},
@@ -67,7 +67,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             wgb.ToTree(root).DfsDescendant().ShouldBe(expected);
         }
 
-        public static TheoryData DfsLeafData => new TheoryData<int, int[]>
+        public static TheoryData<int, int[]> DfsLeafData => new()
         {
             { 0, new[] { 5, 6, 2, 4, 7, 3, 1, 0}},
             { 1, new[] { 4, 7, 3, 5, 6, 2, 0, 1 }},
@@ -87,7 +87,7 @@ namespace Kzrnm.Competitive.Testing.Graph
             wgb.ToTree(root).DfsDescendantLeaf().ShouldBe(expected);
         }
 
-        public static TheoryData DfsEventsData => new TheoryData<int, int[]>
+        public static TheoryData<int, int[]> DfsEventsData => new()
         {
             { 0, new[] { 0, 1, 3, 7, ~7, ~3, 4, ~4, ~1, 2, 6, ~6, 5, ~5, ~2, ~0 }},
             { 1, new[] { 1, 0, 2, 6, ~6, 5, ~5, ~2, ~0, 3, 7, ~7, ~3, 4, ~4, ~1 }},

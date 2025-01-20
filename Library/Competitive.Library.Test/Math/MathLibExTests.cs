@@ -8,7 +8,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
     public class MathLibExTests
     {
 
-        public static TheoryData GcdInt_Data => new TheoryData<int, int, int>
+        public static TheoryData<int, int, int> GcdInt_Data => new()
         {
             { 1, 2, 1 },
             { 2, 845106, 2 },
@@ -23,15 +23,15 @@ namespace Kzrnm.Competitive.Testing.MathNS
         {
             MathLibEx.Gcd(num1, num2).ShouldBe(expected);
         }
-        public static TheoryData GcdIntParams_Data => new TheoryData<int[], int>
+        public static TheoryData<int[], int> GcdIntParams_Data => new()
         {
-            { new int[]{ 344250, 152325, 450 }, 225 },
-            { new int[]{ 344250, 152325, 450, 75 }, 75 },
-            { new int[]{ 344250, 152325, 450, 60 }, 15 },
-            { new int[]{ 344250, 152325, 450, 75, 45 }, 15 },
-            { new int[]{ 344250, 152325, 450, 75, 45, 60 }, 15 },
-            { new int[]{ 344250, 152325, 450, 75, 45, 6 }, 3 },
-            { new int[]{ 344250, 152325, 450, 75, 45, 8 }, 1 },
+            { [344250, 152325, 450], 225 },
+            { [344250, 152325, 450, 75], 75 },
+            { [344250, 152325, 450, 60], 15 },
+            { [344250, 152325, 450, 75, 45], 15 },
+            { [344250, 152325, 450, 75, 45, 60], 15 },
+            { [344250, 152325, 450, 75, 45, 6], 3 },
+            { [344250, 152325, 450, 75, 45, 8], 1 },
         };
         [Theory]
         [Trait("Category", "Gcd")]
@@ -41,7 +41,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             MathLibEx.Gcd(nums).ShouldBe(expected);
         }
 
-        public static TheoryData GcdLong_Data => new TheoryData<long, long, long>
+        public static TheoryData<long, long, long> GcdLong_Data => new()
         {
             { 1, 2, 1 },
             { 2, 845106, 2 },
@@ -55,12 +55,12 @@ namespace Kzrnm.Competitive.Testing.MathNS
         {
             MathLibEx.Gcd(num1, num2).ShouldBe(expected);
         }
-        public static TheoryData GcdLongParams_Data => new TheoryData<long[], long>
+        public static TheoryData<long[], long> GcdLongParams_Data => new()
         {
-            { new long[]{ 230895518700, 230811434700, 1300 }, 100 },
-            { new long[]{ 230895518700, 230811434700, 490 }, 70 },
-            { new long[]{ 230895518700, 230811434700, 6370, 42 }, 14 },
-            { new long[]{ 230895518700, 230811434700, 6370, 42, 13 }, 1 },
+            { [230895518700, 230811434700, 1300], 100 },
+            { [230895518700, 230811434700, 490], 70 },
+            { [230895518700, 230811434700, 6370, 42], 14 },
+            { [230895518700, 230811434700, 6370, 42, 13], 1 },
         };
         [Theory]
         [Trait("Category", "Gcd")]
@@ -71,7 +71,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         }
 
 
-        public static TheoryData LcmInt_Data => new TheoryData<int, int, int>
+        public static TheoryData<int, int, int> LcmInt_Data => new()
         {
             { 1, 2, 2 },
             { 2, 845106, 845106 },
@@ -84,11 +84,11 @@ namespace Kzrnm.Competitive.Testing.MathNS
         {
             MathLibEx.Lcm(num1, num2).ShouldBe(expected);
         }
-        public static TheoryData LcmIntParams_Data => new TheoryData<int[], int>
+        public static TheoryData<int[], int> LcmIntParams_Data => new()
         {
-            { new int[]{ 44250, 2325, 5, 25 }, 1371750 },
-            { new int[]{ 44250, 2325, 5, 25, 3 }, 1371750 },
-            { new int[]{ 44250, 2325, 5, 25, 11 }, 15089250 },
+            { [44250, 2325, 5, 25], 1371750 },
+            { [44250, 2325, 5, 25, 3], 1371750 },
+            { [44250, 2325, 5, 25, 11], 15089250 },
         };
         [Theory]
         [Trait("Category", "Lcm")]
@@ -98,7 +98,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             MathLibEx.Lcm(nums).ShouldBe(expected);
         }
 
-        public static TheoryData LcmLong_Data => new TheoryData<long, long, long>
+        public static TheoryData<long, long, long> LcmLong_Data => new()
         {
             { 1, 2, 2 },
             { 2, 845106, 845106 },
@@ -111,13 +111,13 @@ namespace Kzrnm.Competitive.Testing.MathNS
         {
             MathLibEx.Lcm(num1, num2).ShouldBe(expected);
         }
-        public static TheoryData LcmLongParams_Data => new TheoryData<long[], long>
+        public static TheoryData<long[], long> LcmLongParams_Data => new()
         {
-            { new long[]{ 44250, 2325, 5, 25 }, 1371750 },
-            { new long[]{ 44250, 2325, 5, 25, 3 }, 1371750 },
-            { new long[]{ 44250, 2325, 5, 25, 11 }, 15089250 },
-            { new long[]{ 44250, 2325, 5, 25, 11, 9999973 }, 150892092590250 },
-            { new long[]{ 44250, 2325, 5, 25, 11, 9999991 }, 150892364196750 },
+            { [44250, 2325, 5, 25], 1371750 },
+            { [44250, 2325, 5, 25, 3], 1371750 },
+            { [44250, 2325, 5, 25, 11], 15089250 },
+            { [44250, 2325, 5, 25, 11, 9999973], 150892092590250 },
+            { [44250, 2325, 5, 25, 11, 9999991], 150892364196750 },
         };
         [Theory]
         [Trait("Category", "Lcm")]
@@ -127,7 +127,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             MathLibEx.Lcm(nums).ShouldBe(expected);
         }
 
-        public static TheoryData DivisorInt_Data => new TheoryData<int, int[]>
+        public static TheoryData<int, int[]> DivisorInt_Data => new()
         {
             {
                 1,
@@ -193,7 +193,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             MathLibEx.Divisor(963761198400).Length.ShouldBe(6720); //高度合成数
         }
 
-        public static TheoryData PrimeFactoringInt_Data => new TheoryData<int, Dictionary<int, int>>
+        public static TheoryData<int, Dictionary<int, int>> PrimeFactoringInt_Data => new()
         {
             {
                 1,
@@ -276,7 +276,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             x.ShouldBe(num);
         }
 
-        public static TheoryData PrimeFactoringLong_Data => new TheoryData<long, Dictionary<long, int>>
+        public static TheoryData<long, Dictionary<long, int>> PrimeFactoringLong_Data => new()
         {
             {
                 1,

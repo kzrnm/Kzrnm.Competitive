@@ -5,7 +5,7 @@ namespace Kzrnm.Competitive.Testing.Collection
 {
     public class SetIntervalTests
     {
-        public static TheoryData Add_Data => new TheoryData<(int from, int to)[], (int from, int to)[]>
+        public static TheoryData<(int from, int to)[], (int from, int to)[]> Add_Data => new()
         {
             {
                 Array.Empty<(int from, int to)>(),
@@ -362,7 +362,7 @@ namespace Kzrnm.Competitive.Testing.Collection
         }
 
 
-        public static TheoryData Remove_Data => new TheoryData<int, int, bool, (int from, int to)[]>
+        public static TheoryData<int, int, bool, (int from, int to)[]> Remove_Data => new()
         {
             { 1,10,false,new (int,int)[]{(10, 20),(25, 30),(35, 40),(50, 60) } },
             { 20,25,false,new (int,int)[]{(10, 20),(25, 30),(35, 40),(50, 60) } },
@@ -383,11 +383,12 @@ namespace Kzrnm.Competitive.Testing.Collection
         [MemberData(nameof(Remove_Data))]
         public void Remove(int from, int to, bool success, (int from, int to)[] result)
         {
-            var set = new SetIntervalInt(new[] {
+            var set = new SetIntervalInt([
                 (10, 20),
                 (25, 30),
                 (35, 40),
-                (50, 60)});
+                (50, 60),
+            ]);
             set.Remove(from, to).ShouldBe(success);
             set.ShouldBe(result);
         }
@@ -416,10 +417,11 @@ namespace Kzrnm.Competitive.Testing.Collection
         [InlineData(69, false)]
         public void Contains(int value, bool isContains)
         {
-            var set = new SetIntervalInt(new[] {
+            var set = new SetIntervalInt([
                 (10, 20),
                 (30, 40),
-                (50, 60)});
+                (50, 60),
+            ]);
             set.Contains(value).ShouldBe(isContains);
             if (isContains)
                 set.FindNode(value).ShouldNotBeNull();
@@ -438,14 +440,15 @@ namespace Kzrnm.Competitive.Testing.Collection
         [InlineData(11, 19, true)]
         public void ContainsRange(int from, int to, bool isContains)
         {
-            var set = new SetIntervalInt(new[] {
+            var set = new SetIntervalInt([
                 (10, 20),
                 (30, 40),
-                (50, 60)});
+                (50, 60),
+            ]);
             ((ICollection<(int, int)>)set).Contains((from, to)).ShouldBe(isContains);
         }
 
-        public static TheoryData RangeTruncate_Data => new TheoryData<int, int, (int From, int ToExclusive)[]>
+        public static TheoryData<int, int, (int From, int ToExclusive)[]> RangeTruncate_Data => new()
         {
             {  0, 10, Array.Empty<(int, int)>() },
             { 20, 30, Array.Empty<(int, int)>() },
@@ -461,14 +464,15 @@ namespace Kzrnm.Competitive.Testing.Collection
         [MemberData(nameof(RangeTruncate_Data))]
         public void RangeTruncate(int from, int to, (int From, int ToExclusive)[] expected)
         {
-            var set = new SetIntervalInt(new[] {
+            var set = new SetIntervalInt([
                 (10, 20),
                 (30, 40),
-                (50, 60)});
+                (50, 60),
+            ]);
             set.RangeTruncate(from, to).ShouldBe(expected);
         }
 
-        public static TheoryData RangeAll_Data => new TheoryData<int, int, (int From, int ToExclusive)[]>
+        public static TheoryData<int, int, (int From, int ToExclusive)[]> RangeAll_Data => new()
         {
             {  0, 10, Array.Empty<(int, int)>() },
             { 20, 30, Array.Empty<(int, int)>() },
@@ -484,10 +488,11 @@ namespace Kzrnm.Competitive.Testing.Collection
         [MemberData(nameof(RangeAll_Data))]
         public void RangeAll(int from, int to, (int From, int ToExclusive)[] expected)
         {
-            var set = new SetIntervalInt(new[] {
+            var set = new SetIntervalInt([
                 (10, 20),
                 (30, 40),
-                (50, 60)});
+                (50, 60),
+            ]);
             set.RangeAll(from, to).ShouldBe(expected);
         }
 

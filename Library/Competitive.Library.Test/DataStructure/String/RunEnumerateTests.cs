@@ -6,32 +6,32 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
 {
     public class RunEnumerateTests
     {
-        public static IEnumerable<(string, (int From, int ToExclusive)[][])> RunEnumerate_Data()
+        public static IEnumerable<TheoryDataRow<string, (int From, int ToExclusive)[][]>> RunEnumerate_Data()
         {
-            yield return ("", new (int From, int ToExclusive)[1][]
-            {
+            yield return ("",
+            [
                 [],
-            });
-            yield return ("mississippi", new (int From, int ToExclusive)[][]
-            {
+            ]);
+            yield return ("mississippi",
+            [
                 [],
                 [(2,4),(5,7),(8,10)],
                 [],
                 [(1,8)],
                 [],
                 [],
-            });
-            yield return ("aaaaaaa", new (int From, int ToExclusive)[][]
-            {
+            ]);
+            yield return ("aaaaaaa",
+            [
                 [],
                 [(0,7)],
                 [],
                 [],
-            });
+            ]);
         }
 
         [Theory]
-        [TupleMemberData(nameof(RunEnumerate_Data))]
+        [MemberData(nameof(RunEnumerate_Data))]
         public void RunEnumerate(string s, (int From, int ToExclusive)[][] expected)
         {
             ShouldEqual(StringLibEx.RunEnumerate(s), expected);

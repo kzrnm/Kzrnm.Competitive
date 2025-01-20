@@ -45,7 +45,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
             return c.Select(n => (uint)n).ToArray();
         }
 
-        public static TheoryData EmptyIntTestData => new TheoryData<int[], int[], uint[]>
+        public static TheoryData<int[], int[], uint[]> EmptyIntTestData => new()
         {
             { Array.Empty<int>(), Array.Empty<int>(), Array.Empty<uint>() },
             { Array.Empty<int>(), new int[]{ 1, 2 }, Array.Empty<uint>() },

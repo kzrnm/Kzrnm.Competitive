@@ -7,7 +7,7 @@ namespace Kzrnm.Competitive.Testing.Bits
 {
     public class BitTests
     {
-        public static TheoryData BitStringInt32_Data => new TheoryData<int, int, string>
+        public static TheoryData<int, int, string> BitStringInt32_Data => new()
         {
             { 0, 0, "0" },
             { 1, 3, "001" },
@@ -28,7 +28,7 @@ namespace Kzrnm.Competitive.Testing.Bits
             num.ToBitString(len).ShouldBe(expected);
         }
 
-        public static TheoryData BitStringInt64_Data => new TheoryData<long, int, string>
+        public static TheoryData<long, int, string> BitStringInt64_Data => new()
         {
             { 0, 0, "0" },
             { 1, 3, "001" },
@@ -49,7 +49,7 @@ namespace Kzrnm.Competitive.Testing.Bits
             num.ToBitString(len).ShouldBe(expected);
         }
 
-        public static TheoryData BitStringUInt64_Data => new TheoryData<ulong, int, string>
+        public static TheoryData<ulong, int, string> BitStringUInt64_Data => new()
         {
             { 0, 0, "0" },
             { 1, 3, "001" },
@@ -101,7 +101,7 @@ namespace Kzrnm.Competitive.Testing.Bits
                                         }
         }
         [Theory]
-        [TupleMemberData(nameof(BitEnumerateByte_Data))]
+        [MemberData(nameof(BitEnumerateByte_Data))]
         [Trait("Category", "BitEnumerate")]
         public void BitEnumerateByte(uint num, int[] expected)
         {
@@ -109,7 +109,7 @@ namespace Kzrnm.Competitive.Testing.Bits
             num.Bits().ToArray().ShouldBe(expected);
         }
 
-        public static TheoryData BitEnumerateInt32_Data => new TheoryData<int, int[]>
+        public static TheoryData<int, int[]> BitEnumerateInt32_Data => new()
         {
             { -1, new[]{
                 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -132,7 +132,7 @@ namespace Kzrnm.Competitive.Testing.Bits
             num.Bits().ToArray().ShouldBe(expected);
         }
 
-        public static TheoryData BitEnumerateUInt32_Data => new TheoryData<uint, int[]>
+        public static TheoryData<uint, int[]> BitEnumerateUInt32_Data => new()
         {
             { uint.MaxValue, new[]{
                 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -155,7 +155,7 @@ namespace Kzrnm.Competitive.Testing.Bits
             num.Bits().ToArray().ShouldBe(expected);
         }
 
-        public static TheoryData BitEnumerateInt64_Data => new TheoryData<long, int[]>
+        public static TheoryData<long, int[]> BitEnumerateInt64_Data => new()
         {
             { -1, new[]{
                 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -181,7 +181,7 @@ namespace Kzrnm.Competitive.Testing.Bits
             num.Bits().ToArray().ShouldBe(expected);
         }
 
-        public static TheoryData BitEnumerateUInt64_Data => new TheoryData<ulong, int[]>
+        public static TheoryData<ulong, int[]> BitEnumerateUInt64_Data => new()
         {
             { ulong.MaxValue, new[]{
                 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,

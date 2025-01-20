@@ -24,7 +24,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             ]);
         }
 
-        public static TheoryData Parse_Data => new TheoryData<string, BitMatrix64>
+        public static TheoryData<string, BitMatrix64> Parse_Data => new()
         {
             {
                 """
@@ -55,7 +55,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             BitMatrix64.Parse(text.Split('\n')).ShouldBe(mat);
         }
 
-        public static TheoryData String_Data => new TheoryData<BitMatrix64, string>
+        public static TheoryData<BitMatrix64, string> String_Data => new()
         {
             {
                 new BitMatrix64([
@@ -121,7 +121,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (~mat).ShouldBe(expected);
         }
 
-        public static TheoryData Add_Data => new TheoryData<BitMatrix64, BitMatrix64, BitMatrix64>
+        public static TheoryData<BitMatrix64, BitMatrix64, BitMatrix64> Add_Data => new()
         {
             {
                 BitMatrix64.Zero,
@@ -191,7 +191,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat1 ^ mat2).ShouldBe(expected);
         }
 
-        public static TheoryData Multiply_Data => new TheoryData<BitMatrix64, BitMatrix64, BitMatrix64>
+        public static TheoryData<BitMatrix64, BitMatrix64, BitMatrix64> Multiply_Data => new()
         {
             {
                 BitMatrix64.Identity,
@@ -252,7 +252,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat1 * mat2).ShouldBe(expected);
         }
 
-        public static TheoryData MultiplyVector_Data => new TheoryData<BitMatrix64, bool[], ulong, ulong>
+        public static TheoryData<BitMatrix64, bool[], ulong, ulong> MultiplyVector_Data => new()
         {
             {
                 BitMatrix64.Parse(
@@ -260,7 +260,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "101",
                     "010",
                 ]),
-                new[]{ true, false, true},
+                [true, false, true],
                 0b101ul,
                 0b0ul
             },
@@ -270,7 +270,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "101",
                     "010",
                 ]),
-                new[]{ true, true, true},
+                [true, true, true],
                 0b111ul,
                 0b10ul
             },
@@ -280,7 +280,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "101",
                     "010",
                 ]),
-                new[]{ false, true, true},
+                [false, true, true],
                 0b110ul,
                 0b11ul
             },
@@ -290,7 +290,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     .Select((s, i) => s.Remove(i, 1).Insert(i, "1"))
                     .ToArray()
                 ),
-                new[] { true, false, false, true, false, true, false, false, true, true, false, true, false, true, true, true, true, true, false, true, false, false, false, false, true, true, true, false, true, false, true, true, false, false, false, false, true, false, true, false, true, false, true, true, false, true, false, false, true, true, true, false, false, true, false, true, false, true, false, true, false, false, true, true },
+                [true, false, false, true, false, true, false, false, true, true, false, true, false, true, true, true, true, true, false, true, false, false, false, false, true, true, true, false, true, false, true, true, false, false, false, false, true, false, true, false, true, false, true, true, false, true, false, false, true, true, true, false, false, true, false, true, false, true, false, true, false, false, true, true],
                 0b1100101010100111001011010101000011010111000010111110101100101001ul,
                 0b1100101010100111001011010101000011010111000010111110101100101001ul
             },
@@ -363,10 +363,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             }
         }
 
-        public static TheoryData GaussianElimination_Data => new TheoryData<
-            bool,
-            BitMatrix64,
-            BitMatrix64>
+        public static TheoryData<bool, BitMatrix64, BitMatrix64> GaussianElimination_Data => new()
         {
             {
                 false,
@@ -431,7 +428,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             got.ShouldBe(expected);
         }
 
-        public static TheoryData LinearSystem_Data => new TheoryData<BitMatrix64, ulong, ulong[]>
+        public static TheoryData<BitMatrix64, ulong, ulong[]> LinearSystem_Data => new()
         {
             {
                 BitMatrix64.Parse(

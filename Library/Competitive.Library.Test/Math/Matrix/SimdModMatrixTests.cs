@@ -98,7 +98,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             });
         }
 
-        public static TheoryData Add_Data => new TheoryData<SimdModMatrix, SimdModMatrix, SimdModMatrix>
+        public static TheoryData<SimdModMatrix, SimdModMatrix, SimdModMatrix> Add_Data => new()
         {
             {
                 SimdModMatrix.Zero,
@@ -171,7 +171,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     yield return (a, b);
         }
         [Theory]
-        [TupleMemberData(nameof(AddRandom_Data))]
+        [MemberData(nameof(AddRandom_Data))]
         public void AddRandom(int h, int w)
         {
             var rnd = new Random(227);
@@ -192,7 +192,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             }
         }
 
-        public static TheoryData Subtract_Data => new TheoryData<SimdModMatrix, SimdModMatrix, SimdModMatrix>
+        public static TheoryData<SimdModMatrix, SimdModMatrix, SimdModMatrix> Subtract_Data => new()
         {
             {
                 SimdModMatrix.Identity,
@@ -278,7 +278,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         }
 
         [Theory]
-        [TupleMemberData(nameof(AddRandom_Data))]
+        [MemberData(nameof(AddRandom_Data))]
         public void SubtractRandom(int h, int w)
         {
             var rnd = new Random(227);
@@ -299,7 +299,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             }
         }
 
-        public static TheoryData Multiply_Data => new TheoryData<SimdModMatrix, SimdModMatrix, SimdModMatrix>
+        public static TheoryData<SimdModMatrix, SimdModMatrix, SimdModMatrix> Multiply_Data => new()
         {
             {
                 SimdModMatrix.Identity,
@@ -373,7 +373,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
 
 
         [Theory]
-        [TupleMemberData(nameof(MultiplyRandom_Data))]
+        [MemberData(nameof(MultiplyRandom_Data))]
         public void MultiplyRandom(int h, int w, int mid)
         {
             var rnd = new Random(227);
@@ -393,7 +393,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             }
         }
 
-        public static TheoryData MultiplyScalar_Data => new TheoryData<int, SimdModMatrix, SimdModMatrix>
+        public static TheoryData<int, SimdModMatrix, SimdModMatrix> MultiplyScalar_Data => new()
         {
             {
                 2,
@@ -431,7 +431,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat * a).ShouldBe(expected);
         }
 
-        public static TheoryData MultiplyVector_Data => new TheoryData<SimdModMatrix, MontgomeryModInt[], MontgomeryModInt[]>
+        public static TheoryData<SimdModMatrix, MontgomeryModInt[], MontgomeryModInt[]> MultiplyVector_Data => new()
         {
             {
                 new SimdModMatrix(new MontgomeryModInt[,]{
@@ -486,7 +486,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             }
         }
 
-        public static TheoryData Determinant_Data => new TheoryData<MontgomeryModInt[,], MontgomeryModInt>
+        public static TheoryData<MontgomeryModInt[,], MontgomeryModInt> Determinant_Data => new()
         {
             {
                 new MontgomeryModInt[,]
@@ -599,7 +599,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         }
 
         [Theory]
-        [TupleMemberData(nameof(Cofactor_Data))]
+        [MemberData(nameof(Cofactor_Data))]
         [Trait("Category", "Normal")]
         public void Cofactor(MontgomeryModInt[,] array, int i, int j, MontgomeryModInt expected)
         {
@@ -634,7 +634,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         }
 
 
-        public static TheoryData Transpose_Data => new TheoryData<SimdModMatrix, SimdModMatrix>
+        public static TheoryData<SimdModMatrix, SimdModMatrix> Transpose_Data => new()
         {
             {
                 new(new MontgomeryModInt[2,3]{
@@ -668,9 +668,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         }
 
 
-        public static TheoryData GaussianElimination_Data => new TheoryData<
-            SimdModMatrix,
-            SimdModMatrix>
+        public static TheoryData<SimdModMatrix, SimdModMatrix> GaussianElimination_Data => new()
         {
             {
                 new(new MontgomeryModInt[2,3]{
@@ -756,10 +754,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             got.ShouldBe(expected);
         }
 
-        public static TheoryData LinearSystem_Data => new TheoryData<
-            SimdModMatrix,
-            MontgomeryModInt[],
-            MontgomeryModInt[][]>
+        public static TheoryData<SimdModMatrix, MontgomeryModInt[], MontgomeryModInt[][]> LinearSystem_Data => new()
         {
             {
                 new(new MontgomeryModInt[2,3]{

@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
                 ls.Add(tup);
             return ls.ToArray();
         }
-        public static IEnumerable<(Int32 num, Int32[] expected)> Int32_Data()
+        public static IEnumerable<TheoryDataRow<Int32, Int32[]>> Int32_Data()
         {
             yield return (0b0, [0]);
             yield return (0b1, [1, 0]);
@@ -50,7 +50,7 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
         }
 
         [Theory]
-        [TupleMemberData(nameof(Int32_Data))]
+        [MemberData(nameof(Int32_Data))]
         public void Int32(Int32 num, Int32[] expected)
         {
             num.BitSubset(false).ShouldBe(expected);
@@ -66,7 +66,7 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
         }
 
 
-        public static IEnumerable<(UInt32 num, UInt32[] expected)> UInt32_Data()
+        public static IEnumerable<TheoryDataRow<UInt32, UInt32[]>> UInt32_Data()
         {
             yield return (0b0, [0]);
             yield return (0b1, [1, 0]);
@@ -93,7 +93,7 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
         }
 
         [Theory]
-        [TupleMemberData(nameof(UInt32_Data))]
+        [MemberData(nameof(UInt32_Data))]
         public void UInt32(UInt32 num, UInt32[] expected)
         {
             num.BitSubset(false).ShouldBe(expected);
@@ -108,7 +108,7 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
                 expected.Take(expected.Length / 2).Skip(1).Select(b => (b, num & ~b)));
         }
 
-        public static IEnumerable<(Int64 num, Int64[] expected)> Int64_Data()
+        public static IEnumerable<TheoryDataRow<Int64, Int64[]>> Int64_Data()
         {
             yield return (0b0, [0]);
             yield return (0b1, [1, 0]);
@@ -135,7 +135,7 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
         }
 
         [Theory]
-        [TupleMemberData(nameof(Int64_Data))]
+        [MemberData(nameof(Int64_Data))]
         public void Int64(Int64 num, Int64[] expected)
         {
             num.BitSubset(false).ShouldBe(expected);
@@ -150,7 +150,7 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
                 expected.Take(expected.Length / 2).Skip(1).Select(b => (b, num & ~b)));
         }
 
-        public static IEnumerable<(UInt64 num, UInt64[] expected)> UInt64_Data()
+        public static IEnumerable<TheoryDataRow<UInt64, UInt64[]>> UInt64_Data()
         {
             yield return (0b0, [0]);
             yield return (0b1, [1, 0]);
@@ -177,7 +177,7 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp
         }
 
         [Theory]
-        [TupleMemberData(nameof(UInt64_Data))]
+        [MemberData(nameof(UInt64_Data))]
         public void UInt64(UInt64 num, UInt64[] expected)
         {
             num.BitSubset(false).ShouldBe(expected);

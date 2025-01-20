@@ -10,27 +10,23 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Normal")]
         public void Construct()
         {
-            new BitMatrix128(new bool[][]
-            {
+            new BitMatrix128([
                 [true, false, true],
                 [false, true, true],
-            })._v.ShouldBe(new UInt128[]
-            {
+            ])._v.ShouldBe([
                 0b101ul,
                 0b110ul,
-            });
-            new BitMatrix128(new UInt128[]
-            {
+            ]);
+            new BitMatrix128([
                 0b101ul,
                 0b110ul,
-            })._v.ShouldBe(new UInt128[]
-            {
+            ])._v.ShouldBe([
                 0b101ul,
                 0b110ul,
-            });
+            ]);
         }
 
-        public static TheoryData Parse_Data => new TheoryData<string, BitMatrix128>
+        public static TheoryData<string, BitMatrix128> Parse_Data => new()
         {
             {
                 """
@@ -38,23 +34,21 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 01010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101
                 01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001
                 """,
-                new BitMatrix128(new UInt128[]
-                {
+                new BitMatrix128([
                     new UInt128(0b0101010101010101010101010101010101010101010101010101010101010101,0b0101010101010101010101010101010101010101010101010101010101010101),
                     new UInt128(0b1010101010101010101010101010101010101010101010101010101010101010,0b1010101010101010101010101010101010101010101010101010101010101010),
                     new UInt128(0b1000000000000000000000000000000000000000000000000000000000000000,0b10),
-                })
+                ])
             },
             {
                 """
                 11001
                 10010
                 """,
-                new BitMatrix128(new UInt128[]
-                {
+                new BitMatrix128([
                     0b10011,
                     0b01001,
-                })
+                ])
             },
         };
         [Theory]
@@ -65,7 +59,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             BitMatrix128.Parse(text.Split('\n')).ShouldBe(mat);
         }
 
-        public static TheoryData String_Data => new TheoryData<BitMatrix128, string>
+        public static TheoryData<BitMatrix128, string> String_Data => new()
         {
             {
                 new BitMatrix128([
@@ -82,24 +76,21 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 """.Replace("\r\n", "\n")
             },
             {
-                new BitMatrix128(new[]
-                {
-                    new[] {  false },
-                }),
+                new BitMatrix128([
+                    [false],
+                ]),
                 "0".PadRight(128, '0')
             },
             {
-                new BitMatrix128(new[]
-                {
-                    new[] {  true },
-                }),
+                new BitMatrix128([
+                    [true],
+                ]),
                 "1".PadRight(128, '0')
             },
             {
-                new BitMatrix128(new[]
-                {
+                new BitMatrix128([
                     new UInt128(0b101, 0b1100111),
-                }),
+                ]),
                 "11100110000000000000000000000000000000000000000000000000000000001010000000000000000000000000000000000000000000000000000000000000"
             },
         };
@@ -134,7 +125,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (~mat).ShouldBe(expected);
         }
 
-        public static TheoryData Add_Data => new TheoryData<BitMatrix128, BitMatrix128, BitMatrix128>
+        public static TheoryData<BitMatrix128, BitMatrix128, BitMatrix128> Add_Data => new()
         {
             {
                 BitMatrix128.Zero,
@@ -204,7 +195,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat1 ^ mat2).ShouldBe(expected);
         }
 
-        public static TheoryData Multiply_Data => new TheoryData<BitMatrix128, BitMatrix128, BitMatrix128>
+        public static TheoryData<BitMatrix128, BitMatrix128, BitMatrix128> Multiply_Data => new()
         {
             {
                 BitMatrix128.Identity,
@@ -265,7 +256,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat1 * mat2).ShouldBe(expected);
         }
 
-        public static TheoryData MultiplyVector_Data => new TheoryData<BitMatrix128, bool[], UInt128, UInt128>
+        public static TheoryData<BitMatrix128, bool[], UInt128, UInt128> MultiplyVector_Data => new()
         {
             {
                 BitMatrix128.Parse(
@@ -273,7 +264,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "101",
                     "010",
                 ]),
-                new[]{ true, false, true},
+                [true, false, true],
                 0b101ul,
                 0b0ul
             },
@@ -283,7 +274,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "101",
                     "010",
                 ]),
-                new[]{ true, true, true},
+                [true, true, true],
                 0b111ul,
                 0b10ul
             },
@@ -293,7 +284,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "101",
                     "010",
                 ]),
-                new[]{ false, true, true},
+                [false, true, true],
                 0b110ul,
                 0b11ul
             },
@@ -303,7 +294,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     .Select((s, i) => s.Remove(i, 1).Insert(i, "1"))
                     .ToArray()
                 ),
-                new[] { true, false, false, true, false, true, false, false, true, true, false, true, false, true, true, true, true, true, false, true, false, false, false, false, true, true, true, false, true, false, true, true, false, false, false, false, true, false, true, false, true, false, true, true, false, true, false, false, true, true, true, false, false, true, false, true, false, true, false, true, false, false, true, true, true, false, true, false, true, false, true, false, true, false, true, false, true, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, false, true, false, false, false, false, true, false, true, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, false, true },
+                [true, false, false, true, false, true, false, false, true, true, false, true, false, true, true, true, true, true, false, true, false, false, false, false, true, true, true, false, true, false, true, true, false, false, false, false, true, false, true, false, true, false, true, true, false, true, false, false, true, true, true, false, false, true, false, true, false, true, false, true, false, false, true, true, true, false, true, false, true, false, true, false, true, false, true, false, true, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, false, true, false, false, false, false, true, false, true, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, false, true],
                 new UInt128(0b1001010101010101010101101000010010101010101010101011010101010101ul, 0b1100101010100111001011010101000011010111000010111110101100101001ul),
                 new UInt128(0b1001010101010101010101101000010010101010101010101011010101010101ul, 0b1100101010100111001011010101000011010111000010111110101100101001ul)
             },
@@ -376,10 +367,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             }
         }
 
-        public static TheoryData GaussianElimination_Data => new TheoryData<
-            bool,
-            BitMatrix128,
-            BitMatrix128>
+        public static TheoryData<bool, BitMatrix128, BitMatrix128> GaussianElimination_Data => new()
         {
             {
                 false,

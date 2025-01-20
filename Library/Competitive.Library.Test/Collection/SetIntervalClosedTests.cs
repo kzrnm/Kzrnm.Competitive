@@ -5,7 +5,7 @@ namespace Kzrnm.Competitive.Testing.Collection
 {
     public class SetIntervalClosedTests
     {
-        public static TheoryData Add_Data => new TheoryData<(int from, int to)[], (int from, int to)[]>
+        public static TheoryData<(int from, int to)[], (int from, int to)[]> Add_Data => new()
         {
             {
                 Array.Empty<(int from, int to)>(),
@@ -371,7 +371,7 @@ namespace Kzrnm.Competitive.Testing.Collection
         }
 
 
-        public static TheoryData Remove_Data => new TheoryData<int, int, bool, (int from, int to)[]>
+        public static TheoryData<int, int, bool, (int from, int to)[]> Remove_Data => new()
         {
             { 1,9,false,new (int,int)[]{(10, 20),(25, 30),(35, 40),(50, 60) } },
             { 21,24,false,new (int,int)[]{(10, 20),(25, 30),(35, 40),(50, 60) } },
@@ -448,7 +448,7 @@ namespace Kzrnm.Competitive.Testing.Collection
             ((ICollection<(int, int)>)set).Contains((from, to)).ShouldBe(isContains);
         }
 
-        public static TheoryData RangeTruncate_Data => new TheoryData<int, int, (int From, int ToInclusive)[]>
+        public static TheoryData<int, int, (int From, int ToInclusive)[]> RangeTruncate_Data => new()
         {
             {  0, 9, Array.Empty<(int, int)>() },
             { 21, 29, Array.Empty<(int, int)>() },
@@ -471,7 +471,7 @@ namespace Kzrnm.Competitive.Testing.Collection
             set.RangeTruncate(from, to).ShouldBe(expected);
         }
 
-        public static TheoryData RangeAll_Data => new TheoryData<int, int, (int From, int ToInclusive)[]>
+        public static TheoryData<int, int, (int From, int ToInclusive)[]> RangeAll_Data => new()
         {
             {  0, 9, Array.Empty<(int, int)>() },
             { 21, 29, Array.Empty<(int, int)>() },

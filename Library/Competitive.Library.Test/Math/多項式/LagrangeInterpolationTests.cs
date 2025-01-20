@@ -4,7 +4,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
 {
     public class LagrangeInterpolationTest
     {
-        public static TheoryData Coefficient_Data => new TheoryData<(int, int)[]>
+        public static TheoryData<(int x, int y)[]> Coefficient_Data => new()
         {
             new (int, int)[]
             {

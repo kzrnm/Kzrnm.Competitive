@@ -238,7 +238,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
             ((ReadOnlySpan<int>)span).Select(FuncIndex).ToArray().ShouldBe(Enumerable.Range(0, 10).Select(FuncIndex));
         }
 
-        public static TheoryData Chunk_Data => new TheoryData<IEnumerable<int>, int, int[][]>
+        public static TheoryData<IEnumerable<int>, int, int[][]> Chunk_Data => new()
         {
             {
                 Enumerable.Range(0, 12),
@@ -276,7 +276,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
                 result[i].ShouldBe(expected[i]);
         }
 
-        public static TheoryData Tupled2_Data => new TheoryData<int[], (int, int)[]>
+        public static TheoryData<int[], (int, int)[]> Tupled2_Data => new()
         {
             {
                 [1,2,3,4,5,6],
@@ -297,7 +297,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
             new ReadOnlySpan<int>(array).Tupled2().ShouldBe(expected);
         }
 
-        public static TheoryData CompressCount_Data => new TheoryData<IEnumerable<byte>, (byte Value, int Count)[]>
+        public static TheoryData<IEnumerable<byte>, (byte Value, int Count)[]> CompressCount_Data => new()
         {
             {
                 Enumerable.Range(0, 6).Select(i => (byte)i),
@@ -357,7 +357,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
             input.CompressCount().ShouldBe(expected);
         }
 
-        public static TheoryData CompressCount2_Data => new TheoryData<string, (char Value, int Count)[]>
+        public static TheoryData<string, (char Value, int Count)[]> CompressCount2_Data => new()
         {
             {
                 "<<>>",

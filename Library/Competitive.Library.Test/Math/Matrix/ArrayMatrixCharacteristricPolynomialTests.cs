@@ -9,26 +9,26 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
     using ModInt = StaticModInt<Mod1000000007>;
     public class ArrayMatrixCharacteristricPolynomialTests
     {
-        public static IEnumerable<Tuple<int[,]>> Size3_Data()
+        public static IEnumerable<TheoryDataRow<int[,]>> Size3_Data()
         {
             var rnd = new Random(227);
             for (int q = 0; q < 100; q++)
             {
                 var arr = new int[3, 3];
                 rnd.NextBytes(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref arr[0, 0], arr.Length)));
-                yield return Tuple.Create(arr);
+                yield return arr;
             }
             {
                 var arr = new int[3, 3];
                 var span = MemoryMarshal.CreateSpan(ref arr[0, 0], arr.Length);
                 span[0..3].CopyTo(span[3..]);
                 rnd.NextBytes(MemoryMarshal.AsBytes(span));
-                yield return Tuple.Create(arr);
+                yield return arr;
             }
         }
 
         [Theory]
-        [TupleMemberData(nameof(Size3_Data))]
+        [MemberData(nameof(Size3_Data))]
         public void Size3(int[,] v)
         {
             var a = new ModInt[]{
@@ -45,26 +45,26 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             new ArrayMatrix<ModInt>(a, 3, 3).CharacteristricPolynomial(false).ShouldBe((-expected).Coefficients);
         }
 
-        public static IEnumerable<Tuple<int[,]>> Size4_Data()
+        public static IEnumerable<TheoryDataRow<int[,]>> Size4_Data()
         {
             var rnd = new Random(227);
             for (int q = 0; q < 100; q++)
             {
                 var arr = new int[4, 4];
                 rnd.NextBytes(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref arr[0, 0], arr.Length)));
-                yield return Tuple.Create(arr);
+                yield return arr;
             }
             {
                 var arr = new int[4, 4];
                 var span = MemoryMarshal.CreateSpan(ref arr[0, 0], arr.Length);
                 span[0..4].CopyTo(span[4..]);
                 rnd.NextBytes(MemoryMarshal.AsBytes(span));
-                yield return Tuple.Create(arr);
+                yield return arr;
             }
         }
 
         [Theory]
-        [TupleMemberData(nameof(Size4_Data))]
+        [MemberData(nameof(Size4_Data))]
         public void Size4(int[,] v)
         {
             var a = new ModInt[]{
@@ -73,10 +73,10 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 v[2,0], v[2,1], v[2,2], v[2,3],
                 v[3,0], v[3,1], v[3,2], v[3,3] };
             var expected = new PolynominalMatrix4x4<ModInt>(
-                new(new ModInt[] { -v[0, 0], 1 }), new(new ModInt[] { -v[0, 1] }), new(new ModInt[] { -v[0, 2] }), new(new ModInt[] { -v[0, 3] }),
-                new(new ModInt[] { -v[1, 0] }), new(new ModInt[] { -v[1, 1], 1 }), new(new ModInt[] { -v[1, 2] }), new(new ModInt[] { -v[1, 3] }),
-                new(new ModInt[] { -v[2, 0] }), new(new ModInt[] { -v[2, 1] }), new(new ModInt[] { -v[2, 2], 1 }), new(new ModInt[] { -v[2, 3] }),
-                new(new ModInt[] { -v[3, 0] }), new(new ModInt[] { -v[3, 1] }), new(new ModInt[] { -v[3, 2] }), new(new ModInt[] { -v[3, 3], 1 }))
+                new([-v[0, 0], 1]), new([-v[0, 1]]), new([-v[0, 2]]), new([-v[0, 3]]),
+                new([-v[1, 0]]), new([-v[1, 1], 1]), new([-v[1, 2]]), new([-v[1, 3]]),
+                new([-v[2, 0]]), new([-v[2, 1]]), new([-v[2, 2], 1]), new([-v[2, 3]]),
+                new([-v[3, 0]]), new([-v[3, 1]]), new([-v[3, 2]]), new([-v[3, 3], 1]))
                 .Determinant();
             new ArrayMatrix<ModInt>(a, 4, 4).CharacteristricPolynomial().ShouldBe(expected.Coefficients);
         }

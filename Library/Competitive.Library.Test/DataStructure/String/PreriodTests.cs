@@ -6,7 +6,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
 {
     public class PreriodTests
     {
-        public static IEnumerable<(int[], int)> PeriodInt_Data()
+        public static IEnumerable<TheoryDataRow<int[], int>> PeriodInt_Data()
         {
             for (int i = 1; i < 10; i++)
             {
@@ -16,11 +16,11 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
                     yield return (Enumerable.Repeat(loop, r).SelectMany(a => a).ToArray(), i);
                 }
             }
-            yield return (new[] { 1, 2, 3, 1, 2, }, 5);
+            yield return ([1, 2, 3, 1, 2,], 5);
         }
 
         [Theory]
-        [TupleMemberData(nameof(PeriodInt_Data))]
+        [MemberData(nameof(PeriodInt_Data))]
         public void PeriodInt(int[] s, int expected)
         {
             StringLibEx.Period(s).ShouldBe(expected);

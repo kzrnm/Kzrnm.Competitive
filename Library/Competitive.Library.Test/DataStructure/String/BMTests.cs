@@ -3,7 +3,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
 {
     public class BMTests
     {
-        public static TheoryData Match_Data => new TheoryData<string, string, int>
+        public static TheoryData<string, string, int> Match_Data => new()
         {
             { "ab", new string('q',1998)+"ab", 1998 },
             { "abc", "abd", -1 },

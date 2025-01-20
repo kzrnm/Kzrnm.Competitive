@@ -21,7 +21,7 @@ namespace Kzrnm.Competitive.Testing.Number
         }
 
         [Theory]
-        [TupleMemberData(nameof(ParseUInt32_Data))]
+        [MemberData(nameof(ParseUInt32_Data))]
         public void ParseUInt32(uint num)
         {
             var str = System.Convert.ToString(num, 2);
@@ -43,7 +43,7 @@ namespace Kzrnm.Competitive.Testing.Number
         }
 
         [Theory]
-        [TupleMemberData(nameof(ParseUInt64_Data))]
+        [MemberData(nameof(ParseUInt64_Data))]
         public void ParseUInt64(ulong num)
         {
             var str = System.Convert.ToString((long)num, 2);
@@ -80,7 +80,7 @@ namespace Kzrnm.Competitive.Testing.Number
         }
 
         [Theory]
-        [TupleMemberData(nameof(ParseBitArray_Data))]
+        [MemberData(nameof(ParseBitArray_Data))]
         public void ParseBitArray(string input)
         {
             var naive = input.Select(c => c != '0').ToArray();

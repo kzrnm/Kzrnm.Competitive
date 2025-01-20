@@ -101,7 +101,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             });
         }
 
-        public static TheoryData Add_Data => new TheoryData<ArrayMatrix<int>, ArrayMatrix<int>, ArrayMatrix<int>>
+        public static TheoryData<ArrayMatrix<int>, ArrayMatrix<int>, ArrayMatrix<int>> Add_Data => new()
         {
             {
                 ArrayMatrix<int>.Zero,
@@ -162,7 +162,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat2 + mat1).ShouldBe(expected);
         }
 
-        public static TheoryData Subtract_Data => new TheoryData<ArrayMatrix<int>, ArrayMatrix<int>, ArrayMatrix<int>>
+        public static TheoryData<ArrayMatrix<int>, ArrayMatrix<int>, ArrayMatrix<int>> Subtract_Data => new()
         {
             {
                 ArrayMatrix<int>.Identity,
@@ -247,7 +247,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat1 - mat2).ShouldBe(expected);
         }
 
-        public static TheoryData Multiply_Data => new TheoryData<ArrayMatrix<int>, ArrayMatrix<int>, ArrayMatrix<int>>
+        public static TheoryData<ArrayMatrix<int>, ArrayMatrix<int>, ArrayMatrix<int>> Multiply_Data => new()
         {
             {
                 ArrayMatrix<int>.Identity,
@@ -349,7 +349,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
            };
 
 
-        public static TheoryData MultiplyScalar_Data => new TheoryData<int, ArrayMatrix<int>, ArrayMatrix<int>>
+        public static TheoryData<int, ArrayMatrix<int>, ArrayMatrix<int>> MultiplyScalar_Data => new()
         {
             {
                 2,
@@ -387,7 +387,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat * a).ShouldBe(expected);
         }
 
-        public static TheoryData MultiplyVector_Data => new TheoryData<ArrayMatrix<long>, long[], long[]>
+        public static TheoryData<ArrayMatrix<long>, long[], long[]> MultiplyVector_Data => new()
         {
             {
                 new ArrayMatrix<long>(new long[,]{
@@ -442,7 +442,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             }
         }
 
-        public static TheoryData Determinant_Data => new TheoryData<Fraction[,], Fraction>
+        public static TheoryData<Fraction[,], Fraction> Determinant_Data => new()
         {
             {
                 new Fraction[,]
@@ -555,7 +555,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         }
 
         [Theory]
-        [TupleMemberData(nameof(Cofactor_Data))]
+        [MemberData(nameof(Cofactor_Data))]
         [Trait("Category", "Normal")]
         public void Cofactor(Fraction[,] array, int i, int j, Fraction expected)
         {
@@ -590,7 +590,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         }
 
 
-        public static TheoryData Transpose_Data => new TheoryData<ArrayMatrix<int>, ArrayMatrix<int>>
+        public static TheoryData<ArrayMatrix<int>, ArrayMatrix<int>> Transpose_Data => new()
         {
             {
                 new(new int[2,3]{
@@ -624,9 +624,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         }
 
 
-        public static TheoryData GaussianElimination_Data => new TheoryData<
-            ArrayMatrix<Fraction>,
-            ArrayMatrix<Fraction>>
+        public static TheoryData<ArrayMatrix<Fraction>, ArrayMatrix<Fraction>> GaussianElimination_Data => new()
         {
             {
                 new(new Fraction[2,3]{
@@ -712,10 +710,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             got.ShouldBe(expected);
         }
 
-        public static TheoryData LinearSystem_Data => new TheoryData<
-            ArrayMatrix<Fraction>,
-            Fraction[],
-            Fraction[][]>
+        public static TheoryData<ArrayMatrix<Fraction>, Fraction[], Fraction[][]> LinearSystem_Data => new()
         {
             {
                 new(new Fraction[2,3]{

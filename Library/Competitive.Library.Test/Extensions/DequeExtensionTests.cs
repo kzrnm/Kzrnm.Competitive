@@ -9,7 +9,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
     {
         public static IEnumerable<ValueTuple<int>> Lengths => Enumerable.Range(0, 18).Select(ValueTuple.Create<int>);
         [Theory]
-        [TupleMemberData(nameof(Lengths))]
+        [MemberData(nameof(Lengths))]
         public void ToDeque(int length)
         {
             var orig = Enumerable.Range(1, length).ToArray();

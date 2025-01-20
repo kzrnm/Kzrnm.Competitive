@@ -5,9 +5,9 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String
 {
     public class KMPTests
     {
-        public static TheoryData Match_Data => new TheoryData<string, string, IEnumerable<int>>
+        public static TheoryData<string, string, IEnumerable<int>> Match_Data => new()
         {
-            { "ab", new string('q',1998)+"ab", new int[]{ 1998 } },
+            { "ab", new string('q',1998)+"ab", [1998] },
             { "abc", "abd", Array.Empty<int>() },
         };
 

@@ -28,7 +28,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
 
         [Theory]
         [Trait("Category", "Operator")]
-        [TupleMemberData(nameof(RandomStrassen_Data))]
+        [MemberData(nameof(RandomStrassen_Data))]
         public void RandomStrassen(ArrayMatrix<byte> matInt1, ArrayMatrix<byte> matInt2)
         {
             var mat1 = new ArrayMatrix<MontgomeryModInt<Mod1000000007>>(matInt1._v.Select(n => (MontgomeryModInt<Mod1000000007>)(uint)n).ToArray(), matInt1.Height, matInt1.Width);
