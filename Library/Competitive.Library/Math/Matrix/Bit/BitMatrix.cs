@@ -371,6 +371,7 @@ namespace Kzrnm.Competitive
         public static bool operator ==(BitMatrix left, BitMatrix right) => left.Equals(right);
         [凾(256)]
         public static bool operator !=(BitMatrix left, BitMatrix right) => !(left == right);
+
         public override string ToString()
         {
             if (kind != Kd.Normal) return kind.ToString();
@@ -402,15 +403,11 @@ namespace Kzrnm.Competitive
 #if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
 #endif
-        class DebugView
+        readonly record struct DebugView(
+            [property: DebuggerBrowsable(DebuggerBrowsableState.Never)] BitMatrix Matrix)
         {
-            private readonly BitMatrix m;
-            public DebugView(BitMatrix matrix)
-            {
-                m = matrix;
-            }
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            public BitArrayDebug Items => new(m._v);
+            public BitArrayDebug Items => new(Matrix._v);
         }
     }
 }

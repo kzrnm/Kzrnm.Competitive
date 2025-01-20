@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFrameworks>net9.0;net7.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
-    <NoWarn>$(NoWarn);CS8019;CA1050;CA1822;IDE0005;IDE0051;IDE0059</NoWarn>
+    <NoWarn>$(NoWarn);CS8019;CA1050;CA1822;IDE0005;IDE0051;IDE0059;NETSDK1138</NoWarn>
     <DefineConstants>$(DefineConstants);LIBRARY</DefineConstants>
   </PropertyGroup>
 

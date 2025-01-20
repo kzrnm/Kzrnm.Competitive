@@ -185,7 +185,7 @@ namespace Kzrnm.Competitive.Testing.Number
             }
         }
 
-        public static IEnumerable<(string, UInt512)> Parse_Data()
+        public static IEnumerable<TheoryDataRow<string, UInt512>> Parse_Data()
         {
             yield return ("1", (UInt512)1);
             yield return (new BigInteger(1e60).ToString(), (UInt512)new BigInteger(1e60));
@@ -740,7 +740,7 @@ namespace Kzrnm.Competitive.Testing.Number
             }
         }
 
-        public static IEnumerable<(UInt512, UInt512)> TrailingZeroCount_Data()
+        public static IEnumerable<TheoryDataRow<UInt512, UInt512>> TrailingZeroCount_Data()
         {
             yield return (0b1, 0);
             yield return (0b101, 0);
@@ -774,7 +774,7 @@ namespace Kzrnm.Competitive.Testing.Number
             UInt512.TrailingZeroCount(input).ShouldBe(expected);
         }
 
-        public static IEnumerable<(UInt512, UInt512)> Log2_Data()
+        public static IEnumerable<TheoryDataRow<UInt512, UInt512>> Log2_Data()
         {
             yield return (0b0, 0);
             yield return (0b1, 0);

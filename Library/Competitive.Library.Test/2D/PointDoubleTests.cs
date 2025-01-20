@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Xunit.Sdk;
 
 namespace Kzrnm.Competitive.Testing.TwoDimensional
 {
@@ -59,7 +60,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                         .ShouldBe(i.CompareTo(j), $"({SortedPoints[i]}).CompareTo(({SortedPoints[j]})) == {i}.CompareTo({j})");
         }
 
-        public static TheoryData<PointDouble, PointDouble, int> Inner_Data => new()
+        public static TheoryData<PointDouble, PointDouble, double> Inner_Data => new()
         {
             { new (0,0), new (0,0), 0 },
             { new (0,1), new (1,0), 0 },
@@ -69,12 +70,12 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         };
         [Theory]
         [MemberData(nameof(Inner_Data))]
-        public void Inner(PointDouble p1, PointDouble p2, int expected)
+        public void Inner(PointDouble p1, PointDouble p2, double expected)
         {
             p1.Inner(p2).ShouldBe(expected);
         }
 
-        public static TheoryData<PointDouble, PointDouble, int> Cross_Data => new()
+        public static TheoryData<PointDouble, PointDouble, double> Cross_Data => new()
         {
             { new (0,0), new (0,0), 0 },
             { new (0,1), new (1,0), -1 },
@@ -84,7 +85,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         };
         [Theory]
         [MemberData(nameof(Cross_Data))]
-        public void Cross(PointDouble p1, PointDouble p2, int expected)
+        public void Cross(PointDouble p1, PointDouble p2, double expected)
         {
             p1.Cross(p2).ShouldBe(expected);
         }
@@ -225,7 +226,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             p.直線との距離(a, b, c).ShouldBe(expected);
         }
 
-        public static TheoryData<PointDouble, PointDouble, (double, double, double)> 直線_Data => new()
+        public static TheoryData<PointDouble, PointDouble, SerializableTuple<double, double, double>> 直線_Data => new()
         {
             { new (0,0), new (1,1), (1, -1, 0) },
             { new (1,0), new (1,1), (1, 0, -1) },
@@ -234,12 +235,12 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         };
         [Theory]
         [MemberData(nameof(直線_Data))]
-        public void 直線(PointDouble p1, PointDouble p2, (double, double, double) expected)
+        public void 直線(PointDouble p1, PointDouble p2, SerializableTuple<double, double, double> expected)
         {
-            p1.直線(p2).ShouldBe(expected);
+            p1.直線(p2).ShouldBe(expected.ToTuple());
         }
 
-        public static TheoryData<PointDouble, PointDouble, (double, double, double)> 垂直二等分線_Data => new()
+        public static TheoryData<PointDouble, PointDouble, SerializableTuple<double, double, double>> 垂直二等分線_Data => new()
         {
             { new (0,0), new (1,1), (-1, -1, 1) },
             { new (1,0), new (1,1), (0, -1, 0.5) },
@@ -248,9 +249,9 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         };
         [Theory]
         [MemberData(nameof(垂直二等分線_Data))]
-        public void 垂直二等分線(PointDouble p1, PointDouble p2, (double, double, double) expected)
+        public void 垂直二等分線(PointDouble p1, PointDouble p2, SerializableTuple<double, double, double> expected)
         {
-            p1.垂直二等分線(p2).ShouldBe(expected);
+            p1.垂直二等分線(p2).ShouldBe(expected.ToTuple());
         }
 
         public static TheoryData<double, double, double, double, double, double, PointDouble> 直線と直線の交点_Data => new()
@@ -265,7 +266,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             PointDouble.直線と直線の交点(a, b, c, u, v, w).ShouldBe(expected);
         }
 
-        public static TheoryData<double, double, PointDouble, (double, double, double)> 直線の垂線_Data => new()
+        public static TheoryData<double, double, PointDouble, SerializableTuple<double, double, double>> 直線の垂線_Data => new()
         {
             { 1, 1, new (0.5, -1.5), (1, -1, -2) },
             { 4, 7, new (-10, 2), (7, -4, 78) },
@@ -274,9 +275,9 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         };
         [Theory]
         [MemberData(nameof(直線の垂線_Data))]
-        public void 直線の垂線(double a, double b, PointDouble p, (double, double, double) expected)
+        public void 直線の垂線(double a, double b, PointDouble p, SerializableTuple<double, double, double> expected)
         {
-            PointDouble.直線の垂線(a, b, p).ShouldBe(expected);
+            PointDouble.直線の垂線(a, b, p).ShouldBe(expected.ToTuple());
         }
 
         public static TheoryData<double, double, double, PointDouble, double, PointDouble[]> 直線と円の交点_Data => new()
@@ -373,54 +374,72 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             PointDouble.線分が交差しているか(b2, a2, b1, a1).ShouldBe(expected);
         }
 
-        public static TheoryData<PointDouble[], (PointDouble, PointDouble, PointDouble)[]> 三角形に分割_Data => new()
+        public class 三角形に分割Data : IXunitSerializable
         {
+            public PointDouble[] Input { get; set; }
+            public (PointDouble, PointDouble, PointDouble)[] Expected { get; set; }
+
+            void IXunitSerializable.Deserialize(IXunitSerializationInfo info)
             {
-                new PointDouble[0],
-                []
+                Input = info.GetValue<PointDouble[]>(nameof(Input));
+                var ex = info.GetValue<PointDouble[]>(nameof(Expected));
+                Expected = ex.Chunk(3).Select(t => (t[0], t[1], t[2])).ToArray();
+            }
+
+            void IXunitSerializable.Serialize(IXunitSerializationInfo info)
+            {
+                info.AddValue(nameof(Input), Input);
+                info.AddValue(nameof(Expected), Expected.SelectMany(t => new[] { t.Item1, t.Item2, t.Item3 }).ToArray());
+            }
+        }
+        public static TheoryData<三角形に分割Data> 三角形に分割_Data => new()
+        {
+            new 三角形に分割Data {
+                Input = [],
+                Expected = [],
             },
-            {
-                new PointDouble[1],
-                []
+            new 三角形に分割Data {
+                Input = new PointDouble[1],
+                Expected = [],
             },
-            {
-                new PointDouble[2],
-                []
+            new 三角形に分割Data {
+                Input = new PointDouble[2],
+                Expected = [],
             },
-            {
-                new PointDouble[3]
-                {
+            new 三角形に分割Data {
+                Input =
+                [
                     new (0, 1),
                     new (0, 0),
                     new (1, 1),
-                },
-                new (PointDouble, PointDouble, PointDouble)[]
-                {
+                ],
+                Expected =
+                [
                     (new (0, 0), new (0, 1), new (1, 1)),
-                }
+                ],
             },
-            {
-                new PointDouble[5]
-                {
+            new 三角形に分割Data {
+                Input =
+                [
                     new (0, 0),
                     new (10, 0),
                     new (5, 5),
                     new (10, 10),
                     new (0, 10),
-                },
-                new (PointDouble, PointDouble, PointDouble)[]
-                {
+                ],
+                Expected =
+                [
                     (new (10, 0), new (0, 0), new (0, 10)),
                     (new (10, 0), new (0, 10), new (10, 10)),
                     (new (5, 5), new (10, 0), new (10, 10)),
-                }
+                ],
             },
         };
         [Theory]
         [MemberData(nameof(三角形に分割_Data))]
-        public void 三角形に分割(PointDouble[] s, (PointDouble, PointDouble, PointDouble)[] expected)
+        public void 三角形に分割(三角形に分割Data d)
         {
-            PointDouble.三角形に分割(s).ShouldBe(expected);
+            PointDouble.三角形に分割(d.Input).ShouldBe(d.Expected);
         }
 
         [Fact]

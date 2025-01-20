@@ -16,15 +16,15 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         public void GetChildTest()
         {
             var trie = new Trie<int, int>();
-            trie.GetChild(stackalloc int[] { 1, 2, 3 }).ShouldBeNull();
+            trie.GetChild([1, 2, 3]).ShouldBeNull();
         }
 
         [Fact]
         public void AddTest()
         {
             var trie = new Trie<int, int>();
-            trie.Add(stackalloc int[] { 1, 2, 3 }, -1);
-            trie.GetChild(stackalloc int[] { 1, 2, 3 }).Value.ShouldBe(-1);
+            trie.Add([1, 2, 3], -1);
+            trie.GetChild([1, 2, 3]).Value.ShouldBe(-1);
             trie.HasValue.ShouldBeFalse();
 
             SortedDictionary<int, Trie<int, int>> dic;
@@ -76,12 +76,12 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         public void IndexTest()
         {
             var trie = new Trie<int, int>();
-            trie.Add(stackalloc int[] { 1, 2, 3 }, 0);
-            trie.Add(stackalloc int[] { 1, 3, 2 }, 1);
-            trie.Add(stackalloc int[] { 2, 1, 3 }, 2);
-            trie.Add(stackalloc int[] { 2, 3, 1 }, 3);
-            trie.Add(stackalloc int[] { 3, 1, 3 }, 4);
-            trie.Add(stackalloc int[] { 3, 2, 1 }, 5);
+            trie.Add([1, 2, 3], 0);
+            trie.Add([1, 3, 2], 1);
+            trie.Add([2, 1, 3], 2);
+            trie.Add([2, 3, 1], 3);
+            trie.Add([3, 1, 3], 4);
+            trie.Add([3, 2, 1], 5);
 
             for (int i = 0; i < 6; i++)
                 trie[i].ShouldBe(i);
@@ -94,10 +94,10 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         public void RemoveTest()
         {
             var trie = new Trie<int, int>();
-            trie.Add(stackalloc int[] { 1, 2 }, 10);
-            trie.Add(stackalloc int[] { 1, 2, 3 }, -1);
-            trie.GetChild(stackalloc int[] { 1, 2 }).Value.ShouldBe(10);
-            trie.GetChild(stackalloc int[] { 1, 2, 3 }).Value.ShouldBe(-1);
+            trie.Add([1, 2], 10);
+            trie.Add([1, 2, 3], -1);
+            trie.GetChild([1, 2]).Value.ShouldBe(10);
+            trie.GetChild([1, 2, 3]).Value.ShouldBe(-1);
             trie.HasValue.ShouldBeFalse();
 
             Trie<int, int> tt;
@@ -128,7 +128,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
             dic.ShouldBeEmpty();
 
             // remove last
-            trie.Remove(stackalloc int[] { 1, 2, 3 });
+            trie.Remove([1, 2, 3]);
 
             tt = trie;
             dic = TrieDic(tt);
@@ -149,8 +149,8 @@ namespace Kzrnm.Competitive.Testing.DataStructure
 
 
             // remove mid
-            trie.Add(stackalloc int[] { 1, 2, 3 }, -2);
-            trie.Remove(stackalloc int[] { 1, 2 });
+            trie.Add([1, 2, 3], -2);
+            trie.Remove([1, 2]);
 
             tt = trie;
             dic = TrieDic(tt);
@@ -177,7 +177,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
 
 
             // remove last one
-            trie.Remove(stackalloc int[] { 1, 2, 3 });
+            trie.Remove([1, 2, 3]);
 
             tt = trie;
             dic = TrieDic(tt);
@@ -190,22 +190,22 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         {
             var trie = new Trie<int, int>();
             trie.Count.ShouldBe(0);
-            trie.Add(stackalloc int[] { 1, 2, 3 }, -1);
-            trie.Add(stackalloc int[] { 1, 2 }, -1);
-            trie.Add(stackalloc int[] { 2, 2, 4 }, -1);
+            trie.Add([1, 2, 3], -1);
+            trie.Add([1, 2], -1);
+            trie.Add([2, 2, 4], -1);
             trie.Count.ShouldBe(3);
-            trie.GetChild(stackalloc int[] { 1, 2, 3 }).Count.ShouldBe(1);
-            trie.GetChild(stackalloc int[] { 1, 2 }).Count.ShouldBe(2);
+            trie.GetChild([1, 2, 3]).Count.ShouldBe(1);
+            trie.GetChild([1, 2]).Count.ShouldBe(2);
 
-            trie.Remove(stackalloc int[] { 2, 2, 4 });
+            trie.Remove([2, 2, 4]);
             trie.Count.ShouldBe(2);
-            trie.GetChild(stackalloc int[] { 1, 2, 3 }).Count.ShouldBe(1);
-            trie.GetChild(stackalloc int[] { 1, 2 }).Count.ShouldBe(2);
+            trie.GetChild([1, 2, 3]).Count.ShouldBe(1);
+            trie.GetChild([1, 2]).Count.ShouldBe(2);
 
-            trie.Remove(stackalloc int[] { 1, 2 });
+            trie.Remove([1, 2]);
             trie.Count.ShouldBe(1);
-            trie.GetChild(stackalloc int[] { 1, 2, 3 }).Count.ShouldBe(1);
-            trie.GetChild(stackalloc int[] { 1, 2 }).Count.ShouldBe(1);
+            trie.GetChild([1, 2, 3]).Count.ShouldBe(1);
+            trie.GetChild([1, 2]).Count.ShouldBe(1);
         }
 
 
@@ -213,12 +213,12 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         public void AllEnumerateTest()
         {
             var trie = new Trie<int, int>();
-            trie.Add(stackalloc int[] { 1 }, -2);
-            trie.Add(stackalloc int[] { 1, 2 }, 10);
-            trie.Add(stackalloc int[] { 1, 2, 3 }, -1);
-            trie.Add(stackalloc int[] { 1, -3 }, 35);
-            trie.Add(stackalloc int[] { 1, -2 }, 8);
-            trie.Add(stackalloc int[] { 1, -2, 5 }, 6);
+            trie.Add([1], -2);
+            trie.Add([1, 2], 10);
+            trie.Add([1, 2, 3], -1);
+            trie.Add([1, -3], 35);
+            trie.Add([1, -2], 8);
+            trie.Add([1, -2, 5], 6);
 
             var all = trie.All().GetEnumerator();
             var expected = new (int[] key, int val)[]
@@ -244,14 +244,14 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         public void MatchGreedyTest()
         {
             var trie = new Trie<int, int>();
-            trie.Add(stackalloc int[] { 1 }, -2);
-            trie.Add(stackalloc int[] { 1, 2 }, 10);
-            trie.Add(stackalloc int[] { 1, 2, 3 }, -1);
-            trie.Add(stackalloc int[] { 1, -3 }, 35);
-            trie.Add(stackalloc int[] { 1, -2 }, 8);
-            trie.Add(stackalloc int[] { 1, -2, 5 }, 6);
+            trie.Add([1], -2);
+            trie.Add([1, 2], 10);
+            trie.Add([1, 2, 3], -1);
+            trie.Add([1, -3], 35);
+            trie.Add([1, -2], 8);
+            trie.Add([1, -2, 5], 6);
 
-            var greedy = trie.MatchGreedy(new int[] { 1, -2, 5, 20 }).GetEnumerator();
+            var greedy = trie.MatchGreedy([1, -2, 5, 20]).GetEnumerator();
             var expected = new (int[] key, int val)[]
             {
                 (new int[] { 1 }, -2),

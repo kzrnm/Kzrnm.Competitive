@@ -16,20 +16,18 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             [
                 [1, 2, 3],
                 [4, 5, 6],
-            ]).ToArray().ShouldBe(new int[][]
-            {
+            ]).ToArray().ShouldBe([
                 [1, 2, 3],
                 [4, 5, 6],
-            });
+            ]);
             new ArrayMatrix<int>(new int[,]
             {
                 { 1, 2, 3 },
                 { 4, 5, 6 },
-            }).ToArray().ShouldBe(new int[][]
-            {
+            }).ToArray().ShouldBe([
                 [1, 2, 3],
                 [4, 5, 6],
-            });
+            ]);
         }
 
         [Fact]
@@ -73,7 +71,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             [
                 [1, 2, 3],
                 [4, 5, 6],
-            ]).ShouldBe(new ArrayMatrix<int>(new int[] { 1, 2, 3, 4, 5, 6 }, 2, 3));
+            ]).ShouldBe(new ArrayMatrix<int>([1, 2, 3, 4, 5, 6], 2, 3));
             new ArrayMatrix<int>(
             [
                 [1, 2,],
@@ -94,11 +92,10 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             {
                 { 1, 2, 3 },
                 { 4, 5, 6 },
-            })).ToArray().ShouldBe(new int[][]
-            {
+            })).ToArray().ShouldBe([
                 [-1, -2, -3],
                 [-4, -5, -6],
-            });
+            ]);
         }
 
         public static TheoryData<ArrayMatrix<int>, ArrayMatrix<int>, ArrayMatrix<int>> Add_Data => new()
@@ -429,11 +426,10 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 { 1, 2 },
                 { 3, 4 },
             });
-            orig.Pow(5).ToArray().ShouldBe(new int[][]
-            {
+            orig.Pow(5).ToArray().ShouldBe([
                 [1069, 1558],
                 [2337, 3406],
-            });
+            ]);
             var cur = orig;
             for (int i = 1; i < 10; i++)
             {
@@ -573,12 +569,11 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 {-10, 10, 3}
             });
             var inv = orig.Inv();
-            inv.ToArray().ShouldBe(new Fraction[][]
-            {
+            inv.ToArray().ShouldBe([
                 [new Fraction(-146,319), new Fraction(-93,319), new Fraction(-243,319)],
                 [new Fraction(-131,319), new Fraction(-90,319), new Fraction(-194,319)],
                 [new Fraction(-50,319), new Fraction(-10,319), new Fraction(-57,319)],
-            });
+            ]);
             var id = new Fraction[][]
             {
                 [1,0,0],

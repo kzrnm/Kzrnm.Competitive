@@ -438,10 +438,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "111",
                 ]),
                 0b111ul,
-                new[]
-                {
-                    0b111ul
-                }
+                [0b111ul]
             },
             {
                 BitMatrix64.Parse(
@@ -451,10 +448,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "101",
                 ]),
                 0b111ul,
-                new[]
-                {
-                    0b011ul
-                }
+                [0b011ul]
             },
             {
                 BitMatrix64.Parse(
@@ -474,11 +468,10 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "110",
                 ]),
                 0b110,
-                new[]
-                {
+                [
                     0b010ul,
                     0b100ul,
-                }
+                ]
             },
             {
                 BitMatrix64.Parse(
@@ -487,11 +480,10 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "000",
                 ]),
                 0ul,
-                new[]
-                {
+                [
                     0ul,
                     1ul,
-                }
+                ]
             },
         };
 

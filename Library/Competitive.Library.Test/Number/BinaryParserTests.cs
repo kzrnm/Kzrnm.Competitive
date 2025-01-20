@@ -6,17 +6,17 @@ namespace Kzrnm.Competitive.Testing.Number
 {
     public class BinaryParserTests
     {
-        public static IEnumerable<Tuple<uint>> ParseUInt32_Data()
+        public static IEnumerable<TheoryDataRow<uint>> ParseUInt32_Data()
         {
             for (uint i = 0; i < 100; i++)
             {
-                yield return Tuple.Create(i);
-                yield return Tuple.Create(uint.MaxValue - i);
+                yield return i;
+                yield return uint.MaxValue - i;
             }
             var rnd = new Xoshiro256(227);
             for (int i = 0; i < 100; i++)
             {
-                yield return Tuple.Create(rnd.NextUInt32());
+                yield return rnd.NextUInt32();
             }
         }
 
@@ -28,17 +28,17 @@ namespace Kzrnm.Competitive.Testing.Number
             BinaryParser.ParseUInt32(str).ShouldBe(num);
         }
 
-        public static IEnumerable<Tuple<ulong>> ParseUInt64_Data()
+        public static IEnumerable<TheoryDataRow<ulong>> ParseUInt64_Data()
         {
             for (ulong i = 0; i < 100; i++)
             {
-                yield return Tuple.Create(i);
-                yield return Tuple.Create(ulong.MaxValue - i);
+                yield return i;
+                yield return ulong.MaxValue - i;
             }
             var rnd = new Xoshiro256(227);
             for (int i = 0; i < 100; i++)
             {
-                yield return Tuple.Create(rnd.NextUInt64());
+                yield return rnd.NextUInt64();
             }
         }
 
@@ -51,19 +51,19 @@ namespace Kzrnm.Competitive.Testing.Number
         }
 
 
-        public static IEnumerable<Tuple<string>> ParseBitArray_Data()
+        public static IEnumerable<TheoryDataRow<string>> ParseBitArray_Data()
         {
             for (int i = 0; i < 20; i++)
             {
-                yield return Tuple.Create(System.Convert.ToString(i, 2));
+                yield return System.Convert.ToString(i, 2);
             }
             for (int i = 0; i < 20; i++)
             {
-                yield return Tuple.Create(System.Convert.ToString(i + (1L << 32) - 10, 2));
+                yield return System.Convert.ToString(i + (1L << 32) - 10, 2);
             }
             for (int i = 0; i < 20; i++)
             {
-                yield return Tuple.Create(System.Convert.ToString(i + (1L << 40), 2));
+                yield return System.Convert.ToString(i + (1L << 40), 2);
             }
 
             var rnd = new Xoshiro256(227);
@@ -75,7 +75,7 @@ namespace Kzrnm.Competitive.Testing.Number
                 {
                     chrs[j] = (char)(rnd.NextInt32(2) + '0');
                 }
-                yield return Tuple.Create(new string(chrs));
+                yield return new string(chrs);
             }
         }
 

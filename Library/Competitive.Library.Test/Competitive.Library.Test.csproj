@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <NoWarn>$(NoWarn);CA1822;CA1825;CA1032;IDE0028;IDE0018;IDE0044;IDE0305;xUnit1037</NoWarn>
+    <NoWarn>$(NoWarn);CA1822;CA1825;CA1032;IDE0028;IDE0018;IDE0044;IDE0305;NETSDK1138</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Library'">
     <DefineConstants>$(DefineConstants);DEBUG;LIBRARY</DefineConstants>

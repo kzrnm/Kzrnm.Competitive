@@ -1,19 +1,17 @@
 using AtCoder.Internal;
 using System;
 using System.Buffers;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    using static Kzrnm.Competitive.SegtreeBeats;
     using Kd = Internal.ArrayMatrixKind;
     /// <summary>
     /// Mod2 の行列。+: xor *: and
@@ -359,6 +357,7 @@ namespace Kzrnm.Competitive
         public static bool operator ==(BitMatrix<T> left, BitMatrix<T> right) => left.Equals(right);
         [凾(256)]
         public static bool operator !=(BitMatrix<T> left, BitMatrix<T> right) => !(left == right);
+
         public override string ToString()
         {
             if (kind != Kd.Normal) return kind.ToString();

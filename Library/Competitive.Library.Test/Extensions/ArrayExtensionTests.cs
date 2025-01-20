@@ -1,3 +1,4 @@
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,114 +21,155 @@ namespace Kzrnm.Competitive.Testing.Extensions
             MemoryMarshal.Cast<int, long>(arr).ToArray().Sort().ShouldBeInOrder();
         }
 
-        [Fact]
-        public void SortString()
+        public static TheoryData<string[], string[]> SortString_Data => new()
         {
-            new string[] {
-                "zzz14144",
-                "aBc",
-                "AB",
-                "a",
-                "dsjkf50000",
-                "BCD443",
-                "aaa31",
-            }.Sort().ShouldBe([
-                "AB",
-                "BCD443",
-                "a",
-                "aBc",
-                "aaa31",
-                "dsjkf50000",
-                "zzz14144",
-            ]);
+            {
+                [
+                    "zzz14144",
+                    "aBc",
+                    "AB",
+                    "a",
+                    "dsjkf50000",
+                    "BCD443",
+                    "aaa31",
+                ],
+                [
+                    "AB",
+                    "BCD443",
+                    "a",
+                    "aBc",
+                    "aaa31",
+                    "dsjkf50000",
+                    "zzz14144",
+                ]
+            },
+        };
+        [Theory]
+        [MemberData(nameof(SortString_Data))]
+        public void SortString(string[] input, string[] expected)
+        {
+            input.Sort().ShouldBe(expected);
         }
 
-        [Fact]
-        public void SortSelect()
+        public static TheoryData<string[], string[]> SortSelect_Data => new()
         {
-            new string[] {
-                "zzz14144",
-                "aBc",
-                "AB",
-                "a",
-                "dsjkf50000",
-                "BCD443",
-                "aaa31",
-            }.Sort(s => s.Length).ShouldBe([
-                "a",
-                "AB",
-                "aBc",
-                "aaa31",
-                "BCD443",
-                "zzz14144",
-                "dsjkf50000",
-            ]);
+            {
+                [
+                    "zzz14144",
+                    "aBc",
+                    "AB",
+                    "a",
+                    "dsjkf50000",
+                    "BCD443",
+                    "aaa31",
+                ],
+                [
+                    "a",
+                    "AB",
+                    "aBc",
+                    "aaa31",
+                    "BCD443",
+                    "zzz14144",
+                    "dsjkf50000",
+                ]
+            },
+        };
+        [Theory]
+        [MemberData(nameof(SortSelect_Data))]
+        public void SortSelect(string[] input, string[] expected)
+        {
+            input.Sort(s => s.Length).ShouldBe(expected);
         }
 
-        [Fact]
-        public void SortComparison()
+        public static TheoryData<string[], string[]> SortComparison_Data => new()
         {
-            new string[] {
-                "zzz14144",
-                "aBc",
-                "AB",
-                "a",
-                "dsjkf50000",
-                "BCD443",
-                "aaa31",
-            }.Sort((s1, s2) => s1.Length.CompareTo(s2.Length)).ShouldBe([
-                "a",
-                "AB",
-                "aBc",
-                "aaa31",
-                "BCD443",
-                "zzz14144",
-                "dsjkf50000",
-            ]);
+            {
+                [
+                    "zzz14144",
+                    "aBc",
+                    "AB",
+                    "a",
+                    "dsjkf50000",
+                    "BCD443",
+                    "aaa31",
+                ],
+                [
+                    "a",
+                    "AB",
+                    "aBc",
+                    "aaa31",
+                    "BCD443",
+                    "zzz14144",
+                    "dsjkf50000",
+                ]
+            },
+        };
+        [Theory]
+        [MemberData(nameof(SortComparison_Data))]
+        public void SortComparison(string[] input, string[] expected)
+        {
+            input.Sort((s1, s2) => s1.Length.CompareTo(s2.Length)).ShouldBe(expected);
         }
 
-        [Fact]
-        public void SortComparer()
+        public static TheoryData<string[], StringComparison, string[]> SortComparer_Data => new()
         {
-            new string[] {
-                "zzz14144",
-                "aBc",
-                "AB",
-                "a",
-                "dsjkf50000",
-                "BCD443",
-                "aaa31",
-            }.Sort(StringComparer.OrdinalIgnoreCase).ShouldBe([
-                "a",
-                "aaa31",
-                "AB",
-                "aBc",
-                "BCD443",
-                "dsjkf50000",
-                "zzz14144",
-            ]);
+            {
+                [
+                    "zzz14144",
+                    "aBc",
+                    "AB",
+                    "a",
+                    "dsjkf50000",
+                    "BCD443",
+                    "aaa31",
+                ],
+                StringComparison.OrdinalIgnoreCase,
+                [
+                    "a",
+                    "aaa31",
+                    "AB",
+                    "aBc",
+                    "BCD443",
+                    "dsjkf50000",
+                    "zzz14144",
+                ]
+            },
+        };
+        [Theory]
+        [MemberData(nameof(SortComparer_Data))]
+        public void SortComparer(string[] input, StringComparison comparisonType, string[] expected)
+        {
+            input.Sort(StringComparer.FromComparison(comparisonType)).ShouldBe(expected);
         }
 
-        [Fact]
-        public void Reverse()
+        public static TheoryData<string[], string[]> Reverse_Data => new()
         {
-            new string[] {
-                "zzz14144",
-                "aBc",
-                "AB",
-                "a",
-                "dsjkf50000",
-                "BCD443",
-                "aaa31",
-            }.Reverse().ShouldBe([
-                "aaa31",
-                "BCD443",
-                "dsjkf50000",
-                "a",
-                "AB",
-                "aBc",
-                "zzz14144",
-            ]);
+            {
+                [
+                    "zzz14144",
+                    "aBc",
+                    "AB",
+                    "a",
+                    "dsjkf50000",
+                    "BCD443",
+                    "aaa31",
+                ],
+                [
+                    "aaa31",
+                    "BCD443",
+                    "dsjkf50000",
+                    "a",
+                    "AB",
+                    "aBc",
+                    "zzz14144",
+                ]
+            },
+        };
+        [Theory]
+        [MemberData(nameof(Reverse_Data))]
+        public void Reverse(string[] input, string[] expected)
+        {
+            input.Reverse().ShouldBe(expected);
         }
 
         [Fact]
@@ -173,11 +215,11 @@ namespace Kzrnm.Competitive.Testing.Extensions
         [Fact]
         public void GetOrDummySpan()
         {
-            Span<long> arr = stackalloc long[] {
+            Span<long> arr = [
                 43,
                 24,
                 8373,
-            };
+            ];
             arr.GetOrDummy(0).ShouldBe(43);
             arr.GetOrDummy(1).ShouldBe(24);
             arr.GetOrDummy(2).ShouldBe(8373);
@@ -199,11 +241,11 @@ namespace Kzrnm.Competitive.Testing.Extensions
         [Fact]
         public void GetOrDummyReadOnlySpan()
         {
-            ReadOnlySpan<long> arr = stackalloc long[] {
+            ReadOnlySpan<long> arr = [
                 43,
                 24,
                 8373,
-            };
+            ];
             arr.GetOrDummy(0).ShouldBe(43);
             arr.GetOrDummy(1).ShouldBe(24);
             arr.GetOrDummy(2).ShouldBe(8373);

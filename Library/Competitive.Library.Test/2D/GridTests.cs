@@ -45,12 +45,11 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [Fact]
         public void StringDefault()
         {
-            var grid = Grid.Create(new[]
-            {
+            var grid = Grid.Create([
                 "...#.",
                 ".#.#.",
                 ".#..."
-            }, '-');
+            ], '-');
             grid.H.ShouldBe(3);
             grid.W.ShouldBe(5);
             grid[0, 0].ShouldBe('.');
@@ -216,14 +215,14 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
                 return (int)p;
             }
 
-            var q = new int[] { 3, 1, 5, 7 }.AsSpan();
+            Span<int> q = [3, 1, 5, 7];
             foreach (int ix in grid.Moves(1, 1))
             {
                 ix.ShouldBe(q[0]);
                 q = q[1..];
             }
 
-            var r = new (int, int)[] { (1, 0), (0, 1), (1, 2), (2, 1) }.AsSpan();
+            Span<(int, int)> r = [(1, 0), (0, 1), (1, 2), (2, 1)];
             foreach (var (h, w) in grid.Moves(4))
             {
                 (h, w).ShouldBe(r[0]);
@@ -345,11 +344,10 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         [Fact]
         public void Foreach()
         {
-            var grid = Grid.Create(new[]
-            {
+            var grid = Grid.Create([
                 "123",
                 "456",
-            }, '-');
+            ], '-');
             var lst = new List<(char, int, int)>();
             foreach (var tuple in grid)
                 lst.Add(tuple);

@@ -106,6 +106,10 @@ namespace Kzrnm.Competitive.Internal.Bbst
             => t != null ? t.Sum : op.Identity;
         static T IBbstNode<T, LazySplayTreeNode<T, F, TOp>>.Sum(LazySplayTreeNode<T, F, TOp> t)
             => GetSum(t);
+
+#if !LIBRARY
+        [SourceExpander.NotEmbeddingSource]
+#endif
         public override string ToString() => $"Size = {Size}, Value = {Value}, Sum = {Sum}";
 
         [凾(256)] static T ISplayTreePusher<LazySplayTreeNode<T, F, TOp>, T>.Operate(T x, T y) => op.Operate(x, y);

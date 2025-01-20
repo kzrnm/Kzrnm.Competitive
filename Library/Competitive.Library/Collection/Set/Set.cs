@@ -23,6 +23,10 @@ namespace Kzrnm.Competitive
             {
                 Value = item;
             }
+
+#if !LIBRARY
+            [SourceExpander.NotEmbeddingSource]
+#endif
             public override string ToString() => $"Value = {Value}, Size = {Size}";
             [凾(256)] public static Node Create(T item, NodeColor color) => new(item, color);
             [凾(256)] public static T GetValue(Node node) => node.Value;

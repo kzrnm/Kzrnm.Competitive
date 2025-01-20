@@ -287,6 +287,9 @@ namespace Kzrnm.Competitive
                 From = from;
                 ToExclusive = toExclusive;
             }
+#if !LIBRARY
+            [SourceExpander.NotEmbeddingSource]
+#endif
             public override string ToString() => $"Range = [{From}, {ToExclusive}), Size = {Size}";
             [凾(256)]
             public static Node Create((T From, T ToExclusive) item, NodeColor color) => new Node(item.From, item.ToExclusive, color);

@@ -1,4 +1,8 @@
+using Shouldly;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using Xunit.Sdk;
 
 namespace Kzrnm.Competitive.Testing.MathNS
 {
@@ -19,105 +23,115 @@ namespace Kzrnm.Competitive.Testing.MathNS
         }
 
 
-        public static TheoryData<int, Dictionary<int, int>> PrimeFactoringInt_Data => new()
+        public static TheoryData<int, SerializableTuple<int, int>[]> PrimeFactoringInt_Data => new()
         {
             {
                 1,
-                new Dictionary<int, int> { }
+                []
             },
             {
                 1 << 16,
-                new Dictionary<int, int> {
-                    { 2, 16 },
-                }
+                [
+                    (2, 16),
+                ]
             },
             {
                 2 * 3 * 5,
-                new Dictionary<int, int> {
-                    { 2, 1 },
-                    { 3, 1 },
-                    { 5, 1 },
-                }
+                [
+                    (2, 1),
+                    (3, 1),
+                    (5, 1),
+                ]
             },
             {
                 99991,
-                new Dictionary<int, int> {
-                    { 99991, 1 },
-                }
+                [
+                    (99991, 1),
+                ]
             },
             {
                 2147483647,
-                new Dictionary<int, int> {
-                    { 2147483647, 1 },
-                }
+                [
+                    (2147483647, 1),
+                ]
             },
             {
                 2095133040, //高度合成数
-                new Dictionary<int, int> {
-                    { 2, 4 },
-                    { 3, 4 },
-                    { 5, 1 },
-                    { 7, 1 },
-                    { 11, 1 },
-                    { 13, 1 },
-                    { 17, 1 },
-                    { 19, 1 },
-                }
+                [
+                    (2, 4),
+                    (3, 4),
+                    (5, 1),
+                    (7, 1),
+                    (11, 1),
+                    (13, 1),
+                    (17, 1),
+                    (19, 1),
+                ]
             },
         };
 
         [Theory]
         [MemberData(nameof(PrimeFactoringInt_Data))]
-        public void PrimeFactoringInt(int num, Dictionary<int, int> expected)
+        public void PrimeFactoringInt(int num, SerializableTuple<int, int>[] expected)
         {
-            primes.PrimeFactoring(num).ShouldBe(expected);
+            var f = primes.PrimeFactoring(num);
+            f.Count.ShouldBe(expected.Length);
+            foreach (var (k, count) in expected)
+            {
+                f.ShouldContainKeyAndValue(k, count);
+            }
         }
 
-        public static TheoryData<long, Dictionary<long, int>> PrimeFactoringLong_Data => new()
+        public static TheoryData<long, SerializableTuple<long, int>[]> PrimeFactoringLong_Data => new()
         {
             {
                 1,
-                new Dictionary<long, int> { }
+                []
             },
             {
                 903906555552,
-                new Dictionary<long, int> {
-                    { 2, 5 },
-                    { 3, 8 },
-                    { 7, 1 },
-                    { 11, 2 },
-                    { 13, 1 },
-                    { 17, 1 },
-                    { 23, 1 },
-                }
+                [
+                    (2, 5),
+                    (3, 8),
+                    (7, 1),
+                    (11, 2),
+                    (13, 1),
+                    (17, 1),
+                    (23, 1),
+                ]
             },
             {
                 132147483703,
-                new Dictionary<long, int> {
-                    { 132147483703, 1 },
-                }
+                [
+                    (132147483703, 1),
+                ]
             },
             {
                 963761198400, //高度合成数
-                new Dictionary<long, int> {
-                    { 2, 6 },
-                    { 3, 4 },
-                    { 5, 2 },
-                    { 7, 1 },
-                    { 11, 1 },
-                    { 13, 1 },
-                    { 17, 1 },
-                    { 19, 1 },
-                    { 23, 1 },
-                }
+                [
+                    (2, 6),
+                    (3, 4),
+                    (5, 2),
+                    (7, 1),
+                    (11, 1),
+                    (13, 1),
+                    (17, 1),
+                    (19, 1),
+                    (23, 1),
+                ]
             },
         };
 
         [Theory]
         [MemberData(nameof(PrimeFactoringLong_Data))]
-        public void PrimeFactoringLong(long num, Dictionary<long, int> expected)
+        public void PrimeFactoringLong(long num, SerializableTuple<long, int>[] expected)
         {
-            primes.PrimeFactoring(num).ShouldBe(expected);
+            var f = primes.PrimeFactoring(num);
+            f.Count.ShouldBe(expected.Length);
+            foreach (var (k, count) in expected)
+            {
+                f.ShouldContainKeyAndValue(k, count);
+            }
         }
 
         [Fact]

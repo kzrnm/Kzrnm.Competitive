@@ -232,15 +232,11 @@ namespace Kzrnm.Competitive
 #if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
 #endif
-        class DebugView
+        readonly record struct DebugView(
+            [property: DebuggerBrowsable(DebuggerBrowsableState.Never)] BitOrMatrix Matrix)
         {
-            private readonly BitOrMatrix m;
-            public DebugView(BitOrMatrix matrix)
-            {
-                m = matrix;
-            }
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            public BitArrayDebug Items => new(m._v);
+            public BitArrayDebug Items => new(Matrix._v);
         }
     }
 }

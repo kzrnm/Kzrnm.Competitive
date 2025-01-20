@@ -126,8 +126,7 @@ namespace Kzrnm.Competitive.Testing.Collection
             set.Add(1, 10);
             set.Add(2, 11);
             set.Add(3, 12);
-            set.ToArray().ShouldBe(new KeyValuePair<int, int>[]
-            {
+            set.ToArray().ShouldBe([
                 KeyValuePair.Create(1,5),
                 KeyValuePair.Create(1,10),
                 KeyValuePair.Create(2,6),
@@ -141,10 +140,9 @@ namespace Kzrnm.Competitive.Testing.Collection
                 KeyValuePair.Create(7,2),
                 KeyValuePair.Create(8,3),
                 KeyValuePair.Create(9,4),
-            });
+            ]);
             set.Remove(5);
-            set.ToArray().ShouldBe(new KeyValuePair<int, int>[]
-            {
+            set.ToArray().ShouldBe([
                 KeyValuePair.Create(1,5),
                 KeyValuePair.Create(1,10),
                 KeyValuePair.Create(2,6),
@@ -157,7 +155,7 @@ namespace Kzrnm.Competitive.Testing.Collection
                 KeyValuePair.Create(7,2),
                 KeyValuePair.Create(8,3),
                 KeyValuePair.Create(9,4),
-            });
+            ]);
             set.FindNodeLowerBound(4).Pair.ShouldBe(KeyValuePair.Create(4, 8));
             set.FindNodeUpperBound(4).Pair.ShouldBe(KeyValuePair.Create(5, 9));
             set.FindNodeLowerBound(5).Pair.ShouldBe(KeyValuePair.Create(5, 9));

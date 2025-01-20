@@ -289,6 +289,10 @@ namespace Kzrnm.Competitive
                 From = from;
                 ToInclusive = toInclusive;
             }
+
+#if !LIBRARY
+            [SourceExpander.NotEmbeddingSource]
+#endif
             public override string ToString() => $"Range = [{From}, {ToInclusive}], Size = {Size}";
             [凾(256)]
             public static Node Create((T From, T ToInclusive) item, NodeColor color) => new Node(item.From, item.ToInclusive, color);

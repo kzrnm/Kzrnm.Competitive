@@ -169,6 +169,10 @@ namespace Kzrnm.Competitive
             [凾(256)]
             public static T GetSum(TSelf t)
                 => t != null ? t.Sum : op.Identity;
+
+#if !LIBRARY
+            [SourceExpander.NotEmbeddingSource]
+#endif
             public override string ToString() => Data switch
             {
                 Leaf lf => $"Size = {Size}, Value = {lf.Value}, Sum = {Sum}, Lazy = {Lazy}",

@@ -148,14 +148,13 @@ namespace Kzrnm.Competitive.Testing.Extensions
             }
         }
 
-        public static readonly object[][] Bits_Data = new[]
+        public static TheoryData<int> Bits_Data => new(new int[]
         {
             20,
             32,
             32*2,
             32*3,
-        }.SelectMany(
-            n => Enumerable.Range(-5, 11).Select(i => new object[] { n + i })).ToArray();
+        }.SelectMany(n => Enumerable.Range(-5, 11).Select(i => n + i)));
 
         [Theory]
         [MemberData(nameof(Bits_Data))]

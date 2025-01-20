@@ -1,19 +1,27 @@
 using AtCoder;
 using System;
 using System.Linq;
-using System.Numerics;
 
 namespace Kzrnm.Competitive.Testing.MathNS
 {
     public class ConvolutionLargeTests
     {
+#pragma warning disable IDE0079
+#pragma warning disable xUnit1004 // Test methods should not be skipped
+#pragma warning restore IDE0079
+        public static bool LibraryTest
+#if LIBRARY
+            => true;
+#else
+            => false;
+#endif
         private readonly struct Mod998244353 : IStaticMod
         {
             public uint Mod => 998244353;
             public bool IsPrime => true;
         }
 
-        [HeavyFact]
+        [Fact(Skip = "重いので飛ばす", SkipWhen = nameof(LibraryTest))]
         public void Large998244353_2_23_Alpha()
         {
             var len = NumberTheoreticTransform<Mod998244353>.NttLength();
@@ -31,8 +39,8 @@ namespace Kzrnm.Competitive.Testing.MathNS
             }
             ret.Skip(1999).SkipLast(1998).ShouldAllBe(v => v == 1000);
         }
-
-        [HeavyFact]
+        
+        [Fact(Skip = "重いので飛ばす", SkipWhen = nameof(LibraryTest))]
         public void Large998244353_2_24()
         {
             var len = NumberTheoreticTransform<Mod998244353>.NttLength();
@@ -49,6 +57,9 @@ namespace Kzrnm.Competitive.Testing.MathNS
                 ret[^i].ShouldBe(expected);
             }
         }
+#pragma warning disable IDE0079
+#pragma warning restore xUnit1004 // Test methods should not be skipped
+#pragma warning restore IDE0079
 
         static uint[] ConvNative(uint[] a, uint[] b, long mod)
         {
@@ -67,10 +78,10 @@ namespace Kzrnm.Competitive.Testing.MathNS
 
         public static TheoryData<int[], int[], uint[]> EmptyIntTestData => new()
         {
-            { Array.Empty<int>(), Array.Empty<int>(), Array.Empty<uint>() },
-            { Array.Empty<int>(), new int[]{ 1, 2 }, Array.Empty<uint>() },
-            { new int[]{ 1, 2 }, Array.Empty<int>(), Array.Empty<uint>() },
-            { new int[]{ 1 }, Array.Empty<int>(), Array.Empty<uint>() },
+            { [], [], [] },
+            { [], [1, 2], [] },
+            { [1, 2], [], [] },
+            { [1], [], [] },
         };
 
         [Theory]

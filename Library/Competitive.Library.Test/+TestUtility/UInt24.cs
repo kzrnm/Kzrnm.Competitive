@@ -3,12 +3,14 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Numerics;
+using Xunit.Sdk;
 
 
 namespace Kzrnm.Competitive.Testing
 {
     public readonly struct UInt24(byte v2, byte v1, byte v0) : INumber<UInt24>
     {
+
 #if BIGENDIAN
         private readonly byte v2 = v2;
         private readonly byte v1 = v1;
@@ -21,7 +23,7 @@ namespace Kzrnm.Competitive.Testing
 
         public override string ToString() => ((uint)this).ToString();
         public override bool Equals([NotNullWhen(true)] object obj)
-            => obj is UInt24 && Equals((UInt24)obj);
+            => obj is UInt24 v && Equals(v);
         public override int GetHashCode() => (int)this;
 
         public static UInt24 One => (UInt24)1;

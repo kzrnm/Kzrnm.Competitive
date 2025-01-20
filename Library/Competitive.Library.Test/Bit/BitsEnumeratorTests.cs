@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Xunit.Sdk;
 
 namespace Kzrnm.Competitive.Testing.Bits
 {
@@ -50,6 +51,18 @@ namespace Kzrnm.Competitive.Testing.Bits
             { new(1, 1), [0, 64] },
             { 0, [] },
         };
+        struct IInt128 : IXunitSerializable
+        {
+            public void Deserialize(IXunitSerializationInfo info)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Serialize(IXunitSerializationInfo info)
+            {
+                throw new NotImplementedException();
+            }
+        }
         [Theory]
         [MemberData(nameof(BitEnumerateInt128_Data))]
         public void BitEnumerateInt128(Int128 num, int[] expected)

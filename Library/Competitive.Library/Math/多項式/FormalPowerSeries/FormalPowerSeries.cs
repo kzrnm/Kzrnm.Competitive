@@ -89,6 +89,7 @@ namespace Kzrnm.Competitive
                 s = s[..^1];
             return s;
         }
+
         public override string ToString() => string.Join(", ", _cs);
         [凾(256)] internal FpsImpl<T> ToImpl(bool breaking = false) => new FpsImpl<T>(breaking ? _cs : _cs.ToArray());
 

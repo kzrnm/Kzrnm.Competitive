@@ -33,7 +33,7 @@ namespace Kzrnm.Competitive.Testing.DataStructure
         Mod998244353AffineTransformation RandomAffine(Random rnd) => new(rnd.Next(), rnd.Next());
         int RandomInt32(Random rnd) => rnd.Next();
 
-        public static IEnumerable<(PopAdd Pop, PopAdd Add)> CreateTestData()
+        public static IEnumerable<TheoryDataRow<PopAdd, PopAdd>> CreateTestData()
         {
             var array = new[] { PopAdd.First, PopAdd.Last, PopAdd.Random, };
             foreach (var pop in array)

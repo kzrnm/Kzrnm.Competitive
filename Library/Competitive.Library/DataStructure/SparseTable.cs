@@ -51,21 +51,14 @@ namespace Kzrnm.Competitive
         [SourceExpander.NotEmbeddingSource]
 #endif
         [DebuggerDisplay("{" + nameof(Value) + "}", Name = "{" + nameof(Key) + ",nq}")]
-        private readonly struct DebugItem
+        private readonly record struct DebugItem(
+            [property: DebuggerBrowsable(0)] int L,
+            [property: DebuggerBrowsable(0)] int R,
+            TValue Value)
         {
-            public DebugItem(int l, int r, TValue value)
-            {
-                L = l;
-                R = r;
-                Value = value;
-            }
-            [DebuggerBrowsable(0)]
-            public int L { get; }
-            [DebuggerBrowsable(0)]
-            public int R { get; }
+
             [DebuggerBrowsable(0)]
             public string Key => R - L == 1 ? $"[{L}]" : $"[{L}-{R})";
-            public TValue Value { get; }
         }
 #if !LIBRARY
         [SourceExpander.NotEmbeddingSource]

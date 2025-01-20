@@ -7,7 +7,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
 {
     public class DequeExtensionTests
     {
-        public static IEnumerable<ValueTuple<int>> Lengths => Enumerable.Range(0, 18).Select(ValueTuple.Create<int>);
+        public static TheoryData<int> Lengths => new(Enumerable.Range(0, 18));
         [Theory]
         [MemberData(nameof(Lengths))]
         public void ToDeque(int length)

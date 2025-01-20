@@ -8,24 +8,20 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Trait("Category", "Normal")]
         public void Construct()
         {
-            new BitMatrix(new bool[][]
-            {
+            new BitMatrix([
                 [true, false, true],
                 [false, true, true],
-            })._v.ShouldBe(new BitArray[]
-            {
-                new BitArray(new[]{ true, false, true }),
-                new BitArray(new[]{ false, true, true }),
-            });
-            new BitMatrix(new BitArray[]
-            {
-                new BitArray(new[]{ true, false, true }),
-                new BitArray(new[]{ false, true, true }),
-            })._v.ShouldBe(new BitArray[]
-            {
-                new BitArray(new[]{ true, false, true }),
-                new BitArray(new[]{ false, true, true }),
-            });
+            ])._v.ShouldBe([
+                new BitArray([true, false, true]),
+                new BitArray([false, true, true]),
+            ]);
+            new BitMatrix([
+                new BitArray([true, false, true]),
+                new BitArray([false, true, true]),
+            ])._v.ShouldBe([
+                new BitArray([true, false, true]),
+                new BitArray([false, true, true]),
+            ]);
         }
 
         public static TheoryData<string, BitMatrix> Parse_Data => new()
@@ -35,11 +31,10 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 10001
                 00110
                 """,
-                new BitMatrix(new BitArray[]
-                {
+                new BitMatrix([
                     new BitArray([true, false, false, false, true ]),
                     new BitArray([false, false, true, true, false ]),
-                })
+                ])
             },
             {
                 """
@@ -47,23 +42,36 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 01010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101
                 01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001
                 """,
-                new BitMatrix(new BitArray[]
-                {
-                    new BitArray((int[])(object)new uint[]{ 0b01010101010101010101010101010101, 0b01010101010101010101010101010101,0b01010101010101010101010101010101,0b01010101010101010101010101010101,}),
-                    new BitArray((int[])(object)new uint[]{ 0b10101010101010101010101010101010, 0b10101010101010101010101010101010,0b10101010101010101010101010101010,0b10101010101010101010101010101010,}),
-                    new BitArray((int[])(object)new uint[]{ 0b10, 0, 0, 0b10000000000000000000000000000000, }),
-                })
+                new BitMatrix([
+                    new BitArray([
+                        0b01010101010101010101010101010101,
+                        0b01010101010101010101010101010101,
+                        0b01010101010101010101010101010101,
+                        0b01010101010101010101010101010101,
+                    ]),
+                    new BitArray([
+                        unchecked((int)0b10101010101010101010101010101010),
+                        unchecked((int)0b10101010101010101010101010101010),
+                        unchecked((int)0b10101010101010101010101010101010),
+                        unchecked((int)0b10101010101010101010101010101010),
+                    ]),
+                    new BitArray([
+                        0b10,
+                        0,
+                        0,
+                        unchecked((int)0b10000000000000000000000000000000),
+                    ]),
+                ])
             },
             {
                 $"""
                 {new string('0', 130)}
                 {new string('1', 130)}
                 """,
-                new BitMatrix(new BitArray[]
-                {
+                new BitMatrix([
                     new BitArray(130, false),
                     new BitArray(130, true),
-                })
+                ])
             },
         };
         [Theory]
@@ -77,12 +85,12 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         public static TheoryData<BitMatrix, string> String_Data => new()
         {
             {
-                new BitMatrix(new bool[][]{
+                new BitMatrix([
                     [true, false,  true],
                     [false, false, false],
                     [false, false,  true],
                     [true,  true,  true],
-                }),
+                ]),
                 """
                 101
                 000
@@ -91,17 +99,15 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 """.Replace("\r\n", "\n")
             },
             {
-                new BitMatrix(new[]
-                {
-                    new[] {  false },
-                }),
+                new BitMatrix([
+                    [false],
+                ]),
                 "0"
             },
             {
-                new BitMatrix(new[]
-                {
-                    new[] {  true },
-                }),
+                new BitMatrix([
+                    [true],
+                ]),
                 "1"
             },
         };
@@ -524,7 +530,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                     "000",
                     "000",
                 ]),
-                new[] { false, false, },
+                [false, false],
                 new[]
                 {
                     new BitArray([false, false, false, ]),

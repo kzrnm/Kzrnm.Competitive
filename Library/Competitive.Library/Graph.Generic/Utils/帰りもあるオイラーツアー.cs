@@ -11,6 +11,10 @@ namespace Kzrnm.Competitive
             public Event Reverse() => new Event(Parent, Edge, !IsDown);
             [凾(256)]
             public (int From, int To) Route() => IsDown ? (Parent, Edge.To) : (Edge.To, Parent);
+
+#if !LIBRARY
+            [SourceExpander.NotEmbeddingSource]
+#endif
             public override string ToString() => $"{Parent}{(IsDown ? '→' : '←')}{Edge}";
         }
         /// <summary>

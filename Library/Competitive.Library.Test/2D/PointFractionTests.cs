@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Xunit.Sdk;
 
 namespace Kzrnm.Competitive.Testing.TwoDimensional
 {
@@ -23,8 +24,8 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             p2.Distance(p1).ShouldBe(distance);
         }
 
-        public static PointFraction[] SortedPoints => new PointFraction[]
-        {
+        public static PointFraction[] SortedPoints =>
+        [
             new (0, 0),
             new (1, 0),
             new (5, 0),
@@ -48,7 +49,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             new (0, -2000),
             new (1, -10),
             new (100000, -1),
-        };
+        ];
         [Fact]
         public void CompareTo()
         {
@@ -212,7 +213,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             p.直線との距離(a, b, c).ShouldBe(expected);
         }
 
-        public static TheoryData<PointFraction, PointFraction, (Fraction, Fraction, Fraction)> 直線_Data => new()
+        public static TheoryData<PointFraction, PointFraction, SerializableTuple<Fraction, Fraction, Fraction>> 直線_Data => new()
         {
             { new (0,0), new (1,1), (1, -1, 0) },
             { new (1,0), new (1,1), (1, 0, -1) },
@@ -221,12 +222,12 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         };
         [Theory]
         [MemberData(nameof(直線_Data))]
-        public void 直線(PointFraction p1, PointFraction p2, (Fraction, Fraction, Fraction) expected)
+        public void 直線(PointFraction p1, PointFraction p2, SerializableTuple<Fraction, Fraction, Fraction> expected)
         {
-            p1.直線(p2).ShouldBe(expected);
+            p1.直線(p2).ShouldBe(expected.ToTuple());
         }
 
-        public static TheoryData<PointFraction, PointFraction, (Fraction, Fraction, Fraction)> 垂直二等分線_Data => new()
+        public static TheoryData<PointFraction, PointFraction, SerializableTuple<Fraction, Fraction, Fraction>> 垂直二等分線_Data => new()
         {
             { new (0,0), new (1,1), (-1, -1, 1) },
             { new (1,0), new (1,1), (0, -1, new(1,2)) },
@@ -235,9 +236,9 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         };
         [Theory]
         [MemberData(nameof(垂直二等分線_Data))]
-        public void 垂直二等分線(PointFraction p1, PointFraction p2, (Fraction, Fraction, Fraction) expected)
+        public void 垂直二等分線(PointFraction p1, PointFraction p2, SerializableTuple<Fraction, Fraction, Fraction> expected)
         {
-            p1.垂直二等分線(p2).ShouldBe(expected);
+            p1.垂直二等分線(p2).ShouldBe(expected.ToTuple());
         }
 
         public static TheoryData<Fraction, Fraction, Fraction, Fraction, Fraction, Fraction, PointFraction> 直線と直線の交点_Data => new()
@@ -252,7 +253,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             PointFraction.直線と直線の交点(a, b, c, u, v, w).ShouldBe(expected);
         }
 
-        public static TheoryData<Fraction, Fraction, PointFraction, (Fraction, Fraction, Fraction)> 直線の垂線_Data => new()
+        public static TheoryData<Fraction, Fraction, PointFraction, SerializableTuple<Fraction, Fraction, Fraction>> 直線の垂線_Data => new()
         {
             { 1, 1, new (new(1,2), new(-3,2)), (1, -1, -2) },
             { 4, 7, new (-10, 2), (7, -4, 78) },
@@ -261,9 +262,9 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
         };
         [Theory]
         [MemberData(nameof(直線の垂線_Data))]
-        public void 直線の垂線(Fraction a, Fraction b, PointFraction p, (Fraction, Fraction, Fraction) expected)
+        public void 直線の垂線(Fraction a, Fraction b, PointFraction p, SerializableTuple<Fraction, Fraction, Fraction> expected)
         {
-            PointFraction.直線の垂線(a, b, p).ShouldBe(expected);
+            PointFraction.直線の垂線(a, b, p).ShouldBe(expected.ToTuple());
         }
 
         public static TheoryData<PointFraction, Fraction, PointFraction, Fraction, CirclePosition> 円の位置関係_Data => new()
@@ -315,54 +316,72 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             PointFraction.線分が交差しているか(b2, a2, b1, a1).ShouldBe(expected);
         }
 
-        public static TheoryData<PointFraction[], (PointFraction, PointFraction, PointFraction)[]> 三角形に分割_Data => new()
+        public class 三角形に分割Data : IXunitSerializable
         {
+            public PointFraction[] Input { get; set; }
+            public (PointFraction, PointFraction, PointFraction)[] Expected { get; set; }
+
+            void IXunitSerializable.Deserialize(IXunitSerializationInfo info)
             {
-                new PointFraction[0],
-                []
+                Input = info.GetValue<PointFraction[]>(nameof(Input));
+                var ex = info.GetValue<PointFraction[]>(nameof(Expected));
+                Expected = ex.Chunk(3).Select(t => (t[0], t[1], t[2])).ToArray();
+            }
+
+            void IXunitSerializable.Serialize(IXunitSerializationInfo info)
+            {
+                info.AddValue(nameof(Input), Input);
+                info.AddValue(nameof(Expected), Expected.SelectMany(t => new[] { t.Item1, t.Item2, t.Item3 }).ToArray());
+            }
+        }
+        public static TheoryData<三角形に分割Data> 三角形に分割_Data => new()
+        {
+            new 三角形に分割Data {
+                Input =[],
+                Expected =[],
             },
-            {
-                new PointFraction[1],
-                []
+            new 三角形に分割Data {
+                Input =new PointFraction[1],
+                Expected =[],
             },
-            {
-                new PointFraction[2],
-                []
+            new 三角形に分割Data {
+                Input =new PointFraction[2],
+                Expected =[],
             },
-            {
-                new PointFraction[3]
-                {
+            new 三角形に分割Data {
+                Input =
+                [
                     new (0, 1),
                     new (0, 0),
                     new (1, 1),
-                },
-                new (PointFraction, PointFraction, PointFraction)[]
-                {
+                ],
+                Expected =
+                [
                     (new (0, 0), new (0, 1), new (1, 1)),
-                }
+                ]
             },
-            {
-                new PointFraction[5]
-                {
+            new 三角形に分割Data {
+                Input =
+                [
                     new (0, 0),
                     new (10, 0),
                     new (5, 5),
                     new (10, 10),
                     new (0, 10),
-                },
-                new (PointFraction, PointFraction, PointFraction)[]
-                {
+                ],
+                Expected =
+                [
                     (new (10, 0), new (0, 0), new (0, 10)),
                     (new (10, 0), new (0, 10), new (10, 10)),
                     (new (5, 5), new (10, 0), new (10, 10)),
-                }
+                ]
             },
         };
         [Theory]
         [MemberData(nameof(三角形に分割_Data))]
-        public void 三角形に分割(PointFraction[] s, (PointFraction, PointFraction, PointFraction)[] expected)
+        public void 三角形に分割(三角形に分割Data d)
         {
-            PointFraction.三角形に分割(s).ShouldBe(expected);
+            PointFraction.三角形に分割(d.Input).ShouldBe(d.Expected);
         }
 
         [Fact]

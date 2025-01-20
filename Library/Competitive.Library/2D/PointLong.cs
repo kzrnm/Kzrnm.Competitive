@@ -9,20 +9,12 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive
 {
     using P = PointLong;
-    public readonly struct PointLong : IEquatable<P>, IComparable<P>, IUtf8ConsoleWriterFormatter
+    public readonly record struct PointLong(long X, long Y) : IComparable<P>, IUtf8ConsoleWriterFormatter
         , IAdditionOperators<P, P, P>, ISubtractionOperators<P, P, P>, IUnaryPlusOperators<P, P>, IUnaryNegationOperators<P, P>
     {
-        public readonly long x;
-        public readonly long y;
-        public PointLong(long x, long y)
-        {
-            this.x = x;
-            this.y = y;
-        }
-
         [EditorBrowsable(EditorBrowsableState.Never)]
         [凾(256)]
-        public void Deconstruct(out long v1, out long v2) { v1 = x; v2 = y; }
+        public void Deconstruct(out long v1, out long v2) { v1 = X; v2 = Y; }
 
         [凾(256)]
         public static implicit operator P((long x, long y) tuple) => new P(tuple.x, tuple.y);
@@ -39,8 +31,8 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public long Distance2(P other)
         {
-            var u = other.x - x;
-            var v = other.y - y;
+            var u = other.X - X;
+            var v = other.Y - Y;
             return u * u + v * v;
         }
         /// <summary>
@@ -48,24 +40,24 @@ namespace Kzrnm.Competitive
         /// </summary>
 
         [凾(256)]
-        public long Inner(P other) => x * other.x + y * other.y;
+        public long Inner(P other) => X * other.X + Y * other.Y;
         /// <summary>
         /// 外積
         /// </summary>
 
         [凾(256)]
-        public long Cross(P other) => x * other.y - y * other.x;
+        public long Cross(P other) => X * other.Y - Y * other.X;
 
         [凾(256)]
-        public static P operator +(P a, P b) => new P(a.x + b.x, a.y + b.y);
+        public static P operator +(P a, P b) => new P(a.X + b.X, a.Y + b.Y);
 
         [凾(256)]
-        public static P operator -(P a, P b) => new P(a.x - b.x, a.y - b.y);
+        public static P operator -(P a, P b) => new P(a.X - b.X, a.Y - b.Y);
 
         [凾(256)]
         public static P operator +(P a) => a;
         [凾(256)]
-        public static P operator -(P a) => new P(-a.x, -a.y);
+        public static P operator -(P a) => new P(-a.X, -a.Y);
 
         /// <summary>
         /// <para>Atan2 の値で比較する(偏角ソート)。</para>
@@ -78,10 +70,10 @@ namespace Kzrnm.Competitive
         {
             // 90°回転させると x の符号が同じなら tan(θ) の大小関係が θ の大小関係と等しくなる。
             // x=0
-            var x1 = -y;
-            var y1 = x;
-            var x2 = -other.y;
-            var y2 = other.x;
+            var x1 = -Y;
+            var y1 = X;
+            var x2 = -other.Y;
+            var y2 = other.X;
 
             int xo1 = x1 > 0 ? 1 : 0;
             int xo2 = x2 > 0 ? 1 : 0;
@@ -110,24 +102,19 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        public bool Equals(P other) => x == other.x && y == other.y;
-        public override bool Equals(object obj) => obj is P p && Equals(p);
-        public override int GetHashCode() => HashCode.Combine(x, y);
-        public override string ToString() => $"{x} {y}";
-        [凾(256)] void IUtf8ConsoleWriterFormatter.Write(Utf8ConsoleWriter cw) => cw.Write(x).Write(' ').Write(y);
+        public bool Equals(P other) => X == other.X && Y == other.Y;
+        public override int GetHashCode() => HashCode.Combine(X, Y);
+        public override string ToString() => $"{X} {Y}";
+        [凾(256)] void IUtf8ConsoleWriterFormatter.Write(Utf8ConsoleWriter cw) => cw.Write(X).Write(' ').Write(Y);
         public static implicit operator ConsoleOutput(P p) => p.ToConsoleOutput();
 
         [凾(256)]
-        public static bool operator ==(P left, P right) => left.Equals(right);
-        [凾(256)]
-        public static bool operator !=(P left, P right) => !left.Equals(right);
-        [凾(256)]
         static int CrossSign(in P origin, in P p1, in P p2)
         {
-            var x1 = p1.x - origin.x;
-            var y1 = p1.y - origin.y;
-            var x2 = p2.x - origin.x;
-            var y2 = p2.y - origin.y;
+            var x1 = p1.X - origin.X;
+            var y1 = p1.Y - origin.Y;
+            var x2 = p2.X - origin.X;
+            var y2 = p2.Y - origin.Y;
             return Math.Sign(x1 * y2 - y1 * x2);
         }
 
@@ -148,8 +135,8 @@ namespace Kzrnm.Competitive
                 for (int i = 1; i < points.Length; i++)
                 {
                     idx[i] = i;
-                    int cmp = points[i].y.CompareTo(origin.y);
-                    if (cmp < 0 || (cmp == 0 && points[i].x < origin.x))
+                    int cmp = points[i].Y.CompareTo(origin.Y);
+                    if (cmp < 0 || (cmp == 0 && points[i].X < origin.X))
                         origin = points[i];
                 }
 
@@ -197,12 +184,12 @@ namespace Kzrnm.Competitive
         public static long Area2(ReadOnlySpan<P> points)
         {
             Contract.Assert(points.Length >= 3);
-            long res = (points[^1].x - points[0].x) * (points[^1].y + points[0].y);
+            long res = (points[^1].X - points[0].X) * (points[^1].Y + points[0].Y);
             for (int i = 1; i < points.Length; i++)
             {
                 var p1 = points[i - 1];
                 var p2 = points[i];
-                res += (p1.x - p2.x) * (p1.y + p2.y);
+                res += (p1.X - p2.X) * (p1.Y + p2.Y);
             }
             return Math.Abs(res);
         }
@@ -211,7 +198,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)]
         public (long A, long B, long C) 直線(P other)
-            => (other.y - y, x - other.x, y * (other.x - x) - x * (other.y - y));
+            => (other.Y - Y, X - other.X, Y * (other.X - X) - X * (other.Y - Y));
 
         /// <summary>
         /// <para><paramref name="a1"/> から <paramref name="b1"/>までの線分と<paramref name="a2"/> から <paramref name="b2"/>までの線分が交差しているかを返します。</para>
@@ -221,11 +208,11 @@ namespace Kzrnm.Competitive
         public static int 線分が交差しているか(P a1, P b1, P a2, P b2)
         {
             var (p, q, r) = a1.直線(b1);
-            if (p * a2.x + q * a2.y + r == 0 && p * b2.x + q * b2.y + r == 0)
+            if (p * a2.X + q * a2.Y + r == 0 && p * b2.X + q * b2.Y + r == 0)
             {
                 // 直線状に並んでいる場合
-                var (xa1, xb1, xa2, xb2) = (a1.x, b1.x, a2.x, b2.x);
-                if (xa1 == xb1) (xa1, xb1, xa2, xb2) = (a1.y, b1.y, a2.y, b2.y); // y軸に平行なとき
+                var (xa1, xb1, xa2, xb2) = (a1.X, b1.X, a2.X, b2.X);
+                if (xa1 == xb1) (xa1, xb1, xa2, xb2) = (a1.Y, b1.Y, a2.Y, b2.Y); // y軸に平行なとき
 
                 if (xa1 > xb1) (xa1, xb1) = (xb1, xa1);
                 if (xa2 > xb2) (xa2, xb2) = (xb2, xa2);
@@ -235,10 +222,10 @@ namespace Kzrnm.Competitive
                 return 1;
             }
 
-            var ta = (a2.x - b2.x) * (a1.y - a2.y) + (a2.y - b2.y) * (a2.x - a1.x);
-            var tb = (a2.x - b2.x) * (b1.y - a2.y) + (a2.y - b2.y) * (a2.x - b1.x);
-            var tc = (a1.x - b1.x) * (a2.y - a1.y) + (a1.y - b1.y) * (a1.x - a2.x);
-            var td = (a1.x - b1.x) * (b2.y - a1.y) + (a1.y - b1.y) * (a1.x - b2.x);
+            var ta = (a2.X - b2.X) * (a1.Y - a2.Y) + (a2.Y - b2.Y) * (a2.X - a1.X);
+            var tb = (a2.X - b2.X) * (b1.Y - a2.Y) + (a2.Y - b2.Y) * (a2.X - b1.X);
+            var tc = (a1.X - b1.X) * (a2.Y - a1.Y) + (a1.Y - b1.Y) * (a1.X - a2.X);
+            var td = (a1.X - b1.X) * (b2.Y - a1.Y) + (a1.Y - b1.Y) * (a1.X - b2.X);
 
             return -Math.Max(Math.Sign(tc) * Math.Sign(td), Math.Sign(ta) * Math.Sign(tb));
         }

@@ -28,12 +28,12 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         public static TheoryData<BitOrMatrix, string> String_Data => new()
         {
             {
-                new BitOrMatrix(new bool[][]{
+                new BitOrMatrix([
                     [true, false,  true],
                     [false, false, false],
                     [false, false,  true],
                     [true,  true,  true],
-                }),
+                ]),
                 """
                 101
                 000
@@ -42,17 +42,15 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 """.Replace("\r\n", "\n")
             },
             {
-                new BitOrMatrix(new[]
-                {
-                    new[] {  false },
-                }),
+                new BitOrMatrix([
+                    [false],
+                ]),
                 "0"
             },
             {
-                new BitOrMatrix(new[]
-                {
-                    new[] {  true },
-                }),
+                new BitOrMatrix([
+                    [true],
+                ]),
                 "1"
             },
         };

@@ -20,20 +20,18 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             [
                 [1, 2, 3],
                 [4, 5, 6],
-            ]).ToArray().ShouldBe(new MontgomeryModInt[][]
-            {
+            ]).ToArray().ShouldBe([
                 [1, 2, 3],
                 [4, 5, 6],
-            });
+            ]);
             new SimdModMatrix(new MontgomeryModInt[,]
             {
                 { 1, 2, 3 },
                 { 4, 5, 6 },
-            }).ToArray().ShouldBe(new MontgomeryModInt[][]
-            {
+            }).ToArray().ShouldBe([
                 [1, 2, 3],
                 [4, 5, 6],
-            });
+            ]);
         }
 
         [Fact]
@@ -70,7 +68,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             [
                 [1, 2, 3],
                 [4, 5, 6],
-            ]).ShouldBe(new SimdModMatrix(new MontgomeryModInt[] { 1, 2, 3, 4, 5, 6 }, 2, 3));
+            ]).ShouldBe(new SimdModMatrix([1, 2, 3, 4, 5, 6], 2, 3));
             new SimdModMatrix(
             [
                 [1, 2,],
@@ -91,11 +89,10 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             {
                 { 1, 2, 3 },
                 { 4, 5, 6 },
-            })).ToArray().ShouldBe(new MontgomeryModInt[][]
-            {
+            })).ToArray().ShouldBe([
                 [-1, -2, -3],
                 [-4, -5, -6],
-            });
+            ]);
         }
 
         public static TheoryData<SimdModMatrix, SimdModMatrix, SimdModMatrix> Add_Data => new()
@@ -473,11 +470,10 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 { 1, 2 },
                 { 3, 4 },
             });
-            orig.Pow(5).ToArray().ShouldBe(new MontgomeryModInt[][]
-            {
+            orig.Pow(5).ToArray().ShouldBe([
                 [1069, 1558],
                 [2337, 3406],
-            });
+            ]);
             var cur = orig;
             for (int i = 1; i < 10; i++)
             {
@@ -623,12 +619,11 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
                 { -(MontgomeryModInt)131/319, -(MontgomeryModInt)90/319, -(MontgomeryModInt)194/319 },
                 { -(MontgomeryModInt)50/319, -(MontgomeryModInt)10/319, -(MontgomeryModInt)57/319 },
             }));
-            var id = new MontgomeryModInt[][]
-            {
+            MontgomeryModInt[][] id = [
                 [1,0,0],
                 [0,1,0],
                 [0,0,1],
-            };
+            ];
             (orig * inv).ToArray().ShouldBe(id);
             (inv * orig).ToArray().ShouldBe(id);
         }

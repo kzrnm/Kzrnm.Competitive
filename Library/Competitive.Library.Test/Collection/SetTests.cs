@@ -24,17 +24,14 @@ namespace Kzrnm.Competitive.Testing.Collection
         [Fact]
         public void Set()
         {
-            var set = new Set<int>(new[]
-            {
-                6,7,8,1,2,3,4,5,1,2,3,
-            });
+            var set = new Set<int>([6, 7, 8, 1, 2, 3, 4, 5, 1, 2, 3]);
             set.Add(9);
             set.Add(5);
-            set.ShouldBe(new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+            set.ShouldBe((int[])[1, 2, 3, 4, 5, 6, 7, 8, 9]);
             set.Count.ShouldBe(9);
             set.Remove(5);
             set.Count.ShouldBe(8);
-            set.ShouldBe(new[] { 1, 2, 3, 4, 6, 7, 8, 9 });
+            set.ShouldBe((int[])[1, 2, 3, 4, 6, 7, 8, 9]);
             set.FindByIndex(8).ShouldBeNull();
             set.FindByIndex(7).Value.ShouldBe(9);
             set.FindNode(5).ShouldBeNull();
@@ -83,41 +80,38 @@ namespace Kzrnm.Competitive.Testing.Collection
             set.FindNodeReverseUpperBound(1).ShouldBeNull();
 
             set.RemoveNode(set.FindNodeLowerBound(5));
-            set.ShouldBe(new[] { 1, 2, 3, 4, 7, 8, 9 });
+            set.ShouldBe((int[])[1, 2, 3, 4, 7, 8, 9]);
 
-            set.Reversed().ShouldBe(new[] { 9, 8, 7, 4, 3, 2, 1 });
-            set.EnumerateItem().ShouldBe(new[] { 1, 2, 3, 4, 7, 8, 9 });
-            set.EnumerateItem(set.FindNodeLowerBound(5)).ShouldBe(new[] { 7, 8, 9 });
-            set.EnumerateItem(set.FindNodeLowerBound(5), true).ShouldBe(new[] { 7, 4, 3, 2, 1 });
+            set.Reversed().ShouldBe([9, 8, 7, 4, 3, 2, 1]);
+            set.EnumerateItem().ShouldBe([1, 2, 3, 4, 7, 8, 9]);
+            set.EnumerateItem(set.FindNodeLowerBound(5)).ShouldBe([7, 8, 9]);
+            set.EnumerateItem(set.FindNodeLowerBound(5), true).ShouldBe([7, 4, 3, 2, 1]);
 
             set.RemoveNode(set.FindNodeLowerBound(0));
-            set.ShouldBe(new[] { 2, 3, 4, 7, 8, 9 });
+            set.ShouldBe((int[])[2, 3, 4, 7, 8, 9]);
 
             set.RemoveNode(set.FindNodeLowerBound(9));
-            set.ShouldBe(new[] { 2, 3, 4, 7, 8 });
+            set.ShouldBe((int[])[2, 3, 4, 7, 8]);
         }
         [Fact]
         public void MultiSet()
         {
-            var set = new Set<int>(new[]
-            {
-                6,7,8,1,2,3,4,5,1,2,3,
-            }, true);
+            var set = new Set<int>([6, 7, 8, 1, 2, 3, 4, 5, 1, 2, 3], true);
             set.Add(9);
             set.Add(5);
-            set.ShouldBe(new int[] { 1, 1, 2, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9 });
+            set.ShouldBe((int[])[1, 1, 2, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9]);
             set.Count.ShouldBe(13);
             set.Remove(5);
             set.Count.ShouldBe(12);
-            set.ShouldBe(new int[] { 1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9 });
+            set.ShouldBe((int[])[1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9]);
             set.FindByIndex(12).ShouldBeNull();
             set.FindByIndex(11).Value.ShouldBe(9);
             set.FindNode(5).ShouldNotBeNull();
 
-            set.Reversed().ShouldBe(new[] { 9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1 });
-            set.EnumerateItem().ShouldBe(new[] { 1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9 });
-            set.EnumerateItem(set.FindNodeLowerBound(6)).ShouldBe(new[] { 6, 7, 8, 9 });
-            set.EnumerateItem(set.FindNodeLowerBound(6), true).ShouldBe(new[] { 6, 5, 4, 3, 3, 2, 2, 1, 1 });
+            set.Reversed().ShouldBe([9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1]);
+            set.EnumerateItem().ShouldBe([1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9]);
+            set.EnumerateItem(set.FindNodeLowerBound(6)).ShouldBe([6, 7, 8, 9]);
+            set.EnumerateItem(set.FindNodeLowerBound(6), true).ShouldBe([6, 5, 4, 3, 3, 2, 2, 1, 1]);
 
             set.FindNodeLowerBound(3).Value.ShouldBe(3);
             set.FindNodeUpperBound(3).Value.ShouldBe(4);
@@ -153,17 +147,14 @@ namespace Kzrnm.Competitive.Testing.Collection
         [Fact]
         public void ReverseComparer()
         {
-            var set = new Set<int, ReverseComparerStruct<int>>(new[]
-            {
-                6,7,8,1,2,3,4,5,1,2,3,
-            });
+            var set = new Set<int, ReverseComparerStruct<int>>([6, 7, 8, 1, 2, 3, 4, 5, 1, 2, 3]);
             set.Add(9);
             set.Add(5);
-            set.ShouldBe(new[] { 9, 8, 7, 6, 5, 4, 3, 2, 1 });
+            set.ShouldBe((int[])[9, 8, 7, 6, 5, 4, 3, 2, 1]);
             set.Count.ShouldBe(9);
             set.Remove(5);
             set.Count.ShouldBe(8);
-            set.ShouldBe(new[] { 9, 8, 7, 6, 4, 3, 2, 1 });
+            set.ShouldBe((int[])[9, 8, 7, 6, 4, 3, 2, 1]);
             set.FindByIndex(8).ShouldBeNull();
             set.FindByIndex(7).Value.ShouldBe(1);
             set.FindNode(5).ShouldBeNull();
@@ -237,9 +228,9 @@ namespace Kzrnm.Competitive.Testing.Collection
         {
             var arr = new[] { 1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9 };
             var set = new Set<int>(arr, true);
-            set.Reversed().ShouldBe(new[] { 9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1 });
-            set.EnumerateItem().ShouldBe(new[] { 1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9 });
-            set.EnumerateItem(reverse: true).ShouldBe(new[] { 9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1 });
+            set.Reversed().ShouldBe([9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1]);
+            set.EnumerateItem().ShouldBe([1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9]);
+            set.EnumerateItem(reverse: true).ShouldBe([9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1]);
 
             for (int i = 0; i < arr.Length; i++)
             {

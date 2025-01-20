@@ -41,6 +41,9 @@ namespace Kzrnm.Competitive
         }
         public T Value { get; }
 
+#if !LIBRARY
+        [SourceExpander.NotEmbeddingSource]
+#endif
         public override string ToString() => $"Value: {Value}, children: {string.Join(",", Children)}";
         public override int GetHashCode() => Index;
     }
@@ -58,6 +61,9 @@ namespace Kzrnm.Competitive
         }
         public T Value { get; }
 
+#if !LIBRARY
+        [SourceExpander.NotEmbeddingSource]
+#endif
         public override string ToString() => $"Value: {Value}, children: {string.Join(",", Children)}";
         public override int GetHashCode() => Index;
     }

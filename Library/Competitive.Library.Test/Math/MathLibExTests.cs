@@ -131,7 +131,7 @@ namespace Kzrnm.Competitive.Testing.MathNS
         {
             {
                 1,
-                new [] { 1 }
+                [1]
             },
             {
                 1 << 16,
@@ -139,24 +139,24 @@ namespace Kzrnm.Competitive.Testing.MathNS
             },
             {
                 49,
-                new [] { 1, 7, 49, }
+                [1, 7, 49,]
             },
             {
                 2 * 3 * 5,
-                new [] { 1, 2, 3, 5, 6, 10, 15, 30, }
+                [1, 2, 3, 5, 6, 10, 15, 30,]
             },
             {
                 720,
-                new [] {
+                [
                     1, 2, 3, 4, 5, 6, 8, 9, 10,
                     12, 15, 16, 18, 20, 24, 30,
                     36, 40, 45, 48, 60, 72, 80,
-                    90, 120, 144, 180, 240, 360, 720
-                }
+                    90, 120, 144, 180, 240, 360, 720,
+                ]
             },
             {
                 2147483647,
-                new [] { 1, 2147483647, }
+                [1, 2147483647,]
             },
         };
 
@@ -247,23 +247,19 @@ namespace Kzrnm.Competitive.Testing.MathNS
             MathLibEx.PrimeFactoring(num).ShouldBe(expected);
         }
 
-        public static IEnumerable<object[]> PrimeFactoringIntStress_Data()
+        public static IEnumerable<TheoryDataRow<int>> PrimeFactoringIntStress_Data()
         {
-            return Inner().Select(i => new object[] { i });
-            static IEnumerable<int> Inner()
-            {
-                for (int i = 0; i < 100; i++)
-                    yield return int.MaxValue - i;
-                for (int i = 1; i <= 100; i++)
-                    yield return i;
-                var sq = (int)Math.Sqrt(int.MaxValue);
-                for (int i = -50; i <= 50; i++)
-                    yield return sq + i;
+            for (int i = 0; i < 100; i++)
+                yield return int.MaxValue - i;
+            for (int i = 1; i <= 100; i++)
+                yield return i;
+            var sq = (int)Math.Sqrt(int.MaxValue);
+            for (int i = -50; i <= 50; i++)
+                yield return sq + i;
 
-                var rnd = new Xoshiro256(227);
-                for (int i = 1; i <= 100; i++)
-                    yield return (int)(rnd.NextUInt64() >> 33);
-            }
+            var rnd = new Xoshiro256(227);
+            for (int i = 1; i <= 100; i++)
+                yield return (int)(rnd.NextUInt64() >> 33);
         }
 
         [Theory]

@@ -168,6 +168,10 @@ namespace Kzrnm.Competitive
         public Te[] Children { get; }
         public int Depth { get; }
         public int Size { get; }
+
+#if !LIBRARY
+        [SourceExpander.NotEmbeddingSource]
+#endif
         public override string ToString() => $"children: {string.Join(",", Children)}";
         public override int GetHashCode() => Index;
 

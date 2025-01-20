@@ -168,7 +168,8 @@ namespace Kzrnm.Competitive.Testing.Extensions
         [Fact]
         public void Flatten()
         {
-            new[] { "abc", "def", "012", "345", "678" }.Flatten()
+            string[] strs = ["abc", "def", "012", "345", "678"];
+            strs.Flatten()
                 .ShouldBe(
                 ['a', 'b', 'c', 'd', 'e', 'f', '0', '1', '2', '3', '4', '5', '6', '7', '8']);
 
@@ -210,15 +211,15 @@ namespace Kzrnm.Competitive.Testing.Extensions
               -63,-39, 81, 35,  9, 42, -5,-27, 56, 24,
                27, 13,-75,-61, 76, 40,-27, 48, 36, -17 }.MinMax()
             .ShouldBe((-75, 81));
-            ((Span<int>)new int[] {
+            ((Span<int>)[
                 4, 69, 13,  0,-21,-68,-26, 52, -7, 24,
               -63,-39, 81, 35,  9, 42, -5,-27, 56, 24,
-               27, 13,-75,-61, 76, 40,-27, 48, 36, -17 }).MinMax()
+               27, 13,-75,-61, 76, 40,-27, 48, 36, -17]).MinMax()
             .ShouldBe((-75, 81));
-            ((ReadOnlySpan<int>)new int[] {
+            ((ReadOnlySpan<int>)[
                 4, 69, 13,  0,-21,-68,-26, 52, -7, 24,
               -63,-39, 81, 35,  9, 42, -5,-27, 56, 24,
-               27, 13,-75,-61, 76, 40,-27, 48, 36, -17 }).MinMax()
+               27, 13,-75,-61, 76, 40,-27, 48, 36, -17]).MinMax()
             .ShouldBe((-75, 81));
 
             Array.Empty<int>().MinMax().ShouldBe((0, 0));
@@ -238,10 +239,10 @@ namespace Kzrnm.Competitive.Testing.Extensions
             ((ReadOnlySpan<int>)span).Select(FuncIndex).ToArray().ShouldBe(Enumerable.Range(0, 10).Select(FuncIndex));
         }
 
-        public static TheoryData<IEnumerable<int>, int, int[][]> Chunk_Data => new()
+        public static TheoryData<int[], int, int[][]> Chunk_Data => new()
         {
             {
-                Enumerable.Range(0, 12),
+                Enumerable.Range(0, 12).ToArray(),
                 4,
                 new int[][]
                 {
@@ -251,7 +252,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
                 }
             },
             {
-                Enumerable.Range(0, 12),
+                Enumerable.Range(0, 12).ToArray(),
                 5,
                 new int[][]
                 {
@@ -261,47 +262,48 @@ namespace Kzrnm.Competitive.Testing.Extensions
                 }
             },
             {
-                Enumerable.Empty<int>(),
+                Enumerable.Empty<int>().ToArray(),
                 5,
                 Array.Empty<int[]>()
             },
         };
         [Theory]
         [MemberData(nameof(Chunk_Data))]
-        public void Chunk(IEnumerable<int> input, int bufferSize, int[][] expected)
+        public void Chunk(int[] input, int bufferSize, int[][] expected)
         {
-            var result = input.Chunk(bufferSize).ToArray();
+            var result = input.Select(t => t).Chunk(bufferSize).ToArray();
             result.Length.ShouldBe(expected.Length);
             for (int i = 0; i < expected.Length; i++)
                 result[i].ShouldBe(expected[i]);
         }
 
-        public static TheoryData<int[], (int, int)[]> Tupled2_Data => new()
+        public static TheoryData<int[], SerializableTuple<int, int>[]> Tupled2_Data => new()
         {
             {
                 [1,2,3,4,5,6],
-                new (int,int)[]{ (1,2),(2,3),(3,4),(4,5),(5,6) }
+                [(1,2),(2,3),(3,4),(4,5),(5,6)]
             },
             {
                 [1],
-                Array.Empty<(int, int)>()
+                []
             },
         };
 
         [Theory]
         [MemberData(nameof(Tupled2_Data))]
-        public void Tupled2(int[] array, (int, int)[] expected)
+        public void Tupled2(int[] array, SerializableTuple<int, int>[] expected)
         {
-            array.Tupled2().ShouldBe(expected);
-            new Span<int>(array).Tupled2().ShouldBe(expected);
-            new ReadOnlySpan<int>(array).Tupled2().ShouldBe(expected);
+            var expectedT = expected.ToTuple();
+            array.Tupled2().ShouldBe(expectedT);
+            new Span<int>(array).Tupled2().ShouldBe(expectedT);
+            new ReadOnlySpan<int>(array).Tupled2().ShouldBe(expectedT);
         }
 
-        public static TheoryData<IEnumerable<byte>, (byte Value, int Count)[]> CompressCount_Data => new()
+        public static TheoryData<byte[], SerializableTuple<byte, int>[]> CompressCount_Data => new()
         {
             {
-                Enumerable.Range(0, 6).Select(i => (byte)i),
-                new (byte, int)[]
+                Enumerable.Range(0, 6).Select(i => (byte)i).ToArray(),
+                new SerializableTuple<byte, int>[]
                 {
                     (0, 1),
                     (1, 1),
@@ -313,7 +315,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
             },
             {
                 new byte[] { 1, 1, 2, 2, 3, 3, },
-                new (byte, int)[]
+                new SerializableTuple<byte, int>[]
                 {
                     (1, 2),
                     (2, 2),
@@ -322,7 +324,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
             },
             {
                 new byte[] { 1, 1, 2, 2, 3,},
-                new (byte, int)[]
+                new SerializableTuple<byte, int>[]
                 {
                     (1, 2),
                     (2, 2),
@@ -331,7 +333,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
             },
             {
                 new byte[] { 1, 2, 2, 3, 3, },
-                new (byte, int)[]
+                new SerializableTuple<byte, int>[]
                 {
                     (1, 1),
                     (2, 2),
@@ -340,7 +342,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
             },
             {
                 new byte[] { 1, 2, 2, 3, 3, 1, 1, 2, },
-                new (byte, int)[]
+                new SerializableTuple<byte, int>[]
                 {
                     (1, 1),
                     (2, 2),
@@ -352,16 +354,16 @@ namespace Kzrnm.Competitive.Testing.Extensions
         };
         [Theory]
         [MemberData(nameof(CompressCount_Data))]
-        public void CompressCount(IEnumerable<byte> input, (byte Value, int Count)[] expected)
+        public void CompressCount(byte[] input, SerializableTuple<byte, int>[] expected)
         {
-            input.CompressCount().ShouldBe(expected);
+            input.Select(t => t).CompressCount().ShouldBe(expected.ToTuple());
         }
 
-        public static TheoryData<string, (char Value, int Count)[]> CompressCount2_Data => new()
+        public static TheoryData<string, SerializableTuple<char, int>[]> CompressCount2_Data => new()
         {
             {
                 "<<>>",
-                new (char, int)[]
+                new SerializableTuple<char, int>[]
                 {
                     ('<', 2),
                     ('>', 2),
@@ -369,7 +371,7 @@ namespace Kzrnm.Competitive.Testing.Extensions
             },
             {
                 "<<><>>><><>><><><<>><<<><><<>",
-                new (char, int)[]
+                new SerializableTuple<char, int>[]
                 {
                     ('<', 2),
                     ('>', 1),
@@ -396,9 +398,9 @@ namespace Kzrnm.Competitive.Testing.Extensions
         };
         [Theory]
         [MemberData(nameof(CompressCount2_Data))]
-        public void CompressCount2(string input, (char Value, int Count)[] expected)
+        public void CompressCount2(string input, SerializableTuple<char, int>[] expected)
         {
-            input.CompressCount().ShouldBe(expected);
+            input.CompressCount().ShouldBe(expected.ToTuple());
         }
     }
 }

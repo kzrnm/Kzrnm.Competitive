@@ -47,10 +47,10 @@ namespace Kzrnm.Competitive.Testing.MathNS
 
         public static TheoryData<int[], int[], uint[]> EmptyIntTestData => new()
         {
-            { Array.Empty<int>(), Array.Empty<int>(), Array.Empty<uint>() },
-            { Array.Empty<int>(), new int[]{ 1, 2 }, Array.Empty<uint>() },
-            { new int[]{ 1, 2 }, Array.Empty<int>(), Array.Empty<uint>() },
-            { new int[]{ 1 }, Array.Empty<int>(), Array.Empty<uint>() },
+            { [], [], [] },
+            { [], [1, 2], [] },
+            { [1, 2], [], [] },
+            { [1], [], [] },
         };
 
         [Theory]

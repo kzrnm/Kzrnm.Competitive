@@ -5,20 +5,20 @@ namespace Kzrnm.Competitive.Testing.Collection
 {
     public class SetIntervalClosedTests
     {
-        public static TheoryData<(int from, int to)[], (int from, int to)[]> Add_Data => new()
+        public static TheoryData<SerializableTuple<int, int>[], SerializableTuple<int, int>[]> Add_Data => new()
         {
             {
-                Array.Empty<(int from, int to)>(),
-                Array.Empty<(int from, int to)>()
+                Array.Empty<SerializableTuple<int, int>>(),
+                Array.Empty<SerializableTuple<int, int>>()
             },
             {
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (101,101),
                     (15, 100),
                     (-20, -2),
                     (0, 10),
                 },
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (-20, -2),
                     (0, 10),
                     (15, 100),
@@ -26,55 +26,55 @@ namespace Kzrnm.Competitive.Testing.Collection
                 }
             },
             {
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (9, 100),
                     (-20, 2),
                     (0, 10),
                 },
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (-20, 100),
                 }
             },
             {
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (50, 60),
                     (10, 20),
                     (30, 40),
                 },
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (10, 20),
                     (30, 40),
                     (50, 60),
                 }
             },
             {
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (50, 60),
                     (10, 20),
                     (30, 40),
                     (15, 25),
                 },
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (10, 25),
                     (30, 40),
                     (50, 60),
                 }
             },
             {
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (50, 60),
                     (10, 20),
                     (30, 40),
                     (15, 25),
                     (25, 35),
                 },
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (10, 40),
                     (50, 60),
                 }
             },
             {
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (50, 60),
                     (10, 20),
                     (30, 40),
@@ -82,13 +82,13 @@ namespace Kzrnm.Competitive.Testing.Collection
                     (25, 35),
                     (10, 41),
                 },
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (10, 41),
                     (50, 60),
                 }
             },
             {
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (50, 60),
                     (10, 20),
                     (30, 40),
@@ -97,13 +97,13 @@ namespace Kzrnm.Competitive.Testing.Collection
                     (10, 41),
                     (49, 60),
                 },
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (10, 41),
                     (49, 60),
                 }
             },
             {
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (50, 60),
                     (10, 20),
                     (30, 40),
@@ -113,98 +113,98 @@ namespace Kzrnm.Competitive.Testing.Collection
                     (49, 60),
                     (9, 61),
                 },
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (9, 61),
                 }
             },
             {
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (10, 1000),
                     (20, 0),
                     (100, 900),
                     (100, 900),
                 },
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (10, 1000),
                 }
             },
             {
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (10, 100),
                     (-20, 0),
                     (0, 10),
                 },
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (-20, 100),
                 }
             },
             {
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (-20, 190),
                     (-1000, 1000),
                     (-30, 100),
                 },
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (-1000, 1000),
                 }
             },
             {
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (-30, 100),
                     (-10, 1000),
                     (-20, 190),
                 },
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (-30, 1000),
                 }
             },
             {
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (-10, 0),
                     (10, 20),
                     (30, 40),
                     (0, 30),
                 },
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (-10, 40),
                 }
             },
             {
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (-10, 0),
                     (10, 20),
                     (30, 40),
                     (-1, 31),
                 },
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (-10, 40),
                 }
             },
             {
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (-10, 0),
                     (10, 20),
                     (30, 40),
                     (1, 29),
                 },
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (-10, 0),
                     (1, 29),
                     (30, 40),
                 }
             },
             {
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (0, 0),
                     (0, 0),
                     (0, 0),
                 },
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (0, 0),
                 }
             },
             {
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (99, 100),
                     (98, 100),
                     (97, 100),
@@ -216,32 +216,32 @@ namespace Kzrnm.Competitive.Testing.Collection
                     (101, 105),
                     (101, 106),
                 },
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (95, 100),
                     (101, 106),
                 }
             },
             {
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (0, 9),
                     (10, 20),
                     (30, 40),
                     (10, 25),
                 },
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (0, 9),
                     (10, 25),
                     (30, 40),
                 }
             },
             {
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (0, 9),
                     (20, 29),
                     (30, 40),
                     (10, 29),
                 },
-                new (int from, int to)[]{
+                new SerializableTuple<int, int>[]{
                     (0, 9),
                     (10, 29),
                     (30, 40),
@@ -250,19 +250,19 @@ namespace Kzrnm.Competitive.Testing.Collection
         };
         [Theory]
         [MemberData(nameof(Add_Data))]
-        public void Contructor((int from, int to)[] arg, (int from, int to)[] result)
+        public void Contructor(SerializableTuple<int, int>[] arg, SerializableTuple<int, int>[] result)
         {
-            new SetIntervalClosedInt(arg).ShouldBe(result);
+            new SetIntervalClosedInt(arg.ToTuple()).ShouldBe(result.ToTuple());
         }
 
         [Theory]
         [MemberData(nameof(Add_Data))]
-        public void AddTheory((int from, int to)[] arg, (int from, int to)[] result)
+        public void AddTheory(SerializableTuple<int, int>[] arg, SerializableTuple<int, int>[] result)
         {
             var set = new SetIntervalClosedInt();
             foreach (var (f, t) in arg)
                 set.Add(f, t);
-            set.ShouldBe(result);
+            set.ShouldBe(result.ToTuple());
         }
         [Fact]
         public void Add()
@@ -371,20 +371,20 @@ namespace Kzrnm.Competitive.Testing.Collection
         }
 
 
-        public static TheoryData<int, int, bool, (int from, int to)[]> Remove_Data => new()
+        public static TheoryData<int, int, bool, SerializableTuple<int, int>[]> Remove_Data => new()
         {
-            { 1,9,false,new (int,int)[]{(10, 20),(25, 30),(35, 40),(50, 60) } },
-            { 21,24,false,new (int,int)[]{(10, 20),(25, 30),(35, 40),(50, 60) } },
-            { 1,10,true,new (int,int)[]{(11, 20),(25, 30),(35, 40),(50, 60) } },
-            { 1,20,true,new (int,int)[]{(25, 30),(35, 40),(50, 60) } },
-            { 20,25,true,new (int,int)[]{(10, 19),(26, 30),(35, 40),(50, 60) } },
-            { 20,39,true,new (int,int)[]{(10, 19),(40, 40),(50, 60) } },
-            { 10,60,true,Array.Empty<(int, int)>()},
-            { 1,61,true,Array.Empty<(int, int)>()},
+            { 1,9,false,new SerializableTuple<int, int>[]{(10, 20),(25, 30),(35, 40),(50, 60) } },
+            { 21,24,false,new SerializableTuple<int, int>[]{(10, 20),(25, 30),(35, 40),(50, 60) } },
+            { 1,10,true,new SerializableTuple<int, int>[]{(11, 20),(25, 30),(35, 40),(50, 60) } },
+            { 1,20,true,new SerializableTuple<int, int>[]{(25, 30),(35, 40),(50, 60) } },
+            { 20,25,true,new SerializableTuple<int, int>[]{(10, 19),(26, 30),(35, 40),(50, 60) } },
+            { 20,39,true,new SerializableTuple<int, int>[]{(10, 19),(40, 40),(50, 60) } },
+            { 10,60,true,Array.Empty<SerializableTuple<int, int>>()},
+            { 1,61,true,Array.Empty<SerializableTuple<int, int>>()},
         };
         [Theory]
         [MemberData(nameof(Remove_Data))]
-        public void Remove(int from, int to, bool success, (int from, int to)[] result)
+        public void Remove(int from, int to, bool success, SerializableTuple<int, int>[] result)
         {
             var set = new SetIntervalClosedInt([
                 (10, 20),
@@ -392,7 +392,7 @@ namespace Kzrnm.Competitive.Testing.Collection
                 (35, 40),
                 (50, 60)]);
             set.Remove(from, to).ShouldBe(success);
-            set.ShouldBe(result);
+            set.ShouldBe(result.ToTuple());
         }
 
         [Theory]
@@ -448,50 +448,50 @@ namespace Kzrnm.Competitive.Testing.Collection
             ((ICollection<(int, int)>)set).Contains((from, to)).ShouldBe(isContains);
         }
 
-        public static TheoryData<int, int, (int From, int ToInclusive)[]> RangeTruncate_Data => new()
+        public static TheoryData<int, int, SerializableTuple<int, int>[]> RangeTruncate_Data => new()
         {
-            {  0, 9, Array.Empty<(int, int)>() },
-            { 21, 29, Array.Empty<(int, int)>() },
-            { 61, 70, Array.Empty<(int, int)>() },
-            {  0, 10, new[]{ (10, 10) } },
-            { 60, 70, new[]{ (60, 60) } },
-            { 10, 20, new[]{ (10, 20) } },
-            { 10, 30, new[]{ (10, 20), (30, 30) } },
-            { 10, 35, new[]{ (10, 20), (30, 35) } },
-            { 15, 60, new[]{ (15, 20), (30, 40), (50, 60) } },
+            {  0, 9, [] },
+            { 21, 29, [] },
+            { 61, 70, [] },
+            {  0, 10, [(10, 10)]},
+            { 60, 70, [(60, 60)]},
+            { 10, 20, [(10, 20)]},
+            { 10, 30, [(10, 20), (30, 30)]},
+            { 10, 35, [(10, 20), (30, 35)]},
+            { 15, 60, [(15, 20), (30, 40), (50, 60)]},
         };
         [Theory]
         [MemberData(nameof(RangeTruncate_Data))]
-        public void RangeTruncate(int from, int to, (int From, int ToInclusive)[] expected)
+        public void RangeTruncate(int from, int to, SerializableTuple<int, int>[] expected)
         {
             var set = new SetIntervalClosedInt([
                 (10, 20),
                 (30, 40),
                 (50, 60)]);
-            set.RangeTruncate(from, to).ShouldBe(expected);
+            set.RangeTruncate(from, to).ShouldBe(expected.ToTuple());
         }
 
-        public static TheoryData<int, int, (int From, int ToInclusive)[]> RangeAll_Data => new()
+        public static TheoryData<int, int, SerializableTuple<int, int>[]> RangeAll_Data => new()
         {
-            {  0, 9, Array.Empty<(int, int)>() },
-            { 21, 29, Array.Empty<(int, int)>() },
-            { 61, 70, Array.Empty<(int, int)>() },
-            {  0, 10, new[]{ (10, 20) } },
-            { 60, 70, new[]{ (50, 60) } },
-            { 10, 20, new[]{ (10, 20) } },
-            { 10, 30, new[]{ (10, 20), (30, 40) } },
-            { 10, 35, new[]{ (10, 20), (30, 40) } },
-            { 15, 60, new[]{ (10, 20), (30, 40), (50, 60) } },
+            {  0, 9, Array.Empty<SerializableTuple<int, int>>() },
+            { 21, 29, Array.Empty<SerializableTuple<int, int>>() },
+            { 61, 70, Array.Empty<SerializableTuple<int, int>>() },
+            {  0, 10, [(10, 20)]},
+            { 60, 70, [(50, 60)]},
+            { 10, 20, [(10, 20)]},
+            { 10, 30, [(10, 20), (30, 40)]},
+            { 10, 35, [(10, 20), (30, 40)]},
+            { 15, 60, [(10, 20), (30, 40), (50, 60)]},
         };
         [Theory]
         [MemberData(nameof(RangeAll_Data))]
-        public void RangeAll(int from, int to, (int From, int ToInclusive)[] expected)
+        public void RangeAll(int from, int to, SerializableTuple<int, int>[] expected)
         {
             var set = new SetIntervalClosedInt([
                 (10, 20),
                 (30, 40),
                 (50, 60)]);
-            set.RangeAll(from, to).ShouldBe(expected);
+            set.RangeAll(from, to).ShouldBe(expected.ToTuple());
         }
 
         [Fact]

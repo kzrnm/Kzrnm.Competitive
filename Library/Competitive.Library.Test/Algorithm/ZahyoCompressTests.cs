@@ -63,7 +63,9 @@ namespace Kzrnm.Competitive.Testing.Algorithm
         public void CompressedArray()
         {
             ZahyoCompress.CompressedArray("compress".AsSpan()).ShouldBe([0, 3, 2, 4, 5, 1, 6, 6]);
-            ZahyoCompress.CompressedArray(new[] { 3, 5, 6, 41, 6 }).ShouldBe([0, 1, 2, 3, 2]);
+
+            var a = new int[] { 3, 5, 6, 41, 6 };
+            ZahyoCompress.CompressedArray(a).ShouldBe([0, 1, 2, 3, 2]);
         }
     }
 }

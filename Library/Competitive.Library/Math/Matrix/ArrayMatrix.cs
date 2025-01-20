@@ -422,6 +422,9 @@ namespace Kzrnm.Competitive
                     Row = row;
                 }
 
+#if !LIBRARY
+                [SourceExpander.NotEmbeddingSource]
+#endif
                 public override string ToString()
                     => Row.Length < 50
                     ? string.Join(' ', Row)

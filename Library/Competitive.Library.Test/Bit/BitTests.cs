@@ -77,7 +77,7 @@ namespace Kzrnm.Competitive.Testing.Bits
             0UL.ToBitString().ShouldBe(new string('0', 64));
         }
 
-        public static IEnumerable<(uint, int[])> BitEnumerateByte_Data()
+        public static IEnumerable<TheoryDataRow<uint, int[]>> BitEnumerateByte_Data()
         {
             var s = new int[8];
             for (s[0] = 0; s[0] < 2; s[0]++)
@@ -111,17 +111,18 @@ namespace Kzrnm.Competitive.Testing.Bits
 
         public static TheoryData<int, int[]> BitEnumerateInt32_Data => new()
         {
-            { -1, new[]{
+            { -1, [
                 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
                 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
                 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
-                30, 31 } },
-            { int.MinValue, new[]{ 31 } },
-            { 1, new[]{ 0 } },
-            { 3, new[]{ 0, 1  } },
-            { 10, new[]{ 1, 3 } },
-            { 1 << 20, new[]{ 20 } },
-            { 0, Array.Empty<int>() },
+                30, 31]
+            },
+            { int.MinValue, [31]},
+            { 1, [0]},
+            { 3, [0, 1 ]},
+            { 10, [1, 3]},
+            { 1 << 20, [20]},
+            { 0, [] },
         };
         [Theory]
         [MemberData(nameof(BitEnumerateInt32_Data))]
@@ -134,17 +135,21 @@ namespace Kzrnm.Competitive.Testing.Bits
 
         public static TheoryData<uint, int[]> BitEnumerateUInt32_Data => new()
         {
-            { uint.MaxValue, new[]{
+            {
+                uint.MaxValue,
+                [
                 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
                 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
                 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
-                30, 31 } },
-            { 1U << 31, new[]{ 31 } },
-            { 1, new[]{ 0 } },
-            { 3, new[]{ 0, 1 }},
-            { 10, new[]{ 1, 3 }},
-            { 1 << 20, new[]{ 20 } },
-            { 0, Array.Empty<int>() },
+                30, 31
+                ]
+            },
+            { 1U << 31, [31]},
+            { 1, [0]},
+            { 3, [0, 1]},
+            { 10, [1, 3]},
+            { 1 << 20, [20]},
+            { 0, [] },
         };
         [Theory]
         [MemberData(nameof(BitEnumerateUInt32_Data))]
@@ -157,20 +162,20 @@ namespace Kzrnm.Competitive.Testing.Bits
 
         public static TheoryData<long, int[]> BitEnumerateInt64_Data => new()
         {
-            { -1, new[]{
+            { -1, [
                 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
                 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
                 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
                 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
                 40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
                 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
-                60, 61, 62, 63 } },
-            { long.MinValue, new[]{ 63 } },
-            { 1, new[]{ 0 } },
-            { 3, new[]{ 0, 1 }},
-            { 10, new[]{ 1, 3 }},
-            { 1L << 20, new[]{ 20 } },
-            { 0, Array.Empty<int>() },
+                60, 61, 62, 63] },
+            { long.MinValue, [63]},
+            { 1, [0]},
+            { 3, [0, 1]},
+            { 10, [1, 3]},
+            { 1L << 20, [20]},
+            { 0, [] },
         };
         [Theory]
         [MemberData(nameof(BitEnumerateInt64_Data))]
@@ -183,20 +188,20 @@ namespace Kzrnm.Competitive.Testing.Bits
 
         public static TheoryData<ulong, int[]> BitEnumerateUInt64_Data => new()
         {
-            { ulong.MaxValue, new[]{
+            { ulong.MaxValue, [
                 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
                 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
                 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
                 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
                 40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
                 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
-                60, 61, 62, 63 } },
-            { 1UL << 63, new[]{ 63 } },
-            { 1, new[]{ 0 } },
-            { 3, new[]{ 0, 1 }},
-            { 10, new[]{ 1, 3 }},
-            { 1L << 20, new[]{ 20 } },
-            { 0, Array.Empty<int>() },
+                60, 61, 62, 63] },
+            { 1UL << 63, [63]},
+            { 1, [0]},
+            { 3, [0, 1]},
+            { 10, [1, 3]},
+            { 1L << 20, [20]},
+            { 0, [] },
         };
         [Theory]
         [MemberData(nameof(BitEnumerateUInt64_Data))]

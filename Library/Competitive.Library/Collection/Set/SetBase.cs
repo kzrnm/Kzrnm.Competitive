@@ -953,6 +953,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
                 Right = newChild;
             }
         }
+#if !LIBRARY
+        [SourceExpander.NotEmbeddingSource]
+#endif
         public override string ToString() => $"Size = {Size}";
     }
     public enum NodeColor : byte

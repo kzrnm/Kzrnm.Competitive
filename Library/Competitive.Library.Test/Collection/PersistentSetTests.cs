@@ -86,27 +86,27 @@ namespace Kzrnm.Competitive.Testing.Collection
             sd = sd.Add(1, 2);
             sd = sd.Add(2, 1);
             sd = sd.Add(2, 2);
-            sd.ShouldBe(new[] {
+            sd.ShouldBe([
                 KeyValuePair.Create(1, 2),
                 KeyValuePair.Create(1, 1),
                 KeyValuePair.Create(2, 2),
                 KeyValuePair.Create(2, 1),
-            });
+            ]);
 
             sd.Min.ShouldBe(KeyValuePair.Create(1, 2));
-            sd.RemoveMin(out var min).ShouldBe(new[] {
+            sd.RemoveMin(out var min).ShouldBe([
                 KeyValuePair.Create(1, 1),
                 KeyValuePair.Create(2, 2),
                 KeyValuePair.Create(2, 1),
-            });
+            ]);
             min.ShouldBe(KeyValuePair.Create(1, 2));
 
             sd.Max.ShouldBe(KeyValuePair.Create(2, 1));
-            sd.RemoveMax(out var max).ShouldBe(new[] {
+            sd.RemoveMax(out var max).ShouldBe([
                 KeyValuePair.Create(1, 2),
                 KeyValuePair.Create(1, 1),
                 KeyValuePair.Create(2, 2),
-            });
+            ]);
             max.ShouldBe(KeyValuePair.Create(2, 1));
         }
     }
