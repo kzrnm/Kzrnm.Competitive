@@ -68,6 +68,7 @@ jobs:
         run: dotnet build ${{ env.WORKFLOW_BUILD_SLN }} -c Release -p:Version=$VERSION
       - name: Test
         run: dotnet test ${{ env.WORKFLOW_BUILD_SLN }} --no-build --logger GitHubActions -c Release
+        timeout-minutes: 10
       - name: Pack
         run: dotnet pack ${{ env.PACK_CSPROJ }} --no-build -c Release -o bin/Packages/Release -p:Version=$VERSION
       - uses: actions/upload-artifact@v4

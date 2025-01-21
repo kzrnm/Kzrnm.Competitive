@@ -95,6 +95,7 @@ jobs:
         run: dotnet build $WORKFLOW_BUILD_SLN -c Release
       - name: Unit test
         run: dotnet test $UNITTEST_CSPROJ --logger "CompetitiveVerifier;OutDirectory=${{runner.temp}}/VerifierCsUnitTestResult" --no-build  -c Release
+        timeout-minutes: 10
         env:
           UNITTEST_CSPROJ: Competitive.Library.Test/Competitive.Library.Test.csproj
 

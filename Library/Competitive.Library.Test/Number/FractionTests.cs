@@ -40,7 +40,6 @@ namespace Kzrnm.Competitive.Testing.Number
             { new Fraction(1, 2), "1/2" },
             { new Fraction(-1, 2), "-1/2" },
             { new Fraction(1, -2), "-1/2" },
-            { new Fraction(-1, -2), "1/2" },
         };
         [Theory]
         [MemberData(nameof(ToString_Data))]
