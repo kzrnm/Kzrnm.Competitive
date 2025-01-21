@@ -7,7 +7,6 @@
     <RootNamespace>Kzrnm.Competitive</RootNamespace>
     <Configurations>Debug;Release;Library</Configurations>
     <StartupObject>Program</StartupObject>
-    <NoWarn>$(NoWarn);NETSDK1138</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

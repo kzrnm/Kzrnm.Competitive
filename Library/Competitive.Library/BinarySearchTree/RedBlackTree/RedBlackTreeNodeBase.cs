@@ -9,9 +9,9 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.Internal
 {
-    public interface IRedBlackTreeNode<T, Node> : IBbstNode<T, Node> where Node : class, IRedBlackTreeNode<T, Node>
+    public interface IRedBlackTreeNode<T, Nd> : IBbstNode<T, Nd> where Nd : class, IRedBlackTreeNode<T, Nd>
     {
-        static abstract Node Create(Node left, Node right);
+        static abstract Nd Create(Nd left, Nd right);
     }
 
     // https://ei1333.github.io/library/structure/bbst/lazy-red-black-tree.hpp

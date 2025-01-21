@@ -9,38 +9,35 @@ namespace Kzrnm.Competitive
 {
     namespace Internal
     {
-        public interface IImmutableBbst<T, Node, TSelf> : IImmutableList<T>
-            where TSelf : IImmutableBbst<T, Node, TSelf>
+        public interface IImmutableBbst<T, Nd, TSelf> : IImmutableList<T>
+            where TSelf : IImmutableBbst<T, Nd, TSelf>
         {
-            static abstract TSelf Create(Node node);
+            static abstract TSelf Create(Nd node);
         }
 
         /// <summary>
         /// 永続化した平衡二分探索木を実装する
         /// </summary>
         /// <typeparam name="T">モノイド</typeparam>
-        /// <typeparam name="Node">ノード</typeparam>
+        /// <typeparam name="Nd">ノード</typeparam>
         /// <typeparam name="TSelf">自身の型</typeparam>
-        public abstract class ImmutableBinarySearchTreeBase<T, Node, TSelf> : IImmutableList<T>
-            where Node : class, IBbstNode<T, Node>
-            where TSelf : ImmutableBinarySearchTreeBase<T, Node, TSelf>, IImmutableBbst<T, Node, TSelf>
+        public abstract class ImmutableBinarySearchTreeBase<T, Nd, TSelf> : IImmutableList<T>
+            where Nd : class, IBbstNode<T, Nd>
+            where TSelf : ImmutableBinarySearchTreeBase<T, Nd, TSelf>, IImmutableBbst<T, Nd, TSelf>
         {
-            protected ImmutableBinarySearchTreeBase() { }
-            protected ImmutableBinarySearchTreeBase(IEnumerable<T> v) : this(v.ToArray()) { }
-            protected ImmutableBinarySearchTreeBase(T[] v) : this(v.AsSpan()) { }
-            protected ImmutableBinarySearchTreeBase(ReadOnlySpan<T> v) : this(Node.Build(v)) { }
-            protected ImmutableBinarySearchTreeBase(Node root)
+            protected ImmutableBinarySearchTreeBase(ReadOnlySpan<T> v) : this(Nd.Build(v)) { }
+            protected ImmutableBinarySearchTreeBase(Nd root)
             {
                 this.root = root;
             }
             /// <summary>
             /// 二分木の根
             /// </summary>
-            protected Node root;
+            protected Nd root;
             public T this[int index]
             {
-                get => Node.GetValue(ref root, index);
-                set => Node.SetValue(ref root, index, value);
+                get => Nd.GetValue(ref root, index);
+                set => Nd.SetValue(ref root, index, value);
             }
 
             /// <summary>
@@ -50,7 +47,7 @@ namespace Kzrnm.Competitive
             public TSelf SetItem(int index, T value)
             {
                 var t = root;
-                Node.SetValue(ref t, index, value);
+                Nd.SetValue(ref t, index, value);
                 return TSelf.Create(t);
             }
             IImmutableList<T> IImmutableList<T>.SetItem(int index, T value) => SetItem(index, value);
@@ -69,12 +66,12 @@ namespace Kzrnm.Competitive
             /// <summary>
             /// [<paramref name="l"/>..<paramref name="r"/>] の総積を返します。
             /// </summary>
-            [凾(256)] public T Prod(int l, int r) => Node.Prod(ref root, l, r);
+            [凾(256)] public T Prod(int l, int r) => Nd.Prod(ref root, l, r);
             [凾(256)] public T Slice(int l, int length) => Prod(l, l + length);
             /// <summary>
             /// 総積を返します。
             /// </summary>
-            public T AllProd => Node.Sum(root);
+            public T AllProd => Nd.Sum(root);
 
             IImmutableList<T> IImmutableList<T>.Add(T value) => AddLast(value);
 
@@ -85,7 +82,7 @@ namespace Kzrnm.Competitive
             public TSelf AddFirst(T item)
             {
                 var t = root;
-                Node.AddFirst(ref t, item);
+                Nd.AddFirst(ref t, item);
                 return TSelf.Create(t);
             }
 
@@ -96,7 +93,7 @@ namespace Kzrnm.Competitive
             public TSelf AddLast(T item)
             {
                 var t = root;
-                Node.AddLast(ref t, item);
+                Nd.AddLast(ref t, item);
                 return TSelf.Create(t);
             }
 
@@ -104,7 +101,7 @@ namespace Kzrnm.Competitive
             /// 末尾に <paramref name="items"/> を追加します。
             /// </summary>
             [凾(256)]
-            public TSelf AddRange(IEnumerable<T> items) => TSelf.Create(Node.Merge(root, Node.Build(items.ToArray())));
+            public TSelf AddRange(IEnumerable<T> items) => TSelf.Create(Nd.Merge(root, Nd.Build(items.ToArray())));
             IImmutableList<T> IImmutableList<T>.AddRange(IEnumerable<T> items) => AddRange(items);
 
 
@@ -115,7 +112,7 @@ namespace Kzrnm.Competitive
             public TSelf Insert(int index, T item)
             {
                 var t = root;
-                Node.Insert(ref t, index, item);
+                Nd.Insert(ref t, index, item);
                 return TSelf.Create(t);
             }
 
@@ -126,7 +123,7 @@ namespace Kzrnm.Competitive
             public TSelf InsertRange(int index, IEnumerable<T> items)
             {
                 var t = root;
-                Node.Insert(ref t, index, Node.Build(items.ToArray()));
+                Nd.Insert(ref t, index, Nd.Build(items.ToArray()));
                 return TSelf.Create(t);
             }
 
@@ -141,7 +138,7 @@ namespace Kzrnm.Competitive
             public TSelf RemoveAt(int index)
             {
                 var t = root;
-                Node.Erase(ref t, index);
+                Nd.Erase(ref t, index);
                 return TSelf.Create(t);
             }
             IImmutableList<T> IImmutableList<T>.RemoveAt(int index) => RemoveAt(index);
@@ -150,7 +147,7 @@ namespace Kzrnm.Competitive
             public TSelf RemoveRange(int index, int count)
             {
                 var t = root;
-                Node.Erase(ref t, index, count);
+                Nd.Erase(ref t, index, count);
                 return TSelf.Create(t);
             }
             IImmutableList<T> IImmutableList<T>.RemoveRange(int index, int count) => RemoveRange(index, count);
@@ -166,8 +163,8 @@ namespace Kzrnm.Competitive
                     array[arrayIndex++] = v;
             }
 
-            IEnumerator<T> IEnumerable<T>.GetEnumerator() => Node.GetEnumerator(ref root);
-            IEnumerator IEnumerable.GetEnumerator() => Node.GetEnumerator(ref root);
+            IEnumerator<T> IEnumerable<T>.GetEnumerator() => Nd.GetEnumerator(ref root);
+            IEnumerator IEnumerable.GetEnumerator() => Nd.GetEnumerator(ref root);
 
             int IImmutableList<T>.IndexOf(T item, int index, int count, IEqualityComparer<T> equalityComparer) { throw new NotSupportedException(); }
             int IImmutableList<T>.LastIndexOf(T item, int index, int count, IEqualityComparer<T> equalityComparer) { throw new NotSupportedException(); }

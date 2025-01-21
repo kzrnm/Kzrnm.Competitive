@@ -32,7 +32,7 @@ namespace Kzrnm.Competitive
         }
     }
 
-    [DebuggerDisplay(@"{ToStringSplit().Replace(""\r\n"",""\n""),raw}")]
+    [DebuggerDisplay("""{ToStringSplit().Replace("\r\n","\n"),raw}""")]
     [DebuggerTypeProxy(typeof(Grid<>.DebugView))]
     public class Grid<T>
     {
@@ -69,13 +69,6 @@ namespace Kzrnm.Competitive
             return (h, ix - h * W);
         }
 
-        private T defaultReference;
-        [凾(256)]
-        private ref T DefaultValueReference()
-        {
-            defaultReference = defaultValue;
-            return ref defaultReference;
-        }
         public ref T this[int h, int w]
         {
             [凾(256)]
@@ -88,9 +81,13 @@ namespace Kzrnm.Competitive
             {
                 if ((uint)index < (uint)data.Length)
                     return ref data[index];
-                return ref DefaultValueReference();
+                defaultReference = defaultValue;
+                return ref defaultReference;
             }
         }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private T defaultReference;
+
         public Span<T> RowSpan(int h) => (uint)h < (uint)H ? data.AsSpan(h * W, W) : default;
         public Grid<T> Clone() => new Grid<T>(this);
 
@@ -212,7 +209,10 @@ namespace Kzrnm.Competitive
             public static implicit operator int(Position p) => p.Index;
         }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
-        public struct MoveEnumerator : IEnumerator<Position>, IEnumerable<Position>
+        public record struct MoveEnumerator(
+            Grid<T> grid,
+            int origH,
+            int origW) : IEnumerator<Position>, IEnumerable<Position>
         {
             private enum Status
             {
@@ -222,17 +222,7 @@ namespace Kzrnm.Competitive
                 Right,
                 Down,
             }
-            private readonly Grid<T> grid;
-            private readonly int origH, origW;
-            private Status status;
-            [凾(256)]
-            public MoveEnumerator(Grid<T> grid, int h, int w)
-            {
-                this.grid = grid;
-                origH = h;
-                origW = w;
-                status = Status.None;
-            }
+            private Status status = Status.None;
             public Position Current
             {
                 [凾(256)]
@@ -328,14 +318,9 @@ namespace Kzrnm.Competitive
 #if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
 #endif
-        private class DebugLine
+        private readonly record struct DebugLine(
+            [property: DebuggerBrowsable(DebuggerBrowsableState.RootHidden)] T[] line)
         {
-            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            private T[] line;
-            public DebugLine(T[] line)
-            {
-                this.line = line;
-            }
             public override string ToString()
             {
                 if (line is char[] chrs)
@@ -346,13 +331,9 @@ namespace Kzrnm.Competitive
 #if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
 #endif
-        private class DebugView
+        private readonly record struct DebugView(
+            [property: DebuggerBrowsable(DebuggerBrowsableState.Never)] Grid<T> grid)
         {
-            private readonly Grid<T> grid;
-            public DebugView(Grid<T> grid)
-            {
-                this.grid = grid;
-            }
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
             public DebugLine[] Items
             {

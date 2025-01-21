@@ -5,5 +5,6 @@
   <PropertyGroup>
     <SourceExpanderVersion>8.1.0</SourceExpanderVersion>
     <CompetitiveAnalyzer_UseMethodImplNumeric>True</CompetitiveAnalyzer_UseMethodImplNumeric>
+    <NoWarn>$(NoWarn);NETSDK1138</NoWarn>
   </PropertyGroup>
 </Project>

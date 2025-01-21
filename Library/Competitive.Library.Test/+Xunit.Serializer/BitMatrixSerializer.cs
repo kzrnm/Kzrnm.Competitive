@@ -10,10 +10,7 @@ using Xunit.Sdk;
     typeof(BitMatrix),
     typeof(BitOrMatrix),
 ])]
-[assembly: RegisterXunitSerializer(typeof(BitMatrixTSerializer), [
-    typeof(BitMatrix64),
-    typeof(BitMatrix<UInt128>),
-])]
+[assembly: RegisterXunitSerializer(typeof(BitMatrixTSerializer), [typeof(BitMatrix64), typeof(BitMatrix<UInt128>)])]
 
 
 namespace Kzrnm.Competitive.Testing.Serializer;
@@ -65,10 +62,8 @@ public class BitMatrixSerializer : IXunitSerializer
     }
 }
 
-
 public class BitMatrixTSerializer : IXunitSerializer
 {
-    readonly ParserSerializer ParserSerializer = new();
     public object Deserialize(Type type, string serializedValue)
     {
         if (type != typeof(BitMatrix<>).MakeGenericType(type.GenericTypeArguments))
@@ -85,7 +80,9 @@ public class BitMatrixTSerializer : IXunitSerializer
         var b = Array.CreateInstance(type.GenericTypeArguments[0], sp.Length);
         for (int i = 0; i < b.Length; i++)
         {
-            b.SetValue(ParserSerializer.Deserialize(type.GenericTypeArguments[0], sp[i]), i);
+            if (type == typeof(BitMatrix64)) b.SetValue(ulong.Parse(sp[i]), i);
+            else if (type == typeof(BitMatrix<UInt128>)) b.SetValue(ulong.Parse(sp[i]), i);
+            else throw new FormatException();
         }
         return type.GetConstructor([b.GetType()]).Invoke([b]);
     }
@@ -101,6 +98,6 @@ public class BitMatrixTSerializer : IXunitSerializer
             return kind.ToString();
         var v = (IEnumerable)value.GetType().GetField(nameof(BitMatrix<uint>._v), BindingFlags.Instance | BindingFlags.Public)
             .GetValue(value);
-        return string.Join('\0', v.Cast<object>().Select(ParserSerializer.Serialize));
+        return string.Join('\0', v.Cast<object>().Select(v => v.ToString()));
     }
 }

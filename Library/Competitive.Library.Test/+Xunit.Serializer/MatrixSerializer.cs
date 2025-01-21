@@ -2,7 +2,6 @@ using Kzrnm.Competitive;
 using Kzrnm.Competitive.Testing.Serializer;
 using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Xunit.Sdk;
 
 [assembly: RegisterXunitSerializer(typeof(LongMatrixSerializer), [
@@ -14,7 +13,7 @@ using Xunit.Sdk;
 
 namespace Kzrnm.Competitive.Testing.Serializer;
 
-public partial class LongMatrixSerializer : IXunitSerializer
+public class LongMatrixSerializer : IXunitSerializer
 {
     public object Deserialize(Type type, string serializedValue)
     {

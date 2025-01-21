@@ -213,7 +213,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat * a).ShouldBe(expected);
         }
 
-        public static TheoryData<LongMatrix3x3, (long, long, long), (long, long, long)> MultiplyVector_Data => new()
+        public static TheoryData<LongMatrix3x3, SerializableTuple<long, long, long>, SerializableTuple<long, long, long>> MultiplyVector_Data => new()
         {
             {
                 new LongMatrix3x3(
@@ -238,11 +238,15 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Theory]
         [Trait("Category", "Operator")]
         [MemberData(nameof(MultiplyVector_Data))]
-        public void MultiplyVector(LongMatrix3x3 mat, (long v0, long v1, long v2) vector, (long, long, long) expected)
+        public void MultiplyVector(LongMatrix3x3 mat, SerializableTuple<long, long, long> vector, SerializableTuple<long, long, long> expected)
         {
-            (mat * vector).ShouldBe(expected);
-            mat.Multiply(vector).ShouldBe(expected);
-            mat.Multiply(vector.v0, vector.v1, vector.v2).ShouldBe(expected);
+            Inner(mat, vector, expected);
+            static void Inner(LongMatrix3x3 mat, (long, long, long) vector, (long, long, long) expected)
+            {
+                (mat * vector).ShouldBe(expected);
+                mat.Multiply(vector).ShouldBe(expected);
+                mat.Multiply(vector.Item1, vector.Item2, vector.Item3).ShouldBe(expected);
+            }
         }
 
         [Fact]

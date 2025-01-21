@@ -1,7 +1,5 @@
-using AtCoder;
 using Kzrnm.Competitive.Internal;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -17,13 +15,16 @@ namespace Kzrnm.Competitive
         : ImmutableBinarySearchTreeBase<T, ImmutableLazyRedBlackTreeNode<T, byte, SingleBbstOp<T>>, ImmutableLazyRedBlackTree<T>>
         , IImmutableBbst<T, ImmutableLazyRedBlackTreeNode<T, byte, SingleBbstOp<T>>, ImmutableLazyRedBlackTree<T>>
     {
-        public ImmutableLazyRedBlackTree() { }
-        public ImmutableLazyRedBlackTree(IEnumerable<T> v) : base(v) { }
-        public ImmutableLazyRedBlackTree(T[] v) : base(v) { }
-        public ImmutableLazyRedBlackTree(ReadOnlySpan<T> v) : base(v) { }
+        [凾(256)] public static ImmutableLazyRedBlackTree<T> Create(ImmutableLazyRedBlackTreeNode<T, byte, SingleBbstOp<T>> node) => new(node);
+        [凾(256)] public static ImmutableLazyRedBlackTree<T> Create() => Empty;
+#if NET9_0_OR_GREATER
+        [凾(256)] public static ImmutableLazyRedBlackTree<T> Create(params ReadOnlySpan<T> v) => new(v);
+#else
+        [凾(256)] public static ImmutableLazyRedBlackTree<T> Create(params T[] v) => new(v);
+        [凾(256)] public static ImmutableLazyRedBlackTree<T> Create(ReadOnlySpan<T> v) => new(v);
+#endif
+        private ImmutableLazyRedBlackTree(ReadOnlySpan<T> v) : base(v) { }
         public ImmutableLazyRedBlackTree(ImmutableLazyRedBlackTreeNode<T, byte, SingleBbstOp<T>> root) : base(root) { }
-        [凾(256)]
-        static ImmutableLazyRedBlackTree<T> IImmutableBbst<T, ImmutableLazyRedBlackTreeNode<T, byte, SingleBbstOp<T>>, ImmutableLazyRedBlackTree<T>>.Create(ImmutableLazyRedBlackTreeNode<T, byte, SingleBbstOp<T>> node) => new(node);
         public ImmutableLazyRedBlackTreeNode<T, byte, SingleBbstOp<T>>.Enumerator GetEnumerator()
         {
             ImmutableLazyRedBlackTreeNode<T, byte, SingleBbstOp<T>>.GetEnumerator(ref root);
@@ -40,13 +41,16 @@ namespace Kzrnm.Competitive
         , IImmutableBbst<T, ImmutableLazyRedBlackTreeNode<T, F, TOp>, ImmutableLazyRedBlackTree<T, F, TOp>>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
-        public ImmutableLazyRedBlackTree() { }
-        public ImmutableLazyRedBlackTree(IEnumerable<T> v) : base(v) { }
-        public ImmutableLazyRedBlackTree(T[] v) : base(v) { }
-        public ImmutableLazyRedBlackTree(ReadOnlySpan<T> v) : base(v) { }
+        [凾(256)] public static ImmutableLazyRedBlackTree<T, F, TOp> Create(ImmutableLazyRedBlackTreeNode<T, F, TOp> node) => new(node);
+        [凾(256)] public static ImmutableLazyRedBlackTree<T, F, TOp> Create() => Empty;
+#if NET9_0_OR_GREATER
+        [凾(256)] public static ImmutableLazyRedBlackTree<T, F, TOp> Create(params ReadOnlySpan<T> v) => new(v);
+#else
+        [凾(256)] public static ImmutableLazyRedBlackTree<T, F, TOp> Create(params T[] v) => new(v);
+        [凾(256)] public static ImmutableLazyRedBlackTree<T, F, TOp> Create(ReadOnlySpan<T> v) => new(v);
+#endif
+        private ImmutableLazyRedBlackTree(ReadOnlySpan<T> v) : base(v) { }
         public ImmutableLazyRedBlackTree(ImmutableLazyRedBlackTreeNode<T, F, TOp> root) : base(root) { }
-        [凾(256)]
-        static ImmutableLazyRedBlackTree<T, F, TOp> IImmutableBbst<T, ImmutableLazyRedBlackTreeNode<T, F, TOp>, ImmutableLazyRedBlackTree<T, F, TOp>>.Create(ImmutableLazyRedBlackTreeNode<T, F, TOp> node) => new(node);
         public ImmutableLazyRedBlackTreeNode<T, F, TOp>.Enumerator GetEnumerator()
         {
             ImmutableLazyRedBlackTreeNode<T, F, TOp>.GetEnumerator(ref root);

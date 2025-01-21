@@ -2,7 +2,6 @@ using Kzrnm.Competitive;
 using Kzrnm.Competitive.Testing;
 using Kzrnm.Competitive.Testing.Serializer;
 using System;
-using System.Reflection;
 using Xunit.Sdk;
 
 [assembly: RegisterXunitSerializer(typeof(ParserSerializer), [
@@ -17,34 +16,24 @@ using Xunit.Sdk;
 
 namespace Kzrnm.Competitive.Testing.Serializer;
 
-public partial class ParserSerializer : IXunitSerializer
+public class ParserSerializer : IXunitSerializer
 {
     public object Deserialize(Type type, string serializedValue)
     {
-        return Parse(type, serializedValue);
+        if (type == typeof(UInt24) && UInt24.TryParse(serializedValue, out var vUInt24)) return vUInt24;
+        else if (type == typeof(Int128) && Int128.TryParse(serializedValue, out var vInt128)) return vInt128;
+        else if (type == typeof(UInt128) && UInt128.TryParse(serializedValue, out var vUInt128)) return vUInt128;
+        else if (type == typeof(UInt256) && UInt256.TryParse(serializedValue, out var vUInt256)) return vUInt256;
+        else if (type == typeof(UInt512) && UInt512.TryParse(serializedValue, out var vUInt512)) return vUInt512;
+        else if (type == typeof(Fraction) && Fraction.TryParse(serializedValue, out var vFraction)) return vFraction;
+        throw new FormatException();
     }
 
     public bool IsSerializable(Type type, object value, out string failureReason)
-    {
-        failureReason = null;
-        if (ParseMethod(type) == null)
-        {
-            failureReason = "Not IParsable<T>";
-            return false;
-        }
-        return true;
-    }
+        => (failureReason = null) == null;
 
     public string Serialize(object value)
     {
         return value.ToString();
     }
-
-    static MethodInfo ParseMethod(Type type)
-        => type.GetMethod(
-            nameof(IParsable<int>.Parse),
-            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static,
-            [typeof(string), typeof(IFormatProvider)]);
-    static object Parse(Type type, string v)
-        => ParseMethod(type).Invoke(null, [v, null]);
 }

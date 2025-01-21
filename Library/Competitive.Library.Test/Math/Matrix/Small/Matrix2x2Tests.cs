@@ -1,4 +1,6 @@
 
+using Shouldly;
+
 namespace Kzrnm.Competitive.Testing.MathNS.Matrix
 {
     public class Matrix2x2Tests
@@ -188,7 +190,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat * a).ShouldBe(expected);
         }
 
-        public static TheoryData<LongMatrix2x2, (long, long), (long, long)> MultiplyVector_Data => new()
+        public static TheoryData<LongMatrix2x2, SerializableTuple<long, long>, SerializableTuple<long, long>> MultiplyVector_Data => new()
         {
             {
                 new LongMatrix2x2(
@@ -211,11 +213,15 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Theory]
         [Trait("Category", "Operator")]
         [MemberData(nameof(MultiplyVector_Data))]
-        public void MultiplyVector(LongMatrix2x2 mat, (long v0, long v1) vector, (long, long) expected)
+        public void MultiplyVector(LongMatrix2x2 mat, SerializableTuple<long, long> vector, SerializableTuple<long, long> expected)
         {
-            (mat * vector).ShouldBe(expected);
-            mat.Multiply(vector).ShouldBe(expected);
-            mat.Multiply(vector.v0, vector.v1).ShouldBe(expected);
+            Inner(mat, vector, expected);
+            static void Inner(LongMatrix2x2 mat, (long, long) vector, (long, long) expected)
+            {
+                (mat * vector).ShouldBe(expected);
+                mat.Multiply(vector).ShouldBe(expected);
+                mat.Multiply(vector.Item1, vector.Item2).ShouldBe(expected);
+            }
         }
 
         [Fact]

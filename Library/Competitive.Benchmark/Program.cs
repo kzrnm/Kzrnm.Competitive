@@ -42,13 +42,12 @@ public class Benchmark
     private readonly Random rnd = new Random(42);
     const int MAX_N = 1 << 20;
 #if true
-    [Params(new object[]
-    {
+    [Params([
         1 << 5,
         1 << 10,
         1 << 15,
         1 << 20,
-    })]
+    ])]
     public int N;
 #else
     public const int N = 1 << 15;

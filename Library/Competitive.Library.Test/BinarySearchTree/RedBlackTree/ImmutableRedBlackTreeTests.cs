@@ -1,5 +1,6 @@
 using Kzrnm.Competitive.Internal;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
 {
@@ -10,6 +11,6 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
         protected override ImmutableRedBlackTree<int> Empty
             => ImmutableRedBlackTree<int>.Empty;
         protected override ImmutableRedBlackTree<int> Create(IEnumerable<int> values)
-            => new ImmutableRedBlackTree<int>(values);
+            => ImmutableRedBlackTree<int>.Create(values.ToArray());
     }
 }

@@ -1,4 +1,6 @@
 
+using Shouldly;
+
 namespace Kzrnm.Competitive.Testing.MathNS.Matrix
 {
     public class Matrix4x4Tests
@@ -238,7 +240,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
             (mat * a).ShouldBe(expected);
         }
 
-        public static TheoryData<LongMatrix4x4, (long, long, long, long), (long, long, long, long)> MultiplyVector_Data => new()
+        public static TheoryData<LongMatrix4x4, SerializableTuple<long, long, long, long>, SerializableTuple<long, long, long, long>> MultiplyVector_Data => new()
         {
             {
                 new LongMatrix4x4(
@@ -265,11 +267,15 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         [Theory]
         [Trait("Category", "Operator")]
         [MemberData(nameof(MultiplyVector_Data))]
-        public void MultiplyVector(LongMatrix4x4 mat, (long v0, long v1, long v2, long v3) vector, (long, long, long, long) expected)
+        public void MultiplyVector(LongMatrix4x4 mat, SerializableTuple<long, long, long, long> vector, SerializableTuple<long, long, long, long> expected)
         {
-            (mat * vector).ShouldBe(expected);
-            mat.Multiply(vector).ShouldBe(expected);
-            mat.Multiply(vector.v0, vector.v1, vector.v2, vector.v3).ShouldBe(expected);
+            Inner(mat, vector, expected);
+            static void Inner(LongMatrix4x4 mat, (long, long, long, long) vector, (long, long, long, long) expected)
+            {
+                (mat * vector).ShouldBe(expected);
+                mat.Multiply(vector).ShouldBe(expected);
+                mat.Multiply(vector.Item1, vector.Item2, vector.Item3, vector.Item4).ShouldBe(expected);
+            }
         }
 
         [Fact]

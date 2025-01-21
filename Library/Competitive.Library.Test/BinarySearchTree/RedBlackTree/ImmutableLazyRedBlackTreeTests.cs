@@ -1,5 +1,6 @@
 using Kzrnm.Competitive.Internal;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
 {
@@ -9,6 +10,6 @@ namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree
         protected override ImmutableLazyRedBlackTree<int, int, SumOp> Empty
             => ImmutableLazyRedBlackTree<int, int, SumOp>.Empty;
         protected override ImmutableLazyRedBlackTree<int, int, SumOp> Create(IEnumerable<int> values)
-            => new ImmutableLazyRedBlackTree<int, int, SumOp>(values);
+            => ImmutableLazyRedBlackTree<int, int, SumOp>.Create(values.ToArray());
     }
 }

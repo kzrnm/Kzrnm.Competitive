@@ -17,13 +17,16 @@ namespace Kzrnm.Competitive
         : ImmutableBinarySearchTreeBase<T, ImmutableRedBlackTreeNode<T, SingleBbstOp<T>>, ImmutableRedBlackTree<T>>
         , IImmutableBbst<T, ImmutableRedBlackTreeNode<T, SingleBbstOp<T>>, ImmutableRedBlackTree<T>>
     {
-        public ImmutableRedBlackTree() { }
-        public ImmutableRedBlackTree(IEnumerable<T> v) : base(v) { }
-        public ImmutableRedBlackTree(T[] v) : base(v) { }
-        public ImmutableRedBlackTree(ReadOnlySpan<T> v) : base(v) { }
+        [凾(256)] public static ImmutableRedBlackTree<T> Create(ImmutableRedBlackTreeNode<T, SingleBbstOp<T>> node) => new(node);
+        [凾(256)] public static ImmutableRedBlackTree<T> Create() => Empty;
+#if NET9_0_OR_GREATER
+        [凾(256)] public static ImmutableRedBlackTree<T> Create(params ReadOnlySpan<T> v) => new(v);
+#else
+        [凾(256)] public static ImmutableRedBlackTree<T> Create(params T[] v) => new(v);
+        [凾(256)] public static ImmutableRedBlackTree<T> Create(ReadOnlySpan<T> v) => new(v);
+#endif
+        private ImmutableRedBlackTree(ReadOnlySpan<T> v) : base(v) { }
         public ImmutableRedBlackTree(ImmutableRedBlackTreeNode<T, SingleBbstOp<T>> root) : base(root) { }
-        [凾(256)]
-        static ImmutableRedBlackTree<T> IImmutableBbst<T, ImmutableRedBlackTreeNode<T, SingleBbstOp<T>>, ImmutableRedBlackTree<T>>.Create(ImmutableRedBlackTreeNode<T, SingleBbstOp<T>> node) => new(node);
         public ImmutableRedBlackTreeNode<T, SingleBbstOp<T>>.Enumerator GetEnumerator()
         {
             ImmutableRedBlackTreeNode<T, SingleBbstOp<T>>.GetEnumerator(ref root);
@@ -40,13 +43,16 @@ namespace Kzrnm.Competitive
         , IImmutableBbst<T, ImmutableRedBlackTreeNode<T, TOp>, ImmutableRedBlackTree<T, TOp>>
         where TOp : struct, ISegtreeOperator<T>
     {
-        public ImmutableRedBlackTree() { }
-        public ImmutableRedBlackTree(IEnumerable<T> v) : base(v) { }
-        public ImmutableRedBlackTree(T[] v) : base(v) { }
-        public ImmutableRedBlackTree(ReadOnlySpan<T> v) : base(v) { }
+        [凾(256)] public static ImmutableRedBlackTree<T, TOp> Create(ImmutableRedBlackTreeNode<T, TOp> node) => new(node);
+        [凾(256)] public static ImmutableRedBlackTree<T, TOp> Create() => Empty;
+#if NET9_0_OR_GREATER
+        [凾(256)] public static ImmutableRedBlackTree<T, TOp> Create(params ReadOnlySpan<T> v) => new(v);
+#else
+        [凾(256)] public static ImmutableRedBlackTree<T, TOp> Create(params T[] v) => new(v);
+        [凾(256)] public static ImmutableRedBlackTree<T, TOp> Create(ReadOnlySpan<T> v) => new(v);
+#endif
+        private ImmutableRedBlackTree(ReadOnlySpan<T> v) : base(v) { }
         public ImmutableRedBlackTree(ImmutableRedBlackTreeNode<T, TOp> root) : base(root) { }
-        [凾(256)]
-        static ImmutableRedBlackTree<T, TOp> IImmutableBbst<T, ImmutableRedBlackTreeNode<T, TOp>, ImmutableRedBlackTree<T, TOp>>.Create(ImmutableRedBlackTreeNode<T, TOp> node) => new(node);
         public ImmutableRedBlackTreeNode<T, TOp>.Enumerator GetEnumerator()
         {
             ImmutableRedBlackTreeNode<T, TOp>.GetEnumerator(ref root);
