@@ -315,9 +315,7 @@ namespace Kzrnm.Competitive
                 }
             }
         }
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         private readonly record struct DebugLine(
             [property: DebuggerBrowsable(DebuggerBrowsableState.RootHidden)] T[] line)
         {
@@ -328,9 +326,7 @@ namespace Kzrnm.Competitive
                 return string.Join(", ", line);
             }
         }
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         private readonly record struct DebugView(
             [property: DebuggerBrowsable(DebuggerBrowsableState.Never)] Grid<T> grid)
         {

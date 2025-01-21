@@ -47,9 +47,7 @@ namespace Kzrnm.Competitive
             return op.Operate(stb[l], stb[r - (1 << b)]);
         }
 
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         [DebuggerDisplay("{" + nameof(Value) + "}", Name = "{" + nameof(Key) + ",nq}")]
         private readonly record struct DebugItem(
             [property: DebuggerBrowsable(0)] int L,
@@ -60,9 +58,7 @@ namespace Kzrnm.Competitive
             [DebuggerBrowsable(0)]
             public string Key => R - L == 1 ? $"[{L}]" : $"[{L}-{R})";
         }
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         private class DebugView
         {
             private readonly SparseTable<TValue, TOp> st;

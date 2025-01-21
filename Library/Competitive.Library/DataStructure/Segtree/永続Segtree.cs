@@ -150,9 +150,7 @@ namespace Kzrnm.Competitive
         public TValue AllProd => Root.data;
 
 
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         [DebuggerDisplay("{" + nameof(Value) + "}", Name = "{" + nameof(Key) + ",nq}")]
         private readonly struct DebugItem
         {
@@ -170,9 +168,7 @@ namespace Kzrnm.Competitive
             public string Key => R - L == 1 ? $"[{L}]" : $"[{L}-{R})";
             public TValue Value { get; }
         }
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         private class DebugView
         {
             private readonly PersistentSegtree<TValue, TOp> segtree;

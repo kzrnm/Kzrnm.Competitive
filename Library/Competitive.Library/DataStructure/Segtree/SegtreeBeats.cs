@@ -540,9 +540,7 @@ namespace Kzrnm.Competitive
             return 0;
         }
 
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         [DebuggerDisplay("Value = {" + nameof(Value) + "}, Lazy = {" + nameof(Lazy) + "}", Name = "{" + nameof(Key) + ",nq}")]
         internal readonly struct DebugItem
         {
@@ -562,9 +560,7 @@ namespace Kzrnm.Competitive
             public TValue Value { get; }
             public F Lazy { get; }
         }
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         class DebugView
         {
             readonly SegtreeBeats<TValue, F, TOp> segtree;

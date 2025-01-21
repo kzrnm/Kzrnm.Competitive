@@ -61,9 +61,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
         static T IBbstNode<T, SplayTreeNode<T, TOp>>.Sum(SplayTreeNode<T, TOp> t)
             => GetSum(t);
 
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         public override string ToString() => $"Size = {Size}, Value = {Value}, Sum = {Sum}";
 
         [凾(256)] static T ISplayTreePusher<SplayTreeNode<T, TOp>, T>.Operate(T x, T y) => op.Operate(x, y);

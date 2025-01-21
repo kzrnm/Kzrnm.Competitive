@@ -229,9 +229,7 @@ namespace Kzrnm.Competitive
         static BitOrMatrix ISubtractionOperators<BitOrMatrix, BitOrMatrix, BitOrMatrix>.operator -(BitOrMatrix left, BitOrMatrix right) => throw new NotSupportedException();
         static BitOrMatrix IUnaryNegationOperators<BitOrMatrix, BitOrMatrix>.operator -(BitOrMatrix value) => throw new NotSupportedException();
 
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         readonly record struct DebugView(
             [property: DebuggerBrowsable(DebuggerBrowsableState.Never)] BitOrMatrix Matrix)
         {

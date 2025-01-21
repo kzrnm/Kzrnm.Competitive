@@ -377,9 +377,7 @@ namespace Kzrnm.Competitive
             return data.AsSpan(p, Length).ToArray();
         }
 
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         [DebuggerDisplay("Value = {" + nameof(Value) + "}, Lazy = {" + nameof(Lazy) + "}", Name = "{" + nameof(Key) + ",nq}")]
         internal readonly struct DebugItem
         {
@@ -399,9 +397,7 @@ namespace Kzrnm.Competitive
             public T Value { get; }
             public F Lazy { get; }
         }
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         class DebugView
         {
             readonly SLazySegtree<T, F, TOp> s;

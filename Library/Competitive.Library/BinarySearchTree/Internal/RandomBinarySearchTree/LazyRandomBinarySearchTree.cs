@@ -104,9 +104,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
         static T IBbstNode<T, LazyRandomBinarySearchTreeNode<T, F, TOp>>.Sum(LazyRandomBinarySearchTreeNode<T, F, TOp> t)
             => GetSum(t);
 
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         public override string ToString() => $"Size = {Size}, Value = {Value}, Sum = {Sum}, Lazy = {Lazy}";
 
         [凾(256)] public static void Reverse(LazyRandomBinarySearchTreeNode<T, F, TOp> t) => t?.Toggle();

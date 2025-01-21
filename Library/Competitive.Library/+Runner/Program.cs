@@ -21,9 +21,7 @@ internal partial class Program
         cw.Flush();
     }
 }
-#if !LIBRARY
 [SourceExpander.NotEmbeddingSource]
-#endif
 partial class Program
 {
 #pragma warning disable

@@ -379,9 +379,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static bool operator !=(SimdModMatrix<T> left, SimdModMatrix<T> right) => !(left == right);
 
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         class DebugView
         {
             private readonly SimdModMatrix<T> m;
@@ -410,9 +408,7 @@ namespace Kzrnm.Competitive
                     Row = row;
                 }
 
-#if !LIBRARY
                 [SourceExpander.NotEmbeddingSource]
-#endif
                 public override string ToString()
                     => Row.Length < 50
                     ? string.Join(' ', Row)

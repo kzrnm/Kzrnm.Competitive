@@ -308,9 +308,7 @@ namespace Kzrnm.Competitive
         }
         #endregion Search
 
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         private class DebugView
         {
             private readonly IEnumerable<KeyValuePair<TKey, TValue>> collection;

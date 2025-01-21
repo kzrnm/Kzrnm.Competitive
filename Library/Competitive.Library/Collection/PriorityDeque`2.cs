@@ -361,9 +361,7 @@ namespace Kzrnm.Competitive
         ReadOnlySpan<TKey> UnorderdKeys() => keys.AsSpan(0, Count);
         ReadOnlySpan<TValue> UnorderdValues() => values.AsSpan(0, Count);
 
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         private class DebugView
         {
             private readonly PriorityDequeDictionary<TKey, TValue, TOp> pq;

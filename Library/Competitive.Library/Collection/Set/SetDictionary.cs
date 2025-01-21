@@ -110,9 +110,7 @@ namespace Kzrnm.Competitive
                 Value = value;
             }
 
-#if !LIBRARY
             [SourceExpander.NotEmbeddingSource]
-#endif
             public override string ToString() => $"Key = {Key}, Value = {Value}, Size = {Size}";
             [凾(256)] public static Node Create(KeyValuePair<TKey, TValue> item, NodeColor color) => new Node(item.Key, item.Value, color);
             [凾(256)] public static KeyValuePair<TKey, TValue> GetValue(Node node) => node.Pair;
@@ -297,9 +295,7 @@ namespace Kzrnm.Competitive
         }
         #endregion Search
 
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         private class DebugView
         {
             private readonly IEnumerable<KeyValuePair<TKey, TValue>> collection;

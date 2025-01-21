@@ -287,9 +287,7 @@ namespace Kzrnm.Competitive
                 From = from;
                 ToExclusive = toExclusive;
             }
-#if !LIBRARY
             [SourceExpander.NotEmbeddingSource]
-#endif
             public override string ToString() => $"Range = [{From}, {ToExclusive}), Size = {Size}";
             [凾(256)]
             public static Node Create((T From, T ToExclusive) item, NodeColor color) => new Node(item.From, item.ToExclusive, color);
@@ -426,9 +424,7 @@ namespace Kzrnm.Competitive
         [凾(256)] public (T From, T ToExclusive) ReverseUpperBoundItem(T item) => BinarySearch(new C<T>(item), new SetUpperRev()).node.Pair;
         #endregion Search<T>
 
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         private class DebugView
         {
             [DebuggerDisplay("[{" + nameof(From) + "}, {" + nameof(ToExclusive) + "})")]

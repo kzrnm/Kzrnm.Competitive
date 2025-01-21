@@ -290,9 +290,7 @@ namespace Kzrnm.Competitive
                 ToInclusive = toInclusive;
             }
 
-#if !LIBRARY
             [SourceExpander.NotEmbeddingSource]
-#endif
             public override string ToString() => $"Range = [{From}, {ToInclusive}], Size = {Size}";
             [凾(256)]
             public static Node Create((T From, T ToInclusive) item, NodeColor color) => new Node(item.From, item.ToInclusive, color);
@@ -426,9 +424,7 @@ namespace Kzrnm.Competitive
         [凾(256)] public (T From, T ToInclusive) ReverseUpperBoundItem(T item) => BinarySearch(new C<T>(item), new SetUpperRev()).node.Pair;
         #endregion Search<T>
 
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         private class DebugView
         {
             [DebuggerDisplay("[{" + nameof(From) + "}, {" + nameof(ToInclusive) + "}]")]

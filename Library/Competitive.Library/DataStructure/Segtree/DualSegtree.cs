@@ -179,9 +179,7 @@ namespace Kzrnm.Competitive
             return data.AsSpan(p, Length).ToArray();
         }
 
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         [DebuggerDisplay("Lazy = {" + nameof(Lazy) + "}", Name = "{" + nameof(Key) + ",nq}")]
         internal readonly struct DebugItem
         {
@@ -199,9 +197,7 @@ namespace Kzrnm.Competitive
             public string Key => R - L == 1 ? $"[{L}]" : $"[{L}-{R})";
             public T Lazy { get; }
         }
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         class DebugView
         {
             readonly DualSegtree<T, TOp> s;

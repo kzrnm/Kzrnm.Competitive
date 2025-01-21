@@ -302,9 +302,7 @@ namespace Kzrnm.Competitive
 
         ReadOnlySpan<T> UnorderdValues() => data.AsSpan(0, Count);
 
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         private class DebugView
         {
             private readonly PriorityDeque<T, TOp> pq;

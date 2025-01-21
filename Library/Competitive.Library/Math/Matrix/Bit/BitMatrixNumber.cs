@@ -418,9 +418,7 @@ namespace Kzrnm.Competitive
             }
         }
 
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         class DebugView
         {
             private readonly BitMatrix<T> m;

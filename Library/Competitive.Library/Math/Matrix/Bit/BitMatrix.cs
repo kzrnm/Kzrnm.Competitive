@@ -400,9 +400,7 @@ namespace Kzrnm.Competitive
             return new BitMatrix(arr);
         }
 
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         readonly record struct DebugView(
             [property: DebuggerBrowsable(DebuggerBrowsableState.Never)] BitMatrix Matrix)
         {

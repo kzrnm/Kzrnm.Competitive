@@ -243,9 +243,7 @@ namespace Kzrnm.Competitive
             }
         }
 
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         [DebuggerDisplay("{" + nameof(value) + "}", Name = "{" + nameof(key) + ",nq}")]
         private readonly struct DebugItem
         {
@@ -259,9 +257,7 @@ namespace Kzrnm.Competitive
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
             private readonly TValue value;
         }
-#if !LIBRARY
         [SourceExpander.NotEmbeddingSource]
-#endif
         private class DebugView
         {
             private readonly Trie<TKey, TValue> trie;
