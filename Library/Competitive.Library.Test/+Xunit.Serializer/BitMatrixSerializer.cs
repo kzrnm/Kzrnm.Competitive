@@ -81,7 +81,7 @@ public class BitMatrixTSerializer : IXunitSerializer
         for (int i = 0; i < b.Length; i++)
         {
             if (type == typeof(BitMatrix64)) b.SetValue(ulong.Parse(sp[i]), i);
-            else if (type == typeof(BitMatrix<UInt128>)) b.SetValue(ulong.Parse(sp[i]), i);
+            else if (type == typeof(BitMatrix<UInt128>)) b.SetValue(UInt128.Parse(sp[i]), i);
             else throw new FormatException();
         }
         return type.GetConstructor([b.GetType()]).Invoke([b]);

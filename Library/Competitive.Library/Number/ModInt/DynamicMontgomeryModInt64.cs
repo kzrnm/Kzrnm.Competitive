@@ -190,8 +190,12 @@ namespace Kzrnm.Competitive
                 result = -result;
             return true;
         }
+
         public static DynamicMontgomeryModInt64<T> Parse(ReadOnlySpan<char> s)
-            => TryParse(s, out DynamicMontgomeryModInt64<T> r) ? r : throw new FormatException();
+            => TryParse(s, out var r) ? r : throw new FormatException();
+
+        [SourceExpander.NotEmbeddingSource] // for xUnit
+        public static DynamicMontgomeryModInt64<T> Parse(string s, IFormatProvider provider) => Parse(s);
 
         public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => Value.TryFormat(destination, out charsWritten, format, provider);
         public string ToString(string format, IFormatProvider formatProvider) => Value.ToString(format, formatProvider);

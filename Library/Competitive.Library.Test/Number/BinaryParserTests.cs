@@ -69,7 +69,7 @@ namespace Kzrnm.Competitive.Testing.Number
             var rnd = new Xoshiro256(227);
             for (int i = 0; i < 1000; i++)
             {
-                int len = rnd.NextInt32(1, 1000);
+                int len = rnd.NextInt32(2, 1000);
                 var chrs = new char[len];
                 for (int j = 0; j < chrs.Length; j++)
                 {

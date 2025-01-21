@@ -214,7 +214,10 @@ namespace Kzrnm.Competitive
             return true;
         }
         public static MontgomeryModInt<T> Parse(ReadOnlySpan<char> s)
-            => TryParse(s, out MontgomeryModInt<T> r) ? r : throw new FormatException();
+            => TryParse(s, out var r) ? r : throw new FormatException();
+
+        [SourceExpander.NotEmbeddingSource] // for xUnit
+        public static MontgomeryModInt<T> Parse(string s, IFormatProvider provider) => Parse(s);
 
         public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => Value.TryFormat(destination, out charsWritten, format, provider);
         public string ToString(string format, IFormatProvider formatProvider) => Value.ToString(format, formatProvider);

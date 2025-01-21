@@ -212,6 +212,11 @@ namespace Kzrnm.Competitive
         string IFormattable.ToString(string format, IFormatProvider formatProvider) => ToString();
 
 
+        public static BigFraction Parse(ReadOnlySpan<char> s)
+            => TryParse(s, out var r) ? r : throw new FormatException();
+
+        [SourceExpander.NotEmbeddingSource] // for xUnit
+        public static BigFraction Parse(string s, IFormatProvider provider) => Parse(s);
         public static bool TryParse(ReadOnlySpan<char> s, out BigFraction res)
         {
             var ok = false;

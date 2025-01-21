@@ -5,8 +5,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive
 {
     /// <summary>有理数を既約分数で表す</summary>
-    public readonly struct Fraction : IEquatable<Fraction>, IComparable<Fraction>
-        , INumKz<Fraction>
+    public readonly struct Fraction : IEquatable<Fraction>, IComparable<Fraction>, INumKz<Fraction>
     {
         public static readonly Fraction NaN = new Fraction(0, -1, true);
         public static bool IsNaN(Fraction v) => v._denominator0 < 0;
@@ -211,6 +210,11 @@ namespace Kzrnm.Competitive
 
         string IFormattable.ToString(string format, IFormatProvider formatProvider) => ToString();
 
+        public static Fraction Parse(ReadOnlySpan<char> s)
+            => TryParse(s, out var r) ? r : throw new FormatException();
+
+        [SourceExpander.NotEmbeddingSource] // for xUnit
+        public static Fraction Parse(string s, IFormatProvider provider) => Parse(s);
         public static bool TryParse(ReadOnlySpan<char> s, out Fraction res)
         {
             var ok = false;
