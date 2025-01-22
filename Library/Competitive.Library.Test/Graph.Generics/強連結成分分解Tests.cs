@@ -41,7 +41,7 @@ namespace Kzrnm.Competitive.Testing.Graph
                 var gs = g.SccNewGraph().ToGraph().AsArray();
                 for (int i = 0; i < gs.Length; i++)
                 {
-                    gs[i].Value.ShouldBe(ids.Index().Where(t => t.Value == i).Select(t => t.Index));
+                    gs[i].Value.ShouldBe(ids.Index().Where(t => t.Item == i).Select(t => t.Index));
                 }
             }
         }

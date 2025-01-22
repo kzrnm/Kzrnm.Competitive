@@ -32,21 +32,24 @@ namespace Kzrnm.Competitive.Testing.Number
             f.Denominator.ShouldBe(分母out);
         }
 
-        public static TheoryData<Fraction, string> ToString_Data => new()
+        public static TheoryData<long, long, string> ToString_Data => new()
         {
-            { new Fraction(16, 4), "4/1" },
-            { new Fraction(2, 845106), "1/422553" },
-            { new Fraction(230895518700, 230811434700), "9995477/9991837" },
-            { new Fraction(1, 2), "1/2" },
-            { new Fraction(-1, 2), "-1/2" },
-            { new Fraction(1, -2), "-1/2" },
+            { 16, 4, "4/1" },
+            { 2, 845106, "1/422553" },
+            { 230895518700, 230811434700, "9995477/9991837" },
+            { 1, 2, "1/2" },
+            { -1, 2, "-1/2" },
+            { 1, -2, "-1/2" },
         };
         [Theory]
         [MemberData(nameof(ToString_Data))]
         [Trait("Category", "Normal")]
-        public void ToStringTest(Fraction num, string expected)
+        public void ParseAndToStringTest(long numerator, long denominator, string text)
         {
-            num.ToString().ShouldBe(expected);
+            var num = new Fraction(numerator, denominator);
+            num.ToString().ShouldBe(text);
+            Fraction.Parse(text).ShouldBe(num);
+            Fraction.Parse($"{numerator}/{denominator}").ShouldBe(num);
         }
         [Fact]
         [Trait("Category", "Normal")]

@@ -315,6 +315,10 @@ namespace Kzrnm.Competitive
                 }
             }
         }
+
+        [SourceExpander.NotEmbeddingSource]
+        internal object __ToDebugView() => new DebugView(this);
+
         [SourceExpander.NotEmbeddingSource]
         private readonly record struct DebugLine(
             [property: DebuggerBrowsable(DebuggerBrowsableState.RootHidden)] T[] line)

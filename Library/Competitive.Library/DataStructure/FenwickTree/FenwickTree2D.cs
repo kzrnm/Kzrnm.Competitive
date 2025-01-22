@@ -58,19 +58,9 @@ namespace Kzrnm.Competitive
             for (int i = 0; i < tree.Length; i++) tree[i] = new T[W + 1];
         }
 
-        public readonly ref struct Slicer
+        public readonly record struct Slicer(FenwickTree2D<T> fw, int hFrom, int hToExclusive)
         {
-            readonly FenwickTree2D<T> fw;
-            readonly int hFrom;
-            readonly int hToExclusive;
-            public int Length { get; }
-            public Slicer(FenwickTree2D<T> fw, int hFrom, int hToExclusive)
-            {
-                this.fw = fw;
-                this.hFrom = hFrom;
-                this.hToExclusive = hToExclusive;
-                Length = fw.Width - 1;
-            }
+            public int Length => fw.Width - 1;
             [凾(256)]
             public T Slice(int wFrom, int length)
             {

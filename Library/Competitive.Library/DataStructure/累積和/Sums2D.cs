@@ -52,20 +52,9 @@ namespace Kzrnm.Competitive
         }
         [凾(256)]
         public Slicer Slice(int left, int length) => new Slicer(impl, left, left + length);
-        public readonly ref struct Slicer
+        public readonly record struct Slicer(T[][] impl, int left, int rightExclusive)
         {
-            readonly T[][] impl;
-            readonly int left;
-            readonly int rightExclusive;
-            public int Length { get; }
-            [凾(256)]
-            public Slicer(T[][] impl, int left, int rightExclusive)
-            {
-                this.impl = impl;
-                this.left = left;
-                this.rightExclusive = rightExclusive;
-                Length = impl[0].Length - 1;
-            }
+            public int Length => impl[0].Length - 1;
             [凾(256)]
             public T Slice(int top, int length)
             {

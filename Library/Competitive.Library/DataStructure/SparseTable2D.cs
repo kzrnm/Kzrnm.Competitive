@@ -11,11 +11,11 @@ namespace Kzrnm.Competitive
     /// </summary>
 
     [DebuggerDisplay("H = {" + nameof(Length) + "}, W = {" + nameof(st) + "[0][0]." + nameof(Grid<TValue>.W) + "}")]
-    [DebuggerTypeProxy(typeof(SparseTable2D<,>.DebugView))]
     public class SparseTable2D<TValue, TOp> where TOp : struct, ISparseTableOperator<TValue>
     {
         private static TOp op = default;
         private readonly Grid<TValue>[][] st;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public int Length { get; }
 
         private static Grid<TValue> ToGrid(TValue[][] array)
@@ -84,36 +84,20 @@ namespace Kzrnm.Competitive
 
         [凾(256)]
         public Slicer Slice(int lh, int length) => new Slicer(this, lh, lh + length);
-        public readonly ref struct Slicer
+        public readonly record struct Slicer(SparseTable2D<TValue, TOp> impl, int l, int r)
         {
-            readonly SparseTable2D<TValue, TOp> impl;
-            readonly int lh;
-            readonly int rh;
-            public int Length { get; }
-            [凾(256)]
-            public Slicer(SparseTable2D<TValue, TOp> impl, int l, int r)
-            {
-                this.impl = impl;
-                lh = l;
-                rh = r;
-                Length = impl.st[0][0].W;
-            }
+
+            public int Length => impl.st[0][0].W;
             [凾(256)]
             public TValue Slice(int lw, int length)
             {
                 var rw = lw + length;
-                return impl.Prod(lh, rh, lw, rw);
+                return impl.Prod(l, r, lw, rw);
             }
         }
+
         [SourceExpander.NotEmbeddingSource]
-        private class DebugView
-        {
-            private readonly SparseTable2D<TValue, TOp> st;
-            public DebugView(SparseTable2D<TValue, TOp> st)
-            {
-                this.st = st;
-            }
-            public Grid<TValue> Root => st.st[0][0];
-        }
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+        internal object Root => st[0][0].__ToDebugView();
     }
 }
