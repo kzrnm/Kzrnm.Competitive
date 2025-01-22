@@ -107,9 +107,7 @@ namespace Competitive.Runner
                 .Replace("using MI=System.Runtime.CompilerServices.MethodImplAttribute;", "");
             expandedCode = NotLocalRunning().Replace(expandedCode, "$1");
             expandedCode = AggressiveInliningRegex().Replace(expandedCode, "[M(256");
-#if NET9_0_OR_GREATER
-            expandedCode = ArrayEmptyRegex().Replace(expandedCode, "[]");
-#endif
+            expandedCode = SimpleReplaceTarget().Replace(expandedCode, SimpleReplace);
 
             if (expandedCode.Replace("namespace AtCoder.Extension", "namespace MyAtCoder.Extension") is var rep && rep.Length != expandedCode.Length)
             {
@@ -118,12 +116,32 @@ namespace Competitive.Runner
 
             Expand(args, expandedCode);
         }
+
+
+        [GeneratedRegex(
+            "(Property)?(Console|Repeat)(Reader|Writer)|ConsoleOutput|bufferSize|EnsureBuf|FillEntireNumber|Write(Many|LineJoin)|Kzrnm\\.Competitive(?!/b)")]
+        private static partial Regex SimpleReplaceTarget();
+        private static string SimpleReplace(Match m) => m.ValueSpan switch
+        {
+            "PropertyConsoleReader" => "PrpConR",
+            "ConsoleWriter" => "ConW",
+            "ConsoleReader" => "ConR",
+            "PropertyRepeatReader" => "PrpRepR",
+            "RepeatReader" => "RepR",
+            "bufferSize" => "bfsz",
+            "EnsureBuf" => "EnsBf",
+            "FillEntireNumber" => "FlNum",
+            "ConsoleOutput" => "ConO",
+            "WriteMany" => "WrMany",
+            "WriteLineJoin" => "WrJoin",
+            "Kzrnm.Competitive" => "Kzrnm",
+            _ => m.Value,
+        };
+
         [GeneratedRegex(@"#if !LOCAL_RUNNING\n(.*)#endif\n", RegexOptions.Singleline)]
         private static partial Regex NotLocalRunning();
         [GeneratedRegex(@"\[(MI|MethodImpl|凾)\(((MethodImplOptions\.)?AggressiveInlining|256)")]
         private static partial Regex AggressiveInliningRegex();
-        [GeneratedRegex(@"(?<![a-zA-Z0-9])(System\.)?Array\.Empty<[^\(]+\(\)>")]
-        private static partial Regex ArrayEmptyRegex();
 
         static void Expand(ReadOnlySpan<string> args, string expandedCode)
         {
