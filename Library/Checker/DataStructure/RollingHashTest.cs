@@ -8,7 +8,7 @@ namespace Kzrnm.Competitive.DataStructure
         public override string Url => "https://judge.yosupo.jp/problem/zalgorithm";
         public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
-            string S = cr;
+            Asciis S = cr;
             var rh = RollingHash.Create(S);
             var rt = new int[S.Length];
             rt[0] = S.Length;
@@ -20,10 +20,10 @@ namespace Kzrnm.Competitive.DataStructure
             cw.WriteLineJoin(rt);
             return null;
         }
-        readonly record struct F(RollingHash rh, int start) : IOk<int>
+        readonly record struct F(RollingHash Rh, int Start) : IOk<int>
         {
             [MethodImpl(256)]
-            public bool Ok(int len) => rh[..len] == rh.Slice(start, len);
+            public bool Ok(int len) => Rh[..len] == Rh.Slice(Start, len);
         }
     }
 }

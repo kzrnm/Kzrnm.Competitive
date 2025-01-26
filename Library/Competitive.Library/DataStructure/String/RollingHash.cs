@@ -1,4 +1,5 @@
 using Kzrnm.Competitive.Internal;
+using Kzrnm.Competitive.IO;
 using System;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -12,6 +13,9 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static RollingHash Create(string s)
             => new(s.Length, Rhf1.Create<char>(s), Rhf2.Create<char>(s));
+        [凾(256)]
+        public static RollingHash Create(Asciis s)
+            => new(s.Length, Rhf1.Create(s.AsSpan()), Rhf2.Create(s.AsSpan()));
         [凾(256)]
         public static RollingHash Create<T>(T[] s) where T : IBinaryInteger<T>
             => new(s.Length, Rhf1.Create<T>(s), Rhf2.Create<T>(s));

@@ -10,7 +10,7 @@ namespace Kzrnm.Competitive.Collection
         {
             int N = cr;
             int Q = cr;
-            string T = cr;
+            Asciis T = cr;
             var set = new Set<int>(T.Select((c, i) => (c, i)).Where(t => t.c == '1').Select(t => t.i));
             for (int i = 0; i < Q; i++)
             {

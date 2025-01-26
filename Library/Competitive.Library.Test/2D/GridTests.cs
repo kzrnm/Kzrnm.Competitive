@@ -1,3 +1,4 @@
+using Kzrnm.Competitive.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             [
                 "...#.",
                 ".#.#.",
-                ".#..."
+                ".#...",
             ]);
             grid.H.ShouldBe(3);
             grid.W.ShouldBe(5);
@@ -48,7 +49,7 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             var grid = Grid.Create([
                 "...#.",
                 ".#.#.",
-                ".#..."
+                ".#...",
             ], '-');
             grid.H.ShouldBe(3);
             grid.W.ShouldBe(5);
@@ -76,6 +77,83 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional
             grid[0, -1].ShouldBe('-');
             grid[3, -1].ShouldBe('-');
             grid[5, 5].ShouldBe('-');
+        }
+
+        [Fact]
+        public void Ascii()
+        {
+            var grid = Grid.Create(
+            [
+                new Asciis("...#."u8.ToArray()),
+                new Asciis(".#.#."u8.ToArray()),
+                new Asciis(".#..."u8.ToArray()),
+            ]);
+            grid.H.ShouldBe(3);
+            grid.W.ShouldBe(5);
+            grid[0, 0].ShouldBe((Ascii)'.');
+            grid[0, 1].ShouldBe((Ascii)'.');
+            grid[0, 2].ShouldBe((Ascii)'.');
+            grid[0, 3].ShouldBe((Ascii)'#');
+            grid[0, 4].ShouldBe((Ascii)'.');
+            grid[1, 0].ShouldBe((Ascii)'.');
+            grid[1, 1].ShouldBe((Ascii)'#');
+            grid[1, 2].ShouldBe((Ascii)'.');
+            grid[1, 3].ShouldBe((Ascii)'#');
+            grid[1, 4].ShouldBe((Ascii)'.');
+            grid[2, 0].ShouldBe((Ascii)'.');
+            grid[2, 1].ShouldBe((Ascii)'#');
+            grid[2, 2].ShouldBe((Ascii)'.');
+            grid[2, 3].ShouldBe((Ascii)'.');
+            grid[2, 4].ShouldBe((Ascii)'.');
+            grid[-1, 0].ShouldBe((Ascii)'\0');
+            grid[3, 0].ShouldBe((Ascii)'\0');
+            grid[-1, -1].ShouldBe((Ascii)'\0');
+            grid[-1, 5].ShouldBe((Ascii)'\0');
+            grid[0, 5].ShouldBe((Ascii)'\0');
+            grid[3, 5].ShouldBe((Ascii)'\0');
+            grid[0, -1].ShouldBe((Ascii)'\0');
+            grid[3, -1].ShouldBe((Ascii)'\0');
+            grid[5, 5].ShouldBe((Ascii)'\0');
+            grid.ToString().ShouldBe("""
+...#.
+.#.#.
+.#...
+""");
+        }
+        [Fact]
+        public void AsciiDefault()
+        {
+            var grid = Grid.Create([
+                new Asciis("...#."u8.ToArray()),
+                new Asciis(".#.#."u8.ToArray()),
+                new Asciis(".#..."u8.ToArray()),
+            ], '-');
+            grid.H.ShouldBe((Ascii)3);
+            grid.W.ShouldBe((Ascii)5);
+            grid[0, 0].ShouldBe((Ascii)'.');
+            grid[0, 1].ShouldBe((Ascii)'.');
+            grid[0, 2].ShouldBe((Ascii)'.');
+            grid[0, 3].ShouldBe((Ascii)'#');
+            grid[0, 4].ShouldBe((Ascii)'.');
+            grid[1, 0].ShouldBe((Ascii)'.');
+            grid[1, 1].ShouldBe((Ascii)'#');
+            grid[1, 2].ShouldBe((Ascii)'.');
+            grid[1, 3].ShouldBe((Ascii)'#');
+            grid[1, 4].ShouldBe((Ascii)'.');
+            grid[2, 0].ShouldBe((Ascii)'.');
+            grid[2, 1].ShouldBe((Ascii)'#');
+            grid[2, 2].ShouldBe((Ascii)'.');
+            grid[2, 3].ShouldBe((Ascii)'.');
+            grid[2, 4].ShouldBe((Ascii)'.');
+            grid[-1, 0].ShouldBe((Ascii)'-');
+            grid[3, 0].ShouldBe((Ascii)'-');
+            grid[-1, -1].ShouldBe((Ascii)'-');
+            grid[-1, 5].ShouldBe((Ascii)'-');
+            grid[0, 5].ShouldBe((Ascii)'-');
+            grid[3, 5].ShouldBe((Ascii)'-');
+            grid[0, -1].ShouldBe((Ascii)'-');
+            grid[3, -1].ShouldBe((Ascii)'-');
+            grid[5, 5].ShouldBe((Ascii)'-');
         }
 
         [Fact]

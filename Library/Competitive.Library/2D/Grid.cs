@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -10,12 +12,13 @@ namespace Kzrnm.Competitive
 {
     public static class Grid
     {
-        [凾(256)] public static Grid<char> GridString(this ConsoleReader cr, int H, char defaultValue = default) => Create(cr.Repeat(H).Ascii(), defaultValue);
+        [凾(256)] public static Grid<IO.Ascii> GridString(this ConsoleReader cr, int H, char defaultValue = default) => Create(cr.Repeat(H).Ascii(), defaultValue);
         [凾(256)] public static Grid<int> GridInt(this ConsoleReader cr, int H, int W, int defaultValue = default) => Create(cr.Grid<int>(H, W), defaultValue);
         [凾(256)] public static Grid<long> GridLong(this ConsoleReader cr, int H, int W, long defaultValue = default) => Create(cr.Grid<long>(H, W), defaultValue);
         [凾(256)] public static Grid<ulong> GridULong(this ConsoleReader cr, int H, int W, ulong defaultValue = default) => Create(cr.Grid<ulong>(H, W), defaultValue);
-        [凾(256)] public static Grid<char> Create(string[] data, char defaultValue = default) => new Grid<char>(data.Flatten(), data.Length, data[0].Length, defaultValue);
-        [凾(256)] public static Grid<T> Create<T>(T[][] data, T defaultValue = default) => new Grid<T>(data.Flatten(), data.Length, data[0].Length, defaultValue);
+        [凾(256)] public static Grid<char> Create(string[] d, char defaultValue = default) => new Grid<char>(d.Flatten(), d.Length, d[0].Length, defaultValue);
+        [凾(256)] public static Grid<IO.Ascii> Create(Asciis[] d, char defaultValue = default) => new Grid<IO.Ascii>(d.Flatten(), d.Length, d[0].Length, defaultValue);
+        [凾(256)] public static Grid<T> Create<T>(T[][] d, T defaultValue = default) => new Grid<T>(d.Flatten(), d.Length, d[0].Length, defaultValue);
 
         [凾(256)]
         public static void WriteGrid(this Utf8ConsoleWriter cw, Grid<char> grid)
@@ -91,7 +94,7 @@ namespace Kzrnm.Competitive
         public Span<T> RowSpan(int h) => (uint)h < (uint)H ? data.AsSpan(h * W, W) : default;
         public Grid<T> Clone() => new Grid<T>(this);
 
-        private static string ToStringNoSplit(Grid<char> grid)
+        private static string ToStringNoSplit(Grid<T> grid)
         {
             var H = grid.H;
             var W = grid.W;
@@ -99,11 +102,19 @@ namespace Kzrnm.Competitive
             var sb = new StringBuilder();
             for (int h = 0; h + 1 < H; h++)
             {
-                sb.Append(data.AsSpan(h * W, W));
+                Ap(sb, data.AsSpan(h * W, W));
                 sb.AppendLine();
             }
-            sb.Append(data.AsSpan((H - 1) * W, W));
+            Ap(sb, data.AsSpan((H - 1) * W, W));
             return sb.ToString();
+            void Ap(StringBuilder sb, Span<T> s)
+            {
+                foreach (var v in s)
+                    if (typeof(T) == typeof(char))
+                        sb.Append((char)(object)v);
+                    else
+                        sb.Append((char)(IO.Ascii)(object)v);
+            }
         }
         private string ToStringSplit()
         {
@@ -124,8 +135,8 @@ namespace Kzrnm.Competitive
         public override string ToString()
         {
             if (W == 0) return "";
-            if (typeof(T) == typeof(char))
-                return ToStringNoSplit((Grid<char>)(object)this);
+            if (typeof(T) == typeof(char) || typeof(T) == typeof(IO.Ascii))
+                return ToStringNoSplit(this);
             return ToStringSplit();
         }
 
@@ -327,6 +338,8 @@ namespace Kzrnm.Competitive
             {
                 if (line is char[] chrs)
                     return new string(chrs);
+                if (line is IO.Ascii[] asciis)
+                    return new Asciis(Unsafe.As<byte[]>(asciis)).ToString();
                 return string.Join(", ", line);
             }
         }

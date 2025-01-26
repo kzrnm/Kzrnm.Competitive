@@ -1,3 +1,4 @@
+using Kzrnm.Competitive.IO;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -69,6 +70,8 @@ namespace Kzrnm.Competitive
             return rt;
         }
 
+        /// <inheritdoc cref="Manacher2{T}(ReadOnlySpan{T})"/>
+        public static int[] Manacher2(Asciis s) => Manacher2(s.AsSpan());
         /// <inheritdoc cref="Manacher2{T}(ReadOnlySpan{T})"/>
         public static int[] Manacher2(string s) => Manacher2(s.AsSpan());
         /// <inheritdoc cref="Manacher2{T}(ReadOnlySpan{T})"/>

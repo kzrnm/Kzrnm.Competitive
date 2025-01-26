@@ -1,4 +1,5 @@
 using AtCoder;
+using Kzrnm.Competitive.IO;
 using System;
 using System.Buffers;
 using System.Collections.Generic;
@@ -126,6 +127,10 @@ namespace Kzrnm.Competitive
             return s.Length;
         }
 
+        /// <inheritdoc cref="RunEnumerate{T}(ReadOnlySpan{T})"/>
+        [凾(256)]
+        public static (int From, int ToExclusive)[][] RunEnumerate(Asciis s)
+            => RunEnumerate(s.AsSpan());
         /// <inheritdoc cref="RunEnumerate{T}(ReadOnlySpan{T})"/>
         [凾(256)]
         public static (int From, int ToExclusive)[][] RunEnumerate(string s)

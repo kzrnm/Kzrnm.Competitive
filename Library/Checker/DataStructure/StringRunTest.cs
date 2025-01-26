@@ -8,7 +8,7 @@ namespace Kzrnm.Competitive.DataStructure
         public override string Url => "https://judge.yosupo.jp/problem/runenumerate";
         public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
         {
-            string S = cr;
+            Asciis S = cr;
             var ls = new List<(int, int, int)>();
             var runs = StringLibEx.RunEnumerate(S);
             for (int i = 0; i < runs.Length; i++)

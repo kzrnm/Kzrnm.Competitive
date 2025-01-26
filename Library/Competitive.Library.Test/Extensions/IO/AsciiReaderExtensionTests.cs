@@ -17,24 +17,24 @@ namespace Kzrnm.Competitive.Testing.IO
         public void SmallAlphabet()
         {
             var cr = GetReader("abcdefghijklmnopqrstuvwxyz");
-            cr.AsciiToNum('a').ShouldBe(Enumerable.Range(0, 26).Select(v => (short)v));
+            cr.AsciiToNum('a').ShouldBe(Enumerable.Range(0, 26).Select(v => (byte)v));
         }
 
         [Fact]
         public void LargeAlphabet()
         {
             var cr = GetReader("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-            cr.AsciiToNum('A').ShouldBe(Enumerable.Range(0, 26).Select(v => (short)v));
+            cr.AsciiToNum('A').ShouldBe(Enumerable.Range(0, 26).Select(v => (byte)v));
 
             cr = GetReader("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-            cr.AsciiToNum().ShouldBe(Enumerable.Range(0, 26).Select(v => (short)v));
+            cr.AsciiToNum().ShouldBe(Enumerable.Range(0, 26).Select(v => (byte)v));
         }
 
         [Fact]
         public void Number()
         {
             var cr = GetReader("0123456789");
-            cr.AsciiToNum('0').ShouldBe(Enumerable.Range(0, 10).Select(v => (short)v));
+            cr.AsciiToNum('0').ShouldBe(Enumerable.Range(0, 10).Select(v => (byte)v));
         }
     }
 }
