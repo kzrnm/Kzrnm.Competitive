@@ -32,6 +32,18 @@ namespace Kzrnm.Competitive
             };
         }
 
+        public static object ToDebugString(BitArray bits)
+        {
+            var brr = new bool[bits.Length];
+            bits.CopyTo(brr, 0);
+            var chrs = new char[brr.Length];
+            for (int i = 0; i < chrs.Length; i++)
+            {
+                chrs[i] = brr[i] ? '1' : '0';
+            }
+            return new DebugTuple(brr, new string(chrs));
+        }
+
         private class BitArrayDebugImpl
         {
             public BitArrayDebugImpl(BitArray b) { bits = b; }
@@ -40,20 +52,7 @@ namespace Kzrnm.Competitive
             public override string ToString() => Value.ToString();
 
             [DebuggerBrowsable(RootHidden)]
-            public DebugTuple Value
-            {
-                get
-                {
-                    var brr = new bool[bits.Length];
-                    bits.CopyTo(brr, 0);
-                    var chrs = new char[brr.Length];
-                    for (int i = 0; i < chrs.Length; i++)
-                    {
-                        chrs[i] = brr[i] ? '1' : '0';
-                    }
-                    return new DebugTuple(brr, new string(chrs));
-                }
-            }
+            public object Value => ToDebugString(bits);
         }
         private class BitArrayArrayDebug
         {

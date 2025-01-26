@@ -13,6 +13,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 #nullable enable
+[assembly: DebuggerDisplay("{Kzrnm.Competitive.BitArrayDebug.ToDebugString(this)}", Target = typeof(BitArray))]
 namespace Competitive.Runner
 {
     static partial class HandMadeMain
