@@ -12,7 +12,7 @@ namespace Kzrnm.Competitive
 {
     public static class Grid
     {
-        [凾(256)] public static Grid<IO.Ascii> GridString(this ConsoleReader cr, int H, char defaultValue = default) => Create(cr.Repeat(H).Ascii(), defaultValue);
+        [凾(256)] public static Grid<IO.Ascii> GridAscii(this ConsoleReader cr, int H, char defaultValue = default) => Create(cr.Repeat(H).Ascii(), defaultValue);
         [凾(256)] public static Grid<int> GridInt(this ConsoleReader cr, int H, int W, int defaultValue = default) => Create(cr.Grid<int>(H, W), defaultValue);
         [凾(256)] public static Grid<long> GridLong(this ConsoleReader cr, int H, int W, long defaultValue = default) => Create(cr.Grid<long>(H, W), defaultValue);
         [凾(256)] public static Grid<ulong> GridULong(this ConsoleReader cr, int H, int W, ulong defaultValue = default) => Create(cr.Grid<ulong>(H, W), defaultValue);
