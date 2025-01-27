@@ -71,7 +71,7 @@ namespace Kzrnm.Competitive
                 int ni = (int)n;
                 if (DynamicMontgomeryModInt<ModId>.Mod != ni)
                     DynamicMontgomeryModInt<ModId>.Mod = ni;
-                return MillerRabin((int)n,
+                return MillerRabin(ni,
                     n <= 61
                     ? new DynamicMontgomeryModInt<ModId>[] { 2, 7 }
                     : new DynamicMontgomeryModInt<ModId>[] { 2, 7, 61 });
