@@ -302,7 +302,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         void RemoveRight(int idx);
         /// <summary>
-        /// <paramref name="idx"/> のクエリを更新します。
+        /// <paramref name="idx"/> のクエリの結果が生成されていることを表します。
         /// </summary>
         void Update(int idx);
     }
