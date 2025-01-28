@@ -4,12 +4,29 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xunit;
+using Xunit.Sdk;
 
 namespace Competitive.Runner
 {
+    public class LineString : IXunitSerializable
+    {
+        public string Value { get; set; }
+        void IXunitSerializable.Deserialize(IXunitSerializationInfo info)
+        {
+            Value = info.GetValue<string>(nameof(Value));
+        }
+
+        void IXunitSerializable.Serialize(IXunitSerializationInfo info)
+        {
+            info.AddValue(nameof(Value), Value);
+        }
+        public override string ToString() => Value.TrimEnd().Replace("\n", "↵");
+        public static implicit operator LineString(string v) => new LineString { Value = v };
+        public static implicit operator string(LineString l) => l.Value;
+    }
     public partial class Runner
     {
-        private class ResouceSource : TheoryData<int, string, string>
+        private class ResouceSource : TheoryData<int, LineString, LineString>
         {
             public ResouceSource()
             {
@@ -21,7 +38,7 @@ namespace Competitive.Runner
                 Add(++num, InOut.E_IN, InOut.E_OUT);
                 Add(++num, InOut.F_IN, InOut.F_OUT);
             }
-            public new void Add(int num, string p1, string p2)
+            public void Add(int num, string p1, string p2)
             {
                 if (!string.IsNullOrEmpty(p1) && !string.IsNullOrEmpty(p2))
                     base.Add(num, p1, p2);
@@ -30,7 +47,7 @@ namespace Competitive.Runner
 
         [Theory(Timeout = 4000)]
         [ClassData(typeof(ResouceSource))]
-        public Task FromSource(int _, string input, string output) => Task.Run(() =>
+        public Task FromSource(int _, LineString input, LineString output) => Task.Run(() =>
         {
             var encoding = new UTF8Encoding(false);
             using var inSteam = new MemoryStream(encoding.GetBytes(input));
