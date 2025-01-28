@@ -8,7 +8,7 @@ using Xunit.Sdk;
 
 namespace Competitive.Runner
 {
-    public class LineString : IXunitSerializable
+    public partial class LineString : IXunitSerializable
     {
         public string Value { get; set; }
         void IXunitSerializable.Deserialize(IXunitSerializationInfo info)
@@ -20,9 +20,11 @@ namespace Competitive.Runner
         {
             info.AddValue(nameof(Value), Value);
         }
-        public override string ToString() => Value.TrimEnd().Replace("\n", "↵");
+        public override string ToString() => LineBreak().Replace(Value.TrimEnd(), "↵");
         public static implicit operator LineString(string v) => new LineString { Value = v };
         public static implicit operator string(LineString l) => l.Value;
+        [GeneratedRegex(@"(\r\n|\n)")]
+        private static partial Regex LineBreak();
     }
     public partial class Runner
     {
