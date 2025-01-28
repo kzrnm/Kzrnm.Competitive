@@ -183,7 +183,7 @@ namespace Kzrnm.Competitive.Testing.Collection
         [Fact]
         public void ReverseComparer()
         {
-            var set = new SetDictionary<int, int, ReverseComparerStruct<int>>(new Dictionary<int, int>
+            var set = new SetDictionary<int, int, ReverseComparer<int>>(new Dictionary<int, int>
             {
                 {5,0},
                 {6,1},

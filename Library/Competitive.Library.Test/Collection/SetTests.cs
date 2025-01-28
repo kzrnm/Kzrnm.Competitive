@@ -147,7 +147,7 @@ namespace Kzrnm.Competitive.Testing.Collection
         [Fact]
         public void ReverseComparer()
         {
-            var set = new Set<int, ReverseComparerStruct<int>>([6, 7, 8, 1, 2, 3, 4, 5, 1, 2, 3]);
+            var set = new Set<int, ReverseComparer<int>>([6, 7, 8, 1, 2, 3, 4, 5, 1, 2, 3]);
             set.Add(9);
             set.Add(5);
             set.ShouldBe((int[])[9, 8, 7, 6, 5, 4, 3, 2, 1]);

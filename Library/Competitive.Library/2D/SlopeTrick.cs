@@ -32,7 +32,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 左側の傾き
         /// </summary>
-        PriorityQueueOp<T, ReverseComparerStruct<T>> left = new();
+        PriorityQueueOp<T, ReverseComparer<T>> left = new();
 
         /// <summary>
         /// 右側の傾き

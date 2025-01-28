@@ -30,7 +30,7 @@ namespace Kzrnm.Competitive.Testing.Comparer
                 1580055797,
                 382174879
             };
-            Array.Sort(arr, ReverseComparer<int>.Default);
+            Array.Sort(arr, new ReverseComparer<int>());
             arr.ShouldBe([
                 2014529243,
                 1983045250,
@@ -51,7 +51,7 @@ namespace Kzrnm.Competitive.Testing.Comparer
                 289393729,
                 216600710,
                 98686814,
-                49770599
+                49770599,
             ]);
         }
     }

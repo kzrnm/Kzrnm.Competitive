@@ -26,7 +26,7 @@ namespace Kzrnm.Competitive.Testing.Algorithm
             c.Original.ShouldBe(['c', 'e', 'm', 'o', 'p', 'r', 's']);
             c.Replace("compress").ShouldBe([0, 3, 2, 4, 5, 1, 6, 6]);
 
-            c.Compress(new ReverseComparerStruct<char>());
+            c.Compress(new ReverseComparer<char>());
             c.NewTable.ShouldSatisfyAllConditions([
                 t => t.Count.ShouldBe(7),
                 t => t.ShouldContainKeyAndValue('c', 6),

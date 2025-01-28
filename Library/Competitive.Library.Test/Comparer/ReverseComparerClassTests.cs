@@ -2,7 +2,7 @@ using System;
 
 namespace Kzrnm.Competitive.Testing.Comparer
 {
-    public class ReverseComparerStructTests
+    public class ReverseComparerClassTests
     {
         [Fact]
         public void Compare()
@@ -30,7 +30,7 @@ namespace Kzrnm.Competitive.Testing.Comparer
                 1580055797,
                 382174879
             };
-            Array.Sort(arr, new ReverseComparerStruct<int>());
+            Array.Sort(arr, ReverseComparerClass<int>.Default);
             arr.ShouldBe([
                 2014529243,
                 1983045250,
@@ -51,7 +51,7 @@ namespace Kzrnm.Competitive.Testing.Comparer
                 289393729,
                 216600710,
                 98686814,
-                49770599,
+                49770599
             ]);
         }
     }

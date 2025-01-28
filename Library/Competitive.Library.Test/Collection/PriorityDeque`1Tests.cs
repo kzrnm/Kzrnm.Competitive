@@ -75,7 +75,7 @@ namespace Kzrnm.Competitive.Testing.Collection
         }
         class RandomInner(Random rnd)
         {
-            PriorityDeque<int, ReverseComparerStruct<int>> pq = new();
+            PriorityDeque<int, ReverseComparer<int>> pq = new();
             List<int> keyValues = new();
 
             public int Count => keyValues.Count;
