@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using Kzrnm.Competitive.Internal.SegBeats;
 using System.Linq;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -41,23 +42,25 @@ namespace Kzrnm.Competitive
         /// </summary>
         F Composition(F nf, F cf);
     }
-    public class SegtreeBeats : SegtreeBeats<SegtreeBeats.Value, SegtreeBeats.F, SegtreeBeats.Op>
+    public class SegtreeBeats : SegtreeBeats<BeatsVal, BeatsFn, BeatsOp>
     {
         /// <inheritdoc cref="SegtreeBeats{TValue, F, TOp}.SegtreeBeats(int)"/>
         public SegtreeBeats(int n) : base(n) { }
         /// <inheritdoc cref="SegtreeBeats{TValue, F, TOp}.SegtreeBeats(TValue[])"/>
-        public SegtreeBeats(Value[] v) : base(v) { }
+        public SegtreeBeats(BeatsVal[] v) : base(v) { }
         /// <inheritdoc cref="SegtreeBeats{TValue, F, TOp}.SegtreeBeats(TValue[])"/>
-        public SegtreeBeats(IEnumerable<long> v) : base(v.Select(v => new Value(v)).ToArray()) { }
+        public SegtreeBeats(IEnumerable<long> v) : base(v.Select(v => new BeatsVal(v)).ToArray()) { }
 
         [凾(256)]
-        public static F MinOp(long num) => new F { min = num, max = long.MinValue >> 2 };
+        public static BeatsFn MinOp(long num) => new BeatsFn { min = num, max = long.MinValue >> 2 };
         [凾(256)]
-        public static F MaxOp(long num) => new F { min = long.MaxValue >> 2, max = num };
+        public static BeatsFn MaxOp(long num) => new BeatsFn { min = long.MaxValue >> 2, max = num };
         [凾(256)]
-        public static F AddOp(long num) => new F { min = long.MaxValue >> 2, max = long.MinValue >> 2, sum = num };
-
-        public struct Value
+        public static BeatsFn AddOp(long num) => new BeatsFn { min = long.MaxValue >> 2, max = long.MinValue >> 2, sum = num };
+    }
+    namespace Internal.SegBeats
+    {
+        public struct BeatsVal
         {
             public long min;
             public long max;
@@ -67,7 +70,7 @@ namespace Kzrnm.Competitive
             public int cnt;
             public int minCnt;
             public int maxCnt;
-            public Value(long num, int cnt = 1)
+            public BeatsVal(long num, int cnt = 1)
             {
                 min = num;
                 max = num;
@@ -79,15 +82,15 @@ namespace Kzrnm.Competitive
                 maxCnt = cnt;
             }
         }
-        public struct F
+        public struct BeatsFn
         {
             public long min;
             public long max;
             public long sum;
         }
-        public readonly struct Op : ISegtreeBeatsOperator<Value, F>
+        public readonly struct BeatsOp : ISegtreeBeatsOperator<BeatsVal, BeatsFn>
         {
-            public Value Identity => new Value
+            public BeatsVal Identity => new BeatsVal
             {
                 min = long.MaxValue >> 2,
                 max = long.MinValue >> 2,
@@ -95,17 +98,17 @@ namespace Kzrnm.Competitive
                 max2 = long.MinValue >> 2,
             };
 
-            public F FIdentity => new F
+            public BeatsFn FIdentity => new BeatsFn
             {
                 min = long.MaxValue >> 2,
                 max = long.MinValue >> 2,
             };
 
             [凾(256)]
-            public Value Operate(Value x, Value y) =>
+            public BeatsVal Operate(BeatsVal x, BeatsVal y) =>
                 x.min > x.max ? y :
                 y.min > y.max ? x :
-                new Value
+                new BeatsVal
                 {
                     min = Min(x.min, y.min),
                     max = Max(x.max, y.max),
@@ -142,7 +145,7 @@ namespace Kzrnm.Competitive
             }
 
             [凾(256)]
-            public bool Mapping(F f, Value x, out Value res)
+            public bool Mapping(BeatsFn f, BeatsVal x, out BeatsVal res)
             {
                 if (x.cnt == 0)
                 {
@@ -151,7 +154,7 @@ namespace Kzrnm.Competitive
                 }
                 if (x.min == x.max || f.max == f.min || f.max >= x.max || f.min <= x.min)
                 {
-                    res = new Value(Min(f.min, Max(x.min, f.max)) + f.sum, x.cnt);
+                    res = new BeatsVal(Min(f.min, Max(x.min, f.max)) + f.sum, x.cnt);
                     return true;
                 }
                 if (x.min2 == x.max)
@@ -179,7 +182,7 @@ namespace Kzrnm.Competitive
             }
 
             [凾(256)]
-            public F Composition(F nf, F cf) => new F
+            public BeatsFn Composition(BeatsFn nf, BeatsFn cf) => new BeatsFn
             {
                 max = Max(nf.max, Min(cf.max + cf.sum, nf.min)) - cf.sum,
                 min = Min(nf.min, Max(cf.min + cf.sum, nf.max)) - cf.sum,
