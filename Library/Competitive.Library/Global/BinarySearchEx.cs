@@ -1,6 +1,5 @@
 using AtCoder;
 using System;
-using BigInteger = Kzrnm.Numerics.BigInteger;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -125,45 +124,6 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
-        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <c>Ok</c>(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約: <c>Ok</c>(<paramref name="ok"/>) &amp;&amp; !<c>Ok</c>(<paramref name="ng"/>)</para>
-        /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
-        /// </remarks>
-        [凾(256)]
-        public static BigInteger BinarySearch(BigInteger ok, BigInteger ng, Func<BigInteger, bool> okFunc)
-            => BinarySearch(new FuncOk<BigInteger>(okFunc), ok, ng);
-        /// <summary>
-        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <c>Ok</c>(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約: <c>Ok</c>(<paramref name="ok"/>) &amp;&amp; !<c>Ok</c>(<paramref name="ng"/>)</para>
-        /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
-        /// </remarks>
-        [凾(256)]
-        public static BigInteger BinarySearch<TOp>(BigInteger ok, BigInteger ng) where TOp : struct, IOk<BigInteger>
-            => BinarySearch(new TOp(), ok, ng);
-        /// <summary>
-        /// <paramref name="ok"/> と <paramref name="ng"/> の間で <paramref name="op"/>.Ok(i) == true を満たす最も <paramref name="ng"/> に近い値を取得します。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約: <paramref name="op"/>.Ok(<paramref name="ok"/>) &amp;&amp; !<paramref name="op"/>.Ok(<paramref name="ng"/>)</para>
-        /// <para>計算量: O(log |<paramref name="ok"/> - <paramref name="ng"/>|)</para>
-        /// </remarks>
-        [凾(256)]
-        public static BigInteger BinarySearch<TOp>(this TOp op, BigInteger ok, BigInteger ng) where TOp : struct, IOk<BigInteger>
-        {
-            while (BigInteger.Abs(ok - ng) > 1)
-            {
-                var m = ((ok - ng) >> 1) + ng;
-                if (op.Ok(m)) ok = m;
-                else ng = m;
-            }
-            return ok;
-        }
-
-        /// <summary>
         /// <paramref name="ok"/> 以上で <c>Ok</c>(i) == true を満たす最も大きい値を取得します。
         /// </summary>
         /// <remarks>
@@ -194,47 +154,6 @@ namespace Kzrnm.Competitive
         public static long BinarySearchBig<TOp>(this TOp op, long ok) where TOp : struct, IOk<long>
         {
             long plus = 1;
-            var ng = ok + plus;
-            while (op.Ok(ng))
-            {
-                plus <<= 1;
-                ng += plus;
-            }
-            return BinarySearch(op, ok, ng);
-        }
-
-
-        /// <summary>
-        /// <paramref name="ok"/> 以上で <c>Ok</c>(i) == true を満たす最も大きい値を取得します。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約: <c>Ok</c>(<paramref name="ok"/>)</para>
-        /// <para>計算量: O(log |result|)</para>
-        /// </remarks>
-        [凾(256)]
-        public static BigInteger BinarySearchBig(BigInteger ok, Func<BigInteger, bool> okFunc)
-            => BinarySearchBig(ok, new FuncOk<BigInteger>(okFunc));
-        /// <summary>
-        /// <paramref name="ok"/> 以上で <c>Ok</c>(i) == true を満たす最も大きい値を取得します。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約: <c>Ok</c>(<paramref name="ok"/>)</para>
-        /// <para>計算量: O(log |result|)</para>
-        /// </remarks>
-        [凾(256)]
-        public static BigInteger BinarySearchBig<TOp>(BigInteger ok) where TOp : struct, IOk<BigInteger>
-            => BinarySearchBig(ok, new TOp());
-        /// <summary>
-        /// <paramref name="ok"/> 以上で <c>Ok</c>(i) == true を満たす最も大きい値を取得します。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約: <c>Ok</c>(<paramref name="ok"/>)</para>
-        /// <para>計算量: O(log |result|)</para>
-        /// </remarks>
-        [凾(256)]
-        public static BigInteger BinarySearchBig<TOp>(BigInteger ok, TOp op) where TOp : struct, IOk<BigInteger>
-        {
-            BigInteger plus = 1;
             var ng = ok + plus;
             while (op.Ok(ng))
             {
