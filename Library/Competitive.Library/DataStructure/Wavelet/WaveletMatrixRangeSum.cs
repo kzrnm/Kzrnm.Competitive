@@ -116,7 +116,7 @@ namespace Kzrnm.Competitive
         public void PointAdd(F l, F r, T x) => mat.PointAdd(pos[(l, r)], x);
         readonly struct TupleComp : IComparable<(F, F)>
         {
-            private readonly F v;
+            readonly F v;
             public TupleComp(F v) { this.v = v; }
             [凾(256)] public int CompareTo((F, F) other) => -(other.Item1.CompareTo(v) | 1); // 3 > (2, ~), 3 < (3,~) となるようにする
         }
@@ -191,11 +191,10 @@ namespace Kzrnm.Competitive
         where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>
         where ROp : struct, IWabeletSumOperator<T, ROp>
     {
-        private SuccinctIndexableDictionary[] matrix;
-        private int[] v;
-        private int[] mid;
-        private ROp[] ds;
-        private int Length { get; }
+        SuccinctIndexableDictionary[] matrix;
+        int[] v, mid;
+        ROp[] ds;
+        int Length { get; }
 
         /// <summary>
         /// <para>各要素の高さと重み <paramref name="v"/> を初期値として構築する。</para>
@@ -245,7 +244,7 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        private (int, int) Succ(bool f, int l, int r, int level)
+        (int, int) Succ(bool f, int l, int r, int level)
                      => (matrix[level].Rank(f, l) + (f ? mid[level] : 0), matrix[level].Rank(f, r) + (f ? mid[level] : 0));
 
 

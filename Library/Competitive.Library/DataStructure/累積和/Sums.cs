@@ -78,7 +78,7 @@ namespace Kzrnm.Competitive
     public class Sums<T>
         where T : ISubtractionOperators<T, T, T>
     {
-        private readonly T[] impl;
+        readonly T[] impl;
         public int Length => impl.Length - 1;
         internal Sums(T[] accu)
         {

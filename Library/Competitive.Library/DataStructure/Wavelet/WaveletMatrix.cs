@@ -172,9 +172,9 @@ namespace Kzrnm.Competitive
     /// </summary>
     public class WaveletMatrixCompressed
     {
-        private SuccinctIndexableDictionary[] matrix;
-        private int[] mid;
-        private int Length { get; }
+        SuccinctIndexableDictionary[] matrix;
+        int[] mid;
+        int Length { get; }
 
         /// <summary>
         /// <para>各要素の高さ <paramref name="v"/> を初期値として構築する。</para>
@@ -221,7 +221,7 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        private (int, int) Succ(bool f, int l, int r, int level)
+        (int, int) Succ(bool f, int l, int r, int level)
                      => (matrix[level].Rank(f, l) + (f ? mid[level] : 0), matrix[level].Rank(f, r) + (f ? mid[level] : 0));
 
         /// <summary>

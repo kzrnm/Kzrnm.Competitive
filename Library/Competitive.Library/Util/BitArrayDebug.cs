@@ -44,7 +44,7 @@ namespace Kzrnm.Competitive
             return new DebugTuple(brr, new string(chrs));
         }
 
-        private class BitArrayDebugImpl
+        class BitArrayDebugImpl
         {
             public BitArrayDebugImpl(BitArray b) { bits = b; }
             [DebuggerBrowsable(Never)]
@@ -54,7 +54,7 @@ namespace Kzrnm.Competitive
             [DebuggerBrowsable(RootHidden)]
             public object Value => ToDebugString(bits);
         }
-        private class BitArrayArrayDebug
+        class BitArrayArrayDebug
         {
             public BitArrayArrayDebug(BitArray[] b) { bits = b; }
             [DebuggerBrowsable(Never)]

@@ -22,7 +22,7 @@ namespace Kzrnm.Competitive
 
         public int Height => _h;
         public int Width => _w;
-        private readonly int _h, _w;
+        readonly int _h, _w;
         internal readonly T[] _v;
         public ReadOnlySpan<T> AsSpan() => _v;
         public T[][] ToArray()
@@ -88,7 +88,7 @@ namespace Kzrnm.Competitive
             _v = MemoryMarshal.CreateReadOnlySpan(ref m[0, 0], m.Length).ToArray();
         }
 
-        private static ArrayMatrix<T> ThrowNotSupportResponse() => throw new NotSupportedException();
+        static ArrayMatrix<T> ThrowNotSupportResponse() => throw new NotSupportedException();
 
         /// <summary>
         /// 大きさ <paramref name="s"/> の単位行列を返します。
@@ -108,7 +108,7 @@ namespace Kzrnm.Competitive
         public bool IsZero => kind is Kd.Zero;
         [凾(256)] T[] CloneArray() => (T[])_v.Clone();
 
-        private ArrayMatrix<T> AddIdentity()
+        ArrayMatrix<T> AddIdentity()
         {
             var arr = CloneArray();
             for (int i = Math.Min(_h, _w) - 1; i >= 0; i--)
@@ -116,7 +116,7 @@ namespace Kzrnm.Competitive
             return new(arr, _h, _w);
         }
         [凾(256)]
-        private ArrayMatrix<T> Add(ArrayMatrix<T> other)
+        ArrayMatrix<T> Add(ArrayMatrix<T> other)
         {
             if (_v.Length == 0) return new();
             var m = new ArrayMatrix<T>(CloneArray(), _h, _w);
@@ -158,7 +158,7 @@ namespace Kzrnm.Competitive
             };
         }
         [凾(256)]
-        private ArrayMatrix<T> SubtractIdentity()
+        ArrayMatrix<T> SubtractIdentity()
         {
             var arr = CloneArray();
             for (int i = Math.Min(_h, _w) - 1; i >= 0; i--)
@@ -166,7 +166,7 @@ namespace Kzrnm.Competitive
             return new(arr, _h, _w);
         }
         [凾(256)]
-        private ArrayMatrix<T> Subtract(ArrayMatrix<T> other)
+        ArrayMatrix<T> Subtract(ArrayMatrix<T> other)
         {
             if (_v.Length == 0) return new();
             var m = new ArrayMatrix<T>(CloneArray(), _h, _w);
@@ -219,7 +219,7 @@ namespace Kzrnm.Competitive
             };
         }
         [凾(256)]
-        private ArrayMatrix<T> Multiply(ArrayMatrix<T> other)
+        ArrayMatrix<T> Multiply(ArrayMatrix<T> other)
         {
             var rh = _h;
             var rw = other._w;
@@ -276,7 +276,7 @@ namespace Kzrnm.Competitive
             };
         }
         [凾(256)]
-        private ArrayMatrix<T> MultiplyScalar(T scalar)
+        ArrayMatrix<T> MultiplyScalar(T scalar)
         {
             var arr = _v;
             var res = new T[arr.Length];
@@ -394,7 +394,7 @@ namespace Kzrnm.Competitive
         [SourceExpander.NotEmbeddingSource]
         class DebugView
         {
-            private readonly ArrayMatrix<T> m;
+            readonly ArrayMatrix<T> m;
             public Kd Kind => m.kind;
             public DebugView(ArrayMatrix<T> matrix)
             {

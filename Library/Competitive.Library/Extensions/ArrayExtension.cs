@@ -127,7 +127,7 @@ namespace Kzrnm.Competitive
             Dummy<T>.dummy = dummy;
             return ref Dummy<T>.dummy;
         }
-        private static class Dummy<T> { public static T dummy; }
+        static class Dummy<T> { public static T dummy; }
 
 
         // 見つかったら検索を終えるので LowerBound よりも少し速いかも

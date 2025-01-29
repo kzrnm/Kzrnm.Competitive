@@ -179,10 +179,10 @@ namespace Kzrnm.Competitive
             => f.Operate(down[u] + (vertex ? 0 : 1), up[u]);
 
 
-        private SparseTable<(int Depth, int Node), NodeMinOp> _lcaTable;
-        private SparseTable<(int Depth, int Node), NodeMinOp> lcaTable
+        SparseTable<(int Depth, int Node), NodeMinOp> _lcaTable;
+        SparseTable<(int Depth, int Node), NodeMinOp> lcaTable
             => _lcaTable ??= BuildLcaTable();
-        private SparseTable<(int Depth, int Node), NodeMinOp> BuildLcaTable()
+        SparseTable<(int Depth, int Node), NodeMinOp> BuildLcaTable()
         {
             var arr = new (int Depth, int Node)[down.Length];
             for (int i = 0; i < arr.Length; i++)
@@ -199,7 +199,7 @@ namespace Kzrnm.Competitive
         }
         readonly struct FWrapper : IHlDecompositionOperator
         {
-            private readonly Action<int, int> f;
+            readonly Action<int, int> f;
             public FWrapper(Action<int, int> func)
             {
                 f = func;
@@ -207,7 +207,7 @@ namespace Kzrnm.Competitive
             [凾(256)]
             public void Operate(int u, int v) => f(u, v);
         }
-        private struct PathEnumerator
+        struct PathEnumerator
         {
             HeavyLightDecomposition<TNode, TEdge> hl;
             (int f, int t) _c;

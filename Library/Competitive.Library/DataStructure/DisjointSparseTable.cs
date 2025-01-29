@@ -15,7 +15,7 @@ namespace Kzrnm.Competitive
     [DebuggerTypeProxy(typeof(DisjointSparseTable<,>.DebugView))]
     public class DisjointSparseTable<TValue, TOp> where TOp : struct, ISparseTableOperator<TValue>
     {
-        private static TOp op = default;
+        static TOp op = default;
         protected readonly TValue[][] st;
         public int Length { get; }
         public DisjointSparseTable(TValue[] array)
@@ -59,7 +59,7 @@ namespace Kzrnm.Competitive
 
         [SourceExpander.NotEmbeddingSource]
         [DebuggerDisplay("{" + nameof(Value) + "}", Name = "{" + nameof(Key) + ",nq}")]
-        private readonly struct DebugItem
+        readonly struct DebugItem
         {
             public DebugItem(int l, int r, TValue value)
             {
@@ -76,9 +76,9 @@ namespace Kzrnm.Competitive
             public TValue Value { get; }
         }
         [SourceExpander.NotEmbeddingSource]
-        private class DebugView
+        class DebugView
         {
-            private readonly DisjointSparseTable<TValue, TOp> st;
+            readonly DisjointSparseTable<TValue, TOp> st;
             public DebugView(DisjointSparseTable<TValue, TOp> st)
             {
                 this.st = st;

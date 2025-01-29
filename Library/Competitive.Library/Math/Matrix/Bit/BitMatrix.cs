@@ -41,20 +41,20 @@ namespace Kzrnm.Competitive
         }
         public BitMatrix(bool[][] value) : this(value.Select(a => new BitArray(a)).ToArray()) { }
 
-        private static BitMatrix ThrowNotSupportResponse() => throw new NotSupportedException();
+        static BitMatrix ThrowNotSupportResponse() => throw new NotSupportedException();
 
         /// <summary>
         /// 零行列かどうかを返します。
         /// </summary>
         public bool IsZero => kind is Kd.Zero;
-        private static BitArray[] NormalZeroMatrix(int row, int col)
+        static BitArray[] NormalZeroMatrix(int row, int col)
         {
             var arr = new BitArray[row];
             for (int i = 0; i < arr.Length; i++)
                 arr[i] = new BitArray(col);
             return arr;
         }
-        private static BitArray[] CloneArray(BitArray[] arr)
+        static BitArray[] CloneArray(BitArray[] arr)
         {
             var res = new BitArray[arr.Length];
             for (int i = 0; i < arr.Length; i++)
@@ -62,14 +62,14 @@ namespace Kzrnm.Competitive
             return res;
         }
 
-        private BitMatrix AddIdentity()
+        BitMatrix AddIdentity()
         {
             var arr = CloneArray(_v);
             for (int i = 0; i < arr.Length; i++)
                 arr[i][i] = !arr[i][i];
             return new BitMatrix(arr);
         }
-        private BitMatrix Add(BitMatrix other)
+        BitMatrix Add(BitMatrix other)
         {
             Contract.Assert(_v.Length == other._v.Length);
             Contract.Assert(_v[0].Length == other._v[0].Length);
@@ -120,7 +120,7 @@ namespace Kzrnm.Competitive
         public static BitMatrix operator -(BitMatrix x, BitMatrix y) => x + y;
         public static BitMatrix operator ^(BitMatrix x, BitMatrix y) => x + y;
 
-        private BitMatrix Multiply(BitMatrix other)
+        BitMatrix Multiply(BitMatrix other)
         {
             var val = _v;
             var otherArr = other._v;
@@ -233,7 +233,7 @@ namespace Kzrnm.Competitive
         /// <param name="arr">対象の行列</param>
         /// <param name="isReduced">行標準形にするかどうか。false ならば上三角行列</param>
         /// <returns>0ではない列のインデックス</returns>
-        private static List<int> GaussianEliminationImpl(BitArray[] arr, bool isReduced)
+        static List<int> GaussianEliminationImpl(BitArray[] arr, bool isReduced)
         {
             var idx = new List<int>(arr.Length);
             int r = 0;
@@ -259,7 +259,7 @@ namespace Kzrnm.Competitive
         /// <paramref name="r"/> より下で <paramref name="x"/> 列が 0 ではない行を探して、<paramref name="r"/> 行に置く。
         /// </summary>
         /// <returns>0 ではない行が見つかったかどうか</returns>
-        private static bool SearchNonZero(BitArray[] mat, int r, int x)
+        static bool SearchNonZero(BitArray[] mat, int r, int x)
         {
             for (int y = r; y < mat.Length; y++)
                 if (mat[y][x])
@@ -349,7 +349,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public bool Equals(BitMatrix other) =>
             kind == other.kind && (kind != Kd.Normal || EqualsMat(_v, other._v));
-        private static bool EqualsMat(BitArray[] a, BitArray[] b)
+        static bool EqualsMat(BitArray[] a, BitArray[] b)
         {
             if (a.Length != b.Length) return false;
             var array = new int[(a[0].Length + 31) / 32];

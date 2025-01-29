@@ -24,7 +24,7 @@ namespace Kzrnm.Competitive
 
         public int Height => _h;
         public int Width => _w;
-        private readonly int _h, _w;
+        readonly int _h, _w;
         internal readonly MontgomeryModInt<T>[] _v;
         public ReadOnlySpan<MontgomeryModInt<T>> AsSpan() => _v;
         public MontgomeryModInt<T>[][] ToArray()
@@ -90,7 +90,7 @@ namespace Kzrnm.Competitive
             _v = MemoryMarshal.CreateReadOnlySpan(ref m[0, 0], m.Length).ToArray();
         }
 
-        private static SimdModMatrix<T> ThrowNotSupportResponse() => throw new NotSupportedException();
+        static SimdModMatrix<T> ThrowNotSupportResponse() => throw new NotSupportedException();
 
         /// <summary>
         /// 大きさ <paramref name="s"/> の単位行列を返します。
@@ -110,7 +110,7 @@ namespace Kzrnm.Competitive
         public bool IsZero => kind is Kd.Zero;
         [凾(256)] MontgomeryModInt<T>[] CloneArray() => (MontgomeryModInt<T>[])_v.Clone();
 
-        private SimdModMatrix<T> AddIdentity()
+        SimdModMatrix<T> AddIdentity()
         {
             var arr = CloneArray();
             for (int i = Math.Min(_h, _w) - 1; i >= 0; i--)
@@ -118,7 +118,7 @@ namespace Kzrnm.Competitive
             return new(arr, _h, _w);
         }
         [凾(256)]
-        private SimdModMatrix<T> Add(SimdModMatrix<T> other)
+        SimdModMatrix<T> Add(SimdModMatrix<T> other)
         {
             Contract.Assert(_h == other._h && _w == other._w);
             var m2 = Vector256.Create(new T().Mod * 2);
@@ -165,7 +165,7 @@ namespace Kzrnm.Competitive
             };
         }
         [凾(256)]
-        private SimdModMatrix<T> SubtractIdentity()
+        SimdModMatrix<T> SubtractIdentity()
         {
             var arr = CloneArray();
             for (int i = Math.Min(_h, _w) - 1; i >= 0; i--)
@@ -173,7 +173,7 @@ namespace Kzrnm.Competitive
             return new(arr, _h, _w);
         }
         [凾(256)]
-        private SimdModMatrix<T> Subtract(SimdModMatrix<T> other)
+        SimdModMatrix<T> Subtract(SimdModMatrix<T> other)
         {
             Contract.Assert(_h == other._h && _w == other._w);
             var m2 = Vector256.Create(new T().Mod * 2);
@@ -231,7 +231,7 @@ namespace Kzrnm.Competitive
             };
         }
         [凾(256)]
-        private SimdModMatrix<T> Multiply(SimdModMatrix<T> other)
+        SimdModMatrix<T> Multiply(SimdModMatrix<T> other)
         {
             var rh = Height;
             var rw = other.Width;
@@ -264,7 +264,7 @@ namespace Kzrnm.Competitive
             };
         }
         [凾(256)]
-        private SimdModMatrix<T> MultiplyScalar(MontgomeryModInt<T> scalar)
+        SimdModMatrix<T> MultiplyScalar(MontgomeryModInt<T> scalar)
         {
             var arr = _v;
             var res = new MontgomeryModInt<T>[arr.Length];
@@ -382,7 +382,7 @@ namespace Kzrnm.Competitive
         [SourceExpander.NotEmbeddingSource]
         class DebugView
         {
-            private readonly SimdModMatrix<T> m;
+            readonly SimdModMatrix<T> m;
             public Kd Kind => m.kind;
             public DebugView(SimdModMatrix<T> matrix)
             {

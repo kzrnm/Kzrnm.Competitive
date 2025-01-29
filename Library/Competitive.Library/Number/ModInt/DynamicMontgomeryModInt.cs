@@ -22,7 +22,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 1
         /// </summary>
-        private static DynamicMontgomeryModInt<T> _One;
+        static DynamicMontgomeryModInt<T> _One;
         internal uint _v;
 
 

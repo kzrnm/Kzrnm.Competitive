@@ -11,8 +11,8 @@ namespace Kzrnm.Competitive
     /// </summary>
     public class MoAlgorithm
     {
-        private int Max;
-        private readonly List<(int From, int ToExclusive, int Index)> builder;
+        int Max;
+        readonly List<(int From, int ToExclusive, int Index)> builder;
         /// <summary>
         /// 平方分割でオフラインクエリを計算する
         /// </summary>
@@ -141,10 +141,10 @@ namespace Kzrnm.Competitive
             }
         }
 
-        private struct StateStrictWrapper<T, TSt> : IMoAlgorithmOperatorStrict
+        struct StateStrictWrapper<T, TSt> : IMoAlgorithmOperatorStrict
             where TSt : IMoAlgorithmState<T>
         {
-            private TSt st;
+            TSt st;
             public readonly T[] result;
             public StateStrictWrapper(TSt status, int length)
             {
@@ -157,10 +157,10 @@ namespace Kzrnm.Competitive
             [凾(256)] public void RemoveRight(int idx) => st.Remove(idx);
             [凾(256)] public void Update(int idx) => result[idx] = st.Current;
         }
-        private struct StrictStateStrictWrapper<T, TSt> : IMoAlgorithmOperatorStrict
+        struct StrictStateStrictWrapper<T, TSt> : IMoAlgorithmOperatorStrict
             where TSt : IMoAlgorithmStateStrict<T>
         {
-            private TSt st;
+            TSt st;
             public readonly T[] result;
             public StrictStateStrictWrapper(TSt status, int length)
             {
@@ -173,10 +173,10 @@ namespace Kzrnm.Competitive
             [凾(256)] public void RemoveRight(int idx) => st.RemoveRight(idx);
             [凾(256)] public void Update(int idx) => result[idx] = st.Current;
         }
-        private struct OpStrictWrapper<TOp> : IMoAlgorithmOperatorStrict
+        struct OpStrictWrapper<TOp> : IMoAlgorithmOperatorStrict
             where TOp : IMoAlgorithmOperator
         {
-            private TOp st;
+            TOp st;
             public OpStrictWrapper(TOp status) { st = status; }
             [凾(256)] public void AddLeft(int idx) => st.Add(idx);
             [凾(256)] public void AddRight(int idx) => st.Add(idx);
@@ -184,13 +184,9 @@ namespace Kzrnm.Competitive
             [凾(256)] public void RemoveRight(int idx) => st.Remove(idx);
             [凾(256)] public void Update(int idx) => st.Update(idx);
         }
-        private readonly struct ActionStrictWrapper : IMoAlgorithmOperatorStrict
+        readonly struct ActionStrictWrapper : IMoAlgorithmOperatorStrict
         {
-            private readonly Action<int> addLeft;
-            private readonly Action<int> addRight;
-            private readonly Action<int> removeLeft;
-            private readonly Action<int> removeRight;
-            private readonly Action<int> update;
+            readonly Action<int> addLeft, addRight, removeLeft, removeRight, update;
             public ActionStrictWrapper(
                 Action<int> addLeft,
                 Action<int> addRight,

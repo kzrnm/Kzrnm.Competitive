@@ -22,8 +22,7 @@ namespace Kzrnm.Competitive
     public class FenwickTreeRange<T>
         where T : INumberBase<T>
     {
-        private readonly T[] data1;
-        private readonly T[] data2;
+        readonly T[] data1, data2;
 
         public int Length { get; }
 
@@ -43,7 +42,7 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        private static void Add(T[] data, int p, T w)
+        static void Add(T[] data, int p, T w)
         {
             for (++p; p < data.Length; p += (int)InternalBit.ExtractLowestSetBit(p))
                 data[p] += w;
@@ -65,7 +64,7 @@ namespace Kzrnm.Competitive
             Add(data2, r, -x);
         }
         [凾(256)]
-        private static T Sum(T[] data, int r)
+        static T Sum(T[] data, int r)
         {
             T res = default;
             for (; r > 0; r &= r - 1)
@@ -110,7 +109,7 @@ namespace Kzrnm.Competitive
         }
         internal class DebugView
         {
-            private readonly FenwickTreeRange<T> fenwickTree;
+            readonly FenwickTreeRange<T> fenwickTree;
             public DebugView(FenwickTreeRange<T> fenwickTree)
             {
                 this.fenwickTree = fenwickTree;

@@ -10,7 +10,7 @@ namespace Kzrnm.Competitive
     /// <typeparam name="T">データの型</typeparam>
     public class DataNodeGraphBuilder<T> : Internal.Graph.BuilderBase<SimpleGraph<GraphNodeData<T>, Gde>, TreeGraph<TreeNodeData<T>, Gde>, GraphNodeData<T>, TreeNodeData<T>, Gde>
     {
-        private readonly T[] vals;
+        readonly T[] vals;
         public DataNodeGraphBuilder(T[] values, bool isDirected) : base(values.Length, isDirected)
         {
             vals = values;

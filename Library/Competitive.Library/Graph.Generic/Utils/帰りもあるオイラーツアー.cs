@@ -18,7 +18,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <para>根から各ノードを深さ優先探索するとき、ノードに入る/出るをイベント化したときのインデックスを返す。</para>
         /// </summary>
-        private readonly (int left, int right)[] nodes;
+        readonly (int left, int right)[] nodes;
         /// <summary>
         /// <para>根から各ノードを深さ優先探索するとき、ノードに入る/出るをイベント化したときのインデックスを返す。</para>
         /// </summary>

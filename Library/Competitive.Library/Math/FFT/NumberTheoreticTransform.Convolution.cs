@@ -583,23 +583,23 @@ namespace Kzrnm.Competitive
         }
 
 
-        private readonly record struct AnyMod(uint Mod) : IStaticMod
+        readonly record struct AnyMod(uint Mod) : IStaticMod
         {
             public bool IsPrime => false;
         }
-        private readonly struct FFTMod1 : IStaticMod
+        readonly struct FFTMod1 : IStaticMod
         {
             public uint Mod => 167772161;
             public bool IsPrime => true;
         }
 
-        private readonly struct FFTMod2 : IStaticMod
+        readonly struct FFTMod2 : IStaticMod
         {
             public uint Mod => 469762049;
             public bool IsPrime => true;
         }
 
-        private readonly struct FFTMod3 : IStaticMod
+        readonly struct FFTMod3 : IStaticMod
         {
             public uint Mod => 754974721;
             public bool IsPrime => true;

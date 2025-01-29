@@ -17,14 +17,12 @@ namespace Kzrnm.Competitive
         where T : struct, INumberBase<T>
         where TCmp : struct, IConvexHullTrickOperator<T>
     {
-        private static TCmp cmp = default;
+        static TCmp cmp = default;
         public readonly T XINF;
         public readonly T YINF;
-        private bool[] u;
-        private T[] xs;
-        private T[] p;
-        private T[] q;
-        private readonly int size;
+        bool[] u;
+        T[] xs, p, q;
+        readonly int size;
         public int Length { get; }
 
         /// <summary>
@@ -74,7 +72,7 @@ namespace Kzrnm.Competitive
             }
         }
 
-        private void AddLine(T a, T b, int k, int l, int r)
+        void AddLine(T a, T b, int k, int l, int r)
         {
             while (r - l > 0)
             {
@@ -123,7 +121,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)]
         public T Query(int i) => Query(i, xs[i]);
-        private T Query(int k, T x)
+        T Query(int k, T x)
         {
             k += size;
             T s = u[k] ? (p[k] * x) + q[k] : YINF;

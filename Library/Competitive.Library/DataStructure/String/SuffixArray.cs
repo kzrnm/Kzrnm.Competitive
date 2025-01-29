@@ -55,7 +55,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// Suffix Array の長さ = LCP Array の長さ + 1
         /// </summary>
-        private int Length { get; }
+        int Length { get; }
 
         /// <summary>
         /// s[<paramref name="i"/>:] と s[<paramref name="j"/>:] の LCP(Longest Common Prefix) の長さ。
@@ -72,8 +72,8 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// LCP Array の最小値を取得する RMQ
         /// </summary>
-        private readonly SparseTable<int, MinOp> rmq;
-        private SuffixArray(int[] suffixArray, int[] lcpArray)
+        readonly SparseTable<int, MinOp> rmq;
+        SuffixArray(int[] suffixArray, int[] lcpArray)
         {
             Contract.Assert(suffixArray.Length == lcpArray.Length + 1);
             Length = suffixArray.Length;
@@ -88,7 +88,7 @@ namespace Kzrnm.Competitive
                 h = new int[1];
             rmq = new SparseTable<int, MinOp>(h);
         }
-        private readonly struct MinOp : ISparseTableOperator<int>
+        readonly struct MinOp : ISparseTableOperator<int>
         {
             [凾(256)]
             public int Operate(int x, int y) => Math.Min(x, y);

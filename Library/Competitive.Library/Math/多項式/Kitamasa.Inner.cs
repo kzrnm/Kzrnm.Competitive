@@ -7,7 +7,7 @@ namespace Kzrnm.Competitive
 {
     public static partial class Kitamasa
     {
-        private readonly ref struct Inner
+        readonly ref struct Inner
         {
             public readonly uint mod;
             public readonly ReadOnlySpan<uint> a;
@@ -89,7 +89,7 @@ namespace Kzrnm.Competitive
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
-        private ref struct Inner<TMod> where TMod : struct, IStaticMod
+        ref struct Inner<TMod> where TMod : struct, IStaticMod
         {
             public static readonly TMod op = default;
             public ReadOnlySpan<uint> a;

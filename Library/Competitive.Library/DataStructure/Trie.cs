@@ -125,7 +125,7 @@ namespace Kzrnm.Competitive
             [凾(256)]
             set => Add(key, value);
         }
-        private static void ThrowKeyNotFoundException() => throw new KeyNotFoundException();
+        static void ThrowKeyNotFoundException() => throw new KeyNotFoundException();
 
         public bool Remove(ReadOnlySpan<TKey> key)
         {
@@ -245,7 +245,7 @@ namespace Kzrnm.Competitive
 
         [SourceExpander.NotEmbeddingSource]
         [DebuggerDisplay("{" + nameof(value) + "}", Name = "{" + nameof(key) + ",nq}")]
-        private readonly struct DebugItem
+        readonly struct DebugItem
         {
             public DebugItem(TKey[] key, TValue value)
             {
@@ -253,14 +253,14 @@ namespace Kzrnm.Competitive
                 this.value = value;
             }
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            private readonly string key;
+            readonly string key;
             [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            private readonly TValue value;
+            readonly TValue value;
         }
         [SourceExpander.NotEmbeddingSource]
-        private class DebugView
+        class DebugView
         {
-            private readonly Trie<TKey, TValue> trie;
+            readonly Trie<TKey, TValue> trie;
             public DebugView(Trie<TKey, TValue> trie)
             {
                 this.trie = trie;

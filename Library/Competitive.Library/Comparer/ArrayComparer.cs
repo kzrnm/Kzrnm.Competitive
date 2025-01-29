@@ -5,7 +5,7 @@ namespace Kzrnm.Competitive
 {
     public class ArrayComparer<T> : IComparer<T[]> where T : IComparable<T>
     {
-        private readonly bool IsReverse;
+        readonly bool IsReverse;
         public ArrayComparer(bool isReverse = false)
         {
             IsReverse = isReverse;

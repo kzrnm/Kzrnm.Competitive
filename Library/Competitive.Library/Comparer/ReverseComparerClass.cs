@@ -10,7 +10,7 @@ namespace Kzrnm.Competitive
             this.orig = orig;
         }
         public static ReverseComparerClass<T> Default { get; } = new ReverseComparerClass<T>(Comparer<T>.Default);
-        private readonly IComparer<T> orig;
+        readonly IComparer<T> orig;
         [凾(256)]
         public int Compare(T x, T y) => orig.Compare(y, x);
         public override bool Equals(object obj) => obj is ReverseComparerClass<T>;

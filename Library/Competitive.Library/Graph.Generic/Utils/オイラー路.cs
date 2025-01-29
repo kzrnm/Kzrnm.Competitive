@@ -27,7 +27,7 @@ namespace Kzrnm.Competitive
         /// <para>無向オイラーグラフ: 次数(出ていく辺の数)が全て偶数</para>
         /// <para>無向準オイラーグラフ: 次数(出ていく辺の数)が奇数なのが2個</para>
         /// </summary>
-        private static (int from, TEdge[] trail) EulerianTrailUndirected<TEdge>(this IGraph<TEdge> graph)
+        static (int from, TEdge[] trail) EulerianTrailUndirected<TEdge>(this IGraph<TEdge> graph)
             where TEdge : struct, IGraphEdge<TEdge>
         {
             Contract.Assert(!graph[0].IsDirected);
@@ -55,7 +55,7 @@ namespace Kzrnm.Competitive
         /// <para>有向オイラーグラフ: ある頂点で出次数が入次数より1多く、別の頂点で入次数が出次数より1多く、ほかの全ての頂点で入次数と出次数が等しい</para>
         /// <para>有向準オイラーグラフ: 全ての頂点で入次数と出次数が等しい</para>
         /// </summary>
-        private static (int from, TEdge[] trail) EulerianTrailDirected<TEdge>(this IGraph<TEdge> graph)
+        static (int from, TEdge[] trail) EulerianTrailDirected<TEdge>(this IGraph<TEdge> graph)
             where TEdge : struct, IGraphEdge<TEdge>
         {
             Contract.Assert(graph[0].IsDirected);
@@ -123,7 +123,7 @@ namespace Kzrnm.Competitive
             return EulerianTrail(graphQueue, from);
         }
 
-        private static TEdge[] EulerianTrail<TEdge>(Queue<EdgeInternal<TEdge>>[] graph, int from)
+        static TEdge[] EulerianTrail<TEdge>(Queue<EdgeInternal<TEdge>>[] graph, int from)
             where TEdge : struct, IGraphEdge<TEdge>
         {
             var res = new List<TEdge>();
@@ -158,7 +158,7 @@ namespace Kzrnm.Competitive
             Array.Reverse(resArr);
             return resArr;
         }
-        private record EdgeInternal<TEdge>(int From, TEdge ToEdge) where TEdge : IGraphEdge<TEdge>
+        record EdgeInternal<TEdge>(int From, TEdge ToEdge) where TEdge : IGraphEdge<TEdge>
         {
             public bool Used = false;
 

@@ -44,7 +44,7 @@ namespace Kzrnm.Competitive
     /// </summary>
     public class Sums2D<T> where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>
     {
-        private readonly T[][] impl;
+        readonly T[][] impl;
         public int Length => impl.Length - 1;
         internal Sums2D(T[][] accu)
         {

@@ -169,7 +169,7 @@ namespace Kzrnm.Competitive
             return Set(m).Pre(n).Reverse();
         }
 
-        private FpsImpl<T> DivideNative(ReadOnlySpan<MontgomeryModInt<T>> rhs)
+        FpsImpl<T> DivideNative(ReadOnlySpan<MontgomeryModInt<T>> rhs)
         {
             var f = a;
             var g = rhs.ToArray();
@@ -248,7 +248,7 @@ namespace Kzrnm.Competitive
             return deg <= NumberTheoreticTransform<T>.NttLength() ? InvNtt(deg) : InvAnyMod(deg);
 
         }
-        private FpsImpl<T> InvNtt(int deg)
+        FpsImpl<T> InvNtt(int deg)
         {
             var r = new MontgomeryModInt<T>[deg];
             r[0] = a[0].Inv();
@@ -275,7 +275,7 @@ namespace Kzrnm.Competitive
             }
             return Set(r).Pre(deg);
         }
-        private FpsImpl<T> InvAnyMod(int deg)
+        FpsImpl<T> InvAnyMod(int deg)
         {
             var r = new MontgomeryModInt<T>[1] { a[0].Inv() };
             for (int i = 1; i < deg; i <<= 1)

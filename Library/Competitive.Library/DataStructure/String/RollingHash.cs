@@ -37,7 +37,7 @@ namespace Kzrnm.Competitive
         public class Rhf<H> : RhFast<H> where H : struct, IRollingHash
         {
             readonly ulong[] h;
-            private Rhf(ulong[] hs) : base(hs.Length)
+            Rhf(ulong[] hs) : base(hs.Length)
             {
                 ResizePow(hs.Length);
                 h = hs;

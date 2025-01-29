@@ -16,7 +16,7 @@ namespace Kzrnm.Competitive
     }
     public class LinkCutTree<T, F, TOp> where TOp : struct, ILinkCutTreeOperator<T, F>
     {
-        private static TOp op = default;
+        static TOp op = default;
         public class Node
         {
             public Node Left;

@@ -32,10 +32,10 @@ namespace Kzrnm.Competitive
          * 
          * back は d[frontSize..] の総積
          */
-        private static TOp op => default;
-        private int frontSize = 0;
-        private T back = op.Identity;
-        private readonly Deque<T> d;
+        static TOp op => default;
+        int frontSize = 0;
+        T back = op.Identity;
+        readonly Deque<T> d;
         /// <summary>
         /// Slide Window Aggrigation: モノイドの範囲演算を移動しながら求める。計算量: O(N)
         /// </summary>

@@ -51,7 +51,7 @@ namespace Kzrnm.Competitive
             return r;
         }
         [凾(256)]
-        private static (T Quotient, T Remainder) DivRem<T>(T left, T right) where T : IBinaryNumber<T>
+        static (T Quotient, T Remainder) DivRem<T>(T left, T right) where T : IBinaryNumber<T>
         {
             T quotient = left / right;
             return (quotient, left - (quotient * right));

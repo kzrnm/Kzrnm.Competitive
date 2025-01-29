@@ -12,8 +12,7 @@ namespace Kzrnm.Competitive.Internal
     using static SimdMontgomery;
     public readonly partial struct SimdStrassenImpl<T> where T : struct, IStaticMod
     {
-        private const int B = 1 << 7;
-        private const int B8 = B / 8;
+        const int B = 1 << 7, B8 = B / 8;
 
         public readonly int S;
         public readonly int S8;

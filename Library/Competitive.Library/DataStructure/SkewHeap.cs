@@ -14,7 +14,7 @@ namespace Kzrnm.Competitive
     public class SkewHeap<T, F, TOp>
         where TOp : struct, ISkewHeapOperator<T, F>
     {
-        private static TOp op => new TOp();
+        static TOp op => new TOp();
         public class Node
         {
             public Node(T key, int index)

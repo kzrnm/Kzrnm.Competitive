@@ -40,9 +40,9 @@ namespace Kzrnm.Competitive
             }
             return b.Build();
         }
-        private readonly struct Comparer<T, TEdge> : IComparer<TEdge>
-            where T : IComparable<T>
-            where TEdge : IWGraphEdge<T>
+        readonly struct Comparer<T, TEdge> : IComparer<TEdge>
+           where T : IComparable<T>
+           where TEdge : IWGraphEdge<T>
         {
             [凾(256)]
             public int Compare(TEdge x, TEdge y) => x.Value.CompareTo(y.Value);

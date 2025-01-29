@@ -180,7 +180,7 @@ namespace Kzrnm.Competitive
             }
         }
 
-        private static Dictionary<long, long[]> cachedFactors;
+        static Dictionary<long, long[]> cachedFactors;
 
         /// <summary>
         /// <paramref name="n"/> の素因数を順不同で列挙します。

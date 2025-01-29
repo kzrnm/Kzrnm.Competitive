@@ -15,7 +15,7 @@ namespace Kzrnm.Competitive
         {
             s0 = t0; s1 = t1; s2 = t2; s3 = t3;
         }
-        private Xoshiro256(Random rnd)
+        Xoshiro256(Random rnd)
         {
             Span<ulong> vs = stackalloc ulong[4];
             rnd.NextBytes(MemoryMarshal.AsBytes(vs));

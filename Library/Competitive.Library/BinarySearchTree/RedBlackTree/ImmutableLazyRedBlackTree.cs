@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive
         [凾(256)] public static ImmutableLazyRedBlackTree<T> Create(params T[] v) => new(v);
         [凾(256)] public static ImmutableLazyRedBlackTree<T> Create(ReadOnlySpan<T> v) => new(v);
 #endif
-        private ImmutableLazyRedBlackTree(ReadOnlySpan<T> v) : base(v) { }
+        ImmutableLazyRedBlackTree(ReadOnlySpan<T> v) : base(v) { }
         public ImmutableLazyRedBlackTree(ImmutableLazyRedBlackTreeNode<T, byte, SingleBbstOp<T>> root) : base(root) { }
         public ImmutableLazyRedBlackTreeNode<T, byte, SingleBbstOp<T>>.Enumerator GetEnumerator()
         {

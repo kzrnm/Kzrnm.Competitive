@@ -5,7 +5,7 @@ namespace Kzrnm.Competitive
 {
     public class BitArrayComparer : IComparer<BitArray>
     {
-        private readonly bool IsReverse;
+        readonly bool IsReverse;
         public BitArrayComparer(bool isReverse = false)
         {
             IsReverse = isReverse;

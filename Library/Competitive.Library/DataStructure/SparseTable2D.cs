@@ -13,12 +13,12 @@ namespace Kzrnm.Competitive
     [DebuggerDisplay("H = {" + nameof(Length) + "}, W = {" + nameof(st) + "[0][0]." + nameof(Grid<TValue>.W) + "}")]
     public class SparseTable2D<TValue, TOp> where TOp : struct, ISparseTableOperator<TValue>
     {
-        private static TOp op = default;
-        private readonly Grid<TValue>[][] st;
+        static TOp op = default;
+        readonly Grid<TValue>[][] st;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public int Length { get; }
 
-        private static Grid<TValue> ToGrid(TValue[][] array)
+        static Grid<TValue> ToGrid(TValue[][] array)
         {
             Contract.Assert(array.Length > 0 && array[0].Length > 0, nameof(array) + " must not be empty");
             var g = new Grid<TValue>(array.Length, array[0].Length);

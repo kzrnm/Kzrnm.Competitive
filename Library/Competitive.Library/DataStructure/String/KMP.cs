@@ -65,11 +65,9 @@ namespace Kzrnm.Competitive
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
         public ref struct Enumerator
         {
-            private readonly ReadOnlySpan<T> pattern;
-            private readonly ReadOnlySpan<T> target;
-            private readonly int[] table;
-            private int index;
-            private int p;
+            readonly ReadOnlySpan<T> pattern, target;
+            readonly int[] table;
+            int index, p;
             public Enumerator(ReadOnlySpan<T> pattern, ReadOnlySpan<T> target, int[] table)
             {
                 this.pattern = pattern;

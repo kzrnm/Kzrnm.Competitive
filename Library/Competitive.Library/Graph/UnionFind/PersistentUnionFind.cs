@@ -11,7 +11,7 @@ namespace Kzrnm.Competitive
     /// </summary>
     public readonly struct PersistentUnionFind
     {
-        private readonly ImmutableList<int> _parentOrSize;
+        readonly ImmutableList<int> _parentOrSize;
 
         /// <summary>
         /// <see cref="PersistentUnionFind"/> を、<paramref name="n"/> 頂点 0 辺のグラフとして初期化します。
@@ -25,7 +25,7 @@ namespace Kzrnm.Competitive
             _parentOrSize = ImmutableList<int>.Empty.AddRange(Enumerable.Repeat(-1, n));
         }
 
-        private PersistentUnionFind(ImmutableList<int> parentOrSize)
+        PersistentUnionFind(ImmutableList<int> parentOrSize)
         {
             _parentOrSize = parentOrSize;
         }

@@ -13,11 +13,11 @@ namespace Kzrnm.Competitive
         public static bool IsNaN(BigFraction v) => v._denominator0 < 0;
 
         /// <summary>分子</summary>
-        private readonly BigInteger _numerator;
+        readonly BigInteger _numerator;
         /// <summary>分子</summary>
         public BigInteger Numerator => _numerator;
         /// <summary>分母 - 1 (default を 0/0 ではなく 0/1 にしたい)</summary>
-        private readonly BigInteger _denominator0;
+        readonly BigInteger _denominator0;
         /// <summary>分母</summary>
         public BigInteger Denominator => _denominator0 + 1;
 
@@ -51,7 +51,7 @@ namespace Kzrnm.Competitive
                 _denominator0 = 分母 / gcd - 1;
             }
         }
-        private BigFraction(BigInteger 分子, BigInteger 分母, bool _)
+        BigFraction(BigInteger 分子, BigInteger 分母, bool _)
         {
             _numerator = 分子;
             _denominator0 = 分母 - 1;

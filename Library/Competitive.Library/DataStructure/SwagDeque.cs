@@ -34,8 +34,8 @@ namespace Kzrnm.Competitive
          * 
          */
 
-        private static TOp op => default;
-        private readonly Deque<T> a, c, d;
+        static TOp op => default;
+        readonly Deque<T> a, c, d;
         /// <summary>
         /// Slide Window Aggrigation: モノイドの範囲演算を移動しながら求める。計算量: O(N)
         /// </summary>

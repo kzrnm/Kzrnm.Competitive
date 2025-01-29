@@ -8,10 +8,10 @@ namespace Kzrnm.Competitive
     /// </summary>
     public class ModIntFactor<T> where T : IModInt<T>
     {
-        private readonly T[] fac, finv;
-        private T[] pow2, invPow2;
+        readonly T[] fac, finv;
+        T[] pow2, invPow2;
         [凾(256)]
-        private void BuildPow2(int size)
+        void BuildPow2(int size)
         {
             // 2の冪乗とその逆数を計算する
             invPow2 = new T[size];

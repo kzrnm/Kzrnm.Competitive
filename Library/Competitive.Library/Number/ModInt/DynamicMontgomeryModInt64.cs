@@ -20,7 +20,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 1
         /// </summary>
-        private static DynamicMontgomeryModInt64<T> _One;
+        static DynamicMontgomeryModInt64<T> _One;
         internal ulong _v;
 
 

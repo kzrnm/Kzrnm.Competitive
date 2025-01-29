@@ -103,6 +103,6 @@ namespace Kzrnm.Competitive
                 p[i] = Unsafe.Add(ref rp, i + 1) - 1;
             return p;
         }
-        private readonly record struct Manacher2Val<T>(T Value, bool HasValue);
+        readonly record struct Manacher2Val<T>(T Value, bool HasValue);
     }
 }

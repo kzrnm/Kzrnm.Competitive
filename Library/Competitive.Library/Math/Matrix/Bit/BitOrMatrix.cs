@@ -41,20 +41,20 @@ namespace Kzrnm.Competitive
         }
         public BitOrMatrix(bool[][] value) : this(value.Select(a => new BitArray(a)).ToArray()) { }
 
-        private static BitOrMatrix ThrowNotSupportResponse() => throw new NotSupportedException();
+        static BitOrMatrix ThrowNotSupportResponse() => throw new NotSupportedException();
 
         /// <summary>
         /// 零行列かどうかを返します。
         /// </summary>
         public bool IsZero => kind is Kd.Zero;
-        private static BitArray[] NormalZeroMatrix(int row, int col)
+        static BitArray[] NormalZeroMatrix(int row, int col)
         {
             var arr = new BitArray[row];
             for (int i = 0; i < arr.Length; i++)
                 arr[i] = new BitArray(col);
             return arr;
         }
-        private static BitArray[] CloneArray(BitArray[] arr)
+        static BitArray[] CloneArray(BitArray[] arr)
         {
             var res = new BitArray[arr.Length];
             for (int i = 0; i < arr.Length; i++)
@@ -62,14 +62,14 @@ namespace Kzrnm.Competitive
             return res;
         }
 
-        private BitOrMatrix AddIdentity()
+        BitOrMatrix AddIdentity()
         {
             var arr = CloneArray(_v);
             for (int i = 0; i < arr.Length; i++)
                 arr[i][i] = true;
             return new BitOrMatrix(arr);
         }
-        private BitOrMatrix Add(BitOrMatrix other)
+        BitOrMatrix Add(BitOrMatrix other)
         {
             Contract.Assert(_v.Length == other._v.Length);
             Contract.Assert(_v[0].Length == other._v[0].Length);
@@ -108,7 +108,7 @@ namespace Kzrnm.Competitive
 
         [凾(256)] public static BitOrMatrix operator +(BitOrMatrix x) => x;
 
-        private BitOrMatrix Multiply(BitOrMatrix other)
+        BitOrMatrix Multiply(BitOrMatrix other)
         {
             var val = _v;
             var otherArr = other._v;
@@ -175,7 +175,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public bool Equals(BitOrMatrix other) =>
             kind == other.kind && (kind != Kd.Normal || EqualsMat(_v, other._v));
-        private static bool EqualsMat(BitArray[] a, BitArray[] b)
+        static bool EqualsMat(BitArray[] a, BitArray[] b)
         {
             if (a.Length != b.Length) return false;
             var array = new int[(a[0].Length + 31) / 32];

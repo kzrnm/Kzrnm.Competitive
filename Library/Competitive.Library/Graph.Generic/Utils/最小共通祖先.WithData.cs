@@ -17,7 +17,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// kprv[u][k] 頂点uの2^k個上の祖先頂点v, 0&lt;=k&lt;logN
         /// </summary>
-        private readonly PathDoubling<T, TOp> doubling;
+        readonly PathDoubling<T, TOp> doubling;
         public LowestCommonAncestorWithData(TNode[] tree, T[] data, TOp op = default)
         {
             if (tree.Length == 0) throw new ArgumentException("空の木です", nameof(tree));
@@ -137,7 +137,7 @@ namespace Kzrnm.Competitive
             where TNode : ITreeNode<TEdge>
             where TEdge : IGraphEdge
         {
-            private readonly ITreeGraph<TNode, TEdge> tree;
+            readonly ITreeGraph<TNode, TEdge> tree;
             public Builder(ITreeGraph<TNode, TEdge> tree)
             {
                 this.tree = tree;

@@ -24,7 +24,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 1
         /// </summary>
-        private static readonly MontgomeryModInt<T> _One = 1;
+        static readonly MontgomeryModInt<T> _One = 1;
         static uint GetR()
         {
             var mod = new T().Mod;

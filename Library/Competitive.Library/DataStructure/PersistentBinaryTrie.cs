@@ -13,13 +13,13 @@ namespace Kzrnm.Competitive
         /// 1 &lt;&lt; <paramref name="maxDepth"/> 未満の数値を取り扱う BinaryTrie を作成する。
         /// </summary>
         public PersistentBinaryTrie(int maxDepth = 64) : this(new Node(), maxDepth) { }
-        private PersistentBinaryTrie(Node root, int maxDepth = 64)
+        PersistentBinaryTrie(Node root, int maxDepth = 64)
         {
             _root = root;
             MaxDepth = maxDepth - 1;
         }
-        private readonly Node _root;
-        private readonly int MaxDepth;
+        readonly Node _root;
+        readonly int MaxDepth;
 
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace Kzrnm.Competitive
         /// <para>すべての値に <paramref name="xorVal"/> と XOR を取った値で扱う。</para>
         /// </summary>
         [凾(256)]
-        private static (ulong Num, Node Node) KthElement(Node t, int k, int bitIndex, ulong xorVal)
+        static (ulong Num, Node Node) KthElement(Node t, int k, int bitIndex, ulong xorVal)
         {
             if (bitIndex == -1)
                 return (0, t);

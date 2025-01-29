@@ -15,7 +15,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// kprv[u][k] 頂点uの2^k個上の祖先頂点v, 0&lt;=k&lt;logN
         /// </summary>
-        private readonly PathDoubling doubling;
+        readonly PathDoubling doubling;
         public LowestCommonAncestor(TNode[] tree)
         {
             if (tree.Length == 0) throw new ArgumentException("空の木です", nameof(tree));

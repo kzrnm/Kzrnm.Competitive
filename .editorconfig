@@ -26,3 +26,6 @@ dotnet_diagnostic.CS9195.severity = none
 
 # CS9192: 引数は 'ref' キーワードまたは 'in' キーワードと共に渡す必要があります
 dotnet_diagnostic.CS9192.severity = none
+
+# IDE0040: アクセシビリティ修飾子を追加します
+dotnet_style_require_accessibility_modifiers = omit_if_default

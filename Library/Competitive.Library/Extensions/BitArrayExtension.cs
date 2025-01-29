@@ -11,7 +11,7 @@ namespace Kzrnm.Competitive
     public static class __BitArrayExtension
     {
 #pragma warning disable CS0649
-        private class Dummy
+        class Dummy
         {
             public int[] arr;
             public int len;

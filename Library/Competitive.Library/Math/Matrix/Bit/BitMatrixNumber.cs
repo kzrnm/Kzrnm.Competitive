@@ -120,7 +120,7 @@ namespace Kzrnm.Competitive
         public static BitMatrix<T> operator -(BitMatrix<T> x, BitMatrix<T> y) => x + y;
         public static BitMatrix<T> operator ^(BitMatrix<T> x, BitMatrix<T> y) => x + y;
 
-        private BitMatrix<T> Multiply(BitMatrix<T> other)
+        BitMatrix<T> Multiply(BitMatrix<T> other)
         {
             var val = _v;
             var otherArr = other._v;
@@ -200,7 +200,7 @@ namespace Kzrnm.Competitive
         /// <param name="arr">対象の行列</param>
         /// <param name="isReduced">行標準形にするかどうか。false ならば上三角行列</param>
         /// <returns>0ではない列のインデックス</returns>
-        private static List<int> GaussianEliminationImpl(T[] arr, bool isReduced)
+        static List<int> GaussianEliminationImpl(T[] arr, bool isReduced)
         {
             var idx = new List<int>(arr.Length);
             int r = 0;
@@ -226,7 +226,7 @@ namespace Kzrnm.Competitive
         /// <paramref name="r"/> より下で <paramref name="x"/> 列が 0 ではない行を探して、<paramref name="r"/> 行に置く。
         /// </summary>
         /// <returns>0 ではない行が見つかったかどうか</returns>
-        private static bool SearchNonZero(T[] mat, int r, int x)
+        static bool SearchNonZero(T[] mat, int r, int x)
         {
             for (int y = r; y < mat.Length; y++)
                 if ((uint.CreateTruncating(mat[y] >> x) & 1) != 0)
@@ -344,7 +344,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public bool Equals(BitMatrix<T> other) =>
             kind == other.kind && (kind != Kd.Normal || EqualsMat(_v, other._v));
-        private static bool EqualsMat(T[] a, T[] b)
+        static bool EqualsMat(T[] a, T[] b)
             => a.AsSpan().SequenceEqual(b);
 
         [凾(256)]
@@ -421,7 +421,7 @@ namespace Kzrnm.Competitive
         [SourceExpander.NotEmbeddingSource]
         class DebugView
         {
-            private readonly BitMatrix<T> m;
+            readonly BitMatrix<T> m;
             public DebugView(BitMatrix<T> matrix)
             {
                 m = matrix;

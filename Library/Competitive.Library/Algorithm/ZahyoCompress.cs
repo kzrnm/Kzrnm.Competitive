@@ -60,10 +60,9 @@ namespace Kzrnm.Competitive
         public ZahyoCompress(IEnumerable<T> collection) { data = new SortedSet<T>(collection); }
         public ZahyoCompress(ReadOnlySpan<T> span) : this(span.ToArray()) { }
 
-        private readonly SortedSet<T> data;
-        private int version;
-        private int lastCompressVesion = -1;
-        private IComparer<T> lastComparer;
+        readonly SortedSet<T> data;
+        int version, lastCompressVesion = -1;
+        IComparer<T> lastComparer;
         [凾(256)]
         public void Add(T item)
         {

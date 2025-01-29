@@ -14,7 +14,7 @@ namespace Kzrnm.Competitive
     [DebuggerTypeProxy(typeof(SparseTable<,>.DebugView))]
     public class SparseTable<TValue, TOp> where TOp : struct, ISparseTableOperator<TValue>
     {
-        private static TOp op = default;
+        static TOp op = default;
         protected readonly TValue[][] st;
         public int Length { get; }
         public SparseTable(TValue[] array)
@@ -49,7 +49,7 @@ namespace Kzrnm.Competitive
 
         [SourceExpander.NotEmbeddingSource]
         [DebuggerDisplay("{" + nameof(Value) + "}", Name = "{" + nameof(Key) + ",nq}")]
-        private readonly record struct DebugItem(
+        readonly record struct DebugItem(
             [property: DebuggerBrowsable(0)] int L,
             [property: DebuggerBrowsable(0)] int R,
             TValue Value)
@@ -59,9 +59,9 @@ namespace Kzrnm.Competitive
             public string Key => R - L == 1 ? $"[{L}]" : $"[{L}-{R})";
         }
         [SourceExpander.NotEmbeddingSource]
-        private class DebugView
+        class DebugView
         {
-            private readonly SparseTable<TValue, TOp> st;
+            readonly SparseTable<TValue, TOp> st;
             public DebugView(SparseTable<TValue, TOp> st)
             {
                 this.st = st;

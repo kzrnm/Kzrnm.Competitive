@@ -29,7 +29,7 @@ namespace Kzrnm.Competitive
                 Tree = tree;
             }
 
-            private readonly ITreeGraph<TNode, TEdge> Tree;
+            readonly ITreeGraph<TNode, TEdge> Tree;
             public T[] Run<T, TOp>(TOp op = default)
                 where TOp : struct, IRerootingOperator<T, TEdge>
             {

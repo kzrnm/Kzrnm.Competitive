@@ -9,10 +9,9 @@ namespace Kzrnm.Competitive
     {
         class ExpressionComparer<K> : IComparer<T> where K : IComparable<K>
         {
-            private class ParameterReplaceVisitor : ExpressionVisitor
+            class ParameterReplaceVisitor : ExpressionVisitor
             {
-                private readonly ParameterExpression from;
-                private readonly ParameterExpression to;
+                readonly ParameterExpression from, to;
                 public ParameterReplaceVisitor(ParameterExpression from, ParameterExpression to)
                 {
                     this.from = from;

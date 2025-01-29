@@ -70,7 +70,7 @@ namespace Kzrnm.Competitive.Graph
         [MethodImpl(256)]
         public Mod998244353AffineTransformation Operate(Mod998244353AffineTransformation x, Mod998244353AffineTransformation y)
             => x.Apply(y);
-        private readonly static Mod998244353AffineTransformation identity = new Mod998244353AffineTransformation(1, 0);
+        static readonly Mod998244353AffineTransformation identity = new Mod998244353AffineTransformation(1, 0);
         public Mod998244353AffineTransformation Identity => identity;
     }
     readonly struct Op2 : ISegtreeOperator<Mod998244353AffineTransformation>
@@ -78,7 +78,7 @@ namespace Kzrnm.Competitive.Graph
         [MethodImpl(256)]
         public Mod998244353AffineTransformation Operate(Mod998244353AffineTransformation x, Mod998244353AffineTransformation y)
             => y.Apply(x);
-        private readonly static Mod998244353AffineTransformation identity = new Mod998244353AffineTransformation(1, 0);
+        static readonly Mod998244353AffineTransformation identity = new Mod998244353AffineTransformation(1, 0);
         public Mod998244353AffineTransformation Identity => identity;
     }
 }

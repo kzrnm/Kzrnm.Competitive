@@ -12,7 +12,7 @@ namespace Kzrnm.Competitive
     [DebuggerTypeProxy(typeof(PersistentSegtree<,>.DebugView))]
     public class PersistentSegtree<TValue, TOp> where TOp : struct, ISegtreeOperator<TValue>
     {
-        private static readonly TOp op = default;
+        static readonly TOp op = default;
 
         public class Node
         {
@@ -52,7 +52,7 @@ namespace Kzrnm.Competitive
         /// <param name="v">初期配列</param>
         public PersistentSegtree(TValue[] v) : this(v.Length, Build(0, v.Length, v)) { }
 
-        private PersistentSegtree(int length, Node root)
+        PersistentSegtree(int length, Node root)
         {
             Length = length;
             Root = root;
@@ -61,14 +61,14 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 配列を元に二分木を初期化して根となるノードを返す
         /// </summary>
-        private static Node Build(int l, int r, TValue[] v)
+        static Node Build(int l, int r, TValue[] v)
         {
             if (l + 1 >= r) return new Node(v[l]);
             return Merge(Build(l, (l + r) >> 1, v), Build((l + r) >> 1, r, v));
         }
 
         [凾(256)]
-        private static Node Merge(Node left, Node right) => new Node(op.Operate(left.data, right.data), left, right);
+        static Node Merge(Node left, Node right) => new Node(op.Operate(left.data, right.data), left, right);
 
         /// <summary>
         /// a[<paramref name="p"/>] に <paramref name="v"/> を代入した <see cref="PersistentSegtree{TValue, TOp}"/> を返します。
@@ -81,7 +81,7 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        private static Node Update(int p, TValue v, Node n, int l, int r)
+        static Node Update(int p, TValue v, Node n, int l, int r)
         {
             if (r <= p || p + 1 <= l)
                 return n;
@@ -129,7 +129,7 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        private static TValue Query(int a, int b, Node k, int l, int r)
+        static TValue Query(int a, int b, Node k, int l, int r)
         {
             if (r <= a || b <= l)
                 return op.Identity;
@@ -152,7 +152,7 @@ namespace Kzrnm.Competitive
 
         [SourceExpander.NotEmbeddingSource]
         [DebuggerDisplay("{" + nameof(Value) + "}", Name = "{" + nameof(Key) + ",nq}")]
-        private readonly struct DebugItem
+        readonly struct DebugItem
         {
             public DebugItem(int l, int r, TValue value)
             {
@@ -169,9 +169,9 @@ namespace Kzrnm.Competitive
             public TValue Value { get; }
         }
         [SourceExpander.NotEmbeddingSource]
-        private class DebugView
+        class DebugView
         {
-            private readonly PersistentSegtree<TValue, TOp> segtree;
+            readonly PersistentSegtree<TValue, TOp> segtree;
             public DebugView(PersistentSegtree<TValue, TOp> segtree)
             {
                 this.segtree = segtree;

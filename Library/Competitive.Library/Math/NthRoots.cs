@@ -15,7 +15,7 @@ namespace Kzrnm.Competitive
             return new Op(num, n).BinarySearch(0, num);
         }
 
-        private readonly struct Op : IOk<ulong>
+        readonly struct Op : IOk<ulong>
         {
             public Op(ulong a, long k)
             {

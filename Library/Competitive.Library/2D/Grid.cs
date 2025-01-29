@@ -89,12 +89,12 @@ namespace Kzrnm.Competitive
             }
         }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private T defaultReference;
+        T defaultReference;
 
         public Span<T> RowSpan(int h) => (uint)h < (uint)H ? data.AsSpan(h * W, W) : default;
         public Grid<T> Clone() => new Grid<T>(this);
 
-        private static string ToStringNoSplit(Grid<T> grid)
+        static string ToStringNoSplit(Grid<T> grid)
         {
             var H = grid.H;
             var W = grid.W;
@@ -116,7 +116,7 @@ namespace Kzrnm.Competitive
                         sb.Append((char)(IO.Ascii)(object)v);
             }
         }
-        private string ToStringSplit()
+        string ToStringSplit()
         {
             var sb = new StringBuilder();
             for (int h = 0; h < H; h++)
@@ -225,7 +225,7 @@ namespace Kzrnm.Competitive
             int origH,
             int origW) : IEnumerator<Position>, IEnumerable<Position>
         {
-            private enum Status
+            enum Status
             {
                 None,
                 Left,
@@ -233,7 +233,7 @@ namespace Kzrnm.Competitive
                 Right,
                 Down,
             }
-            private Status status = Status.None;
+            Status status = Status.None;
             public Position Current
             {
                 [凾(256)]
@@ -309,8 +309,8 @@ namespace Kzrnm.Competitive
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
         public struct Enumerator
         {
-            private readonly Grid<T> g;
-            private int index;
+            readonly Grid<T> g;
+            int index;
             internal Enumerator(Grid<T> grid)
             {
                 g = grid;
@@ -331,7 +331,7 @@ namespace Kzrnm.Competitive
         internal object __ToDebugView() => new DebugView(this);
 
         [SourceExpander.NotEmbeddingSource]
-        private readonly record struct DebugLine(
+        readonly record struct DebugLine(
             [property: DebuggerBrowsable(DebuggerBrowsableState.RootHidden)] T[] line)
         {
             public override string ToString()
@@ -344,7 +344,7 @@ namespace Kzrnm.Competitive
             }
         }
         [SourceExpander.NotEmbeddingSource]
-        private readonly record struct DebugView(
+        readonly record struct DebugView(
             [property: DebuggerBrowsable(DebuggerBrowsableState.Never)] Grid<T> grid)
         {
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]

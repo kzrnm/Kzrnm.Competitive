@@ -13,7 +13,7 @@ using static SimdMontgomery;
     public readonly partial struct SimdStrassenImpl<T>
     {
         [凾(256|512)]
-        private void MulSimd(Span<Vector256<uint>> s, Span<Vector256<uint>> t, Span<Vector256<uint>> u)
+        void MulSimd(Span<Vector256<uint>> s, Span<Vector256<uint>> t, Span<Vector256<uint>> u)
         {
             var r = this.R;
             var m1 = this.M1;
