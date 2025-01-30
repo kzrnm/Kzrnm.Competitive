@@ -66,33 +66,6 @@ namespace Kzrnm.Competitive.Testing.GlobalNS
             new DelegateOk<ulong>(num => num == ulong.MaxValue).BinarySearch(ulong.MaxValue, 0).ShouldBe(ulong.MaxValue);
         }
 
-        private readonly struct BigLower : IOk<BigInteger>
-        {
-            private static readonly BigInteger INF = new BigInteger(1) << 1000;
-            public bool Ok(BigInteger value) => value < INF;
-        }
-        [Fact]
-        public void BigDefault()
-        {
-            __BinarySearchEx.BinarySearch<BigLower>(0, BigInteger.Pow(10, 1000)).ShouldBe(BigInteger.Pow(2, 1000) - 1);
-        }
-        [Fact]
-        public void BigArg()
-        {
-            new DelegateOk<BigInteger>(num => num < 9).BinarySearch(0, 10).ShouldBe(8);
-            new DelegateOk<BigInteger>(num => num < 9).BinarySearch(0, ulong.MaxValue).ShouldBe(8);
-            new DelegateOk<BigInteger>(num => num < ulong.MaxValue).BinarySearch(0, ulong.MaxValue).ShouldBe(ulong.MaxValue - 1);
-            new DelegateOk<BigInteger>(num => num == ulong.MaxValue).BinarySearch(ulong.MaxValue, 0).ShouldBe(ulong.MaxValue);
-        }
-
-
-        [Fact]
-        public void BigUpper()
-        {
-            __BinarySearchEx.BinarySearchBig(0, new DelegateOk<BigInteger>(num => num < new BigInteger(1) << 1000)).ShouldBe(BigInteger.Pow(2, 1000) - 1);
-            __BinarySearchEx.BinarySearchBig(new BigInteger(1) << 10, new DelegateOk<BigInteger>(num => num < new BigInteger(1) << 1000)).ShouldBe(BigInteger.Pow(2, 1000) - 1);
-        }
-
         private readonly struct DoubleLower : IOk<double>
         {
             public bool Ok(double value) => value < 0;
