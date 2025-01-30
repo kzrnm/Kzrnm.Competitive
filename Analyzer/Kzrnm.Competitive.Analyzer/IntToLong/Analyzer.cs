@@ -2,7 +2,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using System;
 using System.Collections.Immutable;
 
 namespace Kzrnm.Competitive.Analyzer.IntToLong;
@@ -32,16 +31,25 @@ public class Analyzer : DiagnosticAnalyzer
             not SpecialType.System_UInt32)
             return;
 
+        var containsMultiply = false;
         for (; node is not null; node = GetParent(node))
         {
+            containsMultiply |= node.Kind() is
+                SyntaxKind.MultiplyExpression
+                or SyntaxKind.LeftShiftExpression;
             if (semanticModel.GetTypeInfo(node, cancellationToken: context.CancellationToken)
                 .ConvertedType.SpecialType is var convertedType && convertedType is SpecialType.System_Int64 or SpecialType.System_UInt64)
             {
                 var isUnsigned = convertedType is SpecialType.System_UInt64;
+
                 var diagnostic = node.Kind() switch
                 {
                     SyntaxKind.MultiplyExpression
-                    or SyntaxKind.LeftShiftExpression => DiagnosticDescriptors.KZCOMPETITIVE0001_OverflowInt32(context.Node, isUnsigned),
+                    or SyntaxKind.LeftShiftExpression
+                    or SyntaxKind.DivideExpression
+                    or SyntaxKind.ModuloExpression
+                    or SyntaxKind.RightShiftExpression
+                        => DiagnosticDescriptors.KZCOMPETITIVE0001_OverflowInt32(context.Node, isUnsigned),
                     _ => null,
                 };
 

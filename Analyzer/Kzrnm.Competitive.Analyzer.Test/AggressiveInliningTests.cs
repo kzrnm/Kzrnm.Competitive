@@ -1,6 +1,5 @@
 using Kzrnm.Competitive.Analyzer.Diagnostics;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Testing;
 using VerifyCS = Kzrnm.Competitive.Analyzer.Test.CSharpCodeFixVerifier<
     Kzrnm.Competitive.Analyzer.AggressiveInlining.Analyzer,
     Kzrnm.Competitive.Analyzer.AggressiveInlining.CodeFixProvider>;
