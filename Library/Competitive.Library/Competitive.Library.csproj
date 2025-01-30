@@ -40,7 +40,7 @@
     <PackageReference Include="ac-library-csharp" Version="3.9.1" />
     <PackageReference Include="Kzrnm.BigInteger" Version="0.3.3-embedded" />
     <PackageReference Include="Competitive.IO" Version="3.0.0-beta7" />
-    <PackageReference Include="Kzrnm.Competitive.Analyzer" Version="1.1.0">
+    <PackageReference Include="Kzrnm.Competitive.Analyzer" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

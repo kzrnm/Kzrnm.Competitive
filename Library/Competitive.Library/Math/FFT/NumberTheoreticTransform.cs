@@ -71,7 +71,7 @@ namespace Kzrnm.Competitive
 
             var w = new MontgomeryModInt<T>[level + 1];
             var y = new MontgomeryModInt<T>[level + 1];
-            w[level - 1] = pr.Pow((new T().Mod - 1) / (1u << level));
+            w[level - 1] = pr.Pow((new T().Mod - 1) / (1ul << level));
             y[level - 1] = w[level - 1].Inv();
             for (int i = level - 2; i > 0; --i)
             {
@@ -196,7 +196,7 @@ namespace Kzrnm.Competitive
             a.CopyTo(b);
             INtt(b);
             var r = MontgomeryModInt<T>.One;
-            var zeta = pr.Pow((new T().Mod - 1) / ((uint)a.Length << 1));
+            var zeta = pr.Pow((new T().Mod - 1) / ((ulong)a.Length << 1));
 
             for (int i = 0; i < b.Length; i++)
             {
