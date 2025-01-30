@@ -14,8 +14,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ac-library-csharp" Version="3.8.0" />
-    <PackageReference Include="Kzrnm.Competitive" Version="2023.1201.2013" />
+    <PackageReference Include="ac-library-csharp" Version="3.9.1" />
+    <PackageReference Include="Kzrnm.Competitive" Version="2025.108.2144" />
   </ItemGroup>
 
   <ItemGroup>

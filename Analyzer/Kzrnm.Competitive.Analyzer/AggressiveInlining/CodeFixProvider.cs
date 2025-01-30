@@ -22,8 +22,7 @@ public class CodeFixProvider : Microsoft.CodeAnalysis.CodeFixes.CodeFixProvider
 {
     private const string title = "Add AggressiveInlining";
     public override ImmutableArray<string> FixableDiagnosticIds
-        => ImmutableArray.Create(
-            DiagnosticDescriptors.KZCOMPETITIVE0003_AgressiveInlining_Descriptor.Id);
+        => [DiagnosticDescriptors.KZCOMPETITIVE0003_AgressiveInlining_Descriptor.Id];
 
     public sealed override FixAllProvider GetFixAllProvider()
         => WellKnownFixAllProviders.BatchFixer;

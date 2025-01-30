@@ -20,7 +20,7 @@ struct IntComparer : IComparer<int>
     public int Compare(int x,  int y) => x.CompareTo(y);
 }
 ";
-        await VerifyCS.VerifyAnalyzerAsync(source);
+        await VerifyCS.VerifyAnalyzerAsync(source, [], TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -107,10 +107,10 @@ struct BoolOp : INumOperator<bool>
     }
 }
 ";
-        await VerifyCS.VerifyCodeFixAsync(source, new DiagnosticResult[] {
+        await VerifyCS.VerifyCodeFixAsync(source, [
             VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(5, 1, 30, 2).WithArguments(
                 "Add, Compare, Decrement, Divide, Equals, GetHashCode, GreaterThan, GreaterThanOrEqual, Increment, LessThan, LessThanOrEqual, Minus, Modulo, Multiply, Subtract"),
-        }, fixedSource);
+        ], fixedSource, TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -136,10 +136,10 @@ struct OpSeg : ISegtreeOperator<int>
     public int Operate(int x, int y) => System.Math.Max(x, y);
 }
 ";
-        await VerifyCS.VerifyCodeFixAsync(source, new DiagnosticResult[]
-        {
+        await VerifyCS.VerifyCodeFixAsync(source,
+        [
             VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(4, 1, 8, 2).WithArguments("Operate"),
-        }, fixedSource);
+        ], fixedSource, TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -155,7 +155,7 @@ struct OpSeg : ISegtreeOperator<int>
     public int Operate(int x, int y) => System.Math.Max(x, y);
 }
 ";
-        await VerifyCS.VerifyAnalyzerAsync(source);
+        await VerifyCS.VerifyAnalyzerAsync(source, [], TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -189,10 +189,10 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 ";
-        await VerifyCS.VerifyCodeFixAsync(source, new DiagnosticResult[]
-        {
+        await VerifyCS.VerifyCodeFixAsync(source,
+        [
             VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(4, 1, 11, 2).WithArguments("Composition, Mapping, Operate"),
-        }, fixedSource);
+        ], fixedSource, TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -224,10 +224,10 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 ";
-        await VerifyCS.VerifyCodeFixAsync(source, new DiagnosticResult[]
-        {
+        await VerifyCS.VerifyCodeFixAsync(source,
+        [
 VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(3, 1, 10, 2).WithArguments("Composition, Mapping, Operate"),
-        }, fixedSource);
+        ], fixedSource, TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -248,7 +248,7 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 ";
-        await VerifyCS.VerifyAnalyzerAsync(source);
+        await VerifyCS.VerifyAnalyzerAsync(source, [], TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -268,7 +268,7 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 ";
-        await VerifyCS.VerifyAnalyzerAsync(source);
+        await VerifyCS.VerifyAnalyzerAsync(source, [], TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -305,10 +305,10 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 ";
-        await VerifyCS.VerifyCodeFixAsync(source, new DiagnosticResult[]
-        {
+        await VerifyCS.VerifyCodeFixAsync(source,
+        [
 VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(4, 1, 14, 2).WithArguments("Composition, Mapping"),
-        }, fixedSource);
+        ], fixedSource, TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -345,10 +345,10 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 ";
-        await VerifyCS.VerifyCodeFixAsync(source, new DiagnosticResult[]
-        {
+        await VerifyCS.VerifyCodeFixAsync(source,
+        [
 VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(4, 1, 14, 2).WithArguments("Composition, Mapping, Operate"),
-        }, fixedSource);
+        ], fixedSource, TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -393,10 +393,10 @@ struct Op : ILazySegtreeOperator<long, int>
 [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
 sealed class MyAttribute : Attribute{}
 ";
-        await VerifyCS.VerifyCodeFixAsync(source, new DiagnosticResult[]
-        {
+        await VerifyCS.VerifyCodeFixAsync(source,
+        [
 VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(5, 1, 16, 2).WithArguments("Composition, Mapping"),
-        }, fixedSource);
+        ], fixedSource, TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -417,7 +417,7 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 ";
-        await VerifyCS.VerifyAnalyzerAsync(source);
+        await VerifyCS.VerifyAnalyzerAsync(source, [], TestContext.Current.CancellationToken);
     }
 
 
@@ -457,9 +457,11 @@ struct Def<T> : IAny<T> {
     }
 }
 ";
-        await VerifyCS.VerifyCodeFixAsync(source,
+        await VerifyCS.VerifyCodeFixAsync(
+            source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(8, 1, 14, 2).WithArguments("Fun1, Fun2"),
-            fixedSource);
+            fixedSource,
+            TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -497,7 +499,8 @@ struct Op : ILazySegtreeOperator<long, int>
 ";
         await VerifyCS.VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(5, 1, 12, 2).WithArguments("Composition, Mapping, Operate"),
-            fixedSource);
+            fixedSource,
+            TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -588,9 +591,11 @@ class Def<T> : IAny<T> {
     }
 }
 ";
-        await VerifyCS.VerifyCodeFixAsync(source,
+        await VerifyCS.VerifyCodeFixAsync(
+            source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(8, 1, 14, 2).WithArguments("Fun1, Fun2"),
-            fixedSource);
+            fixedSource,
+            TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -631,7 +636,8 @@ record Def<T> : IAny<T> {
 ";
         await VerifyCS.VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(8, 1, 14, 2).WithArguments("Fun1, Fun2"),
-            fixedSource);
+            fixedSource,
+            TestContext.Current.CancellationToken);
     }
 
     [Fact]
@@ -670,9 +676,11 @@ record struct Def<T> : IAny<T> {
     }
 }
 ";
-        await VerifyCS.VerifyCodeFixAsync(source,
+        await VerifyCS.VerifyCodeFixAsync(
+            source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(8, 1, 14, 2).WithArguments("Fun1, Fun2"),
-            fixedSource);
+            fixedSource,
+            TestContext.Current.CancellationToken);
     }
 
 
@@ -708,8 +716,10 @@ public class Impl : IInterface
     public static int Merge(int a, int b) => a + b;
 }
 ";
-        await VerifyCS.VerifyCodeFixAsync(source,
+        await VerifyCS.VerifyCodeFixAsync(
+            source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(10, 1, 13, 2).WithArguments("Merge"),
-            fixedSource);
+            fixedSource,
+            TestContext.Current.CancellationToken);
     }
 }

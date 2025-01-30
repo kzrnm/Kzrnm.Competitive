@@ -11,8 +11,7 @@ namespace Kzrnm.Competitive.Analyzer.IntToLong;
 public class Analyzer : DiagnosticAnalyzer
 {
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-        => ImmutableArray.Create(
-            DiagnosticDescriptors.KZCOMPETITIVE0001_OverflowInt32_Descriptor);
+        => [DiagnosticDescriptors.KZCOMPETITIVE0001_OverflowInt32_Descriptor];
 
     public override void Initialize(AnalysisContext context)
     {

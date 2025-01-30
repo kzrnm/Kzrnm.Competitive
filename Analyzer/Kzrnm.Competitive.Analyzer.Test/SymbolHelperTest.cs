@@ -30,7 +30,7 @@ public class SymbolHelperTest
     [Fact]
     public async Task TypeEqual()
     {
-        var root = await trees[0].GetRootAsync();
+        var root = await trees[0].GetRootAsync(TestContext.Current.CancellationToken);
         var semanticModel = compilation.GetSemanticModel(trees[0], false);
         var nodes = root.DescendantNodes();
 
@@ -58,7 +58,7 @@ public class SymbolHelperTest
     [Fact]
     public async Task GenericReplace()
     {
-        var root = await trees[0].GetRootAsync();
+        var root = await trees[0].GetRootAsync(TestContext.Current.CancellationToken);
         var semanticModel = compilation.GetSemanticModel(trees[0], false);
         var nodes = root.DescendantNodes();
 
@@ -97,7 +97,7 @@ public class SymbolHelperTest
     [Fact]
     public async Task NestGenericReplace()
     {
-        var root = await trees[0].GetRootAsync();
+        var root = await trees[0].GetRootAsync(TestContext.Current.CancellationToken);
         var semanticModel = compilation.GetSemanticModel(trees[0], false);
         var nodes = root.DescendantNodes();
 
@@ -136,7 +136,7 @@ public class SymbolHelperTest
     [Fact]
     public async Task ToTypeSyntax()
     {
-        var root = await trees[0].GetRootAsync();
+        var root = await trees[0].GetRootAsync(TestContext.Current.CancellationToken);
         var semanticModel = compilation.GetSemanticModel(trees[0], false);
         var nodes = root.DescendantNodes();
         var declaredTypeSymbols

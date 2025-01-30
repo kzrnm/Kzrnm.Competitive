@@ -13,8 +13,7 @@ namespace Kzrnm.Competitive.Analyzer.CreateOperator;
 public class Analyzer : DiagnosticAnalyzer
 {
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-        => ImmutableArray.Create(
-            DiagnosticDescriptors.KZCOMPETITIVE0004_DefineOperatorType_Descriptor);
+        => [DiagnosticDescriptors.KZCOMPETITIVE0004_DefineOperatorType_Descriptor];
 
     public override void Initialize(AnalysisContext context)
     {

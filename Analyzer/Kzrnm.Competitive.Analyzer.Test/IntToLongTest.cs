@@ -48,7 +48,7 @@ public static class Example
 }
 """;
 
-        await VerifyCS.VerifyAnalyzerAsync(source);
+        await VerifyCS.VerifyAnalyzerAsync(source, [], TestContext.Current.CancellationToken);
     }
     [Fact]
     public async Task Hit()
@@ -138,6 +138,7 @@ public static class Example
                 VerifyCS.Diagnostic(KZCOMPETITIVE0001).WithSpan(24, 13, 24, 18).WithArguments("u * u"),
                 VerifyCS.Diagnostic(KZCOMPETITIVE0001).WithSpan(25, 13, 25, 19).WithArguments("u << 5"),
             ],
-            fixedSource);
+            fixedSource,
+            TestContext.Current.CancellationToken);
     }
 }

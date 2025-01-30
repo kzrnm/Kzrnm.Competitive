@@ -16,8 +16,7 @@ public class CodeFixProvider : Microsoft.CodeAnalysis.CodeFixes.CodeFixProvider
 {
     private const string title = "Create operator type";
     public override ImmutableArray<string> FixableDiagnosticIds
-        => ImmutableArray.Create(
-            DiagnosticDescriptors.KZCOMPETITIVE0004_DefineOperatorType_Descriptor.Id);
+        => [DiagnosticDescriptors.KZCOMPETITIVE0004_DefineOperatorType_Descriptor.Id];
     public sealed override FixAllProvider GetFixAllProvider()
         => WellKnownFixAllProviders.BatchFixer;
 

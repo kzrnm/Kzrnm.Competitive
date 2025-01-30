@@ -14,8 +14,7 @@ using static Constants;
 public class Analyzer : DiagnosticAnalyzer
 {
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-        => ImmutableArray.Create(
-            DiagnosticDescriptors.KZCOMPETITIVE0003_AgressiveInlining_Descriptor);
+        => [DiagnosticDescriptors.KZCOMPETITIVE0003_AgressiveInlining_Descriptor];
 
     private record ContainingOperatorTypes(INamedTypeSymbol MethodImplAttribute, INamedTypeSymbol IsOperatorAttribute)
     {
