@@ -1,5 +1,7 @@
 using AtCoder.Internal;
+using Kzrnm.Competitive.IO;
 using System;
+using System.Collections;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
@@ -214,16 +216,33 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 0,1 で表された行列をパースします。
         /// </summary>
+        [凾(256)]
+        public static BitOrMatrix Parse(Asciis[] rows)
+            => Parse((IList)rows);
+        /// <summary>
+        /// 0,1 で表された行列をパースします。
+        /// </summary>
+        [凾(256)]
         public static BitOrMatrix Parse(string[] rows)
+            => Parse((IList)rows);
+        /// <summary>
+        /// 0,1 で表された行列をパースします。
+        /// </summary>
+        static BitOrMatrix Parse(IList rows)
         {
-            var arr = new BitArray[rows.Length];
+            var arr = new BitArray[rows.Count];
             for (int i = 0; i < arr.Length; i++)
             {
-                arr[i] = BinaryParser.ParseBitArray(rows[i]);
+                arr[i] = rows[i] switch
+                {
+                    Asciis a => BinaryParser.ParseBitArray(a),
+                    string s => BinaryParser.ParseBitArray(s),
+                    _ => throw new InvalidCastException(),
+                };
                 if (i > 0 && arr[i].Length != arr[i - 1].Length)
                     throw new FormatException("Row length are diffrent.");
             }
-            return new BitOrMatrix(arr);
+            return new(arr);
         }
 
         static BitOrMatrix ISubtractionOperators<BitOrMatrix, BitOrMatrix, BitOrMatrix>.operator -(BitOrMatrix left, BitOrMatrix right) => throw new NotSupportedException();

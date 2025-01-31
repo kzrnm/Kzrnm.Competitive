@@ -1,6 +1,8 @@
 using AtCoder.Internal;
+using Kzrnm.Competitive.IO;
 using System;
 using System.Buffers;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -398,23 +400,40 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 0,1 で表された行列をパースします。
         /// </summary>
+        [凾(256)]
+        public static BitMatrix<T> Parse(Asciis[] rows)
+            => Parse((IList)rows);
+        /// <summary>
+        /// 0,1 で表された行列をパースします。
+        /// </summary>
+        [凾(256)]
         public static BitMatrix<T> Parse(string[] rows)
+            => Parse((IList)rows);
+        /// <summary>
+        /// 0,1 で表された行列をパースします。
+        /// </summary>
+        static BitMatrix<T> Parse(IList rows)
         {
-            var arr = new T[rows.Length];
+            var arr = new T[rows.Count];
             for (int i = 0; i < arr.Length; i++)
             {
-                arr[i] = ParseRow(rows[i]);
+                arr[i] = rows[i] switch
+                {
+                    Asciis a => ParseRow<byte>(a.d),
+                    string s => ParseRow<char>(s),
+                    _ => throw new InvalidCastException(),
+                };
             }
             return new BitMatrix<T>(arr);
 
-            static T ParseRow(string row)
+            static T ParseRow<U>(ReadOnlySpan<U> row) where U : unmanaged, INumber<U>
             {
-                var s = row.AsSpan().Trim();
-                Span<char> t = stackalloc char[Unsafe.SizeOf<T>() * 8];
+                var s = row.Trim();
+                Span<U> t = stackalloc U[Unsafe.SizeOf<T>() * 8];
                 s.CopyTo(t);
-                t[s.Length..].Fill('0');
+                t[s.Length..].Fill(U.CreateChecked('0'));
                 t.Reverse();
-                return BinaryParser.ParseNumber<T>(t);
+                return BinaryParser.ParseNumber<T, U>(t);
             }
         }
 
