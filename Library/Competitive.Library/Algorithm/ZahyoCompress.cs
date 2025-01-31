@@ -56,9 +56,12 @@ namespace Kzrnm.Competitive
     public class ZahyoCompress<T>
     {
         public ZahyoCompress() { data = new(); }
-        public ZahyoCompress(T[] arr) : this(arr.AsEnumerable()) { }
-        public ZahyoCompress(IEnumerable<T> collection) { data = new SortedSet<T>(collection); }
-        public ZahyoCompress(ReadOnlySpan<T> span) : this(span.ToArray()) { }
+        public ZahyoCompress(T[] arr) : this(arr.AsSpan()) { }
+        public ZahyoCompress(IEnumerable<T> collection) { data = new(collection); }
+        public ZahyoCompress(ReadOnlySpan<T> span) : this()
+        {
+            foreach (var v in span) data.Add(v);
+        }
 
         readonly SortedSet<T> data;
         int version, lastCompressVesion = -1;
