@@ -5,8 +5,6 @@ using System.Runtime.CompilerServices;
 using Xunit.Sdk;
 
 namespace Kzrnm.Competitive.Testing;
-
-
 public record struct SerializableTuple<T1, T2>(T1 Item1, T2 Item2) : ITuple, IXunitSerializable
 {
     readonly object ITuple.this[int index] => index switch
