@@ -1,7 +1,10 @@
 using Kzrnm.Competitive;
 using Kzrnm.Competitive.Testing.Serializer;
 using System;
+using System.Collections;
 using System.Linq;
+using System.Numerics;
+using System.Reflection;
 using Xunit.Sdk;
 
 [assembly: RegisterXunitSerializer(typeof(LongMatrixSerializer), [
@@ -10,8 +13,55 @@ using Xunit.Sdk;
     typeof(LongMatrix4x4),
 ])]
 
+[assembly: RegisterXunitSerializer(typeof(ArrayMatrixSerializer), [
+    typeof(ArrayMatrix<int>),
+    typeof(ArrayMatrix<long>),
+    typeof(ArrayMatrix<Fraction>),
+])]
 
 namespace Kzrnm.Competitive.Testing.Serializer;
+
+public class ArrayMatrixSerializer : IXunitSerializer
+{
+    public object Deserialize(Type type, string serializedValue)
+    {
+        if (type == typeof(ArrayMatrix<int>))
+            return Deserialize<int>(serializedValue);
+        if (type == typeof(ArrayMatrix<long>))
+            return Deserialize<long>(serializedValue);
+        if (type == typeof(ArrayMatrix<Fraction>))
+            return Deserialize<Fraction>(serializedValue);
+        throw new InvalidOperationException();
+    }
+    static ArrayMatrix<T> Deserialize<T>(string serializedValue) where T : INumberBase<T> => serializedValue switch
+    {
+        nameof(Internal.ArrayMatrixKind.Identity) => ArrayMatrix<T>.Identity,
+        nameof(Internal.ArrayMatrixKind.Zero) => ArrayMatrix<T>.Zero,
+        _ => new(serializedValue.Split('\n').Select(line => line.Split('\0').Select(v => T.Parse(v, null)).ToArray()).ToArray()),
+    };
+    public bool IsSerializable(Type type, object value, out string failureReason)
+        => (failureReason = null) == null;
+    public string Serialize(object value)
+    {
+        var kind = value.GetType().GetField(nameof(ArrayMatrix<int>.kind), BindingFlags.NonPublic | BindingFlags.Instance)
+            .GetValue(value);
+        switch (kind)
+        {
+            case Internal.ArrayMatrixKind.Identity:
+            case Internal.ArrayMatrixKind.Zero:
+                return kind.ToString();
+        }
+
+        var array = (IEnumerable)value.GetType().GetField(nameof(ArrayMatrix<int>._v), BindingFlags.NonPublic | BindingFlags.Instance)
+                .GetValue(value);
+        var width = (int)value.GetType().GetProperty(nameof(ArrayMatrix<int>.Width), BindingFlags.Public | BindingFlags.Instance)
+                .GetValue(value);
+
+        return string.Join('\n', array.Cast<object>()
+            .Chunk(width)
+            .Select(line => string.Join("\0", line)));
+    }
+}
 
 public class LongMatrixSerializer : IXunitSerializer
 {
