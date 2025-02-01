@@ -281,16 +281,43 @@ namespace Kzrnm.Competitive
         /// <item><description>ただし解無しのときは空配列を返す</description></item>
         /// </list>
         /// </returns>
-        public BitArray[] LinearSystem(bool[] vector)
+        public BitArray[] LinearSystem(BitArray vector)
         {
             Contract.Assert(_v.Length == vector.Length);
-            var impl = _v.Zip(vector, (row, v) =>
+            var impl = new BitArray[_v.Length];
+            for (int i = 0; i < impl.Length; i++)
             {
-                row = new BitArray(row);
-                ++row.Length;
-                row[^1] = v;
-                return row;
-            }).ToArray();
+                impl[i] = new(_v[i]);
+                ++impl[i].Length;
+                impl[i][^1] = vector[i];
+            }
+            return LinearSystemImpl(impl);
+        }
+        /// <summary>
+        /// 連立一次方程式 <see langword="this"/>・X=<paramref name="vector"/> を満たす ベクトル X を求める。
+        /// </summary>
+        /// <returns>
+        /// <list type="bullet">
+        /// <item><description>最初の配列: 特殊解</description></item>
+        /// <item><description>2番目以降の配列: 解空間の基底ベクトル</description></item>
+        /// <item><description>ただし解無しのときは空配列を返す</description></item>
+        /// </list>
+        /// </returns>
+        public BitArray[] LinearSystem(ReadOnlySpan<bool> vector)
+        {
+            Contract.Assert(_v.Length == vector.Length);
+            var impl = new BitArray[_v.Length];
+            for (int i = 0; i < impl.Length; i++)
+            {
+                impl[i] = new(_v[i]);
+                ++impl[i].Length;
+                impl[i][^1] = vector[i];
+            }
+            return LinearSystemImpl(impl);
+        }
+        [凾(256)]
+        BitArray[] LinearSystemImpl(BitArray[] impl)
+        {
             var idxs = GaussianEliminationImpl(impl, false).AsSpan();
             var r = idxs.Length;
             int w = _v[0].Length;
