@@ -84,6 +84,17 @@ namespace Kzrnm.Competitive.Testing.Extensions
             b.ToUInt32Array().ShouldBe([1, 3, ((uint)int.MaxValue) + 1, 8]);
         }
 
+        [Theory]
+        [MemberData(nameof(BitArrayCase.LongBinaryTexts), MemberType = typeof(BitArrayCase))]
+        public void BitString(string input)
+        {
+            var bits = new BitArray(input.Length);
+            for (int i = 0; i < input.Length; i++)
+                bits[i] = input[i] != '0';
+
+            bits.ToBitString().ShouldBe(input);
+        }
+
         [Fact]
         public void OnBits()
         {

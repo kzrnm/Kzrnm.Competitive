@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Threading;
 using BitArray = System.Collections.BitArray;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -36,6 +39,72 @@ namespace Kzrnm.Competitive
             var arr = new uint[(b.Length + 31) / 32];
             b.CopyTo(arr);
             return arr;
+        }
+
+        /// <summary>
+        /// <see cref="BitArray"/> を2進数表記の数値文字列にして返します。
+        /// </summary>
+        [凾(256)]
+        public static bool TryBitFormat(this BitArray b, Span<char> dst, out int written)
+        {
+            written = 0;
+            if (dst.Length < b.Length) return false;
+            if (b.Length == 0) return true;
+
+            var a = ToUInt32Array(b);
+
+#if NET8_0_OR_GREATER
+            {
+                Span<char> d = stackalloc char[32];
+                a[^1].TryFormat(d, out var ww, "B32", CultureInfo.InvariantCulture);
+                d.Reverse();
+                if ((b.Length & 31) is not 0 and var w2)
+                    d = d[..w2];
+                d.CopyTo(dst[(32 * (a.Length - 1))..]);
+            }
+            for (int i = a.Length - 2; i >= 0; i--)
+            {
+                var d = dst.Slice(i << 5, 32);
+                a[i].TryFormat(d, out var ww, "B32", CultureInfo.InvariantCulture);
+                Debug.Assert(ww == 32);
+                d.Reverse();
+            }
+#else
+            {
+                var w = Convert.ToString(a[^1], 2);
+                var d = dst[(32 * (a.Length - 1))..];
+                Debug.Assert(w.Length <= d.Length);
+                w.CopyTo(d);
+                d[..w.Length].Reverse();
+                d[w.Length..((b.Length & 31) switch
+                {
+                    0 => 32,
+                    var v => v,
+                })].Fill('0');
+            }
+            for (int i = a.Length - 2; i >= 0; i--)
+            {
+                var d = dst.Slice(i << 5, 32);
+                var w = Convert.ToString(a[i], 2);
+                Debug.Assert(w.Length <= 32);
+                w.CopyTo(d);
+                d[..w.Length].Reverse();
+                d[w.Length..].Fill('0');
+            }
+#endif
+            written = b.Length;
+            return true;
+        }
+
+        /// <summary>
+        /// <see cref="BitArray"/> を2進数表記の数値文字列にして返します。
+        /// </summary>
+        [凾(256)]
+        public static string ToBitString(this BitArray b)
+        {
+            var rt = new char[b.Length];
+            TryBitFormat(b, rt, out _);
+            return new(rt);
         }
 
         /// <summary>

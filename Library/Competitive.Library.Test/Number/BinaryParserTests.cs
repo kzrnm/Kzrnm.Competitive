@@ -50,46 +50,19 @@ namespace Kzrnm.Competitive.Testing.Number
             BinaryParser.ParseUInt64(str).ShouldBe(num);
         }
 
-
-        public static TheoryData<string> ParseBitArray_Data()
-        {
-            return new(Inner().Distinct());
-            static IEnumerable<string> Inner()
-            {
-                for (int i = 0; i < 20; i++)
-                {
-                    yield return System.Convert.ToString(i, 2);
-                }
-                for (int i = 0; i < 20; i++)
-                {
-                    yield return System.Convert.ToString(i + (1L << 32) - 10, 2);
-                }
-                for (int i = 0; i < 20; i++)
-                {
-                    yield return System.Convert.ToString(i + (1L << 40), 2);
-                }
-
-                var rnd = new Xoshiro256(227);
-                for (int i = 0; i < 1000; i++)
-                {
-                    int len = rnd.NextInt32(2, 1000);
-                    var chrs = new char[len];
-                    for (int j = 0; j < chrs.Length; j++)
-                    {
-                        chrs[j] = (char)(rnd.NextInt32(2) + '0');
-                    }
-                    yield return new string(chrs);
-                }
-            }
-        }
-
         [Theory]
-        [MemberData(nameof(ParseBitArray_Data))]
+        [MemberData(nameof(BitArrayCase.LongBinaryTexts), MemberType = typeof(BitArrayCase))]
         public void ParseBitArray(string input)
         {
-            var naive = input.Select(c => c != '0').ToArray();
-            BinaryParser.ParseBitArray(input).Cast<bool>().ShouldBe(naive);
-        }
+            var bits = BinaryParser.ParseBitArray(input);
+            bits.Cast<bool>().ShouldBe(input.Select(c => c != '0').ToArray());
 
+            bits.Length.ShouldBe(input.Length);
+
+            for (int i = 0; i < bits.Length; i++)
+            {
+                bits[i].ShouldBe(input[i] != '0');
+            }
+        }
     }
 }
