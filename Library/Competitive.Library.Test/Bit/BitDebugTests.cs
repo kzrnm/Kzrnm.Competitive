@@ -1,7 +1,6 @@
-using Shouldly;
 using System.Linq;
 
-namespace Kzrnm.Competitive.Testing.Util
+namespace Kzrnm.Competitive.Testing.Bit
 {
     public class BitDebugTests
     {

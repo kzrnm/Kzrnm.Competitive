@@ -1,28 +1,36 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Threading;
 using BitArray = System.Collections.BitArray;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
+
+#if NET8_0_OR_GREATER
+using System.Globalization;
+#endif
 
 namespace Kzrnm.Competitive
 {
     public static class __BitArrayExtension
     {
 #pragma warning disable CS0649
-        class Dummy
+        internal class Dummy
         {
-            public int[] arr;
+            public uint[] arr;
             public int len;
             public int ver;
         }
 #pragma warning restore CS0649
-        [凾(256)]
-        public static int[] GetArray(this BitArray b) => Unsafe.As<Dummy>(b).arr;
+        /// <summary>
+        /// <see cref="BitArray"/> の内部を直接抜き取るダミークラスにキャストします。
+        /// </summary>
+        [凾(256)] internal static Dummy AsDummy(this BitArray b) => Unsafe.As<Dummy>(b);
+        /// <summary>
+        /// <see cref="BitArray"/> の内部の配列を直接抜き取ります。
+        /// </summary>
+        [凾(256)] public static uint[] GetArray(this BitArray b) => AsDummy(b).arr;
 
         [凾(256)]
         public static void CopyTo(this BitArray b, int[] array, int index = 0) => b.CopyTo(array, index);
@@ -31,15 +39,11 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static void CopyTo(this BitArray b, bool[] array, int index = 0) => b.CopyTo(array, index);
         /// <summary>
-        /// 内部の配列を <see langword="uint"/> の配列にコピーします。
+        /// <see cref="BitArray"/> の内部の配列を新しくコピーして返します。
         /// </summary>
         [凾(256)]
         public static uint[] ToUInt32Array(this BitArray b)
-        {
-            var arr = new uint[(b.Length + 31) / 32];
-            b.CopyTo(arr);
-            return arr;
-        }
+            => GetArray(b).AsSpan()[..((b.Length + 31) / 32)].ToArray();
 
         /// <summary>
         /// <see cref="BitArray"/> を2進数表記の数値文字列にして返します。
@@ -114,7 +118,7 @@ namespace Kzrnm.Competitive
         public static int[] OnBits(this BitArray b)
         {
             var arr = b.GetArray();
-            var brr = MemoryMarshal.Cast<int, ulong>(arr);
+            var brr = MemoryMarshal.Cast<uint, ulong>(arr);
             var l = new List<int>(b.Length);
             for (var i = 0; i < brr.Length; ++i)
                 foreach (var bit in brr[i].Bits())
@@ -141,13 +145,13 @@ namespace Kzrnm.Competitive
         {
             var arr = b.GetArray().AsSpan();
             var rem = b.Length & 31;
-            int cnt = rem == 0 ? 0 : -BitOperations.PopCount((uint)((-1 << rem) & arr[^1]));
+            int cnt = rem == 0 ? 0 : -BitOperations.PopCount((uint.MaxValue << rem) & arr[^1]);
             if ((arr.Length & 1) != 0)
             {
-                cnt += BitOperations.PopCount((uint)arr[^1]);
+                cnt += BitOperations.PopCount(arr[^1]);
                 arr = arr[..^1];
             }
-            var brr = MemoryMarshal.Cast<int, ulong>(arr);
+            var brr = MemoryMarshal.Cast<uint, ulong>(arr);
             foreach (var bb in brr)
                 cnt += BitOperations.PopCount(bb);
             return cnt;
@@ -160,12 +164,12 @@ namespace Kzrnm.Competitive
         public static int Lsb(this BitArray b)
         {
             var arr = b.GetArray().AsSpan();
-            var brr = MemoryMarshal.Cast<int, ulong>(arr);
+            var brr = MemoryMarshal.Cast<uint, ulong>(arr);
             for (int i = 0; i < brr.Length; i++)
                 if (brr[i] != 0)
                     return Math.Min(b.Length, BitOperations.TrailingZeroCount(brr[i]) + i * 64);
             if ((arr.Length & 1) != 0)
-                return Math.Min(b.Length, BitOperations.TrailingZeroCount((uint)arr[^1]) + brr.Length * 64);
+                return Math.Min(b.Length, BitOperations.TrailingZeroCount(arr[^1]) + brr.Length * 64);
             return b.Length;
         }
 
@@ -177,20 +181,20 @@ namespace Kzrnm.Competitive
         {
             var arr = b.GetArray().AsSpan();
             var rem = b.Length & 31;
-            var m = (uint)arr[^1] & ((1u << rem) - 1);
+            var m = arr[^1] & ((1u << rem) - 1);
             if (rem == 0)
-                m = (uint)arr[^1];
+                m = arr[^1];
             if (m != 0)
                 return BitOperations.Log2(m) + 32 * (arr.Length - 1);
             arr = arr[..^1];
 
             if ((arr.Length & 1) != 0)
             {
-                m = (uint)arr[^1];
+                m = arr[^1];
                 if (m != 0)
                     return BitOperations.Log2(m) + 32 * (arr.Length - 1);
             }
-            var brr = MemoryMarshal.Cast<int, ulong>(arr);
+            var brr = MemoryMarshal.Cast<uint, ulong>(arr);
             for (int i = brr.Length - 1; i >= 0; i--)
                 if (brr[i] != 0)
                     return Math.Min(b.Length, BitOperations.Log2(brr[i]) + i * 64);
