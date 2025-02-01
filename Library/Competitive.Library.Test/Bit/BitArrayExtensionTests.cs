@@ -87,7 +87,7 @@ public class BitArrayExtensionTests
     }
 
     [Theory]
-    [MemberData(nameof(BitArrayCase.LongBinaryTexts), MemberType = typeof(BitArrayCase))]
+    [MemberData(nameof(BitArrayCase.LongBinaryTexts), MemberType = typeof(BitArrayCase), DisableDiscoveryEnumeration = true)]
     public void BitString(string input)
     {
         var bits = new BitArray(input.Length);
@@ -170,7 +170,7 @@ public class BitArrayExtensionTests
     }.SelectMany(n => Enumerable.Range(-5, 11).Select(i => n + i)));
 
     [Theory]
-    [MemberData(nameof(Bits_Data))]
+    [MemberData(nameof(Bits_Data), DisableDiscoveryEnumeration = true)]
     public void Lsb(int len)
     {
         var b = new BitArray(Enumerable.Repeat(false, len).Concat(Enumerable.Repeat(true, 2)).ToArray());
@@ -184,7 +184,7 @@ public class BitArrayExtensionTests
     }
 
     [Theory]
-    [MemberData(nameof(Bits_Data))]
+    [MemberData(nameof(Bits_Data), DisableDiscoveryEnumeration = true)]
     public void Msb(int len)
     {
         var b = new BitArray(Enumerable.Repeat(false, len).Concat(Enumerable.Repeat(true, 1)).ToArray());

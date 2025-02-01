@@ -31,7 +31,7 @@ public class BitsEnumeratorTests
                                     }
     }
     [Theory]
-    [MemberData(nameof(BitEnumerateByte_Data))]
+    [MemberData(nameof(BitEnumerateByte_Data), DisableDiscoveryEnumeration = true)]
     public void BitEnumerateByte(byte num, int[] expected)
     {
         new BitsEnumerator<byte>(num).ShouldBe(expected);

@@ -40,7 +40,7 @@ namespace Kzrnm.Competitive.Testing.Graph
         };
 
         [Theory]
-        [MemberData(nameof(BfsData))]
+        [MemberData(nameof(BfsData), DisableDiscoveryEnumeration = true)]
         public void Bfs(int root, int[] expected)
         {
             gb.ToTree(root).BfsDescendant().ShouldBe(expected);
@@ -60,7 +60,7 @@ namespace Kzrnm.Competitive.Testing.Graph
         };
 
         [Theory]
-        [MemberData(nameof(DfsData))]
+        [MemberData(nameof(DfsData), DisableDiscoveryEnumeration = true)]
         public void Dfs(int root, int[] expected)
         {
             gb.ToTree(root).DfsDescendant().ShouldBe(expected);
@@ -80,7 +80,7 @@ namespace Kzrnm.Competitive.Testing.Graph
         };
 
         [Theory]
-        [MemberData(nameof(DfsLeafData))]
+        [MemberData(nameof(DfsLeafData), DisableDiscoveryEnumeration = true)]
         public void DfsLeaf(int root, int[] expected)
         {
             gb.ToTree(root).DfsDescendantLeaf().ShouldBe(expected);
@@ -100,7 +100,7 @@ namespace Kzrnm.Competitive.Testing.Graph
         };
 
         [Theory]
-        [MemberData(nameof(DfsEventsData))]
+        [MemberData(nameof(DfsEventsData), DisableDiscoveryEnumeration = true)]
         public void DfsEvents(int root, int[] expected)
         {
             gb.ToTree(root).DfsDescendantEvents().ShouldBe(expected);

@@ -101,7 +101,7 @@ public class BitTests
                                     }
     }
     [Theory]
-    [MemberData(nameof(BitEnumerateByte_Data))]
+    [MemberData(nameof(BitEnumerateByte_Data), DisableDiscoveryEnumeration = true)]
     [Trait("Category", "BitEnumerate")]
     public void BitEnumerateByte(uint num, int[] expected)
     {

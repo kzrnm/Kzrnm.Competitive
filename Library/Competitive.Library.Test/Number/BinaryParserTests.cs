@@ -21,7 +21,7 @@ namespace Kzrnm.Competitive.Testing.Number
         }
 
         [Theory]
-        [MemberData(nameof(ParseUInt32_Data))]
+        [MemberData(nameof(ParseUInt32_Data), DisableDiscoveryEnumeration = true)]
         public void ParseUInt32(uint num)
         {
             var str = System.Convert.ToString(num, 2);
@@ -43,7 +43,7 @@ namespace Kzrnm.Competitive.Testing.Number
         }
 
         [Theory]
-        [MemberData(nameof(ParseUInt64_Data))]
+        [MemberData(nameof(ParseUInt64_Data), DisableDiscoveryEnumeration = true)]
         public void ParseUInt64(ulong num)
         {
             var str = System.Convert.ToString((long)num, 2);
@@ -51,7 +51,7 @@ namespace Kzrnm.Competitive.Testing.Number
         }
 
         [Theory]
-        [MemberData(nameof(BitArrayCase.LongBinaryTexts), MemberType = typeof(BitArrayCase))]
+        [MemberData(nameof(BitArrayCase.LongBinaryTexts), MemberType = typeof(BitArrayCase), DisableDiscoveryEnumeration = true)]
         public void ParseBitArray(string input)
         {
             var bits = BinaryParser.ParseBitArray(input);
