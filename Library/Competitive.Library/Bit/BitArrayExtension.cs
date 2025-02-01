@@ -180,20 +180,18 @@ namespace Kzrnm.Competitive
         public static int Msb(this BitArray b)
         {
             var arr = b.GetArray().AsSpan();
+            arr = arr[..((b.Length + 31) / 32)];
             var rem = b.Length & 31;
-            var m = arr[^1] & ((1u << rem) - 1);
-            if (rem == 0)
-                m = arr[^1];
-            if (m != 0)
-                return BitOperations.Log2(m) + 32 * (arr.Length - 1);
-            arr = arr[..^1];
+            if (rem != 0)
+                arr[^1] &= (1u << rem) - 1;
 
             if ((arr.Length & 1) != 0)
             {
-                m = arr[^1];
+                var m = arr[^1];
                 if (m != 0)
                     return BitOperations.Log2(m) + 32 * (arr.Length - 1);
             }
+
             var brr = MemoryMarshal.Cast<uint, ulong>(arr);
             for (int i = brr.Length - 1; i >= 0; i--)
                 if (brr[i] != 0)
