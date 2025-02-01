@@ -1,7 +1,6 @@
 using AtCoder.Internal;
 using Kzrnm.Competitive.IO;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -420,27 +419,26 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)]
         public static BitMatrix Parse(Asciis[] rows)
-            => Parse((IList)rows);
+        {
+            var arr = new BitArray[rows.Length];
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = BinaryParser.ParseBitArray(rows[i]);
+                if (i > 0 && arr[i].Length != arr[i - 1].Length)
+                    throw new FormatException("Row length are diffrent.");
+            }
+            return new(arr);
+        }
         /// <summary>
         /// 0,1 で表された行列をパースします。
         /// </summary>
         [凾(256)]
         public static BitMatrix Parse(string[] rows)
-            => Parse((IList)rows);
-        /// <summary>
-        /// 0,1 で表された行列をパースします。
-        /// </summary>
-        static BitMatrix Parse(IList rows)
         {
-            var arr = new BitArray[rows.Count];
+            var arr = new BitArray[rows.Length];
             for (int i = 0; i < arr.Length; i++)
             {
-                arr[i] = rows[i] switch
-                {
-                    Asciis a => BinaryParser.ParseBitArray(a),
-                    string s => BinaryParser.ParseBitArray(s),
-                    _ => throw new InvalidCastException(),
-                };
+                arr[i] = BinaryParser.ParseBitArray(rows[i]);
                 if (i > 0 && arr[i].Length != arr[i - 1].Length)
                     throw new FormatException("Row length are diffrent.");
             }

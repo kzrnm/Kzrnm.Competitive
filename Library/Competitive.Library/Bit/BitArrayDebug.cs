@@ -94,6 +94,17 @@ namespace Kzrnm.Competitive
                 }
             }
         }
+        static string BitString(BitArray bits)
+        {
+            var arr = bits.AsDummy().arr;
+            var chr = new char[arr.Length * 32];
+            for (int i = 0; i < arr.Length; i++)
+            {
+                var span = chr.AsSpan(i * 32, 32);
+                Convert.ToString(arr[i], 2).PadLeft(32, '0').CopyTo(span);
+            }
+            return new string(chr.AsSpan(0, bits.Length));
+        }
         public readonly record struct DebugTuple(bool[] Array, string Bits)
         {
             public override string ToString() => $"Length = {Array.Length}, {Bits}";

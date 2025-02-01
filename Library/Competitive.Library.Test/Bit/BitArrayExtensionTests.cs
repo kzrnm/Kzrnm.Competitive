@@ -125,7 +125,7 @@ public class BitArrayExtensionTests
     public void PopCount(BitArrayCase c)
     {
         var b = c.ToBitArray();
-        b.PopCount().ShouldBe(c.Count(c => c));
+        b.PopCount().ShouldBe(c.ToBoolArray().Count(c => c));
     }
 
     public static TheoryData<int> Bits_Data => new(new int[]

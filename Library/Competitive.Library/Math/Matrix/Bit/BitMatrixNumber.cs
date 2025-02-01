@@ -2,13 +2,11 @@ using AtCoder.Internal;
 using Kzrnm.Competitive.IO;
 using System;
 using System.Buffers;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using System.Runtime.ConstrainedExecution;
 using System.Text;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -133,7 +131,7 @@ namespace Kzrnm.Competitive
                 ref var row = ref res[i];
                 for (int j = 0; j < otherArr.Length; j++)
                     if ((uint.CreateTruncating(val[i] >> j) & 1) != 0)
-                        row ^= otherArr[^(j + 1)];
+                        row ^= otherArr[j];
             }
             return new BitMatrix<T>(res);
         }
@@ -402,39 +400,36 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)]
         public static BitMatrix<T> Parse(Asciis[] rows)
-            => Parse((IList)rows);
+        {
+            var arr = new T[rows.Length];
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = ParseRow<byte>(rows[i].d);
+            }
+            return new(arr);
+        }
         /// <summary>
         /// 0,1 で表された行列をパースします。
         /// </summary>
         [凾(256)]
         public static BitMatrix<T> Parse(string[] rows)
-            => Parse((IList)rows);
-        /// <summary>
-        /// 0,1 で表された行列をパースします。
-        /// </summary>
-        static BitMatrix<T> Parse(IList rows)
         {
-            var arr = new T[rows.Count];
+            var arr = new T[rows.Length];
             for (int i = 0; i < arr.Length; i++)
             {
-                arr[i] = rows[i] switch
-                {
-                    Asciis a => ParseRow<byte>(a.d),
-                    string s => ParseRow<char>(s),
-                    _ => throw new InvalidCastException(),
-                };
+                arr[i] = ParseRow<char>(rows[i]);
             }
-            return new BitMatrix<T>(arr);
+            return new(arr);
+        }
 
-            static T ParseRow<U>(ReadOnlySpan<U> row) where U : unmanaged, INumber<U>
-            {
-                var s = row.Trim();
-                Span<U> t = stackalloc U[Unsafe.SizeOf<T>() * 8];
-                s.CopyTo(t);
-                t[s.Length..].Fill(U.CreateChecked('0'));
-                t.Reverse();
-                return BinaryParser.ParseNumber<T, U>(t);
-            }
+        static T ParseRow<U>(ReadOnlySpan<U> row) where U : unmanaged, INumber<U>
+        {
+            var s = row.Trim();
+            Span<U> t = stackalloc U[Unsafe.SizeOf<T>() * 8];
+            s.CopyTo(t);
+            t[s.Length..].Fill(U.CreateChecked('0'));
+            t.Reverse();
+            return BinaryParser.ParseNumber<T, U>(t);
         }
 
         [SourceExpander.NotEmbeddingSource]

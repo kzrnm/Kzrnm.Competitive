@@ -1,408 +1,235 @@
+using Kzrnm.Competitive.IO;
+using System;
 using System.Collections;
+using System.Text;
 
 namespace Kzrnm.Competitive.Testing.MathNS.Matrix
 {
     public class BitMatrixTests
     {
-        [Fact]
+        [Theory]
+        [MemberData(nameof(BitMatrixCase.RandomCases), MemberType = typeof(BitMatrixCase), DisableDiscoveryEnumeration = true)]
         [Trait("Category", "Normal")]
-        public void Construct()
+        public void Construct(BitMatrixCase input)
         {
-            new BitMatrix([
-                [true, false, true],
-                [false, true, true],
-            ])._v.ShouldBe([
-                new BitArray([true, false, true]),
-                new BitArray([false, true, true]),
-            ]);
-            new BitMatrix([
-                new BitArray([true, false, true]),
-                new BitArray([false, true, true]),
-            ])._v.ShouldBe([
-                new BitArray([true, false, true]),
-                new BitArray([false, true, true]),
-            ]);
+            var expected = new BitArray[input.Height];
+            for (int i = 0; i < expected.Length; i++)
+            {
+                expected[i] = new BitArray(input.Width);
+                for (int j = input.Width - 1; j >= 0; j--)
+                {
+                    expected[i][j] = input[i, j];
+                }
+            }
+            new BitMatrix(input.ToBoolArray())._v.ShouldBe(expected);
         }
 
-        public static TheoryData<string, BitMatrix> Parse_Data => new()
-        {
-            {
-                """
-                10001
-                00110
-                """,
-                new BitMatrix([
-                    new BitArray([true, false, false, false, true ]),
-                    new BitArray([false, false, true, true, false ]),
-                ])
-            },
-            {
-                """
-                10101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010
-                01010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101
-                01000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001
-                """,
-                new BitMatrix([
-                    new BitArray([
-                        0b01010101010101010101010101010101,
-                        0b01010101010101010101010101010101,
-                        0b01010101010101010101010101010101,
-                        0b01010101010101010101010101010101,
-                    ]),
-                    new BitArray([
-                        unchecked((int)0b10101010101010101010101010101010),
-                        unchecked((int)0b10101010101010101010101010101010),
-                        unchecked((int)0b10101010101010101010101010101010),
-                        unchecked((int)0b10101010101010101010101010101010),
-                    ]),
-                    new BitArray([
-                        0b10,
-                        0,
-                        0,
-                        unchecked((int)0b10000000000000000000000000000000),
-                    ]),
-                ])
-            },
-            {
-                $"""
-                {new string('0', 130)}
-                {new string('1', 130)}
-                """,
-                new BitMatrix([
-                    new BitArray(130, false),
-                    new BitArray(130, true),
-                ])
-            },
-        };
         [Theory]
         [Trait("Category", "Normal")]
-        [MemberData(nameof(Parse_Data))]
-        public void Parse(string text, BitMatrix mat)
+        [MemberData(nameof(BitMatrixCase.RandomCases), MemberType = typeof(BitMatrixCase), DisableDiscoveryEnumeration = true)]
+        public void String(BitMatrixCase input)
         {
-            BitMatrix.Parse(text.Split('\n')).ShouldBe(mat);
+            var arr = input.ToBoolArray();
+            var rowsAscii = new Asciis[arr.Length];
+            var rows = new string[arr.Length];
+            for (int i = 0; i < arr.Length; i++)
+            {
+                var row = new char[input.Width];
+                for (int j = 0; j < row.Length; j++)
+                {
+                    row[j] = input[i, j] ? '1' : '0';
+                }
+                rows[i] = new string(row);
+                rowsAscii[i] = new(Encoding.ASCII.GetBytes(row));
+            }
+            var expected = new BitMatrix(arr);
+            BitMatrix.Parse(rows).ShouldBe(expected);
+            BitMatrix.Parse(rowsAscii).ShouldBe(expected);
+            expected.ToString().Replace("\r\n", "\n").ShouldBe(string.Join("\n", rows));
         }
 
-        public static TheoryData<BitMatrix, string> String_Data => new()
-        {
-            {
-                new BitMatrix([
-                    [true, false,  true],
-                    [false, false, false],
-                    [false, false,  true],
-                    [true,  true,  true],
-                ]),
-                """
-                101
-                000
-                001
-                111
-                """.Replace("\r\n", "\n")
-            },
-            {
-                new BitMatrix([
-                    [false],
-                ]),
-                "0"
-            },
-            {
-                new BitMatrix([
-                    [true],
-                ]),
-                "1"
-            },
-        };
         [Theory]
         [Trait("Category", "Normal")]
-        [MemberData(nameof(String_Data))]
-        public void String(BitMatrix mat, string text)
+        [MemberData(nameof(BitMatrixCase.RandomCases), MemberType = typeof(BitMatrixCase), DisableDiscoveryEnumeration = true)]
+        public void SingleMinus(BitMatrixCase input)
         {
-            mat.ToString().Replace("\r\n", "\n").ShouldBe(text);
-            BitMatrix.Parse(text.Split('\n')).ShouldBe(mat);
-        }
-
-        [Fact]
-        [Trait("Category", "Operator")]
-        public void SingleMinus()
-        {
-            var mat = BitMatrix.Parse(
-            [
-                "101",
-                "000",
-                "001",
-                "111",
-            ]);
-            var expected = BitMatrix.Parse(
-            [
-                "010",
-                "111",
-                "110",
-                "000",
-            ]);
+            var mat = new BitMatrix(input.ToBoolArray());
+            var expectedArray = input.ToBoolArray();
+            for (int h = 0; h < expectedArray.Length; h++)
+                for (int w = 0; w < expectedArray[h].Length; w++)
+                    expectedArray[h][w] = !expectedArray[h][w];
+            var expected = new BitMatrix(expectedArray);
             (-mat).ShouldBe(expected);
             (~mat).ShouldBe(expected);
         }
 
-        public static TheoryData<BitMatrix, BitMatrix, BitMatrix> Add_Data => new()
-        {
-            {
-                BitMatrix.Zero,
-                BitMatrix.Identity,
-                BitMatrix.Identity
-            },
-            {
-                BitMatrix.Parse(
-                [
-                    "101",
-                    "000",
-                    "001",
-                ]),
-                BitMatrix.Parse(
-                [
-                    "100",
-                    "010",
-                    "101",
-                ]),
-                BitMatrix.Parse(
-                [
-                    "001",
-                    "010",
-                    "100",
-                ])
-            },
-            {
-                BitMatrix.Parse(
-                [
-                    "101",
-                    "000",
-                    "001",
-                ]),
-                BitMatrix.Zero,
-                BitMatrix.Parse(
-                [
-                    "101",
-                    "000",
-                    "001",
-                ])
-            },
-            {
-                BitMatrix.Parse(
-                [
-                    "101",
-                    "000",
-                    "001",
-                ]),
-                BitMatrix.Identity,
-                BitMatrix.Parse(
-                [
-                    "001",
-                    "010",
-                    "000",
-                ])
-            },
-        };
-
         [Theory]
         [Trait("Category", "Operator")]
-        [MemberData(nameof(Add_Data))]
-        public void Add(BitMatrix mat1, BitMatrix mat2, BitMatrix expected)
+        [MemberData(nameof(BitMatrixCase.RandomAddCases), MemberType = typeof(BitMatrixCase), DisableDiscoveryEnumeration = true)]
+        public void Add(BitMatrixCase left, BitMatrixCase right)
         {
+            var mat1 = left.ToBitMatrix();
+            var mat2 = right.ToBitMatrix();
+            var expected = NaiveExpected();
+
             (mat1 + mat2).ShouldBe(expected);
             (mat2 + mat1).ShouldBe(expected);
             (mat1 - mat2).ShouldBe(expected);
             (mat1 ^ mat2).ShouldBe(expected);
-        }
 
-        public static TheoryData<BitMatrix, BitMatrix, BitMatrix> Multiply_Data => new()
-        {
+            BitMatrix NaiveExpected()
             {
-                BitMatrix.Identity,
-                BitMatrix.Zero,
-                BitMatrix.Zero
-            },
-            {
-                BitMatrix.Parse(
-                [
-                    "101",
-                    "010",
-                ]),
-                BitMatrix.Parse(
-                [
-                    "10",
-                    "11",
-                    "10",
-                ]),
-                BitMatrix.Parse(
-                [
-                    "00",
-                    "11",
-                ])
-            },
-            {
-                BitMatrix.Parse(
-                [
-                    "00",
-                    "11",
-                ]),
-                BitMatrix.Zero,
-                BitMatrix.Parse(
-                [
-                    "00",
-                    "00",
-                ])
-            },
-            {
-                BitMatrix.Parse(
-                [
-                    "00",
-                    "11",
-                ]),
-                BitMatrix.Identity,
-                BitMatrix.Parse(
-                [
-                    "00",
-                    "11",
-                ])
-            },
-        };
+                switch (left.Kind, right.Kind)
+                {
+                    case (Internal.ArrayMatrixKind.Zero, Internal.ArrayMatrixKind.Zero):
+                        return new(Internal.ArrayMatrixKind.Zero);
+                    case (Internal.ArrayMatrixKind.Identity, Internal.ArrayMatrixKind.Zero):
+                    case (Internal.ArrayMatrixKind.Zero, Internal.ArrayMatrixKind.Identity):
+                        return new(Internal.ArrayMatrixKind.Identity);
 
-        [Theory]
-        [Trait("Category", "Operator")]
-        [MemberData(nameof(Multiply_Data))]
-        public void Multiply(BitMatrix mat1, BitMatrix mat2, BitMatrix expected)
-        {
-            (mat1 * mat2).ShouldBe(expected);
-        }
+                    case (Internal.ArrayMatrixKind.Normal, Internal.ArrayMatrixKind.Zero):
+                        return left.ToBitMatrix();
+                    case (Internal.ArrayMatrixKind.Zero, Internal.ArrayMatrixKind.Normal):
+                        return right.ToBitMatrix();
 
-        public static TheoryData<BitMatrix, bool[], BitArray> MultiplyVector_Data => new()
-        {
-            {
-                BitMatrix.Parse(
-                [
-                    "101",
-                    "010",
-                ]),
-                [true, false, true],
-                new BitArray([false, false])
-            },
-            {
-                BitMatrix.Parse(
-                [
-                    "101",
-                    "010",
-                ]),
-                [true, true, true],
-                new BitArray([false, true])
-            },
-        };
-
-        [Theory]
-        [Trait("Category", "Operator")]
-        [MemberData(nameof(MultiplyVector_Data))]
-        public void MultiplyVector(BitMatrix mat, bool[] vector, BitArray expected)
-        {
-            (mat * vector).ShouldBe(expected);
-            (mat * new BitArray(vector)).ShouldBe(expected);
-            mat.Multiply(new BitArray(vector)).ShouldBe(expected);
-        }
-
-        [Fact]
-        [Trait("Category", "Normal")]
-        public void Pow()
-        {
-            var orig = BitMatrix.Parse(
-            [
-                "111",
-                "101",
-                "011",
-            ]);
-            var expecteds = new[]
-            {
-                BitMatrix.Parse(
-                [
-                    "100",
-                    "010",
-                    "001",
-                ]),
-                BitMatrix.Parse(
-                [
-                    "111",
-                    "101",
-                    "011",
-                ]),
-                BitMatrix.Parse(
-                [
-                    "001",
-                    "100",
-                    "110",
-                ]),
-                BitMatrix.Parse(
-                [
-                    "011",
-                    "111",
-                    "010",
-                ]),
-                BitMatrix.Parse(
-                [
-                    "110",
-                    "001",
-                    "101",
-                ]),
-                BitMatrix.Parse(
-                [
-                    "010",
-                    "011",
-                    "100",
-                ]),
-            };
-            var cur = orig;
-            for (int i = 1; i < expecteds.Length; i++)
-            {
-                cur.ShouldBe(expecteds[i]);
-                orig.Pow(i).ShouldBe(cur);
-                cur *= orig;
+                    case (Internal.ArrayMatrixKind.Normal, Internal.ArrayMatrixKind.Identity):
+                        {
+                            var expectedCase = new BitMatrixCase(left);
+                            for (int i = Math.Min(expectedCase.Height, expectedCase.Width) - 1; i >= 0; i--)
+                            {
+                                expectedCase[i, i] = !expectedCase[i, i];
+                            }
+                            return expectedCase.ToBitMatrix();
+                        }
+                    case (Internal.ArrayMatrixKind.Identity, Internal.ArrayMatrixKind.Normal):
+                        {
+                            var expectedCase = new BitMatrixCase(right);
+                            for (int i = Math.Min(expectedCase.Height, expectedCase.Width) - 1; i >= 0; i--)
+                            {
+                                expectedCase[i, i] = !expectedCase[i, i];
+                            }
+                            return expectedCase.ToBitMatrix();
+                        }
+                    default:
+                        {
+                            var expectedCase = new BitMatrixCase(left.Height, left.Width);
+                            for (int h = 0; h < expectedCase.Height; h++)
+                                for (int w = 0; w < expectedCase.Width; w++)
+                                {
+                                    expectedCase[h, w] = left[h, w] ^ right[h, w];
+                                }
+                            return expectedCase.ToBitMatrix();
+                        }
+                }
             }
         }
 
-        public static TheoryData<BitMatrix> Inv_Data => new()
+        [Theory]
+        [Trait("Category", "Operator")]
+        [MemberData(nameof(BitMatrixCase.RandomMultiplyCases), MemberType = typeof(BitMatrixCase), DisableDiscoveryEnumeration = true)]
+        public void Multiply(BitMatrixCase left, BitMatrixCase right)
         {
+            var mat1 = left.ToBitMatrix();
+            var mat2 = right.ToBitMatrix();
+            var expected = NaiveExpected();
+
+            (mat1 * mat2).ShouldBe(expected);
+
+            BitMatrix NaiveExpected()
             {
-                BitMatrix.Parse(
-                [
-                    "101",
-                    "010",
-                    "011",
-                ])
-            },
-            {
-                BitMatrix.Parse(
-                [
-                    "100",
-                    "010",
-                    "111",
-                ])
-            },
-            {
-                BitMatrix.Parse(
-                [
-                    "001",
-                    "010",
-                    "111",
-                ])
-            },
-        };
+                switch (left.Kind, right.Kind)
+                {
+                    case (Internal.ArrayMatrixKind.Zero, Internal.ArrayMatrixKind.Zero):
+                    case (Internal.ArrayMatrixKind.Identity, Internal.ArrayMatrixKind.Zero):
+                    case (Internal.ArrayMatrixKind.Zero, Internal.ArrayMatrixKind.Identity):
+                        return new(Internal.ArrayMatrixKind.Zero);
+
+                    case (Internal.ArrayMatrixKind.Identity, Internal.ArrayMatrixKind.Identity):
+                        return new(Internal.ArrayMatrixKind.Identity);
+
+                    case (Internal.ArrayMatrixKind.Normal, Internal.ArrayMatrixKind.Identity):
+                        return left.ToBitMatrix();
+                    case (Internal.ArrayMatrixKind.Identity, Internal.ArrayMatrixKind.Normal):
+                        return right.ToBitMatrix();
+
+                    case (Internal.ArrayMatrixKind.Normal, Internal.ArrayMatrixKind.Zero):
+                        return new BitMatrixCase(left.Height, left.Width).ToBitMatrix();
+                    case (Internal.ArrayMatrixKind.Zero, Internal.ArrayMatrixKind.Normal):
+                        return new BitMatrixCase(right.Height, right.Width).ToBitMatrix();
+
+                    default:
+                        {
+                            var expectedCase = new BitMatrixCase(left.Height, right.Width);
+                            for (int h = 0; h < expectedCase.Height; h++)
+                                for (int w = 0; w < expectedCase.Width; w++)
+                                    for (int t = 0; t < left.Width; t++)
+                                    {
+                                        expectedCase[h, w] ^= left[h, t] && right[t, w];
+                                    }
+                            return expectedCase.ToBitMatrix();
+                        }
+                }
+            }
+        }
 
         [Theory]
         [Trait("Category", "Operator")]
-        [MemberData(nameof(Inv_Data))]
-        public void Inv(BitMatrix mat)
+        [MemberData(nameof(BitMatrixCase.RandomMultiplyVectorCases), MemberType = typeof(BitMatrixCase), DisableDiscoveryEnumeration = true)]
+        public void MultiplyVector(BitMatrixCase left, BitArrayCase right)
         {
+            var mat = left.ToBitMatrix();
+            var vector = right.ToBitArray();
+            var expected = NaiveExpected();
+
+            (mat * right.ToBoolArray()).ShouldBe(expected);
+            (mat * vector).ShouldBe(expected);
+            mat.Multiply(vector).ShouldBe(expected);
+
+            BitArray NaiveExpected()
+            {
+                var expectedCase = new BitArrayCase(new bool[left.Height]);
+                for (int h = 0; h < expectedCase.Length; h++)
+                    for (int t = 0; t < left.Width; t++)
+                    {
+                        expectedCase[h] ^= left[h, t] && right[t];
+                    }
+                return expectedCase.ToBitArray();
+            }
+        }
+
+        [Theory]
+        [Trait("Category", "Normal")]
+        [MemberData(nameof(BitMatrixCase.RandomSquareCases), MemberType = typeof(BitMatrixCase), DisableDiscoveryEnumeration = true)]
+        public void Pow(BitMatrixCase input)
+        {
+            var orig = input.ToBitMatrix();
+            var mat = input.ToBitMatrix();
+
+            orig.Pow(1).ShouldBe(mat);
+            for (int i = 2; i < 11; i++)
+            {
+                mat *= orig;
+                orig.Pow(i).ShouldBe(mat);
+            }
+        }
+
+        [Theory]
+        [Trait("Category", "Operator")]
+        [MemberData(nameof(BitMatrixCase.RandomSquareCases), MemberType = typeof(BitMatrixCase), DisableDiscoveryEnumeration = true)]
+        public void Inv(BitMatrixCase input)
+        {
+            var mat = input.ToBitMatrix();
             var inv = mat.Inv();
-            var expected = BitMatrix.Parse(
-            [
-                "100",
-                "010",
-                "001",
-            ]);
+            if (inv.IsZero)
+                return;
+
+            var expectedCase = new BitMatrixCase(input.Height, input.Width);
+            for (int i = 0; i < expectedCase.Height; i++)
+            {
+                expectedCase[i, i] = true;
+            }
+            var expected = expectedCase.ToBitMatrix();
+
             (mat * inv).ShouldBe(expected);
             (inv * mat).ShouldBe(expected);
         }
