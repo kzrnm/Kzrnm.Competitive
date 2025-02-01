@@ -1,13 +1,62 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Xunit.Sdk;
 
 namespace Kzrnm.Competitive.Testing;
 
-public static class BitArrayCase
+public class BitArrayCase(bool[] bits) : IEnumerable<bool>, IXunitSerializable
 {
+    public BitArrayCase() : this([]) { }
+
+    public BitArray ToBitArray() => new(bits);
+    public bool[] ToBoolArray() => (bool[])bits.Clone();
+
+    public bool this[int index]
+    {
+        get => bits[index];
+        set => bits[index] = value;
+    }
+
+    public IEnumerator<bool> GetEnumerator() => ((IEnumerable<bool>)bits).GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => bits.GetEnumerator();
+    void IXunitSerializable.Deserialize(IXunitSerializationInfo info)
+    {
+        bits = info.GetValue<bool[]>(nameof(bits));
+    }
+
+    void IXunitSerializable.Serialize(IXunitSerializationInfo info)
+    {
+        info.AddValue(nameof(bits), bits);
+    }
+
+    public static BitArrayCase MakeRandomCase(Random random, int length)
+    {
+        var b = new bool[length];
+        for (int i = 0; i < b.Length; i++)
+        {
+            b[i] = random.Next(2) != 0;
+        }
+        return new BitArrayCase(b);
+    }
+
+    public static IEnumerable<TheoryDataRow<BitArrayCase>> RandomCases()
+    {
+        var rnd = new Random(227);
+        for (int i = 1; i < 12; i++)
+            for (int q = 0; q < 4; q++)
+            {
+                yield return MakeRandomCase(rnd, 32 * i - 1);
+                yield return MakeRandomCase(rnd, 32 * i);
+                yield return MakeRandomCase(rnd, 32 * i + 1);
+            }
+        for (int q = 0; q < 256; q++)
+        {
+            yield return MakeRandomCase(rnd, rnd.Next(1, 140));
+        }
+    }
+
     public static TheoryData<string> LongBinaryTexts()
     {
         return new(Inner().Distinct());
@@ -39,5 +88,4 @@ public static class BitArrayCase
             }
         }
     }
-
 }

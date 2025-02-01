@@ -1,6 +1,7 @@
 using Kzrnm.Competitive;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Kzrnm.Competitive.Testing.Bit;
@@ -28,62 +29,67 @@ public class BitArrayExtensionTests
         var b = new BitArray(0);
         b.CopyTo(Array.Empty<int>());
     }
-    [Fact]
-    public void CopyToInt()
+    [Theory]
+    [MemberData(nameof(BitArrayCase.RandomCases), MemberType = typeof(BitArrayCase), DisableDiscoveryEnumeration = true)]
+    public void CopyToInt(BitArrayCase c)
     {
-        var arr = new int[4];
-        var b = new BitArray(100);
-        b[0] = true;
-        b[32] = true;
-        b[33] = true;
-        b[32 * 3 - 1] = true;
-        b[99] = true;
-        b.CopyTo(arr);
-        arr.ShouldBe([1, 3, int.MinValue, 8]);
-    }
-    [Fact]
-    public void CopyToUInt()
-    {
-        var arr = new uint[4];
-        var b = new BitArray(100);
-        b[0] = true;
-        b[32] = true;
-        b[33] = true;
-        b[32 * 3 - 1] = true;
-        b[99] = true;
-        b.CopyTo(arr);
-        arr.ShouldBe([1, 3, (uint)int.MaxValue + 1, 8]);
-    }
-    [Fact]
-    public void CopyToBool()
-    {
-        var arr = new bool[100];
-        var b = new BitArray(100);
-        var exp = new bool[100];
-        b[0] = true;
-        b[32] = true;
-        b[33] = true;
-        b[32 * 3 - 1] = true;
-        b[99] = true;
-        b.CopyTo(arr);
+        var b = c.ToBitArray();
+        var dst = new int[(b.Length + 31) / 32];
+        b.CopyTo(dst);
 
-        exp[0] = true;
-        exp[32] = true;
-        exp[33] = true;
-        exp[32 * 3 - 1] = true;
-        exp[99] = true;
-        arr.ShouldBe(exp);
+        var exp = new int[(b.Length + 31) / 32];
+        var exps = exp.AsSpan();
+        for (int i = 0; i < b.Length;)
+        {
+            for (int j = 0; j < 32 && i < b.Length; j++, i++)
+                if (b[i])
+                {
+                    exps[0] |= 1 << j;
+                }
+            exps = exps[1..];
+        }
+
+        dst.ShouldBe(exp);
     }
-    [Fact]
-    public void ToUInt32Array()
+    [Theory]
+    [MemberData(nameof(BitArrayCase.RandomCases), MemberType = typeof(BitArrayCase), DisableDiscoveryEnumeration = true)]
+    public void CopyToUInt(BitArrayCase c)
     {
-        var b = new BitArray(100);
-        b[0] = true;
-        b[32] = true;
-        b[33] = true;
-        b[32 * 3 - 1] = true;
-        b[99] = true;
-        b.ToUInt32Array().ShouldBe([1, 3, 1u << 31, 8]);
+        var b = c.ToBitArray();
+        var dst = new uint[(b.Length + 31) / 32];
+        b.CopyTo(dst);
+
+        var exp = new uint[(b.Length + 31) / 32];
+        var exps = exp.AsSpan();
+        for (int i = 0; i < b.Length;)
+        {
+            for (int j = 0; j < 32 && i < b.Length; j++, i++)
+                if (b[i])
+                {
+                    exps[0] |= 1u << j;
+                }
+            exps = exps[1..];
+        }
+        dst.ShouldBe(exp);
+    }
+    [Theory]
+    [MemberData(nameof(BitArrayCase.RandomCases), MemberType = typeof(BitArrayCase), DisableDiscoveryEnumeration = true)]
+    public void CopyToBool(BitArrayCase c)
+    {
+        var exp = c.ToBoolArray();
+        var b = c.ToBitArray();
+        var dst = new bool[b.Length];
+        b.CopyTo(dst);
+        dst.ShouldBe(exp);
+    }
+    [Theory]
+    [MemberData(nameof(BitArrayCase.RandomCases), MemberType = typeof(BitArrayCase), DisableDiscoveryEnumeration = true)]
+    public void ToUInt32Array(BitArrayCase c)
+    {
+        var b = c.ToBitArray();
+        var other = new BitArray((int[])(object)b.ToUInt32Array());
+        other.Length.ShouldBe((b.Length + 31) / 32 * 32);
+        b.Cast<bool>().ShouldBe(other.Cast<bool>().Take(b.Length));
     }
 
     [Theory]
@@ -97,68 +103,29 @@ public class BitArrayExtensionTests
         bits.ToBitString().ShouldBe(input);
     }
 
-    [Fact]
-    public void OnBits()
+    [Theory]
+    [MemberData(nameof(BitArrayCase.RandomCases), MemberType = typeof(BitArrayCase), DisableDiscoveryEnumeration = true)]
+    public void OnBits(BitArrayCase c)
     {
-        var b = new BitArray(100);
-        b[0] = true;
-        b[32] = true;
-        b[33] = true;
-        b[32 * 3 - 1] = true;
-        b[99] = true;
-        b.OnBits().ShouldBe([0, 32, 33, 95, 99]);
+        var b = c.ToBitArray();
+        var expected = new List<int>();
+        for (int i = 0; i < b.Length; i++)
 
-        b.Length = 129;
-        b[128] = true;
-        b.OnBits().ShouldBe([0, 32, 33, 95, 99, 128]);
-    }
-
-    [Fact]
-    public void OnBitRandom()
-    {
-        var rnd = new Random(227);
-        for (int len = 1; len < 5000; len *= 3)
-        {
-            var brr = new byte[len];
-            rnd.NextBytes(brr);
-            var b = new BitArray(brr);
-            var bbs = b.OnBits().ToArray().AsSpan();
-            for (int i = 0; i < b.Length; i++)
-            {
-                if (bbs.Length > 0 && bbs[0] == i)
-                {
-                    b[i].ShouldBeTrue();
-                    bbs = bbs[1..];
-                }
-                else
-                    b[i].ShouldBeFalse();
-            }
-            bbs.Length.ShouldBe(0);
-        }
+            if (b[i])
+                expected.Add(i);
+        b.OnBits().ShouldBe(expected);
+        ++b.Length;
+        b[^1] = true;
+        expected.Add(b.Length - 1);
+        b.OnBits().ShouldBe(expected);
     }
 
     [Theory]
-    [InlineData(63)]
-    [InlineData(64)]
-    [InlineData(65)]
-    [InlineData(100)]
-    public void PopCount(int size)
+    [MemberData(nameof(BitArrayCase.RandomCases), MemberType = typeof(BitArrayCase), DisableDiscoveryEnumeration = true)]
+    public void PopCount(BitArrayCase c)
     {
-        var rnd = new Random(227);
-        var b = new BitArray(size);
-        b.PopCount().ShouldBe(0);
-        b[size - 1] = true;
-        b.PopCount().ShouldBe(1);
-        for (int n = 0; n < 300; n++)
-        {
-            var ix = rnd.Next(size);
-            b[ix] = true;
-            var c = 0;
-            for (int i = 0; i < size; i++)
-                if (b[i])
-                    ++c;
-            b.PopCount().ShouldBe(c);
-        }
+        var b = c.ToBitArray();
+        b.PopCount().ShouldBe(c.Count(c => c));
     }
 
     public static TheoryData<int> Bits_Data => new(new int[]
