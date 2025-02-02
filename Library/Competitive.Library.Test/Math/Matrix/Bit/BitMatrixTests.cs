@@ -221,7 +221,10 @@ public class BitMatrixTests
         var mat = input.ToBitMatrix();
         var inv = mat.Inv();
         if (inv.IsZero)
+        {
+            mat.Determinant().ShouldBeFalse();
             return;
+        }
 
         var expectedCase = new BitMatrixCase(input.Height, input.Width);
         for (int i = 0; i < expectedCase.Height; i++)
@@ -230,6 +233,7 @@ public class BitMatrixTests
         }
         var expected = expectedCase.ToBitMatrix();
 
+        mat.Determinant().ShouldBeTrue();
         (mat * inv).ShouldBe(expected);
         (inv * mat).ShouldBe(expected);
     }
