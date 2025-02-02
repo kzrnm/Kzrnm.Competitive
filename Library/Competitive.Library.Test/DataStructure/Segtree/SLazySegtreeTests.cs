@@ -1,5 +1,6 @@
 using AtCoder.Internal;
 using System;
+using System.Linq;
 
 
 namespace Kzrnm.Competitive.Testing.DataStructure;
@@ -97,6 +98,32 @@ public class SLazySegtreeTest
         seg[2..4].ShouldBe(0);
     }
 
+
+    private readonly struct SumOp : ISLazySegtreeOperator<int, Guid>
+    {
+        public int Identity => 0;
+        public Guid FIdentity => Guid.Empty;
+        public Guid Composition(Guid nf, Guid cf) => Guid.Empty;
+        public int Mapping(Guid f, int x, int size)
+        {
+            if (x != size)
+                throw new InvalidOperationException();
+            return x;
+        }
+        public int Operate(int x, int y) => x + y;
+    }
+
+    [Fact]
+    public void Size()
+    {
+        var seg = new SLazySegtree<int, Guid, SumOp>(Enumerable.Repeat(1, 35).ToArray());
+        for (int l = 0; l < seg.Length; l++)
+            for (int r = l; r <= seg.Length; r++)
+            {
+                seg.Apply(l, r, Guid.Empty);
+                seg[l..r].ShouldBe(r - l);
+            }
+    }
 
     [Fact]
     public void ToArray()
