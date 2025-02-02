@@ -11,6 +11,11 @@ namespace Kzrnm.Competitive
     /// </summary>
     public static class LongestIncreasingSubsequence
     {
+        public record struct Result<T>(T Value, int Index)
+        {
+            [凾(256)] public static implicit operator T(Result<T> r) => r.Value;
+        }
+
         /// <summary>
         /// <para><paramref name="s"/> のある1つの最長増加部分列と使用したインデックスを返します。</para>
         /// <para><paramref name="strict"/> が <see langword="true"/> ならば狭義単調増加、 <see langword="false"/> ならば広義単調増加な列を返します。</para>
@@ -20,7 +25,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         /// <param name="s">元となるリスト</param>
         /// <param name="strict">狭義単調増加か否か</param>
-        [凾(256)] public static (T[] Lis, int[] Indexes) Lis<T>(T[] s, bool strict = true) where T : IComparable<T> => Lis((ReadOnlySpan<T>)s, strict);
+        [凾(256)] public static Result<T>[] Lis<T>(T[] s, bool strict = true) where T : IComparable<T> => Lis((ReadOnlySpan<T>)s, strict);
         /// <summary>
         /// <para><paramref name="s"/> のある1つの最長増加部分列と使用したインデックスを返します。</para>
         /// <para><paramref name="strict"/> が <see langword="true"/> ならば狭義単調増加、 <see langword="false"/> ならば広義単調増加な列を返します。</para>
@@ -30,7 +35,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         /// <param name="s">元となるリスト</param>
         /// <param name="strict">狭義単調増加か否か</param>
-        [凾(256)] public static (T[] Lis, int[] Indexes) Lis<T>(Span<T> s, bool strict = true) where T : IComparable<T> => Lis((ReadOnlySpan<T>)s, strict);
+        [凾(256)] public static Result<T>[] Lis<T>(Span<T> s, bool strict = true) where T : IComparable<T> => Lis((ReadOnlySpan<T>)s, strict);
         /// <summary>
         /// <para><paramref name="s"/> のある1つの最長増加部分列と使用したインデックスを返します。</para>
         /// <para><paramref name="strict"/> が <see langword="true"/> ならば狭義単調増加、 <see langword="false"/> ならば広義単調増加な列を返します。</para>
@@ -41,7 +46,7 @@ namespace Kzrnm.Competitive
         /// <param name="s">元となるリスト</param>
         /// <param name="strict">狭義単調増加か否か</param>
         [凾(256)]
-        public static (T[] Lis, int[] Indexes) Lis<T>(ReadOnlySpan<T> s, bool strict = true) where T : IComparable<T>
+        public static Result<T>[] Lis<T>(ReadOnlySpan<T> s, bool strict = true) where T : IComparable<T>
             => strict
             ? Lis<T, Vs<T>>(s)
             : Lis<T, Vl<T>>(s);
@@ -57,7 +62,7 @@ namespace Kzrnm.Competitive
         /// <param name="s">元となるリスト</param>
         /// <param name="cmp"><see cref="IComparer{T}"/>の実装</param>
         /// <param name="strict">狭義単調増加か否か</param>
-        [凾(256)] public static (T[] Lis, int[] Indexes) Lis<T, TCmp>(T[] s, TCmp cmp, bool strict = true) where TCmp : IComparer<T> => Lis((ReadOnlySpan<T>)s, cmp, strict);
+        [凾(256)] public static Result<T>[] Lis<T, TCmp>(T[] s, TCmp cmp, bool strict = true) where TCmp : IComparer<T> => Lis((ReadOnlySpan<T>)s, cmp, strict);
         /// <summary>
         /// <para><paramref name="s"/> のある1つの最長増加部分列と使用したインデックスを返します。</para>
         /// <para><paramref name="strict"/> が <see langword="true"/> ならば狭義単調増加、 <see langword="false"/> ならば広義単調増加な列を返します。</para>
@@ -68,7 +73,7 @@ namespace Kzrnm.Competitive
         /// <param name="s">元となるリスト</param>
         /// <param name="cmp"><see cref="IComparer{T}"/>の実装</param>
         /// <param name="strict">狭義単調増加か否か</param>
-        [凾(256)] public static (T[] Lis, int[] Indexes) Lis<T, TCmp>(Span<T> s, TCmp cmp, bool strict = true) where TCmp : IComparer<T> => Lis((ReadOnlySpan<T>)s, cmp, strict);
+        [凾(256)] public static Result<T>[] Lis<T, TCmp>(Span<T> s, TCmp cmp, bool strict = true) where TCmp : IComparer<T> => Lis((ReadOnlySpan<T>)s, cmp, strict);
         /// <summary>
         /// <para><paramref name="s"/> のある1つの最長増加部分列と使用したインデックスを返します。</para>
         /// <para><paramref name="strict"/> が <see langword="true"/> ならば狭義単調増加、 <see langword="false"/> ならば広義単調増加な列を返します。</para>
@@ -80,7 +85,7 @@ namespace Kzrnm.Competitive
         /// <param name="cmp"><see cref="IComparer{T}"/>の実装</param>
         /// <param name="strict">狭義単調増加か否か</param>
         [凾(256)]
-        public static (T[] Lis, int[] Indexes) Lis<T, TCmp>(ReadOnlySpan<T> s, TCmp cmp, bool strict = true) where TCmp : IComparer<T>
+        public static Result<T>[] Lis<T, TCmp>(ReadOnlySpan<T> s, TCmp cmp, bool strict = true) where TCmp : IComparer<T>
             => strict
             ? Lis(s, new Cs<T, TCmp> { cp = cmp })
             : Lis(s, new Cl<T, TCmp> { cp = cmp });
@@ -134,9 +139,9 @@ namespace Kzrnm.Competitive
 #pragma warning restore IDE0251 // メンバーを 'readonly' にする
 
         [凾(256)]
-        static (T[] Lis, int[] Indexes) Lis<T, Cp>(ReadOnlySpan<T> s, Cp op = default) where Cp : ICp<T>
+        static Result<T>[] Lis<T, Cp>(ReadOnlySpan<T> s, Cp op = default) where Cp : ICp<T>
         {
-            if (s.IsEmpty) return (Array.Empty<T>(), Array.Empty<int>());
+            if (s.IsEmpty) return Array.Empty<Result<T>>();
 
             // s[i] を最長増加部分列で使うときに使う直前の値のインデックス
             var prevs = new int[s.Length];
@@ -168,17 +173,15 @@ namespace Kzrnm.Competitive
                 }
             }
 
-            var lis = new T[ls.Count];
-            var idxs = new int[ls.Count];
+            var rt = new Result<T>[ls.Count];
             var c = li[^1];
-            for (int i = lis.Length - 1; i >= 0; i--)
+            for (int i = rt.Length - 1; i >= 0; i--)
             {
-                lis[i] = s[c];
-                idxs[i] = c;
+                rt[i] = new(s[c], c);
                 c = prevs[c];
             }
             Debug.Assert(c == -1);
-            return (lis, idxs);
+            return rt;
         }
     }
 }

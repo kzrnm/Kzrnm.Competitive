@@ -1,4 +1,5 @@
 using Kzrnm.Competitive.IO;
+using System.Linq;
 
 namespace Kzrnm.Competitive.Algorithm;
 
@@ -8,9 +9,9 @@ internal class LongestIncreasingSubsequenceTest : BaseSolver
     public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
     {
         int N = cr;
-        var idx = LongestIncreasingSubsequence.Lis(cr.Repeat(N).Int()).Indexes;
-        cw.WriteLine(idx.Length);
-        cw.WriteLineJoin(idx);
+        var lis = LongestIncreasingSubsequence.Lis(cr.Repeat(N).Int());
+        cw.WriteLine(lis.Length);
+        cw.WriteLineJoin(lis.Select(t => t.Index));
         return null;
     }
 }
