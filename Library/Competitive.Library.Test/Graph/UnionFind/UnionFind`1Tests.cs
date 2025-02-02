@@ -2,60 +2,59 @@ using System;
 using System.Linq;
 
 
-namespace Kzrnm.Competitive.Testing.Graph
+namespace Kzrnm.Competitive.Testing.Graph;
+
+public class UnionFindDataTests
 {
-    public class UnionFindDataTests
+    [Fact]
+    public void Zero()
     {
-        [Fact]
-        public void Zero()
+        var uf = new UnionFind<int>([], (a, b) => a + b);
+        uf.Groups().ShouldBe([]);
+    }
+
+    [Fact]
+    public void Simple()
+    {
+        var uf = new UnionFind<int>([1, 2], (a, b) => a + b);
+        uf.Same(0, 1).ShouldBeFalse();
+
+        uf.Data(0).ShouldBe(1);
+        uf.Data(1).ShouldBe(2);
+
+        uf.Merge(0, 1).ShouldBeTrue();
+        uf.Same(0, 1).ShouldBeTrue();
+        uf.Size(0).ShouldBe(2);
+
+        uf.Data(0).ShouldBe(3);
+        uf.Data(1).ShouldBe(3);
+    }
+
+    [Fact]
+    public void Line()
+    {
+        int n = 10000;
+        var uf = new UnionFind<long>(Enumerable.Range(0, n).Select(a => (long)a).ToArray(), (a, b) => a + b);
+        for (int i = 0; i < n - 1; i++)
         {
-            var uf = new UnionFind<int>([], (a, b) => a + b);
-            uf.Groups().ShouldBe([]);
+            uf.Merge(i, i + 1);
         }
+        uf.Size(0).ShouldBe(n);
+        uf.Groups().Length.ShouldBe(1);
+        uf.Data(0).ShouldBe((long)n * (n - 1) / 2);
+    }
 
-        [Fact]
-        public void Simple()
+    [Fact]
+    public void LineReverse()
+    {
+        int n = 10000;
+        var uf = new UnionFind<long>(Enumerable.Range(0, n).Select(a => (long)a).ToArray(), (a, b) => a + b);
+        for (int i = n - 2; i >= 0; i--)
         {
-            var uf = new UnionFind<int>([1, 2], (a, b) => a + b);
-            uf.Same(0, 1).ShouldBeFalse();
-
-            uf.Data(0).ShouldBe(1);
-            uf.Data(1).ShouldBe(2);
-
-            uf.Merge(0, 1).ShouldBeTrue();
-            uf.Same(0, 1).ShouldBeTrue();
-            uf.Size(0).ShouldBe(2);
-
-            uf.Data(0).ShouldBe(3);
-            uf.Data(1).ShouldBe(3);
+            uf.Merge(i, i + 1);
         }
-
-        [Fact]
-        public void Line()
-        {
-            int n = 10000;
-            var uf = new UnionFind<long>(Enumerable.Range(0, n).Select(a => (long)a).ToArray(), (a, b) => a + b);
-            for (int i = 0; i < n - 1; i++)
-            {
-                uf.Merge(i, i + 1);
-            }
-            uf.Size(0).ShouldBe(n);
-            uf.Groups().Length.ShouldBe(1);
-            uf.Data(0).ShouldBe((long)n * (n - 1) / 2);
-        }
-
-        [Fact]
-        public void LineReverse()
-        {
-            int n = 10000;
-            var uf = new UnionFind<long>(Enumerable.Range(0, n).Select(a => (long)a).ToArray(), (a, b) => a + b);
-            for (int i = n - 2; i >= 0; i--)
-            {
-                uf.Merge(i, i + 1);
-            }
-            uf.Size(0).ShouldBe(n);
-            uf.Groups().Length.ShouldBe(1);
-            uf.Data(0).ShouldBe((long)n * (n - 1) / 2);
-        }
+        uf.Size(0).ShouldBe(n);
+        uf.Groups().Length.ShouldBe(1);
+        uf.Data(0).ShouldBe((long)n * (n - 1) / 2);
     }
 }

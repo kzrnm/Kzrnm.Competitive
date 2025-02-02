@@ -32,9 +32,9 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         public void Size3(int[,] v)
         {
             var a = new ModInt[]{
-                v[0,0], v[0,1], v[0,2],
-                v[1,0], v[1,1], v[1,2],
-                v[2,0], v[2,1], v[2,2] };
+            v[0,0], v[0,1], v[0,2],
+            v[1,0], v[1,1], v[1,2],
+            v[2,0], v[2,1], v[2,2] };
 
             var expected = new PolynominalMatrix3x3<ModInt>(
                 new([-v[0, 0], 1]), new([-v[0, 1]]), new([-v[0, 2]]),
@@ -68,10 +68,10 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix
         public void Size4(int[,] v)
         {
             var a = new ModInt[]{
-                v[0,0], v[0,1], v[0,2], v[0,3],
-                v[1,0], v[1,1], v[1,2], v[1,3],
-                v[2,0], v[2,1], v[2,2], v[2,3],
-                v[3,0], v[3,1], v[3,2], v[3,3] };
+            v[0,0], v[0,1], v[0,2], v[0,3],
+            v[1,0], v[1,1], v[1,2], v[1,3],
+            v[2,0], v[2,1], v[2,2], v[2,3],
+            v[3,0], v[3,1], v[3,2], v[3,3] };
             var expected = new PolynominalMatrix4x4<ModInt>(
                 new([-v[0, 0], 1]), new([-v[0, 1]]), new([-v[0, 2]]), new([-v[0, 3]]),
                 new([-v[1, 0]]), new([-v[1, 1], 1]), new([-v[1, 2]]), new([-v[1, 3]]),

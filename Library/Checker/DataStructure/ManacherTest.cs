@@ -1,15 +1,14 @@
 using Kzrnm.Competitive.IO;
 
-namespace Kzrnm.Competitive.DataStructure
+namespace Kzrnm.Competitive.DataStructure;
+
+internal class ManacherTest : BaseSolver
 {
-    internal class ManacherTest : BaseSolver
+    public override string Url => "https://judge.yosupo.jp/problem/enumerate_palindromes";
+    public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
     {
-        public override string Url => "https://judge.yosupo.jp/problem/enumerate_palindromes";
-        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
-        {
-            Asciis S = cr;
-            var rt = Palindrome.Manacher2(S);
-            return cw.WriteLineJoin(rt);
-        }
+        Asciis S = cr;
+        var rt = Palindrome.Manacher2(S);
+        return cw.WriteLineJoin(rt);
     }
 }

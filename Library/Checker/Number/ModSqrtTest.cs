@@ -1,25 +1,24 @@
 using AtCoder;
 using Kzrnm.Competitive.IO;
 
-namespace Kzrnm.Competitive.Number
+namespace Kzrnm.Competitive.Number;
+
+internal class ModSqrtTest : BaseSolver
 {
-    internal class ModSqrtTest : BaseSolver
+    public override string Url => "https://judge.yosupo.jp/problem/sqrt_mod";
+    public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
     {
-        public override string Url => "https://judge.yosupo.jp/problem/sqrt_mod";
-        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+        int Q = cr;
+        while (--Q >= 0)
         {
-            int Q = cr;
-            while (--Q >= 0)
-            {
-                int y = cr;
-                int p = cr;
-                DynamicModInt<int>.Mod = p;
-                var res = ModSqrt.Solve(new DynamicModInt<int>(y));
-                if (res != ModSqrt.Solve(y, p))
-                    return "Invalid";
-                cw.WriteLine(res);
-            }
-            return null;
+            int y = cr;
+            int p = cr;
+            DynamicModInt<int>.Mod = p;
+            var res = ModSqrt.Solve(new DynamicModInt<int>(y));
+            if (res != ModSqrt.Solve(y, p))
+                return "Invalid";
+            cw.WriteLine(res);
         }
+        return null;
     }
 }

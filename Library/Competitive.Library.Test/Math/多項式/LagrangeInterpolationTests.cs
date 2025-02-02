@@ -1,74 +1,73 @@
 using AtCoder;
 
-namespace Kzrnm.Competitive.Testing.MathNS
+namespace Kzrnm.Competitive.Testing.MathNS;
+
+public class LagrangeInterpolationTest
 {
-    public class LagrangeInterpolationTest
+    public static TheoryData<(int x, int y)[]> Coefficient_Data => new()
     {
-        public static TheoryData<(int x, int y)[]> Coefficient_Data => new()
+        new (int, int)[]
         {
-            new (int, int)[]
-            {
-                (0,1),
-                (1,10),
-            },
-            new (int, int)[]
-            {
-                (0,1),
-                (1,10),
-                (2,11),
-            },
-            new (int, int)[]
-            {
-                (0,1),
-                (1,10),
-                (2,11),
-                (3,-51),
-            }
-        };
-        [Theory]
-        [MemberData(nameof(Coefficient_Data))]
-        public void Coefficient((int x, int y)[] data)
+            (0,1),
+            (1,10),
+        },
+        new (int, int)[]
         {
-            RunTest<Mod998244353>(data);
-            RunTest<Mod1000000007>(data);
-
-            static void RunTest<T>((int x, int y)[] plots) where T : struct, IStaticMod
-            {
-                var modPlots = new (MontgomeryModInt<T> x, MontgomeryModInt<T> y)[plots.Length];
-                for (int i = 0; i < plots.Length; i++)
-                    modPlots[i] = (plots[i].x, plots[i].y);
-
-                var fps = LagrangeInterpolation.Coefficient(modPlots);
-                fps._cs.Length.ShouldBe(plots.Length);
-                foreach (var (x, y) in modPlots)
-                    fps.Eval(x).ShouldBe(y);
-            }
+            (0,1),
+            (1,10),
+            (2,11),
+        },
+        new (int, int)[]
+        {
+            (0,1),
+            (1,10),
+            (2,11),
+            (3,-51),
         }
+    };
+    [Theory]
+    [MemberData(nameof(Coefficient_Data))]
+    public void Coefficient((int x, int y)[] data)
+    {
+        RunTest<Mod998244353>(data);
+        RunTest<Mod1000000007>(data);
 
-        [Fact]
-        public void Eval()
+        static void RunTest<T>((int x, int y)[] plots) where T : struct, IStaticMod
         {
-            RunTest<Mod998244353>([1, 0, 2, 0, 3, 0, 4], 100);
-            RunTest<Mod998244353>([1, 0, 2, 0, 3, 0, 4], 1000);
-            RunTest<Mod998244353>([1, 0, 2, 0, 3, 0, 4], 10000);
+            var modPlots = new (MontgomeryModInt<T> x, MontgomeryModInt<T> y)[plots.Length];
+            for (int i = 0; i < plots.Length; i++)
+                modPlots[i] = (plots[i].x, plots[i].y);
 
-            RunTest<Mod1000000007>([1, 0, 2, 0, 3, 0, 4], 100);
-            RunTest<Mod1000000007>([1, 0, 2, 0, 3, 0, 4], 1000);
-            RunTest<Mod1000000007>([1, 0, 2, 0, 3, 0, 4], 10000);
+            var fps = LagrangeInterpolation.Coefficient(modPlots);
+            fps._cs.Length.ShouldBe(plots.Length);
+            foreach (var (x, y) in modPlots)
+                fps.Eval(x).ShouldBe(y);
+        }
+    }
 
-            static void RunTest<T>(int[] y, long x) where T : struct, IStaticMod
+    [Fact]
+    public void Eval()
+    {
+        RunTest<Mod998244353>([1, 0, 2, 0, 3, 0, 4], 100);
+        RunTest<Mod998244353>([1, 0, 2, 0, 3, 0, 4], 1000);
+        RunTest<Mod998244353>([1, 0, 2, 0, 3, 0, 4], 10000);
+
+        RunTest<Mod1000000007>([1, 0, 2, 0, 3, 0, 4], 100);
+        RunTest<Mod1000000007>([1, 0, 2, 0, 3, 0, 4], 1000);
+        RunTest<Mod1000000007>([1, 0, 2, 0, 3, 0, 4], 10000);
+
+        static void RunTest<T>(int[] y, long x) where T : struct, IStaticMod
+        {
+            var modY = new MontgomeryModInt<T>[y.Length];
+            var modPlots = new (MontgomeryModInt<T> x, MontgomeryModInt<T> y)[y.Length];
+            for (int i = 0; i < y.Length; i++)
             {
-                var modY = new MontgomeryModInt<T>[y.Length];
-                var modPlots = new (MontgomeryModInt<T> x, MontgomeryModInt<T> y)[y.Length];
-                for (int i = 0; i < y.Length; i++)
-                {
-                    modY[i] = y[i];
-                    modPlots[i] = (i, y[i]);
-                }
-
-                var fps = LagrangeInterpolation.Coefficient(modPlots);
-                LagrangeInterpolation.Eval<T>(modY, x).ShouldBe(fps.Eval(x));
+                modY[i] = y[i];
+                modPlots[i] = (i, y[i]);
             }
+
+            var fps = LagrangeInterpolation.Coefficient(modPlots);
+            LagrangeInterpolation.Eval<T>(modY, x).ShouldBe(fps.Eval(x));
         }
     }
 }

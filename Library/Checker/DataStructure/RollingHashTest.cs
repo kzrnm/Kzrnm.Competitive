@@ -1,29 +1,28 @@
 using Kzrnm.Competitive.IO;
 using System.Runtime.CompilerServices;
 
-namespace Kzrnm.Competitive.DataStructure
-{
-    internal class RollingHashTest : BaseSolver
-    {
-        public override string Url => "https://judge.yosupo.jp/problem/zalgorithm";
-        public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
-        {
-            Asciis S = cr;
-            var rh = RollingHash.Create(S);
-            var rt = new int[S.Length];
-            rt[0] = S.Length;
+namespace Kzrnm.Competitive.DataStructure;
 
-            for (int i = 1; i < rt.Length; i++)
-            {
-                rt[i] = new F(rh, i).BinarySearch(0, rt.Length - i + 1);
-            }
-            cw.WriteLineJoin(rt);
-            return null;
-        }
-        readonly record struct F(RollingHash Rh, int Start) : IOk<int>
+internal class RollingHashTest : BaseSolver
+{
+    public override string Url => "https://judge.yosupo.jp/problem/zalgorithm";
+    public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
+    {
+        Asciis S = cr;
+        var rh = RollingHash.Create(S);
+        var rt = new int[S.Length];
+        rt[0] = S.Length;
+
+        for (int i = 1; i < rt.Length; i++)
         {
-            [MethodImpl(256)]
-            public bool Ok(int len) => Rh[..len] == Rh.Slice(Start, len);
+            rt[i] = new F(rh, i).BinarySearch(0, rt.Length - i + 1);
         }
+        cw.WriteLineJoin(rt);
+        return null;
+    }
+    readonly record struct F(RollingHash Rh, int Start) : IOk<int>
+    {
+        [MethodImpl(256)]
+        public bool Ok(int len) => Rh[..len] == Rh.Slice(Start, len);
     }
 }

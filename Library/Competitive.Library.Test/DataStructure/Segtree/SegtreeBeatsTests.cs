@@ -1,96 +1,95 @@
 using static System.Math;
 
-namespace Kzrnm.Competitive.Testing.DataStructure
+namespace Kzrnm.Competitive.Testing.DataStructure;
+
+public class SegtreeBeatsTests
 {
-    public class SegtreeBeatsTests
+    [Fact]
+    public void Native()
     {
-        [Fact]
-        public void Native()
+        Sums<long> sums;
+        var seg = new SegtreeBeats<S, long, Op>(new S[10].Fill(new S(0)));
+        seg.Apply(0, 8, 1);
+        sums = Sums.Create(new long[] { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 });
+        for (int l = 0; l < 10; l++)
+            for (int r = l; r <= 10; r++)
+                seg[l..r].sum.ShouldBe(sums[l..r]);
+
+        seg.Apply(0, 3, 5);
+        sums = Sums.Create(new long[] { 5, 5, 5, 1, 1, 1, 1, 1, 0, 0 });
+        for (int l = 0; l < 10; l++)
+            for (int r = l; r <= 10; r++)
+                seg[l..r].sum.ShouldBe(sums[l..r]);
+
+        seg.Apply(2, 5, 2);
+        sums = Sums.Create(new long[] { 5, 5, 5, 2, 2, 1, 1, 1, 0, 0 });
+        for (int l = 0; l < 10; l++)
+            for (int r = l; r <= 10; r++)
+                seg[l..r].sum.ShouldBe(sums[l..r]);
+    }
+    struct S(long num, int cnt = 1)
+    {
+        public long max = num;
+        public long max2 = long.MinValue >> 2;
+        public long sum = num * cnt;
+        public int cnt = cnt;
+        public int maxCnt = cnt;
+
+        public override readonly string ToString() => $"max: {max}, max2: {max2}, sum: {sum}, cnt: {cnt}, maxCnt: {maxCnt}";
+    }
+
+    struct Op : ISegtreeBeatsOperator<S, long>
+    {
+        public S Identity => new()
         {
-            Sums<long> sums;
-            var seg = new SegtreeBeats<S, long, Op>(new S[10].Fill(new S(0)));
-            seg.Apply(0, 8, 1);
-            sums = Sums.Create(new long[] { 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 });
-            for (int l = 0; l < 10; l++)
-                for (int r = l; r <= 10; r++)
-                    seg[l..r].sum.ShouldBe(sums[l..r]);
+            max = long.MinValue >> 2,
+            max2 = long.MinValue >> 2,
+        };
 
-            seg.Apply(0, 3, 5);
-            sums = Sums.Create(new long[] { 5, 5, 5, 1, 1, 1, 1, 1, 0, 0 });
-            for (int l = 0; l < 10; l++)
-                for (int r = l; r <= 10; r++)
-                    seg[l..r].sum.ShouldBe(sums[l..r]);
+        public readonly long FIdentity => long.MinValue >> 2;
 
-            seg.Apply(2, 5, 2);
-            sums = Sums.Create(new long[] { 5, 5, 5, 2, 2, 1, 1, 1, 0, 0 });
-            for (int l = 0; l < 10; l++)
-                for (int r = l; r <= 10; r++)
-                    seg[l..r].sum.ShouldBe(sums[l..r]);
+        public S Operate(S x, S y) => new()
+        {
+            max = Max(x.max, y.max),
+            max2 = Max2(x.max, x.max2, y.max, y.max2),
+            sum = x.sum + y.sum,
+            cnt = x.cnt + y.cnt,
+            maxCnt = x.max == y.max ? x.maxCnt + y.maxCnt : x.max > y.max ? x.maxCnt : y.maxCnt,
+        };
+
+        readonly long Max2(long v1, long v2, long v3, long v4)
+        {
+            if (v1 == v3) return Max(v2, v4);
+            if (v1 > v3) return Max(v2, v3);
+            else return Max(v1, v4);
         }
-        struct S(long num, int cnt = 1)
+        public bool Mapping(long f, S x, out S res)
         {
-            public long max = num;
-            public long max2 = long.MinValue >> 2;
-            public long sum = num * cnt;
-            public int cnt = cnt;
-            public int maxCnt = cnt;
-
-            public override readonly string ToString() => $"max: {max}, max2: {max2}, sum: {sum}, cnt: {cnt}, maxCnt: {maxCnt}";
-        }
-
-        struct Op : ISegtreeBeatsOperator<S, long>
-        {
-            public S Identity => new()
+            if (x.cnt == 0)
             {
-                max = long.MinValue >> 2,
-                max2 = long.MinValue >> 2,
-            };
-
-            public readonly long FIdentity => long.MinValue >> 2;
-
-            public S Operate(S x, S y) => new()
-            {
-                max = Max(x.max, y.max),
-                max2 = Max2(x.max, x.max2, y.max, y.max2),
-                sum = x.sum + y.sum,
-                cnt = x.cnt + y.cnt,
-                maxCnt = x.max == y.max ? x.maxCnt + y.maxCnt : x.max > y.max ? x.maxCnt : y.maxCnt,
-            };
-
-            readonly long Max2(long v1, long v2, long v3, long v4)
-            {
-                if (v1 == v3) return Max(v2, v4);
-                if (v1 > v3) return Max(v2, v3);
-                else return Max(v1, v4);
+                res = Identity;
+                return true;
             }
-            public bool Mapping(long f, S x, out S res)
+            if (f >= x.max)
             {
-                if (x.cnt == 0)
-                {
-                    res = Identity;
-                    return true;
-                }
-                if (f >= x.max)
-                {
-                    res = new S(f, x.cnt);
-                    return true;
-                }
-                if (x.cnt == x.maxCnt)
-                {
-                    res = x;
-                    return true;
-                }
-                if (f > x.max2)
-                {
-                    res = x;
-                    res.max2 = f;
-                    res.sum = x.max * x.maxCnt + (x.cnt - x.maxCnt) * f;
-                    return true;
-                }
+                res = new S(f, x.cnt);
+                return true;
+            }
+            if (x.cnt == x.maxCnt)
+            {
                 res = x;
-                return false;
+                return true;
             }
-            public readonly long Composition(long nf, long cf) => Max(nf, cf);
+            if (f > x.max2)
+            {
+                res = x;
+                res.max2 = f;
+                res.sum = x.max * x.maxCnt + (x.cnt - x.maxCnt) * f;
+                return true;
+            }
+            res = x;
+            return false;
         }
+        public readonly long Composition(long nf, long cf) => Max(nf, cf);
     }
 }
