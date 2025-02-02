@@ -352,7 +352,6 @@ public class BitMatrix64Tests
             0b110,
             [
                 0b010ul,
-                0b100ul,
             ]
         },
         {

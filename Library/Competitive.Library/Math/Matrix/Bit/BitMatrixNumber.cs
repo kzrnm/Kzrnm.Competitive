@@ -36,7 +36,6 @@ namespace Kzrnm.Competitive
             this.kind = kind;
             _v = null;
         }
-
         public BitMatrix(T[] value)
         {
             _v = value;
@@ -255,10 +254,6 @@ namespace Kzrnm.Competitive
                 var s = int.CreateTruncating(T.Log2(v));
                 if (log2 < s) log2 = s;
             }
-            {
-                var s = int.CreateTruncating(T.Log2(vector));
-                if (log2 < s) log2 = s;
-            }
             return LinearSystem(vector, log2 + 1);
         }
 
@@ -319,8 +314,11 @@ namespace Kzrnm.Competitive
                     int f = idxs[y];
                     used.Remove(f);
                     v |= (impl[y] >> width) << f;
-                    for (int x = f + 1; x < w; x++)
-                        v ^= (((v & impl[y]) >> x) & T.One) << f;
+
+                    var smask = ~((T.One << (f + 1)) - T.One);
+                    var tmask = (T.One << w) - T.One;
+                    if (T.IsOddInteger(T.PopCount(v & impl[y] & smask & tmask)))
+                        v ^= T.One << f;
                 }
                 lst.Add(v);
             }
@@ -363,12 +361,15 @@ namespace Kzrnm.Competitive
             if (kind != Kd.Normal) return kind.ToString();
             var bitSize = BitSize();
             var sb = new StringBuilder(_v.Length * (bitSize + 2));
-            var charsSize = (bitSize + 63) >> 6;
 
+#if NET8_0_OR_GREATER
             char[] bufArray = null;
             Span<char> buf = bitSize <= 256
                 ? stackalloc char[512]
                 : (bufArray = ArrayPool<char>.Shared.Rent(bitSize));
+#else
+            var charsSize = (bitSize + 63) >> 6;
+#endif
 
             foreach (var row in _v)
             {
@@ -391,8 +392,10 @@ namespace Kzrnm.Competitive
                 sb.Append('\n');
             }
 
+#if NET8_0_OR_GREATER
             if (bufArray != null)
                 ArrayPool<char>.Shared.Return(bufArray);
+#endif
             return sb.Remove(sb.Length - 1, 1).ToString();
         }
         /// <summary>

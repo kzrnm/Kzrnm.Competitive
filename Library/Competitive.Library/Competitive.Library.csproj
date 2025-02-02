@@ -7,6 +7,13 @@
     <RootNamespace>Kzrnm.Competitive</RootNamespace>
     <OutputType>Library</OutputType>
     <NoWarn>$(NoWarn);1701;1702;CA1034;CA1036;CA1815;CA2211;CS1591;IDE1006;IDE0034;IDE0305;IDE0044;IDE0062;IDE0130;EMBED0004;EMBED0010</NoWarn>
+
+    <!-- 脱.NET7後は有効にしても良い
+    IDE0300: コレクションの初期化を簡略化します
+    IDE0301: コレクションの初期化を簡略化します
+    -->
+    <NoWarn>$(NoWarn);IDE0290;IDE0300;IDE0301</NoWarn>
+
     <DefineConstants>$(DefineConstants);ATCODER_CONTRACT</DefineConstants>
     <Configurations>Debug;Release;Library</Configurations>
     <CompetitiveAnalyzer_UseMethodImplNumeric>True</CompetitiveAnalyzer_UseMethodImplNumeric>

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using BitArray = System.Collections.BitArray;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -176,11 +177,17 @@ namespace Kzrnm.Competitive
         public BitArray Multiply(BitArray vector)
         {
             var val = _v;
-            var res = new bool[val.Length];
-            for (int i = 0; i < res.Length; i++)
-                res[i] = (new BitArray(val[i]).And(vector).PopCount() & 1) != 0;
-
-            return new BitArray(res);
+            var b = new BitArray(val.Length);
+            var a = b.GetArray();
+            for (int i = 0; i < val.Length;)
+            {
+                ref var t = ref a[i >> 5];
+                for (int j = 0; i < val.Length && j < 32; j++, i++)
+                {
+                    t |= (uint)(new BitArray(val[i]).And(vector).PopCount() & 1) << j;
+                }
+            }
+            return b;
         }
 
 
@@ -350,9 +357,7 @@ namespace Kzrnm.Competitive
                 {
                     int f = idxs[y];
                     used.Remove(f);
-                    v[f] = impl[y][^1];
-                    for (int x = f + 1; x < w; x++)
-                        v[f] ^= v[x] && impl[y][x];
+                    v[f] = impl[y][^1] != AndPopCnt(v, impl[y], f + 1, w);
                 }
                 lst.Add(v);
             }
@@ -364,12 +369,87 @@ namespace Kzrnm.Competitive
                 for (int y = idxs.Length - 1; y >= 0; y--)
                 {
                     int f = idxs[y];
-                    for (int x = f + 1; x < w; x++)
-                        v[f] ^= v[x] && impl[y][x];
+                    CheckAndPopCnt(v, impl[y], f + 1, w);
+                    v[f] ^= AndPopCnt(v, impl[y], f + 1, w);
                 }
                 lst.Add(v);
             }
             return lst.ToArray();
+        }
+
+        [SourceExpander.NotEmbeddingSource]
+        [Conditional("DEBUG")]
+        static void CheckAndPopCnt(BitArray a, BitArray b, int l, int r)
+        {
+            if (AndPopCnt(a, b, l, r) != Naive(a, b, l, r))
+            {
+                AndPopCnt(a, b, l, r);
+                Debug.Fail("ナイーブ解と異なる");
+            }
+            bool Naive(BitArray a, BitArray b, int l, int r)
+            {
+                var rt = false;
+                for (int x = l; x < r; x++)
+                    rt ^= a[x] && b[x];
+                return rt;
+            }
+        }
+
+        [凾(256)]
+        static bool AndPopCnt(BitArray a, BitArray b, int l, int r)
+        {
+            //var rt = false;
+            //for (int x = l; x < r; x++)
+            //    rt ^= a[x] && b[x];
+            //return rt;
+            if (l >= r) return false;
+
+            var u = a.GetArray();
+            var v = b.GetArray();
+
+            var smask = ~((1u << (l & 31)) - 1);
+            var s = l >> 5;
+            var tmask = (1u << (r & 31)) - 1;
+            if (tmask == 0) --tmask;
+            var t = --r >> 5;
+            if (s == t)
+            {
+                return (BitOperations.PopCount(u[s] & v[s] & smask & tmask) & 1) != 0;
+            }
+            var c = u[s] & v[s] & smask;
+            c ^= u[t] & v[t] & tmask;
+
+            for (int i = t - 1; i > s; i--)
+                c ^= u[i] & v[i];
+
+            return (BitOperations.PopCount(c) & 1) != 0;
+        }
+
+        /// <summary>
+        /// 行列式を求めます。
+        /// </summary>
+        [凾(256)]
+        public bool Determinant()
+        {
+            if (_v.Length == 0) return true;
+            Contract.Assert(_v.Length == _v[0].Length);
+            var arr = _v.Select(v => new BitArray(v)).ToArray();
+
+            //上三角行列
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (!arr[i][i])
+                {
+                    if (!SearchNonZero(arr, i, i))
+                        return false;
+                }
+                for (int j = i + 1; j < arr.Length; j++)
+                {
+                    if (arr[j][i])
+                        arr[j].Xor(arr[i]);
+                }
+            }
+            return true;
         }
 
         [凾(256)]
