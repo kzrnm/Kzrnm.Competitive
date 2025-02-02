@@ -266,6 +266,8 @@ jobs:
     needs: [verify]
     outputs:
       upload-pages: ${{steps.upload-pages.outcome == 'success'}}
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -303,6 +305,7 @@ jobs:
           working-directory: Library/.competitive-verifier
           result-files: ${{ steps.all-artifacts.outputs.artifacts-root }}/Result-*/result.json
           output-path: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
+
       - name: Save cached results
         if: ${{ ! inputs.ignore_prev_result }}
         uses: actions/cache/save@v4
@@ -332,6 +335,21 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
+
+      - name: Push prev-result.json
+        if: github.ref == 'refs/heads/main'
+        working-directory: Library/.competitive-verifier/
+        continue-on-error: true
+        run: |
+          cp merged-result.json prev-result.json
+          gzip prev-result.json --force
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch --force-create prev-result
+          git add prev-result.json.gz
+          git commit -m "Update prev-result.json"
+          git push --set-upstream origin prev-result -f
 
       - name: Check
         uses: competitive-verifier/actions/check@v2
