@@ -4,9 +4,11 @@ using Xunit.Sdk;
 
 namespace Kzrnm.Competitive.Testing.TwoDimensional;
 
+using Point = PointDouble;
+
 public class PointDoubleTests
 {
-    public static TheoryData<PointDouble, PointDouble, double, double> Distance_Data => new()
+    public static TheoryData<Point, Point, double, double> Distance_Data => new()
     {
         { new (0,0), new (0,0), 0, 0 },
         { new (1,1), new (1,1), 0, 0 },
@@ -17,7 +19,7 @@ public class PointDoubleTests
     };
     [Theory]
     [MemberData(nameof(Distance_Data))]
-    public void Distance(PointDouble p1, PointDouble p2, double d2, double distance)
+    public void Distance(Point p1, Point p2, double d2, double distance)
     {
         p1.Distance2(p2).ShouldBe(d2);
         p2.Distance2(p1).ShouldBe(d2);
@@ -25,7 +27,7 @@ public class PointDoubleTests
         p2.Distance(p1).ShouldBe(distance);
     }
 
-    public static PointDouble[] SortedPoints =>
+    public static Point[] SortedPoints =>
     [
         new (0, 0),
         new (1, 0),
@@ -60,7 +62,7 @@ public class PointDoubleTests
                     .ShouldBe(i.CompareTo(j), $"({SortedPoints[i]}).CompareTo(({SortedPoints[j]})) == {i}.CompareTo({j})");
     }
 
-    public static TheoryData<PointDouble, PointDouble, double> Inner_Data => new()
+    public static TheoryData<Point, Point, double> Inner_Data => new()
     {
         { new (0,0), new (0,0), 0 },
         { new (0,1), new (1,0), 0 },
@@ -70,12 +72,12 @@ public class PointDoubleTests
     };
     [Theory]
     [MemberData(nameof(Inner_Data))]
-    public void Inner(PointDouble p1, PointDouble p2, double expected)
+    public void Inner(Point p1, Point p2, double expected)
     {
         p1.Inner(p2).ShouldBe(expected);
     }
 
-    public static TheoryData<PointDouble, PointDouble, double> Cross_Data => new()
+    public static TheoryData<Point, Point, double> Cross_Data => new()
     {
         { new (0,0), new (0,0), 0 },
         { new (0,1), new (1,0), -1 },
@@ -85,15 +87,15 @@ public class PointDoubleTests
     };
     [Theory]
     [MemberData(nameof(Cross_Data))]
-    public void Cross(PointDouble p1, PointDouble p2, double expected)
+    public void Cross(Point p1, Point p2, double expected)
     {
         p1.Cross(p2).ShouldBe(expected);
     }
 
-    public static TheoryData<PointDouble[], double> Area_Data => new()
+    public static TheoryData<Point[], double> Area_Data => new()
     {
         {
-            new PointDouble[]
+            new Point[]
             {
                 new(1,1),
                 new(2,2),
@@ -103,7 +105,7 @@ public class PointDoubleTests
             6
         },
         {
-            new PointDouble[]
+            new Point[]
             {
                 new(-1,1),
                 new(1,3),
@@ -113,7 +115,7 @@ public class PointDoubleTests
             6
         },
         {
-            new PointDouble[]
+            new Point[]
             {
                 new(1.1,0.51),
                 new(1.95,6.4423),
@@ -126,92 +128,90 @@ public class PointDoubleTests
 
     [Theory]
     [MemberData(nameof(Area_Data))]
-    public void Area(PointDouble[] points, double expected)
+    public void Area(Point[] points, double expected)
     {
-        PointDouble.Area2(points).ShouldBe(expected);
-        PointDouble.Area(points).ShouldBe(expected / 2.0);
+        Point.Area2(points).ShouldBe(expected);
+        Point.Area(points).ShouldBe(expected / 2.0);
     }
-
-    [Fact]
-    public void ConvexHull1()
+    public static TheoryData<Point[], int[], int[]> ConvexHull_Data => new()
     {
-        var points = new PointDouble[]
         {
-            (100000000, 100000000),
-            ( 80000000,  90000000),
-            ( 10000000, -10000000),
-            (100000000,  80000000),
-            ( 40000000,  20000000),
-            ( 80000000,  60000000),
-            ( 40000000,  80000000),
-            ( 10000000,  50000000),
-            (110000000, 100000000),
-            ( 60000000,  80000000),
-            ( 80000000,  80000000),
-            (-10000000,  50000000),
-        };
-        PointDouble.ConvexHull(points)
-            .Select(i => points[i])
-            .ShouldBe([
-                (10000000, -10000000),
-                (40000000, 20000000),
-                (80000000, 60000000),
-                (100000000, 80000000),
-                (110000000, 100000000),
+            [
                 (100000000, 100000000),
-                (40000000, 80000000),
-                (-10000000, 50000000)
-            ]);
-    }
-
-    [Fact]
-    public void ConvexHull2()
-    {
-        var points = new PointDouble[]
+                ( 80000000,  90000000),
+                ( 10000000, -10000000),
+                (100000000,  80000000),
+                ( 40000000,  20000000),
+                ( 80000000,  60000000),
+                ( 40000000,  80000000),
+                ( 10000000,  50000000),
+                (110000000, 100000000),
+                ( 60000000,  80000000),
+                ( 80000000,  80000000),
+                (-10000000,  50000000),
+            ],
+            [2, 4, 5, 3, 8, 0, 6, 11],
+            [2, 3, 8, 0, 6, 11]
+        },
         {
-            (10, 10),
-            ( 8,  9),
-            ( 8,  8),
-            (10,  8),
-            ( 0,  0),
-            ( 4,  0),
-            ( 8,  6),
-            ( 1,  5),
-            ( 6,  8),
-            (11, 10),
-            ( 1,  8),
-            (-6,  6),
-            (-4,  4),
-            (-1,  1)
-        };
-        PointDouble.ConvexHull(points)
-            .Select(i => points[i])
-            .ShouldBe([
-                (0, 0),
-                (4, 0),
-                (10, 8),
-                (11, 10),
+            [
                 (10, 10),
-                (1, 8),
-                (-6, 6),
-                (-4, 4),
-                (-1, 1)
-            ]);
-    }
+                ( 8,  9),
+                ( 8,  8),
+                (10,  8),
+                ( 0,  0),
+                ( 4,  0),
+                ( 8,  6),
+                ( 1,  5),
+                ( 6,  8),
+                (11, 10),
+                ( 1,  8),
+                (-6,  6),
+                (-4,  4),
+                (-1,  1),
+            ],
+            [4, 5, 3, 9, 0, 10, 11, 12, 13],
+            [4, 5, 3, 9, 0, 10, 11]
+        },
+        {
+            [
+                (0, 0),
+                (0, 1),
+                (0, 2),
+                (0, 2),
+                (1, 0),
+                (1, 1),
+                (1, 1),
+                (1, 2),
+                (2, 0),
+                (2, 1),
+                (2, 2),
+            ],
+            [0, 4, 8, 9, 10, 7, 2, 1],
+            [0, 8, 10, 3]
+        }
+    };
 
-    public static TheoryData<PointDouble, PointDouble, PointDouble, PointDouble> 外心_Data => new()
+    [Theory]
+    [MemberData(nameof(ConvexHull_Data))]
+    public void ConvexHull(Point[] points, int[] expectedNotStrict, int[] expectedStrict)
+    {
+        Point.ConvexHull(points).ShouldBe(expectedNotStrict);
+        Point.ConvexHull(points, true).ShouldBe(expectedStrict);
+    }
+    public static TheoryData<Point, Point, Point, Point> 外心_Data => new()
     {
         { new (0,0), new (1,0), new (0,1), new (0.5000000000000001,0.5000000000000001) },
         { new (-11,4), new (-0.2,60), new (62,-10), new (30.86367239101717, 24.967720324589546) },
     };
     [Theory]
     [MemberData(nameof(外心_Data))]
-    public void 外心(PointDouble p1, PointDouble p2, PointDouble p3, PointDouble expected)
+    public void 外心(Point p1, Point p2, Point p3, Point expected)
     {
-        PointDouble.外心(p1, p2, p3).ShouldBe(expected);
+        Point.外心(p1, p2, p3).ShouldBe(expected);
     }
 
-    public static TheoryData<PointDouble, double, double, double, double> 直線との距離_Data => new()
+    public static TheoryData<Point, double, double, double, double> 直線との距離_Data => new()
     {
         { new (0,0), 1, 1, -1, 0.7071067811865475 },
         { new (0,0), -1, -1, 2, 1.414213562373095 },
@@ -221,12 +221,12 @@ public class PointDoubleTests
     };
     [Theory]
     [MemberData(nameof(直線との距離_Data))]
-    public void 直線との距離(PointDouble p, double a, double b, double c, double expected)
+    public void 直線との距離(Point p, double a, double b, double c, double expected)
     {
         p.直線との距離(a, b, c).ShouldBe(expected);
     }
 
-    public static TheoryData<PointDouble, PointDouble, SerializableTuple<double, double, double>> 直線_Data => new()
+    public static TheoryData<Point, Point, SerializableTuple<double, double, double>> 直線_Data => new()
     {
         { new (0,0), new (1,1), (1, -1, 0) },
         { new (1,0), new (1,1), (1, 0, -1) },
@@ -235,12 +235,12 @@ public class PointDoubleTests
     };
     [Theory]
     [MemberData(nameof(直線_Data))]
-    public void 直線(PointDouble p1, PointDouble p2, SerializableTuple<double, double, double> expected)
+    public void 直線(Point p1, Point p2, SerializableTuple<double, double, double> expected)
     {
         p1.直線(p2).ShouldBe(expected.ToTuple());
     }
 
-    public static TheoryData<PointDouble, PointDouble, SerializableTuple<double, double, double>> 垂直二等分線_Data => new()
+    public static TheoryData<Point, Point, SerializableTuple<double, double, double>> 垂直二等分線_Data => new()
     {
         { new (0,0), new (1,1), (-1, -1, 1) },
         { new (1,0), new (1,1), (0, -1, 0.5) },
@@ -249,24 +249,24 @@ public class PointDoubleTests
     };
     [Theory]
     [MemberData(nameof(垂直二等分線_Data))]
-    public void 垂直二等分線(PointDouble p1, PointDouble p2, SerializableTuple<double, double, double> expected)
+    public void 垂直二等分線(Point p1, Point p2, SerializableTuple<double, double, double> expected)
     {
         p1.垂直二等分線(p2).ShouldBe(expected.ToTuple());
     }
 
-    public static TheoryData<double, double, double, double, double, double, PointDouble> 直線と直線の交点_Data => new()
+    public static TheoryData<double, double, double, double, double, double, Point> 直線と直線の交点_Data => new()
     {
         { 1, 1, 1, -1, 1, 2, new (0.5, -1.5) },
         { -1, 5, .5, -7, 7, 5.8, new (0.9107142857142857, 0.08214285714285714) },
     };
     [Theory]
     [MemberData(nameof(直線と直線の交点_Data))]
-    public void 直線と直線の交点(double a, double b, double c, double u, double v, double w, PointDouble expected)
+    public void 直線と直線の交点(double a, double b, double c, double u, double v, double w, Point expected)
     {
-        PointDouble.直線と直線の交点(a, b, c, u, v, w).ShouldBe(expected);
+        Point.直線と直線の交点(a, b, c, u, v, w).ShouldBe(expected);
     }
 
-    public static TheoryData<double, double, PointDouble, SerializableTuple<double, double, double>> 直線の垂線_Data => new()
+    public static TheoryData<double, double, Point, SerializableTuple<double, double, double>> 直線の垂線_Data => new()
     {
         { 1, 1, new (0.5, -1.5), (1, -1, -2) },
         { 4, 7, new (-10, 2), (7, -4, 78) },
@@ -275,41 +275,41 @@ public class PointDoubleTests
     };
     [Theory]
     [MemberData(nameof(直線の垂線_Data))]
-    public void 直線の垂線(double a, double b, PointDouble p, SerializableTuple<double, double, double> expected)
+    public void 直線の垂線(double a, double b, Point p, SerializableTuple<double, double, double> expected)
     {
-        PointDouble.直線の垂線(a, b, p).ShouldBe(expected.ToTuple());
+        Point.直線の垂線(a, b, p).ShouldBe(expected.ToTuple());
     }
 
-    public static TheoryData<double, double, double, PointDouble, double, PointDouble[]> 直線と円の交点_Data => new()
+    public static TheoryData<double, double, double, Point, double, Point[]> 直線と円の交点_Data => new()
     {
-        { 1, -1, 1, new (0, 0), 0.1, Array.Empty<PointDouble>() },
-        { 0, -1, 1, new (0, 0), 1, new PointDouble[]{ new (0, 1) } },
-        { 1, -1, 1, new (0, 0), 1, new PointDouble[]{ new (-1, 0), new (0, 1) } },
+        { 1, -1, 1, new (0, 0), 0.1, Array.Empty<Point>() },
+        { 0, -1, 1, new (0, 0), 1, new Point[]{ new (0, 1) } },
+        { 1, -1, 1, new (0, 0), 1, new Point[]{ new (-1, 0), new (0, 1) } },
     };
     [Theory]
     [MemberData(nameof(直線と円の交点_Data))]
-    public void 直線と円の交点(double a, double b, double c, PointDouble p, double r, PointDouble[] expected)
+    public void 直線と円の交点(double a, double b, double c, Point p, double r, Point[] expected)
     {
-        PointDouble.直線と円の交点(a, b, c, p, r).Order().ShouldBe(expected.Order());
+        Point.直線と円の交点(a, b, c, p, r).Order().ShouldBe(expected.Order());
     }
 
-    public static TheoryData<PointDouble, double, PointDouble, double, PointDouble[]> 円の交点_Data => new()
+    public static TheoryData<Point, double, Point, double, Point[]> 円の交点_Data => new()
     {
-        { new (-1, -1), 10, new (1, 2), 1, Array.Empty<PointDouble>() },
-        { new (5, 0), 5, new (1, 0), 1, new PointDouble[]{ new (0, 0) } },
-        { new (-1, 0), 1.2, new (1, 0), 1.2, new PointDouble[]{ new (0, 0.6633249580710799), new (0, -0.6633249580710799) } },
-        { new (0, 0), 1, new (1, 1), 1, new PointDouble[]{ new (0, 1), new (1, 0) } },
-        { new (-1, 0), 1, new (1, 0), 1, new PointDouble[]{ new (0, 0) } },
-        { new (-1, 0), 0.8, new (1, 0), 1, Array.Empty<PointDouble>() },
+        { new (-1, -1), 10, new (1, 2), 1, Array.Empty<Point>() },
+        { new (5, 0), 5, new (1, 0), 1, new Point[]{ new (0, 0) } },
+        { new (-1, 0), 1.2, new (1, 0), 1.2, new Point[]{ new (0, 0.6633249580710799), new (0, -0.6633249580710799) } },
+        { new (0, 0), 1, new (1, 1), 1, new Point[]{ new (0, 1), new (1, 0) } },
+        { new (-1, 0), 1, new (1, 0), 1, new Point[]{ new (0, 0) } },
+        { new (-1, 0), 0.8, new (1, 0), 1, Array.Empty<Point>() },
     };
     [Theory]
     [MemberData(nameof(円の交点_Data))]
-    public void 円の交点(PointDouble p1, double r1, PointDouble p2, double r2, PointDouble[] expected)
+    public void 円の交点(Point p1, double r1, Point p2, double r2, Point[] expected)
     {
-        PointDouble.円の交点(p1, r1, p2, r2).Order().ShouldBe(expected.Order());
+        Point.円の交点(p1, r1, p2, r2).Order().ShouldBe(expected.Order());
     }
 
-    public static TheoryData<PointDouble, double, PointDouble, double, CirclePosition> 円の位置関係_Data => new()
+    public static TheoryData<Point, double, Point, double, CirclePosition> 円の位置関係_Data => new()
     {
         { new (-1, -1), 10, new (1, 2), 1, CirclePosition.Inner },
         { new (5, 0), 5, new (1, 0), 1, CirclePosition.Inscribed },
@@ -320,12 +320,12 @@ public class PointDoubleTests
     };
     [Theory]
     [MemberData(nameof(円の位置関係_Data))]
-    public void 円の位置関係(PointDouble p1, double r1, PointDouble p2, double r2, CirclePosition expected)
+    public void 円の位置関係(Point p1, double r1, Point p2, double r2, CirclePosition expected)
     {
-        PointDouble.円の位置関係(p1, r1, p2, r2).ShouldBe(expected);
+        Point.円の位置関係(p1, r1, p2, r2).ShouldBe(expected);
     }
 
-    public static TheoryData<PointDouble, double, PointDouble, double, double> 円の距離_Data => new()
+    public static TheoryData<Point, double, Point, double, double> 円の距離_Data => new()
     {
         { new (-1, -1), 10, new (1, 2), 1, 5.39444872453601 },
         { new (5, 0), 5, new (1, 0), 1, 0 },
@@ -336,12 +336,12 @@ public class PointDoubleTests
     };
     [Theory]
     [MemberData(nameof(円の距離_Data))]
-    public void 円の距離(PointDouble p1, double r1, PointDouble p2, double r2, double expected)
+    public void 円の距離(Point p1, double r1, Point p2, double r2, double expected)
     {
-        PointDouble.円の距離(p1, r1, p2, r2).ShouldBe(expected, 1e-9);
+        Point.円の距離(p1, r1, p2, r2).ShouldBe(expected, 1e-9);
     }
 
-    public static TheoryData<PointDouble, PointDouble, PointDouble, PointDouble, int> 線分が交差しているか_Data => new()
+    public static TheoryData<Point, Point, Point, Point, int> 線分が交差しているか_Data => new()
     {
         { new (-1, -1), new (1, 1), new (-1, 0), new (0, 0.001), -1 },
         { new (-1, -1), new (1, 1), new (-1, 0), new (0, -0.001), 1 },
@@ -361,28 +361,28 @@ public class PointDoubleTests
     };
     [Theory]
     [MemberData(nameof(線分が交差しているか_Data))]
-    public void 線分が交差しているか(PointDouble a1, PointDouble b1, PointDouble a2, PointDouble b2, int expected)
+    public void 線分が交差しているか(Point a1, Point b1, Point a2, Point b2, int expected)
     {
-        PointDouble.線分が交差しているか(a1, b1, a2, b2).ShouldBe(expected);
-        PointDouble.線分が交差しているか(b1, a1, a2, b2).ShouldBe(expected);
-        PointDouble.線分が交差しているか(a1, b1, b2, a2).ShouldBe(expected);
-        PointDouble.線分が交差しているか(b1, a1, b2, a2).ShouldBe(expected);
+        Point.線分が交差しているか(a1, b1, a2, b2).ShouldBe(expected);
+        Point.線分が交差しているか(b1, a1, a2, b2).ShouldBe(expected);
+        Point.線分が交差しているか(a1, b1, b2, a2).ShouldBe(expected);
+        Point.線分が交差しているか(b1, a1, b2, a2).ShouldBe(expected);
 
-        PointDouble.線分が交差しているか(a2, b2, a1, b1).ShouldBe(expected);
-        PointDouble.線分が交差しているか(b2, a2, a1, b1).ShouldBe(expected);
-        PointDouble.線分が交差しているか(a2, b2, b1, a1).ShouldBe(expected);
-        PointDouble.線分が交差しているか(b2, a2, b1, a1).ShouldBe(expected);
+        Point.線分が交差しているか(a2, b2, a1, b1).ShouldBe(expected);
+        Point.線分が交差しているか(b2, a2, a1, b1).ShouldBe(expected);
+        Point.線分が交差しているか(a2, b2, b1, a1).ShouldBe(expected);
+        Point.線分が交差しているか(b2, a2, b1, a1).ShouldBe(expected);
     }
 
     public class 三角形に分割Data : IXunitSerializable
     {
-        public PointDouble[] Input { get; set; }
-        public (PointDouble, PointDouble, PointDouble)[] Expected { get; set; }
+        public Point[] Input { get; set; }
+        public (Point, Point, Point)[] Expected { get; set; }
 
         void IXunitSerializable.Deserialize(IXunitSerializationInfo info)
         {
-            Input = info.GetValue<PointDouble[]>(nameof(Input));
-            var ex = info.GetValue<PointDouble[]>(nameof(Expected));
+            Input = info.GetValue<Point[]>(nameof(Input));
+            var ex = info.GetValue<Point[]>(nameof(Expected));
             Expected = ex.Chunk(3).Select(t => (t[0], t[1], t[2])).ToArray();
         }
 
@@ -399,11 +399,11 @@ public class PointDoubleTests
             Expected = [],
         },
         new 三角形に分割Data {
-            Input = new PointDouble[1],
+            Input = new Point[1],
             Expected = [],
         },
         new 三角形に分割Data {
-            Input = new PointDouble[2],
+            Input = new Point[2],
             Expected = [],
         },
         new 三角形に分割Data {
@@ -439,7 +439,7 @@ public class PointDoubleTests
     [MemberData(nameof(三角形に分割_Data))]
     public void 三角形に分割(三角形に分割Data d)
     {
-        PointDouble.三角形に分割(d.Input).ShouldBe(d.Expected);
+        Point.三角形に分割(d.Input).ShouldBe(d.Expected);
     }
 
     [Fact]
@@ -448,7 +448,7 @@ public class PointDoubleTests
         var utf8Wrapper = new Utf8ConsoleWriterWrapper();
         using (var cw = utf8Wrapper.GetWriter())
         {
-            var arr = new PointDouble[]
+            var arr = new Point[]
             {
                 new(1.0/1, 1e-10),
                 new(-1.0/3, 1e-5),

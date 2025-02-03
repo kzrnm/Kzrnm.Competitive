@@ -3,9 +3,11 @@ using System.Linq;
 
 namespace Kzrnm.Competitive.Testing.TwoDimensional;
 
+using Point = PointLong;
+
 public class PointLongTests
 {
-    public static TheoryData<PointLong, PointLong, long, double> Distance_Data => new()
+    public static TheoryData<Point, Point, long, double> Distance_Data => new()
     {
         { new (0,0), new (0,0), 0, 0 },
         { new (1,1), new (1,1), 0, 0 },
@@ -15,7 +17,7 @@ public class PointLongTests
     };
     [Theory]
     [MemberData(nameof(Distance_Data))]
-    public void Distance(PointLong p1, PointLong p2, long d2, double distance)
+    public void Distance(Point p1, Point p2, long d2, double distance)
     {
         p1.Distance2(p2).ShouldBe(d2);
         p2.Distance2(p1).ShouldBe(d2);
@@ -23,7 +25,7 @@ public class PointLongTests
         p2.Distance(p1).ShouldBe(distance);
     }
 
-    public static PointLong[] SortedPoints =>
+    public static Point[] SortedPoints =>
     [
         new(0, 0),
         new(1, 0),
@@ -58,7 +60,7 @@ public class PointLongTests
                     $"({SortedPoints[i]}).CompareTo(({SortedPoints[j]})) == {i}.CompareTo({j})");
     }
 
-    public static TheoryData<PointLong, PointLong, long> Inner_Data => new()
+    public static TheoryData<Point, Point, long> Inner_Data => new()
     {
         { new (0,0), new (0,0), 0 },
         { new (0,1), new (1,0), 0 },
@@ -68,12 +70,12 @@ public class PointLongTests
     };
     [Theory]
     [MemberData(nameof(Inner_Data))]
-    public void Inner(PointLong p1, PointLong p2, long expected)
+    public void Inner(Point p1, Point p2, long expected)
     {
         p1.Inner(p2).ShouldBe(expected);
     }
 
-    public static TheoryData<PointLong, PointLong, long> Cross_Data => new()
+    public static TheoryData<Point, Point, long> Cross_Data => new()
     {
         { new (0,0), new (0,0), 0 },
         { new (0,1), new (1,0), -1 },
@@ -83,15 +85,15 @@ public class PointLongTests
     };
     [Theory]
     [MemberData(nameof(Cross_Data))]
-    public void Cross(PointLong p1, PointLong p2, long expected)
+    public void Cross(Point p1, Point p2, long expected)
     {
         p1.Cross(p2).ShouldBe(expected);
     }
 
-    public static TheoryData<PointLong[], long> Area_Data => new()
+    public static TheoryData<Point[], long> Area_Data => new()
     {
         {
-            new PointLong[]
+            new Point[]
             {
                 new(1,1),
                 new(2,2),
@@ -101,7 +103,7 @@ public class PointLongTests
             6
         },
         {
-            new PointLong[]
+            new Point[]
             {
                 new(-1,1),
                 new(1,3),
@@ -111,7 +113,7 @@ public class PointLongTests
             6
         },
         {
-            new PointLong[]
+            new Point[]
             {
                 new(1000000000-1,1000000000+1),
                 new(1000000000+1,1000000000+3),
@@ -124,77 +126,77 @@ public class PointLongTests
 
     [Theory]
     [MemberData(nameof(Area_Data))]
-    public void Area(PointLong[] points, long expected)
+    public void Area(Point[] points, long expected)
     {
-        PointLong.Area2(points).ShouldBe(expected);
-        PointLong.Area(points).ShouldBe(expected / 2.0);
+        Point.Area2(points).ShouldBe(expected);
+        Point.Area(points).ShouldBe(expected / 2.0);
     }
 
-    [Fact]
-    public void ConvexHull1()
+    public static TheoryData<Point[], int[], int[]> ConvexHull_Data => new()
     {
-        var points = new PointLong[]
         {
-            (100000000, 100000000),
-            ( 80000000,  90000000),
-            ( 10000000, -10000000),
-            (100000000,  80000000),
-            ( 40000000,  20000000),
-            ( 80000000,  60000000),
-            ( 40000000,  80000000),
-            ( 10000000,  50000000),
-            (110000000, 100000000),
-            ( 60000000,  80000000),
-            ( 80000000,  80000000),
-            (-10000000,  50000000),
-        };
-        PointLong.ConvexHull(points)
-            .Select(i => points[i])
-            .ShouldBe([
-                (10000000, -10000000),
-                (40000000, 20000000),
-                (80000000, 60000000),
-                (100000000, 80000000),
-                (110000000, 100000000),
+            [
                 (100000000, 100000000),
-                (40000000, 80000000),
-                (-10000000, 50000000),
-           ]);
-    }
-
-    [Fact]
-    public void ConvexHull2()
-    {
-        var points = new PointLong[]
+                ( 80000000,  90000000),
+                ( 10000000, -10000000),
+                (100000000,  80000000),
+                ( 40000000,  20000000),
+                ( 80000000,  60000000),
+                ( 40000000,  80000000),
+                ( 10000000,  50000000),
+                (110000000, 100000000),
+                ( 60000000,  80000000),
+                ( 80000000,  80000000),
+                (-10000000,  50000000),
+            ],
+            [2, 4, 5, 3, 8, 0, 6, 11],
+            [2, 3, 8, 0, 6, 11]
+        },
         {
-            (10, 10),
-            ( 8,  9),
-            ( 8,  8),
-            (10,  8),
-            ( 0,  0),
-            ( 4,  0),
-            ( 8,  6),
-            ( 1,  5),
-            ( 6,  8),
-            (11, 10),
-            ( 1,  8),
-            (-6,  6),
-            (-4,  4),
-            (-1,  1)
-        };
-        PointLong.ConvexHull(points)
-            .Select(i => points[i])
-            .ShouldBe([
-                (0, 0),
-                (4, 0),
-                (10, 8),
-                (11, 10),
+            [
                 (10, 10),
-                (1, 8),
-                (-6, 6),
-                (-4, 4),
-                (-1, 1),
-            ]);
+                ( 8,  9),
+                ( 8,  8),
+                (10,  8),
+                ( 0,  0),
+                ( 4,  0),
+                ( 8,  6),
+                ( 1,  5),
+                ( 6,  8),
+                (11, 10),
+                ( 1,  8),
+                (-6,  6),
+                (-4,  4),
+                (-1,  1),
+            ],
+            [4, 5, 3, 9, 0, 10, 11, 12, 13],
+            [4, 5, 3, 9, 0, 10, 11]
+        },
+        {
+            [
+                (0, 0),
+                (0, 1),
+                (0, 2),
+                (0, 2),
+                (1, 0),
+                (1, 1),
+                (1, 1),
+                (1, 2),
+                (2, 0),
+                (2, 1),
+                (2, 2),
+            ],
+            [0, 4, 8, 9, 10, 7, 2, 1],
+            [0, 8, 10, 3]
+        }
+    };
+
+    [Theory]
+    [MemberData(nameof(ConvexHull_Data))]
+    public void ConvexHull(Point[] points, int[] expectedNotStrict, int[] expectedStrict)
+    {
+        Point.ConvexHull(points).ShouldBe(expectedNotStrict);
+        Point.ConvexHull(points, true).ShouldBe(expectedStrict);
     }
 
     [Fact]
@@ -203,7 +205,7 @@ public class PointLongTests
         var utf8Wrapper = new Utf8ConsoleWriterWrapper();
         using (var cw = utf8Wrapper.GetWriter())
         {
-            var arr = new PointLong[]
+            var arr = new Point[]
             {
                 new(1, long.MinValue+0),
                 new(3, long.MinValue+1),

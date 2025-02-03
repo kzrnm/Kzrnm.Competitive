@@ -124,11 +124,19 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 凸包(一番外側の多角形)を求める
         /// </summary>
+        /// <param name="points">点の集合</param>
+        /// <param name="strict"><see langword="false"/> ならば辺上の点を含め、<see langword="true"/> ならば含めない</param>
+        /// <returns>凸包を構成する点のインデックスを順に列挙する</returns>
         [凾(256)]
-        public static int[] ConvexHull(ReadOnlySpan<P> points)
+        public static int[] ConvexHull(ReadOnlySpan<P> points, bool strict = false)
         {
             // https://en.wikipedia.org/wiki/Graham_scan
-            Contract.Assert(points.Length >= 2);
+            switch (points.Length)
+            {
+                case 0: return Array.Empty<int>();
+                case 1: return new int[1];
+            }
+
             var idx = new int[points.Length];
             P[] pts = new P[points.Length];
             {
@@ -155,18 +163,21 @@ namespace Kzrnm.Competitive
             var st = new List<int>(pts.Length) { 0 };
             for (int i = 1; i < pts.Length; i++)
             {
-                while (st.Count > 1 && CrossSign(pts[st[^2]], pts[st[^1]], pts[i]) < 0)
+                while (st.Count > 1
+                    && CrossSign(pts[st[^2]], pts[st[^1]], pts[i]) is var c && (c < 0 || c == 0 && strict))
                     st.RemoveAt(st.Count - 1);
-                st.Add(i);
+                if (pts[st[^1]] != pts[i])
+                    st.Add(i);
             }
 
             // 最後の並びが起点から一直線に並んでいる場合は保存されていないので追加で確認する
-            for (int i = st[^1] - 1; i > 0; i--)
-            {
-                if (CrossSign(pts[st[^1]], pts[i], pts[0]) == 0)
-                    st.Add(i);
-                else break;
-            }
+            if (!strict)
+                for (int i = st[^1] - 1; i > 0; i--)
+                {
+                    if (CrossSign(pts[st[^1]], pts[i], pts[0]) == 0)
+                        st.Add(i);
+                    else break;
+                }
 
             var res = new int[st.Count];
             for (int i = st.Count - 1; i >= 0; i--)
