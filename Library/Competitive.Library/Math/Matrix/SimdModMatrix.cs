@@ -107,7 +107,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 零行列かどうかを返します。
         /// </summary>
-        public bool IsZero => kind is Kd.Zero;
+        public bool IsZero => kind == Kd.Zero;
         [凾(256)] MontgomeryModInt<T>[] CloneArray() => (MontgomeryModInt<T>[])_v.Clone();
 
         SimdModMatrix<T> AddIdentity()

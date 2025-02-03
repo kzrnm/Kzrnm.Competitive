@@ -1,7 +1,7 @@
 using Kzrnm.Competitive.IO;
 using MontgomeryModInt = Kzrnm.Competitive.MontgomeryModInt<AtCoder.Mod998244353>;
 
-namespace Kzrnm.Competitive.Math;
+namespace Kzrnm.Competitive.MathNs;
 
 internal class KthLinearRecurrenceTest : BaseSolver
 {

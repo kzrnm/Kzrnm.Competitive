@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using System.Text;
 using BitArray = System.Collections.BitArray;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -18,7 +19,6 @@ namespace Kzrnm.Competitive
     public readonly struct BitOrMatrix
         : Internal.IMatrix<BitOrMatrix>
     {
-        public bool this[int row, int col] => _v[row][col];
         public readonly BitArray[] _v;
         public int Height => _v.Length;
         public int Width => _v[0].Length;
@@ -41,13 +41,16 @@ namespace Kzrnm.Competitive
             kind = Kd.Normal;
         }
         public BitOrMatrix(bool[][] value) : this(value.Select(a => new BitArray(a)).ToArray()) { }
+        public bool this[int row, int col] { [凾(256)] get => _v[row][col]; }
+        [凾(256)] public BitArray RowUnsafe(int i) => _v[i];
 
         static BitOrMatrix ThrowNotSupportResponse() => throw new NotSupportedException();
 
         /// <summary>
         /// 零行列かどうかを返します。
         /// </summary>
-        public bool IsZero => kind is Kd.Zero;
+        public bool IsZero => kind == Kd.Zero;
+        [凾(256)]
         static BitArray[] NormalZeroMatrix(int row, int col)
         {
             var arr = new BitArray[row];
@@ -55,6 +58,7 @@ namespace Kzrnm.Competitive
                 arr[i] = new BitArray(col);
             return arr;
         }
+        [凾(256)]
         static BitArray[] CloneArray(BitArray[] arr)
         {
             var res = new BitArray[arr.Length];
@@ -63,6 +67,7 @@ namespace Kzrnm.Competitive
             return res;
         }
 
+        [凾(256)]
         BitOrMatrix AddIdentity()
         {
             var arr = CloneArray(_v);
@@ -70,6 +75,7 @@ namespace Kzrnm.Competitive
                 arr[i][i] = true;
             return new BitOrMatrix(arr);
         }
+        [凾(256)]
         BitOrMatrix Add(BitOrMatrix other)
         {
             Contract.Assert(_v.Length == other._v.Length);
@@ -82,6 +88,7 @@ namespace Kzrnm.Competitive
 
             return new BitOrMatrix(arr);
         }
+        [凾(256)]
         public static BitOrMatrix operator +(BitOrMatrix x, BitOrMatrix y)
         {
             return x.kind switch
@@ -109,6 +116,7 @@ namespace Kzrnm.Competitive
 
         [凾(256)] public static BitOrMatrix operator +(BitOrMatrix x) => x;
 
+        [凾(256)]
         BitOrMatrix Multiply(BitOrMatrix other)
         {
             var val = _v;
@@ -124,6 +132,7 @@ namespace Kzrnm.Competitive
             }
             return new BitOrMatrix(res);
         }
+        [凾(256)]
         public static BitOrMatrix operator *(BitOrMatrix x, BitOrMatrix y)
         {
             return x.kind switch
@@ -151,16 +160,17 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// ベクトルにかける
         /// </summary>
-        public static BitArray operator *(BitOrMatrix mat, bool[] vector) => mat.Multiply(new BitArray(vector));
+        [凾(256)] public static BitArray operator *(BitOrMatrix mat, bool[] vector) => mat.Multiply(new BitArray(vector));
 
         /// <summary>
         /// ベクトルにかける
         /// </summary>
-        public static BitArray operator *(BitOrMatrix mat, BitArray vector) => mat.Multiply(vector);
+        [凾(256)] public static BitArray operator *(BitOrMatrix mat, BitArray vector) => mat.Multiply(vector);
 
         /// <summary>
         /// ベクトルにかける
         /// </summary>
+        [凾(256)]
         public BitArray Multiply(BitArray vector)
         {
             var val = _v;
@@ -175,25 +185,36 @@ namespace Kzrnm.Competitive
         public override bool Equals(object obj) => obj is BitOrMatrix x && Equals(x);
         [凾(256)]
         public bool Equals(BitOrMatrix other) =>
-            kind == other.kind && (kind != Kd.Normal || EqualsMat(_v, other._v));
-        static bool EqualsMat(BitArray[] a, BitArray[] b)
+            kind == other.kind && (kind != Kd.Normal || Equals(_v, other._v));
+        [凾(256)]
+        static bool Equals(BitArray[] a, BitArray[] b)
         {
             if (a.Length != b.Length) return false;
-            var array = new int[(a[0].Length + 31) / 32];
-            var empty = new int[(a[0].Length + 31) / 32];
-            for (int i = 0; i < a.Length; i++)
-            {
-                new BitArray(a[i]).Xor(b[i]).CopyTo(array, 0);
-                if (!array.AsSpan().SequenceEqual(empty)) return false;
-            }
+            for (int i = a.Length - 1; i >= 0; i--)
+                if (!a[i].SequenceEqual(b[i]))
+                    return false;
             return true;
         }
         [凾(256)]
-        public override int GetHashCode() => kind switch
+        public override int GetHashCode()
         {
-            Kd.Normal => HashCode.Combine(kind, _v.Length, _v[0][0], _v[0][^1], _v[^1][0], _v[^1][^1]),
-            _ => HashCode.Combine(kind),
-        };
+            HashCode hs = new();
+            hs.Add(kind);
+            if (kind == Kd.Normal)
+            {
+                var len = Width >> 5;
+                var ex = (1u << (Width & 31)) - 1;
+                hs.Add(Height);
+                hs.Add(Width);
+                foreach (var row in _v)
+                {
+                    var a = row.GetArray();
+                    hs.Add(ex == 0 ? 0 : a[len] & ex);
+                    hs.AddBytes(MemoryMarshal.AsBytes(a.AsSpan(0, len)));
+                }
+            }
+            return hs.ToHashCode();
+        }
         [凾(256)]
         public static bool operator ==(BitOrMatrix left, BitOrMatrix right) => left.Equals(right);
         [凾(256)]

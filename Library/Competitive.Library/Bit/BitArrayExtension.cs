@@ -111,6 +111,21 @@ namespace Kzrnm.Competitive
             return new(rt);
         }
 
+        [凾(256)]
+        public static bool SequenceEqual(this BitArray b, BitArray other)
+        {
+            if (b.Length != other.Length) return false;
+            var x = GetArray(b);
+            var y = GetArray(other);
+            var len = b.Length >> 5;
+
+            if ((b.Length & 31) is var ex
+                && ex != 0
+                && ((x[len] ^ y[len]) & ((1u << ex) - 1)) != 0)
+                return false;
+            return x.AsSpan(0, len).SequenceEqual(y.AsSpan(0, len));
+        }
+
         /// <summary>
         /// フラグの立っているインデックスを列挙します。
         /// </summary>

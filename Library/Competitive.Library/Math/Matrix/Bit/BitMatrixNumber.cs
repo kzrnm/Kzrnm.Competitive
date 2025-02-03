@@ -20,7 +20,6 @@ namespace Kzrnm.Competitive
     public readonly struct BitMatrix<T> : Internal.IMatrix<BitMatrix<T>>
         where T : unmanaged, IBinaryInteger<T>
     {
-        public bool this[int row, int col] => (uint.CreateTruncating(_v[row] >> col) & 1) != 0;
         public readonly T[] _v;
         public int Height => _v.Length;
         public int Width => Unsafe.SizeOf<T>() * 8;
@@ -42,6 +41,9 @@ namespace Kzrnm.Competitive
             kind = Kd.Normal;
         }
         public BitMatrix(bool[][] value) : this(value.Select(BoolArrayToNumber).ToArray()) { }
+        public bool this[int row, int col] { [凾(256)] get => (uint.CreateTruncating(_v[row] >> col) & 1) != 0; }
+        [凾(256)] public T Row(int i) => _v[i];
+        [凾(256)]
         static T BoolArrayToNumber(bool[] arr)
         {
             var res = T.Zero;
@@ -58,10 +60,11 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 零行列かどうかを返します。
         /// </summary>
-        public bool IsZero => kind is Kd.Zero;
+        public bool IsZero => kind == Kd.Zero;
 
-        static T[] CloneArray(T[] arr) => arr.ToArray();
+        [凾(256)] static T[] CloneArray(T[] arr) => arr.ToArray();
 
+        [凾(256)]
         BitMatrix<T> AddIdentity()
         {
             var arr = CloneArray(_v);
@@ -69,6 +72,7 @@ namespace Kzrnm.Competitive
                 arr[i] ^= T.One << i;
             return new BitMatrix<T>(arr);
         }
+        [凾(256)]
         BitMatrix<T> Add(BitMatrix<T> other)
         {
             Contract.Assert(_v.Length == other._v.Length);
@@ -80,6 +84,7 @@ namespace Kzrnm.Competitive
 
             return new BitMatrix<T>(arr);
         }
+        [凾(256)]
         public static BitMatrix<T> operator +(BitMatrix<T> x, BitMatrix<T> y)
         {
             return x.kind switch
@@ -106,6 +111,7 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)] public static BitMatrix<T> operator +(BitMatrix<T> x) => x;
+        [凾(256)]
         public static BitMatrix<T> operator -(BitMatrix<T> x)
         {
             var val = x._v;
@@ -114,11 +120,12 @@ namespace Kzrnm.Competitive
                 arr[i] = ~val[i];
             return new BitMatrix<T>(arr);
         }
-        public static BitMatrix<T> operator ~(BitMatrix<T> x) => -x;
+        [凾(256)] public static BitMatrix<T> operator ~(BitMatrix<T> x) => -x;
 
-        public static BitMatrix<T> operator -(BitMatrix<T> x, BitMatrix<T> y) => x + y;
-        public static BitMatrix<T> operator ^(BitMatrix<T> x, BitMatrix<T> y) => x + y;
+        [凾(256)] public static BitMatrix<T> operator -(BitMatrix<T> x, BitMatrix<T> y) => x + y;
+        [凾(256)] public static BitMatrix<T> operator ^(BitMatrix<T> x, BitMatrix<T> y) => x + y;
 
+        [凾(256)]
         BitMatrix<T> Multiply(BitMatrix<T> other)
         {
             var val = _v;
@@ -134,6 +141,7 @@ namespace Kzrnm.Competitive
             }
             return new BitMatrix<T>(res);
         }
+        [凾(256)]
         public static BitMatrix<T> operator *(BitMatrix<T> x, BitMatrix<T> y)
         {
             return x.kind switch
@@ -161,16 +169,17 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// ベクトルにかける
         /// </summary>
-        public static T operator *(BitMatrix<T> mat, bool[] vector) => mat.Multiply(BoolArrayToNumber(vector));
+        [凾(256)] public static T operator *(BitMatrix<T> mat, bool[] vector) => mat.Multiply(BoolArrayToNumber(vector));
 
         /// <summary>
         /// ベクトルにかける
         /// </summary>
-        public static T operator *(BitMatrix<T> mat, T vector) => mat.Multiply(vector);
+        [凾(256)] public static T operator *(BitMatrix<T> mat, T vector) => mat.Multiply(vector);
 
         /// <summary>
         /// ベクトルにかける
         /// </summary>
+        [凾(256)]
         public T Multiply(T vector)
         {
             var val = _v;
@@ -185,6 +194,7 @@ namespace Kzrnm.Competitive
         /// ガウスの消去法(掃き出し法)
         /// </summary>
         /// <param name="isReduced">行標準形にするかどうか。false ならば上三角行列</param>
+        [凾(256)]
         public BitMatrix<T> GaussianElimination(bool isReduced = true)
         {
             Contract.Assert(kind == Kd.Normal);
@@ -199,6 +209,7 @@ namespace Kzrnm.Competitive
         /// <param name="arr">対象の行列</param>
         /// <param name="isReduced">行標準形にするかどうか。false ならば上三角行列</param>
         /// <returns>0ではない列のインデックス</returns>
+        [凾(256)]
         static List<int> GaussianEliminationImpl(T[] arr, bool isReduced)
         {
             var idx = new List<int>(arr.Length);
@@ -225,6 +236,7 @@ namespace Kzrnm.Competitive
         /// <paramref name="r"/> より下で <paramref name="x"/> 列が 0 ではない行を探して、<paramref name="r"/> 行に置く。
         /// </summary>
         /// <returns>0 ではない行が見つかったかどうか</returns>
+        [凾(256)]
         static bool SearchNonZero(T[] mat, int r, int x)
         {
             for (int y = r; y < mat.Length; y++)
@@ -246,6 +258,7 @@ namespace Kzrnm.Competitive
         /// <item><description>ただし解無しのときは空配列を返す</description></item>
         /// </list>
         /// </returns>
+        [凾(256)]
         public T[] LinearSystem(T vector)
         {
             int log2 = 0;
@@ -268,6 +281,7 @@ namespace Kzrnm.Competitive
         /// <item><description>ただし解無しのときは空配列を返す</description></item>
         /// </list>
         /// </returns>
+        [凾(256)]
         public T[] LinearSystem(T vector, int width)
         {
             Contract.Assert(width < BitSize());
@@ -425,6 +439,7 @@ namespace Kzrnm.Competitive
             return new(arr);
         }
 
+        [凾(256)]
         static T ParseRow<U>(ReadOnlySpan<U> row) where U : unmanaged, INumber<U>
         {
             var s = row.Trim();

@@ -24,7 +24,9 @@ namespace Kzrnm.Competitive
         public int Width => _w;
         readonly int _h, _w;
         internal readonly T[] _v;
-        public ReadOnlySpan<T> AsSpan() => _v;
+        [凾(256)] public ReadOnlySpan<T> AsSpan() => _v;
+        [凾(256)] public ReadOnlySpan<T> RowSpan(int i) => _v.AsSpan(i * _w, _w);
+        [凾(256)]
         public T[][] ToArray()
         {
             var arr = new T[_h][];
@@ -105,7 +107,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 零行列かどうかを返します。
         /// </summary>
-        public bool IsZero => kind is Kd.Zero;
+        public bool IsZero => kind == Kd.Zero;
         [凾(256)] T[] CloneArray() => (T[])_v.Clone();
 
         ArrayMatrix<T> AddIdentity()
@@ -406,23 +408,27 @@ namespace Kzrnm.Competitive
                 get
                 {
                     if (m.kind != Kd.Normal) return null;
-                    var a = m.ToArray();
-                    return a.Select(r => new Item(r)).ToArray();
+                    return Enumerable.Range(0, m.Height)
+                        .Select(h => new Item(new ArraySegment<T>(m._v, h * m.Width, m.Width)))
+                        .ToArray();
                 }
             }
 
             internal readonly struct Item
             {
-                [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-                public readonly T[] Row;
-                public Item(T[] row)
+                [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+                public readonly ArraySegment<T> Row;
+                public Item(ArraySegment<T> row)
                 {
                     Row = row;
                 }
 
-                [SourceExpander.NotEmbeddingSource]
+
+                [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+                public ReadOnlySpan<T> RowSpan => Row.AsSpan();
+
                 public override string ToString()
-                    => Row.Length < 50
+                    => Row.Count < 50
                     ? string.Join(' ', Row)
                     : (string.Join(' ', Row.Take(50)) + ",...");
             }

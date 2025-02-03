@@ -105,6 +105,27 @@ public class BitArrayExtensionTests
 
     [Theory]
     [MemberData(nameof(BitArrayCase.RandomCases), MemberType = typeof(BitArrayCase), DisableDiscoveryEnumeration = true)]
+    public void SequenceEqual(BitArrayCase c)
+    {
+        var a = c.ToBitArray();
+        var b = new BitArray(a);
+
+        a.SequenceEqual(b).ShouldBeTrue();
+        a[^1] = true;
+        b[^1] = false;
+        a.Length--;
+        a.SequenceEqual(b).ShouldBeFalse();
+        b.Length--;
+        a.SequenceEqual(b).ShouldBeTrue();
+        if (a.Length == 0) return;
+        a[^1] = true;
+        b[^1] = false;
+        a.Length--;
+        a.SequenceEqual(b).ShouldBeFalse();
+    }
+
+    [Theory]
+    [MemberData(nameof(BitArrayCase.RandomCases), MemberType = typeof(BitArrayCase), DisableDiscoveryEnumeration = true)]
     public void OnBits(BitArrayCase c)
     {
         var b = c.ToBitArray();
@@ -148,6 +169,11 @@ public class BitArrayExtensionTests
 
         b = new BitArray(Enumerable.Repeat(false, len).Prepend(true).ToArray());
         b.Lsb().ShouldBe(0);
+
+        b = new BitArray(Enumerable.Repeat(false, len).Append(true).ToArray());
+        b.Lsb().ShouldBe(len);
+        b.Length -= 2;
+        b.Lsb().ShouldBe(len - 1);
     }
 
     [Theory]
@@ -162,5 +188,10 @@ public class BitArrayExtensionTests
 
         b = new BitArray(Enumerable.Repeat(false, len).Prepend(true).ToArray());
         b.Msb().ShouldBe(0);
+
+        b = new BitArray(Enumerable.Repeat(false, len).Append(true).ToArray());
+        b.Msb().ShouldBe(len);
+        b.Length -= 2;
+        b.Msb().ShouldBe(len - 1);
     }
 }

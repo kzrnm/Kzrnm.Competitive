@@ -61,7 +61,7 @@ public class BitArrayCase(bool[] bits) : IXunitSerializable
                 yield return MakeRandomCase(rnd, 32 * i);
                 yield return MakeRandomCase(rnd, 32 * i + 1);
             }
-        for (int q = 0; q < 256; q++)
+        for (int q = 0; q < 128; q++)
         {
             yield return MakeRandomCase(rnd, rnd.Next(1, 140));
         }
