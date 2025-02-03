@@ -10,7 +10,7 @@ internal abstract class BbstBase : BaseSolver
 {
     public override string Url => "https://judge.yosupo.jp/problem/dynamic_sequence_range_affine_range_sum";
     public override double? Tle => 10 * 1.2;
-    internal readonly struct Op : IReversibleBinarySearchTreeOperator<ModInt, Mod998244353AffineTransformation>
+    internal readonly struct BbstOp : IReversibleBinarySearchTreeOperator<ModInt, Mod998244353AffineTransformation>
     {
         public ModInt Identity => ModInt.Zero;
 

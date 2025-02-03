@@ -11,7 +11,10 @@ namespace Kzrnm.Competitive
     /// </summary>
     public readonly struct PersistentUnionFind
     {
-        readonly ImmutableList<int> _parentOrSize;
+        /// <summary>
+        /// Parent or size. A negative value indicates size, a positive value indicates parent.
+        /// </summary>
+        readonly ImmutableList<int> _ps;
 
         /// <summary>
         /// <see cref="PersistentUnionFind"/> を、<paramref name="n"/> 頂点 0 辺のグラフとして初期化します。
@@ -22,12 +25,12 @@ namespace Kzrnm.Competitive
         /// </remarks>
         public PersistentUnionFind(int n)
         {
-            _parentOrSize = ImmutableList<int>.Empty.AddRange(Enumerable.Repeat(-1, n));
+            _ps = ImmutableList<int>.Empty.AddRange(Enumerable.Repeat(-1, n));
         }
 
         PersistentUnionFind(ImmutableList<int> parentOrSize)
         {
-            _parentOrSize = parentOrSize;
+            _ps = parentOrSize;
         }
 
         /// <summary>
@@ -40,12 +43,12 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public PersistentUnionFind Merge(int a, int b)
         {
-            Contract.Assert(0 <= a && a < _parentOrSize.Count);
-            Contract.Assert(0 <= b && b < _parentOrSize.Count);
+            Contract.Assert(0 <= a && a < _ps.Count);
+            Contract.Assert(0 <= b && b < _ps.Count);
             int x = Leader(a), y = Leader(b);
             if (x == y) return this;
-            var u = _parentOrSize[x];
-            var v = _parentOrSize[y];
+            var u = _ps[x];
+            var v = _ps[y];
 
             if (-u < -v)
             {
@@ -53,7 +56,7 @@ namespace Kzrnm.Competitive
                 (u, v) = (v, u);
             }
 
-            return new PersistentUnionFind(_parentOrSize.SetItem(x, u + v).SetItem(y, x));
+            return new PersistentUnionFind(_ps.SetItem(x, u + v).SetItem(y, x));
         }
 
         /// <summary>
@@ -66,8 +69,8 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public bool Same(int a, int b)
         {
-            Contract.Assert(0 <= a && a < _parentOrSize.Count);
-            Contract.Assert(0 <= b && b < _parentOrSize.Count);
+            Contract.Assert(0 <= a && a < _ps.Count);
+            Contract.Assert(0 <= b && b < _ps.Count);
             return Leader(a) == Leader(b);
         }
 
@@ -81,7 +84,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public int Leader(int a)
         {
-            var p = _parentOrSize[a];
+            var p = _ps[a];
             if (p < 0) return a;
             return Leader(p);
         }
@@ -97,8 +100,8 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public int Size(int a)
         {
-            Contract.Assert(0 <= a && a < _parentOrSize.Count);
-            return -_parentOrSize[Leader(a)];
+            Contract.Assert(0 <= a && a < _ps.Count);
+            return -_ps[Leader(a)];
         }
 
         /// <summary>
@@ -124,7 +127,7 @@ namespace Kzrnm.Competitive
         /// <returns>「一つの連結成分の頂点番号のリスト」のリスト, 頂点番号に対応する連結成分のID。</returns>
         public (int[][] Groups, int[] GroupIds) GroupsAndIds()
         {
-            int _n = _parentOrSize.Count;
+            int _n = _ps.Count;
             var leaderBuf = new int[_n];
             var id = new int[_n];
             var gr = new int[_n];
@@ -135,7 +138,7 @@ namespace Kzrnm.Competitive
                 if (i == leaderBuf[i])
                 {
                     id[i] = resultList.Count;
-                    resultList.Add(new int[-_parentOrSize[i]]);
+                    resultList.Add(new int[-_ps[i]]);
                 }
             }
             var result = resultList.ToArray();

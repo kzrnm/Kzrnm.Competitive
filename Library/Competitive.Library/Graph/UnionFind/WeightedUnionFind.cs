@@ -1,23 +1,64 @@
+using AtCoder;
 using AtCoder.Internal;
+using Kzrnm.Competitive.Internal;
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public class WeightedUnionFind<T>
-        where T : IAdditionOperators<T, T, T>
-        , ISubtractionOperators<T, T, T>
-        , IUnaryNegationOperators<T, T>
+    /// <summary>
+    /// 重み付き UnionFind
+    /// </summary>
+    /// <remarks>頂点間の重みを保持し、整合性チェックを行う。</remarks>
+    public class WeightedUnionFind<T> : WeightedUnionFind<T, WeightedUnionFind<T>.Adder>
+    where T :
+    IAdditionOperators<T, T, T>
+    , IAdditiveIdentity<T, T>
+    , IUnaryNegationOperators<T, T>
     {
-        internal readonly int[] _parentOrSize;
+        /// <inheritdoc />
+        public WeightedUnionFind(int n) : base(n) { }
+        public readonly struct Adder : IWeightedUnionFindOperator<T>
+        {
+            public T Identity => T.AdditiveIdentity;
+            [凾(256)] public T Negate(T v) => -v;
+            [凾(256)] public T Operate(T x, T y) => x + y;
+        }
+    }
+
+    namespace Internal
+    {
+        [IsOperator]
+        public interface IWeightedUnionFindOperator<T> : ISegtreeOperator<T>
+        {
+            /// <summary>
+            /// 符号を逆転させる処理。足し算ならマイナス、掛け算なら逆数。
+            /// </summary>
+            T Negate(T v);
+        }
+    }
+
+    /// <summary>
+    /// 重み付き UnionFind
+    /// </summary>
+    /// <remarks>頂点間の重みを保持し、整合性チェックを行う。</remarks>
+    public class WeightedUnionFind<T, TOp> where TOp : struct, Internal.IWeightedUnionFindOperator<T>
+    {
+        static TOp op => new();
+
+        /// <summary>
+        /// Parent or size. A negative value indicates size, a positive value indicates parent.
+        /// </summary>
+        internal readonly int[] _ps;
         /// <summary>
         /// 親との重みの差分
         /// </summary>
-        internal readonly T[] _weightDiff;
+        internal readonly T[] _w;
 
         /// <summary>
-        /// <see cref="WeightedUnionFind{T}"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺のグラフとして初期化します。
+        /// <see cref="WeightedUnionFind{T, TOp}"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺のグラフとして初期化します。
         /// </summary>
         /// <remarks>
         /// <para>制約: 0≤<paramref name="n"/>≤10^8</para>
@@ -25,9 +66,12 @@ namespace Kzrnm.Competitive
         /// </remarks>
         public WeightedUnionFind(int n)
         {
-            _parentOrSize = new int[n];
-            _weightDiff = new T[n];
-            for (int i = 0; i < _parentOrSize.Length; i++) _parentOrSize[i] = -1;
+            _ps = new int[n];
+            _w = new T[n];
+            _ps.AsSpan().Fill(-1);
+            var id = new TOp().Identity;
+            if (!EqualityComparer<T>.Default.Equals(id, default))
+                _w.AsSpan().Fill(id);
         }
 
         /// <summary>
@@ -40,21 +84,22 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public bool Merge(int a, int b, T w)
         {
-            Contract.Assert(0 <= a && a < _parentOrSize.Length);
-            Contract.Assert(0 <= b && b < _parentOrSize.Length);
+            Contract.Assert(0 <= a && a < _ps.Length);
+            Contract.Assert(0 <= b && b < _ps.Length);
             int x = Leader(a), y = Leader(b);
             if (x == y)
-                return EqualityComparer<T>.Default.Equals(WeightDiff(a, b), w);
+                return EqualityComparer<T>.Default.Equals(_w[b], op.Operate(_w[a], w));
 
-            w += Weight(a) - Weight(b);
-            if (_parentOrSize[x] > _parentOrSize[y])
+            if (_ps[x] > _ps[y])
             {
                 (x, y) = (y, x);
-                w = -w;
+                (a, b) = (b, a);
+                w = op.Negate(w);
             }
-            _parentOrSize[x] += _parentOrSize[y];
-            _parentOrSize[y] = x;
-            _weightDiff[y] = w;
+
+            _ps[x] += _ps[y];
+            _ps[y] = x;
+            _w[y] = op.Operate(op.Operate(_w[a], w), op.Negate(_w[b]));
             return true;
         }
 
@@ -68,8 +113,8 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public bool Same(int a, int b)
         {
-            Contract.Assert(0 <= a && a < _parentOrSize.Length);
-            Contract.Assert(0 <= b && b < _parentOrSize.Length);
+            Contract.Assert(0 <= a && a < _ps.Length);
+            Contract.Assert(0 <= b && b < _ps.Length);
             return Leader(a) == Leader(b);
         }
 
@@ -83,10 +128,11 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public int Leader(int a)
         {
-            if (_parentOrSize[a] < 0) return a;
-            int par = Leader(_parentOrSize[a]);
-            _weightDiff[a] += _weightDiff[_parentOrSize[a]];
-            return _parentOrSize[a] = par;
+            if (_ps[a] < 0) return a;
+            int par = Leader(_ps[a]);
+            // マージが済んでいないので重みを再計算する
+            _w[a] = op.Operate(_w[_ps[a]], _w[a]);
+            return _ps[a] = par;
         }
 
         /// <summary>
@@ -100,7 +146,7 @@ namespace Kzrnm.Competitive
         T Weight(int a)
         {
             Leader(a);
-            return _weightDiff[a];
+            return _w[a];
         }
 
         /// <summary>
@@ -111,7 +157,9 @@ namespace Kzrnm.Competitive
         /// <para>計算量: ならしO(a(n))</para>
         /// </remarks>
         [凾(256)]
-        public T WeightDiff(int a, int b) => Weight(b) - Weight(a);
+        public T WeightDiff(int a, int b)
+            => op.Operate(op.Negate(Weight(a)), Weight(b));
+
 
         /// <summary>
         /// 頂点 <paramref name="a"/> の属する連結成分のサイズを返します。
@@ -123,8 +171,8 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public int Size(int a)
         {
-            Contract.Assert(0 <= a && a < _parentOrSize.Length);
-            return -_parentOrSize[Leader(a)];
+            Contract.Assert(0 <= a && a < _ps.Length);
+            return -_ps[Leader(a)];
         }
 
         /// <summary>
@@ -150,17 +198,17 @@ namespace Kzrnm.Competitive
         /// <returns>「一つの連結成分の頂点番号のリスト」のリスト, 頂点番号に対応する連結成分のID。</returns>
         public (int[][] Groups, int[] GroupIds) GroupsAndIds()
         {
-            var leaderBuf = new int[_parentOrSize.Length];
-            var id = new int[_parentOrSize.Length];
-            var gr = new int[_parentOrSize.Length];
-            var resultList = new List<int[]>(_parentOrSize.Length);
+            var leaderBuf = new int[_ps.Length];
+            var id = new int[_ps.Length];
+            var gr = new int[_ps.Length];
+            var resultList = new List<int[]>(_ps.Length);
             for (int i = 0; i < leaderBuf.Length; i++)
             {
                 leaderBuf[i] = Leader(i);
                 if (i == leaderBuf[i])
                 {
                     id[i] = resultList.Count;
-                    resultList.Add(new int[-_parentOrSize[i]]);
+                    resultList.Add(new int[-_ps[i]]);
                 }
             }
             var result = resultList.ToArray();
@@ -174,5 +222,10 @@ namespace Kzrnm.Competitive
             }
             return (result, gr);
         }
+    }
+
+    public interface IWeight<T> : ISegtreeOperator<T>
+    {
+
     }
 }

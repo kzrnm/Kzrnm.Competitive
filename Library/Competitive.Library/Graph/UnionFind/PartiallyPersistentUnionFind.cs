@@ -11,6 +11,10 @@ namespace Kzrnm.Competitive
     public class PartiallyPersistentUnionFind
     {
         public int Version { private set; get; }
+
+        /// <summary>
+        /// Parent or rank(depth). A negative value indicates size, a positive value indicates rank.
+        /// </summary>
         internal readonly int[] _parentOrRank;
         /// <summary>
         /// 親がいつ更新されたか

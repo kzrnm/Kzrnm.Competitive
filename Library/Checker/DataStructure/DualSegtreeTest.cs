@@ -32,12 +32,11 @@ internal class DualSegtreeTest : BaseSolver
         }
         return null;
     }
-}
+    readonly record struct Op : IDualSegtreeOperator<Mod998244353AffineTransformation>
+    {
+        public Mod998244353AffineTransformation FIdentity => new(ModInt.One, ModInt.Zero);
 
-readonly record struct Op : IDualSegtreeOperator<Mod998244353AffineTransformation>
-{
-    public Mod998244353AffineTransformation FIdentity => new(ModInt.One, ModInt.Zero);
-
-    [MethodImpl(256)]
-    public Mod998244353AffineTransformation Composition(Mod998244353AffineTransformation nf, Mod998244353AffineTransformation cf) => nf.Apply(cf);
+        [MethodImpl(256)]
+        public Mod998244353AffineTransformation Composition(Mod998244353AffineTransformation nf, Mod998244353AffineTransformation cf) => nf.Apply(cf);
+    }
 }

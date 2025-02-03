@@ -12,7 +12,7 @@
     IDE0300: コレクションの初期化を簡略化します
     IDE0301: コレクションの初期化を簡略化します
     -->
-    <NoWarn>$(NoWarn);IDE0290;IDE0300;IDE0301</NoWarn>
+    <NoWarn>$(NoWarn);IDE0028;IDE0290;IDE0300;IDE0301</NoWarn>
 
     <DefineConstants>$(DefineConstants);ATCODER_CONTRACT</DefineConstants>
     <Configurations>Debug;Release;Library</Configurations>
@@ -46,7 +46,7 @@
     <InternalsVisibleTo Include="Competitive.Library.Test" />
     <PackageReference Include="ac-library-csharp" Version="3.9.1" />
     <PackageReference Include="Kzrnm.BigInteger" Version="0.3.3-embedded" />
-    <PackageReference Include="Competitive.IO" Version="3.0.0-beta7" />
+    <PackageReference Include="Competitive.IO" Version="3.0.0" />
     <PackageReference Include="Kzrnm.Competitive.Analyzer" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

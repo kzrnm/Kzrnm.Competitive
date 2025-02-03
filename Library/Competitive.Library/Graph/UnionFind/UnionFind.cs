@@ -6,10 +6,13 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    [DebuggerDisplay("Count = {" + nameof(_parentOrSize) + "." + nameof(Array.Length) + "}")]
+    [DebuggerDisplay("Count = {" + nameof(_ps) + "." + nameof(Array.Length) + "}")]
     public class UnionFind
     {
-        internal readonly int[] _parentOrSize;
+        /// <summary>
+        /// Parent or size. A negative value indicates size, a positive value indicates parent.
+        /// </summary>
+        internal readonly int[] _ps;
 
         /// <summary>
         /// <see cref="UnionFind"/> クラスの新しいインスタンスを、<paramref name="n"/> 頂点 0 辺のグラフとして初期化します。
@@ -20,8 +23,8 @@ namespace Kzrnm.Competitive
         /// </remarks>
         public UnionFind(int n)
         {
-            _parentOrSize = new int[n];
-            _parentOrSize.AsSpan().Fill(-1);
+            _ps = new int[n];
+            _ps.AsSpan().Fill(-1);
         }
 
         /// <summary>
@@ -34,13 +37,13 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public bool Merge(int a, int b)
         {
-            Contract.Assert(0 <= a && a < _parentOrSize.Length);
-            Contract.Assert(0 <= b && b < _parentOrSize.Length);
+            Contract.Assert(0 <= a && a < _ps.Length);
+            Contract.Assert(0 <= b && b < _ps.Length);
             int x = Leader(a), y = Leader(b);
             if (x == y) return false;
-            if (_parentOrSize[x] > _parentOrSize[y]) (x, y) = (y, x);
-            _parentOrSize[x] += _parentOrSize[y];
-            _parentOrSize[y] = x;
+            if (_ps[x] > _ps[y]) (x, y) = (y, x);
+            _ps[x] += _ps[y];
+            _ps[y] = x;
             return true;
         }
 
@@ -54,8 +57,8 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public bool Same(int a, int b)
         {
-            Contract.Assert(0 <= a && a < _parentOrSize.Length);
-            Contract.Assert(0 <= b && b < _parentOrSize.Length);
+            Contract.Assert(0 <= a && a < _ps.Length);
+            Contract.Assert(0 <= b && b < _ps.Length);
             return Leader(a) == Leader(b);
         }
 
@@ -69,12 +72,12 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public int Leader(int a)
         {
-            if (_parentOrSize[a] < 0) return a;
-            while (0 <= _parentOrSize[_parentOrSize[a]])
+            if (_ps[a] < 0) return a;
+            while (0 <= _ps[_ps[a]])
             {
-                (a, _parentOrSize[a]) = (_parentOrSize[a], _parentOrSize[_parentOrSize[a]]);
+                (a, _ps[a]) = (_ps[a], _ps[_ps[a]]);
             }
-            return _parentOrSize[a];
+            return _ps[a];
         }
 
 
@@ -88,8 +91,8 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public int Size(int a)
         {
-            Contract.Assert(0 <= a && a < _parentOrSize.Length);
-            return -_parentOrSize[Leader(a)];
+            Contract.Assert(0 <= a && a < _ps.Length);
+            return -_ps[Leader(a)];
         }
 
         /// <summary>
@@ -115,17 +118,17 @@ namespace Kzrnm.Competitive
         /// <returns>「一つの連結成分の頂点番号のリスト」のリスト, 頂点番号に対応する連結成分のID。</returns>
         public (int[][] Groups, int[] GroupIds) GroupsAndIds()
         {
-            var leaderBuf = new int[_parentOrSize.Length];
-            var id = new int[_parentOrSize.Length];
-            var gr = new int[_parentOrSize.Length];
-            var resultList = new List<int[]>(_parentOrSize.Length);
+            var leaderBuf = new int[_ps.Length];
+            var id = new int[_ps.Length];
+            var gr = new int[_ps.Length];
+            var resultList = new List<int[]>(_ps.Length);
             for (int i = 0; i < leaderBuf.Length; i++)
             {
                 leaderBuf[i] = Leader(i);
                 if (i == leaderBuf[i])
                 {
                     id[i] = resultList.Count;
-                    resultList.Add(new int[-_parentOrSize[i]]);
+                    resultList.Add(new int[-_ps[i]]);
                 }
             }
             var result = resultList.ToArray();
