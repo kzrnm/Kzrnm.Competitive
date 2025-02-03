@@ -11,7 +11,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public readonly struct Matrix6x6<T> : IMatrix<Matrix6x6<T>>, IMatrixGet<T>
+    public readonly struct Matrix6x6<T> : IMatrix<Matrix6x6<T>, T>
         , IMultiplyOperators<Matrix6x6<T>, T, Matrix6x6<T>>
         where T : INumberBase<T>
     {

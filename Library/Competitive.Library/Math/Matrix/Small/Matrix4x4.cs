@@ -8,7 +8,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public readonly struct Matrix4x4<T> : IMatrix<Matrix4x4<T>>, IMatrixGet<T>
+    public readonly struct Matrix4x4<T> : IMatrix<Matrix4x4<T>, T>
         , IMultiplyOperators<Matrix4x4<T>, T, Matrix4x4<T>>
         where T : INumberBase<T>
     {
