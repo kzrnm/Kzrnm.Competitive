@@ -97,53 +97,12 @@ namespace Competitive.Runner
 
         static void Expand(ReadOnlySpan<string> args)
         {
-            var expandedCode = GetSourceCode(BasePath.Replace("HandMadeMain.cs", "Program.cs"))
-                ?.Code
-                ?.Replace("\r\n", "\n");
+            var expandedCode = GetSourceCode(BasePath.Replace("HandMadeMain.cs", "Program.cs"))?.Code;
             if (expandedCode == null)
                 ThrowEmptyExpanded();
 
-            expandedCode = expandedCode.Replace("using 凾", "using MAttribute")
-                .Replace("using M=MethodImplAttribute;", "")
-                .Replace("using MI=System.Runtime.CompilerServices.MethodImplAttribute;", "");
-            expandedCode = NotLocalRunning().Replace(expandedCode, "$1");
-            expandedCode = AggressiveInliningRegex().Replace(expandedCode, "[M(256");
-            expandedCode = SimpleReplaceTarget().Replace(expandedCode, SimpleReplace);
-
-            if (expandedCode.Replace("namespace AtCoder.Extension", "namespace MyAtCoder.Extension") is var rep && rep.Length != expandedCode.Length)
-            {
-                expandedCode = rep.Replace("using AtCoder.Extension", "using MyAtCoder.Extension");
-            }
-
-            Expand(args, expandedCode);
+            Expand(args, FormatCode(expandedCode));
         }
-
-
-        [GeneratedRegex(
-            "(Property)?(Console|Repeat)(Reader|Writer)|ConsoleOutput|bufferSize|EnsureBuf|FillEntireNumber|Write(Many|LineJoin)|Kzrnm\\.Competitive(?!/b)")]
-        private static partial Regex SimpleReplaceTarget();
-        private static string SimpleReplace(Match m) => m.ValueSpan switch
-        {
-            "PropertyConsoleReader" => "PrpConR",
-            "ConsoleWriter" => "ConW",
-            "ConsoleReader" => "ConR",
-            "PropertyRepeatReader" => "PrpRepR",
-            "RepeatReader" => "RepR",
-            "bufferSize" => "bfsz",
-            "EnsureBuf" => "EnsBf",
-            "FillEntireNumber" => "FlNum",
-            "ConsoleOutput" => "ConO",
-            "WriteMany" => "WrMany",
-            "WriteLineJoin" => "WrJoin",
-            "Kzrnm.Competitive" => "Kzrnm",
-            _ => m.Value,
-        };
-
-        [GeneratedRegex(@"#if !LOCAL_RUNNING\n(.*)#endif\n", RegexOptions.Singleline)]
-        private static partial Regex NotLocalRunning();
-        [GeneratedRegex(@"\[(MI|MethodImpl|凾)\(((MethodImplOptions\.)?AggressiveInlining|256)")]
-        private static partial Regex AggressiveInliningRegex();
-
         static void Expand(ReadOnlySpan<string> args, string expandedCode)
         {
             bool writeFile = false;
@@ -176,6 +135,53 @@ namespace Competitive.Runner
             }
             else
                 Console.WriteLine(expandedCode);
+        }
+
+
+        [GeneratedRegex(
+            @"(Property)?(Console|Repeat)(Reader|Writer)|ConsoleOutput|bufferSize|EnsureBuf|FillEntireNumber|Write(Many|LineJoin)|Kzrnm\.Competitive(?!/b)|(?<!\.)ReadOnlySpan<(char|byte)>")]
+        private static partial Regex SimpleReplaceTarget();
+        private static string SimpleReplace(Match m) => m.ValueSpan switch
+        {
+            "PropertyConsoleReader" => "PrpConR",
+            "ConsoleWriter" => "ConW",
+            "ConsoleReader" => "ConR",
+            "PropertyRepeatReader" => "PrpRepR",
+            "RepeatReader" => "RepR",
+            "bufferSize" => "bfsz",
+            "EnsureBuf" => "EnsBf",
+            "FillEntireNumber" => "FlNum",
+            "ConsoleOutput" => "ConO",
+            "WriteMany" => "WrMany",
+            "WriteLineJoin" => "WrJoin",
+            "Kzrnm.Competitive" => "Kzrnm",
+            _ => m.Value,
+        };
+
+        [GeneratedRegex(@"#if !LOCAL_RUNNING\n(.*)#endif\n", RegexOptions.Singleline)]
+        private static partial Regex NotLocalRunning();
+        [GeneratedRegex(@"\[(MI|MethodImpl|凾)\(((MethodImplOptions\.)?AggressiveInlining|256)")]
+        private static partial Regex AggressiveInliningRegex();
+
+        [GeneratedRegex(@"(?<!\.)ReadOnlySpan<((c)har|(b)yte)>")]
+        private static partial Regex ReadOnlySpanText();
+        static string FormatCode(string expandedCode)
+        {
+            expandedCode = expandedCode
+                .Replace("\r\n", "\n")
+                .Replace("using 凾", "using MAttribute")
+                .Replace("using M=MethodImplAttribute;", "")
+                .Replace("using MI=System.Runtime.CompilerServices.MethodImplAttribute;", "");
+            expandedCode = NotLocalRunning().Replace(expandedCode, "$1");
+            expandedCode = AggressiveInliningRegex().Replace(expandedCode, "[M(256");
+            expandedCode = ReadOnlySpanText().Replace(expandedCode, "ROS$2$3 ");
+            expandedCode = SimpleReplaceTarget().Replace(expandedCode, SimpleReplace);
+
+            if (expandedCode.Replace("namespace AtCoder.Extension", "namespace MyAtCoder.Extension") is var rep && rep.Length != expandedCode.Length)
+            {
+                expandedCode = rep.Replace("using AtCoder.Extension", "using MyAtCoder.Extension");
+            }
+            return expandedCode;
         }
         static SourceExpander.Expanded.SourceCode? GetSourceCode(string filePath)
         {

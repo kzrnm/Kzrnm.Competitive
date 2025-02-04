@@ -1,6 +1,8 @@
 using Kzrnm.Competitive.IO;
 using System;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
+using ROSb = System.ReadOnlySpan<byte>;
+using ROSc = System.ReadOnlySpan<char>;
 
 namespace Kzrnm.Competitive
 {
@@ -25,8 +27,8 @@ namespace Kzrnm.Competitive
         public static implicit operator O(double v) => cw.WriteLine(v);
         public static implicit operator O(decimal v) => cw.WriteLine(v);
         public static implicit operator O(char v) => cw.WriteLine(v);
-        public static implicit operator O(ReadOnlySpan<char> v) => cw.WriteLine(v);
-        public static implicit operator O(ReadOnlySpan<byte> v) => cw.WriteLine(v);
+        public static implicit operator O(ROSc v) => cw.WriteLine(v);
+        public static implicit operator O(ROSb v) => cw.WriteLine(v);
         public static implicit operator O(char[] v) => cw.WriteLine(v.AsSpan());
         public static implicit operator O(string v) => cw.WriteLine(v.AsSpan());
         public static implicit operator O(Asciis v) => cw.WriteLine(v.AsSpan());

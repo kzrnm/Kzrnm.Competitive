@@ -344,6 +344,7 @@ namespace Kzrnm.Competitive
         public SimdModMatrix<T> GaussianElimination(bool isReduced = true)
         {
             Contract.Assert(kind == Kd.Normal);
+            if (_v.Length == 0) return this;
             var arr = ToArray();
             ArrayMatrixLogic<MontgomeryModInt<T>>.GaussianEliminationImpl(arr, isReduced);
             return new(arr);

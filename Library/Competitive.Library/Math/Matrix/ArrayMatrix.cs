@@ -358,6 +358,7 @@ namespace Kzrnm.Competitive
         public ArrayMatrix<T> GaussianElimination(bool isReduced = true)
         {
             Contract.Assert(kind == Kd.Normal);
+            if (_v.Length == 0) return this;
             var arr = ToArray();
             ArrayMatrixLogic<T>.GaussianEliminationImpl(arr, isReduced);
             return new(arr);

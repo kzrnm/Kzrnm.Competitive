@@ -43,7 +43,7 @@ namespace Kzrnm.Competitive
         }
         public BitMatrix(bool[][] value) : this(value.Select(a => new BitArray(a)).ToArray()) { }
 
-        public bool this[int row, int col]{ [凾(256)] get => _v[row][col]; }
+        public bool this[int row, int col] { [凾(256)] get => _v[row][col]; }
         [凾(256)] public BitArray RowUnsafe(int i) => _v[i];
 
         static BitMatrix ThrowNotSupportResponse() => throw new NotSupportedException();
@@ -244,6 +244,7 @@ namespace Kzrnm.Competitive
         public BitMatrix GaussianElimination(bool isReduced = true)
         {
             Contract.Assert(kind == Kd.Normal);
+            if (_v.Length == 0) return this;
             var arr = CloneArray(_v);
             GaussianEliminationImpl(arr, isReduced);
             return new BitMatrix(arr);
@@ -342,6 +343,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         BitArray[] LinearSystemImpl(BitArray[] impl)
         {
+            if (impl.Length == 0) return Array.Empty<BitArray>();
             var idxs = GaussianEliminationImpl(impl, false).AsSpan();
             var r = idxs.Length;
             int w = _v[0].Length;

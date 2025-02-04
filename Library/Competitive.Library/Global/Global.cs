@@ -6,8 +6,8 @@ namespace Kzrnm.Competitive
     public static class Global
     {
         #region BoolOutput
-        [凾(256)] public static string YesNo(bool b) => b ? "Yes" : "No";
-        [凾(256)] public static string TakahashiAoki(bool b) => b ? "Takahashi" : "Aoki";
+        [凾(256)] public static ReadOnlySpan<byte> YesNo(bool b) => b ? "Yes"u8 : "No"u8;
+        [凾(256)] public static ReadOnlySpan<byte> TakahashiAoki(bool b) => b ? "Takahashi"u8 : "Aoki"u8;
         #endregion BoolOutput
 
         #region NewArray
