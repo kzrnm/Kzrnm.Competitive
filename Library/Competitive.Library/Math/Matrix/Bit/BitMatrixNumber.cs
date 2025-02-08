@@ -43,6 +43,7 @@ namespace Kzrnm.Competitive
         public BitMatrix(bool[][] value) : this(value.Select(BoolArrayToNumber).ToArray()) { }
         public bool this[int row, int col] { [凾(256)] get => (uint.CreateTruncating(_v[row] >> col) & 1) != 0; }
         [凾(256)] public T Row(int i) => _v[i];
+        [凾(256)] public ReadOnlySpan<T> AsSpan() => _v;
         [凾(256)]
         static T BoolArrayToNumber(bool[] arr)
         {
