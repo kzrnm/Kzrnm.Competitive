@@ -22,7 +22,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="ac-library-csharp" Version="3.9.1" />
     <PackageReference Include="CompetitiveVerifierResolverTestLogger" Version="*">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
