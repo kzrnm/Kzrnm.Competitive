@@ -1,6 +1,6 @@
+#if LIBRARY
 using System;
 using System.Diagnostics;
-#if LIBRARY
 namespace SourceExpander
 {
     [Conditional("COMPILE_TIME_ONLY")]

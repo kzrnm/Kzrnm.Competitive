@@ -27,7 +27,11 @@ namespace Kzrnm.Competitive
             Contract.Assert(a.Length == 0 || a[0].Value == 0);
             if (deg < 0) deg = a.Length;
             if (deg == 0)
-                return new FormalPowerSeries<T>(stackalloc MontgomeryModInt<T>[] { MontgomeryModInt<T>.One });
+            {
+#pragma warning disable CS9193
+                return new FormalPowerSeries<T>(new ReadOnlySpan<MontgomeryModInt<T>>(MontgomeryModInt<T>.One));
+#pragma warning restore CS9193
+            }
             var t = f.ToImpl();
             return (deg <= NumberTheoreticTransform<T>.NttLength() ? t.ExpNtt(deg) : t.ExpAnyMod(deg)).ToFps();
         }
@@ -124,8 +128,11 @@ namespace Kzrnm.Competitive
             var c = GetDeque(deg);
             c.AddLast(MontgomeryModInt<T>.One);
 
-            Span<MontgomeryModInt<T>> z2 = stackalloc MontgomeryModInt<T>[2];
-            z2.Fill(MontgomeryModInt<T>.One);
+#if NET8_0_OR_GREATER
+            Span<MontgomeryModInt<T>> z2 = [MontgomeryModInt<T>.One, MontgomeryModInt<T>.One];
+#else
+            Span<MontgomeryModInt<T>> z2 = stackalloc MontgomeryModInt<T>[] { MontgomeryModInt<T>.One, MontgomeryModInt<T>.One };
+#endif
 
             for (int m = 2; m < deg; m *= 2)
             {

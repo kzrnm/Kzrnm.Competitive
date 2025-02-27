@@ -29,6 +29,7 @@ namespace Kzrnm.Competitive
         {
             var bytes = value.ToByteArray(isUnsigned: true);
             Span<ulong> v = stackalloc ulong[ULongCount];
+            v.Clear();
             if (bytes.Length > Size)
             {
                 bytes = bytes[..Size];
@@ -42,6 +43,7 @@ namespace Kzrnm.Competitive
             var bytes = value.ToByteArray(isUnsigned: true);
             if (bytes.Length > Size) ThrowOverflowException();
             Span<ulong> v = stackalloc ulong[ULongCount];
+            v.Clear();
             bytes.CopyTo(MemoryMarshal.AsBytes(v));
             return new UInt512(v[7], v[6], v[5], v[4], v[3], v[2], v[1], v[0]);
         }

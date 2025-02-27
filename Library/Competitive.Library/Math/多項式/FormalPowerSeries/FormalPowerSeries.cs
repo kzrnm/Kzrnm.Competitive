@@ -39,7 +39,7 @@ namespace Kzrnm.Competitive
         }
         [凾(256)] public ReadOnlySpan<MontgomeryModInt<T>> AsSpan() => _cs.AsSpan();
         [凾(256)] public static implicit operator ReadOnlySpan<MontgomeryModInt<T>>(FormalPowerSeries<T> f) => f._cs.AsSpan();
-        [凾(256)] public static implicit operator FormalPowerSeries<T>(MontgomeryModInt<T> v) => new(stackalloc MontgomeryModInt<T>[1] { v });
+        [凾(256)] public static implicit operator FormalPowerSeries<T>(MontgomeryModInt<T> v) => new(new ReadOnlySpan<MontgomeryModInt<T>>(in v));
 
 
         /// <summary>

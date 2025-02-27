@@ -3,6 +3,7 @@ using Kzrnm.Competitive.IO;
 using System.Globalization;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
+[module: System.Runtime.CompilerServices.SkipLocalsInit]
 internal partial class Program
 {
     public PropertyConsoleReader cr;
