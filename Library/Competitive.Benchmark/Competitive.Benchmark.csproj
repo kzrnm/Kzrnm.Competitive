@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
-    <PackageReference Include="Kzrnm.BigInteger" Version="0.3.3" />
+    <PackageReference Include="Kzrnm.BigInteger" Version="0.5.3" />
     <ProjectReference Include="..\Competitive.Library\Competitive.Library.csproj" />
   </ItemGroup>
 
