@@ -6,5 +6,6 @@ documentation_of:
 - ./BitArraySerializer.cs
 - ./BitMatrixSerializer.cs
 - ./MatrixSerializer.cs
+- ./ParsableSerializer.cs
 - ./PointSerializer.cs
 ---
