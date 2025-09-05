@@ -21,7 +21,7 @@ env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_NOLOGO: true
   NUGET_XMLDOC_MODE: skip
-  WORKFLOW_BUILD_SLN: Library/Competitive.Library.sln
+  WORKFLOW_BUILD_SLN: Library/Competitive.Library.slnx
   PACK_CSPROJ: Library/Competitive.Library/Competitive.Library.csproj
 
 jobs:

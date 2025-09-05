@@ -36,7 +36,7 @@ env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_NOLOGO: true
   NUGET_XMLDOC_MODE: skip
-  WORKFLOW_BUILD_SLN: Competitive.Library.sln
+  WORKFLOW_BUILD_SLN: Competitive.Library.slnx
   TZ: Asia/Tokyo
 
 jobs:
