@@ -1,8 +1,8 @@
 {
   "enabled": true,
-  "$schema": "https://raw.githubusercontent.com/kzrnm/SourceExpander/master/schema/expander.schema.json",
+  "$schema": "https://raw.githubusercontent.com/kzrnm/SourceExpander/HEAD/schema/expander.schema.json",
   "expanding-position": "AfterUsings",
-  "static-embedding-text": "//LICENSE:\n//https://github.com/kzrnm/Kzrnm.Competitive/blob/master/LICENSE\n//https://github.com/kzrnm/Kzrnm.Competitive/blob/master/3rd-party%20Licenses.txt\n#pragma warning disable",
+  "static-embedding-text": "//LICENSE:\n//https://github.com/kzrnm/Kzrnm.Competitive/blob/HEAD/LICENSE\n//https://github.com/kzrnm/Kzrnm.Competitive/blob/HEAD/3rd-party%20Licenses.txt\n#pragma warning disable",
   "match-file-pattern": [
     "Program.cs"
   ]

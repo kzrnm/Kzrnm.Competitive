@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Kzrnm.Competitive.Analyzer.Example/Kzrnm.Competitive.Analyzer.Example.csproj" />
+  <Project Path="Kzrnm.Competitive.Analyzer.Test/Kzrnm.Competitive.Analyzer.Test.csproj" />
+  <Project Path="Kzrnm.Competitive.Analyzer/Kzrnm.Competitive.Analyzer.csproj" />
+</Solution>
