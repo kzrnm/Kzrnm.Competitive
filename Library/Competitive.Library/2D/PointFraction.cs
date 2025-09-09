@@ -9,7 +9,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive
 {
     using P = PointFraction;
-    public readonly record struct PointFraction(Fraction X, Fraction Y) :  IComparable<P>, IUtf8ConsoleWriterFormatter
+    public readonly record struct PointFraction(Fraction X, Fraction Y) : IComparable<P>, IUtf8ConsoleWriterFormatter
         , IAdditionOperators<P, P, P>, ISubtractionOperators<P, P, P>, IUnaryPlusOperators<P, P>, IUnaryNegationOperators<P, P>
     {
         [EditorBrowsable(EditorBrowsableState.Never)]

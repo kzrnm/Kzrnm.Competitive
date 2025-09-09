@@ -42,7 +42,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="Shouldly" Version="4.3.0" />
-    <PackageReference Include="SourceExpander.Embedder.Testing" Version="8.1.0" />
+    <PackageReference Include="SourceExpander.Embedder.Testing" Version="8.2.0" />
     <PackageReference Include="xunit.v3" Version="1.1.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="3.0.1">
       <PrivateAssets>all</PrivateAssets>

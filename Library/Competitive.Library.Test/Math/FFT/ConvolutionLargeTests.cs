@@ -39,7 +39,7 @@ public class ConvolutionLargeTests
         }
         ret.Skip(1999).SkipLast(1998).ShouldAllBe(v => v == 1000);
     }
-    
+
     [Fact(Skip = "重いので飛ばす", SkipWhen = nameof(LibraryTest))]
     public void Large998244353_2_24()
     {

@@ -28,9 +28,7 @@ namespace Kzrnm.Competitive
             if (deg < 0) deg = a.Length;
             if (deg == 0)
             {
-#pragma warning disable CS9193
-                return new FormalPowerSeries<T>(new ReadOnlySpan<MontgomeryModInt<T>>(MontgomeryModInt<T>.One));
-#pragma warning restore CS9193
+                return new FormalPowerSeries<T>(new MontgomeryModInt<T>[] { MontgomeryModInt<T>.One });
             }
             var t = f.ToImpl();
             return (deg <= NumberTheoreticTransform<T>.NttLength() ? t.ExpNtt(deg) : t.ExpAnyMod(deg)).ToFps();
