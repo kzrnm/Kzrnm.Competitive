@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net9.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net9.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <RootNamespace>Kzrnm.Competitive.Testing</RootNamespace>
     <LangVersion>latest</LangVersion>
