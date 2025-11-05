@@ -83,7 +83,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
       - name: setup CompetitiveVerifierCsResolver
-        run: dotnet tool install -g CompetitiveVerifierCsResolver --prerelease
+        run: dotnet tool install -g CompetitiveVerifierCsResolver
 
       - name: Trim solution
         shell: pwsh

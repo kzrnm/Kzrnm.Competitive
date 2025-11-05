@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net9.0</TargetFrameworks>
+    <TargetFramework>net9.0</TargetFramework>
     <DotnetVersion>$([System.Version]::Parse($([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)'))).Major)</DotnetVersion>
     <LangVersion Condition="'$(DotnetVersion)' != ''">$([MSBuild]::Add($(DotnetVersion), 4))</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
