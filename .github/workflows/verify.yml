@@ -102,11 +102,16 @@ jobs:
         env:
           UNITTEST_CSPROJ: Competitive.Library.Test/Competitive.Library.Test.csproj
 
-      - name: Resolve net7.0
-        run: dotnet run --project $VERIFY_CSPROJ --framework $FRAMEWORK --no-launch-profile --no-build -c Release | tee "${{runner.temp}}/problems-$FRAMEWORK.json"
+      - name: Resolve
+        shell: bash
+        run: |
+          for FRAMEWORK in $FRAMEWORKS; do
+            dotnet run --project $VERIFY_CSPROJ --framework $FRAMEWORK --no-launch-profile --no-build -c Release | tee "${{runner.temp}}/problems-$FRAMEWORK.json"
+          done
         env:
           VERIFY_CSPROJ: Checker/Checker.csproj
-          FRAMEWORK: net7.0
+          FRAMEWORKS: | 
+            net9.0
 
       - name: cs-resolve
         uses: competitive-verifier/actions/cs-resolve@v2

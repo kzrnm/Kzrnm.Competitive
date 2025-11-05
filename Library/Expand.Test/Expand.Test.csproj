@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net7.0</TargetFrameworks>
+    <TargetFrameworks>net9.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>annotations</Nullable>
-    <LangVersion>11</LangVersion>
+    <LangVersion>13</LangVersion>
     <NoWarn>$(NoWarn);CS0436;CS8981;CS0649</NoWarn>
     <SourceExpander_Generator_ExpandingAll>true</SourceExpander_Generator_ExpandingAll>
   </PropertyGroup>
