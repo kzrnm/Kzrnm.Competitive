@@ -86,11 +86,13 @@ jobs:
         run: dotnet tool install -g CompetitiveVerifierCsResolver --prerelease
 
       - name: Trim solution
+        shell: pwsh
         run: |
-          sed -i -e '/{03D41CA3-57BF-4EE3-B1BB-AD427B08D962}\./d' $WORKFLOW_BUILD_SLN
-          sed -i -e '/{03D41CA3-57BF-4EE3-B1BB-AD427B08D962} =/d' $WORKFLOW_BUILD_SLN
-          sed -i -e '/= "Competitive.Benchmark"/d' $WORKFLOW_BUILD_SLN
-          sed -i -E "N;s/EndProject\r?\nEndProject/EndProject/g" $WORKFLOW_BUILD_SLN
+          $xml = [xml]::new()
+          $xml.Load("$PWD/Competitive.Library.slnx")
+          $bench=$xml.SelectSingleNode("//Project[@Path='Competitive.Benchmark/Competitive.Benchmark.csproj']")
+          $bench.ParentNode.RemoveChild($bench)
+          $xml.Save("$PWD/Competitive.Library.slnx")
 
       - name: Build
         run: dotnet build $WORKFLOW_BUILD_SLN -c Release
