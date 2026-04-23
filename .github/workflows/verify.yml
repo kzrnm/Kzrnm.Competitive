@@ -48,13 +48,13 @@ jobs:
       run:
         working-directory: Library
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
             7.0.x
             9.0.x
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
@@ -70,13 +70,13 @@ jobs:
         working-directory: Library
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
             7.0.x
             9.0.x
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
@@ -179,7 +179,7 @@ jobs:
         with:
           file: ${{runner.temp}}/verify_files.json
       - name: Upload binaries
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: binary-${{github.sha}}
           path: Library/Checker/bin/Release
@@ -199,13 +199,13 @@ jobs:
           ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09",
            "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 123456789
 
       - name: Restore cached results
         if: ${{ ! inputs.ignore_prev_result }}
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         id: restore-cached-results
         with:
           path: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
@@ -260,7 +260,7 @@ jobs:
         env:
           YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
       - name: Upload result artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Result-${{ runner.os }}-${{ matrix.index }}
           path: ${{runner.temp}}/result.json
@@ -277,7 +277,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 123456789
 
@@ -316,7 +316,7 @@ jobs:
 
       - name: Save cached results
         if: ${{ ! inputs.ignore_prev_result }}
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
           key: ${{ runner.os }}-verify-result-${{ hashFiles('Library/**/*.cs') }}
@@ -340,7 +340,7 @@ jobs:
           destination: _site
       - name: Upload artifact
         id: upload-pages
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
@@ -373,4 +373,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
