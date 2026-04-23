@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-
 namespace Kzrnm.Competitive.Testing.Graph;
 
 public class 最小共通祖先Tests

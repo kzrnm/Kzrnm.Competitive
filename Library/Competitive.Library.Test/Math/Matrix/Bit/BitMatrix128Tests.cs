@@ -1,6 +1,4 @@
 using Kzrnm.Competitive.IO;
-using System;
-using System.Linq;
 using System.Text;
 using BitMatrix128 = Kzrnm.Competitive.BitMatrix<System.UInt128>;
 

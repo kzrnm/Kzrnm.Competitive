@@ -1,5 +1,4 @@
 using Kzrnm.Competitive.Testing.Serializer;
-using System;
 using System.Collections;
 using Xunit.Sdk;
 

@@ -1,5 +1,4 @@
 using AtCoder.Internal;
-using System;
 using System.Runtime.InteropServices;
 
 namespace Kzrnm.Competitive.Testing.DataStructure;

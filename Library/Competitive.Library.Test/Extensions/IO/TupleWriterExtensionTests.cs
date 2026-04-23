@@ -1,6 +1,4 @@
 using Kzrnm.Competitive.IO;
-using System;
-using System.Linq;
 
 namespace Kzrnm.Competitive.Testing.IO;
 

@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Collections.Immutable;
+using System.Threading.Tasks;
 
 namespace Kzrnm.Competitive.Analyzer.Test;
 
@@ -27,10 +28,10 @@ public class SymbolHelperTest
         compilation = CSharpCompilation.Create("Asm", trees);
     }
 
-    [Fact]
-    public async Task TypeEqual()
+    [Test]
+    public async Task TypeEqual(CancellationToken cancellationToken)
     {
-        var root = await trees[0].GetRootAsync(TestContext.Current.CancellationToken);
+        var root = await trees[0].GetRootAsync(cancellationToken);
         var semanticModel = compilation.GetSemanticModel(trees[0], false);
         var nodes = root.DescendantNodes();
 
@@ -44,21 +45,17 @@ public class SymbolHelperTest
             .Select(sy => semanticModel.GetSymbolInfo(sy.Declaration.Type).Symbol)
             .OfType<INamedTypeSymbol>()
             .Single();
+        // TODO: TUnit migration - xUnit Assert.Equal had additional argument(s) (comparer: SymbolEqualityComparer.Default) that could not be converted.
 
-        Assert.Equal(
-            constructedConstraintGenericsSymbol.TypeArguments[0],
-            ((INamedTypeSymbol)constructedConstraintGenericsSymbol.TypeArguments[2]).TypeArguments[0],
-            SymbolEqualityComparer.Default);
-        Assert.Equal(
-            constructedConstraintGenericsSymbol.TypeArguments[1],
-            ((INamedTypeSymbol)constructedConstraintGenericsSymbol.TypeArguments[2]).TypeArguments[1],
-            SymbolEqualityComparer.Default);
+        await Assert.That(((INamedTypeSymbol)constructedConstraintGenericsSymbol.TypeArguments[2]).TypeArguments[0]).IsEqualTo(constructedConstraintGenericsSymbol.TypeArguments[0]);
+        // TODO: TUnit migration - xUnit Assert.Equal had additional argument(s) (comparer: SymbolEqualityComparer.Default) that could not be converted.
+        await Assert.That(((INamedTypeSymbol)constructedConstraintGenericsSymbol.TypeArguments[2]).TypeArguments[1]).IsEqualTo(constructedConstraintGenericsSymbol.TypeArguments[1]);
     }
 
-    [Fact]
-    public async Task GenericReplace()
+    [Test]
+    public async Task GenericReplace(CancellationToken cancellationToken)
     {
-        var root = await trees[0].GetRootAsync(TestContext.Current.CancellationToken);
+        var root = await trees[0].GetRootAsync(cancellationToken);
         var semanticModel = compilation.GetSemanticModel(trees[0], false);
         var nodes = root.DescendantNodes();
 
@@ -81,8 +78,9 @@ public class SymbolHelperTest
             declaredTypeSymbols.Single(s => s.ToString() == "TestAssembly.TA.Bar"));
 
         var got = SymbolHelpers.ReplaceGenericType(constraint, builder.ToImmutable());
+        // TODO: TUnit migration - xUnit Assert.Equal had additional argument(s) (comparer: SymbolEqualityComparer.Default) that could not be converted.
 
-        Assert.Equal(nodes
+        await Assert.That(got).IsEqualTo(nodes
             .OfType<TypeDeclarationSyntax>()
             .Single(sy => sy.Identifier.Text == "Foo")
             .DescendantNodes()
@@ -90,14 +88,13 @@ public class SymbolHelperTest
             .Where(sy => sy.Declaration.Variables.Single().Identifier.Text == "field2")
             .Select(sy => semanticModel.GetSymbolInfo(sy.Declaration.Type).Symbol)
             .OfType<INamedTypeSymbol>()
-            .Single()
-            , got, SymbolEqualityComparer.Default);
+            .Single());
     }
 
-    [Fact]
-    public async Task NestGenericReplace()
+    [Test]
+    public async Task NestGenericReplace(CancellationToken cancellationToken)
     {
-        var root = await trees[0].GetRootAsync(TestContext.Current.CancellationToken);
+        var root = await trees[0].GetRootAsync(cancellationToken);
         var semanticModel = compilation.GetSemanticModel(trees[0], false);
         var nodes = root.DescendantNodes();
 
@@ -120,8 +117,9 @@ public class SymbolHelperTest
             declaredTypeSymbols.Single(s => s.ToString() == "TestAssembly.TA.Bar"));
 
         var got = SymbolHelpers.ReplaceGenericType(constraint, builder.ToImmutable());
+        // TODO: TUnit migration - xUnit Assert.Equal had additional argument(s) (comparer: SymbolEqualityComparer.Default) that could not be converted.
 
-        Assert.Equal(nodes
+        await Assert.That(got).IsEqualTo(nodes
             .OfType<TypeDeclarationSyntax>()
             .Single(sy => sy.Identifier.Text == "Foo")
             .DescendantNodes()
@@ -129,14 +127,13 @@ public class SymbolHelperTest
             .Where(sy => sy.Declaration.Variables.Single().Identifier.Text == "field3")
             .Select(sy => semanticModel.GetSymbolInfo(sy.Declaration.Type).Symbol)
             .OfType<INamedTypeSymbol>()
-            .Single()
-            , got, SymbolEqualityComparer.Default);
+            .Single());
     }
 
-    [Fact]
-    public async Task ToTypeSyntax()
+    [Test]
+    public async Task ToTypeSyntax(CancellationToken cancellationToken)
     {
-        var root = await trees[0].GetRootAsync(TestContext.Current.CancellationToken);
+        var root = await trees[0].GetRootAsync(cancellationToken);
         var semanticModel = compilation.GetSemanticModel(trees[0], false);
         var nodes = root.DescendantNodes();
         var declaredTypeSymbols
@@ -165,7 +162,7 @@ public class SymbolHelperTest
 
         foreach (var (got, expected) in tests)
         {
-            Assert.True(got.IsEquivalentTo(expected, true), $"{expected}");
+            await Assert.That(got.IsEquivalentTo(expected, true)).IsTrue().Because($"{expected}");
         }
     }
 }

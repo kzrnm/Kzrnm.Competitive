@@ -1,5 +1,3 @@
-using System.Numerics;
-
 namespace Kzrnm.Competitive.Testing.Number;
 
 public class ArbitraryModIntFactorTests

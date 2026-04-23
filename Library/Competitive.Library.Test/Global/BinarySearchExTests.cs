@@ -1,5 +1,3 @@
-using System;
-
 namespace Kzrnm.Competitive.Testing.GlobalNS;
 
 public class BinarySearchExTests

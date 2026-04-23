@@ -1,6 +1,4 @@
 using AtCoder;
-using System;
-using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace Kzrnm.Competitive.Testing.MathNS;

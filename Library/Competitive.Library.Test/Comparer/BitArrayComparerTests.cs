@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 
 namespace Kzrnm.Competitive.Testing.Comparer;

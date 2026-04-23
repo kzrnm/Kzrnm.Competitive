@@ -6,6 +6,7 @@
     <RootNamespace>Kzrnm.Competitive.Testing</RootNamespace>
     <LangVersion>latest</LangVersion>
     <Configurations>Debug;Release;Library</Configurations>
+    <ImplicitUsings>enable</ImplicitUsings>
 
     <OutputType>Exe</OutputType>
     <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>

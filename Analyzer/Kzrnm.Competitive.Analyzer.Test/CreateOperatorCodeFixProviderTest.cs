@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using VerifyCS = Kzrnm.Competitive.Analyzer.Test.CSharpCodeFixVerifier<
     Kzrnm.Competitive.Analyzer.CreateOperator.Analyzer,
     Kzrnm.Competitive.Analyzer.CreateOperator.CodeFixProvider>;
+using System.Threading.Tasks;
 
 namespace Kzrnm.Competitive.Analyzer.Test;
 
@@ -71,7 +72,7 @@ public partial class CreateOperatorCodeFixProviderTest
     }
 
     #region StaticModInt
-    [Fact]
+    [Test]
     public async Task StaticModInt_Using()
     {
         var source = """
@@ -102,7 +103,7 @@ $$TypeDefinition$$ Op : IStaticMod
             fixedSource);
     }
 
-    [Fact]
+    [Test]
     public async Task StaticModInt_Qualified_Using()
     {
         var source = """
@@ -133,7 +134,7 @@ $$TypeDefinition$$ Op : IStaticMod
             fixedSource);
     }
 
-    [Fact]
+    [Test]
     public async Task StaticModInt_Qualified()
     {
         var source = """
@@ -164,7 +165,7 @@ $$TypeDefinition$$ Op : AtCoder.IStaticMod
     #endregion StaticModInt
 
     #region Segtree
-    [Fact]
+    [Test]
     public async Task Segtree_Using()
     {
         var source = """
@@ -216,7 +217,7 @@ $$TypeDefinition$$ OpSeg : ISegtreeOperator<int>
             fixedSource);
     }
 
-    [Fact]
+    [Test]
     public async Task Segtree_Qualified_Using()
     {
         var source = """
@@ -268,7 +269,7 @@ $$TypeDefinition$$ OpSeg : ISegtreeOperator<int>
             fixedSource);
     }
 
-    [Fact]
+    [Test]
     public async Task Segtree_Qualified()
     {
         var source = """
@@ -316,7 +317,7 @@ $$TypeDefinition$$ OpSeg : AtCoder.ISegtreeOperator<int>
             fixedSource);
     }
 
-    [Fact]
+    [Test]
     public async Task Segtree_Using_With_System_Runtime_CompilerServices()
     {
         var source = """
@@ -370,7 +371,7 @@ $$TypeDefinition$$ OpSeg : ISegtreeOperator<int>
     #endregion Segtree
 
     #region LazySegtree
-    [Fact]
+    [Test]
     public async Task LazySegtree_Using()
     {
         var source = """
@@ -432,7 +433,7 @@ $$TypeDefinition$$ OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c
             fixedSource);
     }
 
-    [Fact]
+    [Test]
     public async Task LazySegtree_Qualified_Using()
     {
         var source = """
@@ -494,7 +495,7 @@ $$TypeDefinition$$ OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c
             fixedSource);
     }
 
-    [Fact]
+    [Test]
     public async Task LazySegtree_Qualified()
     {
         var source = """
@@ -556,7 +557,7 @@ $$TypeDefinition$$ OpSeg : AtCoder.ILazySegtreeOperator<(int v, int size), (int 
             fixedSource);
     }
 
-    [Fact]
+    [Test]
     public async Task LazySegtree_Using_With_System_Runtime_CompilerServices()
     {
         var source = """
@@ -620,7 +621,7 @@ $$TypeDefinition$$ OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c
     #endregion LazySegtree
 
     #region Others
-    [Fact]
+    [Test]
     public async Task ICompare()
     {
         var source = """
@@ -654,7 +655,7 @@ $$TypeDefinition$$ Op : System.Collections.Generic.IComparer<short>
             fixedSource);
     }
 
-    [Fact]
+    [Test]
     public async Task AnyDefinedType()
     {
         var source = """
@@ -717,7 +718,7 @@ $$TypeDefinition$$ Op : IAny<(int, long)>
            fixedSource);
     }
 
-    [Fact]
+    [Test]
     public async Task AnyDefinedMethod()
     {
         var source = """
@@ -772,7 +773,7 @@ $$TypeDefinition$$ Op : IAny<(int n, long m)>
            fixedSource);
     }
 
-    [Fact]
+    [Test]
     public async Task Array()
     {
         var source = """
@@ -819,7 +820,7 @@ $$TypeDefinition$$ BigOp : IAny<System.Numerics.BigInteger[]>
             fixedSource);
     }
 
-    [Fact]
+    [Test]
     public async Task Generic()
     {
         var source = """
@@ -866,7 +867,7 @@ $$TypeDefinition$$ ModOp : IAny<StaticModInt<Mod1000000007>>
             fixedSource);
     }
 
-    [Fact]
+    [Test]
     public async Task NumOperatorAndShiftOperator()
     {
         var source = """
@@ -976,7 +977,7 @@ $$TypeDefinition$$ Op : ICastOperator<short, char>, INumOperator<float>, INumOpe
             fixedSource);
     }
 
-    [Fact]
+    [Test]
     public async Task UsingAlias()
     {
         var source = """
@@ -1030,7 +1031,7 @@ $$TypeDefinition$$ OpSeg : ISegtreeOperator<ModInt>
             fixedSource);
     }
 
-    [Fact]
+    [Test]
     public async Task MethodImplAlias()
     {
         var source = """
@@ -1085,7 +1086,7 @@ $$TypeDefinition$$ OpSeg : ISegtreeOperator<long>
             fixedSource);
     }
 
-    [Fact]
+    [Test]
     public async Task MethodImpl256()
     {
         var source = """
@@ -1144,7 +1145,7 @@ build_property.CompetitiveAnalyzer_UseMethodImplNumeric = true
     }
 
 
-    [Fact]
+    [Test]
     public async Task Virtual()
     {
         var source = """
@@ -1188,7 +1189,7 @@ $$TypeDefinition$$ Op : IAny
            fixedSource);
     }
 
-    [Fact]
+    [Test]
     public async Task StaticAbstract()
     {
         var source = """
@@ -1242,7 +1243,7 @@ $$TypeDefinition$$ Op : IAny<(int n, long m)>
            fixedSource);
     }
 
-    [Fact]
+    [Test]
     public async Task StaticVirtual()
     {
         var source = """

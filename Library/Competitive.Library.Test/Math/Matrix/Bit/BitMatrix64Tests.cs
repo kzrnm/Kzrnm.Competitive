@@ -1,8 +1,5 @@
-using System.Linq;
-using System;
 using Kzrnm.Competitive.IO;
 using System.Text;
-using System.Collections;
 
 namespace Kzrnm.Competitive.Testing.MathNS.Matrix;
 

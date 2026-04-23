@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-
 namespace Kzrnm.Competitive.Testing.Extensions;
 
 public class UpdateExtensionTests

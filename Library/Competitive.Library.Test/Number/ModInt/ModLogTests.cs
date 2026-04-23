@@ -1,5 +1,4 @@
 using AtCoder.Internal;
-using System;
 
 namespace Kzrnm.Competitive.Testing.Number;
 

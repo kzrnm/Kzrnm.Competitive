@@ -3,14 +3,15 @@ using Microsoft.CodeAnalysis;
 using VerifyCS = Kzrnm.Competitive.Analyzer.Test.CSharpCodeFixVerifier<
     Kzrnm.Competitive.Analyzer.AggressiveInlining.Analyzer,
     Kzrnm.Competitive.Analyzer.AggressiveInlining.CodeFixProvider>;
+using System.Threading.Tasks;
 
 namespace Kzrnm.Competitive.Analyzer.Test;
 
 public class AggressiveInliningTests
 {
     static DiagnosticDescriptor KZCOMPETITIVE0003 => DiagnosticDescriptors.KZCOMPETITIVE0003_AgressiveInlining_Descriptor;
-    [Fact]
-    public async Task Empty()
+    [Test]
+    public async Task Empty(CancellationToken cancellationToken)
     {
         var source = @"
 using System.Collections.Generic;
@@ -19,11 +20,11 @@ struct IntComparer : IComparer<int>
     public int Compare(int x,  int y) => x.CompareTo(y);
 }
 ";
-        await VerifyCS.VerifyAnalyzerAsync(source, [], TestContext.Current.CancellationToken);
+        await VerifyCS.VerifyAnalyzerAsync(source, [], cancellationToken);
     }
 
-    [Fact]
-    public async Task NumOperator()
+    [Test]
+    public async Task NumOperator(CancellationToken cancellationToken)
     {
         var source = @"
 using AtCoder.Operators;
@@ -109,11 +110,11 @@ struct BoolOp : INumOperator<bool>
         await VerifyCS.VerifyCodeFixAsync(source, [
             VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(5, 1, 30, 2).WithArguments(
                 "Add, Compare, Decrement, Divide, Equals, GetHashCode, GreaterThan, GreaterThanOrEqual, Increment, LessThan, LessThanOrEqual, Minus, Modulo, Multiply, Subtract"),
-        ], fixedSource, TestContext.Current.CancellationToken);
+        ], fixedSource, cancellationToken);
     }
 
-    [Fact]
-    public async Task SegtreeOperator()
+    [Test]
+    public async Task SegtreeOperator(CancellationToken cancellationToken)
     {
         var source = @"
 using AtCoder;
@@ -138,11 +139,11 @@ struct OpSeg : ISegtreeOperator<int>
         await VerifyCS.VerifyCodeFixAsync(source,
         [
             VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(4, 1, 8, 2).WithArguments("Operate"),
-        ], fixedSource, TestContext.Current.CancellationToken);
+        ], fixedSource, cancellationToken);
     }
 
-    [Fact]
-    public async Task SegtreeOperator_With_AggressiveInlining()
+    [Test]
+    public async Task SegtreeOperator_With_AggressiveInlining(CancellationToken cancellationToken)
     {
         var source = @"
 using AtCoder;
@@ -154,11 +155,11 @@ struct OpSeg : ISegtreeOperator<int>
     public int Operate(int x, int y) => System.Math.Max(x, y);
 }
 ";
-        await VerifyCS.VerifyAnalyzerAsync(source, [], TestContext.Current.CancellationToken);
+        await VerifyCS.VerifyAnalyzerAsync(source, [], cancellationToken);
     }
 
-    [Fact]
-    public async Task LazySegtreeOperator()
+    [Test]
+    public async Task LazySegtreeOperator(CancellationToken cancellationToken)
     {
         var source = @"
 using AtCoder;
@@ -191,11 +192,11 @@ struct Op : ILazySegtreeOperator<long, int>
         await VerifyCS.VerifyCodeFixAsync(source,
         [
             VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(4, 1, 11, 2).WithArguments("Composition, Mapping, Operate"),
-        ], fixedSource, TestContext.Current.CancellationToken);
+        ], fixedSource, cancellationToken);
     }
 
-    [Fact]
-    public async Task LazySegtreeOperator_Without_Using()
+    [Test]
+    public async Task LazySegtreeOperator_Without_Using(CancellationToken cancellationToken)
     {
         var source = @"
 using AtCoder;
@@ -226,11 +227,11 @@ struct Op : ILazySegtreeOperator<long, int>
         await VerifyCS.VerifyCodeFixAsync(source,
         [
 VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(3, 1, 10, 2).WithArguments("Composition, Mapping, Operate"),
-        ], fixedSource, TestContext.Current.CancellationToken);
+        ], fixedSource, cancellationToken);
     }
 
-    [Fact]
-    public async Task LazySegtreeOperator_With_AggressiveInlining()
+    [Test]
+    public async Task LazySegtreeOperator_With_AggressiveInlining(CancellationToken cancellationToken)
     {
         var source = @"
 using AtCoder;
@@ -247,11 +248,11 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 ";
-        await VerifyCS.VerifyAnalyzerAsync(source, [], TestContext.Current.CancellationToken);
+        await VerifyCS.VerifyAnalyzerAsync(source, [], cancellationToken);
     }
 
-    [Fact]
-    public async Task LazySegtreeOperator_With_Qualified_AggressiveInlining()
+    [Test]
+    public async Task LazySegtreeOperator_With_Qualified_AggressiveInlining(CancellationToken cancellationToken)
     {
         var source = @"
 using AtCoder;
@@ -267,11 +268,11 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 ";
-        await VerifyCS.VerifyAnalyzerAsync(source, [], TestContext.Current.CancellationToken);
+        await VerifyCS.VerifyAnalyzerAsync(source, [], cancellationToken);
     }
 
-    [Fact]
-    public async Task LazySegtreeOperator_Without_AggressiveInlining()
+    [Test]
+    public async Task LazySegtreeOperator_Without_AggressiveInlining(CancellationToken cancellationToken)
     {
         var source = @"
 using AtCoder;
@@ -307,11 +308,11 @@ struct Op : ILazySegtreeOperator<long, int>
         await VerifyCS.VerifyCodeFixAsync(source,
         [
 VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(4, 1, 14, 2).WithArguments("Composition, Mapping"),
-        ], fixedSource, TestContext.Current.CancellationToken);
+        ], fixedSource, cancellationToken);
     }
 
-    [Fact]
-    public async Task LazySegtreeOperator_Without_AggressiveInlining_Equal_Colon()
+    [Test]
+    public async Task LazySegtreeOperator_Without_AggressiveInlining_Equal_Colon(CancellationToken cancellationToken)
     {
         var source = @"
 using AtCoder;
@@ -347,11 +348,11 @@ struct Op : ILazySegtreeOperator<long, int>
         await VerifyCS.VerifyCodeFixAsync(source,
         [
 VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(4, 1, 14, 2).WithArguments("Composition, Mapping, Operate"),
-        ], fixedSource, TestContext.Current.CancellationToken);
+        ], fixedSource, cancellationToken);
     }
 
-    [Fact]
-    public async Task LazySegtreeOperator_With_ArgumentList()
+    [Test]
+    public async Task LazySegtreeOperator_With_ArgumentList(CancellationToken cancellationToken)
     {
         var source = @"
 using System;
@@ -395,11 +396,11 @@ sealed class MyAttribute : Attribute{}
         await VerifyCS.VerifyCodeFixAsync(source,
         [
 VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(5, 1, 16, 2).WithArguments("Composition, Mapping"),
-        ], fixedSource, TestContext.Current.CancellationToken);
+        ], fixedSource, cancellationToken);
     }
 
-    [Fact]
-    public async Task LazySegtreeOperator_With_Alias_AggressiveInlining()
+    [Test]
+    public async Task LazySegtreeOperator_With_Alias_AggressiveInlining(CancellationToken cancellationToken)
     {
         var source = @"
 using AtCoder;
@@ -416,12 +417,12 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 ";
-        await VerifyCS.VerifyAnalyzerAsync(source, [], TestContext.Current.CancellationToken);
+        await VerifyCS.VerifyAnalyzerAsync(source, [], cancellationToken);
     }
 
 
-    [Fact]
-    public async Task AnyDefinedType()
+    [Test]
+    public async Task AnyDefinedType(CancellationToken cancellationToken)
     {
         var source = @"
 using AtCoder;
@@ -460,11 +461,11 @@ struct Def<T> : IAny<T> {
             source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(8, 1, 14, 2).WithArguments("Fun1, Fun2"),
             fixedSource,
-            TestContext.Current.CancellationToken);
+            cancellationToken);
     }
 
-    [Fact]
-    public async Task UsingAlias()
+    [Test]
+    public async Task UsingAlias(CancellationToken cancellationToken)
     {
         var source = @"
 using AtCoder;
@@ -499,11 +500,11 @@ struct Op : ILazySegtreeOperator<long, int>
         await VerifyCS.VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(5, 1, 12, 2).WithArguments("Composition, Mapping, Operate"),
             fixedSource,
-            TestContext.Current.CancellationToken);
+            cancellationToken);
     }
 
-    [Fact]
-    public async Task MethodImpl256()
+    [Test]
+    public async Task MethodImpl256(CancellationToken cancellationToken)
     {
         var source = @"
 using AtCoder;
@@ -554,8 +555,8 @@ build_property.CompetitiveAnalyzer_UseMethodImplNumeric = true
         await test.RunAsync(CancellationToken.None);
     }
 
-    [Fact]
-    public async Task Class()
+    [Test]
+    public async Task Class(CancellationToken cancellationToken)
     {
         var source = @"
 using AtCoder;
@@ -594,11 +595,11 @@ class Def<T> : IAny<T> {
             source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(8, 1, 14, 2).WithArguments("Fun1, Fun2"),
             fixedSource,
-            TestContext.Current.CancellationToken);
+            cancellationToken);
     }
 
-    [Fact]
-    public async Task RecordClass()
+    [Test]
+    public async Task RecordClass(CancellationToken cancellationToken)
     {
         var source = @"
 using AtCoder;
@@ -636,11 +637,11 @@ record Def<T> : IAny<T> {
         await VerifyCS.VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(8, 1, 14, 2).WithArguments("Fun1, Fun2"),
             fixedSource,
-            TestContext.Current.CancellationToken);
+            cancellationToken);
     }
 
-    [Fact]
-    public async Task RecordStruct()
+    [Test]
+    public async Task RecordStruct(CancellationToken cancellationToken)
     {
         var source = @"
 using AtCoder;
@@ -679,12 +680,12 @@ record struct Def<T> : IAny<T> {
             source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(8, 1, 14, 2).WithArguments("Fun1, Fun2"),
             fixedSource,
-            TestContext.Current.CancellationToken);
+            cancellationToken);
     }
 
 
-    [Fact]
-    public async Task StaticAbstract()
+    [Test]
+    public async Task StaticAbstract(CancellationToken cancellationToken)
     {
         var source = @"
 using AtCoder;
@@ -719,6 +720,6 @@ public class Impl : IInterface
             source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(10, 1, 13, 2).WithArguments("Merge"),
             fixedSource,
-            TestContext.Current.CancellationToken);
+            cancellationToken);
     }
 }

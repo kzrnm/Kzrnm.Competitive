@@ -1,6 +1,4 @@
 using AtCoder.Extension;
-using System;
-using System.Linq;
 using IntFenwickTree = AtCoder.FenwickTree<int>;
 
 namespace Kzrnm.Competitive.Testing.DataStructure;

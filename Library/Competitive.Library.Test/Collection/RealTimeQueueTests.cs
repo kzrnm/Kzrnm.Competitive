@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Kzrnm.Competitive.Testing.Collection;
 
 public class RealTimeQueueTests

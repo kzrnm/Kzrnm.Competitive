@@ -1,5 +1,3 @@
-using System;
-
 namespace Kzrnm.Competitive.Testing.Comparer;
 
 public class ReverseComparerTests

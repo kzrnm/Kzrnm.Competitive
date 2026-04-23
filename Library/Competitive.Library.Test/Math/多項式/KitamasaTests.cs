@@ -1,5 +1,4 @@
 using AtCoder;
-using System;
 using System.Runtime.InteropServices;
 
 #pragma warning disable CS0618 // 型またはメンバーが旧型式です

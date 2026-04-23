@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Numerics;
 
 namespace Kzrnm.Competitive.Testing.TwoDimensional;

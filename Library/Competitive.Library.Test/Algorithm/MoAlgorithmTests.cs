@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-
 namespace Kzrnm.Competitive.Testing.Algorithm;
 
 public class MoAlgorithmTests

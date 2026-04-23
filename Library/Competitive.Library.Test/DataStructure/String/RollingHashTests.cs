@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-
 namespace Kzrnm.Competitive.Testing.DataStructure.String;
 
 public class RollingHashTests
@@ -59,7 +56,7 @@ public class RollingHashTests
                                 notMatchHashNotMatchCount++;
                         }
                     }
-       ((double)notMatchHashNotMatchCount / notMatchCount).ShouldBeGreaterThan(0.9999);
+        ((double)notMatchHashNotMatchCount / notMatchCount).ShouldBeGreaterThan(0.9999);
     }
     [Fact]
     public void Large()
@@ -86,6 +83,6 @@ public class RollingHashTests
                                 notMatchHashNotMatchCount++;
                         }
                     }
-       ((double)notMatchHashNotMatchCount / notMatchCount).ShouldBeGreaterThan(0.9999);
+        ((double)notMatchHashNotMatchCount / notMatchCount).ShouldBeGreaterThan(0.9999);
     }
 }

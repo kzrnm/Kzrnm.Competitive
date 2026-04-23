@@ -12,7 +12,9 @@ $config = (Get-Content "$PSScriptRoot/config.json" | ConvertFrom-Json)
 function loadingDll {
     Add-Type -AssemblyName System.Windows.Forms
     Add-Type -Path "$($config.AtCoderStreakPath)/AtCoderStreak.dll"
-    Add-Type -Path "$($config.AtCoderStreakPath)/AngleSharp.dll"
+    if (!("AngleSharp.Html.Parser.HtmlParser" -as [type])) {
+        Add-Type -Path "$($config.AtCoderStreakPath)/AngleSharp.dll"
+    }
 }
 loadingDll
 $streak = [AtCoderStreak.Program]::GetDefault()

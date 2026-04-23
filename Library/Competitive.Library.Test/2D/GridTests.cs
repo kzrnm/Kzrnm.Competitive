@@ -1,7 +1,4 @@
 using Kzrnm.Competitive.IO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Kzrnm.Competitive.Testing.TwoDimensional;
 

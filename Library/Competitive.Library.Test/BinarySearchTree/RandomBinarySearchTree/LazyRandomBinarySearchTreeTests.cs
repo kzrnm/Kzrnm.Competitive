@@ -1,5 +1,4 @@
 using Kzrnm.Competitive.Internal.Bbst;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree;

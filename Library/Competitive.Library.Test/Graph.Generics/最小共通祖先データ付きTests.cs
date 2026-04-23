@@ -1,5 +1,4 @@
 using AtCoder;
-using System.Linq;
 
 namespace Kzrnm.Competitive.Testing.Graph;
 

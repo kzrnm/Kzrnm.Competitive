@@ -1,6 +1,5 @@
 using AtCoder;
 using Kzrnm.Competitive.Testing.Serializer;
-using System;
 using Xunit.Sdk;
 
 [assembly: RegisterXunitSerializer(typeof(AffineTransformationSerializer<double>), typeof(DoubleAffineTransformation))]

@@ -1,5 +1,3 @@
-using System;
-
 namespace Kzrnm.Competitive.Testing.DataStructure;
 
 public class Sums2DTests

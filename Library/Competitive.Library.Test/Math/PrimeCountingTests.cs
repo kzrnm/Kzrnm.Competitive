@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Kzrnm.Competitive.Testing.MathNS;
 
 public class PrimeCountingTests

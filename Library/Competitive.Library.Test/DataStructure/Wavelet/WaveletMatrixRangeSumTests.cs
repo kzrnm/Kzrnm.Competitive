@@ -1,5 +1,3 @@
-using System;
-
 namespace Kzrnm.Competitive.Testing.DataStructure;
 
 public class WaveletMatrix2DTests

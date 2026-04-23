@@ -1,5 +1,3 @@
-using System;
-
 namespace Kzrnm.Competitive.Testing.Algorithm;
 
 public class InversionNumberTests

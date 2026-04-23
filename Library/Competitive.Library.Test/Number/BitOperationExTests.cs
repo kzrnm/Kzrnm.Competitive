@@ -1,6 +1,3 @@
-
-using System.Linq;
-
 namespace Kzrnm.Competitive.Testing.Number;
 
 public class BitOperationsExTests

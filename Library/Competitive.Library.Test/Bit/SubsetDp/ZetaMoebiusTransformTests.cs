@@ -1,4 +1,3 @@
-using System.Linq;
 using Kzrnm.Competitive;
 
 namespace Kzrnm.Competitive.Testing.Bit.SubsetDp;

@@ -1,7 +1,6 @@
 using AtCoder;
 using Kzrnm.Competitive.Internal;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;

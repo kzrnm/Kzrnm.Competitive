@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Kzrnm.Competitive.Testing.Algorithm;
+
 public class DecreasingPointsTests
 {
     class DecreasingPointsResultComparer<T, U>(IComparer<T> cmpX, IComparer<U> cmpY) : IComparer<DecreasingPoints.Result<T, U>>

@@ -1,5 +1,3 @@
-using System;
-
 namespace Kzrnm.Competitive.Testing.Graph;
 
 public class 最短経路BellmanFordTests

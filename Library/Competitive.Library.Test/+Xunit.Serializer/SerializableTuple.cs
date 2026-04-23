@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using Xunit.Sdk;
 
 namespace Kzrnm.Competitive.Testing;
+
 public record struct SerializableTuple<T1, T2>(T1 Item1, T2 Item2) : IXunitSerializable
 {
     public static implicit operator SerializableTuple<T1, T2>(ValueTuple<T1, T2> t) => new(t.Item1, t.Item2);

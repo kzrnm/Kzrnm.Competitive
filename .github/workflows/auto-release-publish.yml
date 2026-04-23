@@ -68,7 +68,7 @@ jobs:
       - name: Build
         run: dotnet build ${{ env.WORKFLOW_BUILD_SLN }} -c Release -p:Version=$VERSION
       - name: Test
-        run: dotnet test --solution ${{ env.WORKFLOW_BUILD_SLN }} --no-build -c Release
+        run: dotnet test --solution ${{ env.WORKFLOW_BUILD_SLN }} --no-build -c Release --report-github-summary-include-passed False
         timeout-minutes: 10
       - name: Pack
         run: dotnet pack ${{ env.PACK_CSPROJ }} --no-build -c Release -o bin/Packages/Release -p:Version=$VERSION

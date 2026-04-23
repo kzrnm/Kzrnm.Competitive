@@ -3,13 +3,14 @@ using Microsoft.CodeAnalysis;
 using VerifyCS = Kzrnm.Competitive.Analyzer.Test.CSharpCodeFixVerifier<
     Kzrnm.Competitive.Analyzer.IntToLong.Analyzer,
     Kzrnm.Competitive.Analyzer.IntToLong.CodeFixProvider>;
+using System.Threading.Tasks;
 
 namespace Kzrnm.Competitive.Analyzer.Test;
 
 public class IntToLongTest
 {
-    [Fact]
-    public async Task Empty()
+    [Test]
+    public async Task Empty(CancellationToken cancellationToken)
     {
         var source = """
 public static class Example
@@ -45,10 +46,10 @@ public static class Example
 }
 """;
 
-        await VerifyCS.VerifyAnalyzerAsync(source, [], TestContext.Current.CancellationToken);
+        await VerifyCS.VerifyAnalyzerAsync(source, [], cancellationToken);
     }
-    [Fact]
-    public async Task Hit()
+    [Test]
+    public async Task Hit(CancellationToken cancellationToken)
     {
         var source = """
 public static class Example
@@ -153,6 +154,6 @@ public static class Example
                 VerifyCS.Diagnostic().WithSpan(31, 13, 31, 20).WithArguments("u << 40"),
             ],
             fixedSource,
-            TestContext.Current.CancellationToken);
+            cancellationToken);
     }
 }

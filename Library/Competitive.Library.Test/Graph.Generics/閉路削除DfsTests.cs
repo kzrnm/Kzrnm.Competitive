@@ -1,6 +1,3 @@
-
-using System.Linq;
-
 namespace Kzrnm.Competitive.Testing.Graph;
 
 public class 閉路削除DfsTests
