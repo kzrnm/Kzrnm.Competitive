@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive.Analyzer.AggressiveInlining;
+
 using static Constants;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]

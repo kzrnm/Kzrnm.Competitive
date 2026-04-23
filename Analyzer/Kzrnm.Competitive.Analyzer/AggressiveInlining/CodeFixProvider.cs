@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Kzrnm.Competitive.Analyzer.Helpers;
 
 namespace Kzrnm.Competitive.Analyzer.AggressiveInlining;
+
 using static Constants;
 using static SyntaxFactory;
 

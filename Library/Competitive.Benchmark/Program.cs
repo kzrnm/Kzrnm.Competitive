@@ -58,7 +58,7 @@ public class Benchmark
     public void Setup()
     {
         array = new int[N];
-        rnd.NextBytes(MemoryMarshal.Cast<int, byte>(array));
+        rnd.NextBytes(MemoryMarshal.Cast<int, byte>(array.AsSpan()));
     }
 
     [Benchmark]

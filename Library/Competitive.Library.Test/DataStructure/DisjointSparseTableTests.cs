@@ -38,7 +38,7 @@ public class DisjointSparseTableTests
         for (int len = 1; len < 50; len++)
         {
             var arr = new short[len];
-            rnd.NextBytes(MemoryMarshal.Cast<short, byte>(arr));
+            rnd.NextBytes(MemoryMarshal.AsBytes(arr.AsSpan()));
             var naive = new MinNaive(arr);
             var st = new DisjointSparseTable<short, MinOp>(arr);
 
@@ -75,7 +75,7 @@ public class DisjointSparseTableTests
         for (int len = 1; len < 50; len++)
         {
             var arr = new uint[len];
-            rnd.NextBytes(MemoryMarshal.Cast<uint, byte>(arr));
+            rnd.NextBytes(MemoryMarshal.AsBytes(arr.AsSpan()));
             for (int i = 0; i < arr.Length; i++)
                 arr[i] &= (1 << 16) - 1;
             var sums = Sums.Create(arr);

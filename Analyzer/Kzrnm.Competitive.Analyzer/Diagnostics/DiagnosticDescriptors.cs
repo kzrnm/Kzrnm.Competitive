@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 
 namespace Kzrnm.Competitive.Analyzer.Diagnostics;
+
 using static DiagnosticsResources;
 
 public static class DiagnosticDescriptors

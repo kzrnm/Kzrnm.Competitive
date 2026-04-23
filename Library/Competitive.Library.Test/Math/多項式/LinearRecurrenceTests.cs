@@ -122,14 +122,12 @@ public class LinearRecurrenceTest
             for (int len = 0; len < 80; len++)
             {
                 {
-                    var recurrence = LinearRecurrence.Recurrence(
-                        new MontgomeryModInt<Mod998244353>[] { a0, a1, a2 }, [1, 1, 1], len);
+                    var recurrence = LinearRecurrence.Recurrence<Mod998244353>([a0, a1, a2], [1, 1, 1], len);
                     recurrence.ShouldBe(native998244353[..len]);
                 }
 
                 {
-                    var recurrence = LinearRecurrence.Recurrence(
-                        new MontgomeryModInt<Mod1000000007>[] { a0, a1, a2 }, [1, 1, 1], len);
+                    var recurrence = LinearRecurrence.Recurrence<Mod1000000007>([a0, a1, a2], [1, 1, 1], len);
                     recurrence.ShouldBe(native1000000007[..len]);
                 }
             }
@@ -146,14 +144,12 @@ public class LinearRecurrenceTest
             for (int len = 0; len < 80; len++)
             {
                 {
-                    var recurrence = LinearRecurrence.Recurrence(
-                        new MontgomeryModInt<Mod998244353>[] { a0, a1 }, [1, 1, 1], len);
+                    var recurrence = LinearRecurrence.Recurrence<Mod998244353>([a0, a1], [1, 1, 1], len);
                     recurrence.ShouldBe(native998244353[..len]);
                 }
 
                 {
-                    var recurrence = LinearRecurrence.Recurrence(
-                        new MontgomeryModInt<Mod1000000007>[] { a0, a1 }, [1, 1, 1], len);
+                    var recurrence = LinearRecurrence.Recurrence<Mod1000000007>([a0, a1], [1, 1, 1], len);
                     recurrence.ShouldBe(native1000000007[..len]);
                 }
             }
@@ -170,14 +166,12 @@ public class LinearRecurrenceTest
             for (int len = 0; len < 80; len++)
             {
                 {
-                    var recurrence = LinearRecurrence.Recurrence(
-                        new MontgomeryModInt<Mod998244353>[] { a0 }, [1, 1, 1], len);
+                    var recurrence = LinearRecurrence.Recurrence<Mod998244353>([a0], [1, 1, 1], len);
                     recurrence.ShouldBe(native998244353[..len]);
 
                 }
                 {
-                    var recurrence = LinearRecurrence.Recurrence(
-                        new MontgomeryModInt<Mod1000000007>[] { a0 }, [1, 1, 1], len);
+                    var recurrence = LinearRecurrence.Recurrence<Mod1000000007>([a0], [1, 1, 1], len);
                     recurrence.ShouldBe(native1000000007[..len]);
                 }
 

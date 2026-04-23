@@ -269,7 +269,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
         {
             int len = rnd.Next(50);
             var array = new int[len];
-            rnd.NextBytes(MemoryMarshal.AsBytes<int>(array));
+            rnd.NextBytes(MemoryMarshal.AsBytes(array.AsSpan()));
             AddRange(array);
             Test();
         }
@@ -308,7 +308,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
         {
             int len = rnd.Next(50);
             var array = new int[len];
-            rnd.NextBytes(MemoryMarshal.AsBytes<int>(array));
+            rnd.NextBytes(MemoryMarshal.AsBytes(array.AsSpan()));
             var l = rnd.Next(list.Count);
             InsertRange(l, array);
             Test();

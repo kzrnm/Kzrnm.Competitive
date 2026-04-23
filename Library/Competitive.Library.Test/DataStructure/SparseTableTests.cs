@@ -35,7 +35,7 @@ public class SparseTableTests
         for (int len = 1; len < 50; len++)
         {
             var arr = new short[len];
-            rnd.NextBytes(MemoryMarshal.Cast<short, byte>(arr));
+            rnd.NextBytes(MemoryMarshal.AsBytes(arr.AsSpan()));
             var native = new MinNative(arr);
             var st = new SparseTable<short, MinOp>(arr);
 

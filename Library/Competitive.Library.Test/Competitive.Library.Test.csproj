@@ -1,17 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net7.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <RootNamespace>Kzrnm.Competitive.Testing</RootNamespace>
     <LangVersion>latest</LangVersion>
     <Configurations>Debug;Release;Library</Configurations>
 
-<!--
     <OutputType>Exe</OutputType>
     <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
     <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
--->
   </PropertyGroup>
 
   <PropertyGroup>
@@ -26,28 +24,17 @@
     <Using Include="Shouldly" />
     <Using Include="Xunit" />
   </ItemGroup>
-  
+
   <ItemGroup>
-    <PackageReference Include="CompetitiveVerifierResolverTestLogger" Version="*">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="GitHubActionsTestLogger" Version="2.4.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="CompetitiveVerifierResolverTestLogger" Version="2.3.0" />
+    <PackageReference Include="GitHubActionsTestLogger" Version="3.0.3" />
     <PackageReference Include="IsExternalInit" Version="1.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="Shouldly" Version="4.3.0" />
     <PackageReference Include="SourceExpander.Embedder.Testing" Version="8.2.0" />
-    <PackageReference Include="xunit.v3" Version="1.1.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="3.0.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="xunit.v3.mtp-v2" Version="3.2.2" />
   </ItemGroup>
 
   <ItemGroup>

@@ -12,7 +12,7 @@ public class KitamasaTests
     {
         DynamicModInt<DMod>.Mod = mod;
         var res = new uint[1000];
-        var drr = MemoryMarshal.Cast<uint, DynamicModInt<DMod>>(res);
+        var drr = MemoryMarshal.Cast<uint, DynamicModInt<DMod>>(res.AsSpan());
         a.CopyTo(res);
         for (int k = a.Length; k < drr.Length; k++)
             for (int i = 0; i < c.Length; i++)

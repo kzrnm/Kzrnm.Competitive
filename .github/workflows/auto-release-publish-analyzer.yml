@@ -33,7 +33,7 @@ jobs:
     with:
       target: Analyzer/Competitive.Analyzer.slnx
       dotnet-version: |
-        7.0.x
+        8.0.x
         9.0.x
 
   build:
@@ -45,7 +45,7 @@ jobs:
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
-            7.0.x
+            8.0.x
             9.0.x
       - uses: actions/cache@v5
         with:
@@ -56,7 +56,7 @@ jobs:
       - name: Build
         run: dotnet build ${{ env.WORKFLOW_BUILD_SLN }} -c Release
       - name: Test
-        run: dotnet test ${{ env.WORKFLOW_BUILD_SLN }} --no-build --logger GitHubActions -c Release
+        run: dotnet test --solution ${{ env.WORKFLOW_BUILD_SLN }} --no-build -c Release
       - name: Pack
         run: dotnet pack ${{ env.PACK_CSPROJ }} --no-build -c Release -o Analyzer/bin/Packages/Release
       - uses: actions/upload-artifact@v7

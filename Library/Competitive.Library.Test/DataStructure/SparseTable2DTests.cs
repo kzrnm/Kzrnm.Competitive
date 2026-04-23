@@ -53,7 +53,7 @@ public class SparseTable2DTests
                 for (int i = 0; i < arr.Length; i++)
                 {
                     arr[i] = new short[lenW];
-                    rnd.NextBytes(MemoryMarshal.Cast<short, byte>(arr[i]));
+                    rnd.NextBytes(MemoryMarshal.AsBytes(arr[i].AsSpan()));
                 }
                 var native = new MinNative(arr);
                 var st = new SparseTable2D<short, MinOp>(arr);

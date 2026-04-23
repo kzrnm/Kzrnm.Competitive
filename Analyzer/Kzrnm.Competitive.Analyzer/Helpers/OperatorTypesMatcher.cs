@@ -1,6 +1,7 @@
 using Microsoft.CodeAnalysis;
 
 namespace Kzrnm.Competitive.Analyzer.Helpers;
+
 using static Constants;
 
 public class OperatorTypesMatcher
