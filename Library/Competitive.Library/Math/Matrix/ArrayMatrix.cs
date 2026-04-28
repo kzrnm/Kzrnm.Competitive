@@ -61,7 +61,7 @@ namespace Kzrnm.Competitive
             if (m.Length == 0)
             {
                 kind = Kd.Normal;
-                _v = Array.Empty<T>();
+                _v = [];
             }
             else
             {

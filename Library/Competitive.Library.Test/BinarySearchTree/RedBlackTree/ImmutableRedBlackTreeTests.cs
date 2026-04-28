@@ -2,6 +2,7 @@ using Kzrnm.Competitive.Internal;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree;
 
+[InheritsTests]
 public class ImmutableRedBlackTreeTests
     : ImmutableBinarySearchTreeTestsBase<ImmutableRedBlackTreeNode<int, SingleBbstOp<int>>, ImmutableRedBlackTree<int>>
 {

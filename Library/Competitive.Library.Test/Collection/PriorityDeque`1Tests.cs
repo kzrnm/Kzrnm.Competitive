@@ -2,8 +2,8 @@ namespace Kzrnm.Competitive.Testing.Collection;
 
 public class PriorityDequeTests
 {
-    [Fact]
-    public void TryDequeue()
+    [Test, MultipleAssertions]
+    public async Task TryDequeue()
     {
         var pq = new PriorityDeque<int>();
 
@@ -12,26 +12,26 @@ public class PriorityDequeTests
         pq.Enqueue(4);
         pq.Enqueue(2);
 
-        pq.Count.ShouldBe(4);
-        pq.TryDequeueMin(out var data).ShouldBeTrue();
-        data.ShouldBe(1);
-        pq.Count.ShouldBe(3);
-        pq.TryDequeueMax(out data).ShouldBeTrue();
-        data.ShouldBe(5);
-        pq.Count.ShouldBe(2);
-        pq.TryDequeueMin(out data).ShouldBeTrue();
-        data.ShouldBe(2);
-        pq.Count.ShouldBe(1);
-        pq.TryDequeueMin(out data).ShouldBeTrue();
-        data.ShouldBe(4);
+        await pq.Count.Should().BeEqualTo(4);
+        await pq.TryDequeueMin(out var data).Should().BeTrue();
+        await data.Should().BeEqualTo(1);
+        await pq.Count.Should().BeEqualTo(3);
+        await pq.TryDequeueMax(out data).Should().BeTrue();
+        await data.Should().BeEqualTo(5);
+        await pq.Count.Should().BeEqualTo(2);
+        await pq.TryDequeueMin(out data).Should().BeTrue();
+        await data.Should().BeEqualTo(2);
+        await pq.Count.Should().BeEqualTo(1);
+        await pq.TryDequeueMin(out data).Should().BeTrue();
+        await data.Should().BeEqualTo(4);
 
-        pq.Count.ShouldBe(0);
-        pq.TryDequeueMin(out _).ShouldBeFalse();
-        pq.TryDequeueMax(out _).ShouldBeFalse();
+        await pq.Count.Should().BeEqualTo(0);
+        await pq.TryDequeueMin(out _).Should().BeFalse();
+        await pq.TryDequeueMax(out _).Should().BeFalse();
     }
 
-    [Fact]
-    public void RandomNormal()
+    [Test, MultipleAssertions]
+    public async Task RandomNormal()
     {
         var rnd = new Random(227);
         var inner = new RandomInner(rnd);
@@ -40,16 +40,16 @@ public class PriorityDequeTests
         {
             int t = rnd.Next(3);
             if (t == 0 || inner.Count == 0)
-                inner.Enqueue();
+                await inner.Enqueue();
             else if (t == 1)
-                inner.DequeueMax();
+                await inner.DequeueMax();
             else
-                inner.DequeueMin();
+                await inner.DequeueMin();
         }
     }
 
-    [Fact]
-    public void RandomEnqueueDequeue()
+    [Test, MultipleAssertions]
+    public async Task RandomEnqueueDequeue()
     {
         var rnd = new Random(227);
         var inner = new RandomInner(rnd);
@@ -58,15 +58,15 @@ public class PriorityDequeTests
         {
             int t = rnd.Next(5);
             if (t == 0 || inner.Count == 0)
-                inner.Enqueue();
+                await inner.Enqueue();
             else if (t == 1)
-                inner.DequeueMax();
+                await inner.DequeueMax();
             else if (t == 2)
-                inner.DequeueMin();
+                await inner.DequeueMin();
             else if (t == 3)
-                inner.EnqueueDequeueMin();
+                await inner.EnqueueDequeueMin();
             else if (t == 4)
-                inner.EnqueueDequeueMax();
+                await inner.EnqueueDequeueMax();
         }
     }
     class RandomInner(Random rnd)
@@ -86,7 +86,7 @@ public class PriorityDequeTests
             }
             return key;
         }
-        public void Enqueue()
+        public async Task Enqueue()
         {
             var key = MakeNext();
             keyValues.Add(key);
@@ -95,44 +95,44 @@ public class PriorityDequeTests
             keyValues.Sort();
             keyValues.Reverse();
 
-            pq.Count.ShouldBe(keyValues.Count);
-            pq.PeekMin.ShouldBe(keyValues[0]);
-            pq.PeekMax.ShouldBe(keyValues[^1]);
+            await pq.Count.Should().BeEqualTo(keyValues.Count);
+            await pq.PeekMin.Should().BeEqualTo(keyValues[0]);
+            await pq.PeekMax.Should().BeEqualTo(keyValues[^1]);
         }
-        public void DequeueMin()
+        public async Task DequeueMin()
         {
             var k = pq.DequeueMin();
 
-            k.ShouldBe(keyValues[0]);
+            await k.Should().BeEqualTo(keyValues[0]);
             keyValues.RemoveAt(0);
             keyValues.Sort();
             keyValues.Reverse();
 
-            pq.Count.ShouldBe(keyValues.Count);
+            await pq.Count.Should().BeEqualTo(keyValues.Count);
             if (Count > 0)
             {
-                pq.PeekMin.ShouldBe(keyValues[0]);
-                pq.PeekMax.ShouldBe(keyValues[^1]);
+                await pq.PeekMin.Should().BeEqualTo(keyValues[0]);
+                await pq.PeekMax.Should().BeEqualTo(keyValues[^1]);
             }
         }
-        public void DequeueMax()
+        public async Task DequeueMax()
         {
             var k = pq.DequeueMax();
 
-            k.ShouldBe(keyValues[^1]);
+            await k.Should().BeEqualTo(keyValues[^1]);
             keyValues.RemoveAt(keyValues.Count - 1);
             keyValues.Sort();
             keyValues.Reverse();
 
-            pq.Count.ShouldBe(keyValues.Count);
+            await pq.Count.Should().BeEqualTo(keyValues.Count);
             if (Count > 0)
             {
-                pq.PeekMin.ShouldBe(keyValues[0]);
-                pq.PeekMax.ShouldBe(keyValues[^1]);
+                await pq.PeekMin.Should().BeEqualTo(keyValues[0]);
+                await pq.PeekMax.Should().BeEqualTo(keyValues[^1]);
             }
         }
 
-        public void EnqueueDequeueMin()
+        public async Task EnqueueDequeueMin()
         {
             var inKey = MakeNext();
             var k = pq.EnqueueDequeueMin(inKey);
@@ -140,14 +140,14 @@ public class PriorityDequeTests
             keyValues.Add(inKey);
             keyValues.Sort();
             keyValues.Reverse();
-            k.ShouldBe(keyValues[0]);
+            await k.Should().BeEqualTo(keyValues[0]);
             keyValues.RemoveAt(0);
 
-            pq.Count.ShouldBe(keyValues.Count);
-            pq.PeekMin.ShouldBe(keyValues[0]);
-            pq.PeekMax.ShouldBe(keyValues[^1]);
+            await pq.Count.Should().BeEqualTo(keyValues.Count);
+            await pq.PeekMin.Should().BeEqualTo(keyValues[0]);
+            await pq.PeekMax.Should().BeEqualTo(keyValues[^1]);
         }
-        public void EnqueueDequeueMax()
+        public async Task EnqueueDequeueMax()
         {
             var inKey = MakeNext();
             var k = pq.EnqueueDequeueMax(inKey);
@@ -155,14 +155,14 @@ public class PriorityDequeTests
             keyValues.Add(inKey);
             keyValues.Sort();
             keyValues.Reverse();
-            k.ShouldBe(keyValues[^1]);
+            await k.Should().BeEqualTo(keyValues[^1]);
             keyValues.RemoveAt(keyValues.Count - 1);
 
-            pq.Count.ShouldBe(keyValues.Count);
+            await pq.Count.Should().BeEqualTo(keyValues.Count);
             if (Count > 0)
             {
-                pq.PeekMin.ShouldBe(keyValues[0]);
-                pq.PeekMax.ShouldBe(keyValues[^1]);
+                await pq.PeekMin.Should().BeEqualTo(keyValues[0]);
+                await pq.PeekMax.Should().BeEqualTo(keyValues[^1]);
             }
         }
     }

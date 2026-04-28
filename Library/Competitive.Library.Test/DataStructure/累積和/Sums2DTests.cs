@@ -2,8 +2,8 @@ namespace Kzrnm.Competitive.Testing.DataStructure;
 
 public class Sums2DTests
 {
-    [Fact]
-    public void Normal()
+    [Test, MultipleAssertions]
+    public async Task Normal()
     {
         var arr = new int[10][];
         for (int i = 0; i < arr.Length; i++)
@@ -15,14 +15,14 @@ public class Sums2DTests
             }
         }
         var sums = Sums2D.Create(arr);
-        sums[0..10][0..20].ShouldBe(8550);
-        sums[1..10][1..20].ShouldBe(8550);
-        sums[3..10][1..20].ShouldBe(7980);
-        sums[4..8][7..9].ShouldBe(330);
+        await sums[0..10][0..20].Should().BeEqualTo(8550);
+        await sums[1..10][1..20].Should().BeEqualTo(8550);
+        await sums[3..10][1..20].Should().BeEqualTo(7980);
+        await sums[4..8][7..9].Should().BeEqualTo(330);
     }
 
-    [Fact]
-    public void Random()
+    [Test, MultipleAssertions]
+    public async Task Random()
     {
         var rnd = new Random();
         var arr = new long[10][];
@@ -39,7 +39,7 @@ public class Sums2DTests
             for (int r = l; r <= 10; r++)
                 for (int u = 0; u <= 20; u++)
                     for (int d = u; d <= 20; d++)
-                        sums[l..r][u..d].ShouldBe(SumDirect(arr, l, r, u, d));
+                        await sums[l..r][u..d].Should().BeEqualTo(SumDirect(arr, l, r, u, d));
     }
 
     static long SumDirect(long[][] arr, int left, int rightEx, int upper, int bottomEx)

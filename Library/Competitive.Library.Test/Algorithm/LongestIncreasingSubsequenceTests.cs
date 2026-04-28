@@ -1,12 +1,15 @@
+using System.Collections.Immutable;
+
 namespace Kzrnm.Competitive.Testing.Algorithm;
 
 public class LongestIncreasingSubsequenceTests
 {
-    record struct CaseData(int[] Input,
-        SerializableTuple<int, int>[] Strictly,
-        SerializableTuple<int, int>[] NotStrictly,
-        SerializableTuple<int, int>[] ReverseStrictly,
-        SerializableTuple<int, int>[] ReverseNotStrictly
+    record struct CaseData(
+        ImmutableArray<int> Input,
+        ImmutableArray<(int, int)> Strictly,
+        ImmutableArray<(int, int)> NotStrictly,
+        ImmutableArray<(int, int)> ReverseStrictly,
+        ImmutableArray<(int, int)> ReverseNotStrictly
     );
     static CaseData[] Cases = [
         new()
@@ -43,47 +46,50 @@ public class LongestIncreasingSubsequenceTests
         },
     ];
 
-    public static IEnumerable<TheoryDataRow<int[], SerializableTuple<int, int>[]>> Strictly_Data() =>
-        Cases.Select(t => new TheoryDataRow<int[], SerializableTuple<int, int>[]>(t.Input, t.Strictly));
+    public static IEnumerable<(ImmutableArray<int> input, ImmutableArray<LongestIncreasingSubsequence.Result<int>> expected)> Strictly_Data() =>
+        ToParams(Cases, t => t.Strictly);
 
-    [Theory]
-    [MemberData(nameof(Strictly_Data))]
-    public void Strictly(int[] input, SerializableTuple<int, int>[] expected)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(Strictly_Data))]
+    public async Task Strictly(ImmutableArray<int> input, ImmutableArray<LongestIncreasingSubsequence.Result<int>> expected)
     {
-        LongestIncreasingSubsequence.Lis(input).ShouldBe(
-            expected.Select(t => new LongestIncreasingSubsequence.Result<int>(t.Item1, t.Item2)));
+        var s = input.ToArray();
+        await LongestIncreasingSubsequence.Lis(s).Should().BeEquivalentOrderTo(expected);
     }
 
-    public static IEnumerable<TheoryDataRow<int[], SerializableTuple<int, int>[]>> NotStrictly_Data() =>
-        Cases.Select(t => new TheoryDataRow<int[], SerializableTuple<int, int>[]>(t.Input, t.NotStrictly));
+    public static IEnumerable<(ImmutableArray<int> input, ImmutableArray<LongestIncreasingSubsequence.Result<int>> expected)> NotStrictly_Data() =>
+        ToParams(Cases, t => t.NotStrictly);
 
-    [Theory]
-    [MemberData(nameof(NotStrictly_Data))]
-    public void NotStrictly(int[] input, SerializableTuple<int, int>[] expected)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(NotStrictly_Data))]
+    public async Task NotStrictly(ImmutableArray<int> input, ImmutableArray<LongestIncreasingSubsequence.Result<int>> expected)
     {
-        LongestIncreasingSubsequence.Lis(input, false).ShouldBe(
-            expected.Select(t => new LongestIncreasingSubsequence.Result<int>(t.Item1, t.Item2)));
+        var s = input.ToArray();
+        await LongestIncreasingSubsequence.Lis(s, false).Should().BeEquivalentOrderTo(expected);
     }
 
-    public static IEnumerable<TheoryDataRow<int[], SerializableTuple<int, int>[]>> ReverseStrictly_Data() =>
-        Cases.Select(t => new TheoryDataRow<int[], SerializableTuple<int, int>[]>(t.Input, t.ReverseStrictly));
+    public static IEnumerable<(ImmutableArray<int> input, ImmutableArray<LongestIncreasingSubsequence.Result<int>> expected)> ReverseStrictly_Data() =>
+        ToParams(Cases, t => t.ReverseStrictly);
 
-    [Theory]
-    [MemberData(nameof(ReverseStrictly_Data))]
-    public void ReverseStrictly(int[] input, SerializableTuple<int, int>[] expected)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(ReverseStrictly_Data))]
+    public async Task ReverseStrictly(ImmutableArray<int> input, ImmutableArray<LongestIncreasingSubsequence.Result<int>> expected)
     {
-        LongestIncreasingSubsequence.Lis(input, new ReverseComparer<int>()).ShouldBe(
-            expected.Select(t => new LongestIncreasingSubsequence.Result<int>(t.Item1, t.Item2)));
+        var s = input.ToArray();
+        await LongestIncreasingSubsequence.Lis(s, new ReverseComparer<int>()).Should().BeEquivalentOrderTo(expected);
     }
 
-    public static IEnumerable<TheoryDataRow<int[], SerializableTuple<int, int>[]>> ReverseNotStrictly_Data() =>
-        Cases.Select(t => new TheoryDataRow<int[], SerializableTuple<int, int>[]>(t.Input, t.ReverseNotStrictly));
+    public static IEnumerable<(ImmutableArray<int> input, ImmutableArray<LongestIncreasingSubsequence.Result<int>> expected)> ReverseNotStrictly_Data() =>
+        ToParams(Cases, t => t.ReverseNotStrictly);
 
-    [Theory]
-    [MemberData(nameof(ReverseNotStrictly_Data))]
-    public void ReverseNotStrictly(int[] input, SerializableTuple<int, int>[] expected)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(ReverseNotStrictly_Data))]
+    public async Task ReverseNotStrictly(ImmutableArray<int> input, ImmutableArray<LongestIncreasingSubsequence.Result<int>> expected)
     {
-        LongestIncreasingSubsequence.Lis(input, new ReverseComparer<int>(), false).ShouldBe(
-            expected.Select(t => new LongestIncreasingSubsequence.Result<int>(t.Item1, t.Item2)));
+        var s = input.ToArray();
+        await LongestIncreasingSubsequence.Lis(s, new ReverseComparer<int>(), false).Should().BeEquivalentOrderTo(expected);
     }
+
+    static (ImmutableArray<int> input, ImmutableArray<LongestIncreasingSubsequence.Result<int>> expected)[] ToParams(IEnumerable<CaseData> d, Func<CaseData, ImmutableArray<(int Value, int Index)>> expectedFunc)
+        => d.Select(cd => (cd.Input, expectedFunc(cd).Select(t => new LongestIncreasingSubsequence.Result<int>(t.Value, t.Index)).ToImmutableArray())).ToArray();
 }

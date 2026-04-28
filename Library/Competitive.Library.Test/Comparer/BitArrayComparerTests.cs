@@ -4,8 +4,8 @@ namespace Kzrnm.Competitive.Testing.Comparer;
 
 public class BitArrayComparerTests
 {
-    [Fact]
-    public void Compare()
+    [Test, MultipleAssertions]
+    public async Task Compare()
     {
         var arr = new BitArray[]
         {
@@ -16,21 +16,21 @@ public class BitArrayComparerTests
         };
         Array.Sort(arr, BitArrayComparer.Default);
 
-        var expected = new BitArray[] {
-            new BitArray((int[])(object)new uint[] { 0x0F153215 }),
-            new BitArray((int[])(object)new uint[] { 0xFF153215 }),
-            new BitArray((int[])(object)new uint[] { 0xFF153215, 0x0 }),
-            new BitArray((int[])(object)new uint[] { 0xFF153215, 0x1 }),
-        };
-        arr.Length.ShouldBe(expected.Length);
+        uint[][] expected = [
+            [0x0F153215],
+            [0xFF153215],
+            [0xFF153215, 0x0],
+            [0xFF153215, 0x1],
+        ];
+        await arr.Should().HaveCount(expected.Length);
         for (int i = 0; i < arr.Length; i++)
         {
-            arr[i].ShouldBe(expected[i], $"Index: {i}");
+            await arr[i].ToUInt32Array().Should().BeEquivalentOrderTo(expected[i]);
         }
     }
 
-    [Fact]
-    public void Reverse()
+    [Test, MultipleAssertions]
+    public async Task Reverse()
     {
         var arr = new BitArray[]
         {
@@ -41,16 +41,16 @@ public class BitArrayComparerTests
         };
         Array.Sort(arr, BitArrayComparer.Reverse);
 
-        var expected = new BitArray[] {
-            new BitArray((int[])(object)new uint[] { 0xFF153215, 0x1 }),
-            new BitArray((int[])(object)new uint[] { 0xFF153215, 0x0 }),
-            new BitArray((int[])(object)new uint[] { 0xFF153215 }),
-            new BitArray((int[])(object)new uint[] { 0x0F153215 }),
-        };
-        arr.Length.ShouldBe(expected.Length);
+        uint[][] expected = [
+            [0xFF153215, 0x1],
+            [0xFF153215, 0x0],
+            [0xFF153215],
+            [0x0F153215],
+        ];
+        await arr.Should().HaveCount(expected.Length);
         for (int i = 0; i < arr.Length; i++)
         {
-            arr[i].ShouldBe(expected[i], $"Index: {i}");
+            await arr[i].ToUInt32Array().Should().BeEquivalentOrderTo(expected[i]);
         }
     }
 }

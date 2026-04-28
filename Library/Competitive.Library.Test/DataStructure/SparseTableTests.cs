@@ -7,29 +7,29 @@ public class SparseTableTests
 {
     Random rnd = new(42);
 
-    [Fact]
-    public void Invalid()
+    [Test, MultipleAssertions]
+    public async Task Invalid()
     {
-        ((Action)(() => _ = new SparseTable<short, MinOp>([]))).ShouldThrow<ContractAssertException>();
+        await Assert.That(() => _ = new SparseTable<short, MinOp>([])).Throws<ContractAssertException>();
 
         var s = new SparseTable<short, MinOp>([1, 2, 3]);
-        Should.Throw<ContractAssertException>(() => s[-1..3]);
-        Should.Throw<ContractAssertException>(() => s[0..4]);
+        await Assert.That(() => s[-1..3]).Throws<ContractAssertException>();
+        await Assert.That(() => s[0..4]).Throws<ContractAssertException>();
         for (var i = 0; i < 5; i++)
-            Should.Throw<ContractAssertException>(() => s[i..i]);
-        Should.Throw<ContractAssertException>(() => s.Prod(-1, 3));
-        Should.Throw<ContractAssertException>(() => s.Prod(0, 4));
+            await Assert.That(() => s[i..i]).Throws<ContractAssertException>();
+        await Assert.That(() => s.Prod(-1, 3)).Throws<ContractAssertException>();
+        await Assert.That(() => s.Prod(0, 4)).Throws<ContractAssertException>();
 
         for (var i = 0; i < 3; i++)
             for (var j = i + 1; j <= 3; j++)
             {
-                Should.NotThrow(() => s[i..j]);
-                Should.NotThrow(() => s.Prod(i, j));
+                await Assert.That(() => s[i..j]).ThrowsNothing();
+                await Assert.That(() => s.Prod(i, j)).ThrowsNothing();
             }
     }
 
-    [Fact]
-    public void Native()
+    [Test]
+    public async Task Native()
     {
         for (int len = 1; len < 50; len++)
         {
@@ -40,11 +40,12 @@ public class SparseTableTests
 
             for (var i = 0; i < len; i++)
                 for (var j = i + 1; j <= len; j++)
-                {
-                    var expected = native.Prod(i, j);
-                    st[i..j].ShouldBe(expected);
-                    st.Prod(i, j).ShouldBe(expected);
-                }
+                    using (Assert.Multiple())
+                    {
+                        var expected = native.Prod(i, j);
+                        await st[i..j].Should().BeEqualTo(expected);
+                        await st.Prod(i, j).Should().BeEqualTo(expected);
+                    }
         }
     }
 

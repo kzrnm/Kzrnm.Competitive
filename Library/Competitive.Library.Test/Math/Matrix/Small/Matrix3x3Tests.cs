@@ -3,33 +3,34 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix;
 
 public class Matrix3x3Tests
 {
-    [Fact]
-    public void Property()
+    [Test, MultipleAssertions]
+    public async Task Property()
     {
         var mat = new LongMatrix3x3((1, 2, 3), (4, 5, 6), (7, 8, 9));
-        mat.Row0.ShouldBe((1, 2, 3));
-        mat.Row1.ShouldBe((4, 5, 6));
-        mat.Row2.ShouldBe((7, 8, 9));
+        await mat.Row0.Should().BeEqualTo((1, 2, 3));
+        await mat.Row1.Should().BeEqualTo((4, 5, 6));
+        await mat.Row2.Should().BeEqualTo((7, 8, 9));
     }
 
-    [Fact]
-    [Trait("Category", "Operator")]
-    public void SingleMinus()
+    [Test]
+    [Property("Category", "Operator")]
+    public async Task SingleMinus()
     {
-        (-new LongMatrix3x3(
+        var mat = -new LongMatrix3x3(
             (1, 2, 3),
             (5, 6, 7),
             (9, 10, 11)
-        )).ShouldBe(new LongMatrix3x3(
+        );
+        await mat.Should().BeEqualTo(new LongMatrix3x3(
             (-1, -2, -3),
             (-5, -6, -7),
             (-9, -10, -11)
         ));
     }
 
-    public static TheoryData<LongMatrix3x3, LongMatrix3x3, LongMatrix3x3> Add_Data => new()
-    {
-        {
+    public static IEnumerable<(LongMatrix3x3, LongMatrix3x3, LongMatrix3x3)> Add_Data =>
+        [
+        (
             new LongMatrix3x3(
                 (1, 2, 3),
                 (5, 6, 7),
@@ -41,8 +42,8 @@ public class Matrix3x3Tests
                 (5, 7, 7),
                 (9, 10, 12)
             )
-        },
-        {
+        ),
+        (
             new LongMatrix3x3(
                 (1, 2, 3),
                 (5, 6, 7),
@@ -58,21 +59,21 @@ public class Matrix3x3Tests
                 (10, 0, 14),
                 (18, 0, 22)
             )
-        },
-    };
+        )
+];
 
-    [Theory]
-    [Trait("Category", "Operator")]
-    [MemberData(nameof(Add_Data))]
-    public void Add(LongMatrix3x3 mat1, LongMatrix3x3 mat2, LongMatrix3x3 expected)
+    [Test, MultipleAssertions]
+    [Property("Category", "Operator")]
+    [MethodDataSource(nameof(Add_Data))]
+    public async Task Add(LongMatrix3x3 mat1, LongMatrix3x3 mat2, LongMatrix3x3 expected)
     {
-        (mat1 + mat2).ShouldBe(expected);
-        (mat2 + mat1).ShouldBe(expected);
+        await (mat1 + mat2).Should().BeEqualTo(expected);
+        await (mat2 + mat1).Should().BeEqualTo(expected);
     }
 
-    public static TheoryData<LongMatrix3x3, LongMatrix3x3, LongMatrix3x3> Subtract_Data => new()
-    {
-        {
+    public static IEnumerable<(LongMatrix3x3, LongMatrix3x3, LongMatrix3x3)> Subtract_Data =>
+    [
+        (
             new LongMatrix3x3(
                 (1, 2, 3),
                 (5, 6, 7),
@@ -88,8 +89,8 @@ public class Matrix3x3Tests
                 (0, 12, 0),
                 (0, 20, 0)
             )
-        },
-        {
+        ),
+        (
             new LongMatrix3x3(
                 (1, 2, 3),
                 (5, 6, 7),
@@ -101,8 +102,8 @@ public class Matrix3x3Tests
                 (5, 5, 7),
                 (9, 10, 10)
             )
-        },
-        {
+        ),
+        (
             LongMatrix3x3.MultiplicativeIdentity,
             new LongMatrix3x3(
                 (1, 2, 3),
@@ -114,19 +115,19 @@ public class Matrix3x3Tests
                 (-5, -5, -7),
                 (-9, -10, -10)
             )
-        },
-    };
-    [Theory]
-    [Trait("Category", "Operator")]
-    [MemberData(nameof(Subtract_Data))]
-    public void Subtract(LongMatrix3x3 mat1, LongMatrix3x3 mat2, LongMatrix3x3 expected)
+        )
+    ];
+    [Test]
+    [Property("Category", "Operator")]
+    [MethodDataSource(nameof(Subtract_Data))]
+    public async Task Subtract(LongMatrix3x3 mat1, LongMatrix3x3 mat2, LongMatrix3x3 expected)
     {
-        (mat1 - mat2).ShouldBe(expected);
+        await (mat1 - mat2).Should().BeEqualTo(expected);
     }
 
-    public static TheoryData<LongMatrix3x3, LongMatrix3x3, LongMatrix3x3> Multiply_Data => new()
-    {
-        {
+    public static IEnumerable<(LongMatrix3x3, LongMatrix3x3, LongMatrix3x3)> Multiply_Data =>
+    [
+        (
             new LongMatrix3x3(
                 (1, 2, 3),
                 (5, 6, 7),
@@ -142,8 +143,8 @@ public class Matrix3x3Tests
                 (98, -116, 50),
                 (158, -188, 78)
             )
-        },
-        {
+        ),
+        (
             new LongMatrix3x3(
                 (1, 2, 3),
                 (5, 6, 7),
@@ -155,8 +156,8 @@ public class Matrix3x3Tests
                 (5, 6, 7),
                 (9, 10, 11)
             )
-        },
-        {
+        ),
+        (
             LongMatrix3x3.MultiplicativeIdentity,
             new LongMatrix3x3(
                 (1, 2, 3),
@@ -168,20 +169,20 @@ public class Matrix3x3Tests
                 (5, 6, 7),
                 (9, 10, 11)
             )
-        },
-    };
+        )
+    ];
 
-    [Theory]
-    [Trait("Category", "Operator")]
-    [MemberData(nameof(Multiply_Data))]
-    public void Multiply(LongMatrix3x3 mat1, LongMatrix3x3 mat2, LongMatrix3x3 expected)
+    [Test]
+    [Property("Category", "Operator")]
+    [MethodDataSource(nameof(Multiply_Data))]
+    public async Task Multiply(LongMatrix3x3 mat1, LongMatrix3x3 mat2, LongMatrix3x3 expected)
     {
-        (mat1 * mat2).ShouldBe(expected);
+        await (mat1 * mat2).Should().BeEqualTo(expected);
     }
 
-    public static TheoryData<long, LongMatrix3x3, LongMatrix3x3> MultiplyScalar_Data => new()
-    {
-        {
+    public static IEnumerable<(long, LongMatrix3x3, LongMatrix3x3)> MultiplyScalar_Data =>
+    [
+        (
             3,
             LongMatrix3x3.MultiplicativeIdentity,
             new LongMatrix3x3(
@@ -189,8 +190,8 @@ public class Matrix3x3Tests
                 (0, 3, 0),
                 (0, 0, 3)
             )
-        },
-        {
+        ),
+        (
             3,
             new LongMatrix3x3(
                 (1, 2, 3),
@@ -202,20 +203,20 @@ public class Matrix3x3Tests
                 (15, 18, 21),
                 (27, 30, 33)
             )
-        },
-    };
+        )
+    ];
 
-    [Theory]
-    [Trait("Category", "Operator")]
-    [MemberData(nameof(MultiplyScalar_Data))]
-    public void MultiplyScalar(long a, LongMatrix3x3 mat, LongMatrix3x3 expected)
+    [Test]
+    [Property("Category", "Operator")]
+    [MethodDataSource(nameof(MultiplyScalar_Data))]
+    public async Task MultiplyScalar(long a, LongMatrix3x3 mat, LongMatrix3x3 expected)
     {
-        (mat * a).ShouldBe(expected);
+        await (mat * a).Should().BeEqualTo(expected);
     }
 
-    public static TheoryData<LongMatrix3x3, SerializableTuple<long, long, long>, SerializableTuple<long, long, long>> MultiplyVector_Data => new()
-    {
-        {
+    public static IEnumerable<(LongMatrix3x3, (long, long, long), (long, long, long))> MultiplyVector_Data =>
+    [
+        (
             new LongMatrix3x3(
                 (3, 0, 0),
                 (0, 3, 0),
@@ -223,8 +224,8 @@ public class Matrix3x3Tests
             ),
             (1,2,3),
             (3,6,9)
-        },
-        {
+        ),
+        (
             new LongMatrix3x3(
                 (1, 2, 3),
                 (4, 5, 6),
@@ -232,33 +233,29 @@ public class Matrix3x3Tests
             ),
             (1,2,3),
             (14, 32, 50)
-        },
-    };
+        )
+    ];
 
-    [Theory]
-    [Trait("Category", "Operator")]
-    [MemberData(nameof(MultiplyVector_Data))]
-    public void MultiplyVector(LongMatrix3x3 mat, SerializableTuple<long, long, long> vector, SerializableTuple<long, long, long> expected)
+    [Test, MultipleAssertions]
+    [Property("Category", "Operator")]
+    [MethodDataSource(nameof(MultiplyVector_Data))]
+    public async Task MultiplyVector(LongMatrix3x3 mat, (long, long, long) vector, (long, long, long) expected)
     {
-        Inner(mat, vector, expected);
-        static void Inner(LongMatrix3x3 mat, (long, long, long) vector, (long, long, long) expected)
-        {
-            (mat * vector).ShouldBe(expected);
-            mat.Multiply(vector).ShouldBe(expected);
-            mat.Multiply(vector.Item1, vector.Item2, vector.Item3).ShouldBe(expected);
-        }
+        await (mat * vector).Should().BeEqualTo(expected);
+        await mat.Multiply(vector).Should().BeEqualTo(expected);
+        await mat.Multiply(vector.Item1, vector.Item2, vector.Item3).Should().BeEqualTo(expected);
     }
 
-    [Fact]
-    [Trait("Category", "Normal")]
-    public void Pow()
+    [Test, MultipleAssertions]
+    [Property("Category", "Normal")]
+    public async Task Pow()
     {
         var orig = new LongMatrix3x3(
                 (1, 2, 3),
                 (5, 6, 7),
                 (9, 10, 11)
             );
-        orig.Pow(5).ShouldBe(new LongMatrix3x3(
+        await orig.Pow(5).Should().BeEqualTo(new LongMatrix3x3(
                 (1825, 2162, 2499),
                 (4847, 5742, 6637),
                 (7869, 9322, 10775)
@@ -266,25 +263,25 @@ public class Matrix3x3Tests
         var cur = orig;
         for (int i = 1; i < 10; i++)
         {
-            orig.Pow(i).ShouldBe(cur);
+            await orig.Pow(i).Should().BeEqualTo(cur);
             cur *= orig;
         }
     }
 
-    [Fact]
-    [Trait("Category", "Normal")]
-    public void Determinant()
+    [Test, MultipleAssertions]
+    [Property("Category", "Normal")]
+    public async Task Determinant()
     {
-        new FractionMatrix3x3(
+        await new FractionMatrix3x3(
             (10, -9, -12),
             (7, -12, 11),
             (-10, 10, 3)
-        ).Determinant().ShouldBe(319);
+        ).Determinant().Should().BeEqualTo(319);
     }
 
-    [Fact]
-    [Trait("Category", "Normal")]
-    public void Inv()
+    [Test, MultipleAssertions]
+    [Property("Category", "Normal")]
+    public async Task Inv()
     {
         var orig = new FractionMatrix3x3(
             (10, -9, -12),
@@ -292,41 +289,41 @@ public class Matrix3x3Tests
             (-10, 10, 3)
         );
         var inv = orig.Inv();
-        inv.ShouldBe(new FractionMatrix3x3(
+        await inv.Should().BeEqualTo(new FractionMatrix3x3(
             (new Fraction(-146, 319), new Fraction(-93, 319), new Fraction(-243, 319)),
             (new Fraction(-131, 319), new Fraction(-90, 319), new Fraction(-194, 319)),
             (new Fraction(-50, 319), new Fraction(-10, 319), new Fraction(-57, 319))
         ));
-        (orig * inv).ShouldBe(FractionMatrix3x3.MultiplicativeIdentity);
-        (inv * orig).ShouldBe(FractionMatrix3x3.MultiplicativeIdentity);
+        await (orig * inv).Should().BeEqualTo(FractionMatrix3x3.MultiplicativeIdentity);
+        await (inv * orig).Should().BeEqualTo(FractionMatrix3x3.MultiplicativeIdentity);
     }
 
-    [Fact]
-    [Trait("Category", "Normal")]
-    public void AsSpan()
+    [Test]
+    [Property("Category", "Normal")]
+    public async Task AsSpan()
     {
         var mat = new LongMatrix3x3(
             (1, 2, 3),
             (4, 5, 6),
             (7, 8, 9)
         );
-        mat.AsSpan().ToArray().ShouldBe([
-            1, 2, 3,
-            4, 5, 6,
-            7, 8, 9
+        await mat.AsSpan().ToArray().Should().BeEquivalentOrderTo([
+            1L, 2L, 3L,
+            4L, 5L, 6L,
+            7L, 8L, 9L
         ]);
     }
 
-    [Fact]
-    [Trait("Category", "Normal")]
-    public void AsSpan3Bytes()
+    [Test]
+    [Property("Category", "Normal")]
+    public async Task AsSpan3Bytes()
     {
         var mat = new Matrix3x3<UInt24>(
             ((UInt24)1, (UInt24)2, (UInt24)3),
             ((UInt24)4, (UInt24)5, (UInt24)6),
             ((UInt24)7, (UInt24)8, (UInt24)9)
         );
-        mat.AsSpan().ToArray().ShouldBe([
+        await mat.AsSpan().ToArray().Should().BeEquivalentOrderTo([
             (UInt24)1, (UInt24)2, (UInt24)3,
             (UInt24)4, (UInt24)5, (UInt24)6,
             (UInt24)7, (UInt24)8, (UInt24)9

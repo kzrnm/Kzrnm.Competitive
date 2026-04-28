@@ -2,8 +2,8 @@ namespace Kzrnm.Competitive.Testing.DataStructure;
 
 public class WaveletMatrix2DTests
 {
-    [Fact]
-    public void Sums()
+    [Test, MultipleAssertions]
+    public async Task Sums()
     {
         var rnd = new Random(227);
         var orig = new long[8, 12];
@@ -21,10 +21,10 @@ public class WaveletMatrix2DTests
             for (int r = l + 1; r <= orig.GetLength(0); r++)
                 for (int u = 0; u < orig.GetLength(1); u++)
                 {
-                    matrix.RectSum(l, r, u).ShouldBe(RectSumNative(l, r, u));
+                    await matrix.RectSum(l, r, u).Should().BeEqualTo(RectSumNative(l, r, u));
                     for (int d = 0; d <= u; d++)
                     {
-                        matrix.RectSum(l, r, d, u).ShouldBe(RectSumNative2(l, r, d, u));
+                        await matrix.RectSum(l, r, d, u).Should().BeEqualTo(RectSumNative2(l, r, d, u));
                     }
                 }
 
@@ -47,8 +47,8 @@ public class WaveletMatrix2DTests
         }
     }
 
-    [Fact]
-    public void AddAndSums()
+    [Test, MultipleAssertions]
+    public async Task AddAndSums()
     {
         var rnd = new Random(227);
         var orig = new long[8, 12];
@@ -66,10 +66,10 @@ public class WaveletMatrix2DTests
             for (int r = l + 1; r <= orig.GetLength(0); r++)
                 for (int u = 0; u < orig.GetLength(1); u++)
                 {
-                    matrix.RectSum(l, r, u).ShouldBe(RectSumNative(l, r, u));
+                    await matrix.RectSum(l, r, u).Should().BeEqualTo(RectSumNative(l, r, u));
                     for (int d = 0; d <= u; d++)
                     {
-                        matrix.RectSum(l, r, d, u).ShouldBe(RectSumNative2(l, r, d, u));
+                        await matrix.RectSum(l, r, d, u).Should().BeEqualTo(RectSumNative2(l, r, d, u));
                     }
                 }
         for (int i = 0; i < 2000; i++)
@@ -85,10 +85,10 @@ public class WaveletMatrix2DTests
             for (int r = l + 1; r <= orig.GetLength(0); r++)
                 for (int u = 0; u < orig.GetLength(1); u++)
                 {
-                    matrix.RectSum(l, r, u).ShouldBe(RectSumNative(l, r, u));
+                    await matrix.RectSum(l, r, u).Should().BeEqualTo(RectSumNative(l, r, u));
                     for (int d = 0; d <= u; d++)
                     {
-                        matrix.RectSum(l, r, d, u).ShouldBe(RectSumNative2(l, r, d, u));
+                        await matrix.RectSum(l, r, d, u).Should().BeEqualTo(RectSumNative2(l, r, d, u));
                     }
                 }
 
@@ -110,4 +110,3 @@ public class WaveletMatrix2DTests
         }
     }
 }
-

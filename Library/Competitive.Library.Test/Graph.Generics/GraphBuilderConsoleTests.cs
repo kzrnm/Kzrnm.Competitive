@@ -13,8 +13,8 @@ public class GraphBuilderConsoleTestsBase
 }
 public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
 {
-    [Fact]
-    public void GraphUndirected()
+    [Test, MultipleAssertions]
+    public async Task GraphUndirected()
     {
         var cr = GetReader(
             """
@@ -26,7 +26,7 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
             5 2
             """);
         var graph = cr.Graph(5, 6, false).ToGraph();
-        graph.Length.ShouldBe(5);
+        await graph.Length.Should().BeEqualTo(5);
         var expectedChildren = new GraphEdge[5][]
         {
             [
@@ -56,14 +56,14 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].IsDirected.ShouldBeFalse($"index: {i}");
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
+            await graph[i].IsDirected.Should().BeFalse();
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
         }
     }
 
-    [Fact]
-    public void GraphUndirectedZeroBased()
+    [Test, MultipleAssertions]
+    public async Task GraphUndirectedZeroBased()
     {
         var cr = GetReader(
             """
@@ -75,7 +75,7 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
             4 1
             """);
         var graph = cr.Graph(5, 6, false, based: 0).ToGraph();
-        graph.Length.ShouldBe(5);
+        await graph.Length.Should().BeEqualTo(5);
         var expectedChildren = new GraphEdge[5][]
         {
             [
@@ -105,14 +105,14 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].IsDirected.ShouldBeFalse($"index: {i}");
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
+            await graph[i].IsDirected.Should().BeFalse();
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
         }
     }
 
-    [Fact]
-    public void GraphDirected()
+    [Test, MultipleAssertions]
+    public async Task GraphDirected()
     {
         var cr = GetReader(
             """
@@ -124,7 +124,7 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
             5 2
             """);
         var graph = cr.Graph(5, 6, true).ToGraph();
-        graph.Length.ShouldBe(5);
+        await graph.Length.Should().BeEqualTo(5);
 
         var expectedChildren = new GraphEdge[5][]
         {
@@ -166,14 +166,14 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].IsDirected.ShouldBeTrue($"index: {i}");
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
+            await graph[i].IsDirected.Should().BeTrue();
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
         }
     }
 
-    [Fact]
-    public void Tree()
+    [Test, MultipleAssertions]
+    public async Task Tree()
     {
         var cr = GetReader(
             """
@@ -183,8 +183,8 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
             5 2
             """);
         var graph = cr.Tree(5).ToTree(0);
-        graph.Length.ShouldBe(5);
-        graph.Root.ShouldBe(0);
+        await graph.Length.Should().BeEqualTo(5);
+        await graph.Root.Should().BeEqualTo(0);
 
         var expectedChildren = new GraphEdge[5][]
         {
@@ -212,13 +212,13 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parent.ShouldBe(expectedParent[i], $"index: {i}");
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parent.Should().BeEqualTo(expectedParent[i]);
         }
     }
 
-    [Fact]
-    public void TreeZeroBased()
+    [Test, MultipleAssertions]
+    public async Task TreeZeroBased()
     {
         var cr = GetReader(
             """
@@ -228,8 +228,8 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
             4 1
             """);
         var graph = cr.Tree(5, based: 0).ToTree(0);
-        graph.Length.ShouldBe(5);
-        graph.Root.ShouldBe(0);
+        await graph.Length.Should().BeEqualTo(5);
+        await graph.Root.Should().BeEqualTo(0);
 
         var expectedChildren = new GraphEdge[5][]
         {
@@ -257,21 +257,21 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parent.ShouldBe(expectedParent[i], $"index: {i}");
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parent.Should().BeEqualTo(expectedParent[i]);
         }
     }
 
-    [Fact]
-    public void TreeParent()
+    [Test, MultipleAssertions]
+    public async Task TreeParent()
     {
         var cr = GetReader(
             """
             1 2 2 4 3
             """);
         var graph = cr.TreeParent(6).ToTree(0);
-        graph.Length.ShouldBe(6);
-        graph.Root.ShouldBe(0);
+        await graph.Length.Should().BeEqualTo(6);
+        await graph.Root.Should().BeEqualTo(0);
 
         var expectedChildren = new GraphEdge[6][]
         {
@@ -303,21 +303,21 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parent.ShouldBe(expectedParent[i], $"index: {i}");
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parent.Should().BeEqualTo(expectedParent[i]);
         }
     }
 
-    [Fact]
-    public void TreeParentZeroBased()
+    [Test, MultipleAssertions]
+    public async Task TreeParentZeroBased()
     {
         var cr = GetReader(
             """
             0 1 1 3 2
             """);
         var graph = cr.TreeParent(6, based: 0).ToTree(0);
-        graph.Length.ShouldBe(6);
-        graph.Root.ShouldBe(0);
+        await graph.Length.Should().BeEqualTo(6);
+        await graph.Root.Should().BeEqualTo(0);
 
         var expectedChildren = new GraphEdge[6][]
         {
@@ -349,13 +349,13 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parent.ShouldBe(expectedParent[i], $"index: {i}");
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parent.Should().BeEqualTo(expectedParent[i]);
         }
     }
 
-    [Fact]
-    public void GraphWithEdgeIndexUndirected()
+    [Test, MultipleAssertions]
+    public async Task GraphWithEdgeIndexUndirected()
     {
         var cr = GetReader(
             """
@@ -367,7 +367,7 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
             5 2
             """);
         var graph = cr.GraphWithEdgeIndex(5, 6, false).ToGraph();
-        graph.Length.ShouldBe(5);
+        await graph.Length.Should().BeEqualTo(5);
 
         var expectedChildren = new GraphEdge<int>[5][]
         {
@@ -398,14 +398,14 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].IsDirected.ShouldBeFalse($"index: {i}");
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
+            await graph[i].IsDirected.Should().BeFalse();
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
         }
     }
 
-    [Fact]
-    public void GraphWithEdgeIndexDirected()
+    [Test, MultipleAssertions]
+    public async Task GraphWithEdgeIndexDirected()
     {
         var cr = GetReader(
             """
@@ -417,7 +417,7 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
             5 2
             """);
         var graph = cr.GraphWithEdgeIndex(5, 6, true).ToGraph();
-        graph.Length.ShouldBe(5);
+        await graph.Length.Should().BeEqualTo(5);
 
         var expectedChildren = new GraphEdge<int>[5][]
         {
@@ -459,15 +459,15 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].IsDirected.ShouldBeTrue($"index: {i}");
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
+            await graph[i].IsDirected.Should().BeTrue();
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
         }
     }
 
 
-    [Fact]
-    public void GraphWithEdgeIndexDirectedZeroBased()
+    [Test, MultipleAssertions]
+    public async Task GraphWithEdgeIndexDirectedZeroBased()
     {
         var cr = GetReader(
             """
@@ -479,7 +479,7 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
             4 1
             """);
         var graph = cr.GraphWithEdgeIndex(5, 6, true, based: 0).ToGraph();
-        graph.Length.ShouldBe(5);
+        await graph.Length.Should().BeEqualTo(5);
 
         var expectedChildren = new GraphEdge<int>[5][]
         {
@@ -521,9 +521,9 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].IsDirected.ShouldBeTrue($"index: {i}");
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
+            await graph[i].IsDirected.Should().BeTrue();
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
         }
     }
 }
@@ -531,8 +531,8 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
 
 public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
 {
-    [Fact]
-    public void GraphUndirected()
+    [Test, MultipleAssertions]
+    public async Task GraphUndirected()
     {
         var cr = GetReader(
             """
@@ -544,7 +544,7 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
             5 2 55
             """);
         var graph = cr.Graph<int>(5, 6, false).ToGraph();
-        graph.Length.ShouldBe(5);
+        await graph.Length.Should().BeEqualTo(5);
 
         var expectedChildren = new WEdge<int>[5][]
         {
@@ -575,14 +575,14 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].IsDirected.ShouldBeFalse($"index: {i}");
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
+            await graph[i].IsDirected.Should().BeFalse();
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
         }
     }
 
-    [Fact]
-    public void GraphDirected()
+    [Test, MultipleAssertions]
+    public async Task GraphDirected()
     {
         var cr = GetReader(
             """
@@ -594,7 +594,7 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
             5 2 55
             """);
         var graph = cr.Graph<int>(5, 6, true).ToGraph();
-        graph.Length.ShouldBe(5);
+        await graph.Length.Should().BeEqualTo(5);
 
         var expectedChildren = new WEdge<int>[5][]
         {
@@ -636,14 +636,14 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].IsDirected.ShouldBeTrue($"index: {i}");
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
+            await graph[i].IsDirected.Should().BeTrue();
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
         }
     }
 
-    [Fact]
-    public void GraphDirectedZeroBased()
+    [Test, MultipleAssertions]
+    public async Task GraphDirectedZeroBased()
     {
         var cr = GetReader(
             """
@@ -655,7 +655,7 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
             4 1 55
             """);
         var graph = cr.Graph<int>(5, 6, true, based: 0).ToGraph();
-        graph.Length.ShouldBe(5);
+        await graph.Length.Should().BeEqualTo(5);
 
         var expectedChildren = new WEdge<int>[5][]
         {
@@ -697,14 +697,14 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].IsDirected.ShouldBeTrue($"index: {i}");
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
+            await graph[i].IsDirected.Should().BeTrue();
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
         }
     }
 
-    [Fact]
-    public void Tree()
+    [Test, MultipleAssertions]
+    public async Task Tree()
     {
         var cr = GetReader(
             """
@@ -714,8 +714,8 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
             5 2 55
             """);
         var graph = cr.Tree<int>(5).ToTree(0);
-        graph.Length.ShouldBe(5);
-        graph.Root.ShouldBe(0);
+        await graph.Length.Should().BeEqualTo(5);
+        await graph.Root.Should().BeEqualTo(0);
 
         var expectedChildren = new WEdge<int>[5][]
         {
@@ -743,13 +743,13 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parent.ShouldBe(expectedParent[i], $"index: {i}");
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parent.Should().BeEqualTo(expectedParent[i]);
         }
     }
 
-    [Fact]
-    public void TreeZeroBased()
+    [Test, MultipleAssertions]
+    public async Task TreeZeroBased()
     {
         var cr = GetReader(
             """
@@ -759,8 +759,8 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
             4 1 55
             """);
         var graph = cr.Tree<int>(5, based: 0).ToTree(0);
-        graph.Length.ShouldBe(5);
-        graph.Root.ShouldBe(0);
+        await graph.Length.Should().BeEqualTo(5);
+        await graph.Root.Should().BeEqualTo(0);
 
         var expectedChildren = new WEdge<int>[5][]
         {
@@ -788,13 +788,13 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parent.ShouldBe(expectedParent[i], $"index: {i}");
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parent.Should().BeEqualTo(expectedParent[i]);
         }
     }
 
-    [Fact]
-    public void GraphWithEdgeIndexUndirected()
+    [Test, MultipleAssertions]
+    public async Task GraphWithEdgeIndexUndirected()
     {
         var cr = GetReader(
             """
@@ -806,7 +806,7 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
             5 2 55
             """);
         var graph = cr.GraphWithEdgeIndex<int>(5, 6, false).ToGraph();
-        graph.Length.ShouldBe(5);
+        await graph.Length.Should().BeEqualTo(5);
 
         var expectedChildren = new WEdge<int, int>[5][]
         {
@@ -837,14 +837,14 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].IsDirected.ShouldBeFalse($"index: {i}");
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
+            await graph[i].IsDirected.Should().BeFalse();
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
         }
     }
 
-    [Fact]
-    public void GraphWithEdgeIndexDirected()
+    [Test, MultipleAssertions]
+    public async Task GraphWithEdgeIndexDirected()
     {
         var cr = GetReader(
             """
@@ -856,7 +856,7 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
             5 2 55
             """);
         var graph = cr.GraphWithEdgeIndex<int>(5, 6, true).ToGraph();
-        graph.Length.ShouldBe(5);
+        await graph.Length.Should().BeEqualTo(5);
 
         var expectedChildren = new WEdge<int, int>[5][]
         {
@@ -898,14 +898,14 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].IsDirected.ShouldBeTrue($"index: {i}");
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
+            await graph[i].IsDirected.Should().BeTrue();
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
         }
     }
 
-    [Fact]
-    public void GraphWithEdgeIndexDirectedZeroBased()
+    [Test, MultipleAssertions]
+    public async Task GraphWithEdgeIndexDirectedZeroBased()
     {
         var cr = GetReader(
             """
@@ -917,7 +917,7 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
             4 1 55
             """);
         var graph = cr.GraphWithEdgeIndex<int>(5, 6, true, based: 0).ToGraph();
-        graph.Length.ShouldBe(5);
+        await graph.Length.Should().BeEqualTo(5);
 
         var expectedChildren = new WEdge<int, int>[5][]
         {
@@ -959,17 +959,17 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].IsDirected.ShouldBeTrue($"index: {i}");
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
+            await graph[i].IsDirected.Should().BeTrue();
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
         }
     }
 }
 
 public class WGraphBuilderInt64CreateTests : GraphBuilderConsoleTestsBase
 {
-    [Fact]
-    public void GraphUndirected()
+    [Test, MultipleAssertions]
+    public async Task GraphUndirected()
     {
         var cr = GetReader(
             """
@@ -981,7 +981,7 @@ public class WGraphBuilderInt64CreateTests : GraphBuilderConsoleTestsBase
             5 2 55
             """);
         var graph = cr.Graph<long>(5, 6, false).ToGraph();
-        graph.Length.ShouldBe(5);
+        await graph.Length.Should().BeEqualTo(5);
 
         var expectedChildren = new WEdge<long>[5][]
         {
@@ -1012,14 +1012,14 @@ public class WGraphBuilderInt64CreateTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].IsDirected.ShouldBeFalse($"index: {i}");
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
+            await graph[i].IsDirected.Should().BeFalse();
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
         }
     }
 
-    [Fact]
-    public void GraphDirected()
+    [Test, MultipleAssertions]
+    public async Task GraphDirected()
     {
         var cr = GetReader(
             """
@@ -1031,7 +1031,7 @@ public class WGraphBuilderInt64CreateTests : GraphBuilderConsoleTestsBase
             5 2 55
             """);
         var graph = cr.Graph<long>(5, 6, true).ToGraph();
-        graph.Length.ShouldBe(5);
+        await graph.Length.Should().BeEqualTo(5);
 
         var expectedChildren = new WEdge<long>[5][]
         {
@@ -1073,14 +1073,14 @@ public class WGraphBuilderInt64CreateTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].IsDirected.ShouldBeTrue($"index: {i}");
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
+            await graph[i].IsDirected.Should().BeTrue();
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
         }
     }
 
-    [Fact]
-    public void Tree()
+    [Test, MultipleAssertions]
+    public async Task Tree()
     {
         var cr = GetReader(
             """
@@ -1090,8 +1090,8 @@ public class WGraphBuilderInt64CreateTests : GraphBuilderConsoleTestsBase
             5 2 55
             """);
         var graph = cr.Tree<long>(5).ToTree(0);
-        graph.Length.ShouldBe(5);
-        graph.Root.ShouldBe(0);
+        await graph.Length.Should().BeEqualTo(5);
+        await graph.Root.Should().BeEqualTo(0);
 
         var expectedChildren = new WEdge<long>[5][]
         {
@@ -1119,14 +1119,14 @@ public class WGraphBuilderInt64CreateTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parent.ShouldBe(expectedParent[i], $"index: {i}");
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parent.Should().BeEqualTo(expectedParent[i]);
         }
     }
 
 
-    [Fact]
-    public void GraphWithEdgeIndexUndirected()
+    [Test, MultipleAssertions]
+    public async Task GraphWithEdgeIndexUndirected()
     {
         var cr = GetReader(
             """
@@ -1138,7 +1138,7 @@ public class WGraphBuilderInt64CreateTests : GraphBuilderConsoleTestsBase
             5 2 55
             """);
         var graph = cr.GraphWithEdgeIndex<long>(5, 6, false).ToGraph();
-        graph.Length.ShouldBe(5);
+        await graph.Length.Should().BeEqualTo(5);
 
         var expectedChildren = new WEdge<long, int>[5][]
         {
@@ -1169,14 +1169,14 @@ public class WGraphBuilderInt64CreateTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].IsDirected.ShouldBeFalse($"index: {i}");
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
+            await graph[i].IsDirected.Should().BeFalse();
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
         }
     }
 
-    [Fact]
-    public void GraphWithEdgeIndexDirected()
+    [Test, MultipleAssertions]
+    public async Task GraphWithEdgeIndexDirected()
     {
         var cr = GetReader(
             """
@@ -1188,7 +1188,7 @@ public class WGraphBuilderInt64CreateTests : GraphBuilderConsoleTestsBase
             5 2 55
             """);
         var graph = cr.GraphWithEdgeIndex<long>(5, 6, true).ToGraph();
-        graph.Length.ShouldBe(5);
+        await graph.Length.Should().BeEqualTo(5);
 
         var expectedChildren = new WEdge<long, int>[5][]
         {
@@ -1230,9 +1230,9 @@ public class WGraphBuilderInt64CreateTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            graph[i].IsDirected.ShouldBeTrue($"index: {i}");
-            graph[i].Children.ShouldBe(expectedChildren[i], $"index: {i}");
-            graph[i].Parents.ShouldBe(expectedParents[i], $"index: {i}");
+            await graph[i].IsDirected.Should().BeTrue();
+            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
         }
     }
 }

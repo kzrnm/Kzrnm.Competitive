@@ -21,14 +21,14 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
     protected abstract LazyBinarySearchTreeBase<int, int, Node> Create();
     protected abstract LazyBinarySearchTreeBase<int, int, Node> Create(IEnumerable<int> values);
 
-    [Fact]
-    public void Zero()
+    [Test]
+    public async Task Zero()
     {
-        Create().AllProd.ShouldBe(0);
+        await Create().AllProd.Should().BeEqualTo(0);
     }
 
-    [Fact]
-    public void NaiveProd()
+    [Test, MultipleAssertions]
+    public async Task NaiveProd()
     {
         for (int n = 0; n <= 30; n++)
         {
@@ -38,22 +38,22 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
             var tree = Create(p);
             var expected = new SLazySegtree<int, int, SumOp>(p);
 
-            void Test()
+            async Task Test()
             {
                 for (int l = 0; l <= n; l++)
                     for (int r = l; r <= n; r++)
                     {
-                        tree.Prod(l, r).ShouldBe(expected[l..r]);
-                        tree[l..r].ShouldBe(expected[l..r]);
+                        await tree.Prod(l, r).Should().BeEqualTo(expected[l..r]);
+                        await tree[l..r].Should().BeEqualTo(expected[l..r]);
                     }
                 for (int i = 0; i < n; i++)
                 {
-                    tree[i..(i + 1)].ShouldBe(expected[i]);
-                    tree[i].ShouldBe(expected[i]);
+                    await tree[i..(i + 1)].Should().BeEqualTo(expected[i]);
+                    await tree[i].Should().BeEqualTo(expected[i]);
                 }
             }
-            tree.ShouldBe(p);
-            Test();
+            await tree.Should().BeEquivalentOrderTo(p);
+            await Test();
 
 
             for (int i = 0; i < n; i++)
@@ -61,7 +61,7 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
                 var x = ((i << 5) + (i >> 2) + (i << 3) + i % 3) % 51;
                 tree[i] = expected[i] = x;
             }
-            Test();
+            await Test();
 
             for (int l = 0; l < n; l++)
                 for (int r = l; r <= n; r++)
@@ -70,12 +70,12 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
                     tree.Apply(l, r, x);
                     expected.Apply(l, r, x);
                 }
-            Test();
+            await Test();
         }
     }
 
-    [Fact]
-    public void Usage()
+    [Test, MultipleAssertions]
+    public async Task Usage()
     {
         const int n = 10;
         var tree = Create(new int[n]);
@@ -85,47 +85,47 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
             tree.Apply(l, r, x);
             expected.Apply(l, r, x);
         }
-        void Test()
+        async Task Test()
         {
-            tree.AllProd.ShouldBe(expected.AllProd);
+            await tree.AllProd.Should().BeEqualTo(expected.AllProd);
             for (int l = 0; l <= n; l++)
                 for (int r = l; r <= n; r++)
                 {
-                    tree.Prod(l, r).ShouldBe(expected[l..r]);
-                    tree[l..r].ShouldBe(expected[l..r]);
+                    await tree.Prod(l, r).Should().BeEqualTo(expected[l..r]);
+                    await tree[l..r].Should().BeEqualTo(expected[l..r]);
                 }
             for (int i = 0; i < n; i++)
             {
-                tree[i..(i + 1)].ShouldBe(expected[i]);
-                tree[i].ShouldBe(expected[i]);
+                await tree[i..(i + 1)].Should().BeEqualTo(expected[i]);
+                await tree[i].Should().BeEqualTo(expected[i]);
             }
-            tree.ShouldBe(expected.ToArray());
+            await tree.Should().BeEquivalentOrderTo(expected.ToArray());
         }
 
-        Test();
+        await Test();
         Apply(0, 3, 5);
-        Test();
+        await Test();
         Apply(2, 3, -10);
-        Test();
+        await Test();
     }
 
-    [Fact]
-    public void Reverse()
+    [Test, MultipleAssertions]
+    public async Task Reverse()
     {
         const int N = 8;
         var tree = Create(Enumerable.Range(0, N));
         for (int i = 0; i < N; i++)
-            tree[i].ShouldBe(i);
+            await tree[i].Should().BeEqualTo(i);
         tree.Reverse(2, 5);
         var expected = new[] { 0, 1, 4, 3, 2, 5, 6, 7 };
         tree.Reverse();
         expected.AsSpan().Reverse();
 
-        void Test()
+        async Task Test()
         {
-            tree.ShouldBe(expected);
+            await tree.Should().BeEquivalentOrderTo(expected);
             for (int i = 0; i < N; i++)
-                tree[i].ShouldBe(expected[i]);
+                await tree[i].Should().BeEqualTo(expected[i]);
         }
         void Reverse(int l, int r)
         {
@@ -133,7 +133,7 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
             expected.AsSpan()[l..r].Reverse();
         }
 
-        Test();
+        await Test();
 
         var rnd = new Random(227);
         for (int q = 0; q < 100; q++)
@@ -141,12 +141,12 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
             int l = rnd.Next(N);
             int r = rnd.Next(l + 1, N + 1);
             Reverse(l, r);
-            Test();
+            await Test();
         }
     }
 
-    [Fact]
-    public void InsertAndReverse()
+    [Test, MultipleAssertions]
+    public async Task InsertAndReverse()
     {
         var list = Enumerable.Range(0, 8).ToList();
         var tree = Create(list);
@@ -160,32 +160,32 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
             tree.Reverse(l, r);
             list.AsSpan()[l..r].Reverse();
         }
-        void Test()
+        async Task Test()
         {
-            tree.ShouldBe(list);
+            await tree.Should().BeEquivalentOrderTo(list);
             for (int i = 0; i < list.Count; i++)
-                tree[i].ShouldBe(list[i]);
+                await tree[i].Should().BeEqualTo(list[i]);
         }
 
 
         tree.AddLast(-1);
         list.Add(-1);
-        Test();
+        await Test();
 
         Insert(2, -2);
-        Test();
+        await Test();
         Insert(0, -5);
         Insert(list.Count, 111);
-        Test();
+        await Test();
 
         Reverse(2, 5);
-        Test();
+        await Test();
 
         Insert(2, -12);
-        Test();
+        await Test();
         Insert(0, -15);
         Insert(list.Count, 1111);
-        Test();
+        await Test();
 
         var rnd = new Random(227);
         for (int q = 0; q < 100; q++)
@@ -195,12 +195,12 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
                 Reverse(l, rnd.Next(l, list.Count) + 1);
             else
                 Insert(l, rnd.Next(list.Count) - 100);
-            Test();
+            await Test();
         }
     }
 
-    [Fact]
-    public void AddAndSetValue()
+    [Test, MultipleAssertions]
+    public async Task AddAndSetValue()
     {
         var list = Enumerable.Range(0, 8).ToList();
         var tree = Create(list);
@@ -214,19 +214,19 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
             tree[index] = value;
             list[index] = value;
         }
-        void Test()
+        async Task Test()
         {
-            tree.ShouldBe(list);
+            await tree.Should().BeEquivalentOrderTo(list);
             for (int i = 0; i < list.Count; i++)
-                tree[i].ShouldBe(list[i]);
+                await tree[i].Should().BeEqualTo(list[i]);
         }
 
 
         Add(-1);
-        Test();
+        await Test();
 
         SetValue(2, -2);
-        Test();
+        await Test();
         var rnd = new Random(227);
         for (int q = 0; q < 100; q++)
         {
@@ -235,12 +235,12 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
                 SetValue(l, rnd.Next(100000));
             else
                 Add(rnd.Next(1000000));
-            Test();
+            await Test();
         }
     }
 
-    [Fact]
-    public void AddRange()
+    [Test, MultipleAssertions]
+    public async Task AddRange()
     {
         var list = Enumerable.Range(0, 8).ToList();
         var tree = Create(list);
@@ -249,18 +249,18 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
             tree.AddRange(values);
             list.AddRange(values);
         }
-        void Test()
+        async Task Test()
         {
-            tree.ShouldBe(list);
+            await tree.Should().BeEquivalentOrderTo(list);
             for (int i = 0; i < list.Count; i++)
-                tree[i].ShouldBe(list[i]);
+                await tree[i].Should().BeEqualTo(list[i]);
         }
 
 
-        Test();
+        await Test();
 
         AddRange([1, 2, 2, 3]);
-        Test();
+        await Test();
         var rnd = new Random(227);
         for (int q = 0; q < 50; q++)
         {
@@ -268,12 +268,12 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
             var array = new int[len];
             rnd.NextBytes(MemoryMarshal.AsBytes(array.AsSpan()));
             AddRange(array);
-            Test();
+            await Test();
         }
     }
 
-    [Fact]
-    public void InsertRange()
+    [Test, MultipleAssertions]
+    public async Task InsertRange()
     {
         var list = Enumerable.Range(0, 8).ToList();
         var tree = Create(list);
@@ -282,18 +282,18 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
             tree.InsertRange(index, values);
             list.InsertRange(index, values);
         }
-        void Test()
+        async Task Test()
         {
-            tree.ShouldBe(list);
+            await tree.Should().BeEquivalentOrderTo(list);
             for (int i = 0; i < list.Count; i++)
-                tree[i].ShouldBe(list[i]);
+                await tree[i].Should().BeEqualTo(list[i]);
         }
 
 
-        Test();
+        await Test();
 
         InsertRange(1, [1, 2, 2, 3]);
-        Test();
+        await Test();
         var rnd = new Random(227);
         for (int q = 0; q < 50; q++)
         {
@@ -302,12 +302,12 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
             rnd.NextBytes(MemoryMarshal.AsBytes(array.AsSpan()));
             var l = rnd.Next(list.Count);
             InsertRange(l, array);
-            Test();
+            await Test();
         }
     }
 
-    [Fact]
-    public void RemoveAt()
+    [Test, MultipleAssertions]
+    public async Task RemoveAt()
     {
         foreach (var list in new[]
         {
@@ -321,11 +321,11 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
                 tree.RemoveAt(index);
                 list.RemoveAt(index);
             }
-            void Test()
+            async Task Test()
             {
-                tree.ShouldBe(list);
+                await tree.Should().BeEquivalentOrderTo(list);
                 for (int i = 0; i < list.Count; i++)
-                    tree[i].ShouldBe(list[i]);
+                    await tree[i].Should().BeEqualTo(list[i]);
             }
 
             var rnd = new Random(227);
@@ -333,13 +333,13 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
             {
                 var l = rnd.Next(list.Count);
                 RemoveAt(l);
-                Test();
+                await Test();
             }
         }
     }
 
-    [Fact]
-    public void RemoveRange()
+    [Test, MultipleAssertions]
+    public async Task RemoveRange()
     {
         var list = Enumerable.Range(0, 100).ToList();
         var tree = Create(list);
@@ -353,11 +353,11 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
             tree.RemoveRange(index, count);
             list.RemoveRange(index, count);
         }
-        void Test()
+        async Task Test()
         {
-            tree.ShouldBe(list);
+            await tree.Should().BeEquivalentOrderTo(list);
             for (int i = 0; i < list.Count; i++)
-                tree[i].ShouldBe(list[i]);
+                await tree[i].Should().BeEqualTo(list[i]);
         }
 
         var rnd = new Random(227);
@@ -369,7 +369,7 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
             var l = rnd.Next(list.Count - 50);
             int len = rnd.Next(50);
             RemoveRange(l, len);
-            Test();
+            await Test();
         }
     }
 }

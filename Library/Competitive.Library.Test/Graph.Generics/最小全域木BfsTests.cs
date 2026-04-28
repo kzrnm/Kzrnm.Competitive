@@ -2,8 +2,8 @@ namespace Kzrnm.Competitive.Testing.Graph;
 
 public class 最小全域木BfsTests
 {
-    [Fact]
-    public void 重みなしグラフ()
+    [Test, MultipleAssertions]
+    public async Task 重みなしグラフ()
     {
         var gb = new GraphBuilder(5, false);
         gb.Add(0, 1);
@@ -17,16 +17,16 @@ public class 最小全域木BfsTests
         gb.Add(4, 0);
         var graph = gb.ToGraph();
         var mst = graph.MinimumSpanningTreeBfs();
-        mst.Cost.ShouldBe(4);
-        mst.Edges.ShouldBe([
+        await mst.Cost.Should().BeEqualTo(4);
+        await mst.Edges.Should().BeEquivalentOrderTo([
             (0, new GraphEdge(1)),
             (0, new GraphEdge(2)),
             (0, new GraphEdge(3)),
             (0, new GraphEdge(4)),
         ]);
     }
-    [Fact]
-    public void 重み付きグラフ()
+    [Test, MultipleAssertions]
+    public async Task 重み付きグラフ()
     {
         var gb = new WIntGraphBuilder(5, false);
         gb.Add(0, 1, 1);
@@ -40,8 +40,8 @@ public class 最小全域木BfsTests
         gb.Add(4, 0, 1);
         var graph = gb.ToGraph();
         var mst = graph.MinimumSpanningTreeBfs();
-        mst.Cost.ShouldBe(4);
-        mst.Edges.ShouldBe([
+        await mst.Cost.Should().BeEqualTo(4);
+        await mst.Edges.Should().BeEquivalentOrderTo([
             (0, new WEdge<int>(1, 1)),
             (0, new WEdge<int>(2, 10)),
             (0, new WEdge<int>(3, 30)),

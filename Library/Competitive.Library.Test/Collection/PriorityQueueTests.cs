@@ -3,8 +3,8 @@ namespace Kzrnm.Competitive.Testing.Collection;
 
 public class PriorityQueueTest
 {
-    [Fact]
-    public void TryDequeue()
+    [Test, MultipleAssertions]
+    public async Task TryDequeue()
     {
         var pq = PriorityQueue.CreateDictionary<int, (string A, char B)>();
 
@@ -13,15 +13,23 @@ public class PriorityQueueTest
         pq.Enqueue(4, ("C", 'G'));
         pq.Enqueue(2, ("D", 'H'));
 
-        pq.TryDequeue(out var key, out var a, out var b).ShouldBeTrue();
-        key.ShouldBe(1); a.ShouldBe("A"); b.ShouldBe('E');
-        pq.TryDequeue(out key, out a, out b).ShouldBeTrue();
-        key.ShouldBe(2); a.ShouldBe("D"); b.ShouldBe('H');
-        pq.TryDequeue(out key, out a, out b).ShouldBeTrue();
-        key.ShouldBe(4); a.ShouldBe("C"); b.ShouldBe('G');
-        pq.TryDequeue(out key, out a, out b).ShouldBeTrue();
-        key.ShouldBe(5); a.ShouldBe("B"); b.ShouldBe('F');
+        await pq.TryDequeue(out var key, out var a, out var b).Should().BeTrue();
+        await key.Should().BeEqualTo(1);
+        await a.Should().BeEqualTo("A");
+        await b.Should().BeEqualTo('E');
+        await pq.TryDequeue(out key, out a, out b).Should().BeTrue();
+        await key.Should().BeEqualTo(2);
+        await a.Should().BeEqualTo("D");
+        await b.Should().BeEqualTo('H');
+        await pq.TryDequeue(out key, out a, out b).Should().BeTrue();
+        await key.Should().BeEqualTo(4);
+        await a.Should().BeEqualTo("C");
+        await b.Should().BeEqualTo('G');
+        await pq.TryDequeue(out key, out a, out b).Should().BeTrue();
+        await key.Should().BeEqualTo(5);
+        await a.Should().BeEqualTo("B");
+        await b.Should().BeEqualTo('F');
 
-        pq.TryDequeue(out _, out _, out _).ShouldBeFalse();
+        await pq.TryDequeue(out _, out _, out _).Should().BeFalse();
     }
 }

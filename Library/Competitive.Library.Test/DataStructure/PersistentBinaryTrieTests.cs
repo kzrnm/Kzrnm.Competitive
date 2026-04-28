@@ -3,8 +3,8 @@ namespace Kzrnm.Competitive.Testing.DataStructure;
 
 public class PersistentBinaryTrieTests
 {
-    [Fact]
-    public void Simple()
+    [Test, MultipleAssertions]
+    public async Task Simple()
     {
         var bt = new PersistentBinaryTrie();
         bt = bt.Add(1, 2);
@@ -14,60 +14,60 @@ public class PersistentBinaryTrieTests
         bt = bt.Add(5);
         bt.Add(3).Add(6).Remove(2);
 
-        bt.KthElement(0).Num.ShouldBe(1u);
-        bt.KthElement(1).Num.ShouldBe(1u);
-        bt.KthElement(2).Num.ShouldBe(2u);
-        bt.KthElement(3).Num.ShouldBe(5u);
+        await bt.KthElement(0).Num.Should().BeEqualTo(1u);
+        await bt.KthElement(1).Num.Should().BeEqualTo(1u);
+        await bt.KthElement(2).Num.Should().BeEqualTo(2u);
+        await bt.KthElement(3).Num.Should().BeEqualTo(5u);
 
-        bt.MinElement().Num.ShouldBe(1u);
-        bt.MaxElement().Num.ShouldBe(5u);
+        await bt.MinElement().Num.Should().BeEqualTo(1u);
+        await bt.MaxElement().Num.Should().BeEqualTo(5u);
 
-        bt.Count(1).ShouldBe(2);
-        bt.Count(2).ShouldBe(1);
-        bt.Count(5).ShouldBe(1);
+        await bt.Count(1).Should().BeEqualTo(2);
+        await bt.Count(2).Should().BeEqualTo(1);
+        await bt.Count(5).Should().BeEqualTo(1);
 
-        bt.CountLess(1).ShouldBe(0);
-        bt.CountLess(2).ShouldBe(2);
-        bt.CountLess(3).ShouldBe(3);
-        bt.CountLess(5).ShouldBe(3);
-        bt.CountLess(6).ShouldBe(4);
+        await bt.CountLess(1).Should().BeEqualTo(0);
+        await bt.CountLess(2).Should().BeEqualTo(2);
+        await bt.CountLess(3).Should().BeEqualTo(3);
+        await bt.CountLess(5).Should().BeEqualTo(3);
+        await bt.CountLess(6).Should().BeEqualTo(4);
 
 
 
-        bt.KthElement(0, 4).Num.ShouldBe(1u);
-        bt.KthElement(1, 4).Num.ShouldBe(5u);
-        bt.KthElement(2, 4).Num.ShouldBe(5u);
-        bt.KthElement(3, 4).Num.ShouldBe(6u);
+        await bt.KthElement(0, 4).Num.Should().BeEqualTo(1u);
+        await bt.KthElement(1, 4).Num.Should().BeEqualTo(5u);
+        await bt.KthElement(2, 4).Num.Should().BeEqualTo(5u);
+        await bt.KthElement(3, 4).Num.Should().BeEqualTo(6u);
 
-        bt.MinElement(4).Num.ShouldBe(1u);
-        bt.MaxElement(4).Num.ShouldBe(6u);
+        await bt.MinElement(4).Num.Should().BeEqualTo(1u);
+        await bt.MaxElement(4).Num.Should().BeEqualTo(6u);
 
-        bt.Count(1, 4).ShouldBe(1);
-        bt.Count(2, 4).ShouldBe(0);
-        bt.Count(5, 4).ShouldBe(2);
-        bt.Count(6, 4).ShouldBe(1);
+        await bt.Count(1, 4).Should().BeEqualTo(1);
+        await bt.Count(2, 4).Should().BeEqualTo(0);
+        await bt.Count(5, 4).Should().BeEqualTo(2);
+        await bt.Count(6, 4).Should().BeEqualTo(1);
 
-        bt.CountLess(1, 4).ShouldBe(0);
-        bt.CountLess(2, 4).ShouldBe(1);
-        bt.CountLess(3, 4).ShouldBe(1);
-        bt.CountLess(5, 4).ShouldBe(1);
-        bt.CountLess(6, 4).ShouldBe(3);
-        bt.CountLess(7, 4).ShouldBe(4);
+        await bt.CountLess(1, 4).Should().BeEqualTo(0);
+        await bt.CountLess(2, 4).Should().BeEqualTo(1);
+        await bt.CountLess(3, 4).Should().BeEqualTo(1);
+        await bt.CountLess(5, 4).Should().BeEqualTo(1);
+        await bt.CountLess(6, 4).Should().BeEqualTo(3);
+        await bt.CountLess(7, 4).Should().BeEqualTo(4);
 
         bt = bt.Remove(2);
-        bt.KthElement(0).Num.ShouldBe(1u);
-        bt.KthElement(1).Num.ShouldBe(1u);
-        bt.KthElement(2).Num.ShouldBe(5u);
+        await bt.KthElement(0).Num.Should().BeEqualTo(1u);
+        await bt.KthElement(1).Num.Should().BeEqualTo(1u);
+        await bt.KthElement(2).Num.Should().BeEqualTo(5u);
 
-        bt.MinElement().Num.ShouldBe(1u);
-        bt.MaxElement().Num.ShouldBe(5u);
+        await bt.MinElement().Num.Should().BeEqualTo(1u);
+        await bt.MaxElement().Num.Should().BeEqualTo(5u);
 
-        bt.Count(1).ShouldBe(2);
-        bt.Count(5).ShouldBe(1);
+        await bt.Count(1).Should().BeEqualTo(2);
+        await bt.Count(5).Should().BeEqualTo(1);
 
-        bt.CountLess(1).ShouldBe(0);
-        bt.CountLess(2).ShouldBe(2);
-        bt.CountLess(5).ShouldBe(2);
-        bt.CountLess(6).ShouldBe(3);
+        await bt.CountLess(1).Should().BeEqualTo(0);
+        await bt.CountLess(2).Should().BeEqualTo(2);
+        await bt.CountLess(5).Should().BeEqualTo(2);
+        await bt.CountLess(6).Should().BeEqualTo(3);
     }
 }

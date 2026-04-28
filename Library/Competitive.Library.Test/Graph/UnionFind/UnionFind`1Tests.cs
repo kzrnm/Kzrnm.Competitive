@@ -2,32 +2,32 @@ namespace Kzrnm.Competitive.Testing.Graph;
 
 public class UnionFindDataTests
 {
-    [Fact]
-    public void Zero()
+    [Test, MultipleAssertions]
+    public async Task Zero()
     {
         var uf = new UnionFind<int>([], (a, b) => a + b);
-        uf.Groups().ShouldBe([]);
+        await uf.Groups().Should().BeEmpty();
     }
 
-    [Fact]
-    public void Simple()
+    [Test, MultipleAssertions]
+    public async Task Simple()
     {
         var uf = new UnionFind<int>([1, 2], (a, b) => a + b);
-        uf.Same(0, 1).ShouldBeFalse();
+        await uf.Same(0, 1).Should().BeFalse();
 
-        uf.Data(0).ShouldBe(1);
-        uf.Data(1).ShouldBe(2);
+        await uf.Data(0).Should().BeEqualTo(1);
+        await uf.Data(1).Should().BeEqualTo(2);
 
-        uf.Merge(0, 1).ShouldBeTrue();
-        uf.Same(0, 1).ShouldBeTrue();
-        uf.Size(0).ShouldBe(2);
+        await uf.Merge(0, 1).Should().BeTrue();
+        await uf.Same(0, 1).Should().BeTrue();
+        await uf.Size(0).Should().BeEqualTo(2);
 
-        uf.Data(0).ShouldBe(3);
-        uf.Data(1).ShouldBe(3);
+        await uf.Data(0).Should().BeEqualTo(3);
+        await uf.Data(1).Should().BeEqualTo(3);
     }
 
-    [Fact]
-    public void Line()
+    [Test, MultipleAssertions]
+    public async Task Line()
     {
         int n = 10000;
         var uf = new UnionFind<long>(Enumerable.Range(0, n).Select(a => (long)a).ToArray(), (a, b) => a + b);
@@ -35,13 +35,13 @@ public class UnionFindDataTests
         {
             uf.Merge(i, i + 1);
         }
-        uf.Size(0).ShouldBe(n);
-        uf.Groups().Length.ShouldBe(1);
-        uf.Data(0).ShouldBe((long)n * (n - 1) / 2);
+        await uf.Size(0).Should().BeEqualTo(n);
+        await uf.Groups().Length.Should().BeEqualTo(1);
+        await uf.Data(0).Should().BeEqualTo((long)n * (n - 1) / 2);
     }
 
-    [Fact]
-    public void LineReverse()
+    [Test, MultipleAssertions]
+    public async Task LineReverse()
     {
         int n = 10000;
         var uf = new UnionFind<long>(Enumerable.Range(0, n).Select(a => (long)a).ToArray(), (a, b) => a + b);
@@ -49,8 +49,8 @@ public class UnionFindDataTests
         {
             uf.Merge(i, i + 1);
         }
-        uf.Size(0).ShouldBe(n);
-        uf.Groups().Length.ShouldBe(1);
-        uf.Data(0).ShouldBe((long)n * (n - 1) / 2);
+        await uf.Size(0).Should().BeEqualTo(n);
+        await uf.Groups().Length.Should().BeEqualTo(1);
+        await uf.Data(0).Should().BeEqualTo((long)n * (n - 1) / 2);
     }
 }

@@ -9,66 +9,65 @@ public class SwagTests
     Mod998244353AffineTransformation RandomAffine(Random rnd) => new(rnd.Next(), rnd.Next());
     int RandomInt32(Random rnd) => rnd.Next();
 
-    [Fact] public void AffineTransformation() => new Inner<Mod998244353AffineTransformation, AffineTransformationOp>(rnd).RandomTest(RandomAffine);
-    [Fact] public void SlideMin() => new Inner<int, SlideMinOp>(rnd).RandomTest(RandomInt32);
-    [Fact] public void SlideMax() => new Inner<int, SlideMaxOp>(rnd).RandomTest(RandomInt32);
+    [Test, MultipleAssertions] public async Task AffineTransformation() => await new Inner<Mod998244353AffineTransformation, AffineTransformationOp>(rnd).RandomTest(RandomAffine);
+    [Test, MultipleAssertions] public async Task SlideMin() => await new Inner<int, SlideMinOp>(rnd).RandomTest(RandomInt32);
+    [Test, MultipleAssertions] public async Task SlideMax() => await new Inner<int, SlideMaxOp>(rnd).RandomTest(RandomInt32);
 
     record Inner<T, TOp>(Random Rnd) where TOp : struct, ISegtreeOperator<T>
     {
-        public void RandomTest(Func<Random, T> nextProvider)
+        public async Task RandomTest(Func<Random, T> nextProvider)
         {
             var op = new TOp();
             var swag = new Swag<T, TOp>();
             var deque = new Deque<T>();
 
-
-            swag.AllProd.ShouldBe(op.Identity);
-            Should.Throw<ContractAssertException>(() => swag.Pop())
-                .Message.ShouldBe("data is empty.");
+            await swag.AllProd.Should().BeEqualTo(op.Identity);
+            await Assert.That(swag.Pop).Throws<ContractAssertException>()
+                .WithMessage("data is empty.");
 
             for (int i = 0; i < 200; i++)
             {
                 var next = nextProvider(Rnd);
                 deque.AddLast(next); swag.Push(next);
-                swag.AllProd.ShouldBe(deque.Aggregate(op.Operate));
+                await swag.AllProd.Should().BeEqualTo(deque.Aggregate(op.Operate));
             }
 
             for (int i = 1; i < 200; i++)
             {
                 deque.PopFirst(); swag.Pop();
-                swag.AllProd.ShouldBe(deque.Aggregate(op.Operate));
+                await swag.AllProd.Should().BeEqualTo(deque.Aggregate(op.Operate));
             }
 
             deque.PopFirst(); swag.Pop();
-            swag.AllProd.ShouldBe(op.Identity);
-            Should.Throw<ContractAssertException>(() => swag.Pop())
-                .Message.ShouldBe("data is empty.");
+            await swag.AllProd.Should().BeEqualTo(op.Identity);
+            await Assert.That(swag.Pop).Throws<ContractAssertException>()
+                .WithMessage("data is empty.");
 
             for (int i = 0; i < 200; i++)
             {
                 var next = nextProvider(Rnd);
                 deque.AddLast(next); swag.Push(next);
             }
-            RandomInitial(deque, nextProvider);
+            await RandomInitial(deque, nextProvider);
         }
-        void RandomInitial(Deque<T> deque, Func<Random, T> nextProvider)
+        async Task RandomInitial(Deque<T> deque, Func<Random, T> nextProvider)
         {
             var op = new TOp();
             var swag = new Swag<T, TOp>(deque.ToArray());
-            swag.AllProd.ShouldBe(deque.Aggregate(op.Operate));
+            await swag.AllProd.Should().BeEqualTo(deque.Aggregate(op.Operate));
 
             for (int i = 0; i < 2000; i++)
             {
                 if (deque.Count > 0 && Rnd.Next(2) != 0)
                 {
                     deque.PopFirst(); swag.Pop();
-                    swag.AllProd.ShouldBe(deque.Aggregate(op.Operate));
+                    await swag.AllProd.Should().BeEqualTo(deque.Aggregate(op.Operate));
                 }
                 else
                 {
                     var next = nextProvider(Rnd);
                     deque.AddLast(next); swag.Push(next);
-                    swag.AllProd.ShouldBe(deque.Aggregate(op.Operate));
+                    await swag.AllProd.Should().BeEqualTo(deque.Aggregate(op.Operate));
                 }
             }
         }

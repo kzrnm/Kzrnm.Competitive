@@ -1,21 +1,22 @@
 namespace Kzrnm.Competitive.Testing.Number;
 
+[NotInParallel]
 public class PrimitiveRootTests
 {
-    [Theory]
-    [InlineData(2, 1)]
-    [InlineData(3, 2)]
-    [InlineData(5, 2)]
-    [InlineData(7, 3)]
-    [InlineData(11, 2)]
-    [InlineData(13, 2)]
-    [InlineData(37, 2)]
-    [InlineData(211, 2)]
-    [InlineData(998244353, 3)]
-    [InlineData(1000000007, 5)]
-    public void Solve(int p, int expected)
+    [Test, MultipleAssertions]
+    [Arguments(2, 1)]
+    [Arguments(3, 2)]
+    [Arguments(5, 2)]
+    [Arguments(7, 3)]
+    [Arguments(11, 2)]
+    [Arguments(13, 2)]
+    [Arguments(37, 2)]
+    [Arguments(211, 2)]
+    [Arguments(998244353, 3)]
+    [Arguments(1000000007, 5)]
+    public async Task Solve(int p, int expected)
     {
-        PrimitiveRoot.Solve(p).ShouldBe(expected);
-        PrimitiveRoot.Solve((uint)p).ShouldBe((uint)expected);
+        await PrimitiveRoot.Solve(p).Should().BeEqualTo(expected);
+        await PrimitiveRoot.Solve((uint)p).Should().BeEqualTo((uint)expected);
     }
 }

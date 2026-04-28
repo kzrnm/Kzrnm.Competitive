@@ -2,30 +2,30 @@ namespace Kzrnm.Competitive.Testing.Extensions;
 
 public class BoolArrayExtensionTests
 {
-    public static TheoryData<int[], int, bool[]> Arrays => new()
-    {
-        {
+    public static IEnumerable<(int[], int, bool[])> Arrays =>
+    [
+        (
             [2],
             2,
             [false, false]
-        },
-        {
+        ),
+        (
             [1, 2],
             2,
             [false, true]
-        },
-        {
+        ),
+        (
             [0, 1],
             2,
             [true, true]
-        },
-    };
-    [Theory]
-    [MemberData(nameof(Arrays))]
-    public void ToBoolArray(int[] array, int length, bool[] expected)
+        ),
+    ];
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(Arrays))]
+    public async Task ToBoolArray(int[] array, int length, bool[] expected)
     {
-        array.ToBoolArray(length).ShouldBe(expected);
-        array.AsSpan().ToBoolArray(length).ShouldBe(expected);
-        array.AsEnumerable().ToBoolArray(length).ShouldBe(expected);
+        await array.ToBoolArray(length).Should().BeEquivalentOrderTo(expected);
+        await array.AsSpan().ToBoolArray(length).Should().BeEquivalentOrderTo(expected);
+        await array.AsEnumerable().ToBoolArray(length).Should().BeEquivalentOrderTo(expected);
     }
 }

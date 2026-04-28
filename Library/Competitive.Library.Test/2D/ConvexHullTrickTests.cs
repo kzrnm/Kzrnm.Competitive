@@ -2,83 +2,97 @@ namespace Kzrnm.Competitive.Testing.TwoDimensional;
 
 public class ConvexHullTrickTests
 {
-    [Fact]
-    public void Min()
+    [Test]
+    public async Task Min()
     {
         var xs = new long[] { 0, 10, 12, 20, 29, 30, 40, 47, 50 };
         var cht = new LongMinConvexHullTrick(xs);
         var native = new MinConvexHullTrickNative();
-        for (int i = 0; i < xs.Length; i++)
-            cht.Query(i).ShouldBe(cht.YINF);
+        using (Assert.Multiple())
+            for (int i = 0; i < xs.Length; i++)
+                await cht.Query(i).Should().BeEqualTo(cht.YINF);
 
         cht.AddLine(2, 3);
         native.AddLine(2, 3);
-        for (int i = 0; i < xs.Length; i++)
-            cht.Query(i).ShouldBe(native.Min(xs[i]));
+        using (Assert.Multiple())
+            for (int i = 0; i < xs.Length; i++)
+                await cht.Query(i).Should().BeEqualTo(native.Min(xs[i]));
 
         cht.AddLine(-6, 300);
         native.AddLine(-6, 300);
-        for (int i = 0; i < xs.Length; i++)
-            cht.Query(i).ShouldBe(native.Min(xs[i]));
+        using (Assert.Multiple())
+            for (int i = 0; i < xs.Length; i++)
+                await cht.Query(i).Should().BeEqualTo(native.Min(xs[i]));
 
         cht.AddLine(1, 30);
         native.AddLine(1, 30);
-        for (int i = 0; i < xs.Length; i++)
-            cht.Query(i).ShouldBe(native.Min(xs[i]));
+        using (Assert.Multiple())
+            for (int i = 0; i < xs.Length; i++)
+                await cht.Query(i).Should().BeEqualTo(native.Min(xs[i]));
 
         cht.AddLine(1, 50);
         native.AddLine(1, 50);
-        for (int i = 0; i < xs.Length; i++)
-            cht.Query(i).ShouldBe(native.Min(xs[i]));
+        using (Assert.Multiple())
+            for (int i = 0; i < xs.Length; i++)
+                await cht.Query(i).Should().BeEqualTo(native.Min(xs[i]));
 
         cht.AddLine(1, 500);
         native.AddLine(1, 500);
-        for (int i = 0; i < xs.Length; i++)
-            cht.Query(i).ShouldBe(native.Min(xs[i]));
+        using (Assert.Multiple())
+            for (int i = 0; i < xs.Length; i++)
+                await cht.Query(i).Should().BeEqualTo(native.Min(xs[i]));
 
         cht.AddLine(0, 50);
         native.AddLine(0, 50);
-        for (int i = 0; i < xs.Length; i++)
-            cht.Query(i).ShouldBe(native.Min(xs[i]));
+        using (Assert.Multiple())
+            for (int i = 0; i < xs.Length; i++)
+                await cht.Query(i).Should().BeEqualTo(native.Min(xs[i]));
     }
-    [Fact]
-    public void Max()
+    [Test]
+    public async Task Max()
     {
         var xs = new long[] { 0, 10, 12, 20, 29, 30, 40, 47, 50 };
         var cht = new LongMaxConvexHullTrick(xs);
         var native = new MaxConvexHullTrickNative();
-        for (int i = 0; i < xs.Length; i++)
-            cht.Query(i).ShouldBe(cht.YINF);
+        using (Assert.Multiple())
+            for (int i = 0; i < xs.Length; i++)
+                await cht.Query(i).Should().BeEqualTo(cht.YINF);
 
         cht.AddLine(2, 3);
         native.AddLine(2, 3);
-        for (int i = 0; i < xs.Length; i++)
-            cht.Query(i).ShouldBe(native.Min(xs[i]));
+        using (Assert.Multiple())
+            for (int i = 0; i < xs.Length; i++)
+                await cht.Query(i).Should().BeEqualTo(native.Min(xs[i]));
 
         cht.AddLine(-6, 300);
         native.AddLine(-6, 300);
-        for (int i = 0; i < xs.Length; i++)
-            cht.Query(i).ShouldBe(native.Min(xs[i]));
+        using (Assert.Multiple())
+            for (int i = 0; i < xs.Length; i++)
+                await cht.Query(i).Should().BeEqualTo(native.Min(xs[i]));
 
         cht.AddLine(1, 30);
         native.AddLine(1, 30);
-        for (int i = 0; i < xs.Length; i++)
-            cht.Query(i).ShouldBe(native.Min(xs[i]));
+        using (Assert.Multiple())
+            for (int i = 0; i < xs.Length; i++)
+                await cht.Query(i).Should().BeEqualTo(native.Min(xs[i]));
 
         cht.AddLine(1, 50);
         native.AddLine(1, 50);
-        for (int i = 0; i < xs.Length; i++)
-            cht.Query(i).ShouldBe(native.Min(xs[i]));
+        using (Assert.Multiple())
+            for (int i = 0; i < xs.Length; i++)
+                await cht.Query(i).Should().BeEqualTo(native.Min(xs[i]));
 
         cht.AddLine(1, 500);
         native.AddLine(1, 500);
-        for (int i = 0; i < xs.Length; i++)
-            cht.Query(i).ShouldBe(native.Min(xs[i]));
+        using (Assert.Multiple())
+            for (int i = 0; i < xs.Length; i++)
+                await cht.Query(i).Should().BeEqualTo(native.Min(xs[i]));
 
         cht.AddLine(0, 50);
         native.AddLine(0, 50);
-        for (int i = 0; i < xs.Length; i++)
-            cht.Query(i).ShouldBe(native.Min(xs[i]));
+        using (Assert.Multiple())
+            for (int i = 0; i < xs.Length; i++)
+                await cht.Query(i).Should().BeEqualTo(native.Min(xs[i]));
     }
 
     private class MinConvexHullTrickNative

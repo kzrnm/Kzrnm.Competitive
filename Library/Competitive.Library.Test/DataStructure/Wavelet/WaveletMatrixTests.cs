@@ -1,3 +1,5 @@
+using TUnit.Assertions.Core;
+
 namespace Kzrnm.Competitive.Testing.DataStructure;
 
 public class WaveletMatrixTests
@@ -17,26 +19,25 @@ public class WaveletMatrixTests
     ];
     public WaveletMatrix<long> matrix = new(orig);
 
-    [Theory]
-    [InlineData(0, 1)]
-    [InlineData(1, -1)]
-    [InlineData(2, 2)]
-    [InlineData(3, -2)]
-    [InlineData(4, 3)]
-    [InlineData(5, 3)]
-    [InlineData(6, -3)]
-    [InlineData(7, -2)]
-    [InlineData(8, 4)]
-    [InlineData(9, 5)]
-    [InlineData(10, 6)]
-    public void Indexer(int index, long expected)
+    [Test, MultipleAssertions]
+    [Arguments(0, 1)]
+    [Arguments(1, -1)]
+    [Arguments(2, 2)]
+    [Arguments(3, -2)]
+    [Arguments(4, 3)]
+    [Arguments(5, 3)]
+    [Arguments(6, -3)]
+    [Arguments(7, -2)]
+    [Arguments(8, 4)]
+    [Arguments(9, 5)]
+    [Arguments(10, 6)]
+    public async Task Indexer(int index, long expected)
     {
-        matrix[index].ShouldBe(expected);
+        await matrix[index].Should().BeEqualTo(expected);
     }
 
-
-    [Fact]
-    public void Rank()
+    [Test, MultipleAssertions]
+    public async Task Rank()
     {
         static int Native(int r, long x)
         {
@@ -52,15 +53,15 @@ public class WaveletMatrixTests
         {
             for (int r = 0; r <= orig.Length; r++)
             {
-                matrix.Rank(r, x).ShouldBe(Native(r, x));
+                await matrix.Rank(r, x).Should().BeEqualTo(Native(r, x));
                 for (int l = 0; l < r; l++)
-                    matrix.Rank(l, r, x).ShouldBe(Native(r, x) - Native(l, x));
+                    await matrix.Rank(l, r, x).Should().BeEqualTo(Native(r, x) - Native(l, x));
             }
         }
     }
 
-    [Fact]
-    public void KthSmallest()
+    [Test, MultipleAssertions]
+    public async Task KthSmallest()
     {
         for (int l = 0; l < orig.Length; l++)
             for (int r = l + 1; r <= orig.Length; r++)
@@ -69,13 +70,13 @@ public class WaveletMatrixTests
                 Array.Sort(rangeItems);
                 for (int k = 0; k < r - l; k++)
                 {
-                    matrix.KthSmallest(l, r, k).ShouldBe(rangeItems[k]);
+                    await matrix.KthSmallest(l, r, k).Should().BeEqualTo(rangeItems[k]);
                 }
             }
     }
 
-    [Fact]
-    public void KthLargest()
+    [Test, MultipleAssertions]
+    public async Task KthLargest()
     {
         for (int l = 0; l < orig.Length; l++)
             for (int r = l + 1; r <= orig.Length; r++)
@@ -85,13 +86,13 @@ public class WaveletMatrixTests
                 Array.Reverse(rangeItems);
                 for (int k = 0; k < r - l; k++)
                 {
-                    matrix.KthLargest(l, r, k).ShouldBe(rangeItems[k]);
+                    await matrix.KthLargest(l, r, k).Should().BeEqualTo(rangeItems[k]);
                 }
             }
     }
 
-    [Fact]
-    public void RangeFreq()
+    [Test, MultipleAssertions]
+    public async Task RangeFreq()
     {
         static int Native(int l, int r, long lower, long upper)
         {
@@ -107,37 +108,37 @@ public class WaveletMatrixTests
             for (int r = l + 1; r <= orig.Length; r++)
                 for (int upper = -8; upper <= 8; upper++)
                 {
-                    matrix.RangeFreq(l, r, upper).ShouldBe(Native(l, r, long.MinValue, upper));
+                    await matrix.RangeFreq(l, r, upper).Should().BeEqualTo(Native(l, r, long.MinValue, upper));
                     for (int lower = -8; lower < upper; lower++)
-                        matrix.RangeFreq(l, r, lower, upper).ShouldBe(Native(l, r, lower, upper), $"{l}, {r}, {lower}, {upper}");
+                        await matrix.RangeFreq(l, r, lower, upper).Should().BeEqualTo(Native(l, r, lower, upper));
                 }
     }
 
-    [Fact]
-    public void PrevValue()
+    [Test, MultipleAssertions]
+    public async Task PrevValue()
     {
         for (int l = 0; l < orig.Length; l++)
             for (int r = l + 1; r <= orig.Length; r++)
                 for (int upper = -8; upper <= 8; upper++)
                 {
-                    matrix.PrevValue(l, r, upper).ShouldBe(
+                    await matrix.PrevValue(l, r, upper).Should().BeEqualTo(
                         orig.AsSpan()[l..r].ToArray().Where(v => v < upper)
                         .Select(v => (long?)v)
-                        .DefaultIfEmpty(null).Max(), $"{l}, {r}, {upper}");
+                        .DefaultIfEmpty(null).Max());
                 }
     }
 
-    [Fact]
-    public void NextValue()
+    [Test, MultipleAssertions]
+    public async Task NextValue()
     {
         for (int l = 0; l < orig.Length; l++)
             for (int r = l + 1; r <= orig.Length; r++)
                 for (int lower = -8; lower <= 8; lower++)
                 {
-                    matrix.NextValue(l, r, lower).ShouldBe(
+                    await matrix.NextValue(l, r, lower).Should().BeEqualTo(
                         orig.AsSpan()[l..r].ToArray().Where(v => v >= lower)
                         .Select(v => (long?)v)
-                        .DefaultIfEmpty(null).Min(), $"{l}, {r}, {lower}");
+                        .DefaultIfEmpty(null).Min());
                 }
     }
 }

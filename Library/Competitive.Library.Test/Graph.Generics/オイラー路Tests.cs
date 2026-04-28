@@ -3,8 +3,8 @@ namespace Kzrnm.Competitive.Testing.Graph;
 
 public class オイラー路Tests
 {
-    [Fact]
-    public void 有向グラフ()
+    [Test, MultipleAssertions]
+    public async Task 有向グラフ()
     {
         var gb = new GraphBuilder(8, true);
         gb.Add(0, 1);
@@ -18,8 +18,8 @@ public class オイラー路Tests
         gb.Add(4, 7);
         gb.Add(7, 0);
         var (from, edges) = gb.ToGraph().EulerianTrail();
-        from.ShouldBe(0);
-        edges.ShouldBe([
+        await from.Should().BeEqualTo(0);
+        await edges.Should().BeEquivalentOrderTo([
             new GraphEdge(1),
             new GraphEdge(2),
             new GraphEdge(3),
@@ -33,8 +33,8 @@ public class オイラー路Tests
         ]);
     }
 
-    [Fact]
-    public void 無向グラフ()
+    [Test, MultipleAssertions]
+    public async Task 無向グラフ()
     {
         var gb = new GraphBuilder(8, false);
         gb.Add(0, 1);
@@ -48,8 +48,8 @@ public class オイラー路Tests
         gb.Add(4, 7);
         gb.Add(7, 0);
         var (from, edges) = gb.ToGraph().EulerianTrail();
-        from.ShouldBe(0);
-        edges.ShouldBe([
+        await from.Should().BeEqualTo(0);
+        await edges.Should().BeEquivalentOrderTo([
             new GraphEdge(1),
             new GraphEdge(2),
             new GraphEdge(3),
@@ -63,8 +63,8 @@ public class オイラー路Tests
         ]);
     }
 
-    [Fact]
-    public void 重み付きグラフ()
+    [Test, MultipleAssertions]
+    public async Task 重み付きグラフ()
     {
         var gb = new WIntGraphBuilder(8, true);
         gb.Add(0, 1, 1);
@@ -78,8 +78,8 @@ public class オイラー路Tests
         gb.Add(4, 7, 9);
         gb.Add(7, 0, 10);
         var (from, edges) = gb.ToGraph().EulerianTrail();
-        from.ShouldBe(0);
-        edges.ShouldBe([
+        await from.Should().BeEqualTo(0);
+        await edges.Should().BeEquivalentOrderTo([
             new WEdge<int>(1, 1),
             new WEdge<int>(2, 2),
             new WEdge<int>(3, 3),

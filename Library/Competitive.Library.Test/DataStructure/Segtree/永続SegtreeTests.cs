@@ -5,60 +5,48 @@ namespace Kzrnm.Competitive.Testing.DataStructure;
 
 public class 永続SegtreeTests
 {
-    [Fact]
-    public void Invalid()
+    [Test, MultipleAssertions]
+    public async Task Invalid()
     {
         var s = new PersistentSegtree<string, MonoidOperator>(10);
-        Should.Throw<ContractAssertException>(() => s[-1]);
-        Should.Throw<ContractAssertException>(() => s[10]);
-        Should.NotThrow(() => s[0]);
-        Should.NotThrow(() => s[9]);
+        await Assert.That(() => s[-1]).Throws<ContractAssertException>();
+        await Assert.That(() => s[10]).Throws<ContractAssertException>();
+        await Assert.That(() => s[0]).ThrowsNothing();
+        await Assert.That(() => s[9]).ThrowsNothing();
 
-        Should.Throw<ContractAssertException>(() => s.Prod(-1, -1));
-        Should.Throw<ContractAssertException>(() => s.Prod(3, 2));
-        Should.Throw<ContractAssertException>(() => s.Prod(0, 11));
-        Should.Throw<ContractAssertException>(() => s.Prod(-1, 11));
-        Should.NotThrow(() => s.Prod(0, 0));
-        Should.NotThrow(() => s.Prod(10, 10));
-        Should.NotThrow(() => s.Prod(0, 10));
-
-        //Should.Throw<ContractAssertException>(() => s.MaxRight(11, s => true));
-        //Should.Throw<ContractAssertException>(() => s.MaxRight(-1, s => true));
-        //Should.Throw<ContractAssertException>(() => s.MaxRight(0, s => false));
-        //Should.NotThrow(() => s.MaxRight(0, s => true));
-        //Should.NotThrow(() => s.MaxRight(10, s => true));
-
-        //Should.Throw<ContractAssertException>(() => s.MinLeft(11, s => true));
-        //Should.Throw<ContractAssertException>(() => s.MinLeft(-1, s => true));
-        //Should.Throw<ContractAssertException>(() => s.MinLeft(0, s => false));
-        //Should.NotThrow(() => s.MinLeft(0, s => true));
-        //Should.NotThrow(() => s.MinLeft(10, s => true));
+        await Assert.That(() => s.Prod(-1, -1)).Throws<ContractAssertException>();
+        await Assert.That(() => s.Prod(3, 2)).Throws<ContractAssertException>();
+        await Assert.That(() => s.Prod(0, 11)).Throws<ContractAssertException>();
+        await Assert.That(() => s.Prod(-1, 11)).Throws<ContractAssertException>();
+        await Assert.That(() => s.Prod(0, 0)).ThrowsNothing();
+        await Assert.That(() => s.Prod(10, 10)).ThrowsNothing();
+        await Assert.That(() => s.Prod(0, 10)).ThrowsNothing();
     }
 
-    [Fact]
-    public void One()
+    [Test, MultipleAssertions]
+    public async Task One()
     {
         var s = new PersistentSegtree<string, MonoidOperator>(1);
-        s.AllProd.ShouldBe("$");
-        s[0].ShouldBe("$");
-        s.Prod(0, 1).ShouldBe("$");
-        s[0..1].ShouldBe("$");
+        await s.AllProd.Should().BeEqualTo("$");
+        await s[0].Should().BeEqualTo("$");
+        await s.Prod(0, 1).Should().BeEqualTo("$");
+        await s[0..1].Should().BeEqualTo("$");
         var ns = s.SetItem(0, "dummy");
-        s.AllProd.ShouldBe("$");
-        s[0].ShouldBe("$");
-        s.Prod(0, 1).ShouldBe("$");
-        s[0..1].ShouldBe("$");
-        ns[0].ShouldBe("dummy");
-        ns.Prod(0, 0).ShouldBe("$");
-        ns.Prod(0, 1).ShouldBe("dummy");
-        ns.Prod(1, 1).ShouldBe("$");
-        ns[0..0].ShouldBe("$");
-        ns[0..1].ShouldBe("dummy");
-        ns[1..1].ShouldBe("$");
+        await s.AllProd.Should().BeEqualTo("$");
+        await s[0].Should().BeEqualTo("$");
+        await s.Prod(0, 1).Should().BeEqualTo("$");
+        await s[0..1].Should().BeEqualTo("$");
+        await ns[0].Should().BeEqualTo("dummy");
+        await ns.Prod(0, 0).Should().BeEqualTo("$");
+        await ns.Prod(0, 1).Should().BeEqualTo("dummy");
+        await ns.Prod(1, 1).Should().BeEqualTo("$");
+        await ns[0..0].Should().BeEqualTo("$");
+        await ns[0..1].Should().BeEqualTo("dummy");
+        await ns[1..1].Should().BeEqualTo("$");
     }
 
-    [Fact]
-    public void CompareNaive()
+    [Test, MultipleAssertions]
+    public async Task CompareNaive()
     {
         for (int n = 1; n < 30; n++)
         {
@@ -77,8 +65,8 @@ public class 永続SegtreeTests
             {
                 for (int r = l; r <= n; r++)
                 {
-                    seg1.Prod(l, r).ShouldBe(seg0.Prod(l, r));
-                    seg1[l..r].ShouldBe(seg0.Prod(l, r));
+                    await seg1.Prod(l, r).Should().BeEqualTo(seg0.Prod(l, r));
+                    await seg1[l..r].Should().BeEqualTo(seg0.Prod(l, r));
                 }
             }
 
@@ -87,7 +75,7 @@ public class 永続SegtreeTests
             //    for (int r = l; r <= n; r++)
             //    {
             //        var y = seg1.Prod(l, r);
-            //        seg1.MaxRight(l, x => x.Length <= y.Length).ShouldBe(seg0.MaxRight(l, x => x.Length <= y.Length));
+            //        seg1.MaxRight(l, x => x.Length <= y.Length).Should().BeEqualTo(seg0.MaxRight(l, x => x.Length <= y.Length));
             //    }
             //}
 
@@ -97,7 +85,7 @@ public class 永続SegtreeTests
             //    for (int l = 0; l <= r; l++)
             //    {
             //        var y = seg1.Prod(l, r);
-            //        seg1.MinLeft(l, x => x.Length <= y.Length).ShouldBe(seg0.MinLeft(l, x => x.Length <= y.Length));
+            //        seg1.MinLeft(l, x => x.Length <= y.Length).Should().BeEqualTo(seg0.MinLeft(l, x => x.Length <= y.Length));
             //    }
             //}
         }
@@ -145,7 +133,8 @@ public class 永続SegtreeTests
         public int MaxRight(int l, Predicate<string> f)
         {
             var sum = op.Identity;
-            f(sum).ShouldBeTrue();
+            if (!f(sum))
+                throw new InvalidOperationException();
             for (int i = l; i < n; i++)
             {
                 sum = op.Operate(sum, d[i]);
@@ -156,7 +145,8 @@ public class 永続SegtreeTests
         public int MinLeft(int r, Predicate<string> f)
         {
             var sum = op.Identity;
-            f(sum).ShouldBeTrue();
+            if (!f(sum))
+                throw new InvalidOperationException();
             for (int i = r - 1; i >= 0; i--)
             {
                 sum = op.Operate(d[i], sum);

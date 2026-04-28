@@ -2,6 +2,7 @@ using Kzrnm.Competitive.Internal.Bbst;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree;
 
+[InheritsTests]
 public class LazySplayTreeTests : LazyBinarySearchTreeTestsBase<LazySplayTreeNode<int, int, SumOp>>
 {
     protected override LazySplayTree<int, int, SumOp> Create()

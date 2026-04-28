@@ -5,8 +5,8 @@ namespace Kzrnm.Competitive.Testing.Bit;
 
 public class BitArrayExtensionTests
 {
-    [Fact]
-    public void GetUnsageIntArray()
+    [Test, MultipleAssertions]
+    public async Task GetUnsageIntArray()
     {
         var b = new BitArray(70);
         b.SetAll(true);
@@ -14,21 +14,21 @@ public class BitArrayExtensionTests
         b[64] = false;
 
         var arr = b.GetArray();
-        arr.Length.ShouldBe(3);
-        arr[0].ShouldBe(unchecked((uint)-2));
-        arr[1].ShouldBe(unchecked((uint)-1));
-        (arr[2] & 0b111111).ShouldBe(0b111110u);
+        await arr.Length.Should().BeEqualTo(3);
+        await arr[0].Should().BeEqualTo(unchecked((uint)-2));
+        await arr[1].Should().BeEqualTo(unchecked((uint)-1));
+        await (arr[2] & 0b111111).Should().BeEqualTo(0b111110u);
     }
 
-    [Fact]
-    public void EmptyCopyTo()
+    [Test, MultipleAssertions]
+    public async Task EmptyCopyTo()
     {
         var b = new BitArray(0);
         b.CopyTo(Array.Empty<int>());
     }
-    [Theory]
-    [MemberData(nameof(BitArrayCase.RandomCases), MemberType = typeof(BitArrayCase), DisableDiscoveryEnumeration = true)]
-    public void CopyToInt(BitArrayCase c)
+    [Test, MultipleAssertions]
+    [MethodDataSource(typeof(BitArrayCase), nameof(BitArrayCase.RandomCases))]
+    public async Task CopyToInt(BitArrayCase c)
     {
         var b = c.ToBitArray();
         var dst = new int[(b.Length + 31) / 32];
@@ -46,11 +46,11 @@ public class BitArrayExtensionTests
             exps = exps[1..];
         }
 
-        dst.ShouldBe(exp);
+        await dst.Should().BeEquivalentOrderTo(exp);
     }
-    [Theory]
-    [MemberData(nameof(BitArrayCase.RandomCases), MemberType = typeof(BitArrayCase), DisableDiscoveryEnumeration = true)]
-    public void CopyToUInt(BitArrayCase c)
+    [Test, MultipleAssertions]
+    [MethodDataSource(typeof(BitArrayCase), nameof(BitArrayCase.RandomCases))]
+    public async Task CopyToUInt(BitArrayCase c)
     {
         var b = c.ToBitArray();
         var dst = new uint[(b.Length + 31) / 32];
@@ -67,63 +67,63 @@ public class BitArrayExtensionTests
                 }
             exps = exps[1..];
         }
-        dst.ShouldBe(exp);
+        await dst.Should().BeEquivalentOrderTo(exp);
     }
-    [Theory]
-    [MemberData(nameof(BitArrayCase.RandomCases), MemberType = typeof(BitArrayCase), DisableDiscoveryEnumeration = true)]
-    public void CopyToBool(BitArrayCase c)
+    [Test, MultipleAssertions]
+    [MethodDataSource(typeof(BitArrayCase), nameof(BitArrayCase.RandomCases))]
+    public async Task CopyToBool(BitArrayCase c)
     {
         var exp = c.ToBoolArray();
         var b = c.ToBitArray();
         var dst = new bool[b.Length];
         b.CopyTo(dst);
-        dst.ShouldBe(exp);
+        await dst.Should().BeEquivalentOrderTo(exp);
     }
-    [Theory]
-    [MemberData(nameof(BitArrayCase.RandomCases), MemberType = typeof(BitArrayCase), DisableDiscoveryEnumeration = true)]
-    public void ToUInt32Array(BitArrayCase c)
+    [Test, MultipleAssertions]
+    [MethodDataSource(typeof(BitArrayCase), nameof(BitArrayCase.RandomCases))]
+    public async Task ToUInt32Array(BitArrayCase c)
     {
         var b = c.ToBitArray();
         var other = new BitArray((int[])(object)b.ToUInt32Array());
-        other.Length.ShouldBe((b.Length + 31) / 32 * 32);
-        b.Cast<bool>().ShouldBe(other.Cast<bool>().Take(b.Length));
+        await other.Length.Should().BeEqualTo((b.Length + 31) / 32 * 32);
+        await b.Cast<bool>().Should().BeEquivalentOrderTo(other.Cast<bool>().Take(b.Length));
     }
 
-    [Theory]
-    [MemberData(nameof(BitArrayCase.LongBinaryTexts), MemberType = typeof(BitArrayCase), DisableDiscoveryEnumeration = true)]
-    public void BitString(string input)
+    [Test, MultipleAssertions]
+    [MethodDataSource(typeof(BitArrayCase), nameof(BitArrayCase.LongBinaryTexts))]
+    public async Task BitString(string input)
     {
         var bits = new BitArray(input.Length);
         for (int i = 0; i < input.Length; i++)
             bits[i] = input[i] != '0';
 
-        bits.ToBitString().ShouldBe(input);
+        await bits.ToBitString().Should().BeEqualTo(input);
     }
 
-    [Theory]
-    [MemberData(nameof(BitArrayCase.RandomCases), MemberType = typeof(BitArrayCase), DisableDiscoveryEnumeration = true)]
-    public void SequenceEqual(BitArrayCase c)
+    [Test, MultipleAssertions]
+    [MethodDataSource(typeof(BitArrayCase), nameof(BitArrayCase.RandomCases))]
+    public async Task SequenceEqual(BitArrayCase c)
     {
         var a = c.ToBitArray();
         var b = new BitArray(a);
 
-        a.SequenceEqual(b).ShouldBeTrue();
+        await a.SequenceEqual(b).Should().BeTrue();
         a[^1] = true;
         b[^1] = false;
         a.Length--;
-        a.SequenceEqual(b).ShouldBeFalse();
+        await a.SequenceEqual(b).Should().BeFalse();
         b.Length--;
-        a.SequenceEqual(b).ShouldBeTrue();
+        await a.SequenceEqual(b).Should().BeTrue();
         if (a.Length == 0) return;
         a[^1] = true;
         b[^1] = false;
         a.Length--;
-        a.SequenceEqual(b).ShouldBeFalse();
+        await a.SequenceEqual(b).Should().BeFalse();
     }
 
-    [Theory]
-    [MemberData(nameof(BitArrayCase.RandomCases), MemberType = typeof(BitArrayCase), DisableDiscoveryEnumeration = true)]
-    public void OnBits(BitArrayCase c)
+    [Test, MultipleAssertions]
+    [MethodDataSource(typeof(BitArrayCase), nameof(BitArrayCase.RandomCases))]
+    public async Task OnBits(BitArrayCase c)
     {
         var b = c.ToBitArray();
         var expected = new List<int>();
@@ -131,64 +131,64 @@ public class BitArrayExtensionTests
 
             if (b[i])
                 expected.Add(i);
-        b.OnBits().ShouldBe(expected);
+        await b.OnBits().Should().BeEquivalentOrderTo(expected);
         ++b.Length;
         b[^1] = true;
         expected.Add(b.Length - 1);
-        b.OnBits().ShouldBe(expected);
+        await b.OnBits().Should().BeEquivalentOrderTo(expected);
     }
 
-    [Theory]
-    [MemberData(nameof(BitArrayCase.RandomCases), MemberType = typeof(BitArrayCase), DisableDiscoveryEnumeration = true)]
-    public void PopCount(BitArrayCase c)
+    [Test, MultipleAssertions]
+    [MethodDataSource(typeof(BitArrayCase), nameof(BitArrayCase.RandomCases))]
+    public async Task PopCount(BitArrayCase c)
     {
         var b = c.ToBitArray();
-        b.PopCount().ShouldBe(c.ToBoolArray().Count(c => c));
+        await b.PopCount().Should().BeEqualTo(c.ToBoolArray().Count(c => c));
     }
 
-    public static TheoryData<int> Bits_Data => new(new int[]
+    public static IEnumerable<int> Bits_Data => new int[]
     {
         20,
         32,
         32*2,
         32*3,
-    }.SelectMany(n => Enumerable.Range(-5, 11).Select(i => n + i)));
+    }.SelectMany(n => Enumerable.Range(-5, 11).Select(i => n + i));
 
-    [Theory]
-    [MemberData(nameof(Bits_Data), DisableDiscoveryEnumeration = true)]
-    public void Lsb(int len)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(Bits_Data))]
+    public async Task Lsb(int len)
     {
         var b = new BitArray(Enumerable.Repeat(false, len).Concat(Enumerable.Repeat(true, 2)).ToArray());
-        b.Lsb().ShouldBe(len);
+        await b.Lsb().Should().BeEqualTo(len);
 
         b = new BitArray(Enumerable.Repeat(false, len).Concat(Enumerable.Repeat(true, 2)).Concat(Enumerable.Repeat(false, 2)).ToArray());
-        b.Lsb().ShouldBe(len);
+        await b.Lsb().Should().BeEqualTo(len);
 
         b = new BitArray(Enumerable.Repeat(false, len).Prepend(true).ToArray());
-        b.Lsb().ShouldBe(0);
+        await b.Lsb().Should().BeEqualTo(0);
 
         b = new BitArray(Enumerable.Repeat(false, len).Append(true).ToArray());
-        b.Lsb().ShouldBe(len);
+        await b.Lsb().Should().BeEqualTo(len);
         b.Length -= 2;
-        b.Lsb().ShouldBe(len - 1);
+        await b.Lsb().Should().BeEqualTo(len - 1);
     }
 
-    [Theory]
-    [MemberData(nameof(Bits_Data), DisableDiscoveryEnumeration = true)]
-    public void Msb(int len)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(Bits_Data))]
+    public async Task Msb(int len)
     {
         var b = new BitArray(Enumerable.Repeat(false, len).Concat(Enumerable.Repeat(true, 1)).ToArray());
-        b.Msb().ShouldBe(len);
+        await b.Msb().Should().BeEqualTo(len);
 
         b = new BitArray(Enumerable.Repeat(false, len).Concat(Enumerable.Repeat(true, 1)).Concat(Enumerable.Repeat(false, 2)).ToArray());
-        b.Msb().ShouldBe(len);
+        await b.Msb().Should().BeEqualTo(len);
 
         b = new BitArray(Enumerable.Repeat(false, len).Prepend(true).ToArray());
-        b.Msb().ShouldBe(0);
+        await b.Msb().Should().BeEqualTo(0);
 
         b = new BitArray(Enumerable.Repeat(false, len).Append(true).ToArray());
-        b.Msb().ShouldBe(len);
+        await b.Msb().Should().BeEqualTo(len);
         b.Length -= 2;
-        b.Msb().ShouldBe(len - 1);
+        await b.Msb().Should().BeEqualTo(len - 1);
     }
 }

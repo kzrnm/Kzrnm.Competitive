@@ -7,11 +7,11 @@ public class SparseTable2DTests
 {
     Random rnd = new(42);
 
-    [Fact]
-    public void Invalid()
+    [Test, MultipleAssertions]
+    public async Task Invalid()
     {
-        ((Action)(() => _ = new SparseTable2D<short, MinOp>([]))).ShouldThrow<ContractAssertException>();
-        ((Action)(() => _ = new SparseTable2D<short, MinOp>([[]]))).ShouldThrow<ContractAssertException>();
+        await Assert.That(() => _ = new SparseTable2D<short, MinOp>([])).Throws<ContractAssertException>();
+        await Assert.That(() => _ = new SparseTable2D<short, MinOp>([[]])).Throws<ContractAssertException>();
 
         var s = new SparseTable2D<short, MinOp>(Grid.Create(new[]
         {
@@ -20,30 +20,30 @@ public class SparseTable2DTests
             [7,8,9],
             [10,11,12],
         }));
-        Should.Throw<ContractAssertException>(() => s[-1..3][0..1]);
-        Should.Throw<ContractAssertException>(() => s[0..5][0..1]);
-        Should.Throw<ContractAssertException>(() => s[0..1][-1..]);
-        Should.Throw<ContractAssertException>(() => s[0..1][..5]);
+        await Assert.That(() => s[-1..3][0..1]).Throws<ContractAssertException>();
+        await Assert.That(() => s[0..5][0..1]).Throws<ContractAssertException>();
+        await Assert.That(() => s[0..1][-1..]).Throws<ContractAssertException>();
+        await Assert.That(() => s[0..1][..5]).Throws<ContractAssertException>();
         for (var i = 0; i < 5; i++)
         {
-            Should.Throw<ContractAssertException>(() => s[i..i][0..1]);
-            Should.Throw<ContractAssertException>(() => s[0..1][i..i]);
+            await Assert.That(() => s[i..i][0..1]).Throws<ContractAssertException>();
+            await Assert.That(() => s[0..1][i..i]).Throws<ContractAssertException>();
         }
 
 
-        Should.Throw<ContractAssertException>(() => s.Prod(-1, 3, 0, 1));
-        Should.Throw<ContractAssertException>(() => s.Prod(0, 5, 0, 1));
-        Should.Throw<ContractAssertException>(() => s.Prod(0, 1, -1, 1));
-        Should.Throw<ContractAssertException>(() => s.Prod(0, 1, 0, 5));
+        await Assert.That(() => s.Prod(-1, 3, 0, 1)).Throws<ContractAssertException>();
+        await Assert.That(() => s.Prod(0, 5, 0, 1)).Throws<ContractAssertException>();
+        await Assert.That(() => s.Prod(0, 1, -1, 1)).Throws<ContractAssertException>();
+        await Assert.That(() => s.Prod(0, 1, 0, 5)).Throws<ContractAssertException>();
         for (var i = 0; i < 5; i++)
         {
-            Should.Throw<ContractAssertException>(() => s.Prod(i, i, 0, 1));
-            Should.Throw<ContractAssertException>(() => s.Prod(0, 1, i, i));
+            await Assert.That(() => s.Prod(i, i, 0, 1)).Throws<ContractAssertException>();
+            await Assert.That(() => s.Prod(0, 1, i, i)).Throws<ContractAssertException>();
         }
     }
 
-    [Fact]
-    public void Native()
+    [Test]
+    public async Task Native()
     {
         for (int lenH = 1; lenH < 10; lenH++)
             for (int lenW = 1; lenW < 10; lenW++)
@@ -61,11 +61,12 @@ public class SparseTable2DTests
                     for (var rh = lh + 1; rh <= lenH; rh++)
                         for (var lw = 0; lw < lenW; lw++)
                             for (var rw = lw + 1; rw <= lenW; rw++)
-                            {
-                                var expected = native.Prod(lh, rh, lw, rw);
-                                st[lh..rh][lw..rw].ShouldBe(expected);
-                                st.Prod(lh, rh, lw, rw).ShouldBe(expected);
-                            }
+                                using (Assert.Multiple())
+                                {
+                                    var expected = native.Prod(lh, rh, lw, rw);
+                                    await st[lh..rh][lw..rw].Should().BeEqualTo(expected);
+                                    await st.Prod(lh, rh, lw, rw).Should().BeEqualTo(expected);
+                                }
             }
     }
 

@@ -2,8 +2,8 @@ namespace Kzrnm.Competitive.Testing.Algorithm;
 
 public class MoAlgorithmTests
 {
-    [Fact]
-    public void Solve()
+    [Test, MultipleAssertions]
+    public async Task Solve()
     {
         const int N = 100000;
         var rnd = new Random(227);
@@ -21,17 +21,22 @@ public class MoAlgorithmTests
             mo.AddQuery(l, r);
             expected[i] = fw[l..r];
         }
-        mo.Solve<long, St>(new St(array)).ShouldBe(expected);
+        await mo.Solve<long, St>(new St(array)).Should().BeEquivalentOrderTo(expected);
 
+        var results = new long[N];
+        results.AsSpan().Fill(long.MinValue);
         long current1 = 0;
         mo.Solve(i => current1 += array[i], i => current1 -= array[i],
-            update: i => current1.ShouldBe(expected[i]));
+            update: i => results[i] = current1);
+        await results.Should().BeEquivalentOrderTo(expected);
 
         long current2 = 0;
+        results.AsSpan().Fill(long.MinValue);
         mo.SolveStrict(
             i => current2 += array[i], i => current2 += array[i],
             i => current2 -= array[i], i => current2 -= array[i],
-            update: i => current2.ShouldBe(expected[i]));
+            update: i => results[i] = current2);
+        await results.Should().BeEquivalentOrderTo(expected);
     }
 }
 class St(long[] array) : IMoAlgorithmState<long>

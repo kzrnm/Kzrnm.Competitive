@@ -2,8 +2,8 @@ namespace Kzrnm.Competitive.Testing.Comparer;
 
 public class ReverseComparerClassTests
 {
-    [Fact]
-    public void Compare()
+    [Test]
+    public async Task Compare()
     {
         var arr = new int[]
         {
@@ -29,7 +29,7 @@ public class ReverseComparerClassTests
             382174879
         };
         Array.Sort(arr, ReverseComparerClass<int>.Default);
-        arr.ShouldBe([
+        await arr.Should().BeEquivalentOrderTo([
             2014529243,
             1983045250,
             1850902760,

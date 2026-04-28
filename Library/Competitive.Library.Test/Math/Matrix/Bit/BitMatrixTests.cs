@@ -6,10 +6,10 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix;
 
 public class BitMatrixTests
 {
-    [Theory]
-    [MemberData(nameof(BitMatrixCase.RandomCases), MemberType = typeof(BitMatrixCase), DisableDiscoveryEnumeration = true)]
-    [Trait("Category", "Normal")]
-    public void Construct(BitMatrixCase input)
+    [Test]
+    [MethodDataSource(typeof(BitMatrixCase), nameof(BitMatrixCase.RandomCases), Arguments = [384])]
+    [Property("Category", "Normal")]
+    public async Task Construct(BitMatrixCase input)
     {
         var expected = new BitArray[input.Height];
         for (int i = 0; i < expected.Length; i++)
@@ -20,13 +20,13 @@ public class BitMatrixTests
                 expected[i][j] = input[i, j];
             }
         }
-        new BitMatrix(input.ToBoolArray())._v.ShouldBe(expected);
+        await new BitMatrix(input.ToBoolArray()).Should().BeEqualTo(new BitMatrix(expected));
     }
 
-    [Theory]
-    [Trait("Category", "Normal")]
-    [MemberData(nameof(BitMatrixCase.RandomCases), MemberType = typeof(BitMatrixCase), DisableDiscoveryEnumeration = true)]
-    public void String(BitMatrixCase input)
+    [Test, MultipleAssertions]
+    [Property("Category", "Normal")]
+    [MethodDataSource(typeof(BitMatrixCase), nameof(BitMatrixCase.RandomCases), Arguments = [384])]
+    public async Task String(BitMatrixCase input)
     {
         var arr = input.ToBoolArray();
         var rowsAscii = new Asciis[arr.Length];
@@ -42,15 +42,15 @@ public class BitMatrixTests
             rowsAscii[i] = new(Encoding.ASCII.GetBytes(row));
         }
         var expected = new BitMatrix(arr);
-        BitMatrix.Parse(rows).ShouldBe(expected);
-        BitMatrix.Parse(rowsAscii).ShouldBe(expected);
-        expected.ToString().Replace("\r\n", "\n").ShouldBe(string.Join("\n", rows));
+        await BitMatrix.Parse(rows).Should().BeEqualTo(expected);
+        await BitMatrix.Parse(rowsAscii).Should().BeEqualTo(expected);
+        await expected.ToString().Replace("\r\n", "\n").Should().BeEqualTo(string.Join("\n", rows));
     }
 
-    [Theory]
-    [Trait("Category", "Normal")]
-    [MemberData(nameof(BitMatrixCase.RandomCases), MemberType = typeof(BitMatrixCase), DisableDiscoveryEnumeration = true)]
-    public void SingleMinus(BitMatrixCase input)
+    [Test, MultipleAssertions]
+    [Property("Category", "Normal")]
+    [MethodDataSource(typeof(BitMatrixCase), nameof(BitMatrixCase.RandomCases), Arguments = [384])]
+    public async Task SingleMinus(BitMatrixCase input)
     {
         var mat = new BitMatrix(input.ToBoolArray());
         var expectedArray = input.ToBoolArray();
@@ -58,23 +58,23 @@ public class BitMatrixTests
             for (int w = 0; w < expectedArray[h].Length; w++)
                 expectedArray[h][w] = !expectedArray[h][w];
         var expected = new BitMatrix(expectedArray);
-        (-mat).ShouldBe(expected);
-        (~mat).ShouldBe(expected);
+        await (-mat).Should().BeEqualTo(expected);
+        await (~mat).Should().BeEqualTo(expected);
     }
 
-    [Theory]
-    [Trait("Category", "Operator")]
-    [MemberData(nameof(BitMatrixCase.RandomAddCases), MemberType = typeof(BitMatrixCase), DisableDiscoveryEnumeration = true)]
-    public void Add(BitMatrixCase left, BitMatrixCase right)
+    [Test, MultipleAssertions]
+    [Property("Category", "Operator")]
+    [MethodDataSource(typeof(BitMatrixCase), nameof(BitMatrixCase.RandomAddCases), Arguments = [384])]
+    public async Task Add(BitMatrixCase left, BitMatrixCase right)
     {
         var mat1 = left.ToBitMatrix();
         var mat2 = right.ToBitMatrix();
         var expected = NaiveExpected();
 
-        (mat1 + mat2).ShouldBe(expected);
-        (mat2 + mat1).ShouldBe(expected);
-        (mat1 - mat2).ShouldBe(expected);
-        (mat1 ^ mat2).ShouldBe(expected);
+        await (mat1 + mat2).Should().BeEqualTo(expected);
+        await (mat2 + mat1).Should().BeEqualTo(expected);
+        await (mat1 - mat2).Should().BeEqualTo(expected);
+        await (mat1 ^ mat2).Should().BeEqualTo(expected);
 
         BitMatrix NaiveExpected()
         {
@@ -93,7 +93,7 @@ public class BitMatrixTests
 
                 case (Internal.ArrayMatrixKind.Normal, Internal.ArrayMatrixKind.Identity):
                     {
-                        var expectedCase = new BitMatrixCase(left);
+                        var expectedCase = new BitMatrixCase.Builder(left);
                         for (int i = Math.Min(expectedCase.Height, expectedCase.Width) - 1; i >= 0; i--)
                         {
                             expectedCase[i, i] = !expectedCase[i, i];
@@ -102,7 +102,7 @@ public class BitMatrixTests
                     }
                 case (Internal.ArrayMatrixKind.Identity, Internal.ArrayMatrixKind.Normal):
                     {
-                        var expectedCase = new BitMatrixCase(right);
+                        var expectedCase = new BitMatrixCase.Builder(right);
                         for (int i = Math.Min(expectedCase.Height, expectedCase.Width) - 1; i >= 0; i--)
                         {
                             expectedCase[i, i] = !expectedCase[i, i];
@@ -111,7 +111,7 @@ public class BitMatrixTests
                     }
                 default:
                     {
-                        var expectedCase = new BitMatrixCase(left.Height, left.Width);
+                        var expectedCase = new BitMatrixCase.Builder(left.Height, left.Width);
                         for (int h = 0; h < expectedCase.Height; h++)
                             for (int w = 0; w < expectedCase.Width; w++)
                             {
@@ -123,16 +123,16 @@ public class BitMatrixTests
         }
     }
 
-    [Theory]
-    [Trait("Category", "Operator")]
-    [MemberData(nameof(BitMatrixCase.RandomMultiplyCases), MemberType = typeof(BitMatrixCase), DisableDiscoveryEnumeration = true)]
-    public void Multiply(BitMatrixCase left, BitMatrixCase right)
+    [Test]
+    [Property("Category", "Operator")]
+    [MethodDataSource(typeof(BitMatrixCase), nameof(BitMatrixCase.RandomMultiplyCases), Arguments = [180])]
+    public async Task Multiply(BitMatrixCase left, BitMatrixCase right)
     {
         var mat1 = left.ToBitMatrix();
         var mat2 = right.ToBitMatrix();
         var expected = NaiveExpected();
 
-        (mat1 * mat2).ShouldBe(expected);
+        await (mat1 * mat2).Should().BeEqualTo(expected);
 
         BitMatrix NaiveExpected()
         {
@@ -152,13 +152,13 @@ public class BitMatrixTests
                     return right.ToBitMatrix();
 
                 case (Internal.ArrayMatrixKind.Normal, Internal.ArrayMatrixKind.Zero):
-                    return new BitMatrixCase(left.Height, left.Width).ToBitMatrix();
+                    return new BitMatrixCase.Builder(left.Height, left.Width).ToBitMatrix();
                 case (Internal.ArrayMatrixKind.Zero, Internal.ArrayMatrixKind.Normal):
-                    return new BitMatrixCase(right.Height, right.Width).ToBitMatrix();
+                    return new BitMatrixCase.Builder(right.Height, right.Width).ToBitMatrix();
 
                 default:
                     {
-                        var expectedCase = new BitMatrixCase(left.Height, right.Width);
+                        var expectedCase = new BitMatrixCase.Builder(left.Height, right.Width);
                         for (int h = 0; h < expectedCase.Height; h++)
                             for (int w = 0; w < expectedCase.Width; w++)
                                 for (int t = 0; t < left.Width; t++)
@@ -171,75 +171,75 @@ public class BitMatrixTests
         }
     }
 
-    [Theory]
-    [Trait("Category", "Operator")]
-    [MemberData(nameof(BitMatrixCase.RandomMultiplyVectorCases), MemberType = typeof(BitMatrixCase), DisableDiscoveryEnumeration = true)]
-    public void MultiplyVector(BitMatrixCase left, BitArrayCase right)
+    [Test, MultipleAssertions]
+    [Property("Category", "Operator")]
+    [MethodDataSource(typeof(BitMatrixCase), nameof(BitMatrixCase.RandomMultiplyVectorCases), Arguments = [180])]
+    public async Task MultiplyVector(BitMatrixCase left, BitArrayCase right)
     {
         var mat = left.ToBitMatrix();
         var vector = right.ToBitArray();
         var expected = NaiveExpected();
 
-        (mat * right.ToBoolArray()).ShouldBe(expected);
-        (mat * vector).ShouldBe(expected);
-        mat.Multiply(vector).ShouldBe(expected);
+        await (mat * right.ToBoolArray()).Should().BeEqualTo(expected, BitArrayEqualityComparer.Default);
+        await (mat * vector).Should().BeEqualTo(expected, BitArrayEqualityComparer.Default);
+        await mat.Multiply(vector).Should().BeEqualTo(expected, BitArrayEqualityComparer.Default);
 
         BitArray NaiveExpected()
         {
-            var expectedCase = new BitArrayCase(new bool[left.Height]);
+            var expectedCase = new bool[left.Height];
             for (int h = 0; h < expectedCase.Length; h++)
                 for (int t = 0; t < left.Width; t++)
                 {
                     expectedCase[h] ^= left[h, t] && right[t];
                 }
-            return expectedCase.ToBitArray();
+            return new BitArray(expectedCase);
         }
     }
 
-    [Theory]
-    [Trait("Category", "Normal")]
-    [MemberData(nameof(BitMatrixCase.RandomSquareCases), MemberType = typeof(BitMatrixCase), DisableDiscoveryEnumeration = true)]
-    public void Pow(BitMatrixCase input)
+    [Test, MultipleAssertions]
+    [Property("Category", "Normal")]
+    [MethodDataSource(typeof(BitMatrixCase), nameof(BitMatrixCase.RandomSquareCases))]
+    public async Task Pow(BitMatrixCase input)
     {
         var orig = input.ToBitMatrix();
-        var mat = input.ToBitMatrix();
+        var mat = orig;
 
-        orig.Pow(1).ShouldBe(mat);
+        await orig.Pow(1).Should().BeEqualTo(mat);
         for (int i = 2; i < 11; i++)
         {
             mat *= orig;
-            orig.Pow(i).ShouldBe(mat);
+            await orig.Pow(i).Should().BeEqualTo(mat);
         }
     }
 
-    [Theory]
-    [Trait("Category", "Operator")]
-    [MemberData(nameof(BitMatrixCase.RandomSquareCases), MemberType = typeof(BitMatrixCase), DisableDiscoveryEnumeration = true)]
-    public void Inv(BitMatrixCase input)
+    [Test, MultipleAssertions]
+    [Property("Category", "Operator")]
+    [MethodDataSource(typeof(BitMatrixCase), nameof(BitMatrixCase.RandomSquareCases))]
+    public async Task Inv(BitMatrixCase input)
     {
         var mat = input.ToBitMatrix();
         var inv = mat.Inv();
         if (inv.IsZero)
         {
-            mat.Determinant().ShouldBeFalse();
+            await mat.Determinant().Should().BeFalse();
             return;
         }
 
-        var expectedCase = new BitMatrixCase(input.Height, input.Width);
+        var expectedCase = new BitMatrixCase.Builder(input.Height, input.Width);
         for (int i = 0; i < expectedCase.Height; i++)
         {
             expectedCase[i, i] = true;
         }
         var expected = expectedCase.ToBitMatrix();
 
-        mat.Determinant().ShouldBeTrue();
-        (mat * inv).ShouldBe(expected);
-        (inv * mat).ShouldBe(expected);
+        await mat.Determinant().Should().BeTrue();
+        await (mat * inv).Should().BeEqualTo(expected);
+        await (inv * mat).Should().BeEqualTo(expected);
     }
 
-    public static TheoryData<bool, BitMatrix, BitMatrix> GaussianElimination_Data => new()
-    {
-        {
+    public static IEnumerable<(bool, BitMatrix, BitMatrix)> GaussianElimination_Data =>
+    [
+        (
             false,
             BitMatrix.Parse(
             [
@@ -253,8 +253,8 @@ public class BitMatrixTests
                 "0101",
                 "0011",
             ])
-        },
-        {
+        ),
+        (
             false,
             BitMatrix.Parse(
             [
@@ -272,8 +272,8 @@ public class BitMatrixTests
                 "0001",
                 "0000",
             ])
-        },
-        {
+        ),
+        (
             true,
             BitMatrix.Parse(
             [
@@ -291,20 +291,20 @@ public class BitMatrixTests
                 "0001",
                 "0000",
             ])
-        },
-    };
+        ),
+    ];
 
-    [Theory]
-    [MemberData(nameof(GaussianElimination_Data))]
-    public void GaussianElimination(bool isReduced, BitMatrix orig, BitMatrix expected)
+    [Test]
+    [MethodDataSource(nameof(GaussianElimination_Data))]
+    public async Task GaussianElimination(bool isReduced, BitMatrix orig, BitMatrix expected)
     {
         var got = orig.GaussianElimination(isReduced);
-        got.ShouldBe(expected);
+        await got.Should().BeEqualTo(expected);
     }
 
-    public static TheoryData<BitMatrix, bool[], BitArray[]> LinearSystem_Data => new()
-    {
-        {
+    public static IEnumerable<(BitMatrix, bool[], BitArray[])> LinearSystem_Data =>
+    [
+        (
             BitMatrix.Parse(
             [
                 "100",
@@ -312,12 +312,11 @@ public class BitMatrixTests
                 "111",
             ]),
             [true, true, true,],
-            new[]
-            {
+            [
                 new BitArray([true, true, true, ]),
-            }
-        },
-        {
+            ]
+        ),
+        (
             BitMatrix.Parse(
             [
                 "100",
@@ -325,12 +324,11 @@ public class BitMatrixTests
                 "101",
             ]),
             [true, true, true,],
-            new[]
-            {
+            [
                 new BitArray([true, true, false, ]),
-            }
-        },
-        {
+            ]
+        ),
+        (
             BitMatrix.Parse(
             [
                 "100",
@@ -339,8 +337,8 @@ public class BitMatrixTests
             ]),
             [true, true, true,],
             []
-        },
-        {
+        ),
+        (
             BitMatrix.Parse(
             [
                 "100",
@@ -348,36 +346,34 @@ public class BitMatrixTests
                 "110",
             ]),
             [true, true, false,],
-            new[]
-            {
+            [
                 new BitArray([true, true, false, ]),
                 new BitArray([false, false, true, ]),
-            }
-        },
-        {
+            ]
+        ),
+        (
             BitMatrix.Parse(
             [
                 "000",
                 "000",
             ]),
             [false, false],
-            new[]
-            {
+            [
                 new BitArray([false, false, false, ]),
                 new BitArray([true, false, false, ]),
                 new BitArray([false, true, false, ]),
                 new BitArray([false, false, true, ]),
-            }
-        },
-    };
+            ]
+        ),
+    ];
 
-    [Theory]
-    [MemberData(nameof(LinearSystem_Data))]
-    public void LinearSystem(BitMatrix matrix, bool[] vector, BitArray[] expected)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(LinearSystem_Data))]
+    public async Task LinearSystem(BitMatrix matrix, bool[] vector, BitArray[] expected)
     {
         var got = matrix.LinearSystem(vector);
-        got.Length.ShouldBe(expected.Length);
+        await got.Length.Should().BeEqualTo(expected.Length);
         for (int i = 0; i < got.Length; i++)
-            got[i].ShouldBe(expected[i], $"got[{i}]");
+            await got[i].Should().BeEqualTo(expected[i], BitArrayEqualityComparer.Default);
     }
 }

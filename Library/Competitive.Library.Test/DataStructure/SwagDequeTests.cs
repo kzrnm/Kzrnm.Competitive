@@ -5,32 +5,32 @@ namespace Kzrnm.Competitive.Testing.DataStructure;
 
 public class SwagDequeTests
 {
-    [Fact]
-    public void AddLastAndPopFirst()
+    [Test, MultipleAssertions]
+    public async Task AddLastAndPopFirst()
     {
         var swag = new SwagDeque<int, SlideMinOp>();
-        swag.AllProd.ShouldBe(int.MaxValue);
+        await swag.AllProd.Should().BeEqualTo(int.MaxValue);
         swag.AddLast(1);
-        swag.AllProd.ShouldBe(1);
+        await swag.AllProd.Should().BeEqualTo(1);
         swag.PopFirst();
-        swag.AllProd.ShouldBe(int.MaxValue);
+        await swag.AllProd.Should().BeEqualTo(int.MaxValue);
     }
-    [Fact]
-    public void AddFirstAndPopLast()
+    [Test, MultipleAssertions]
+    public async Task AddFirstAndPopLast()
     {
         var swag = new SwagDeque<int, SlideMinOp>();
-        swag.AllProd.ShouldBe(int.MaxValue);
+        await swag.AllProd.Should().BeEqualTo(int.MaxValue);
         swag.AddFirst(1);
-        swag.AllProd.ShouldBe(1);
+        await swag.AllProd.Should().BeEqualTo(1);
         swag.PopLast();
-        swag.AllProd.ShouldBe(int.MaxValue);
+        await swag.AllProd.Should().BeEqualTo(int.MaxValue);
     }
 
     Random rnd = new(227);
     Mod998244353AffineTransformation RandomAffine(Random rnd) => new(rnd.Next(), rnd.Next());
     int RandomInt32(Random rnd) => rnd.Next();
 
-    public static IEnumerable<TheoryDataRow<PopAdd, PopAdd>> CreateTestData()
+    public static IEnumerable<(PopAdd, PopAdd)> CreateTestData()
     {
         var array = new[] { PopAdd.First, PopAdd.Last, PopAdd.Random, };
         foreach (var pop in array)
@@ -39,31 +39,31 @@ public class SwagDequeTests
     }
 
 
-    [Theory]
-    [MemberData(nameof(CreateTestData))]
-    public void AffineTransformation(PopAdd pop, PopAdd add)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(CreateTestData))]
+    public async Task AffineTransformation(PopAdd pop, PopAdd add)
     {
         var inner = new Inner<Mod998244353AffineTransformation, AffineTransformationOp>(rnd, pop, add);
-        inner.RandomTest(RandomAffine);
-        inner.NearZeroTest(RandomAffine);
+        await inner.RandomTest(RandomAffine);
+        await inner.NearZeroTest(RandomAffine);
     }
 
-    [Theory]
-    [MemberData(nameof(CreateTestData))]
-    public void SlideMin(PopAdd pop, PopAdd add)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(CreateTestData))]
+    public async Task SlideMin(PopAdd pop, PopAdd add)
     {
         var inner = new Inner<int, SlideMinOp>(rnd, pop, add);
-        inner.RandomTest(RandomInt32);
-        inner.NearZeroTest(RandomInt32);
+        await inner.RandomTest(RandomInt32);
+        await inner.NearZeroTest(RandomInt32);
     }
 
-    [Theory]
-    [MemberData(nameof(CreateTestData))]
-    public void SlideMax(PopAdd pop, PopAdd add)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(CreateTestData))]
+    public async Task SlideMax(PopAdd pop, PopAdd add)
     {
         var inner = new Inner<int, SlideMaxOp>(rnd, pop, add);
-        inner.RandomTest(RandomInt32);
-        inner.NearZeroTest(RandomInt32);
+        await inner.RandomTest(RandomInt32);
+        await inner.NearZeroTest(RandomInt32);
     }
 
     public enum PopAdd
@@ -140,15 +140,15 @@ public class SwagDequeTests
             }
         }
 
-        public void NearZeroTest(Func<Random, T> nextProvider)
+        public async Task NearZeroTest(Func<Random, T> nextProvider)
         {
             var op = new TOp();
             var swag = new SwagDeque<T, TOp>();
             var deque = new Deque<T>();
 
-            swag.AllProd.ShouldBe(op.Identity);
-            Should.Throw<ContractAssertException>(() => Pop(deque, swag))
-                .Message.ShouldBe("data is empty.");
+            await swag.AllProd.Should().BeEqualTo(op.Identity);
+            await Assert.That(() => Pop(deque, swag)).Throws<ContractAssertException>()
+                .WithMessage("data is empty.");
 
             for (int q = 0; q < 2000; q++)
             {
@@ -156,68 +156,68 @@ public class SwagDequeTests
                 {
                     var next = nextProvider(Rnd);
                     Add(deque, swag, next);
-                    swag.AllProd.ShouldBe(deque.Aggregate(op.Operate));
+                    await swag.AllProd.Should().BeEqualTo(deque.Aggregate(op.Operate));
                 }
 
                 Pop(deque, swag);
-                swag.AllProd.ShouldBe(deque.Aggregate(op.Operate));
+                await swag.AllProd.Should().BeEqualTo(deque.Aggregate(op.Operate));
                 Pop(deque, swag);
-                swag.AllProd.ShouldBe(op.Identity);
+                await swag.AllProd.Should().BeEqualTo(op.Identity);
             }
         }
 
-        public void RandomTest(Func<Random, T> nextProvider)
+        public async Task RandomTest(Func<Random, T> nextProvider)
         {
             var op = new TOp();
             var swag = new SwagDeque<T, TOp>();
             var deque = new Deque<T>();
-
-            swag.AllProd.ShouldBe(op.Identity);
+            await
+                        swag.AllProd.Should().BeEqualTo(op.Identity);
 
             for (int i = 0; i < 200; i++)
             {
                 var next = nextProvider(Rnd);
                 Add(deque, swag, next);
-                swag.AllProd.ShouldBe(deque.Aggregate(op.Operate));
+                await swag.AllProd.Should().BeEqualTo(deque.Aggregate(op.Operate));
             }
 
             for (int i = 1; i < 200; i++)
             {
                 Pop(deque, swag);
-                swag.AllProd.ShouldBe(deque.Aggregate(op.Operate));
+                await swag.AllProd.Should().BeEqualTo(deque.Aggregate(op.Operate));
             }
 
             Pop(deque, swag);
-            swag.AllProd.ShouldBe(op.Identity);
-            Should.Throw<ContractAssertException>(() => Pop(deque, swag))
-                .Message.ShouldBe("data is empty.");
+            await swag.AllProd.Should().BeEqualTo(op.Identity);
+            await Assert.That(() => Pop(deque, swag)).Throws<ContractAssertException>()
+                .WithMessage("data is empty.");
 
             for (int i = 0; i < 200; i++)
             {
                 var next = nextProvider(Rnd);
                 Add(deque, swag, next);
             }
-            RandomInitial(deque, nextProvider);
+            await RandomInitial(deque, nextProvider);
         }
 
-        void RandomInitial(Deque<T> deque, Func<Random, T> nextProvider)
+        async Task RandomInitial(Deque<T> deque, Func<Random, T> nextProvider)
         {
             var op = new TOp();
             var swag = new SwagDeque<T, TOp>(deque.ToArray());
-            swag.AllProd.ShouldBe(deque.Aggregate(op.Operate));
+            await swag.AllProd.Should().BeEqualTo(deque.Aggregate(op.Operate));
 
             for (int i = 0; i < 2000; i++)
             {
                 if (deque.Count > 0 && Rnd.Next(2) != 0)
                 {
                     Pop(deque, swag);
-                    swag.AllProd.ShouldBe(deque.Aggregate(op.Operate));
+                    await swag.AllProd.Should().BeEqualTo(deque.Aggregate(op.Operate));
                 }
                 else
                 {
                     var next = nextProvider(Rnd);
                     Add(deque, swag, next);
-                    swag.AllProd.ShouldBe(deque.Aggregate(op.Operate));
+                    await swag.AllProd.Should().BeEqualTo(deque.Aggregate(op.Operate));
                 }
             }
         }

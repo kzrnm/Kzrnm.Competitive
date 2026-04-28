@@ -1,8 +1,10 @@
+using System.Collections.Immutable;
+
 namespace Kzrnm.Competitive.Testing.DataStructure.String;
 
 public class RunEnumerateTests
 {
-    public static IEnumerable<TheoryDataRow<string, (int From, int ToExclusive)[][]>> RunEnumerate_Data()
+    public static IEnumerable<(string, ImmutableArray<ImmutableArray<(int From, int ToExclusive)>>)> RunEnumerate_Data()
     {
         yield return ("",
         [
@@ -26,19 +28,19 @@ public class RunEnumerateTests
         ]);
     }
 
-    [Theory]
-    [MemberData(nameof(RunEnumerate_Data))]
-    public void RunEnumerate(string s, (int From, int ToExclusive)[][] expected)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(RunEnumerate_Data))]
+    public async Task RunEnumerate(string s, ImmutableArray<ImmutableArray<(int From, int ToExclusive)>> expected)
     {
-        ShouldEqual(StringLibEx.RunEnumerate(s), expected);
-        ShouldEqual(StringLibEx.RunEnumerate(s.Select(t => (int)t).ToArray()), expected);
+        await ShouldEqual(StringLibEx.RunEnumerate(s), expected);
+        await ShouldEqual(StringLibEx.RunEnumerate(s.Select(t => (int)t).ToArray()), expected);
 
-        static void ShouldEqual((int From, int ToExclusive)[][] got, (int From, int ToExclusive)[][] expected)
+        static async Task ShouldEqual((int From, int ToExclusive)[][] got, ImmutableArray<ImmutableArray<(int From, int ToExclusive)>> expected)
         {
-            got.Length.ShouldBe(expected.Length);
+            await got.Length.Should().BeEqualTo(expected.Length);
             for (int i = 0; i < got.Length; i++)
             {
-                got[i].ShouldBe(expected[i], $"i={i}");
+                await got[i].Should().BeEquivalentOrderTo(expected[i]);
             }
         }
     }

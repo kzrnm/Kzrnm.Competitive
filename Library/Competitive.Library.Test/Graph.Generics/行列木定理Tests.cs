@@ -4,17 +4,16 @@ namespace Kzrnm.Competitive.Testing.Graph;
 
 public class 行列木定理Tests
 {
-    [Fact]
-    public void Single()
+    [Test, MultipleAssertions]
+    public async Task Single()
     {
         var gb = new GraphBuilder(1, false);
         var g = gb.ToGraph();
-        g.MatrixTreeTheorem().Calc<StaticModInt<Mod1000000007>>()
-            .Value.ShouldBe(1);
+        await g.MatrixTreeTheorem().Calc<StaticModInt<Mod1000000007>>().Value.Should().BeEqualTo(1);
     }
 
-    [Fact]
-    public void Random()
+    [Test, MultipleAssertions]
+    public async Task Random()
     {
         var rnd = new Random(227);
         for (int i = 0; i < 100; i++)
@@ -37,8 +36,7 @@ public class 行列木定理Tests
             }
 
             var g = gb.ToGraph();
-            g.MatrixTreeTheorem().Calc<StaticModInt<Mod1000000007>>()
-                .Value.ShouldBe(Naive(n, hs.ToArray()));
+            await g.MatrixTreeTheorem().Calc<StaticModInt<Mod1000000007>>().Value.Should().BeEqualTo(Naive(n, hs.ToArray()));
         }
     }
 

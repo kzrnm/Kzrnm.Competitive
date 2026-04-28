@@ -4,15 +4,15 @@ namespace Kzrnm.Competitive.Testing.DataStructure;
 
 public class SegtreeExtensionTests
 {
-    [Fact]
-    public void ToArray()
+    [Test, MultipleAssertions]
+    public async Task ToArray()
     {
         for (int i = 0; i < 20; i++)
         {
             var seg = new Segtree<int, Op>(i);
             for (int j = 0; j < i; j++)
                 seg[j] = j;
-            seg.ToArray().ShouldBe(Enumerable.Range(0, i));
+            await seg.ToArray().Should().BeEquivalentOrderTo(Enumerable.Range(0, i));
         }
     }
     readonly struct Op : ISegtreeOperator<int>

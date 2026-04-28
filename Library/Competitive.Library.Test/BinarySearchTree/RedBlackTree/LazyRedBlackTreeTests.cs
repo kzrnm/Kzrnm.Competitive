@@ -2,6 +2,7 @@ using Kzrnm.Competitive.Internal;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree;
 
+[InheritsTests]
 public class LazyRedBlackTreeTests : LazyBinarySearchTreeTestsBase<LazyRedBlackTreeNode<int, int, SumOp>>
 {
     protected override LazyRedBlackTree<int, int, SumOp> Create()

@@ -3,8 +3,8 @@ namespace Kzrnm.Competitive.Testing.Graph;
 
 public class 最小有向全域木Tests
 {
-    [Fact]
-    public void Int()
+    [Test, MultipleAssertions]
+    public async Task Int()
     {
         var gb = new WIntGraphBuilder(5, true);
         gb.Add(0, 1, 442);
@@ -19,26 +19,26 @@ public class 最小有向全域木Tests
         gb.Add(4, 1, 4424223);
         var graph = gb.ToGraph();
         var mst = graph.DirectedMinimumSpanningTree(0);
-        mst.Edges.ShouldBe([
+        await mst.Edges.Should().BeEquivalentOrderTo([
             (0, new WEdge<int>(4, 423)),
             (0, new WEdge<int>(3, 16)),
             (0, new WEdge<int>(2, 104)),
             (0, new WEdge<int>(1, 442)),
         ]);
-        mst.Cost.ShouldBe(423 + 16 + 104 + 442);
+        await mst.Cost.Should().BeEqualTo(423 + 16 + 104 + 442);
 
         mst = graph.DirectedMinimumSpanningTree(3);
-        mst.Edges.ShouldBe([
+        await mst.Edges.Should().BeEquivalentOrderTo([
             (3, new WEdge<int>(4, 5024224)),
             (0, new WEdge<int>(2, 104)),
             (0, new WEdge<int>(1, 442)),
             (4, new WEdge<int>(0, 14214)),
         ]);
-        mst.Cost.ShouldBe(5024224 + 104 + 442 + 14214);
+        await mst.Cost.Should().BeEqualTo(5024224 + 104 + 442 + 14214);
     }
 
-    [Fact]
-    public void Long()
+    [Test, MultipleAssertions]
+    public async Task Long()
     {
         var gb = new WLongGraphBuilder(5, true);
         gb.Add(0, 1, 442);
@@ -53,21 +53,21 @@ public class 最小有向全域木Tests
         gb.Add(4, 1, 4424223);
         var graph = gb.ToGraph();
         var mst = graph.DirectedMinimumSpanningTree(0);
-        mst.Edges.ShouldBe([
+        await mst.Edges.Should().BeEquivalentOrderTo([
             (0, new WEdge<long>(4, 423)),
             (0, new WEdge<long>(3, 16)),
             (0, new WEdge<long>(2, 104)),
             (0, new WEdge<long>(1, 442)),
         ]);
-        mst.Cost.ShouldBe(423 + 16 + 104 + 442);
+        await mst.Cost.Should().BeEqualTo(423 + 16 + 104 + 442);
 
         mst = graph.DirectedMinimumSpanningTree(3);
-        mst.Edges.ShouldBe([
+        await mst.Edges.Should().BeEquivalentOrderTo([
             (3, new WEdge<long>(4, 5024224)),
             (0, new WEdge<long>(2, 104)),
             (0, new WEdge<long>(1, 442)),
             (4, new WEdge<long>(0, 14214)),
         ]);
-        mst.Cost.ShouldBe(5024224 + 104 + 442 + 14214);
+        await mst.Cost.Should().BeEqualTo(5024224 + 104 + 442 + 14214);
     }
 }

@@ -17,45 +17,45 @@ public class SLazySegtreeTest
         public int Operate(int x, int y) => Math.Max(x, y);
     }
 
-    [Fact]
-    public void Zero()
+    [Test, MultipleAssertions]
+    public async Task Zero()
     {
-        new SLazySegtree<int, int, Starry>(0).AllProd.ShouldBe(-1_000_000_000);
-        new SLazySegtree<int, int, Starry>(10).AllProd.ShouldBe(-1_000_000_000);
+        await new SLazySegtree<int, int, Starry>(0).AllProd.Should().BeEqualTo(-1_000_000_000);
+        await new SLazySegtree<int, int, Starry>(10).AllProd.Should().BeEqualTo(-1_000_000_000);
     }
 
-    [Fact]
-    public void Invalid()
+    [Test, MultipleAssertions]
+    public async Task Invalid()
     {
         var s = new SLazySegtree<int, int, Starry>(10);
-        Should.Throw<ContractAssertException>(() => s[-1]);
-        Should.Throw<ContractAssertException>(() => s[10]);
-        Should.NotThrow(() => s[0]);
-        Should.NotThrow(() => s[9]);
+        await Assert.That(() => s[-1]).Throws<ContractAssertException>();
+        await Assert.That(() => s[10]).Throws<ContractAssertException>();
+        await Assert.That(() => s[0]).ThrowsNothing();
+        await Assert.That(() => s[9]).ThrowsNothing();
 
-        Should.Throw<ContractAssertException>(() => s.Prod(-1, -1));
-        Should.Throw<ContractAssertException>(() => s.Prod(3, 2));
-        Should.Throw<ContractAssertException>(() => s.Prod(0, 11));
-        Should.Throw<ContractAssertException>(() => s.Prod(-1, 11));
-        Should.NotThrow(() => s.Prod(0, 0));
-        Should.NotThrow(() => s.Prod(10, 10));
-        Should.NotThrow(() => s.Prod(0, 10));
+        await Assert.That(() => s.Prod(-1, -1)).Throws<ContractAssertException>();
+        await Assert.That(() => s.Prod(3, 2)).Throws<ContractAssertException>();
+        await Assert.That(() => s.Prod(0, 11)).Throws<ContractAssertException>();
+        await Assert.That(() => s.Prod(-1, 11)).Throws<ContractAssertException>();
+        await Assert.That(() => s.Prod(0, 0)).ThrowsNothing();
+        await Assert.That(() => s.Prod(10, 10)).ThrowsNothing();
+        await Assert.That(() => s.Prod(0, 10)).ThrowsNothing();
 
-        Should.Throw<ContractAssertException>(() => s.MaxRight(11, s => true));
-        Should.Throw<ContractAssertException>(() => s.MaxRight(-1, s => true));
-        Should.Throw<ContractAssertException>(() => s.MaxRight(0, s => false));
-        Should.NotThrow(() => s.MaxRight(0, s => true));
-        Should.NotThrow(() => s.MaxRight(10, s => true));
+        await Assert.That(() => s.MaxRight(11, s => true)).Throws<ContractAssertException>();
+        await Assert.That(() => s.MaxRight(-1, s => true)).Throws<ContractAssertException>();
+        await Assert.That(() => s.MaxRight(0, s => false)).Throws<ContractAssertException>();
+        await Assert.That(() => s.MaxRight(0, s => true)).ThrowsNothing();
+        await Assert.That(() => s.MaxRight(10, s => true)).ThrowsNothing();
 
-        Should.Throw<ContractAssertException>(() => s.MinLeft(11, s => true));
-        Should.Throw<ContractAssertException>(() => s.MinLeft(-1, s => true));
-        Should.Throw<ContractAssertException>(() => s.MinLeft(0, s => false));
-        Should.NotThrow(() => s.MinLeft(0, s => true));
-        Should.NotThrow(() => s.MinLeft(10, s => true));
+        await Assert.That(() => s.MinLeft(11, s => true)).Throws<ContractAssertException>();
+        await Assert.That(() => s.MinLeft(-1, s => true)).Throws<ContractAssertException>();
+        await Assert.That(() => s.MinLeft(0, s => false)).Throws<ContractAssertException>();
+        await Assert.That(() => s.MinLeft(0, s => true)).ThrowsNothing();
+        await Assert.That(() => s.MinLeft(10, s => true)).ThrowsNothing();
     }
 
-    [Fact]
-    public void NaiveProd()
+    [Test, MultipleAssertions]
+    public async Task NaiveProd()
     {
         for (int n = 0; n <= 50; n++)
         {
@@ -75,25 +75,25 @@ public class SLazySegtreeTest
                     {
                         e = Math.Max(e, p[i]);
                     }
-                    seg.Prod(l, r).ShouldBe(e);
-                    seg[l..r].ShouldBe(e);
+                    await seg.Prod(l, r).Should().BeEqualTo(e);
+                    await seg[l..r].Should().BeEqualTo(e);
                 }
             }
         }
     }
 
-    [Fact]
-    public void Usage()
+    [Test, MultipleAssertions]
+    public async Task Usage()
     {
         var seg = new SLazySegtree<int, int, Starry>(new int[10]);
-        seg.AllProd.ShouldBe(0);
+        await seg.AllProd.Should().BeEqualTo(0);
         seg.Apply(0, 3, 5);
-        seg.AllProd.ShouldBe(5);
+        await seg.AllProd.Should().BeEqualTo(5);
         seg.Apply(2, -10);
-        seg.Prod(2, 3).ShouldBe(-5);
-        seg[2..3].ShouldBe(-5);
-        seg.Prod(2, 4).ShouldBe(0);
-        seg[2..4].ShouldBe(0);
+        await seg.Prod(2, 3).Should().BeEqualTo(-5);
+        await seg[2..3].Should().BeEqualTo(-5);
+        await seg.Prod(2, 4).Should().BeEqualTo(0);
+        await seg[2..4].Should().BeEqualTo(0);
     }
 
 
@@ -111,27 +111,27 @@ public class SLazySegtreeTest
         public int Operate(int x, int y) => x + y;
     }
 
-    [Fact]
-    public void Size()
+    [Test, MultipleAssertions]
+    public async Task Size()
     {
         var seg = new SLazySegtree<int, Guid, SumOp>(Enumerable.Repeat(1, 35).ToArray());
         for (int l = 0; l < seg.Length; l++)
             for (int r = l; r <= seg.Length; r++)
             {
                 seg.Apply(l, r, Guid.Empty);
-                seg[l..r].ShouldBe(r - l);
+                await seg[l..r].Should().BeEqualTo(r - l);
             }
     }
 
-    [Fact]
-    public void ToArray()
+    [Test, MultipleAssertions]
+    public async Task ToArray()
     {
         for (int i = 0; i < 20; i++)
         {
             var seg = new SLazySegtree<int, int, Starry>(new int[i]);
             for (int j = 0; j < seg.Length - j; j++)
                 seg.Apply(j, seg.Length - j, 1);
-            seg.ToArray().ShouldBe(CreateExpected(i));
+            await seg.ToArray().Should().BeEquivalentOrderTo(CreateExpected(i));
         }
 
         static int[] CreateExpected(int length)

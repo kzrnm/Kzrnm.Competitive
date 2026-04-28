@@ -4,8 +4,8 @@ namespace Kzrnm.Competitive.Testing.IO;
 
 public class TupleWriterExtensionTests
 {
-    [Fact]
-    public void WriteTuples2()
+    [Test, MultipleAssertions]
+    public async Task WriteTuples2()
     {
         var utf8Wrapper = new Utf8ConsoleWriterWrapper();
         using (var cw = utf8Wrapper.GetWriter())
@@ -20,7 +20,7 @@ public class TupleWriterExtensionTests
             cw.WriteTuples<int, string>(arr.AsSpan());
             cw.WriteTuples(arr.AsEnumerable().Reverse());
         }
-        utf8Wrapper.Read().ShouldBe("""
+        await utf8Wrapper.Read().Should().BeEqualTo("""
         1 Red
         3 Blue
         5 Green
@@ -33,8 +33,8 @@ public class TupleWriterExtensionTests
         """.Replace("\r\n", "\n"));
     }
 
-    [Fact]
-    public void WriteTuples3()
+    [Test, MultipleAssertions]
+    public async Task WriteTuples3()
     {
         var utf8Wrapper = new Utf8ConsoleWriterWrapper();
         using (var cw = utf8Wrapper.GetWriter())
@@ -49,7 +49,7 @@ public class TupleWriterExtensionTests
             cw.WriteTuples<int, string, char>(arr.AsSpan());
             cw.WriteTuples(arr.AsEnumerable().Reverse());
         }
-        utf8Wrapper.Read().ShouldBe("""
+        await utf8Wrapper.Read().Should().BeEqualTo("""
         1 Red r
         3 Blue b
         5 Green g
@@ -62,8 +62,8 @@ public class TupleWriterExtensionTests
         """.Replace("\r\n", "\n"));
     }
 
-    [Fact]
-    public void WriteTuples4()
+    [Test, MultipleAssertions]
+    public async Task WriteTuples4()
     {
         var utf8Wrapper = new Utf8ConsoleWriterWrapper();
         using (var cw = utf8Wrapper.GetWriter())
@@ -78,7 +78,7 @@ public class TupleWriterExtensionTests
             cw.WriteTuples<int, string, char, decimal>(arr.AsSpan());
             cw.WriteTuples(arr.AsEnumerable().Reverse());
         }
-        utf8Wrapper.Read().ShouldBe("""
+        await utf8Wrapper.Read().Should().BeEqualTo("""
         1 Red r 0.50000000000000000000
         3 Blue b 0.75000000000000000000
         5 Green g 0.25000000000000000000

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>net9.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <RootNamespace>Kzrnm.Competitive.Testing</RootNamespace>
     <LangVersion>latest</LangVersion>
@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <NoWarn>$(NoWarn);CA1822;CA1825;CA1032;IDE0028;IDE0018;IDE0044;IDE0305;NETSDK1138</NoWarn>
+    <NoWarn>$(NoWarn);CA1822;CA1825;CA1861;CA1032;IDE0028;IDE0018;IDE0044;IDE0305;NETSDK1138</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Library'">
     <DefineConstants>$(DefineConstants);DEBUG;LIBRARY</DefineConstants>
@@ -22,24 +22,48 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Using Include="Shouldly" />
-    <Using Include="Xunit" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="TUnit" Version="1.43.11" />
     <PackageReference Include="CompetitiveVerifierResolverTestLogger" Version="2.3.0" />
-    <PackageReference Include="GitHubActionsTestLogger" Version="3.0.3" />
     <PackageReference Include="IsExternalInit" Version="1.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Shouldly" Version="4.3.0" />
     <PackageReference Include="SourceExpander.Embedder.Testing" Version="8.2.0" />
-    <PackageReference Include="xunit.v3.mtp-v2" Version="3.2.2" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="TUnit.Assertions.Should" Version="1.43.11-beta" />
     <ProjectReference Include="..\Competitive.Library\Competitive.Library.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Using Include="TUnit.Assertions.Should" />
+    <Using Include="TUnit.Assertions.Should.Extensions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Alias="LongFenwickTree" Include="AtCoder.FenwickTree&lt;long&gt;" />
+    <Using Alias="Mod998244353AffineTransformation" Include="Kzrnm.Competitive.AffineTransformation&lt;AtCoder.StaticModInt&lt;AtCoder.Mod998244353&gt;&gt;" />
+    <Using Alias="DoubleAffineTransformation" Include="Kzrnm.Competitive.AffineTransformation&lt;double&gt;" />
+    <Using Alias="BitMatrix64" Include="Kzrnm.Competitive.BitMatrix&lt;ulong&gt;" />
+    <Using Alias="IntFenwickTree2D" Include="Kzrnm.Competitive.FenwickTree2D&lt;int&gt;" />
+    <Using Alias="IntFenwickTreeRange" Include="Kzrnm.Competitive.FenwickTreeRange&lt;int&gt;" />
+    <Using Alias="FractionMatrix2x2" Include="Kzrnm.Competitive.Matrix2x2&lt;Kzrnm.Competitive.Fraction&gt;" />
+    <Using Alias="LongMatrix2x2" Include="Kzrnm.Competitive.Matrix2x2&lt;long&gt;" />
+    <Using Alias="FractionMatrix3x3" Include="Kzrnm.Competitive.Matrix3x3&lt;Kzrnm.Competitive.Fraction&gt;" />
+    <Using Alias="LongMatrix3x3" Include="Kzrnm.Competitive.Matrix3x3&lt;long&gt;" />
+    <Using Alias="FractionMatrix4x4" Include="Kzrnm.Competitive.Matrix4x4&lt;Kzrnm.Competitive.Fraction&gt;" />
+    <Using Alias="LongMatrix4x4" Include="Kzrnm.Competitive.Matrix4x4&lt;long&gt;" />
+    <Using Alias="StaticModInt1000000007Factor" Include="Kzrnm.Competitive.ModIntFactor&lt;AtCoder.StaticModInt&lt;AtCoder.Mod1000000007&gt;&gt;" />
+    <Using Alias="MontgomeryModInt1000000007Factor" Include="Kzrnm.Competitive.ModIntFactor&lt;Kzrnm.Competitive.MontgomeryModInt&lt;AtCoder.Mod1000000007&gt;&gt;" />
+    <Using Alias="DoublePolynomial" Include="Kzrnm.Competitive.Polynomial&lt;double&gt;" />
+    <Using Alias="IntPolynomial" Include="Kzrnm.Competitive.Polynomial&lt;int&gt;" />
+    <Using Alias="SetIntervalInt" Include="Kzrnm.Competitive.SetInterval&lt;int&gt;" />
+    <Using Alias="SetIntervalClosedInt" Include="Kzrnm.Competitive.SetIntervalClosed&lt;int&gt;" />
+    <Using Alias="LongWaveletMatrix2DWithFenwickTree" Include="Kzrnm.Competitive.WaveletMatrix2DWithFenwickTree&lt;int, long&gt;" />
+    <Using Alias="LongWaveletMatrix2DWithSums" Include="Kzrnm.Competitive.WaveletMatrix2DWithSums&lt;int, long&gt;" />
+    <Using Alias="LongWaveletMatrixWithFenwickTree" Include="Kzrnm.Competitive.WaveletMatrixWithFenwickTree&lt;int, long&gt;" />
+    <Using Alias="LongWaveletMatrixWithSums" Include="Kzrnm.Competitive.WaveletMatrixWithSums&lt;int, long&gt;" />
+    <Using Alias="IntWeightedUnionFind" Include="Kzrnm.Competitive.WeightedUnionFind&lt;int&gt;" />
+    <Using Alias="WIntGraphBuilder" Include="Kzrnm.Competitive.WGraphBuilder&lt;int&gt;" />
+    <Using Alias="WLongGraphBuilder" Include="Kzrnm.Competitive.WGraphBuilder&lt;long&gt;" />
+    <Using Alias="BigInteger" Include="Kzrnm.Numerics.BigInteger" />
+  </ItemGroup>
 </Project>

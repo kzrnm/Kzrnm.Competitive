@@ -42,25 +42,25 @@ public class ConvolutionTests
         return c.Select(n => (uint)n).ToArray();
     }
 
-    public static TheoryData<int[], int[], uint[]> EmptyIntTestData => new()
-    {
-        { [], [], [] },
-        { [], [1, 2], [] },
-        { [1, 2], [], [] },
-        { [1], [], [] },
-    };
+    public static IEnumerable<(int[], int[], uint[])> EmptyIntTestData =>
+    [
+        ([], [], []),
+        ([], [1, 2], []),
+        ([1, 2], [], []),
+        ([1], [], []),
+    ];
 
-    [Theory]
-    [Trait("Category", "Empty")]
-    [MemberData(nameof(EmptyIntTestData))]
-    public void EmptyInt(int[] a, int[] b, uint[] expected)
+    [Test, MultipleAssertions]
+    [Property("Category", "Empty")]
+    [MethodDataSource(nameof(EmptyIntTestData))]
+    public async Task EmptyInt(int[] a, int[] b, uint[] expected)
     {
         for (int i = 2; i < 10; i++)
-            NumberTheoreticTransform.Convolution(a, b, i).ShouldBe(expected);
+            await NumberTheoreticTransform.Convolution(a, b, i).Should().BeEqualTo(expected);
     }
 
-    [Fact]
-    public void Mid()
+    [Test, MultipleAssertions]
+    public async Task Mid()
     {
         var rnd = new Random(42);
         int n = 123, m = 234;
@@ -74,33 +74,14 @@ public class ConvolutionTests
         {
             b[i] = rnd.NextUInt();
         }
-        NumberTheoreticTransform.Convolution<Mod998244353>(a, b).ShouldBe(ConvNative(a, b, 998244353));
-        NumberTheoreticTransform.Convolution<Mod1000000000>(a, b).ShouldBe(ConvNative(a, b, 1000000000));
-        NumberTheoreticTransform.Convolution<Mod1000000007>(a, b).ShouldBe(ConvNative(a, b, 1000000007));
+        await NumberTheoreticTransform.Convolution<Mod998244353>(a, b).Should().BeEquivalentOrderTo(ConvNative(a, b, 998244353));
+        await NumberTheoreticTransform.Convolution<Mod1000000000>(a, b).Should().BeEquivalentOrderTo(ConvNative(a, b, 1000000000));
+        await NumberTheoreticTransform.Convolution<Mod1000000007>(a, b).Should().BeEquivalentOrderTo(ConvNative(a, b, 1000000007));
     }
 
 
-    [Fact]
-    public void Small()
-    {
-        var rnd = new Random(42);
-        int n = 123, m = 234;
-        var a = new uint[n];
-        var b = new uint[m];
-        for (int i = 0; i < n; i++)
-        {
-            a[i] = rnd.NextUInt();
-        }
-        for (int i = 0; i < m; i++)
-        {
-            b[i] = rnd.NextUInt();
-        }
-        for (int i = 0; i < 50; i++)
-            NumberTheoreticTransform.Convolution(a, b, 5 + i).ShouldBe(ConvNative(a, b, 5 + i));
-    }
-
-    [Fact]
-    public void Large()
+    [Test, MultipleAssertions]
+    public async Task Small()
     {
         var rnd = new Random(42);
         int n = 123, m = 234;
@@ -115,11 +96,30 @@ public class ConvolutionTests
             b[i] = rnd.NextUInt();
         }
         for (int i = 0; i < 50; i++)
-            NumberTheoreticTransform.Convolution(a, b, 1000000005 + i).ShouldBe(ConvNative(a, b, 1000000005 + i));
+            await NumberTheoreticTransform.Convolution(a, b, 5 + i).Should().BeEquivalentOrderTo(ConvNative(a, b, 5 + i));
     }
 
-    [Fact]
-    public void Simple()
+    [Test, MultipleAssertions]
+    public async Task Large()
+    {
+        var rnd = new Random(42);
+        int n = 123, m = 234;
+        var a = new uint[n];
+        var b = new uint[m];
+        for (int i = 0; i < n; i++)
+        {
+            a[i] = rnd.NextUInt();
+        }
+        for (int i = 0; i < m; i++)
+        {
+            b[i] = rnd.NextUInt();
+        }
+        for (int i = 0; i < 50; i++)
+            await NumberTheoreticTransform.Convolution(a, b, 1000000005 + i).Should().BeEquivalentOrderTo(ConvNative(a, b, 1000000005 + i));
+    }
+
+    [Test, MultipleAssertions]
+    public async Task Simple()
     {
         var rnd = new Random(42);
         for (int c = 0; c < 100; c++)
@@ -138,13 +138,13 @@ public class ConvolutionTests
                     {
                         b[i] = rnd.NextUInt();
                     }
-                    NumberTheoreticTransform.Convolution(a, b, 1000000000 + c).ShouldBe(ConvNative(a, b, 1000000000 + c));
+                    await NumberTheoreticTransform.Convolution(a, b, 1000000000 + c).Should().BeEquivalentOrderTo(ConvNative(a, b, 1000000000 + c));
                 }
             }
     }
 
-    [Fact]
-    public void Simple113()
+    [Test, MultipleAssertions]
+    public async Task Simple113()
     {
         var rnd = new Random(42);
         for (int n = 1; n < 20; n++)
@@ -162,14 +162,14 @@ public class ConvolutionTests
                 {
                     b[i] = rnd.NextUInt();
                 }
-                NumberTheoreticTransform.Convolution<Mod113>(a, b).ShouldBe(ConvNative(a, b, 113));
+                await NumberTheoreticTransform.Convolution<Mod113>(a, b).Should().BeEquivalentOrderTo(ConvNative(a, b, 113));
             }
         }
     }
 
 
-    [Fact]
-    public void ULong()
+    [Test, MultipleAssertions]
+    public async Task ULong()
     {
         var arr = new UInt128[10];
         Random.Shared.NextBytes(MemoryMarshal.AsBytes(arr.AsSpan()));
@@ -195,7 +195,7 @@ public class ConvolutionTests
                 {
                     b[i] = (uint)rnd.Next(int.MaxValue);
                 }
-                NumberTheoreticTransform.ConvolutionULong(a, b).ShouldBe(ConvNative(a, b));
+                await NumberTheoreticTransform.ConvolutionULong(a, b).Should().BeEquivalentOrderTo(ConvNative(a, b));
             }
         }
 
@@ -213,8 +213,8 @@ public class ConvolutionTests
             return c;
         }
     }
-    [Fact]
-    public void UInt128()
+    [Test, MultipleAssertions]
+    public async Task UInt128()
     {
         var rnd = new Random(42);
         for (int n = 1; n < 65; n++)
@@ -232,7 +232,7 @@ public class ConvolutionTests
                 {
                     b[i] = rnd.NextUInt();
                 }
-                NumberTheoreticTransform.ConvolutionUInt128(a, b).ShouldBe(ConvNative(a, b));
+                await NumberTheoreticTransform.ConvolutionUInt128(a, b).Should().BeEquivalentOrderTo(ConvNative(a, b));
             }
         }
 

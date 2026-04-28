@@ -1,42 +1,27 @@
 using System.Collections;
-using Xunit.Sdk;
+using System.Collections.Immutable;
 
 namespace Kzrnm.Competitive.Testing;
 
-public class BitArrayCase(bool[] bits) : IXunitSerializable
+public readonly record struct BitArrayCase(ImmutableArray<bool> Bits)
 {
-    public BitArrayCase(BitArrayCase other) : this(other.ToBoolArray()) { }
-    public BitArrayCase() : this([]) { }
-
-    public BitArray ToBitArray() => new(bits);
-    public bool[] ToBoolArray() => (bool[])bits.Clone();
-    public int Length => bits.Length;
-    public bool this[int index]
-    {
-        get => bits[index];
-        set => bits[index] = value;
-    }
+    public BitArrayCase(IEnumerable<bool> bits) : this(bits.ToImmutableArray()) { }
+    public BitArray ToBitArray() => new(Bits.ToArray());
+    public bool[] ToBoolArray() => Bits.ToArray();
+    public int Length => Bits.Length;
+    public bool this[int index] => Bits[index];
 
     public override string ToString()
     {
         var chr = new char[Length];
         for (int i = 0; i < chr.Length; i++)
         {
-            chr[i] = bits[i] ? '1' : '0';
+            chr[i] = Bits[i] ? '1' : '0';
         }
         return new string(chr);
     }
 
-    public IEnumerator<bool> GetEnumerator() => ((IEnumerable<bool>)bits).GetEnumerator();
-    void IXunitSerializable.Deserialize(IXunitSerializationInfo info)
-    {
-        bits = info.GetValue<bool[]>(nameof(bits));
-    }
-
-    void IXunitSerializable.Serialize(IXunitSerializationInfo info)
-    {
-        info.AddValue(nameof(bits), bits);
-    }
+    public IEnumerator<bool> GetEnumerator() => ((IEnumerable<bool>)Bits).GetEnumerator();
 
     public static BitArrayCase MakeRandomCase(Random random, int length)
     {
@@ -45,10 +30,10 @@ public class BitArrayCase(bool[] bits) : IXunitSerializable
         {
             b[i] = random.Next(2) != 0;
         }
-        return new BitArrayCase(b);
+        return new BitArrayCase(b.ToImmutableArray());
     }
 
-    public static IEnumerable<TheoryDataRow<BitArrayCase>> RandomCases()
+    public static IEnumerable<BitArrayCase> RandomCases()
     {
         var rnd = new Random(227);
         for (int i = 1; i < 12; i++)
@@ -64,10 +49,10 @@ public class BitArrayCase(bool[] bits) : IXunitSerializable
         }
     }
 
-    public static TheoryData<string> LongBinaryTexts() => LongBinaryTexts(1000);
-    public static TheoryData<string> LongBinaryTexts(int maxLength)
+    public static IEnumerable<string> LongBinaryTexts() => LongBinaryTexts(1000);
+    public static IEnumerable<string> LongBinaryTexts(int maxLength)
     {
-        return new(Inner(maxLength).Distinct());
+        return Inner(maxLength).Distinct();
         static IEnumerable<string> Inner(int maxLength)
         {
             for (int i = 0; i < 20; i++)

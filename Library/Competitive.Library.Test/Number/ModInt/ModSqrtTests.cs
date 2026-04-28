@@ -4,34 +4,36 @@ namespace Kzrnm.Competitive.Testing.Number;
 
 public class ModSqrtTests
 {
-    [Fact]
-    public void Long()
+    [Test, MultipleAssertions]
+    public async Task Long()
     {
-        foreach (var mod in new PrimeNumber(120))
+        foreach (var mod in new PrimeNumber(120).AsEnumerable())
         {
             var hs = Build(mod);
             for (int i = 0; i < mod; i++)
             {
                 if (hs[i].Count == 0)
-                    ModSqrt.Solve(i, mod).ShouldBe(-1, $"nothing^2 ≡ {i} mod {mod}");
+                    await ModSqrt.Solve(i, mod).Should().BeEqualTo(-1);
                 else
-                    hs[i].ShouldContain(ModSqrt.Solve(i, mod), $"result^2 ≡ {i} mod {mod}");
+                    await hs[i].Should().Contain(ModSqrt.Solve(i, mod));
             }
         }
     }
-    [Fact]
-    public void DynamicModInt()
+
+    struct DId;
+    [Test, MultipleAssertions]
+    public async Task DynamicModInt()
     {
-        foreach (var mod in new PrimeNumber(120))
+        foreach (var mod in new PrimeNumber(120).AsEnumerable())
         {
             var hs = Build(mod);
-            DynamicModInt<bool>.Mod = mod;
+            DynamicModInt<DId>.Mod = mod;
             for (int i = 0; i < mod; i++)
             {
                 if (hs[i].Count == 0)
-                    ModSqrt.Solve(DynamicModInt<bool>.Raw(i)).ShouldBe(-1, $"nothing^2 ≡ {i} mod {mod}");
+                    await ModSqrt.Solve(DynamicModInt<DId>.Raw(i)).Should().BeEqualTo(-1);
                 else
-                    hs[i].ShouldContain(ModSqrt.Solve(DynamicModInt<bool>.Raw(i)), $"result^2 ≡ {i} mod {mod}");
+                    await hs[i].Should().Contain(ModSqrt.Solve(DynamicModInt<DId>.Raw(i)));
             }
         }
     }
@@ -46,17 +48,17 @@ public class ModSqrtTests
         public bool IsPrime => true;
         public uint Mod => 1097;
     }
-    [Fact]
-    public void StaticModInt()
+    [Test, MultipleAssertions]
+    public async Task StaticModInt()
     {
         int mod = 6221;
         var hs = Build(mod);
         for (int i = 0; i < mod; i++)
         {
             if (hs[i].Count == 0)
-                ModSqrt.Solve(StaticModInt<Mod6221>.Raw(i)).ShouldBe(-1, $"nothing^2 ≡ {i} mod {mod}");
+                await ModSqrt.Solve(StaticModInt<Mod6221>.Raw(i)).Should().BeEqualTo(-1);
             else
-                hs[i].ShouldContain(ModSqrt.Solve(StaticModInt<Mod6221>.Raw(i)), $"result^2 ≡ {i} mod {mod}");
+                await hs[i].Should().Contain(ModSqrt.Solve(StaticModInt<Mod6221>.Raw(i)));
         }
 
         mod = 1097;
@@ -64,23 +66,23 @@ public class ModSqrtTests
         for (int i = 0; i < mod; i++)
         {
             if (hs[i].Count == 0)
-                ModSqrt.Solve(StaticModInt<Mod1097>.Raw(i)).ShouldBe(-1, $"nothing^2 ≡ {i} mod {mod}");
+                await ModSqrt.Solve(StaticModInt<Mod1097>.Raw(i)).Should().BeEqualTo(-1);
             else
-                hs[i].ShouldContain(ModSqrt.Solve(StaticModInt<Mod1097>.Raw(i)), $"result^2 ≡ {i} mod {mod}");
+                await hs[i].Should().Contain(ModSqrt.Solve(StaticModInt<Mod1097>.Raw(i)));
         }
     }
 
-    [Fact]
-    public void MontgomeryModInt()
+    [Test, MultipleAssertions]
+    public async Task MontgomeryModInt()
     {
         int mod = 6221;
         var hs = Build(mod);
         for (int i = 0; i < mod; i++)
         {
             if (hs[i].Count == 0)
-                ModSqrt.Solve((MontgomeryModInt<Mod6221>)i).ShouldBe(-1, $"nothing^2 ≡ {i} mod {mod}");
+                await ModSqrt.Solve((MontgomeryModInt<Mod6221>)i).Should().BeEqualTo(-1);
             else
-                hs[i].ShouldContain(ModSqrt.Solve((MontgomeryModInt<Mod6221>)i), $"result^2 ≡ {i} mod {mod}");
+                await hs[i].Should().Contain(ModSqrt.Solve((MontgomeryModInt<Mod6221>)i));
         }
 
         mod = 1097;
@@ -88,9 +90,9 @@ public class ModSqrtTests
         for (int i = 0; i < mod; i++)
         {
             if (hs[i].Count == 0)
-                ModSqrt.Solve((MontgomeryModInt<Mod1097>)i).ShouldBe(-1, $"nothing^2 ≡ {i} mod {mod}");
+                await ModSqrt.Solve((MontgomeryModInt<Mod1097>)i).Should().BeEqualTo(-1);
             else
-                hs[i].ShouldContain(ModSqrt.Solve((MontgomeryModInt<Mod1097>)i), $"result^2 ≡ {i} mod {mod}");
+                await hs[i].Should().Contain(ModSqrt.Solve((MontgomeryModInt<Mod1097>)i));
         }
     }
 

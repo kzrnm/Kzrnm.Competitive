@@ -1,3 +1,5 @@
+using System.Collections.Immutable;
+
 namespace Kzrnm.Competitive.Testing.Algorithm;
 
 public class DecreasingPointsTests
@@ -13,61 +15,59 @@ public class DecreasingPointsTests
             return a.Index.CompareTo(b.Index);
         }
     }
-    public static IEnumerable<TheoryDataRow<SerializableTuple<double, int>[]>> RandomPointCases()
+    public static IEnumerable<ImmutableArray<(double, int)>> RandomPointCases()
     {
         var rnd = new Random(227);
-        yield return Inner(rnd, 1).ToArray();
+        yield return Inner(rnd, 1).ToImmutableArray();
         for (int q = 0; q < 16; q++)
         {
-            yield return Inner(rnd, size: rnd.Next(3, 8)).ToArray();
-            yield return Inner(rnd, size: rnd.Next(50, 100)).ToArray();
+            yield return Inner(rnd, size: rnd.Next(3, 8)).ToImmutableArray();
+            yield return Inner(rnd, size: rnd.Next(50, 100)).ToImmutableArray();
         }
 
-        static IEnumerable<SerializableTuple<double, int>> Inner(Random random, int size)
+        static IEnumerable<(double, int)> Inner(Random random, int size)
         {
             for (int i = 0; i < size; i++)
             {
-                yield return new SerializableTuple<double, int>(random.NextDouble(), random.Next(50));
+                yield return (random.NextDouble(), random.Next(50));
             }
         }
     }
 
-    [Theory]
-    [MemberData(nameof(RandomPointCases), DisableDiscoveryEnumeration = true)]
-    public void Strict(SerializableTuple<double, int>[] input)
+    [Test]
+    [MethodDataSource(nameof(RandomPointCases))]
+    public async Task Strict(ImmutableArray<(double, int)> input)
     {
-        var points = input.Select(t => t.ToTuple()).ToArray();
+        var points = input.ToArray();
         var expected = Naive(points, true);
-        DecreasingPoints.Points(points).ShouldBe(expected);
+        await DecreasingPoints.Points(points).Should().BeEquivalentOrderTo(expected);
     }
 
-    [Theory]
-    [MemberData(nameof(RandomPointCases), DisableDiscoveryEnumeration = true)]
-    public void NotStrict(SerializableTuple<double, int>[] input)
+    [Test]
+    [MethodDataSource(nameof(RandomPointCases))]
+    public async Task NotStrict(ImmutableArray<(double, int)> input)
     {
-        var points = input.Select(t => t.ToTuple()).ToArray();
+        var points = input.ToArray();
         var expected = Naive(points, false);
-        DecreasingPoints.Points(points, strict: false).ShouldBe(expected);
+        await DecreasingPoints.Points(points, strict: false).Should().BeEquivalentOrderTo(expected);
     }
 
-    [Theory]
-    [MemberData(nameof(RandomPointCases), DisableDiscoveryEnumeration = true)]
-    public void StrictComparer(SerializableTuple<double, int>[] input)
+    [Test]
+    [MethodDataSource(nameof(RandomPointCases))]
+    public async Task StrictComparer(ImmutableArray<(double, int)> input)
     {
-        var points = input.Select(t => t.ToTuple()).ToArray();
+        var points = input.ToArray();
         var expected = Naive(points, true, ReverseComparerClass<double>.Default, ReverseComparerClass<int>.Default);
-        DecreasingPoints.Points(points, ReverseComparerClass<double>.Default, ReverseComparerClass<int>.Default).ShouldBe(expected);
+        await DecreasingPoints.Points(points, ReverseComparerClass<double>.Default, ReverseComparerClass<int>.Default).Should().BeEquivalentOrderTo(expected);
     }
 
-    [Theory]
-    [MemberData(nameof(RandomPointCases), DisableDiscoveryEnumeration = true)]
-    public void NotStrictComparer(SerializableTuple<double, int>[] input)
+    [Test]
+    [MethodDataSource(nameof(RandomPointCases))]
+    public async Task NotStrictComparer(ImmutableArray<(double, int)> input)
     {
-        var points = input.Select(t => t.ToTuple()).ToArray();
+        var points = input.ToArray();
         var expected = Naive(points, false, ReverseComparerClass<double>.Default, ReverseComparerClass<int>.Default);
-        DecreasingPoints.Points(points,
-            ReverseComparerClass<double>.Default, ReverseComparerClass<int>.Default,
-            strict: false).ShouldBe(expected);
+        await DecreasingPoints.Points(points, ReverseComparerClass<double>.Default, ReverseComparerClass<int>.Default, strict: false).Should().BeEquivalentOrderTo(expected);
     }
 
     internal static DecreasingPoints.Result<T, U>[] Naive<T, U>((T X, U Y)[] points, bool strict, IComparer<T> cmpX = null, IComparer<U> cmpY = null)

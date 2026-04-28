@@ -2,8 +2,8 @@ namespace Kzrnm.Competitive.Testing.Graph;
 
 public class 帰りもあるオイラーツアーTests
 {
-    [Fact]
-    public void 重みなしグラフ()
+    [Test, MultipleAssertions]
+    public async Task 重みなしグラフ()
     {
         var gb = new GraphBuilder(8, false);
         gb.Add(0, 1);
@@ -15,30 +15,30 @@ public class 帰りもあるオイラーツアーTests
         gb.Add(3, 7);
         var tree = gb.ToTree();
         var tour = tree.EulerianTour();
-        tour.Events.ShouldBe([
-            new 帰りもあるオイラーツアー<GraphEdge>.Event(-1, new GraphEdge(0), true),
-            new 帰りもあるオイラーツアー<GraphEdge>.Event(0, new GraphEdge(1), true),
-            new 帰りもあるオイラーツアー<GraphEdge>.Event(1, new GraphEdge(3), true),
-            new 帰りもあるオイラーツアー<GraphEdge>.Event(3, new GraphEdge(7), true),
-            new 帰りもあるオイラーツアー<GraphEdge>.Event(3, new GraphEdge(7), false),
-            new 帰りもあるオイラーツアー<GraphEdge>.Event(1, new GraphEdge(3), false),
-            new 帰りもあるオイラーツアー<GraphEdge>.Event(1, new GraphEdge(4), true),
-            new 帰りもあるオイラーツアー<GraphEdge>.Event(1, new GraphEdge(4), false),
-            new 帰りもあるオイラーツアー<GraphEdge>.Event(0, new GraphEdge(1), false),
-            new 帰りもあるオイラーツアー<GraphEdge>.Event(0, new GraphEdge(2), true),
-            new 帰りもあるオイラーツアー<GraphEdge>.Event(2, new GraphEdge(6), true),
-            new 帰りもあるオイラーツアー<GraphEdge>.Event(2, new GraphEdge(6), false),
-            new 帰りもあるオイラーツアー<GraphEdge>.Event(2, new GraphEdge(5), true),
-            new 帰りもあるオイラーツアー<GraphEdge>.Event(2, new GraphEdge(5), false),
-            new 帰りもあるオイラーツアー<GraphEdge>.Event(0, new GraphEdge(2), false),
-            new 帰りもあるオイラーツアー<GraphEdge>.Event(-1, new GraphEdge(0), false)
-        ]);
-        Enumerable.Range(0, 8).Select(i => tour[i]).ShouldBe([
+        await tour.Events.Should().BeEquivalentOrderTo(new 帰りもあるオイラーツアー<GraphEdge>.Event[] {
+            new (-1, new (0), true),
+            new (0, new (1), true),
+            new (1, new (3), true),
+            new (3, new (7), true),
+            new (3, new (7), false),
+            new (1, new (3), false),
+            new (1, new (4), true),
+            new (1, new (4), false),
+            new (0, new (1), false),
+            new (0, new (2), true),
+            new (2, new (6), true),
+            new (2, new (6), false),
+            new (2, new (5), true),
+            new (2, new (5), false),
+            new (0, new (2), false),
+            new (-1, new (0), false),
+        });
+        await Enumerable.Range(0, 8).Select(i => tour[i]).Should().BeEquivalentOrderTo([
             (0, 15), (1, 8), (9, 14), (2, 5), (6, 7), (12, 13), (10, 11), (3, 4)
         ]);
     }
-    [Fact]
-    public void 重み付きグラフ()
+    [Test, MultipleAssertions]
+    public async Task 重み付きグラフ()
     {
         var gb = new WIntGraphBuilder(8, false);
         gb.Add(0, 1, 1);
@@ -50,7 +50,7 @@ public class 帰りもあるオイラーツアーTests
         gb.Add(3, 7, 7);
         var tree = gb.ToTree();
         var tour = tree.EulerianTour();
-        tour.Events.ShouldBe([
+        await tour.Events.Should().BeEquivalentOrderTo([
             new 帰りもあるオイラーツアー<WEdge<int>>.Event(-1, new WEdge<int>(0, 0), true),
             new 帰りもあるオイラーツアー<WEdge<int>>.Event(0, new WEdge<int>(1, 1), true),
             new 帰りもあるオイラーツアー<WEdge<int>>.Event(1, new WEdge<int>(3, 3), true),
@@ -68,7 +68,7 @@ public class 帰りもあるオイラーツアーTests
             new 帰りもあるオイラーツアー<WEdge<int>>.Event(0, new WEdge<int>(2, 2), false),
             new 帰りもあるオイラーツアー<WEdge<int>>.Event(-1, new WEdge<int>(0, 0), false)
         ]);
-        Enumerable.Range(0, 8).Select(i => tour[i]).ShouldBe([
+        await Enumerable.Range(0, 8).Select(i => tour[i]).Should().BeEquivalentOrderTo([
             (0, 15), (1, 8), (9, 14), (2, 5), (6, 7), (12, 13), (10, 11), (3, 4)
         ]);
     }

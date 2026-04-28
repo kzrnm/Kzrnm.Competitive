@@ -5,8 +5,8 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp;
 
 public class AndConvolutionTests
 {
-    [Fact]
-    public void UInt32()
+    [Test, MultipleAssertions]
+    public async Task UInt32()
     {
         var rnd = new Random(227);
         for (int q = 100; q >= 0; q--)
@@ -20,12 +20,12 @@ public class AndConvolutionTests
                 a[i] = (uint)rnd.Next(100);
                 b[i] = (uint)rnd.Next(100);
             }
-            AndConvolution.Convolution(a, b).ShouldBe(Naive(a, b));
+            await AndConvolution.Convolution(a, b).Should().BeEquivalentOrderTo(Naive(a, b));
         }
     }
 
-    [Fact]
-    public void Long()
+    [Test, MultipleAssertions]
+    public async Task Long()
     {
         var rnd = new Random(227);
         for (int q = 100; q >= 0; q--)
@@ -39,12 +39,12 @@ public class AndConvolutionTests
                 a[i] = rnd.Next(int.MaxValue / len);
                 b[i] = rnd.Next(int.MaxValue / len);
             }
-            AndConvolution.Convolution(a, b).ShouldBe(Naive(a, b));
+            await AndConvolution.Convolution(a, b).Should().BeEquivalentOrderTo(Naive(a, b));
         }
     }
 
-    [Fact]
-    public void Mod1000000007()
+    [Test, MultipleAssertions]
+    public async Task Mod1000000007()
     {
         var rnd = new Random(227);
         for (int q = 100; q >= 0; q--)
@@ -57,12 +57,12 @@ public class AndConvolutionTests
                 a[i] = rnd.Next();
                 b[i] = rnd.Next();
             }
-            AndConvolution.Convolution(a, b).ShouldBe(Naive(a, b));
+            await AndConvolution.Convolution(a, b).Should().BeEquivalentOrderTo(Naive(a, b));
         }
     }
 
-    [Fact]
-    public void Mod998244353()
+    [Test, MultipleAssertions]
+    public async Task Mod998244353()
     {
         var rnd = new Random(227);
         for (int q = 100; q >= 0; q--)
@@ -75,12 +75,12 @@ public class AndConvolutionTests
                 a[i] = rnd.Next();
                 b[i] = rnd.Next();
             }
-            AndConvolution.Convolution(a, b).ShouldBe(Naive(a, b));
+            await AndConvolution.Convolution(a, b).Should().BeEquivalentOrderTo(Naive(a, b));
         }
     }
 
-    [Fact]
-    public void Double()
+    [Test, MultipleAssertions]
+    public async Task Double()
     {
         var rnd = new Random(227);
         for (int q = 100; q >= 0; q--)
@@ -93,9 +93,9 @@ public class AndConvolutionTests
                 a[i] = rnd.NextDouble();
                 b[i] = rnd.NextDouble();
             }
-            AndConvolution.Convolution(a, b)
+            await AndConvolution.Convolution(a, b)
                 .Zip(Naive(a, b), (a, b) => Math.Abs(a - b))
-                .ShouldAllBe(diff => diff < 1e-10);
+                .Should().All(diff => diff < 1e-10);
         }
     }
 

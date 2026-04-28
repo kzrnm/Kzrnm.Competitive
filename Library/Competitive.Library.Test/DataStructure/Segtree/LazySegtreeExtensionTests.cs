@@ -4,15 +4,15 @@ namespace Kzrnm.Competitive.Testing.DataStructure;
 
 public class LazySegtreeExtensionTests
 {
-    [Fact]
-    public void ToArray()
+    [Test, MultipleAssertions]
+    public async Task ToArray()
     {
         for (int i = 0; i < 20; i++)
         {
             var seg = new LazySegtree<int, int, Op>(i);
             for (int j = 0; j < seg.Length - j; j++)
                 seg.Apply(j, seg.Length - j, 1);
-            seg.ToArray().ShouldBe(CreateExpected(i));
+            await seg.ToArray().Should().BeEquivalentOrderTo(CreateExpected(i));
         }
 
         static int[] CreateExpected(int length)

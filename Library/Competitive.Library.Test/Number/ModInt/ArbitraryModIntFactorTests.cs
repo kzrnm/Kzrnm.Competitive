@@ -18,21 +18,21 @@ public class ArbitraryModIntFactorTests
         return c;
     }
 
-    [Theory]
-    [InlineData(2)]
-    [InlineData(8)]
-    [InlineData(30)]
-    [InlineData(50)]
-    [InlineData(900)]
-    [InlineData(1000)]
-    [InlineData(367519)]
-    [InlineData(73513440)]
-    [InlineData(998244353)]
-    public void Mod(int mod)
+    [Test, MultipleAssertions]
+    [Arguments(2)]
+    [Arguments(8)]
+    [Arguments(30)]
+    [Arguments(50)]
+    [Arguments(900)]
+    [Arguments(1000)]
+    [Arguments(367519)]
+    [Arguments(73513440)]
+    [Arguments(998244353)]
+    public async Task Mod(int mod)
     {
         var amf = new ArbitraryModIntFactor(mod);
         for (int n = 0; n < table.Length; n++)
             for (int k = 0; k <= n; k++)
-                amf.Combination(n, k).ShouldBe((uint)(table[n][k] % mod), $"Combination(n={n}, k={k})");
+                await amf.Combination(n, k).Should().BeEqualTo((uint)(table[n][k] % mod));
     }
 }

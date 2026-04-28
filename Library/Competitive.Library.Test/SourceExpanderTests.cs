@@ -6,7 +6,7 @@ namespace Embedding;
 
 public class SourceExpanderTest
 {
-    [Fact]
+    [Test, Kzrnm.Competitive.Testing.MultipleAssertions]
     public async Task LanguageVersion()
     {
         var embedded = await EmbeddedData.LoadFromAssembly(typeof(Global));
@@ -17,29 +17,32 @@ public class SourceExpanderTest
 #elif NET9_0
         const string expected = "13.0";
 #endif
-        embedded.AssemblyMetadatas.ShouldContainKeyAndValue("SourceExpander.EmbeddedLanguageVersion", expected);
+        await embedded.AssemblyMetadatas.Should().ContainKey("SourceExpander.EmbeddedLanguageVersion");
+        await embedded.AssemblyMetadatas.Should().ContainKeyWithValue("SourceExpander.EmbeddedLanguageVersion", expected);
     }
 
-    [Fact]
+    [Test, Kzrnm.Competitive.Testing.MultipleAssertions]
     public async Task EmbeddedSource()
     {
+        var list = new List<string> { "apple", "banana", "cherry" };
+        await Assert.That(list).Contains("banana");
+        await list.Should().Contain("banana");
+
         var embedded = await EmbeddedData.LoadFromAssembly(typeof(Global));
-        embedded.AssemblyMetadatas.ShouldContainKey("SourceExpander.EmbeddedSourceCode.GZipBase32768");
-        embedded.SourceFiles.Select(s => s.FileName).Count().ShouldBeGreaterThan(2);
-        embedded.SourceFiles.Select(s => s.FileName).ShouldAllBe(name => name.StartsWith("Competitive.Library>"));
+        await embedded.AssemblyMetadatas.Should().ContainKey("SourceExpander.EmbeddedSourceCode.GZipBase32768");
+        await embedded.SourceFiles.Select(s => s.FileName).Should().HaveAtLeast(3);
+        await embedded.SourceFiles.Select(s => s.FileName).Should().All(name => name.StartsWith("Competitive.Library>"));
 
-        embedded.SourceFiles.SelectMany(s => s.TypeNames).ShouldContain("Kzrnm.Competitive.Global");
-        embedded.SourceFiles.SelectMany(s => s.TypeNames).ShouldContain("Kzrnm.Competitive.__FenwickTreeExtension");
+        await embedded.SourceFiles.SelectMany(s => s.TypeNames).Should().Contain("Kzrnm.Competitive.Global");
+        await embedded.SourceFiles.SelectMany(s => s.TypeNames).Should().Contain("Kzrnm.Competitive.__FenwickTreeExtension");
     }
-
-    [Fact]
+    [Test, Kzrnm.Competitive.Testing.MultipleAssertions]
     public async Task EmbeddedNamespaces()
     {
         var embedded = await EmbeddedData.LoadFromAssembly(typeof(Global));
-        embedded.AssemblyMetadatas.ShouldContainKey("SourceExpander.EmbeddedNamespaces");
-        embedded.EmbeddedNamespaces.ShouldContain("Kzrnm.Competitive");
-        embedded.EmbeddedNamespaces.ShouldContain("Kzrnm.Competitive.Internal");
-
+        await embedded.AssemblyMetadatas.Should().ContainKey("SourceExpander.EmbeddedNamespaces");
+        await embedded.EmbeddedNamespaces.Should().Contain("Kzrnm.Competitive");
+        await embedded.EmbeddedNamespaces.Should().Contain("Kzrnm.Competitive.Internal");
     }
 }
 #endif

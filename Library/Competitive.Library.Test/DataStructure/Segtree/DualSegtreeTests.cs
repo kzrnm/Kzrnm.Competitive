@@ -13,25 +13,25 @@ public class DualSegtreeTests
         public ModInt Composition(ModInt f, ModInt g) => f * g;
     }
 
-    [Fact]
-    public void Zero()
+    [Test, MultipleAssertions]
+    public async Task Zero()
     {
-        new DualSegtree<ModInt, Multiply>(0).d.ShouldBe(Enumerable.Repeat(ModInt.One, 2));
-        new DualSegtree<ModInt, Multiply>(20).d.ShouldBe(Enumerable.Repeat(ModInt.One, 64));
+        await new DualSegtree<ModInt, Multiply>(0).d.Should().BeEquivalentOrderTo(Enumerable.Repeat(ModInt.One, 2));
+        await new DualSegtree<ModInt, Multiply>(20).d.Should().BeEquivalentOrderTo(Enumerable.Repeat(ModInt.One, 64));
     }
 
-    [Fact]
-    public void Invalid()
+    [Test, MultipleAssertions]
+    public async Task Invalid()
     {
         var s = new DualSegtree<ModInt, Multiply>(10);
-        Should.Throw<ContractAssertException>(() => s[-1]);
-        Should.Throw<ContractAssertException>(() => s[10]);
-        Should.NotThrow(() => s[0]);
-        Should.NotThrow(() => s[9]);
+        await Assert.That(() => s[-1]).Throws<ContractAssertException>();
+        await Assert.That(() => s[10]).Throws<ContractAssertException>();
+        await Assert.That(() => s[0]).ThrowsNothing();
+        await Assert.That(() => s[9]).ThrowsNothing();
     }
 
-    [Fact]
-    public void NaiveProd()
+    [Test, MultipleAssertions]
+    public async Task NaiveProd()
     {
         for (int n = 0; n <= 50; n++)
         {
@@ -52,15 +52,15 @@ public class DualSegtreeTests
 
                     for (int i = 0; i < p.Length; i++)
                     {
-                        seg[i].ShouldBe(p[i]);
+                        await seg[i].Should().BeEqualTo(p[i]);
                     }
                 }
             }
         }
     }
 
-    [Fact]
-    public void ToArray()
+    [Test, MultipleAssertions]
+    public async Task ToArray()
     {
         for (int n = 0; n <= 50; n++)
         {
@@ -81,35 +81,35 @@ public class DualSegtreeTests
 
                     for (int i = 0; i < p.Length; i++)
                     {
-                        seg[i].ShouldBe(p[i]);
+                        await seg[i].Should().BeEqualTo(p[i]);
                     }
                 }
             }
         }
     }
 
-    [Fact]
-    public void Usage()
+    [Test, MultipleAssertions]
+    public async Task Usage()
     {
         var seg = new DualSegtree<ModInt, Multiply>([1, 2, 3]);
-        seg.d.ShouldBe([1, 1, 1, 1, 1, 2, 3, 1]);
+        await seg.d.Should().BeEquivalentOrderTo([(ModInt)1, 1, 1, 1, 1, 2, 3, 1]);
 
         seg[0] = 4;
-        seg.d.ShouldBe([1, 1, 1, 1, 4, 2, 3, 1]);
+        await seg.d.Should().BeEquivalentOrderTo([(ModInt)1, 1, 1, 1, 4, 2, 3, 1]);
 
         seg.Apply(0, 2);
-        seg.d.ShouldBe([1, 1, 1, 1, 8, 2, 3, 1]);
+        await seg.d.Should().BeEquivalentOrderTo([(ModInt)1, 1, 1, 1, 8, 2, 3, 1]);
 
         seg.Apply(0, 1, 2);
-        seg.d.ShouldBe([1, 1, 1, 1, 16, 2, 3, 1]);
+        await seg.d.Should().BeEquivalentOrderTo([(ModInt)1, 1, 1, 1, 16, 2, 3, 1]);
 
         seg.Apply(0, 2, 2);
-        seg.d.ShouldBe([1, 1, 2, 1, 16, 2, 3, 1]);
+        await seg.d.Should().BeEquivalentOrderTo([(ModInt)1, 1, 2, 1, 16, 2, 3, 1]);
 
         seg.Apply(0, 3, 2);
-        seg.d.ShouldBe([1, 1, 4, 1, 16, 2, 6, 1]);
+        await seg.d.Should().BeEquivalentOrderTo([(ModInt)1, 1, 4, 1, 16, 2, 6, 1]);
 
-        seg.ToArray().ShouldBe([64, 8, 6]);
-        seg.d.ShouldBe([1, 1, 1, 1, 64, 8, 6, 1]);
+        await seg.ToArray().Should().BeEquivalentOrderTo([(ModInt)64, 8, 6]);
+        await seg.d.Should().BeEquivalentOrderTo([(ModInt)1, 1, 1, 1, 64, 8, 6, 1]);
     }
 }

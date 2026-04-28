@@ -32,6 +32,21 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)] public static uint[] GetArray(this BitArray b) => AsDummy(b).arr;
 
+
+        /// <summary>
+        /// <see cref="BitArray"/> の内部の配列のうち有効な範囲を返します。
+        /// </summary>
+        [凾(256)]
+        public static Span<uint> AsSpan(this BitArray b)
+        {
+            var len = b.Length >> 5;
+            var ex = b.Length & 31;
+            var a = b.GetArray();
+            if (ex != 0)
+                a[len] &= (1u << ex) - 1;
+            return a.AsSpan(0, len);
+        }
+
         [凾(256)]
         public static void CopyTo(this BitArray b, int[] array, int index = 0) => b.CopyTo(array, index);
         [凾(256)]
@@ -115,15 +130,9 @@ namespace Kzrnm.Competitive
         public static bool SequenceEqual(this BitArray b, BitArray other)
         {
             if (b.Length != other.Length) return false;
-            var x = GetArray(b);
-            var y = GetArray(other);
-            var len = b.Length >> 5;
-
-            if ((b.Length & 31) is var ex
-                && ex != 0
-                && ((x[len] ^ y[len]) & ((1u << ex) - 1)) != 0)
-                return false;
-            return x.AsSpan(0, len).SequenceEqual(y.AsSpan(0, len));
+            var x = AsSpan(b);
+            var y = AsSpan(other);
+            return x.SequenceEqual(y);
         }
 
         /// <summary>

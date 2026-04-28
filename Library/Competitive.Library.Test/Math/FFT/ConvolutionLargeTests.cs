@@ -19,40 +19,42 @@ public class ConvolutionLargeTests
         public bool IsPrime => true;
     }
 
-    [Fact(Skip = "重いので飛ばす", SkipWhen = nameof(LibraryTest))]
-    public void Large998244353_2_23_Alpha()
+    [Test, MultipleAssertions]
+    [Skip("重いので飛ばす")]
+    public async Task Large998244353_2_23_Alpha()
     {
         var len = NumberTheoreticTransform<Mod998244353>.NttLength();
         var a = Enumerable.Repeat(1, len).ToArray();
         var b = Enumerable.Repeat((0, 1), 1000).SelectMany(t => new[] { t.Item1, t.Item2 }).ToArray();
         var ret = ConvolutionLarge.Convolution<Mod998244353>(a, b);
-        ret[0].ShouldBe(0u);
+        await ret[0].Should().BeEqualTo(0u);
         for (int i = 1; i < 2000; i += 2)
         {
             var expected = (uint)(i + 1) >> 1;
-            ret[i].ShouldBe(expected);
-            ret[i + 1].ShouldBe(expected);
-            ret[ret.Length - i - 1].ShouldBe(expected);
-            ret[^i].ShouldBe(expected);
+            await ret[i].Should().BeEqualTo(expected);
+            await ret[i + 1].Should().BeEqualTo(expected);
+            await ret[ret.Length - i - 1].Should().BeEqualTo(expected);
+            await ret[^i].Should().BeEqualTo(expected);
         }
-        ret.Skip(1999).SkipLast(1998).ShouldAllBe(v => v == 1000);
+        await ret.Skip(1999).SkipLast(1998).Should().All(v => v == 1000);
     }
 
-    [Fact(Skip = "重いので飛ばす", SkipWhen = nameof(LibraryTest))]
-    public void Large998244353_2_24()
+    [Test, MultipleAssertions]
+    [Skip("重いので飛ばす")]
+    public async Task Large998244353_2_24()
     {
         var len = NumberTheoreticTransform<Mod998244353>.NttLength();
         var a = Enumerable.Repeat(1, len).ToArray();
         var b = Enumerable.Repeat((0, 1), len / 2).SelectMany(t => new[] { t.Item1, t.Item2 }).ToArray();
         var ret = ConvolutionLarge.Convolution<Mod998244353>(a, b);
-        ret[0].ShouldBe(0u);
+        await ret[0].Should().BeEqualTo(0u);
         for (int i = 1; i < len; i += 2)
         {
             var expected = (uint)(i + 1) >> 1;
-            ret[i].ShouldBe(expected);
-            ret[i + 1].ShouldBe(expected);
-            ret[ret.Length - i - 1].ShouldBe(expected);
-            ret[^i].ShouldBe(expected);
+            await ret[i].Should().BeEqualTo(expected);
+            await ret[i + 1].Should().BeEqualTo(expected);
+            await ret[ret.Length - i - 1].Should().BeEqualTo(expected);
+            await ret[^i].Should().BeEqualTo(expected);
         }
     }
 #pragma warning disable IDE0079
@@ -74,23 +76,23 @@ public class ConvolutionLargeTests
         return c.Select(n => (uint)n).ToArray();
     }
 
-    public static TheoryData<int[], int[], uint[]> EmptyIntTestData => new()
-    {
-        { [], [], [] },
-        { [], [1, 2], [] },
-        { [1, 2], [], [] },
-        { [1], [], [] },
-    };
+    public static IEnumerable<(int[], int[], uint[])> EmptyIntTestData =>
+    [
+        ([], [], []),
+        ([], [1, 2], []),
+        ([1, 2], [], []),
+        ([1], [], []),
+    ];
 
-    [Theory]
-    [MemberData(nameof(EmptyIntTestData))]
-    public void EmptyInt(int[] a, int[] b, uint[] expected)
+    [Test]
+    [MethodDataSource(nameof(EmptyIntTestData))]
+    public async Task EmptyInt(int[] a, int[] b, uint[] expected)
     {
-        ConvolutionLarge.Convolution<Mod998244353>(a, b).ShouldBe(expected);
+        await ConvolutionLarge.Convolution<Mod998244353>(a, b).Should().BeEquivalentOrderTo(expected);
     }
 
-    [Fact]
-    public void Small()
+    [Test, MultipleAssertions]
+    public async Task Small()
     {
         var rnd = new Random(42);
 
@@ -108,7 +110,7 @@ public class ConvolutionLargeTests
                     b[i] = rnd.NextUInt() % 998244353;
                 }
 
-                ConvolutionLarge.Convolution<Mod998244353>(a, b).ShouldBe(ConvNative(a, b, 998244353));
+                await ConvolutionLarge.Convolution<Mod998244353>(a, b).Should().BeEquivalentOrderTo(ConvNative(a, b, 998244353));
             }
     }
 }

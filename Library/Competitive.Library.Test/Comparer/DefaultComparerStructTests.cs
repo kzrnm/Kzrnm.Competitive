@@ -2,8 +2,8 @@ namespace Kzrnm.Competitive.Testing.Comparer;
 
 public class DefaultComparerStructTests
 {
-    [Fact]
-    public void Compare()
+    [Test]
+    public async Task Compare()
     {
         var arr = new int[]
         {
@@ -29,7 +29,7 @@ public class DefaultComparerStructTests
             382174879
         };
         Array.Sort(arr, new DefaultComparerStruct<int>());
-        arr.ShouldBe([
+        await arr.Should().BeEquivalentOrderTo([
             49770599,
             98686814,
             216600710,
@@ -50,6 +50,6 @@ public class DefaultComparerStructTests
             1850902760,
             1983045250,
             2014529243
-        ]);
+         ]);
     }
 }

@@ -13,14 +13,14 @@ public abstract class ImmutableBinarySearchTreeTestsBase<Node, TBbst>
     protected abstract TBbst Empty { get; }
     protected abstract TBbst Create(IEnumerable<int> values);
 
-    [Fact]
-    public void Zero()
+    [Test]
+    public async Task Zero()
     {
-        Empty.AllProd.ShouldBe(0);
+        await Empty.AllProd.Should().BeEqualTo(0);
     }
 
-    [Fact]
-    public void NaiveProd()
+    [Test, MultipleAssertions]
+    public async Task NaiveProd()
     {
         for (int n = 0; n <= 50; n++)
         {
@@ -30,24 +30,24 @@ public abstract class ImmutableBinarySearchTreeTestsBase<Node, TBbst>
             var tree = Create(p);
             var expected = new Segtree<int, Starry>(p);
 
-            void Test()
+            async Task Test()
             {
                 if (UseProd)
                     for (int l = 0; l <= n; l++)
                         for (int r = l; r <= n; r++)
                         {
-                            tree.Prod(l, r).ShouldBe(expected[l..r]);
-                            tree[l..r].ShouldBe(expected[l..r]);
+                            await tree.Prod(l, r).Should().BeEqualTo(expected[l..r]);
+                            await tree[l..r].Should().BeEqualTo(expected[l..r]);
                         }
                 for (int i = 0; i < n; i++)
                 {
                     if (UseProd)
-                        tree[i..(i + 1)].ShouldBe(expected[i]);
-                    tree[i].ShouldBe(expected[i]);
+                        await tree[i..(i + 1)].Should().BeEqualTo(expected[i]);
+                    await tree[i].Should().BeEqualTo(expected[i]);
                 }
             }
-            tree.ShouldBe(p);
-            Test();
+            await tree.Should().BeEquivalentOrderTo(p);
+            await Test();
 
 
             for (int i = 0; i < n; i++)
@@ -56,35 +56,35 @@ public abstract class ImmutableBinarySearchTreeTestsBase<Node, TBbst>
                 tree = tree.SetItem(i, x);
                 expected[i] = x;
             }
-            Test();
+            await Test();
         }
     }
 
-    [Fact]
-    public void Usage()
+    [Test, MultipleAssertions]
+    public async Task Usage()
     {
         var tree = Create(new int[10]);
         if (UseProd)
         {
-            tree.AllProd.ShouldBe(0);
+            await tree.AllProd.Should().BeEqualTo(0);
         }
-        tree.ShouldBe([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+        await tree.Should().BeEquivalentOrderTo([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
         tree = tree.SetItem(0, 5).SetItem(1, 5).SetItem(2, 5);
-        tree.ShouldBe([5, 5, 5, 0, 0, 0, 0, 0, 0, 0]);
+        await tree.Should().BeEquivalentOrderTo([5, 5, 5, 0, 0, 0, 0, 0, 0, 0]);
         if (UseProd)
         {
-            tree.Prod(0, 1).ShouldBe(5);
-            tree.Prod(0, 2).ShouldBe(10);
-            tree.Prod(0, 3).ShouldBe(15);
-            tree.Prod(1, 2).ShouldBe(5);
-            tree.Prod(1, 3).ShouldBe(10);
-            tree.Prod(2, 3).ShouldBe(5);
-            tree.AllProd.ShouldBe(15);
+            await tree.Prod(0, 1).Should().BeEqualTo(5);
+            await tree.Prod(0, 2).Should().BeEqualTo(10);
+            await tree.Prod(0, 3).Should().BeEqualTo(15);
+            await tree.Prod(1, 2).Should().BeEqualTo(5);
+            await tree.Prod(1, 3).Should().BeEqualTo(10);
+            await tree.Prod(2, 3).Should().BeEqualTo(5);
+            await tree.AllProd.Should().BeEqualTo(15);
         }
     }
 
-    [Fact]
-    public void InsertAndReverse()
+    [Test, MultipleAssertions]
+    public async Task InsertAndReverse()
     {
         var list = Enumerable.Range(0, 8).ToList();
         var tree = Create(list);
@@ -95,46 +95,46 @@ public abstract class ImmutableBinarySearchTreeTestsBase<Node, TBbst>
         }
         var savedTree = new List<TBbst>();
         var savedExpects = new List<int[]>();
-        void Test()
+        async Task Test()
         {
             savedTree.Add(tree);
             savedExpects.Add(list.ToArray());
-            tree.ShouldBe(list);
+            await tree.Should().BeEquivalentOrderTo(list);
             for (int i = 0; i < list.Count; i++)
-                tree[i].ShouldBe(list[i]);
+                await tree[i].Should().BeEqualTo(list[i]);
         }
 
 
         tree = tree.AddLast(-1);
         list.Add(-1);
-        Test();
+        await Test();
 
         Insert(2, -2);
-        Test();
+        await Test();
         Insert(0, -5);
         Insert(list.Count, 111);
-        Test();
+        await Test();
 
         Insert(2, -12);
-        Test();
+        await Test();
         Insert(0, -15);
         Insert(list.Count, 1111);
-        Test();
+        await Test();
 
         var rnd = new Random(227);
         for (int q = 0; q < 50; q++)
         {
             int l = rnd.Next(list.Count);
             Insert(l, rnd.Next(list.Count) - 100);
-            Test();
+            await Test();
         }
 
         for (int i = 0; i < savedTree.Count; i++)
-            savedTree[i].ShouldBe(savedExpects[i]);
+            await savedTree[i].Should().BeEquivalentOrderTo(savedExpects[i]);
     }
 
-    [Fact]
-    public void AddAndSetValue()
+    [Test, MultipleAssertions]
+    public async Task AddAndSetValue()
     {
         var list = Enumerable.Range(0, 8).ToList();
         var tree = Create(list);
@@ -150,21 +150,21 @@ public abstract class ImmutableBinarySearchTreeTestsBase<Node, TBbst>
         }
         var savedTree = new List<TBbst>();
         var savedExpects = new List<int[]>();
-        void Test()
+        async Task Test()
         {
             savedTree.Add(tree);
             savedExpects.Add(list.ToArray());
-            tree.ShouldBe(list);
+            await tree.Should().BeEquivalentOrderTo(list);
             for (int i = 0; i < list.Count; i++)
-                tree[i].ShouldBe(list[i]);
+                await tree[i].Should().BeEqualTo(list[i]);
         }
 
 
         Add(-1);
-        Test();
+        await Test();
 
         SetValue(2, -2);
-        Test();
+        await Test();
         var rnd = new Random(227);
         for (int q = 0; q < 50; q++)
         {
@@ -173,15 +173,15 @@ public abstract class ImmutableBinarySearchTreeTestsBase<Node, TBbst>
                 SetValue(l, rnd.Next(1000000));
             else
                 Add(rnd.Next(1000000));
-            Test();
+            await Test();
         }
 
         for (int i = 0; i < savedTree.Count; i++)
-            savedTree[i].ShouldBe(savedExpects[i]);
+            await savedTree[i].Should().BeEquivalentOrderTo(savedExpects[i]);
     }
 
-    [Fact]
-    public void AddRange()
+    [Test, MultipleAssertions]
+    public async Task AddRange()
     {
         var list = Enumerable.Range(0, 8).ToList();
         var tree = Create(list);
@@ -192,20 +192,20 @@ public abstract class ImmutableBinarySearchTreeTestsBase<Node, TBbst>
         }
         var savedTree = new List<TBbst>();
         var savedExpects = new List<int[]>();
-        void Test()
+        async Task Test()
         {
             savedTree.Add(tree);
             savedExpects.Add(list.ToArray());
-            tree.ShouldBe(list);
+            await tree.Should().BeEquivalentOrderTo(list);
             for (int i = 0; i < list.Count; i++)
-                tree[i].ShouldBe(list[i]);
+                await tree[i].Should().BeEqualTo(list[i]);
         }
 
 
-        Test();
+        await Test();
 
         AddRange([1, 2, 2, 3]);
-        Test();
+        await Test();
         var rnd = new Random(227);
         for (int q = 0; q < 50; q++)
         {
@@ -213,15 +213,15 @@ public abstract class ImmutableBinarySearchTreeTestsBase<Node, TBbst>
             var array = new int[len];
             rnd.NextBytes(MemoryMarshal.AsBytes(array.AsSpan()));
             AddRange(array);
-            Test();
+            await Test();
         }
 
         for (int i = 0; i < savedTree.Count; i++)
-            savedTree[i].ShouldBe(savedExpects[i]);
+            await savedTree[i].Should().BeEquivalentOrderTo(savedExpects[i]);
     }
 
-    [Fact]
-    public void InsertRange()
+    [Test, MultipleAssertions]
+    public async Task InsertRange()
     {
         var list = Enumerable.Range(0, 8).ToList();
         var tree = Create(list);
@@ -232,19 +232,19 @@ public abstract class ImmutableBinarySearchTreeTestsBase<Node, TBbst>
         }
         var savedTree = new List<TBbst>();
         var savedExpects = new List<int[]>();
-        void Test()
+        async Task Test()
         {
             savedTree.Add(tree);
             savedExpects.Add(list.ToArray());
-            tree.ShouldBe(list);
+            await tree.Should().BeEquivalentOrderTo(list);
             for (int i = 0; i < list.Count; i++)
-                tree[i].ShouldBe(list[i]);
+                await tree[i].Should().BeEqualTo(list[i]);
         }
 
-        Test();
+        await Test();
 
         InsertRange(1, [1, 2, 2, 3]);
-        Test();
+        await Test();
         var rnd = new Random(227);
         for (int q = 0; q < 50; q++)
         {
@@ -253,15 +253,15 @@ public abstract class ImmutableBinarySearchTreeTestsBase<Node, TBbst>
             rnd.NextBytes(MemoryMarshal.AsBytes(array.AsSpan()));
             var l = rnd.Next(list.Count);
             InsertRange(l, array);
-            Test();
+            await Test();
         }
 
         for (int i = 0; i < savedTree.Count; i++)
-            savedTree[i].ShouldBe(savedExpects[i]);
+            await savedTree[i].Should().BeEquivalentOrderTo(savedExpects[i]);
     }
 
-    [Fact]
-    public void RemoveAt()
+    [Test, MultipleAssertions]
+    public async Task RemoveAt()
     {
         var list = Enumerable.Range(0, 1000).ToList();
         var tree = Create(list);
@@ -272,13 +272,13 @@ public abstract class ImmutableBinarySearchTreeTestsBase<Node, TBbst>
         }
         var savedTree = new List<TBbst>();
         var savedExpects = new List<int[]>();
-        void Test()
+        async Task Test()
         {
             savedTree.Add(tree);
             savedExpects.Add(list.ToArray());
-            tree.ShouldBe(list);
+            await tree.Should().BeEquivalentOrderTo(list);
             for (int i = 0; i < list.Count; i++)
-                tree[i].ShouldBe(list[i]);
+                await tree[i].Should().BeEqualTo(list[i]);
         }
 
         var rnd = new Random(227);
@@ -286,15 +286,15 @@ public abstract class ImmutableBinarySearchTreeTestsBase<Node, TBbst>
         {
             var l = rnd.Next(list.Count);
             RemoveAt(l);
-            Test();
+            await Test();
         }
 
         for (int i = 0; i < savedTree.Count; i++)
-            savedTree[i].ShouldBe(savedExpects[i]);
+            await savedTree[i].Should().BeEquivalentOrderTo(savedExpects[i]);
     }
 
-    [Fact]
-    public void RemoveRange()
+    [Test, MultipleAssertions]
+    public async Task RemoveRange()
     {
         var list = Enumerable.Range(0, 100).ToList();
         var tree = Create(list);
@@ -310,13 +310,13 @@ public abstract class ImmutableBinarySearchTreeTestsBase<Node, TBbst>
         }
         var savedTree = new List<TBbst>();
         var savedExpects = new List<int[]>();
-        void Test()
+        async Task Test()
         {
             savedTree.Add(tree);
             savedExpects.Add(list.ToArray());
-            tree.ShouldBe(list);
+            await tree.Should().BeEquivalentOrderTo(list);
             for (int i = 0; i < list.Count; i++)
-                tree[i].ShouldBe(list[i]);
+                await tree[i].Should().BeEqualTo(list[i]);
         }
 
         var rnd = new Random(227);
@@ -328,10 +328,10 @@ public abstract class ImmutableBinarySearchTreeTestsBase<Node, TBbst>
             var l = rnd.Next(list.Count - 50);
             int len = rnd.Next(50);
             RemoveRange(l, len);
-            Test();
+            await Test();
         }
 
         for (int i = 0; i < savedTree.Count; i++)
-            savedTree[i].ShouldBe(savedExpects[i]);
+            await savedTree[i].Should().BeEquivalentOrderTo(savedExpects[i]);
     }
 }

@@ -7,32 +7,32 @@ public class DisjointSparseTableTests
 {
     Random rnd = new(42);
 
-    [Fact]
-    public void Invalid()
+    [Test, MultipleAssertions]
+    public async Task Invalid()
     {
-        ((Action)(() => _ = new DisjointSparseTable<short, MinOp>([]))).ShouldThrow<ContractAssertException>();
+        await Assert.That(() => _ = new DisjointSparseTable<short, MinOp>([])).Throws<ContractAssertException>();
 
         var s = new DisjointSparseTable<short, MinOp>([1, 2, 3]);
-        Should.Throw<ContractAssertException>(() => s[-1..3]);
-        Should.Throw<ContractAssertException>(() => s[0..4]);
+        await Assert.That(() => s[-1..3]).Throws<ContractAssertException>();
+        await Assert.That(() => s[0..4]).Throws<ContractAssertException>();
         for (var i = 0; i < 5; i++)
-            Should.Throw<ContractAssertException>(() => s[0..0]);
-        Should.Throw<ContractAssertException>(() => s.Prod(-1, 3));
-        Should.Throw<ContractAssertException>(() => s.Prod(0, 4));
+            await Assert.That(() => s[0..0]).Throws<ContractAssertException>();
+        await Assert.That(() => s.Prod(-1, 3)).Throws<ContractAssertException>();
+        await Assert.That(() => s.Prod(0, 4)).Throws<ContractAssertException>();
         for (var i = 0; i < 5; i++)
-            Should.Throw<ContractAssertException>(() => s.Prod(0, 0));
+            await Assert.That(() => s.Prod(0, 0)).Throws<ContractAssertException>();
 
 
         for (var i = 0; i < 3; i++)
             for (var j = i + 1; j <= 3; j++)
             {
-                Should.NotThrow(() => s[i..j]);
-                Should.NotThrow(() => s.Prod(i, j));
+                await Assert.That(() => s[i..j]).ThrowsNothing();
+                await Assert.That(() => s.Prod(i, j)).ThrowsNothing();
             }
     }
 
-    [Fact]
-    public void NaiveMin()
+    [Test]
+    public async Task NaiveMin()
     {
         for (int len = 1; len < 50; len++)
         {
@@ -43,11 +43,12 @@ public class DisjointSparseTableTests
 
             for (var i = 0; i < len; i++)
                 for (var j = i + 1; j <= len; j++)
-                {
-                    var expected = naive.Prod(i, j);
-                    st[i..j].ShouldBe(expected);
-                    st.Prod(i, j).ShouldBe(expected);
-                }
+                    using (Assert.Multiple())
+                    {
+                        var expected = naive.Prod(i, j);
+                        await st[i..j].Should().BeEqualTo(expected);
+                        await st.Prod(i, j).Should().BeEqualTo(expected);
+                    }
         }
     }
 
@@ -68,8 +69,8 @@ public class DisjointSparseTableTests
     }
 
 
-    [Fact]
-    public void NaiveSum()
+    [Test]
+    public async Task NaiveSum()
     {
         for (int len = 1; len < 50; len++)
         {
@@ -82,11 +83,12 @@ public class DisjointSparseTableTests
 
             for (var i = 0; i < len; i++)
                 for (var j = i + 1; j <= len; j++)
-                {
-                    var expected = sums[i..j];
-                    st[i..j].ShouldBe(expected);
-                    st.Prod(i, j).ShouldBe(expected);
-                }
+                    using (Assert.Multiple())
+                    {
+                        var expected = sums[i..j];
+                        await st[i..j].Should().BeEqualTo(expected);
+                        await st.Prod(i, j).Should().BeEqualTo(expected);
+                    }
         }
     }
     struct SumOp : ISparseTableOperator<uint>

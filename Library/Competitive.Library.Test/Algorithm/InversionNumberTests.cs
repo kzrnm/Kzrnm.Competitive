@@ -1,34 +1,48 @@
+using System.Collections.Immutable;
+
 namespace Kzrnm.Competitive.Testing.Algorithm;
 
 public class InversionNumberTests
 {
-    [Fact]
-    public void Int32()
+    public IEnumerable<ImmutableArray<int>> RandomInt32Cases()
     {
         var rnd = new Random(227);
         for (int len = 0; len < 10; len++)
             for (int q = 0; q < 2; q++)
             {
                 var a = new int[len];
+                yield return ImmutableArray.CreateRange(a);
+
                 foreach (ref var v in a.AsSpan())
                     v = rnd.Next(len) + 1;
-
-                InversionNumber.Inversion(a).ShouldBe(Naive((ReadOnlySpan<int>)a));
             }
     }
-    [Fact]
-    public void String()
+    [Test]
+    [MethodDataSource(nameof(RandomInt32Cases))]
+    public async Task Int32(ImmutableArray<int> input)
+    {
+        var a = input.ToArray();
+        await InversionNumber.Inversion(a).Should().BeEqualTo(Naive((ReadOnlySpan<int>)a));
+    }
+
+    public IEnumerable<string> RandomStringCases()
     {
         var rnd = new Random(227);
         for (int len = 0; len < 30; len++)
             for (int q = 0; q < 2; q++)
             {
                 var a = new char[len];
+                yield return new(a);
                 foreach (ref var v in a.AsSpan())
                     v = (char)(rnd.Next(26) + 'A');
-
-                InversionNumber.Inversion(a).ShouldBe(Naive<char>(a));
             }
+    }
+
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(RandomStringCases))]
+    public async Task String(string a)
+    {
+        await InversionNumber.Inversion(a.AsSpan()).Should().BeEqualTo(Naive<char>(a));
     }
 
     static long Naive<T>(ReadOnlySpan<T> a) where T : IComparable<T>

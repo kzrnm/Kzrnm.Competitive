@@ -2,8 +2,8 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String;
 
 public class PalindromeTests
 {
-    [Fact]
-    public void IsPalindrome()
+    [Test, MultipleAssertions]
+    public async Task IsPalindrome()
     {
         var rnd = new Random(227);
         for (int len = 0; len < 20; len++)
@@ -14,9 +14,9 @@ public class PalindromeTests
                 chrs[i] = chrs[^(i + 1)] = (char)(rnd.Next(26) + 'A');
             }
 
-            Palindrome.IsPalindrome(new string(chrs)).ShouldBeTrue();
-            Palindrome.IsPalindrome(chrs).ShouldBeTrue();
-            Palindrome.IsPalindrome(chrs.AsSpan()).ShouldBeTrue();
+            await Palindrome.IsPalindrome(new string(chrs)).Should().BeTrue();
+            await Palindrome.IsPalindrome(chrs).Should().BeTrue();
+            await Palindrome.IsPalindrome(chrs.AsSpan()).Should().BeTrue();
         }
 
         for (int len = 2; len < 20; len++)
@@ -33,29 +33,29 @@ public class PalindromeTests
                 chrs[i] = char.ToLower(chrs[i]);
 
                 var expected = 2 * i + 1 == len;
-                Palindrome.IsPalindrome(new string(chrs)).ShouldBe(expected);
-                Palindrome.IsPalindrome(chrs).ShouldBe(expected);
-                Palindrome.IsPalindrome(chrs.AsSpan()).ShouldBe(expected);
+                await Palindrome.IsPalindrome(new string(chrs)).Should().BeEqualTo(expected);
+                await Palindrome.IsPalindrome(chrs).Should().BeEqualTo(expected);
+                await Palindrome.IsPalindrome(chrs.AsSpan()).Should().BeEqualTo(expected);
             }
         }
     }
 
-    [Theory]
-    [InlineData("", new int[0])]
-    [InlineData("abcbaba", new int[] { 1, 1, 3, 1, 2, 2, 1, })]
-    [InlineData("aaaaa", new int[] { 1, 2, 3, 2, 1, })]
-    public void Manacher(string s, int[] expected)
+    [Test]
+    [Arguments("", new int[0])]
+    [Arguments("abcbaba", new int[] { 1, 1, 3, 1, 2, 2, 1, })]
+    [Arguments("aaaaa", new int[] { 1, 2, 3, 2, 1, })]
+    public async Task Manacher(string s, int[] expected)
     {
-        Palindrome.Manacher(s).ShouldBe(expected);
+        await Palindrome.Manacher(s).Should().BeEquivalentOrderTo(expected);
     }
 
-    [Theory]
-    [InlineData("", new int[0])]
-    [InlineData("abccbc", new int[] { 1, 0, 1, 0, 1, 4, 1, 0, 3, 0, 1, })]
-    [InlineData("aaaaa", new int[] { 1, 2, 3, 4, 5, 4, 3, 2, 1, })]
-    public void Manacher2(string s, int[] expected)
+    [Test, MultipleAssertions]
+    [Arguments("", new int[0])]
+    [Arguments("abccbc", new int[] { 1, 0, 1, 0, 1, 4, 1, 0, 3, 0, 1, })]
+    [Arguments("aaaaa", new int[] { 1, 2, 3, 4, 5, 4, 3, 2, 1, })]
+    public async Task Manacher2(string s, int[] expected)
     {
-        Palindrome.Manacher2(s).ShouldBe(expected);
-        expected.Length.ShouldBe(Math.Max(s.Length * 2 - 1, 0));
+        await Palindrome.Manacher2(s).Should().BeEquivalentOrderTo(expected);
+        await expected.Length.Should().BeEqualTo(Math.Max(s.Length * 2 - 1, 0));
     }
 }

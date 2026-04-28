@@ -3,8 +3,8 @@ namespace Kzrnm.Competitive.Testing.Graph;
 
 public class 最大流Tests
 {
-    [Fact]
-    public void Int()
+    [Test, MultipleAssertions]
+    public async Task Int()
     {
         var gb = new WIntGraphBuilder(5, true);
         gb.Add(0, 1, 1);
@@ -17,12 +17,12 @@ public class 最大流Tests
         gb.Add(4, 3, 6);
         gb.Add(4, 0, 1);
         var graph = gb.ToMFGraph();
-        graph.Flow(0, 1).ShouldBe(1);
-        graph.Flow(0, 3).ShouldBe(46);
+        await graph.Flow(0, 1).Should().BeEqualTo(1);
+        await graph.Flow(0, 3).Should().BeEqualTo(46);
     }
 
-    [Fact]
-    public void Long()
+    [Test, MultipleAssertions]
+    public async Task Long()
     {
         var gb = new WLongGraphBuilder(5, true);
         gb.Add(0, 1, 1);
@@ -35,7 +35,7 @@ public class 最大流Tests
         gb.Add(4, 3, 6);
         gb.Add(4, 0, 1);
         var graph = gb.ToMFGraph();
-        graph.Flow(0, 1).ShouldBe(1);
-        graph.Flow(0, 3).ShouldBe(46);
+        await graph.Flow(0, 1).Should().BeEqualTo(1);
+        await graph.Flow(0, 3).Should().BeEqualTo(46);
     }
 }

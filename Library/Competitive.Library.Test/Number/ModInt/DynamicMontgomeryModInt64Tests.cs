@@ -29,8 +29,8 @@ public class DynamicMontgomeryModInt64Tests
 
 
     private struct AddId { }
-    [Fact]
-    public void Add()
+    [Test, MultipleAssertions]
+    public async Task Add()
     {
         var rnd = new Random(227);
         for (int q = 0; q < 1000; q++)
@@ -41,13 +41,13 @@ public class DynamicMontgomeryModInt64Tests
             var a = rnd.NextLong();
             var b = rnd.NextLong();
 
-            ((DynamicMontgomeryModInt64<AddId>)a + (DynamicMontgomeryModInt64<AddId>)b).Value
-                .ShouldBe((long)(((LargeInteger)a + (LargeInteger)b) % (LargeInteger)mod));
+            await ((DynamicMontgomeryModInt64<AddId>)a + (DynamicMontgomeryModInt64<AddId>)b).Value
+                .Should().BeEqualTo((long)(((LargeInteger)a + (LargeInteger)b) % (LargeInteger)mod));
         }
     }
     private struct MultiplyId { }
-    [Fact]
-    public void Multiply()
+    [Test, MultipleAssertions]
+    public async Task Multiply()
     {
         var rnd = new Random(227);
         for (int q = 0; q < 1000; q++)
@@ -58,20 +58,20 @@ public class DynamicMontgomeryModInt64Tests
             var a = rnd.NextLong();
             var b = rnd.NextLong();
 
-            ((DynamicMontgomeryModInt64<MultiplyId>)a * (DynamicMontgomeryModInt64<MultiplyId>)b).Value
-                .ShouldBe((long)((LargeInteger)a * (LargeInteger)b % (LargeInteger)mod));
+            await ((DynamicMontgomeryModInt64<MultiplyId>)a * (DynamicMontgomeryModInt64<MultiplyId>)b).Value
+                .Should().BeEqualTo((long)((LargeInteger)a * (LargeInteger)b % (LargeInteger)mod));
         }
     }
 
-    [Fact]
-    public void Inv()
+    [Test, MultipleAssertions]
+    public async Task Inv()
     {
-        RunStatic<ModID11>();
-        RunStatic<ModID1000000007>();
-        RunStatic<ModID998244353>();
-        RunStatic<ModID67280421310721>();
+        await RunStatic<ModID11>();
+        await RunStatic<ModID1000000007>();
+        await RunStatic<ModID998244353>();
+        await RunStatic<ModID67280421310721>();
 
-        static void RunStatic<T>() where T : struct
+        static async Task RunStatic<T>() where T : struct
         {
             var mod = DynamicMontgomeryModInt64<T>.Mod;
             var max = Math.Min(1000, mod);
@@ -81,42 +81,42 @@ public class DynamicMontgomeryModInt64Tests
             {
                 if (Gcd(i, mod) != 1) continue;
                 var x = new DynamicMontgomeryModInt64<T>(i).Inv().Value;
-                ((long)((LargeInteger)x * (LargeInteger)i % (LargeInteger)mod)).ShouldBe(1);
+                await ((long)((LargeInteger)x * (LargeInteger)i % (LargeInteger)mod)).Should().BeEqualTo(1);
             }
         }
     }
 
     private struct IncrementID { }
-    [Fact]
-    public void Increment()
+    [Test, MultipleAssertions]
+    public async Task Increment()
     {
         DynamicMontgomeryModInt64<IncrementID> a;
         a = 8;
-        (++a).Value.ShouldBe(9);
-        (++a).Value.ShouldBe(10);
-        (++a).Value.ShouldBe(0);
-        (++a).Value.ShouldBe(1);
+        await (++a).Value.Should().BeEqualTo(9);
+        await (++a).Value.Should().BeEqualTo(10);
+        await (++a).Value.Should().BeEqualTo(0);
+        await (++a).Value.Should().BeEqualTo(1);
         a = 3;
-        (--a).Value.ShouldBe(2);
-        (--a).Value.ShouldBe(1);
-        (--a).Value.ShouldBe(0);
-        (--a).Value.ShouldBe(10);
+        await (--a).Value.Should().BeEqualTo(2);
+        await (--a).Value.Should().BeEqualTo(1);
+        await (--a).Value.Should().BeEqualTo(0);
+        await (--a).Value.Should().BeEqualTo(10);
         a = 8;
-        (a++).Value.ShouldBe(8);
-        (a++).Value.ShouldBe(9);
-        (a++).Value.ShouldBe(10);
-        (a++).Value.ShouldBe(0);
-        a.Value.ShouldBe(1);
+        await (a++).Value.Should().BeEqualTo(8);
+        await (a++).Value.Should().BeEqualTo(9);
+        await (a++).Value.Should().BeEqualTo(10);
+        await (a++).Value.Should().BeEqualTo(0);
+        await a.Value.Should().BeEqualTo(1);
         a = 3;
-        (a--).Value.ShouldBe(3);
-        (a--).Value.ShouldBe(2);
-        (a--).Value.ShouldBe(1);
-        (a--).Value.ShouldBe(0);
-        a.Value.ShouldBe(10);
+        await (a--).Value.Should().BeEqualTo(3);
+        await (a--).Value.Should().BeEqualTo(2);
+        await (a--).Value.Should().BeEqualTo(1);
+        await (a--).Value.Should().BeEqualTo(0);
+        await a.Value.Should().BeEqualTo(10);
     }
 
-    [Fact]
-    public void Parse()
+    [Test, MultipleAssertions]
+    public async Task Parse()
     {
         var bigs = new[]{
             BigInteger.Pow(10, 1000),
@@ -129,12 +129,12 @@ public class DynamicMontgomeryModInt64Tests
             "111.0",
             "111,1",
         };
-        RunStatic<ModID11>();
-        RunStatic<ModID1000000007>();
-        RunStatic<ModID998244353>();
+        await RunStatic<ModID11>();
+        await RunStatic<ModID1000000007>();
+        await RunStatic<ModID998244353>();
 
 
-        void RunStatic<T>() where T : struct
+        async Task RunStatic<T>() where T : struct
         {
             var mod = DynamicMontgomeryModInt64<T>.Mod;
             var nums = Enumerable.Range(-100, 200).SelectMany(i => new[] { i, mod + i });
@@ -142,41 +142,41 @@ public class DynamicMontgomeryModInt64Tests
             {
                 var s = n.ToString();
                 var expected = (n % mod + mod) % mod;
-                DynamicMontgomeryModInt64<T>.TryParse(s, out var num1).ShouldBeTrue();
+                await DynamicMontgomeryModInt64<T>.TryParse(s, out var num1).Should().BeTrue();
                 var num2 = DynamicMontgomeryModInt64<T>.Parse(s);
 
-                num1.Value.ShouldBe(expected);
-                num2.Value.ShouldBe(expected);
+                await num1.Value.Should().BeEqualTo(expected);
+                await num2.Value.Should().BeEqualTo(expected);
             }
 
             foreach (var n in bigs)
             {
                 var s = n.ToString();
                 var expected = (int)(n % mod + mod) % mod;
-                DynamicMontgomeryModInt64<T>.TryParse(s, out var num1).ShouldBeTrue();
+                await DynamicMontgomeryModInt64<T>.TryParse(s, out var num1).Should().BeTrue();
                 var num2 = DynamicMontgomeryModInt64<T>.Parse(s);
 
-                num1.Value.ShouldBe(expected);
-                num2.Value.ShouldBe(expected);
+                await num1.Value.Should().BeEqualTo(expected);
+                await num2.Value.Should().BeEqualTo(expected);
             }
 
             foreach (var s in invalids)
             {
-                DynamicMontgomeryModInt64<T>.TryParse(s, out _).ShouldBeFalse();
-                Should.Throw<FormatException>(() => DynamicMontgomeryModInt64<T>.Parse(s));
+                await DynamicMontgomeryModInt64<T>.TryParse(s, out _).Should().BeFalse();
+                Assert.Throws<FormatException>(() => DynamicMontgomeryModInt64<T>.Parse(s));
             }
         }
     }
-    [Fact]
-    public void ConstructorStatic()
+    [Test, MultipleAssertions]
+    public async Task ConstructorStatic()
     {
-        new DynamicMontgomeryModInt64<ConstructorID>(3).Value.ShouldBe(3);
-        new DynamicMontgomeryModInt64<ConstructorID>(-10).Value.ShouldBe(1);
-        (1 + new DynamicMontgomeryModInt64<ConstructorID>(1)).Value.ShouldBe(2);
+        await new DynamicMontgomeryModInt64<ConstructorID>(3).Value.Should().BeEqualTo(3);
+        await new DynamicMontgomeryModInt64<ConstructorID>(-10).Value.Should().BeEqualTo(1);
+        await (1 + new DynamicMontgomeryModInt64<ConstructorID>(1)).Value.Should().BeEqualTo(2);
     }
 
-    [Fact]
-    public void MemoryStatic()
+    [Test, MultipleAssertions]
+    public async Task MemoryStatic()
     {
         var mt = new Random(227);
         for (int n = 0; n < 100; n++)
@@ -189,20 +189,19 @@ public class DynamicMontgomeryModInt64Tests
                 arr[i] = v;
                 expected[i] = v % 101;
             }
-            arr.Select(m => m.Value).ToArray()
-                .ShouldBe(expected);
+            await arr.Select(m => m.Value).ToArray().Should().BeEquivalentOrderTo(expected);
         }
     }
 
-    [Fact]
-    public void Minus()
+    [Test, MultipleAssertions]
+    public async Task Minus()
     {
-        RunStatic<ModID11>();
-        RunStatic<ModID1000000007>();
-        RunStatic<ModID998244353>();
-        RunStatic<ModID67280421310721>();
+        await RunStatic<ModID11>();
+        await RunStatic<ModID1000000007>();
+        await RunStatic<ModID998244353>();
+        await RunStatic<ModID67280421310721>();
 
-        static void RunStatic<T>() where T : struct
+        static async Task RunStatic<T>() where T : struct
         {
             var mod = DynamicMontgomeryModInt64<T>.Mod;
             var max = Math.Min(1000, mod);
@@ -211,22 +210,22 @@ public class DynamicMontgomeryModInt64Tests
             foreach (var i in cases)
             {
                 var x = (-new DynamicMontgomeryModInt64<T>(i)).Value;
-                x.ShouldBe((mod - i) % mod);
+                await x.Should().BeEqualTo((mod - i) % mod);
             }
         }
     }
 
 
-    [Fact]
-    public void String()
+    [Test, MultipleAssertions]
+    public async Task String()
     {
-        RunStatic<ModID11>();
-        RunStatic<ModID1000000007>();
-        RunStatic<ModID998244353>();
+        await RunStatic<ModID11>();
+        await RunStatic<ModID1000000007>();
+        await RunStatic<ModID998244353>();
 
-        static void RunStatic<T>() where T : struct
+        static async Task RunStatic<T>() where T : struct
         {
-            Span<char> chars = stackalloc char[30];
+            var chars = new char[30];
             var mod = DynamicMontgomeryModInt64<T>.Mod;
             var max = Math.Min(1000, mod);
             var cases = Enumerable.Range(0, (int)max).Select(i => (long)i);
@@ -235,9 +234,9 @@ public class DynamicMontgomeryModInt64Tests
             {
                 var m = new DynamicMontgomeryModInt64<T>(i);
                 var expected = (i % mod).ToString();
-                m.ToString().ShouldBe(expected);
-                m.TryFormat(chars, out var charsWritten, "", null).ShouldBeTrue();
-                new string(chars[..charsWritten]).ShouldBe(expected);
+                await m.ToString().Should().BeEqualTo(expected);
+                await m.TryFormat(chars, out var charsWritten, "", null).Should().BeTrue();
+                await new string(chars, 0, charsWritten).Should().BeEqualTo(expected);
             }
         }
     }

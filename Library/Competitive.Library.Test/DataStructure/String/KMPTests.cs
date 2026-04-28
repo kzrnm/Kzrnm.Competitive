@@ -2,17 +2,17 @@ namespace Kzrnm.Competitive.Testing.DataStructure.String;
 
 public class KMPTests
 {
-    public static TheoryData<string, string, int[]> Match_Data => new()
-    {
-        { "ab", new string('q',1998)+"ab", [1998] },
-        { "abc", "abd", Array.Empty<int>() },
-    };
+    public static IEnumerable<(string, string, int[])> Match_Data =>
+    [
+        ("ab", new string('q',1998)+"ab", [1998]),
+        ("abc", "abd", []),
+    ];
 
-    [Theory]
-    [MemberData(nameof(Match_Data))]
-    public void Matches(string pattern, string target, int[] indexes)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(Match_Data))]
+    public async Task Matches(string pattern, string target, int[] indexes)
     {
         var kmp = KMP.Create(pattern);
-        kmp.Matches(target).ToList().ShouldBe(indexes);
+        await kmp.Matches(target).ToList().Should().BeEquivalentOrderTo(indexes);
     }
 }

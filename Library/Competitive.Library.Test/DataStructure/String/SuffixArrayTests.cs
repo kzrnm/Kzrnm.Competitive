@@ -1,9 +1,12 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Kzrnm.Competitive.Testing.DataStructure.String;
 
 public class SuffixArrayTests
 {
-    [Fact]
-    public void LCPInt()
+    [Test]
+    [SuppressMessage("Usage", "TUnitAssertions0002")]
+    public async Task LCPInt()
     {
         var rnd = new Random();
         for (int n = 1; n < 50; n++)
@@ -12,11 +15,12 @@ public class SuffixArrayTests
             var sa = SuffixArray.Create(str);
             var saNative = GetNative((ReadOnlySpan<int>)str);
 
+            await using var multi = Assert.MultipleAsync();
             for (int i = 0; i < str.Length; i++)
                 for (int j = i; j < str.Length; j++)
                 {
-                    sa.LongestCommonPrefix(i, j).ShouldBe(saNative.GetLCP(i, j));
-                    sa.LongestCommonPrefix(j, i).ShouldBe(saNative.GetLCP(i, j));
+                    multi.Add(sa.LongestCommonPrefix(i, j).Should().BeEqualTo(saNative.GetLCP(i, j)));
+                    multi.Add(sa.LongestCommonPrefix(j, i).Should().BeEqualTo(saNative.GetLCP(i, j)));
                 }
         }
         {
@@ -24,11 +28,12 @@ public class SuffixArrayTests
             var sa = SuffixArray.Create(str);
             var saNative = GetNative((ReadOnlySpan<int>)str);
 
+            await using var multi = Assert.MultipleAsync();
             for (int i = 0; i < str.Length; i++)
                 for (int j = i; j < str.Length; j++)
                 {
-                    sa.LongestCommonPrefix(i, j).ShouldBe(saNative.GetLCP(i, j));
-                    sa.LongestCommonPrefix(j, i).ShouldBe(saNative.GetLCP(i, j));
+                    multi.Add(sa.LongestCommonPrefix(i, j).Should().BeEqualTo(saNative.GetLCP(i, j)));
+                    multi.Add(sa.LongestCommonPrefix(j, i).Should().BeEqualTo(saNative.GetLCP(i, j)));
                 }
         }
         {
@@ -36,31 +41,36 @@ public class SuffixArrayTests
             var sa = SuffixArray.Create(str);
             var saNative = GetNative((ReadOnlySpan<int>)str);
 
+            await using var multi = Assert.MultipleAsync();
             for (int i = 0; i < str.Length; i++)
                 for (int j = i; j < str.Length; j++)
                 {
-                    sa.LongestCommonPrefix(i, j).ShouldBe(saNative.GetLCP(i, j));
-                    sa.LongestCommonPrefix(j, i).ShouldBe(saNative.GetLCP(i, j));
+                    multi.Add(sa.LongestCommonPrefix(i, j).Should().BeEqualTo(saNative.GetLCP(i, j)));
+                    multi.Add(sa.LongestCommonPrefix(j, i).Should().BeEqualTo(saNative.GetLCP(i, j)));
                 }
         }
         {
             var str = new[] { -4210, 4219014, -5, -4210, -4210, 4219014, -5, -4210 };
             var sa = SuffixArray.Create(str);
             var saNative = GetNative((ReadOnlySpan<int>)str);
-            sa.LongestCommonPrefix(0, 3).ShouldBe(1);
-            sa.LongestCommonPrefix(0, 4).ShouldBe(4);
+
+            await using var multi = Assert.MultipleAsync();
+
+            multi.Add(sa.LongestCommonPrefix(0, 3).Should().BeEqualTo(1));
+            multi.Add(sa.LongestCommonPrefix(0, 4).Should().BeEqualTo(4));
 
             for (int i = 0; i < str.Length; i++)
                 for (int j = i; j < str.Length; j++)
                 {
-                    sa.LongestCommonPrefix(i, j).ShouldBe(saNative.GetLCP(i, j));
-                    sa.LongestCommonPrefix(j, i).ShouldBe(saNative.GetLCP(i, j));
+                    multi.Add(sa.LongestCommonPrefix(i, j).Should().BeEqualTo(saNative.GetLCP(i, j)));
+                    multi.Add(sa.LongestCommonPrefix(j, i).Should().BeEqualTo(saNative.GetLCP(i, j)));
                 }
         }
     }
 
-    [Fact]
-    public void LCPString()
+    [Test]
+    [SuppressMessage("Usage", "TUnitAssertions0002")]
+    public async Task LCPString()
     {
         var rnd = new Random();
         for (int n = 1; n < 50; n++)
@@ -69,21 +79,24 @@ public class SuffixArrayTests
             var sa = SuffixArray.Create(str);
             var saNative = GetNative(str.AsSpan());
 
+            await using var multi = Assert.MultipleAsync();
             for (int i = 0; i < str.Length; i++)
                 for (int j = i; j < str.Length; j++)
                 {
-                    sa.LongestCommonPrefix(i, j).ShouldBe(saNative.GetLCP(i, j));
-                    sa.LongestCommonPrefix(j, i).ShouldBe(saNative.GetLCP(i, j));
+                    multi.Add(sa.LongestCommonPrefix(i, j).Should().BeEqualTo(saNative.GetLCP(i, j)));
+                    multi.Add(sa.LongestCommonPrefix(j, i).Should().BeEqualTo(saNative.GetLCP(i, j)));
                 }
         }
         {
             var str = "abcaabca";
             var sa = SuffixArray.Create(str);
             var saNative = GetNative(str.AsSpan());
-            sa.LongestCommonPrefix(0, 3).ShouldBe(1);
-            sa.LongestCommonPrefix(0, 4).ShouldBe(4);
+            
+            await using var multi = Assert.MultipleAsync();
+            multi.Add(sa.LongestCommonPrefix(0, 3).Should().BeEqualTo(1));
+            multi.Add(sa.LongestCommonPrefix(0, 4).Should().BeEqualTo(4));
 
-            sa.SA.ShouldBe([
+            multi.Add(sa.SA.Should().BeEquivalentOrderTo([
                 7, // a
                 3, // aabca
                 4, // abca
@@ -92,8 +105,8 @@ public class SuffixArrayTests
                 1, // bcaabca
                 6, // ca
                 2,  // caabca
-            ]);
-            sa.LcpArray.ShouldBe([
+            ]));
+            multi.Add(sa.LcpArray.Should().BeEquivalentOrderTo([
                 1, // a - aabca
                 1, // aabca - abca
                 4, // abca - abcaabca
@@ -101,14 +114,14 @@ public class SuffixArrayTests
                 3, // bca - bcaabca
                 0, // bcaabca - ca
                 2,  // ca - caabca
-            ]);
-            sa.Rank.ShouldBe([3, 5, 7, 1, 2, 4, 6, 0]);
+            ]));
+            multi.Add(sa.Rank.Should().BeEquivalentOrderTo([3, 5, 7, 1, 2, 4, 6, 0]));
 
             for (int i = 0; i < str.Length; i++)
                 for (int j = i; j < str.Length; j++)
                 {
-                    sa.LongestCommonPrefix(i, j).ShouldBe(saNative.GetLCP(i, j));
-                    sa.LongestCommonPrefix(j, i).ShouldBe(saNative.GetLCP(i, j));
+                    multi.Add(sa.LongestCommonPrefix(i, j).Should().BeEqualTo(saNative.GetLCP(i, j)));
+                    multi.Add(sa.LongestCommonPrefix(j, i).Should().BeEqualTo(saNative.GetLCP(i, j)));
                 }
         }
     }

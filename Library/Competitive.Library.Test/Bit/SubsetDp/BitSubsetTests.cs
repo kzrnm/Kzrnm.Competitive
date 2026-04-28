@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 
@@ -20,7 +21,7 @@ public class BitSubsetTests
             ls.Add(tup);
         return ls.ToArray();
     }
-    public static IEnumerable<TheoryDataRow<Int32, Int32[]>> Int32_Data()
+    public static IEnumerable<(Int32, ImmutableArray<Int32>)> Int32_Data()
     {
         yield return (0b0, [0]);
         yield return (0b1, [1, 0]);
@@ -46,24 +47,24 @@ public class BitSubsetTests
         ]);
     }
 
-    [Theory]
-    [MemberData(nameof(Int32_Data))]
-    public void Int32(Int32 num, Int32[] expected)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(Int32_Data))]
+    public async Task Int32(Int32 num, ImmutableArray<Int32> expected)
     {
-        num.BitSubset(false).ShouldBe(expected);
-        num.BitSubset().ShouldBe(expected.Skip(1));
+        await num.BitSubset(false).Should().BeEquivalentOrderTo(expected);
+        await num.BitSubset().Should().BeEquivalentOrderTo(expected.Skip(1));
 
-        num.BitSubset(false).ToArray().ShouldBe(expected);
-        num.BitSubset().ToArray().ShouldBe(expected.Skip(1));
+        await num.BitSubset(false).ToArray().Should().BeEquivalentOrderTo(expected);
+        await num.BitSubset().ToArray().Should().BeEquivalentOrderTo(expected.Skip(1));
 
-        Combinations(num.BitSubsetCombination(false)).ShouldBe(
+        await Combinations(num.BitSubsetCombination(false)).Should().BeEquivalentOrderTo(
             expected.Take(expected.Length / 2).Select(b => (b, num & ~b)));
-        Combinations(num.BitSubsetCombination()).ShouldBe(
+        await Combinations(num.BitSubsetCombination()).Should().BeEquivalentOrderTo(
             expected.Take(expected.Length / 2).Skip(1).Select(b => (b, num & ~b)));
     }
 
 
-    public static IEnumerable<TheoryDataRow<UInt32, UInt32[]>> UInt32_Data()
+    public static IEnumerable<(UInt32, ImmutableArray<uint>)> UInt32_Data()
     {
         yield return (0b0, [0]);
         yield return (0b1, [1, 0]);
@@ -89,23 +90,23 @@ public class BitSubsetTests
         ]);
     }
 
-    [Theory]
-    [MemberData(nameof(UInt32_Data))]
-    public void UInt32(UInt32 num, UInt32[] expected)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(UInt32_Data))]
+    public async Task UInt32(UInt32 num, ImmutableArray<uint> expected)
     {
-        num.BitSubset(false).ShouldBe(expected);
-        num.BitSubset().ShouldBe(expected.Skip(1));
+        await num.BitSubset(false).Should().BeEquivalentOrderTo(expected);
+        await num.BitSubset().Should().BeEquivalentOrderTo(expected.Skip(1));
 
-        num.BitSubset(false).ToArray().ShouldBe(expected);
-        num.BitSubset().ToArray().ShouldBe(expected.Skip(1));
+        await num.BitSubset(false).ToArray().Should().BeEquivalentOrderTo(expected);
+        await num.BitSubset().ToArray().Should().BeEquivalentOrderTo(expected.Skip(1));
 
-        Combinations(num.BitSubsetCombination(false)).ShouldBe(
+        await Combinations(num.BitSubsetCombination(false)).Should().BeEquivalentOrderTo(
             expected.Take(expected.Length / 2).Select(b => (b, num & ~b)));
-        Combinations(num.BitSubsetCombination()).ShouldBe(
+        await Combinations(num.BitSubsetCombination()).Should().BeEquivalentOrderTo(
             expected.Take(expected.Length / 2).Skip(1).Select(b => (b, num & ~b)));
     }
 
-    public static IEnumerable<TheoryDataRow<Int64, Int64[]>> Int64_Data()
+    public static IEnumerable<(Int64, ImmutableArray<Int64>)> Int64_Data()
     {
         yield return (0b0, [0]);
         yield return (0b1, [1, 0]);
@@ -131,23 +132,23 @@ public class BitSubsetTests
         ]);
     }
 
-    [Theory]
-    [MemberData(nameof(Int64_Data))]
-    public void Int64(Int64 num, Int64[] expected)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(Int64_Data))]
+    public async Task Int64(Int64 num, ImmutableArray<Int64> expected)
     {
-        num.BitSubset(false).ShouldBe(expected);
-        num.BitSubset().ShouldBe(expected.Skip(1));
+        await num.BitSubset(false).Should().BeEquivalentOrderTo(expected);
+        await num.BitSubset().Should().BeEquivalentOrderTo(expected.Skip(1));
 
-        num.BitSubset(false).ToArray().ShouldBe(expected);
-        num.BitSubset().ToArray().ShouldBe(expected.Skip(1));
+        await num.BitSubset(false).ToArray().Should().BeEquivalentOrderTo(expected);
+        await num.BitSubset().ToArray().Should().BeEquivalentOrderTo(expected.Skip(1));
 
-        Combinations(num.BitSubsetCombination(false)).ShouldBe(
+        await Combinations(num.BitSubsetCombination(false)).Should().BeEquivalentOrderTo(
             expected.Take(expected.Length / 2).Select(b => (b, num & ~b)));
-        Combinations(num.BitSubsetCombination()).ShouldBe(
+        await Combinations(num.BitSubsetCombination()).Should().BeEquivalentOrderTo(
             expected.Take(expected.Length / 2).Skip(1).Select(b => (b, num & ~b)));
     }
 
-    public static IEnumerable<TheoryDataRow<UInt64, UInt64[]>> UInt64_Data()
+    public static IEnumerable<(UInt64, ImmutableArray<UInt64>)> UInt64_Data()
     {
         yield return (0b0, [0]);
         yield return (0b1, [1, 0]);
@@ -173,19 +174,19 @@ public class BitSubsetTests
         ]);
     }
 
-    [Theory]
-    [MemberData(nameof(UInt64_Data))]
-    public void UInt64(UInt64 num, UInt64[] expected)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(UInt64_Data))]
+    public async Task UInt64(UInt64 num, ImmutableArray<UInt64> expected)
     {
-        num.BitSubset(false).ShouldBe(expected);
-        num.BitSubset().ShouldBe(expected.Skip(1));
+        await num.BitSubset(false).Should().BeEquivalentOrderTo(expected);
+        await num.BitSubset().Should().BeEquivalentOrderTo(expected.Skip(1));
 
-        num.BitSubset(false).ToArray().ShouldBe(expected);
-        num.BitSubset().ToArray().ShouldBe(expected.Skip(1));
+        await num.BitSubset(false).ToArray().Should().BeEquivalentOrderTo(expected);
+        await num.BitSubset().ToArray().Should().BeEquivalentOrderTo(expected.Skip(1));
 
-        Combinations(num.BitSubsetCombination(false)).ShouldBe(
+        await Combinations(num.BitSubsetCombination(false)).Should().BeEquivalentOrderTo(
             expected.Take(expected.Length / 2).Select(b => (b, num & ~b)));
-        Combinations(num.BitSubsetCombination()).ShouldBe(
+        await Combinations(num.BitSubsetCombination()).Should().BeEquivalentOrderTo(
             expected.Take(expected.Length / 2).Skip(1).Select(b => (b, num & ~b)));
     }
 }

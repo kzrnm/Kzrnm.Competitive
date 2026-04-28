@@ -1,21 +1,22 @@
 namespace Kzrnm.Competitive.Testing.DataStructure.String;
 
+[NotInParallel]
 public class RollingHashEditableTests
 {
     Random rnd = new Random(227);
-    [Fact]
-    public void Static()
+    [Test, MultipleAssertions]
+    public async Task Static()
     {
         var str = rnd.NextIntArray(100, 1, 4);
         var rh = RollingHash.Create(str);
         var rhe = RollingHashEditable.Create(str);
         for (int l1 = 0; l1 < str.Length; l1++)
             for (int r1 = l1 + 1; r1 <= str.Length; r1++)
-                rhe[l1..r1].ShouldBe(rh[l1..r1]);
+                await rhe[l1..r1].Should().BeEqualTo(rh[l1..r1]);
     }
 
-    [Fact]
-    public void Large()
+    [Test, MultipleAssertions]
+    public async Task Large()
     {
         RollingHashEditable.ResizePow(10000);
         const int length = 20;
@@ -51,10 +52,10 @@ public class RollingHashEditableTests
             }
             var re = RollingHash.Create(sl.AsSpan());
 
-            rh.Length.ShouldBe(re.Length);
+            await rh.Length.Should().BeEqualTo(re.Length);
             for (int l = 0; l < rh.Length; l++)
                 for (int r = l + 1; r <= rh.Length; r++)
-                    rh[l..r].ShouldBe(re[l..r]);
+                    await rh[l..r].Should().BeEqualTo(re[l..r]);
         }
     }
 }

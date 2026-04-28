@@ -30,52 +30,52 @@ public class LinearRecurrenceTest
         return res;
     }
 
-    [Fact]
-    public void Kitamasa_Mod1000000007()
+    [Test, MultipleAssertions]
+    public async Task Kitamasa_Mod1000000007()
     {
         var rnd = new Random(42);
         for (int n = 2; n < 10; n++)
         {
             var arrInt = rnd.NextIntArray(n, 0, 1000000007);
             var crrInt = rnd.NextIntArray(n, 0, 1000000007);
-            var arrUInt = MemoryMarshal.Cast<int, uint>(arrInt);
-            var crrUInt = MemoryMarshal.Cast<int, uint>(crrInt);
             var arrModInt = arrInt.Select(n => new MontgomeryModInt<Mod1000000007>(n)).ToArray();
             var crrModInt = crrInt.Select(n => new MontgomeryModInt<Mod1000000007>(n)).ToArray();
-            var expected = NativeDp<Mod1000000007>(arrModInt, crrModInt);
+            var expected = NativeDp(arrModInt, crrModInt);
             for (int l = 0; l < 40; l++)
             {
-                LinearRecurrence.Kitamasa<Mod1000000007>(arrInt, crrInt, l).ShouldBe(expected[l]);
-                LinearRecurrence.Kitamasa<Mod1000000007>(arrUInt, crrUInt, l).ShouldBe(expected[l]);
-                LinearRecurrence.Kitamasa(arrModInt, crrModInt, l).ShouldBe(expected[l]);
+                await LinearRecurrence.Kitamasa<Mod1000000007>(arrInt, crrInt, l).Should().BeEqualTo(expected[l]);
+                var arrUInt = MemoryMarshal.Cast<int, uint>(arrInt);
+                var crrUInt = MemoryMarshal.Cast<int, uint>(crrInt);
+                await LinearRecurrence.Kitamasa<Mod1000000007>(arrUInt, crrUInt, l).Should().BeEqualTo(expected[l]);
+                await LinearRecurrence.Kitamasa(arrModInt, crrModInt, l).Should().BeEqualTo(expected[l]);
             }
         }
     }
 
-    [Fact]
-    public void Kitamasa_Mod998244353()
+    [Test, MultipleAssertions]
+    public async Task Kitamasa_Mod998244353()
     {
         var rnd = new Random(42);
         for (int n = 2; n < 10; n++)
         {
             var arrInt = rnd.NextIntArray(n, 0, 998244353);
             var crrInt = rnd.NextIntArray(n, 0, 998244353);
-            var arrUInt = MemoryMarshal.Cast<int, uint>(arrInt);
-            var crrUInt = MemoryMarshal.Cast<int, uint>(crrInt);
             var arrModInt = arrInt.Select(n => new MontgomeryModInt<Mod998244353>(n)).ToArray();
             var crrModInt = crrInt.Select(n => new MontgomeryModInt<Mod998244353>(n)).ToArray();
-            var expected = NativeDp<Mod998244353>(arrModInt, crrModInt);
+            var expected = NativeDp(arrModInt, crrModInt);
             for (int l = 0; l < 40; l++)
             {
-                LinearRecurrence.Kitamasa<Mod998244353>(arrInt, crrInt, l).ShouldBe(expected[l]);
-                LinearRecurrence.Kitamasa<Mod998244353>(arrUInt, crrUInt, l).ShouldBe(expected[l]);
-                LinearRecurrence.Kitamasa(arrModInt, crrModInt, l).ShouldBe(expected[l]);
+                await LinearRecurrence.Kitamasa<Mod998244353>(arrInt, crrInt, l).Should().BeEqualTo(expected[l]);
+                var arrUInt = MemoryMarshal.Cast<int, uint>(arrInt);
+                var crrUInt = MemoryMarshal.Cast<int, uint>(crrInt);
+                await LinearRecurrence.Kitamasa<Mod998244353>(arrUInt, crrUInt, l).Should().BeEqualTo(expected[l]);
+                await LinearRecurrence.Kitamasa(arrModInt, crrModInt, l).Should().BeEqualTo(expected[l]);
             }
         }
     }
 
-    [Fact]
-    public void Kitamasa_Fibonacci()
+    [Test, MultipleAssertions]
+    public async Task Kitamasa_Fibonacci()
     {
         var rnd = new Random(42);
         for (int n = 2; n < 200; n++)
@@ -83,27 +83,27 @@ public class LinearRecurrenceTest
             var a0 = rnd.Next();
             var a1 = rnd.Next();
             var N = (long)rnd.NextUInt() << 24;
-            RunTest<Mod998244353>(a0, a1, N);
-            RunTest<Mod1000000007>(a0, a1, N);
+            await RunTest<Mod998244353>(a0, a1, N);
+            await RunTest<Mod1000000007>(a0, a1, N);
         }
 
 
-        static void RunTest<T>(int a0, int a1, long n) where T : struct, IStaticMod
+        static async Task RunTest<T>(int a0, int a1, long n) where T : struct, IStaticMod
         {
             Matrix2x2<MontgomeryModInt<T>> mat = new(
                 (0, 1),
                 (1, 1)
             );
 
-            LinearRecurrence.Kitamasa<T>(
+            await LinearRecurrence.Kitamasa<T>(
                 stackalloc MontgomeryModInt<T>[2] { a0, a1 },
                 stackalloc MontgomeryModInt<T>[2] { 1, 1 }, n)
-                .ShouldBe(mat.Pow(n).Multiply(a0, a1).v0);
+                 .Should().BeEqualTo(mat.Pow(n).Multiply(a0, a1).v0);
         }
     }
 
-    [Fact]
-    public void Recurrence_Tribonacci()
+    [Test, MultipleAssertions]
+    public async Task Recurrence_Tribonacci()
     {
         var rnd = new Random(42);
 
@@ -121,12 +121,12 @@ public class LinearRecurrenceTest
             {
                 {
                     var recurrence = LinearRecurrence.Recurrence<Mod998244353>([a0, a1, a2], [1, 1, 1], len);
-                    recurrence.ShouldBe(native998244353[..len]);
+                    await recurrence.Should().BeEquivalentOrderTo(native998244353[..len]);
                 }
 
                 {
                     var recurrence = LinearRecurrence.Recurrence<Mod1000000007>([a0, a1, a2], [1, 1, 1], len);
-                    recurrence.ShouldBe(native1000000007[..len]);
+                    await recurrence.Should().BeEquivalentOrderTo(native1000000007[..len]);
                 }
             }
         }
@@ -143,12 +143,12 @@ public class LinearRecurrenceTest
             {
                 {
                     var recurrence = LinearRecurrence.Recurrence<Mod998244353>([a0, a1], [1, 1, 1], len);
-                    recurrence.ShouldBe(native998244353[..len]);
+                    await recurrence.Should().BeEquivalentOrderTo(native998244353[..len]);
                 }
 
                 {
                     var recurrence = LinearRecurrence.Recurrence<Mod1000000007>([a0, a1], [1, 1, 1], len);
-                    recurrence.ShouldBe(native1000000007[..len]);
+                    await recurrence.Should().BeEquivalentOrderTo(native1000000007[..len]);
                 }
             }
         }
@@ -165,12 +165,12 @@ public class LinearRecurrenceTest
             {
                 {
                     var recurrence = LinearRecurrence.Recurrence<Mod998244353>([a0], [1, 1, 1], len);
-                    recurrence.ShouldBe(native998244353[..len]);
+                    await recurrence.Should().BeEquivalentOrderTo(native998244353[..len]);
 
                 }
                 {
                     var recurrence = LinearRecurrence.Recurrence<Mod1000000007>([a0], [1, 1, 1], len);
-                    recurrence.ShouldBe(native1000000007[..len]);
+                    await recurrence.Should().BeEquivalentOrderTo(native1000000007[..len]);
                 }
 
             }

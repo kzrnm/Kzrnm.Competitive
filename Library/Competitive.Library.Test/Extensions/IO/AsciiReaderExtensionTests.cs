@@ -11,27 +11,27 @@ public class AsciiReaderExtensionTests
         return new PropertyConsoleReader(new MemoryStream(enc.GetBytes(text)), enc);
     }
 
-    [Fact]
-    public void SmallAlphabet()
+    [Test, MultipleAssertions]
+    public async Task SmallAlphabet()
     {
         var cr = GetReader("abcdefghijklmnopqrstuvwxyz");
-        cr.AsciiToNum('a').ShouldBe(Enumerable.Range(0, 26).Select(v => (byte)v));
+        await cr.AsciiToNum('a').Should().BeEquivalentOrderTo(Enumerable.Range(0, 26).Select(v => (byte)v));
     }
 
-    [Fact]
-    public void LargeAlphabet()
+    [Test, MultipleAssertions]
+    public async Task LargeAlphabet()
     {
         var cr = GetReader("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-        cr.AsciiToNum('A').ShouldBe(Enumerable.Range(0, 26).Select(v => (byte)v));
+        await cr.AsciiToNum('A').Should().BeEquivalentOrderTo(Enumerable.Range(0, 26).Select(v => (byte)v));
 
         cr = GetReader("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-        cr.AsciiToNum().ShouldBe(Enumerable.Range(0, 26).Select(v => (byte)v));
+        await cr.AsciiToNum().Should().BeEquivalentOrderTo(Enumerable.Range(0, 26).Select(v => (byte)v));
     }
 
-    [Fact]
-    public void Number()
+    [Test, MultipleAssertions]
+    public async Task Number()
     {
         var cr = GetReader("0123456789");
-        cr.AsciiToNum('0').ShouldBe(Enumerable.Range(0, 10).Select(v => (byte)v));
+        await cr.AsciiToNum('0').Should().BeEquivalentOrderTo(Enumerable.Range(0, 10).Select(v => (byte)v));
     }
 }

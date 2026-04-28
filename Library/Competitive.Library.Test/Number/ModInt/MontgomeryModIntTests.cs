@@ -15,21 +15,21 @@ public class MontgomeryModIntTests
         public uint Mod => 1;
         public bool IsPrime => false;
     }
-    [Fact]
-    public void Mod1()
+    [Test, MultipleAssertions]
+    public async Task Mod1()
     {
         for (int i = 0; i < 100; i++)
         {
             for (int j = 0; j < 100; j++)
             {
-                (new MontgomeryModInt<Mod1ID>(i) * j).Value.ShouldBe(0);
+                await (new MontgomeryModInt<Mod1ID>(i) * j).Value.Should().BeEqualTo(0);
             }
         }
-        (new MontgomeryModInt<Mod1ID>(1234) + 5678).Value.ShouldBe(0);
-        (new MontgomeryModInt<Mod1ID>(1234) - 5678).Value.ShouldBe(0);
-        (new MontgomeryModInt<Mod1ID>(1234) * 5678).Value.ShouldBe(0);
-        //(new LazyMontgomeryModInt<Mod1ID>(1234).Pow(5678)).Value.ShouldBe(0); // faild in Debug.Assert
-        (new MontgomeryModInt<Mod1ID>(0).Inv()).Value.ShouldBe(0);
+        await (new MontgomeryModInt<Mod1ID>(1234) + 5678).Value.Should().BeEqualTo(0);
+        await (new MontgomeryModInt<Mod1ID>(1234) - 5678).Value.Should().BeEqualTo(0);
+        await (new MontgomeryModInt<Mod1ID>(1234) * 5678).Value.Should().BeEqualTo(0);
+        //await (new LazyMontgomeryModInt<Mod1ID>(1234).Pow(5678)).Value.Should().BeEqualTo(0); // faild in Debug.Assert
+        await (new MontgomeryModInt<Mod1ID>(0).Inv()).Value.Should().BeEqualTo(0);
     }
 
     private readonly struct ModID11 : IStaticMod
@@ -47,14 +47,14 @@ public class MontgomeryModIntTests
         public uint Mod => 998244353;
         public bool IsPrime => true;
     }
-    [Fact]
-    public void Inv()
+    [Test, MultipleAssertions]
+    public async Task Inv()
     {
-        RunStatic<ModID11>();
-        RunStatic<ModID1000000007>();
-        RunStatic<ModID998244353>();
+        await RunStatic<ModID11>();
+        await RunStatic<ModID1000000007>();
+        await RunStatic<ModID998244353>();
 
-        static void RunStatic<T>() where T : struct, IStaticMod
+        static async Task RunStatic<T>() where T : struct, IStaticMod
         {
             var mod = (int)new T().Mod;
             var max = Math.Min(1000, mod);
@@ -64,7 +64,7 @@ public class MontgomeryModIntTests
             {
                 if (Gcd(i, mod) != 1) continue;
                 int x = new MontgomeryModInt<T>(i).Inv().Value;
-                ((long)x * i % mod).ShouldBe(1);
+                await ((long)x * i % mod).Should().BeEqualTo(1);
             }
         }
     }
@@ -74,36 +74,36 @@ public class MontgomeryModIntTests
         public uint Mod => 11;
         public bool IsPrime => true;
     }
-    [Fact]
-    public void Increment()
+    [Test, MultipleAssertions]
+    public async Task Increment()
     {
         MontgomeryModInt<IncrementID> a;
         a = 8;
-        (++a).Value.ShouldBe(9);
-        (++a).Value.ShouldBe(10);
-        (++a).Value.ShouldBe(0);
-        (++a).Value.ShouldBe(1);
+        await (++a).Value.Should().BeEqualTo(9);
+        await (++a).Value.Should().BeEqualTo(10);
+        await (++a).Value.Should().BeEqualTo(0);
+        await (++a).Value.Should().BeEqualTo(1);
         a = 3;
-        (--a).Value.ShouldBe(2);
-        (--a).Value.ShouldBe(1);
-        (--a).Value.ShouldBe(0);
-        (--a).Value.ShouldBe(10);
+        await (--a).Value.Should().BeEqualTo(2);
+        await (--a).Value.Should().BeEqualTo(1);
+        await (--a).Value.Should().BeEqualTo(0);
+        await (--a).Value.Should().BeEqualTo(10);
         a = 8;
-        (a++).Value.ShouldBe(8);
-        (a++).Value.ShouldBe(9);
-        (a++).Value.ShouldBe(10);
-        (a++).Value.ShouldBe(0);
-        a.Value.ShouldBe(1);
+        await (a++).Value.Should().BeEqualTo(8);
+        await (a++).Value.Should().BeEqualTo(9);
+        await (a++).Value.Should().BeEqualTo(10);
+        await (a++).Value.Should().BeEqualTo(0);
+        await a.Value.Should().BeEqualTo(1);
         a = 3;
-        (a--).Value.ShouldBe(3);
-        (a--).Value.ShouldBe(2);
-        (a--).Value.ShouldBe(1);
-        (a--).Value.ShouldBe(0);
-        a.Value.ShouldBe(10);
+        await (a--).Value.Should().BeEqualTo(3);
+        await (a--).Value.Should().BeEqualTo(2);
+        await (a--).Value.Should().BeEqualTo(1);
+        await (a--).Value.Should().BeEqualTo(0);
+        await a.Value.Should().BeEqualTo(10);
     }
 
-    [Fact]
-    public void Parse()
+    [Test, MultipleAssertions]
+    public async Task Parse()
     {
         var bigs = new[]{
             BigInteger.Pow(10, 1000),
@@ -116,12 +116,12 @@ public class MontgomeryModIntTests
             "111.0",
             "111,1",
         };
-        RunStatic<ModID11>();
-        RunStatic<ModID1000000007>();
-        RunStatic<ModID998244353>();
+        await RunStatic<ModID11>();
+        await RunStatic<ModID1000000007>();
+        await RunStatic<ModID998244353>();
 
 
-        void RunStatic<T>() where T : struct, IStaticMod
+        async Task RunStatic<T>() where T : struct, IStaticMod
         {
             var mod = (int)new T().Mod;
             var nums = Enumerable.Range(-100, 200).Concat(Enumerable.Range(mod - 100, 200));
@@ -129,28 +129,28 @@ public class MontgomeryModIntTests
             {
                 var s = n.ToString();
                 var expected = (n % mod + mod) % mod;
-                MontgomeryModInt<T>.TryParse(s, out var num1).ShouldBeTrue();
+                await MontgomeryModInt<T>.TryParse(s, out var num1).Should().BeTrue();
                 var num2 = MontgomeryModInt<T>.Parse(s);
 
-                num1.Value.ShouldBe(expected);
-                num2.Value.ShouldBe(expected);
+                await num1.Value.Should().BeEqualTo(expected);
+                await num2.Value.Should().BeEqualTo(expected);
             }
 
             foreach (var n in bigs)
             {
                 var s = n.ToString();
                 var expected = (int)(n % mod + mod) % mod;
-                MontgomeryModInt<T>.TryParse(s, out var num1).ShouldBeTrue();
+                await MontgomeryModInt<T>.TryParse(s, out var num1).Should().BeTrue();
                 var num2 = MontgomeryModInt<T>.Parse(s);
 
-                num1.Value.ShouldBe(expected);
-                num2.Value.ShouldBe(expected);
+                await num1.Value.Should().BeEqualTo(expected);
+                await num2.Value.Should().BeEqualTo(expected);
             }
 
             foreach (var s in invalids)
             {
-                MontgomeryModInt<T>.TryParse(s, out _).ShouldBeFalse();
-                Should.Throw<FormatException>(() => MontgomeryModInt<T>.Parse(s));
+                await MontgomeryModInt<T>.TryParse(s, out _).Should().BeFalse();
+                Assert.Throws<FormatException>(() => MontgomeryModInt<T>.Parse(s));
             }
         }
     }
@@ -159,12 +159,12 @@ public class MontgomeryModIntTests
         public uint Mod => 11;
         public bool IsPrime => true;
     }
-    [Fact]
-    public void ConstructorStatic()
+    [Test, MultipleAssertions]
+    public async Task ConstructorStatic()
     {
-        new MontgomeryModInt<ConstructorID>(3).Value.ShouldBe(3);
-        new MontgomeryModInt<ConstructorID>(-10).Value.ShouldBe(1);
-        (1 + new MontgomeryModInt<ConstructorID>(1)).Value.ShouldBe(2);
+        await new MontgomeryModInt<ConstructorID>(3).Value.Should().BeEqualTo(3);
+        await new MontgomeryModInt<ConstructorID>(-10).Value.Should().BeEqualTo(1);
+        await (1 + new MontgomeryModInt<ConstructorID>(1)).Value.Should().BeEqualTo(2);
     }
 
     private readonly struct MemoryID : IStaticMod
@@ -173,8 +173,8 @@ public class MontgomeryModIntTests
         public bool IsPrime => true;
     }
 
-    [Fact]
-    public void MemoryStatic()
+    [Test, MultipleAssertions]
+    public async Task MemoryStatic()
     {
         var mt = new Random(227);
         for (int n = 0; n < 100; n++)
@@ -187,19 +187,18 @@ public class MontgomeryModIntTests
                 arr[i] = v;
                 expected[i] = v % 101;
             }
-            arr.Select(m => m.Value).ToArray()
-                .ShouldBe(expected);
+            await arr.Select(m => m.Value).ToArray().Should().BeEquivalentOrderTo(expected);
         }
     }
 
-    [Fact]
-    public void Minus()
+    [Test, MultipleAssertions]
+    public async Task Minus()
     {
-        RunStatic<ModID11>();
-        RunStatic<ModID1000000007>();
-        RunStatic<ModID998244353>();
+        await RunStatic<ModID11>();
+        await RunStatic<ModID1000000007>();
+        await RunStatic<ModID998244353>();
 
-        static void RunStatic<T>() where T : struct, IStaticMod
+        static async Task RunStatic<T>() where T : struct, IStaticMod
         {
             var mod = (int)new T().Mod;
             var max = Math.Min(1000, mod);
@@ -208,21 +207,21 @@ public class MontgomeryModIntTests
             foreach (var i in cases)
             {
                 int x = (-new MontgomeryModInt<T>(i)).Value;
-                x.ShouldBe((mod - i) % mod);
+                await x.Should().BeEqualTo((mod - i) % mod);
             }
         }
     }
 
-    [Fact]
-    public void String()
+    [Test, MultipleAssertions]
+    public async Task String()
     {
-        RunStatic<ModID11>();
-        RunStatic<ModID1000000007>();
-        RunStatic<ModID998244353>();
+        await RunStatic<ModID11>();
+        await RunStatic<ModID1000000007>();
+        await RunStatic<ModID998244353>();
 
-        static void RunStatic<T>() where T : struct, IStaticMod
+        static async Task RunStatic<T>() where T : struct, IStaticMod
         {
-            Span<char> chars = stackalloc char[30];
+            var chars = new char[30];
             var mod = (int)new T().Mod;
             var max = Math.Min(1000, mod);
             var cases = Enumerable.Range(0, max);
@@ -231,9 +230,9 @@ public class MontgomeryModIntTests
             {
                 var m = new MontgomeryModInt<T>(i);
                 var expected = (i % mod).ToString();
-                m.ToString().ShouldBe(expected);
-                m.TryFormat(chars, out var charsWritten, "", null).ShouldBeTrue();
-                new string(chars[..charsWritten]).ShouldBe(expected);
+                await m.ToString().Should().BeEqualTo(expected);
+                await m.TryFormat(chars, out var charsWritten, "", null).Should().BeTrue();
+                await new string(chars, 0, charsWritten).Should().BeEqualTo(expected);
             }
         }
     }

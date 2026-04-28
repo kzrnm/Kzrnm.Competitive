@@ -3,8 +3,8 @@ namespace Kzrnm.Competitive.Testing.Graph;
 
 public class 最短経路01BfsTests
 {
-    [Fact]
-    public void Int()
+    [Test, MultipleAssertions]
+    public async Task Int()
     {
         var gb = new WIntGraphBuilder(5, true);
         gb.Add(0, 1, 1);
@@ -17,15 +17,15 @@ public class 最短経路01BfsTests
         gb.Add(4, 3, 1);
         gb.Add(4, 0, 1);
         var graph = gb.ToGraph();
-        graph.ShortestPath01Bfs(0).ShouldBe([0, 1, 0, 1, 0]);
-        graph.ShortestPath01Bfs(1).ShouldBe([1, 0, 0, 1, 0]);
-        graph.ShortestPath01Bfs(2).ShouldBe([1, 2, 0, 1, 0]);
-        graph.ShortestPath01Bfs(3).ShouldBe([int.MaxValue, int.MaxValue, int.MaxValue, 0, int.MaxValue]);
-        graph.ShortestPath01Bfs(4).ShouldBe([1, 2, 1, 1, 0]);
+        await graph.ShortestPath01Bfs(0).Should().BeEquivalentOrderTo([0, 1, 0, 1, 0]);
+        await graph.ShortestPath01Bfs(1).Should().BeEquivalentOrderTo([1, 0, 0, 1, 0]);
+        await graph.ShortestPath01Bfs(2).Should().BeEquivalentOrderTo([1, 2, 0, 1, 0]);
+        await graph.ShortestPath01Bfs(3).Should().BeEquivalentOrderTo([int.MaxValue, int.MaxValue, int.MaxValue, 0, int.MaxValue]);
+        await graph.ShortestPath01Bfs(4).Should().BeEquivalentOrderTo([1, 2, 1, 1, 0]);
     }
 
-    [Fact]
-    public void Long()
+    [Test, MultipleAssertions]
+    public async Task Long()
     {
         var gb = new WLongGraphBuilder(5, true);
         gb.Add(0, 1, 1);
@@ -38,10 +38,10 @@ public class 最短経路01BfsTests
         gb.Add(4, 3, 1);
         gb.Add(4, 0, 1);
         var graph = gb.ToGraph();
-        graph.ShortestPath01Bfs(0).ShouldBe([0, 1, 0, 1, 0]);
-        graph.ShortestPath01Bfs(1).ShouldBe([1, 0, 0, 1, 0]);
-        graph.ShortestPath01Bfs(2).ShouldBe([1, 2, 0, 1, 0]);
-        graph.ShortestPath01Bfs(3).ShouldBe([long.MaxValue, long.MaxValue, long.MaxValue, 0, long.MaxValue]);
-        graph.ShortestPath01Bfs(4).ShouldBe([1, 2, 1, 1, 0]);
+        await graph.ShortestPath01Bfs(0).Should().BeEquivalentOrderTo([0L, 1, 0, 1, 0]);
+        await graph.ShortestPath01Bfs(1).Should().BeEquivalentOrderTo([1L, 0, 0, 1, 0]);
+        await graph.ShortestPath01Bfs(2).Should().BeEquivalentOrderTo([1L, 2, 0, 1, 0]);
+        await graph.ShortestPath01Bfs(3).Should().BeEquivalentOrderTo([long.MaxValue, long.MaxValue, long.MaxValue, 0, long.MaxValue]);
+        await graph.ShortestPath01Bfs(4).Should().BeEquivalentOrderTo([1L, 2, 1, 1, 0]);
     }
 }

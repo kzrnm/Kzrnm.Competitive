@@ -21,38 +21,38 @@ public class UInt512Tests
         return bi;
     }
 
-    [Fact]
-    [Trait("Category", "Convert")]
-    public void ConvertToBigInteger()
+    [Test, MultipleAssertions]
+    [Property("Category", "Convert")]
+    public async Task ConvertToBigInteger()
     {
-        var s = new ulong[1000].AsSpan();
-        rnd.NextBytes(MemoryMarshal.AsBytes(s));
+        var s = new ulong[1000];
+        rnd.NextBytes(MemoryMarshal.AsBytes(s.AsSpan()));
         for (; UInt512.ULongCount < s.Length; s = s[1..])
         {
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 CreateBigInteger(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]));
 
-            Impl(
+            await Impl(
                 new(0, 0, s[5], s[4], s[3], s[2], s[1], s[0]),
                 CreateBigInteger(0, 0, s[5], s[4], s[3], s[2], s[1], s[0]));
 
-            Impl(
+            await Impl(
                 new(0, 0, 0, 0, 0, 0, 0, s[0]),
                 CreateBigInteger(0, 0, 0, 0, 0, 0, 0, s[0]));
         }
-        static void Impl(UInt512 value, BigInteger bi)
+        static async Task Impl(UInt512 value, BigInteger bi)
         {
-            ((BigInteger)value).ShouldBe(bi);
+            await ((BigInteger)value).Should().BeEqualTo(bi);
         }
     }
 
-    [Fact]
-    [Trait("Category", "Convert")]
-    public void ConvertTo()
+    [Test, MultipleAssertions]
+    [Property("Category", "Convert")]
+    public async Task ConvertTo()
     {
-        var s = new ulong[1000].AsSpan();
-        rnd.NextBytes(MemoryMarshal.AsBytes(s));
+        var s = new ulong[1000];
+        rnd.NextBytes(MemoryMarshal.AsBytes(s.AsSpan()));
         for (; UInt512.ULongCount < s.Length; s = s[1..])
         {
             UInt512 value;
@@ -60,11 +60,11 @@ public class UInt512Tests
             {
                 value = new(0, 0, 0, 0, 0, 0, s[1], s[0]);
                 var other128 = new UInt128(s[1], s[0]);
-                ((UInt128)value).ShouldBe(other128);
+                await ((UInt128)value).Should().BeEqualTo(other128);
 
                 value = new(0, 0, 0, 0, 0, 0, 0, s[0]);
                 var other64 = s[0];
-                ((UInt64)value).ShouldBe(other64);
+                await ((UInt64)value).Should().BeEqualTo(other64);
 
 
                 ulong s0 = s[0];
@@ -72,621 +72,624 @@ public class UInt512Tests
                 s0 &= uint.MaxValue;
                 value = new(0, 0, 0, 0, 0, 0, 0, s0);
                 var other32 = (UInt32)s0;
-                ((UInt32)value).ShouldBe(other32);
+                await ((UInt32)value).Should().BeEqualTo(other32);
 
                 s0 &= ushort.MaxValue;
                 value = new(0, 0, 0, 0, 0, 0, 0, s0);
                 var other16 = (UInt16)s0;
-                ((UInt16)value).ShouldBe(other16);
+                await ((UInt16)value).Should().BeEqualTo(other16);
 
                 s0 &= byte.MaxValue;
                 value = new(0, 0, 0, 0, 0, 0, 0, s0);
                 var other8 = (byte)s0;
-                ((byte)value).ShouldBe(other8);
+                await ((byte)value).Should().BeEqualTo(other8);
             }
             unchecked
             {
                 value = new(0, 0, 0, 0, 0, 0, 0, s[0]);
                 var other32 = (UInt32)s[0];
-                ((UInt32)value).ShouldBe(other32);
+                await ((UInt32)value).Should().BeEqualTo(other32);
 
                 value = new(0, 0, 0, 0, 0, 0, 0, s[0]);
                 var other16 = (UInt16)s[0];
-                ((UInt16)value).ShouldBe(other16);
+                await ((UInt16)value).Should().BeEqualTo(other16);
 
                 value = new(0, 0, 0, 0, 0, 0, 0, s[0]);
                 var other8 = (byte)s[0];
-                ((byte)value).ShouldBe(other8);
+                await ((byte)value).Should().BeEqualTo(other8);
             }
         }
 
         checked
         {
             UInt512 value = ulong.MaxValue;
-            Should.Throw<OverflowException>(() => _ = (UInt32)value);
-            Should.Throw<OverflowException>(() => _ = (UInt16)value);
-            Should.Throw<OverflowException>(() => _ = (byte)value);
+            Assert.Throws<OverflowException>(() => _ = (UInt32)value);
+            Assert.Throws<OverflowException>(() => _ = (UInt16)value);
+            Assert.Throws<OverflowException>(() => _ = (byte)value);
 
             value = new(0, 0, 0, 0, 0, 0, 1, 0);
-            Should.Throw<OverflowException>(() => _ = (UInt64)value);
-            Should.Throw<OverflowException>(() => _ = (UInt32)value);
-            Should.Throw<OverflowException>(() => _ = (UInt16)value);
-            Should.Throw<OverflowException>(() => _ = (byte)value);
+            Assert.Throws<OverflowException>(() => _ = (UInt64)value);
+            Assert.Throws<OverflowException>(() => _ = (UInt32)value);
+            Assert.Throws<OverflowException>(() => _ = (UInt16)value);
+            Assert.Throws<OverflowException>(() => _ = (byte)value);
 
             value = new(0, 0, 0, 0, 0, 1, 0, 0);
-            Should.Throw<OverflowException>(() => _ = (UInt128)value);
-            Should.Throw<OverflowException>(() => _ = (UInt64)value);
-            Should.Throw<OverflowException>(() => _ = (UInt32)value);
-            Should.Throw<OverflowException>(() => _ = (UInt16)value);
-            Should.Throw<OverflowException>(() => _ = (byte)value);
+            Assert.Throws<OverflowException>(() => _ = (UInt128)value);
+            Assert.Throws<OverflowException>(() => _ = (UInt64)value);
+            Assert.Throws<OverflowException>(() => _ = (UInt32)value);
+            Assert.Throws<OverflowException>(() => _ = (UInt16)value);
+            Assert.Throws<OverflowException>(() => _ = (byte)value);
         }
     }
 
-    [Fact]
-    [Trait("Category", "Convert")]
-    public void ConvertFromBigInteger()
+    [Test, MultipleAssertions]
+    [Property("Category", "Convert")]
+    public async Task ConvertFromBigInteger()
     {
-        var s = new ulong[1000].AsSpan();
-        rnd.NextBytes(MemoryMarshal.AsBytes(s));
+        var s = new ulong[1000];
+        rnd.NextBytes(MemoryMarshal.AsBytes(s.AsSpan()));
         for (; UInt512.ULongCount < s.Length; s = s[1..])
         {
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 CreateBigInteger(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]));
 
-            Impl(
+            await Impl(
                 new(0, 0, s[5], s[4], s[3], s[2], s[1], s[0]),
                 CreateBigInteger(0, 0, s[5], s[4], s[3], s[2], s[1], s[0]));
 
-            Impl(
+            await Impl(
                 new(0, 0, 0, 0, 0, 0, 0, s[0]),
                 CreateBigInteger(0, 0, 0, 0, 0, 0, 0, s[0]));
 
-            Impl(
+            await Impl(
                 new(s[6], s[5], s[4], s[3], s[2], s[1], s[0], 0),
                 CreateBigInteger(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]) << 64);
         }
-        static void Impl(UInt512 value, BigInteger bi)
+        static async Task Impl(UInt512 value, BigInteger bi)
         {
-            ((UInt512)bi).ShouldBe(value);
+            await ((UInt512)bi).Should().BeEqualTo(value);
         }
     }
 
-    [Fact]
-    [Trait("Category", "Convert")]
-    public void ConvertFrom()
+    [Test, MultipleAssertions]
+    [Property("Category", "Convert")]
+    public async Task ConvertFrom()
     {
-        var s = new ulong[1000].AsSpan();
-        rnd.NextBytes(MemoryMarshal.AsBytes(s));
+        var s = new ulong[1000];
+        rnd.NextBytes(MemoryMarshal.AsBytes(s.AsSpan()));
         for (; UInt512.ULongCount < s.Length; s = s[1..])
         {
             UInt512 value;
             value = new(0, 0, 0, 0, 0, 0, s[1], s[0]);
             UInt512 other128 = new UInt128(s[1], s[0]);
-            other128.ShouldBe(value);
+            await other128.Should().BeEqualTo(value);
 
             value = new(0, 0, 0, 0, 0, 0, 0, s[0]);
             UInt512 other64 = s[0];
-            other64.ShouldBe(value);
+            await other64.Should().BeEqualTo(value);
 
             value = new(0, 0, 0, 0, 0, 0, 0, (uint)s[0]);
             UInt512 other32 = (UInt32)s[0];
-            other32.ShouldBe(value);
+            await other32.Should().BeEqualTo(value);
 
             value = new(0, 0, 0, 0, 0, 0, 0, (ushort)s[0]);
             UInt512 other16 = (UInt16)s[0];
-            other16.ShouldBe(value);
+            await other16.Should().BeEqualTo(value);
 
             value = new(0, 0, 0, 0, 0, 0, 0, (byte)s[0]);
             UInt512 other8 = (byte)s[0];
-            other8.ShouldBe(value);
+            await other8.Should().BeEqualTo(value);
         }
     }
 
-    public static IEnumerable<TheoryDataRow<string, UInt512>> Parse_Data()
+    public static IEnumerable<(string, UInt512)> Parse_Data()
     {
         yield return ("1", (UInt512)1);
         yield return (new BigInteger(1e60).ToString(), (UInt512)new BigInteger(1e60));
         yield return ("100", (UInt512)100);
     }
 
-    [Theory]
-    [MemberData(nameof(Parse_Data))]
-    [Trait("Category", "String")]
-    public void Parse(string input, UInt512 expected)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(Parse_Data))]
+    [Property("Category", "String")]
+    public async Task Parse(string input, UInt512 expected)
     {
-        UInt512.Parse(input).ShouldBe(expected);
+        await UInt512.Parse(input).Should().BeEqualTo(expected);
     }
 
-    [Fact]
-    [Trait("Category", "String")]
-    public void String()
+    [Test, MultipleAssertions]
+    [Property("Category", "String")]
+    public async Task String()
     {
-        var s = new ulong[1000].AsSpan();
-        rnd.NextBytes(MemoryMarshal.AsBytes(s));
+        var s = new ulong[1000];
+        rnd.NextBytes(MemoryMarshal.AsBytes(s.AsSpan()));
         for (; UInt512.ULongCount < s.Length; s = s[1..])
         {
-            Impl(new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]));
+            await Impl(new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]));
 
-            Impl(new(0, 0, s[5], s[4], s[3], s[2], s[1], s[0]));
+            await Impl(new(0, 0, s[5], s[4], s[3], s[2], s[1], s[0]));
 
-            Impl(new(0, 0, 0, 0, 0, 0, 0, s[0]));
+            await Impl(new(0, 0, 0, 0, 0, 0, 0, s[0]));
         }
 
-        static void Impl(UInt512 value)
+        static async Task Impl(UInt512 value)
         {
             var bi = (BigInteger)value;
-            value.ToString().ShouldBe(bi.ToString());
+            await value.ToString().Should().BeEqualTo(bi.ToString());
         }
     }
 
 
-    [Fact]
-    [Trait("Category", "Arthmetic")]
-    public void Add()
+    [Test, MultipleAssertions]
+    [Property("Category", "Arthmetic")]
+    public async Task Add()
     {
-        Impl(UInt512.Zero, UInt512.Zero);
-        Impl(UInt512.Zero, UInt512.One);
-        Impl(UInt512.Zero, UInt512.MaxValue);
+        await Impl(UInt512.Zero, UInt512.Zero);
+        await Impl(UInt512.Zero, UInt512.One);
+        await Impl(UInt512.Zero, UInt512.MaxValue);
 
-        Impl(UInt512.One, UInt512.One);
-        Impl(UInt512.One, UInt512.MaxValue);
+        await Impl(UInt512.One, UInt512.One);
+        await Impl(UInt512.One, UInt512.MaxValue);
 
-        Impl(UInt512.MaxValue, UInt512.MaxValue);
+        await Impl(UInt512.MaxValue, UInt512.MaxValue);
 
         for (int i = 0; i < 4; i++)
         {
-            Impl((UInt512)(BigInteger.One << (64 * i)), 1);
-            Impl((UInt512)((BigInteger.One << (64 * i)) - 1), 1);
+            await Impl((UInt512)(BigInteger.One << (64 * i)), 1);
+            await Impl((UInt512)((BigInteger.One << (64 * i)) - 1), 1);
         }
 
-        var s = new ulong[1000].AsSpan();
-        rnd.NextBytes(MemoryMarshal.AsBytes(s));
+        var s = new ulong[1000];
+        rnd.NextBytes(MemoryMarshal.AsBytes(s.AsSpan()));
         for (; UInt512.ULongCount < s.Length; s = s[1..])
         {
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 new(s[1], s[6], s[0], s[2], s[4], s[3], s[7], s[5]));
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 new(0, 0, 0, s[2], s[4], s[3], s[7], s[5]));
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 new(0, 0, 0, 0, 0, 0, 0, s[5]));
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 UInt512.One);
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 UInt512.Zero);
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 UInt512.MaxValue);
         }
 
-        static void Impl(UInt512 value0, UInt512 value1)
+        static async Task Impl(UInt512 value0, UInt512 value1)
         {
             var bi0 = (BigInteger)value0;
             var bi1 = (BigInteger)value1;
-            ((BigInteger)(value0 + value1)).ShouldBe(biMask & (bi0 + bi1));
-            ((BigInteger)(value1 + value0)).ShouldBe(biMask & (bi0 + bi1));
+            await ((BigInteger)(value0 + value1)).Should().BeEqualTo(biMask & (bi0 + bi1));
+            await ((BigInteger)(value1 + value0)).Should().BeEqualTo(biMask & (bi0 + bi1));
         }
     }
 
-    [Fact]
-    [Trait("Category", "Arthmetic")]
-    public void Minus()
+    [Test, MultipleAssertions]
+    [Property("Category", "Arthmetic")]
+    public async Task Minus()
     {
-        Impl(UInt512.Zero, UInt512.Zero);
-        Impl(UInt512.Zero, UInt512.One);
-        Impl(UInt512.Zero, UInt512.MaxValue);
+        await Impl(UInt512.Zero, UInt512.Zero);
+        await Impl(UInt512.Zero, UInt512.One);
+        await Impl(UInt512.Zero, UInt512.MaxValue);
 
-        Impl(UInt512.One, UInt512.One);
-        Impl(UInt512.One, UInt512.MaxValue);
+        await Impl(UInt512.One, UInt512.One);
+        await Impl(UInt512.One, UInt512.MaxValue);
 
-        Impl(UInt512.MaxValue, UInt512.MaxValue);
+        await Impl(UInt512.MaxValue, UInt512.MaxValue);
 
         for (int i = 0; i < 4; i++)
         {
-            Impl((UInt512)(BigInteger.One << (64 * i)), 1);
-            Impl((UInt512)((BigInteger.One << (64 * i)) - 1), 1);
+            await Impl((UInt512)(BigInteger.One << (64 * i)), 1);
+            await Impl((UInt512)((BigInteger.One << (64 * i)) - 1), 1);
         }
 
-        var s = new ulong[1000].AsSpan();
-        rnd.NextBytes(MemoryMarshal.AsBytes(s));
+        var s = new ulong[1000];
+        rnd.NextBytes(MemoryMarshal.AsBytes(s.AsSpan()));
         for (; UInt512.ULongCount < s.Length; s = s[1..])
         {
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 new(s[1], s[6], s[0], s[2], s[4], s[3], s[7], s[5]));
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 new(0, 0, 0, s[2], s[4], s[3], s[7], s[5]));
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 new(0, 0, 0, 0, 0, 0, 0, s[5]));
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 UInt512.One);
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 UInt512.Zero);
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 UInt512.MaxValue);
         }
 
-        static void Impl(UInt512 value0, UInt512 value1)
+        static async Task Impl(UInt512 value0, UInt512 value1)
         {
             var bi0 = (BigInteger)value0;
             var bi1 = (BigInteger)value1;
-            ((BigInteger)(value0 - value1)).ShouldBe(biMask & (bi0 - bi1));
-            ((BigInteger)(value1 - value0)).ShouldBe(biMask & (bi1 - bi0));
+            await ((BigInteger)(value0 - value1)).Should().BeEqualTo(biMask & (bi0 - bi1));
+            await ((BigInteger)(value1 - value0)).Should().BeEqualTo(biMask & (bi1 - bi0));
         }
     }
 
-    [Fact]
-    [Trait("Category", "Arthmetic")]
-    public void Multiply()
+    [Test, MultipleAssertions]
+    [Property("Category", "Arthmetic")]
+    public async Task Multiply()
     {
-        Impl(UInt512.Zero, UInt512.Zero);
-        Impl(UInt512.Zero, UInt512.One);
-        Impl(UInt512.Zero, UInt512.MaxValue);
+        await Impl(UInt512.Zero, UInt512.Zero);
+        await Impl(UInt512.Zero, UInt512.One);
+        await Impl(UInt512.Zero, UInt512.MaxValue);
 
-        Impl(UInt512.One, UInt512.One);
-        Impl(UInt512.One, UInt512.MaxValue);
+        await Impl(UInt512.One, UInt512.One);
+        await Impl(UInt512.One, UInt512.MaxValue);
 
-        Impl(UInt512.MaxValue, UInt512.MaxValue);
+        await Impl(UInt512.MaxValue, UInt512.MaxValue);
 
-        var s = new ulong[1000].AsSpan();
-        rnd.NextBytes(MemoryMarshal.AsBytes(s));
+        var s = new ulong[1000];
+        rnd.NextBytes(MemoryMarshal.AsBytes(s.AsSpan()));
         for (; UInt512.ULongCount < s.Length; s = s[1..])
         {
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 new(s[1], s[6], s[0], s[2], s[4], s[3], s[7], s[5]));
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 new(0, 0, 0, s[2], s[4], s[3], s[7], s[5]));
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 new(0, 0, 0, 0, 0, 0, 0, s[5]));
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 UInt512.One);
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 UInt512.Zero);
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 UInt512.MaxValue);
         }
 
-        static void Impl(UInt512 value0, UInt512 value1)
+        static async Task Impl(UInt512 value0, UInt512 value1)
         {
             var bi0 = (BigInteger)value0;
             var bi1 = (BigInteger)value1;
-            ((BigInteger)(value0 * value1)).ShouldBe(biMask & (bi0 * bi1));
-            ((BigInteger)(value1 * value0)).ShouldBe(biMask & (bi0 * bi1));
+            await ((BigInteger)(value0 * value1)).Should().BeEqualTo(biMask & (bi0 * bi1));
+            await ((BigInteger)(value1 * value0)).Should().BeEqualTo(biMask & (bi0 * bi1));
         }
     }
 
-    [Fact]
-    [Trait("Category", "Arthmetic")]
-    public void Divide()
+    [Test, MultipleAssertions]
+    [Property("Category", "Arthmetic")]
+    public async Task Divide()
     {
-        Impl(UInt512.Zero, UInt512.Zero);
-        Impl(UInt512.Zero, UInt512.One);
-        Impl(UInt512.Zero, UInt512.MaxValue);
+        await Impl(UInt512.Zero, UInt512.Zero);
+        await Impl(UInt512.Zero, UInt512.One);
+        await Impl(UInt512.Zero, UInt512.MaxValue);
 
-        Impl(UInt512.One, UInt512.One);
-        Impl(UInt512.One, UInt512.MaxValue);
+        await Impl(UInt512.One, UInt512.One);
+        await Impl(UInt512.One, UInt512.MaxValue);
 
-        Impl(UInt512.MaxValue, UInt512.MaxValue);
+        await Impl(UInt512.MaxValue, UInt512.MaxValue);
 
-        var s = new ulong[1000].AsSpan();
-        rnd.NextBytes(MemoryMarshal.AsBytes(s));
+        var s = new ulong[1000];
+        rnd.NextBytes(MemoryMarshal.AsBytes(s.AsSpan()));
         for (; UInt512.ULongCount < s.Length; s = s[1..])
         {
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 new(s[1], s[6], s[0], s[2], s[4], s[3], s[7], s[5]));
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 new(0, 0, 0, s[2], s[4], s[3], s[7], s[5]));
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 new(0, 0, 0, 0, 0, 0, 0, s[5]));
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 UInt512.One);
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 UInt512.Zero);
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 UInt512.MaxValue);
         }
 
-        static void Impl(UInt512 value0, UInt512 value1)
+        static async Task Impl(UInt512 value0, UInt512 value1)
         {
             var bi0 = (BigInteger)value0;
             var bi1 = (BigInteger)value1;
-            if (value1 != 0) ((BigInteger)(value0 / value1)).ShouldBe(biMask & (bi0 / bi1));
-            if (value0 != 0) ((BigInteger)(value1 / value0)).ShouldBe(biMask & (bi1 / bi0));
+            if (value1 != 0)
+                await ((BigInteger)(value0 / value1)).Should().BeEqualTo(biMask & (bi0 / bi1));
+            if (value0 != 0)
+                await ((BigInteger)(value1 / value0)).Should().BeEqualTo(biMask & (bi1 / bi0));
         }
     }
 
-    [Fact]
-    [Trait("Category", "Arthmetic")]
-    public void SingleMinus()
+    [Test, MultipleAssertions]
+    [Property("Category", "Arthmetic")]
+    public async Task SingleMinus()
     {
-        Impl(UInt512.Zero);
-        Impl(UInt512.One);
-        Impl(UInt512.MaxValue);
-        var s = new ulong[1000].AsSpan();
-        rnd.NextBytes(MemoryMarshal.AsBytes(s));
+        await Impl(UInt512.Zero);
+        await Impl(UInt512.One);
+        await Impl(UInt512.MaxValue);
+        var s = new ulong[1000];
+        rnd.NextBytes(MemoryMarshal.AsBytes(s.AsSpan()));
         for (; UInt512.ULongCount < s.Length; s = s[1..])
         {
-            Impl(new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]));
+            await Impl(new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]));
 
-            Impl(new(0, 0, 0, s[2], s[4], s[3], s[7], s[5]));
+            await Impl(new(0, 0, 0, s[2], s[4], s[3], s[7], s[5]));
 
-            Impl(new(0, 0, 0, 0, 0, 0, 0, s[5]));
+            await Impl(new(0, 0, 0, 0, 0, 0, 0, s[5]));
         }
 
-        static void Impl(UInt512 value)
+        static async Task Impl(UInt512 value)
         {
             var bi = (BigInteger)value;
-            if (bi != 0) ((BigInteger)(-value)).ShouldBe((bi ^ biMask) + 1);
+            if (bi != 0)
+                await ((BigInteger)(-value)).Should().BeEqualTo((bi ^ biMask) + 1);
         }
     }
 
-    [Fact]
-    [Trait("Category", "Bitwise")]
-    public void And()
+    [Test, MultipleAssertions]
+    [Property("Category", "Bitwise")]
+    public async Task And()
     {
-        Impl(UInt512.Zero, UInt512.Zero);
-        Impl(UInt512.Zero, UInt512.One);
-        Impl(UInt512.Zero, UInt512.MaxValue);
+        await Impl(UInt512.Zero, UInt512.Zero);
+        await Impl(UInt512.Zero, UInt512.One);
+        await Impl(UInt512.Zero, UInt512.MaxValue);
 
-        Impl(UInt512.One, UInt512.One);
-        Impl(UInt512.One, UInt512.MaxValue);
+        await Impl(UInt512.One, UInt512.One);
+        await Impl(UInt512.One, UInt512.MaxValue);
 
-        Impl(UInt512.MaxValue, UInt512.MaxValue);
+        await Impl(UInt512.MaxValue, UInt512.MaxValue);
 
-        var s = new ulong[1000].AsSpan();
-        rnd.NextBytes(MemoryMarshal.AsBytes(s));
+        var s = new ulong[1000];
+        rnd.NextBytes(MemoryMarshal.AsBytes(s.AsSpan()));
         for (; UInt512.ULongCount < s.Length; s = s[1..])
         {
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 new(s[1], s[6], s[0], s[2], s[4], s[3], s[7], s[5]));
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 new(0, 0, 0, s[2], s[4], s[3], s[7], s[5]));
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 new(0, 0, 0, 0, 0, 0, 0, s[5]));
         }
 
-        static void Impl(UInt512 value0, UInt512 value1)
+        static async Task Impl(UInt512 value0, UInt512 value1)
         {
             var bi0 = (BigInteger)value0;
             var bi1 = (BigInteger)value1;
-            ((BigInteger)(value0 & value1)).ShouldBe(bi0 & bi1);
-            ((BigInteger)(value1 & value0)).ShouldBe(bi0 & bi1);
+            await ((BigInteger)(value0 & value1)).Should().BeEqualTo(bi0 & bi1);
+            await ((BigInteger)(value1 & value0)).Should().BeEqualTo(bi0 & bi1);
         }
     }
 
-    [Fact]
-    [Trait("Category", "Bitwise")]
-    public void Or()
+    [Test, MultipleAssertions]
+    [Property("Category", "Bitwise")]
+    public async Task Or()
     {
-        Impl(UInt512.Zero, UInt512.Zero);
-        Impl(UInt512.Zero, UInt512.One);
-        Impl(UInt512.Zero, UInt512.MaxValue);
+        await Impl(UInt512.Zero, UInt512.Zero);
+        await Impl(UInt512.Zero, UInt512.One);
+        await Impl(UInt512.Zero, UInt512.MaxValue);
 
-        Impl(UInt512.One, UInt512.One);
-        Impl(UInt512.One, UInt512.MaxValue);
+        await Impl(UInt512.One, UInt512.One);
+        await Impl(UInt512.One, UInt512.MaxValue);
 
-        Impl(UInt512.MaxValue, UInt512.MaxValue);
+        await Impl(UInt512.MaxValue, UInt512.MaxValue);
 
-        var s = new ulong[1000].AsSpan();
-        rnd.NextBytes(MemoryMarshal.AsBytes(s));
+        var s = new ulong[1000];
+        rnd.NextBytes(MemoryMarshal.AsBytes(s.AsSpan()));
         for (; UInt512.ULongCount < s.Length; s = s[1..])
         {
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 new(s[1], s[6], s[0], s[2], s[4], s[3], s[7], s[5]));
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 new(0, 0, 0, s[2], s[4], s[3], s[7], s[5]));
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 new(0, 0, 0, 0, 0, 0, 0, s[5]));
         }
 
-        static void Impl(UInt512 value0, UInt512 value1)
+        static async Task Impl(UInt512 value0, UInt512 value1)
         {
             var bi0 = (BigInteger)value0;
             var bi1 = (BigInteger)value1;
-            ((BigInteger)(value0 | value1)).ShouldBe(bi0 | bi1);
-            ((BigInteger)(value1 | value0)).ShouldBe(bi0 | bi1);
+            await ((BigInteger)(value0 | value1)).Should().BeEqualTo(bi0 | bi1);
+            await ((BigInteger)(value1 | value0)).Should().BeEqualTo(bi0 | bi1);
         }
     }
 
-    [Fact]
-    [Trait("Category", "Bitwise")]
-    public void Xor()
+    [Test, MultipleAssertions]
+    [Property("Category", "Bitwise")]
+    public async Task Xor()
     {
-        Impl(UInt512.Zero, UInt512.Zero);
-        Impl(UInt512.Zero, UInt512.One);
-        Impl(UInt512.Zero, UInt512.MaxValue);
+        await Impl(UInt512.Zero, UInt512.Zero);
+        await Impl(UInt512.Zero, UInt512.One);
+        await Impl(UInt512.Zero, UInt512.MaxValue);
 
-        Impl(UInt512.One, UInt512.One);
-        Impl(UInt512.One, UInt512.MaxValue);
+        await Impl(UInt512.One, UInt512.One);
+        await Impl(UInt512.One, UInt512.MaxValue);
 
-        Impl(UInt512.MaxValue, UInt512.MaxValue);
+        await Impl(UInt512.MaxValue, UInt512.MaxValue);
 
-        var s = new ulong[1000].AsSpan();
-        rnd.NextBytes(MemoryMarshal.AsBytes(s));
+        var s = new ulong[1000];
+        rnd.NextBytes(MemoryMarshal.AsBytes(s.AsSpan()));
         for (; UInt512.ULongCount < s.Length; s = s[1..])
         {
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 new(s[1], s[6], s[0], s[2], s[4], s[3], s[7], s[5]));
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 new(0, 0, 0, s[2], s[4], s[3], s[7], s[5]));
 
-            Impl(
+            await Impl(
                 new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]),
                 new(0, 0, 0, 0, 0, 0, 0, s[5]));
         }
 
-        static void Impl(UInt512 value0, UInt512 value1)
+        static async Task Impl(UInt512 value0, UInt512 value1)
         {
             var bi0 = (BigInteger)value0;
             var bi1 = (BigInteger)value1;
-            ((BigInteger)(value0 ^ value1)).ShouldBe(bi0 ^ bi1);
-            ((BigInteger)(value1 ^ value0)).ShouldBe(bi0 ^ bi1);
+            await ((BigInteger)(value0 ^ value1)).Should().BeEqualTo(bi0 ^ bi1);
+            await ((BigInteger)(value1 ^ value0)).Should().BeEqualTo(bi0 ^ bi1);
         }
     }
 
-    [Fact]
-    [Trait("Category", "Bitwise")]
-    public void Not()
+    [Test, MultipleAssertions]
+    [Property("Category", "Bitwise")]
+    public async Task Not()
     {
-        Impl(UInt512.Zero);
-        Impl(UInt512.One);
-        Impl(UInt512.MaxValue);
-        var s = new ulong[1000].AsSpan();
-        rnd.NextBytes(MemoryMarshal.AsBytes(s));
+        await Impl(UInt512.Zero);
+        await Impl(UInt512.One);
+        await Impl(UInt512.MaxValue);
+        var s = new ulong[1000];
+        rnd.NextBytes(MemoryMarshal.AsBytes(s.AsSpan()));
         for (; UInt512.ULongCount < s.Length; s = s[1..])
         {
-            Impl(new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]));
-            Impl(new(0, 0, 0, s[2], s[4], s[3], s[7], s[5]));
-            Impl(new(0, 0, 0, 0, 0, 0, 0, s[5]));
+            await Impl(new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]));
+            await Impl(new(0, 0, 0, s[2], s[4], s[3], s[7], s[5]));
+            await Impl(new(0, 0, 0, 0, 0, 0, 0, s[5]));
         }
 
-        static void Impl(UInt512 value)
+        static async Task Impl(UInt512 value)
         {
             var bi = (BigInteger)value;
-            ((BigInteger)~value).ShouldBe(bi ^ biMask);
+            await ((BigInteger)~value).Should().BeEqualTo(bi ^ biMask);
         }
     }
 
 
-    [Fact]
-    [Trait("Category", "Shift")]
-    public void LeftShift()
+    [Test, MultipleAssertions]
+    [Property("Category", "Shift")]
+    public async Task LeftShift()
     {
         for (int i = 0; i < UInt512.Size * 8; i++)
         {
-            Impl(UInt512.Zero, i);
-            Impl(UInt512.One, i);
-            Impl(UInt512.MaxValue, i);
+            await Impl(UInt512.Zero, i);
+            await Impl(UInt512.One, i);
+            await Impl(UInt512.MaxValue, i);
         }
-        var s = new ulong[80].AsSpan();
-        rnd.NextBytes(MemoryMarshal.AsBytes(s));
+        var s = new ulong[80];
+        rnd.NextBytes(MemoryMarshal.AsBytes(s.AsSpan()));
         for (; UInt512.ULongCount < s.Length; s = s[1..])
         {
             for (int i = 0; i < UInt512.Size * 8; i++)
             {
-                Impl(new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]), i);
+                await Impl(new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]), i);
 
-                Impl(new(0, 0, 0, s[2], s[4], s[3], s[7], s[5]), i);
+                await Impl(new(0, 0, 0, s[2], s[4], s[3], s[7], s[5]), i);
 
-                Impl(new(0, 0, 0, 0, 0, 0, 0, s[5]), i);
+                await Impl(new(0, 0, 0, 0, 0, 0, 0, s[5]), i);
             }
         }
 
-        static void Impl(UInt512 value, int shift)
+        static async Task Impl(UInt512 value, int shift)
         {
             var bi = (BigInteger)value;
-            ((BigInteger)(value << shift)).ShouldBe((bi << shift) & biMask);
+            await ((BigInteger)(value << shift)).Should().BeEqualTo((bi << shift) & biMask);
         }
     }
-    [Fact]
-    [Trait("Category", "Shift")]
-    public void RightShift()
+    [Test, MultipleAssertions]
+    [Property("Category", "Shift")]
+    public async Task RightShift()
     {
         for (int i = 0; i < UInt512.Size * 8; i++)
         {
-            Impl(UInt512.Zero, i);
-            Impl(UInt512.One, i);
-            Impl(UInt512.MaxValue, i);
+            await Impl(UInt512.Zero, i);
+            await Impl(UInt512.One, i);
+            await Impl(UInt512.MaxValue, i);
         }
-        var s = new ulong[80].AsSpan();
-        rnd.NextBytes(MemoryMarshal.AsBytes(s));
+        var s = new ulong[80];
+        rnd.NextBytes(MemoryMarshal.AsBytes(s.AsSpan()));
         for (; UInt512.ULongCount < s.Length; s = s[1..])
         {
             for (int i = 0; i < UInt512.Size * 8; i++)
             {
-                Impl(new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]), i);
+                await Impl(new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]), i);
 
-                Impl(new(0, 0, 0, s[2], s[4], s[3], s[7], s[5]), i);
+                await Impl(new(0, 0, 0, s[2], s[4], s[3], s[7], s[5]), i);
 
-                Impl(new(0, 0, 0, 0, 0, 0, 0, s[5]), i);
+                await Impl(new(0, 0, 0, 0, 0, 0, 0, s[5]), i);
             }
         }
 
-        static void Impl(UInt512 value, int shift)
+        static async Task Impl(UInt512 value, int shift)
         {
             var bi = (BigInteger)value;
-            ((BigInteger)(value >> shift)).ShouldBe((bi >> shift) & biMask);
+            await ((BigInteger)(value >> shift)).Should().BeEqualTo((bi >> shift) & biMask);
         }
     }
 
-    [Fact]
-    [Trait("Category", "BinaryInteger")]
-    public void LeadingZeroCount()
+    [Test, MultipleAssertions]
+    [Property("Category", "BinaryInteger")]
+    public async Task LeadingZeroCount()
     {
-        Impl(UInt512.Zero);
-        Impl(UInt512.One);
-        Impl(UInt512.MaxValue);
-        var s = new ulong[1000].AsSpan();
-        rnd.NextBytes(MemoryMarshal.AsBytes(s));
+        await Impl(UInt512.Zero);
+        await Impl(UInt512.One);
+        await Impl(UInt512.MaxValue);
+        var s = new ulong[1000];
+        rnd.NextBytes(MemoryMarshal.AsBytes(s.AsSpan()));
         for (; UInt512.ULongCount < s.Length; s = s[1..])
         {
-            Impl(new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]));
+            await Impl(new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]));
 
-            Impl(new(0, 0, 0, s[2], s[4], s[3], s[7], s[5]));
+            await Impl(new(0, 0, 0, s[2], s[4], s[3], s[7], s[5]));
 
-            Impl(new(0, 0, 0, 0, 0, 0, 0, s[5]));
+            await Impl(new(0, 0, 0, 0, 0, 0, 0, s[5]));
 
-            Impl(new(s[5], 0, 0, 0, 0, 0, 0, 0));
+            await Impl(new(s[5], 0, 0, 0, 0, 0, 0, 0));
 
-            Impl(new(0, 0, 0, 0, s[5], 0, 0, 0));
+            await Impl(new(0, 0, 0, 0, s[5], 0, 0, 0));
         }
 
-        static void Impl(UInt512 value)
+        static async Task Impl(UInt512 value)
         {
-            UInt512.LeadingZeroCount(value).ShouldBe((UInt512)Naive(value));
+            await UInt512.LeadingZeroCount(value).Should().BeEqualTo((UInt512)Naive(value));
         }
         static int Naive(UInt512 value)
         {
@@ -701,31 +704,31 @@ public class UInt512Tests
         }
     }
 
-    [Fact]
-    [Trait("Category", "BinaryInteger")]
-    public void PopCount()
+    [Test, MultipleAssertions]
+    [Property("Category", "BinaryInteger")]
+    public async Task PopCount()
     {
-        Impl(UInt512.Zero);
-        Impl(UInt512.One);
-        Impl(UInt512.MaxValue);
-        var s = new ulong[1000].AsSpan();
-        rnd.NextBytes(MemoryMarshal.AsBytes(s));
+        await Impl(UInt512.Zero);
+        await Impl(UInt512.One);
+        await Impl(UInt512.MaxValue);
+        var s = new ulong[1000];
+        rnd.NextBytes(MemoryMarshal.AsBytes(s.AsSpan()));
         for (; UInt512.ULongCount < s.Length; s = s[1..])
         {
-            Impl(new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]));
+            await Impl(new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]));
 
-            Impl(new(0, 0, 0, s[2], s[4], s[3], s[7], s[5]));
+            await Impl(new(0, 0, 0, s[2], s[4], s[3], s[7], s[5]));
 
-            Impl(new(0, 0, 0, 0, 0, 0, 0, s[5]));
+            await Impl(new(0, 0, 0, 0, 0, 0, 0, s[5]));
 
-            Impl(new(s[5], 0, 0, 0, 0, 0, 0, 0));
+            await Impl(new(s[5], 0, 0, 0, 0, 0, 0, 0));
 
-            Impl(new(0, 0, 0, 0, s[5], 0, 0, 0));
+            await Impl(new(0, 0, 0, 0, s[5], 0, 0, 0));
         }
 
-        static void Impl(UInt512 value)
+        static async Task Impl(UInt512 value)
         {
-            UInt512.PopCount(value).ShouldBe((UInt512)Naive(value));
+            await UInt512.PopCount(value).Should().BeEqualTo((UInt512)Naive(value));
         }
         static int Naive(UInt512 value)
         {
@@ -738,7 +741,7 @@ public class UInt512Tests
         }
     }
 
-    public static IEnumerable<TheoryDataRow<UInt512, UInt512>> TrailingZeroCount_Data()
+    public static IEnumerable<(UInt512, UInt512)> TrailingZeroCount_Data()
     {
         yield return (0b1, 0);
         yield return (0b101, 0);
@@ -764,15 +767,15 @@ public class UInt512Tests
         yield return (new(2, 0, 0, 0, 0, 0, 0, 0), 1 + 448);
     }
 
-    [Theory]
-    [MemberData(nameof(TrailingZeroCount_Data))]
-    [Trait("Category", "BinaryInteger")]
-    public void TrailingZeroCount(UInt512 input, UInt512 expected)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(TrailingZeroCount_Data))]
+    [Property("Category", "BinaryInteger")]
+    public async Task TrailingZeroCount(UInt512 input, UInt512 expected)
     {
-        UInt512.TrailingZeroCount(input).ShouldBe(expected);
+        await UInt512.TrailingZeroCount(input).Should().BeEqualTo(expected);
     }
 
-    public static IEnumerable<TheoryDataRow<UInt512, UInt512>> Log2_Data()
+    public static IEnumerable<(UInt512, UInt512)> Log2_Data()
     {
         yield return (0b0, 0);
         yield return (0b1, 0);
@@ -799,73 +802,73 @@ public class UInt512Tests
         yield return (new(2, 0, 0, 0, 0, 0, 0, 0), 449);
     }
 
-    [Theory]
-    [MemberData(nameof(Log2_Data))]
-    [Trait("Category", "BinaryInteger")]
-    public void Log2(UInt512 input, UInt512 expected)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(Log2_Data))]
+    [Property("Category", "BinaryInteger")]
+    public async Task Log2(UInt512 input, UInt512 expected)
     {
-        UInt512.Log2(input).ShouldBe(expected);
+        await UInt512.Log2(input).Should().BeEqualTo(expected);
     }
 
 
-    [Fact]
-    [Trait("Category", "Compare")]
-    public void Compare()
+    [Test, MultipleAssertions]
+    [Property("Category", "Compare")]
+    public async Task Compare()
     {
-        (UInt512.Zero < UInt512.One).ShouldBeTrue();
-        (UInt512.Zero < UInt512.MaxValue).ShouldBeTrue();
-        (UInt512.One < UInt512.MaxValue).ShouldBeTrue();
-        (UInt512.Zero > UInt512.One).ShouldBeFalse();
-        (UInt512.Zero > UInt512.MaxValue).ShouldBeFalse();
-        (UInt512.One > UInt512.MaxValue).ShouldBeFalse();
+        await (UInt512.Zero < UInt512.One).Should().BeTrue();
+        await (UInt512.Zero < UInt512.MaxValue).Should().BeTrue();
+        await (UInt512.One < UInt512.MaxValue).Should().BeTrue();
+        await (UInt512.Zero > UInt512.One).Should().BeFalse();
+        await (UInt512.Zero > UInt512.MaxValue).Should().BeFalse();
+        await (UInt512.One > UInt512.MaxValue).Should().BeFalse();
 
-        (UInt512.One < UInt512.Zero).ShouldBeFalse();
-        (UInt512.MaxValue < UInt512.Zero).ShouldBeFalse();
-        (UInt512.MaxValue < UInt512.One).ShouldBeFalse();
-        (UInt512.One > UInt512.Zero).ShouldBeTrue();
-        (UInt512.MaxValue > UInt512.Zero).ShouldBeTrue();
-        (UInt512.MaxValue > UInt512.One).ShouldBeTrue();
+        await (UInt512.One < UInt512.Zero).Should().BeFalse();
+        await (UInt512.MaxValue < UInt512.Zero).Should().BeFalse();
+        await (UInt512.MaxValue < UInt512.One).Should().BeFalse();
+        await (UInt512.One > UInt512.Zero).Should().BeTrue();
+        await (UInt512.MaxValue > UInt512.Zero).Should().BeTrue();
+        await (UInt512.MaxValue > UInt512.One).Should().BeTrue();
 
-        var s = new ulong[1000].AsSpan();
-        rnd.NextBytes(MemoryMarshal.AsBytes(s));
+        var s = new ulong[1000];
+        rnd.NextBytes(MemoryMarshal.AsBytes(s.AsSpan()));
         for (; UInt512.ULongCount < s.Length; s = s[1..])
         {
-            Impl(new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]));
+            await Impl(new(s[7], s[6], s[5], s[4], s[3], s[2], s[1], s[0]));
 
-            Impl(new(0, 0, 0, s[2], s[4], s[3], s[7], s[5]));
+            await Impl(new(0, 0, 0, s[2], s[4], s[3], s[7], s[5]));
 
-            Impl(new(0, 0, 0, 0, 0, 0, 0, s[5]));
+            await Impl(new(0, 0, 0, 0, 0, 0, 0, s[5]));
 
-            Impl(new(s[5], 0, 0, 0, 0, 0, 0, 0));
+            await Impl(new(s[5], 0, 0, 0, 0, 0, 0, 0));
 
-            Impl(new(0, 0, 0, 0, s[5], 0, 0, 0));
+            await Impl(new(0, 0, 0, 0, s[5], 0, 0, 0));
         }
 
-        static void Impl(UInt512 value)
+        static async Task Impl(UInt512 value)
         {
             if (value == 0 || value == UInt512.MaxValue) return;
 
-            (UInt512.Zero < value).ShouldBeTrue();
-            (value < UInt512.MaxValue).ShouldBeTrue();
-            (UInt512.Zero <= value).ShouldBeTrue();
-            (value <= UInt512.MaxValue).ShouldBeTrue();
+            await (UInt512.Zero < value).Should().BeTrue();
+            await (value < UInt512.MaxValue).Should().BeTrue();
+            await (UInt512.Zero <= value).Should().BeTrue();
+            await (value <= UInt512.MaxValue).Should().BeTrue();
 
-            (UInt512.Zero > value).ShouldBeFalse();
-            (value > UInt512.MaxValue).ShouldBeFalse();
-            (UInt512.Zero >= value).ShouldBeFalse();
-            (value >= UInt512.MaxValue).ShouldBeFalse();
+            await (UInt512.Zero > value).Should().BeFalse();
+            await (value > UInt512.MaxValue).Should().BeFalse();
+            await (UInt512.Zero >= value).Should().BeFalse();
+            await (value >= UInt512.MaxValue).Should().BeFalse();
 
-            (UInt512.Zero != value).ShouldBeTrue();
-            (value != UInt512.MaxValue).ShouldBeTrue();
+            await (UInt512.Zero != value).Should().BeTrue();
+            await (value != UInt512.MaxValue).Should().BeTrue();
 
-            (UInt512.Zero == value).ShouldBeFalse();
-            (value == UInt512.MaxValue).ShouldBeFalse();
+            await (UInt512.Zero == value).Should().BeFalse();
+            await (value == UInt512.MaxValue).Should().BeFalse();
 
-            (value - 1 <= value).ShouldBeTrue();
-            (value <= value + 1).ShouldBeTrue();
+            await (value - 1 <= value).Should().BeTrue();
+            await (value <= value + 1).Should().BeTrue();
 
-            (value - 1 >= value).ShouldBeFalse();
-            (value >= value + 1).ShouldBeFalse();
+            await (value - 1 >= value).Should().BeFalse();
+            await (value >= value + 1).Should().BeFalse();
         }
     }
 }

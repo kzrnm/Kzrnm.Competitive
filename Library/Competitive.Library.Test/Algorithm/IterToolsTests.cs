@@ -3,20 +3,20 @@ namespace Kzrnm.Competitive.Testing.Algorithm;
 
 public class IterToolsTest
 {
-    public static TheoryData<int[], int[][]> Permutations_Data => new()
-    {
-        {
+    public static IEnumerable<(int[], int[][])> Permutations_Data =>
+    [
+        (
             [1],
             [[1],]
-        },
-        {
+        ),
+        (
             [ 1, 2 ],
             [
                 [1, 2],
                 [2, 1],
             ]
-        },
-        {
+        ),
+        (
             [ 1, 2, 3 ],
             [
                 [1, 2, 3],
@@ -26,8 +26,8 @@ public class IterToolsTest
                 [3, 1, 2],
                 [3, 2, 1],
             ]
-        },
-        {
+        ),
+        (
             [ 4, 1, 2 ],
             [
                 [4, 1, 2],
@@ -37,97 +37,93 @@ public class IterToolsTest
                 [2, 4, 1],
                 [2, 1, 4],
             ]
-        },
-    };
-    [Theory]
-    [MemberData(nameof(Permutations_Data))]
-    public void Permutations(int[] collection, int[][] expected)
+        ),
+    ];
+    [Test]
+    [MethodDataSource(nameof(Permutations_Data))]
+    public async Task Permutations(int[] collection, int[][] expected)
     {
-        IterTools.Permutations(collection).ShouldBe(expected);
+        await IterTools.Permutations(collection).Should().BeEquivalentOrderTo(expected);
     }
 
-    public static TheoryData<int[], int, int[][]> Combinations_Data => new()
-    {
-        {
+    public static IEnumerable<(int[], int, int[][])> Combinations_Data =>
+    [
+        (
             [1], 0,
             [[]]
-        },
-        {
+        ),
+        (
             [1], 1,
             [[ 1 ]]
-        },
-
-        {
+        ),
+        (
             [1,2], 0,
             [[]]
-        },
-        {
+        ),
+        (
             [1,2], 1,
             [[1], [2],]
-        },
-        {
+        ),
+        (
             [1,2], 2,
             [[1,2],]
-        },
-
-        {
+        ),
+        (
             [1, 2, 3, 4], 0,
             [[]]
-        },
-        {
+        ),
+        (
             [1, 2, 3, 4], 1,
             [[1], [2], [3], [4]]
-        },
-        {
+        ),
+        (
             [1, 2, 3, 4], 2,
             [[1, 2], [1, 3], [1, 4], [2, 3], [2, 4], [3, 4],]
-        },
-        {
+        ),
+        (
             [1, 2, 3, 4], 3,
             [[1, 2, 3], [1, 2, 4], [1, 3, 4], [2, 3, 4],]
-        },
-        {
+        ),
+        (
             [1, 2, 3, 4], 4,
             [[1, 2, 3, 4]]
-        },
-    };
-    [Theory]
-    [MemberData(nameof(Combinations_Data))]
-    public void Combinations(int[] collection, int k, int[][] expected)
+        ),
+    ];
+    [Test]
+    [MethodDataSource(nameof(Combinations_Data))]
+    public async Task Combinations(int[] collection, int k, int[][] expected)
     {
-        IterTools.Combinations(collection, k).ShouldBe(expected);
+        await IterTools.Combinations(collection, k).Should().BeEquivalentOrderTo(expected);
     }
 
 
-    public static TheoryData<int[], int, int[][]> CombinationsWithReplacement_Data => new()
-    {
-        {
+    public static IEnumerable<(int[], int, int[][])> CombinationsWithReplacement_Data =>
+    [
+        (
             [1], 0,
             [[]]
-        },
-        {
+        ),
+        (
             [1], 1,
             [[1]]
-        },
-        {
+        ),
+        (
             [1], 3,
             [[1, 1, 1]]
-        },
-
-        {
+        ),
+        (
             [1,2], 0,
             [[]]
-        },
-        {
+        ),
+        (
             [1,2], 1,
             [[1], [2],]
-        },
-        {
+        ),
+        (
             [1,2], 2,
             [[1, 1], [1, 2], [2, 2],]
-        },
-
-        {
+        ),
+        (
             [1,2,3], 4,
             [
                 [1, 1, 1, 1],
@@ -146,13 +142,12 @@ public class IterToolsTest
                 [2, 3, 3, 3],
                 [3, 3, 3, 3],
             ]
-        },
-
-        {
+        ),
+            (
             [1, 2, 3, 4], 0,
             [[]]
-        },
-        {
+        ),
+        (
             [1, 2, 3, 4], 1,
             [
                 [1],
@@ -160,8 +155,8 @@ public class IterToolsTest
                 [3],
                 [4],
             ]
-        },
-        {
+        ),
+        (
             [1, 2, 3, 4], 2,
             [
                 [1, 1],
@@ -175,8 +170,8 @@ public class IterToolsTest
                 [3, 4],
                 [4, 4],
             ]
-        },
-        {
+        ),
+        (
             [1, 2, 3, 4], 3,
             [
                 [1, 1, 1],
@@ -200,12 +195,12 @@ public class IterToolsTest
                 [3, 4, 4],
                 [4, 4, 4],
             ]
-        },
-    };
-    [Theory]
-    [MemberData(nameof(CombinationsWithReplacement_Data))]
-    public void CombinationsWithReplacement(int[] collection, int k, int[][] expected)
+        ),
+    ];
+    [Test]
+    [MethodDataSource(nameof(CombinationsWithReplacement_Data))]
+    public async Task CombinationsWithReplacement(int[] collection, int k, int[][] expected)
     {
-        IterTools.CombinationsWithReplacement(collection, k).ShouldBe(expected);
+        await IterTools.CombinationsWithReplacement(collection, k).Should().BeEquivalentOrderTo(expected);
     }
 }

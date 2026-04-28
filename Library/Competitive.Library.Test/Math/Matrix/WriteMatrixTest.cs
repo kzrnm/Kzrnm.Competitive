@@ -2,22 +2,22 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix;
 
 public class WriteMatrixTest
 {
-    [Fact]
-    public void Matrix2x2()
+    [Test]
+    public async Task Matrix2x2()
     {
         var utf8Wrapper = new Utf8ConsoleWriterWrapper();
         using (var cw = utf8Wrapper.GetWriter())
         {
             cw.WriteGrid(new Matrix2x2<int>((1, 2), (3, 4)));
         }
-        utf8Wrapper.Read().ShouldBe("""
+        await utf8Wrapper.Read().Should().BeEqualTo("""
         1 2
         3 4
 
         """.Replace("\r\n", "\n"));
     }
-    [Fact]
-    public void ArrayMatrix()
+    [Test]
+    public async Task ArrayMatrix()
     {
         var utf8Wrapper = new Utf8ConsoleWriterWrapper();
         using (var cw = utf8Wrapper.GetWriter())
@@ -27,7 +27,7 @@ public class WriteMatrixTest
                 { -1, -2, -3, },
             }));
         }
-        utf8Wrapper.Read().ShouldBe("""
+        await utf8Wrapper.Read().Should().BeEqualTo("""
         1 2 3
         -1 -2 -3
 

@@ -5,8 +5,8 @@ namespace Kzrnm.Competitive.Testing.DataStructure;
 
 public class FenwickTreeExtensionTests
 {
-    [Fact]
-    public void LowerBound()
+    [Test, MultipleAssertions]
+    public async Task LowerBound()
     {
         var rnd = new Random(227);
         var rndArray = new int[128];
@@ -31,23 +31,23 @@ public class FenwickTreeExtensionTests
                 sums[i] += sums[i - 1];
 
             var max = sums[^1] + 2;
-            fw.LowerBound(0).ShouldBe(0);
+            await fw.LowerBound(0).Should().BeEqualTo(0);
             for (int v = 1; v < max; v++)
             {
                 var expected = sums.LowerBound(v) + 1;
-                fw.LowerBound(v).ShouldBe(expected, $"v={v}");
+                await fw.LowerBound(v).Should().BeEqualTo(expected);
                 if (expected - 1 == sums.Length)
-                    fw[..].ShouldBeLessThan(v);
+                    await fw[..].Should().BeLessThan(v);
                 else
                 {
-                    fw[..expected].ShouldBeGreaterThanOrEqualTo(v);
-                    fw[..(expected - 1)].ShouldBeLessThan(v);
+                    await fw[..expected].Should().BeGreaterThanOrEqualTo(v);
+                    await fw[..(expected - 1)].Should().BeLessThan(v);
                 }
             }
         }
     }
-    [Fact]
-    public void UpperBound()
+    [Test, MultipleAssertions]
+    public async Task UpperBound()
     {
         var rnd = new Random(227);
         var rndArray = new int[128];
@@ -75,20 +75,20 @@ public class FenwickTreeExtensionTests
             for (int v = 0; v < max; v++)
             {
                 var expected = sums.UpperBound(v) + 1;
-                fw.UpperBound(v).ShouldBe(expected, $"v={v}");
+                await fw.UpperBound(v).Should().BeEqualTo(expected);
                 if (expected - 1 == sums.Length)
-                    fw[..].ShouldBeLessThanOrEqualTo(v);
+                    await fw[..].Should().BeLessThanOrEqualTo(v);
                 else
                 {
-                    fw[..expected].ShouldBeGreaterThan(v);
-                    fw[..(expected - 1)].ShouldBeLessThanOrEqualTo(v);
+                    await fw[..expected].Should().BeGreaterThan(v);
+                    await fw[..(expected - 1)].Should().BeLessThanOrEqualTo(v);
                 }
             }
         }
     }
 
-    [Fact]
-    public void Get()
+    [Test, MultipleAssertions]
+    public async Task Get()
     {
         var rnd = new Random(227);
         var rndArray = new int[128];
@@ -109,35 +109,35 @@ public class FenwickTreeExtensionTests
             for (int i = 0; i < array.Length; i++)
                 fw.Add(i, array[i]);
             for (int i = 0; i < array.Length; i++)
-                fw.Get(i).ShouldBe(array[i]);
+                await fw.Get(i).Should().BeEqualTo(array[i]);
         }
     }
 
-    [Fact]
-    public void AddSpan()
+    [Test, MultipleAssertions]
+    public async Task AddSpan()
     {
-        var nums = Enumerable.Range(1, 100).ToArray().AsSpan();
+        var nums = Enumerable.Range(1, 100).ToArray().AsMemory();
 
         for (int n = 0; n <= 100; n++)
         {
             var fw1 = new IntFenwickTree(n);
             var fw2 = new IntFenwickTree(n);
-            fw1.data.ShouldBe(fw2.data);
+            await fw1.data.Should().BeEquivalentOrderTo(fw2.data);
 
-            fw1.Add(nums[..n]);
+            fw1.Add(nums[..n].Span);
             for (int i = 0; i < n; i++)
                 fw2.Add(i, i + 1);
-            fw1.data.ShouldBe(fw2.data);
+            await fw1.data.Should().BeEquivalentOrderTo(fw2.data);
 
-            fw1.Add(nums[..(n / 2)]);
+            fw1.Add(nums[..(n / 2)].Span);
             for (int i = 0; i < (n / 2); i++)
                 fw2.Add(i, i + 1);
-            fw1.data.ShouldBe(fw2.data);
+            await fw1.data.Should().BeEquivalentOrderTo(fw2.data);
         }
     }
 
-    [Fact]
-    public void ToArray()
+    [Test, MultipleAssertions]
+    public async Task ToArray()
     {
         var rnd = new Random(227);
         var rndArray = new int[128];
@@ -162,7 +162,7 @@ public class FenwickTreeExtensionTests
             {
                 expected[i].Sum += expected[i - 1].Sum;
             }
-            fw.ToArray().ShouldBe(expected);
+            await fw.ToArray().Should().BeEquivalentOrderTo(expected);
         }
     }
 }

@@ -2,8 +2,8 @@ namespace Kzrnm.Competitive.Testing.Comparer;
 
 public class ArrayComparerTests
 {
-    [Fact]
-    public void Compare()
+    [Test, MultipleAssertions]
+    public async Task Compare()
     {
         var arr = new[]
         {
@@ -31,15 +31,15 @@ public class ArrayComparerTests
             [2,2,0,],
             [3,],
         };
-        arr.Length.ShouldBe(expected.Length);
+        await arr.Should().HaveCount(expected.Length);
         for (int i = 0; i < arr.Length; i++)
         {
-            arr[i].ShouldBe(expected[i], $"Index: {i}");
+            await arr[i].Should().BeEquivalentOrderTo(expected[i]);
         }
     }
 
-    [Fact]
-    public void Reverse()
+    [Test, MultipleAssertions]
+    public async Task Reverse()
     {
         var arr = new[]
         {
@@ -67,10 +67,10 @@ public class ArrayComparerTests
             [0,],
             Array.Empty<int>(),
         };
-        arr.Length.ShouldBe(expected.Length);
+        await arr.Should().HaveCount(expected.Length);
         for (int i = 0; i < arr.Length; i++)
         {
-            arr[i].ShouldBe(expected[i], $"Index: {i}");
+            await arr[i].Should().BeEquivalentOrderTo(expected[i]);
         }
     }
 }

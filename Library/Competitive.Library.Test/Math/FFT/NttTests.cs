@@ -18,13 +18,13 @@ public class NttTests
         return c;
     }
 
-    [Theory]
-    [InlineData(8)]
-    [InlineData(16)]
-    [InlineData(128)]
-    [InlineData(1024)]
-    [InlineData(2048)]
-    public void Ntt(int n)
+    [Test]
+    [Arguments(8)]
+    [Arguments(16)]
+    [Arguments(128)]
+    [Arguments(1024)]
+    [Arguments(2048)]
+    public async Task Ntt(int n)
     {
         var rnd = new Random(42);
         var a = new MontgomeryModInt<Mod998244353>[n];
@@ -32,16 +32,16 @@ public class NttTests
         var b = (MontgomeryModInt<Mod998244353>[])a.Clone();
         NumberTheoreticTransform<Mod998244353>.Ntt(a);
         NumberTheoreticTransform<Mod998244353>.NttLogical(b);
-        a.ShouldBe(b);
+        await a.Should().BeEquivalentOrderTo(b);
     }
 
-    [Theory]
-    [InlineData(8)]
-    [InlineData(16)]
-    [InlineData(128)]
-    [InlineData(1024)]
-    [InlineData(2048)]
-    public void INtt(int n)
+    [Test]
+    [Arguments(8)]
+    [Arguments(16)]
+    [Arguments(128)]
+    [Arguments(1024)]
+    [Arguments(2048)]
+    public async Task INtt(int n)
     {
         var rnd = new Random(42);
         var a = new MontgomeryModInt<Mod998244353>[n];
@@ -49,14 +49,14 @@ public class NttTests
         var b = (MontgomeryModInt<Mod998244353>[])a.Clone();
         NumberTheoreticTransform<Mod998244353>.INtt(a);
         NumberTheoreticTransform<Mod998244353>.INttLogical(b);
-        a.ShouldBe(b);
+        await a.Should().BeEquivalentOrderTo(b);
     }
 
-    [Theory]
-    [InlineData(123, 234)]
-    [InlineData(1234, 2345)]
-    [InlineData(1235, 2345)]
-    public void Multiply(int n, int m)
+    [Test, MultipleAssertions]
+    [Arguments(123, 234)]
+    [Arguments(1234, 2345)]
+    [Arguments(1235, 2345)]
+    public async Task Multiply(int n, int m)
     {
         var rnd = new Random(42);
         var a = new MontgomeryModInt<Mod998244353>[n];
@@ -64,7 +64,7 @@ public class NttTests
         for (int i = 0; i < n; i++) a[i] = rnd.NextUInt();
         for (int i = 0; i < m; i++) b[i] = rnd.NextUInt();
         var expected = ConvNative(a, b);
-        NumberTheoreticTransform<Mod998244353>.MultiplyLogical(a, b).ShouldBe(expected);
-        NumberTheoreticTransform<Mod998244353>.Multiply(a, b).ShouldBe(expected);
+        await NumberTheoreticTransform<Mod998244353>.MultiplyLogical(a, b).Should().BeEquivalentOrderTo(expected);
+        await NumberTheoreticTransform<Mod998244353>.Multiply(a, b).Should().BeEquivalentOrderTo(expected);
     }
 }

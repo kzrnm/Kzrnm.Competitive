@@ -4,59 +4,56 @@ namespace Kzrnm.Competitive.Testing.MathNS;
 
 public class LagrangeInterpolationTest
 {
-    public static TheoryData<(int x, int y)[]> Coefficient_Data => new()
-    {
-        new (int, int)[]
-        {
+    public static IEnumerable<(int x, int y)[]> Coefficient_Data =>
+    [
+        [
             (0,1),
             (1,10),
-        },
-        new (int, int)[]
-        {
+        ],
+        [
             (0,1),
             (1,10),
             (2,11),
-        },
-        new (int, int)[]
-        {
+        ],
+        [
             (0,1),
             (1,10),
             (2,11),
             (3,-51),
-        }
-    };
-    [Theory]
-    [MemberData(nameof(Coefficient_Data))]
-    public void Coefficient((int x, int y)[] data)
+        ]
+    ];
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(Coefficient_Data))]
+    public async Task Coefficient((int x, int y)[] data)
     {
-        RunTest<Mod998244353>(data);
-        RunTest<Mod1000000007>(data);
+        await RunTest<Mod998244353>(data);
+        await RunTest<Mod1000000007>(data);
 
-        static void RunTest<T>((int x, int y)[] plots) where T : struct, IStaticMod
+        static async Task RunTest<T>((int x, int y)[] plots) where T : struct, IStaticMod
         {
             var modPlots = new (MontgomeryModInt<T> x, MontgomeryModInt<T> y)[plots.Length];
             for (int i = 0; i < plots.Length; i++)
                 modPlots[i] = (plots[i].x, plots[i].y);
 
             var fps = LagrangeInterpolation.Coefficient(modPlots);
-            fps._cs.Length.ShouldBe(plots.Length);
+            await fps._cs.Length.Should().BeEqualTo(plots.Length);
             foreach (var (x, y) in modPlots)
-                fps.Eval(x).ShouldBe(y);
+                await fps.Eval(x).Should().BeEqualTo(y);
         }
     }
 
-    [Fact]
-    public void Eval()
+    [Test, MultipleAssertions]
+    public async Task Eval()
     {
-        RunTest<Mod998244353>([1, 0, 2, 0, 3, 0, 4], 100);
-        RunTest<Mod998244353>([1, 0, 2, 0, 3, 0, 4], 1000);
-        RunTest<Mod998244353>([1, 0, 2, 0, 3, 0, 4], 10000);
+        await RunTest<Mod998244353>([1, 0, 2, 0, 3, 0, 4], 100);
+        await RunTest<Mod998244353>([1, 0, 2, 0, 3, 0, 4], 1000);
+        await RunTest<Mod998244353>([1, 0, 2, 0, 3, 0, 4], 10000);
 
-        RunTest<Mod1000000007>([1, 0, 2, 0, 3, 0, 4], 100);
-        RunTest<Mod1000000007>([1, 0, 2, 0, 3, 0, 4], 1000);
-        RunTest<Mod1000000007>([1, 0, 2, 0, 3, 0, 4], 10000);
+        await RunTest<Mod1000000007>([1, 0, 2, 0, 3, 0, 4], 100);
+        await RunTest<Mod1000000007>([1, 0, 2, 0, 3, 0, 4], 1000);
+        await RunTest<Mod1000000007>([1, 0, 2, 0, 3, 0, 4], 10000);
 
-        static void RunTest<T>(int[] y, long x) where T : struct, IStaticMod
+        static async Task RunTest<T>(int[] y, long x) where T : struct, IStaticMod
         {
             var modY = new MontgomeryModInt<T>[y.Length];
             var modPlots = new (MontgomeryModInt<T> x, MontgomeryModInt<T> y)[y.Length];
@@ -67,7 +64,7 @@ public class LagrangeInterpolationTest
             }
 
             var fps = LagrangeInterpolation.Coefficient(modPlots);
-            LagrangeInterpolation.Eval<T>(modY, x).ShouldBe(fps.Eval(x));
+            await LagrangeInterpolation.Eval<T>(modY, x).Should().BeEqualTo(fps.Eval(x));
         }
     }
 }

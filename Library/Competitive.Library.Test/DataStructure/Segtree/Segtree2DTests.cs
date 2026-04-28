@@ -27,24 +27,24 @@ public class Segtree2DTests
         array[h][w] += v;
         seg[h, w] += v;
     }
-    private void Verify(int h1, int w1, int h2, int w2)
+    private async Task Verify(int h1, int w1, int h2, int w2)
     {
         long native = 0;
         for (int h = h1; h < h2; h++)
             for (int w = w1; w < w2; w++)
                 native += array[h][w];
 
-        seg.Prod(h1, w1, h2, w2).ShouldBe(native);
+        await seg.Prod(h1, w1, h2, w2).Should().BeEqualTo(native);
     }
 
-    [Fact]
-    public void Test()
+    [Test, MultipleAssertions]
+    public async Task Test()
     {
         for (int h1 = 0; h1 < array.Length; h1++)
             for (int h2 = h1; h2 <= array.Length; h2++)
                 for (int w1 = 0; w1 < array[0].Length; w1++)
                     for (int w2 = w1; w2 <= array[0].Length; w2++)
-                        Verify(h1, w1, h2, w2);
+                        await Verify(h1, w1, h2, w2);
 
         for (int n = 0; n < 100; n++)
         {
@@ -57,6 +57,6 @@ public class Segtree2DTests
             for (int h2 = h1; h2 <= array.Length; h2++)
                 for (int w1 = 0; w1 < array[0].Length; w1++)
                     for (int w2 = w1; w2 <= array[0].Length; w2++)
-                        Verify(h1, w1, h2, w2);
+                        await Verify(h1, w1, h2, w2);
     }
 }

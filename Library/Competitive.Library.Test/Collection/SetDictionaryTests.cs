@@ -2,8 +2,8 @@ namespace Kzrnm.Competitive.Testing.Collection;
 
 public class SetDictionaryTests
 {
-    [Fact]
-    public void SetDictionary()
+    [Test, MultipleAssertions]
+    public async Task SetDictionary()
     {
         var set = new SetDictionary<int, int>(new Dictionary<int, int>
         {
@@ -22,7 +22,7 @@ public class SetDictionaryTests
         set.Add(1, 10);
         set.Add(2, 11);
         set.Add(3, 12);
-        set.ToArray().ShouldBe(new Dictionary<int, int>
+        await set.ToArray().Should().BeEquivalentTo(new Dictionary<int, int>
         {
             {1,5},
             {2,6},
@@ -35,7 +35,7 @@ public class SetDictionaryTests
             {9,4},
         });
         set.Remove(5);
-        set.ToArray().ShouldBe(new Dictionary<int, int>
+        await set.ToArray().Should().BeEquivalentTo(new Dictionary<int, int>
         {
             {1,5},
             {2,6},
@@ -46,32 +46,44 @@ public class SetDictionaryTests
             {8,3},
             {9,4},
         });
-        set.FindNodeLowerBound(4).Pair.ShouldBe(KeyValuePair.Create(4, 8));
-        set.FindNodeUpperBound(4).Pair.ShouldBe(KeyValuePair.Create(6, 1));
-        set.FindNodeLowerBound(5).Pair.ShouldBe(KeyValuePair.Create(6, 1));
-        set.FindNodeUpperBound(5).Pair.ShouldBe(KeyValuePair.Create(6, 1));
+        await set.FindNodeLowerBound(4).Pair.Should().BeEqualTo(KeyValuePair.Create(4, 8));
+        await set.FindNodeUpperBound(4).Pair.Should().BeEqualTo(KeyValuePair.Create(6, 1));
+        await set.FindNodeLowerBound(5).Pair.Should().BeEqualTo(KeyValuePair.Create(6, 1));
+        await set.FindNodeUpperBound(5).Pair.Should().BeEqualTo(KeyValuePair.Create(6, 1));
 
-        set.FindNodeLowerBound(10).ShouldBeNull();
-        set.FindNodeUpperBound(10).ShouldBeNull();
+        await set.FindNodeLowerBound(10).Should().BeNull();
+        await set.FindNodeUpperBound(10).Should().BeNull();
 
         int k, v;
         KeyValuePair<int, int> pair;
-        set.TryGetLowerBound(3, out k, out v).ShouldBeTrue(); k.ShouldBe(3); v.ShouldBe(7);
-        set.TryGetUpperBound(3, out k, out v).ShouldBeTrue(); k.ShouldBe(4); v.ShouldBe(8);
-        set.TryGetReverseLowerBound(3, out k, out v).ShouldBeTrue(); k.ShouldBe(3); v.ShouldBe(7);
-        set.TryGetReverseUpperBound(3, out k, out v).ShouldBeTrue(); k.ShouldBe(2); v.ShouldBe(6);
-        set.TryGetLowerBound(3, out pair).ShouldBeTrue(); pair.ShouldBe(KeyValuePair.Create(3, 7));
-        set.TryGetUpperBound(3, out pair).ShouldBeTrue(); pair.ShouldBe(KeyValuePair.Create(4, 8));
-        set.TryGetReverseLowerBound(3, out pair).ShouldBeTrue(); pair.ShouldBe(KeyValuePair.Create(3, 7));
-        set.TryGetReverseUpperBound(3, out pair).ShouldBeTrue(); pair.ShouldBe(KeyValuePair.Create(2, 6));
+        await set.TryGetLowerBound(3, out k, out v).Should().BeTrue();
+        await k.Should().BeEqualTo(3);
+        await v.Should().BeEqualTo(7);
+        await set.TryGetUpperBound(3, out k, out v).Should().BeTrue();
+        await k.Should().BeEqualTo(4);
+        await v.Should().BeEqualTo(8);
+        await set.TryGetReverseLowerBound(3, out k, out v).Should().BeTrue();
+        await k.Should().BeEqualTo(3);
+        await v.Should().BeEqualTo(7);
+        await set.TryGetReverseUpperBound(3, out k, out v).Should().BeTrue();
+        await k.Should().BeEqualTo(2);
+        await v.Should().BeEqualTo(6);
+        await set.TryGetLowerBound(3, out pair).Should().BeTrue();
+        await pair.Should().BeEqualTo(KeyValuePair.Create(3, 7));
+        await set.TryGetUpperBound(3, out pair).Should().BeTrue();
+        await pair.Should().BeEqualTo(KeyValuePair.Create(4, 8));
+        await set.TryGetReverseLowerBound(3, out pair).Should().BeTrue();
+        await pair.Should().BeEqualTo(KeyValuePair.Create(3, 7));
+        await set.TryGetReverseUpperBound(3, out pair).Should().BeTrue();
+        await pair.Should().BeEqualTo(KeyValuePair.Create(2, 6));
 
-        set.TryGetLowerBound(9, out _).ShouldBeTrue();
-        set.TryGetLowerBound(10, out _).ShouldBeFalse();
-        set.TryGetUpperBound(8, out _).ShouldBeTrue();
-        set.TryGetUpperBound(9, out _).ShouldBeFalse();
+        await set.TryGetLowerBound(9, out _).Should().BeTrue();
+        await set.TryGetLowerBound(10, out _).Should().BeFalse();
+        await set.TryGetUpperBound(8, out _).Should().BeTrue();
+        await set.TryGetUpperBound(9, out _).Should().BeFalse();
 
         set.RemoveNode(set.FindNodeLowerBound(5));
-        set.ToArray().ShouldBe(new Dictionary<int, int>
+        await set.ToArray().Should().BeEquivalentTo(new Dictionary<int, int>
         {
             {1,5},
             {2,6},
@@ -83,7 +95,7 @@ public class SetDictionaryTests
         });
 
         set.RemoveNode(set.FindNodeLowerBound(0));
-        set.ToArray().ShouldBe(new Dictionary<int, int>
+        await set.ToArray().Should().BeEquivalentTo(new Dictionary<int, int>
         {
             {2,6},
             {3,7},
@@ -94,7 +106,7 @@ public class SetDictionaryTests
         });
 
         set.RemoveNode(set.FindNodeLowerBound(9));
-        set.ToArray().ShouldBe(new Dictionary<int, int>
+        await set.ToArray().Should().BeEquivalentTo(new Dictionary<int, int>
         {
             {2,6},
             {3,7},
@@ -103,8 +115,8 @@ public class SetDictionaryTests
             {8,3},
         });
     }
-    [Fact]
-    public void MultiSetDictionary()
+    [Test, MultipleAssertions]
+    public async Task MultiSetDictionary()
     {
         var set = new SetDictionary<int, int>(new Dictionary<int, int>
         {
@@ -123,7 +135,7 @@ public class SetDictionaryTests
         set.Add(1, 10);
         set.Add(2, 11);
         set.Add(3, 12);
-        set.ToArray().ShouldBe([
+        await set.ToArray().Should().BeEquivalentOrderTo([
             KeyValuePair.Create(1,5),
             KeyValuePair.Create(1,10),
             KeyValuePair.Create(2,6),
@@ -139,7 +151,7 @@ public class SetDictionaryTests
             KeyValuePair.Create(9,4),
         ]);
         set.Remove(5);
-        set.ToArray().ShouldBe([
+        await set.ToArray().Should().BeEquivalentOrderTo([
             KeyValuePair.Create(1,5),
             KeyValuePair.Create(1,10),
             KeyValuePair.Create(2,6),
@@ -153,32 +165,44 @@ public class SetDictionaryTests
             KeyValuePair.Create(8,3),
             KeyValuePair.Create(9,4),
         ]);
-        set.FindNodeLowerBound(4).Pair.ShouldBe(KeyValuePair.Create(4, 8));
-        set.FindNodeUpperBound(4).Pair.ShouldBe(KeyValuePair.Create(5, 9));
-        set.FindNodeLowerBound(5).Pair.ShouldBe(KeyValuePair.Create(5, 9));
-        set.FindNodeUpperBound(5).Pair.ShouldBe(KeyValuePair.Create(6, 1));
+        await set.FindNodeLowerBound(4).Pair.Should().BeEqualTo(KeyValuePair.Create(4, 8));
+        await set.FindNodeUpperBound(4).Pair.Should().BeEqualTo(KeyValuePair.Create(5, 9));
+        await set.FindNodeLowerBound(5).Pair.Should().BeEqualTo(KeyValuePair.Create(5, 9));
+        await set.FindNodeUpperBound(5).Pair.Should().BeEqualTo(KeyValuePair.Create(6, 1));
 
-        set.FindNodeLowerBound(10).ShouldBeNull();
-        set.FindNodeUpperBound(10).ShouldBeNull();
+        await set.FindNodeLowerBound(10).Should().BeNull();
+        await set.FindNodeUpperBound(10).Should().BeNull();
 
         int k, v;
         KeyValuePair<int, int> pair;
-        set.TryGetLowerBound(3, out k, out v).ShouldBeTrue(); k.ShouldBe(3); v.ShouldBe(7);
-        set.TryGetUpperBound(3, out k, out v).ShouldBeTrue(); k.ShouldBe(4); v.ShouldBe(8);
-        set.TryGetReverseLowerBound(3, out k, out v).ShouldBeTrue(); k.ShouldBe(3); v.ShouldBe(12);
-        set.TryGetReverseUpperBound(3, out k, out v).ShouldBeTrue(); k.ShouldBe(2); v.ShouldBe(11);
-        set.TryGetLowerBound(3, out pair).ShouldBeTrue(); pair.ShouldBe(KeyValuePair.Create(3, 7));
-        set.TryGetUpperBound(3, out pair).ShouldBeTrue(); pair.ShouldBe(KeyValuePair.Create(4, 8));
-        set.TryGetReverseLowerBound(3, out pair).ShouldBeTrue(); pair.ShouldBe(KeyValuePair.Create(3, 12));
-        set.TryGetReverseUpperBound(3, out pair).ShouldBeTrue(); pair.ShouldBe(KeyValuePair.Create(2, 11));
+        await set.TryGetLowerBound(3, out k, out v).Should().BeTrue();
+        await k.Should().BeEqualTo(3);
+        await v.Should().BeEqualTo(7);
+        await set.TryGetUpperBound(3, out k, out v).Should().BeTrue();
+        await k.Should().BeEqualTo(4);
+        await v.Should().BeEqualTo(8);
+        await set.TryGetReverseLowerBound(3, out k, out v).Should().BeTrue();
+        await k.Should().BeEqualTo(3);
+        await v.Should().BeEqualTo(12);
+        await set.TryGetReverseUpperBound(3, out k, out v).Should().BeTrue();
+        await k.Should().BeEqualTo(2);
+        await v.Should().BeEqualTo(11);
+        await set.TryGetLowerBound(3, out pair).Should().BeTrue();
+        await pair.Should().BeEqualTo(KeyValuePair.Create(3, 7));
+        await set.TryGetUpperBound(3, out pair).Should().BeTrue();
+        await pair.Should().BeEqualTo(KeyValuePair.Create(4, 8));
+        await set.TryGetReverseLowerBound(3, out pair).Should().BeTrue();
+        await pair.Should().BeEqualTo(KeyValuePair.Create(3, 12));
+        await set.TryGetReverseUpperBound(3, out pair).Should().BeTrue();
+        await pair.Should().BeEqualTo(KeyValuePair.Create(2, 11));
 
-        set.TryGetLowerBound(9, out _).ShouldBeTrue();
-        set.TryGetLowerBound(10, out _).ShouldBeFalse();
-        set.TryGetUpperBound(8, out _).ShouldBeTrue();
-        set.TryGetUpperBound(9, out _).ShouldBeFalse();
+        await set.TryGetLowerBound(9, out _).Should().BeTrue();
+        await set.TryGetLowerBound(10, out _).Should().BeFalse();
+        await set.TryGetUpperBound(8, out _).Should().BeTrue();
+        await set.TryGetUpperBound(9, out _).Should().BeFalse();
     }
-    [Fact]
-    public void ReverseComparer()
+    [Test, MultipleAssertions]
+    public async Task ReverseComparer()
     {
         var set = new SetDictionary<int, int, ReverseComparer<int>>(new Dictionary<int, int>
         {
@@ -197,7 +221,7 @@ public class SetDictionaryTests
         set.Add(1, 10);
         set.Add(2, 11);
         set.Add(3, 12);
-        set.ToArray().ShouldBe(new Dictionary<int, int>
+        await set.ToArray().Should().BeEquivalentTo(new Dictionary<int, int>
         {
             {9,4},
             {8,3},
@@ -210,7 +234,7 @@ public class SetDictionaryTests
             {1,5},
         });
         set.Remove(5);
-        set.ToArray().ShouldBe(new Dictionary<int, int>
+        await set.ToArray().Should().BeEquivalentTo(new Dictionary<int, int>
         {
             {9,4},
             {8,3},
@@ -221,12 +245,12 @@ public class SetDictionaryTests
             {2,6},
             {1,5},
         });
-        set.FindNodeLowerBound(6).Pair.ShouldBe(KeyValuePair.Create(6, 1));
-        set.FindNodeUpperBound(6).Pair.ShouldBe(KeyValuePair.Create(4, 8));
-        set.FindNodeLowerBound(5).Pair.ShouldBe(KeyValuePair.Create(4, 8));
-        set.FindNodeUpperBound(5).Pair.ShouldBe(KeyValuePair.Create(4, 8));
+        await set.FindNodeLowerBound(6).Pair.Should().BeEqualTo(KeyValuePair.Create(6, 1));
+        await set.FindNodeUpperBound(6).Pair.Should().BeEqualTo(KeyValuePair.Create(4, 8));
+        await set.FindNodeLowerBound(5).Pair.Should().BeEqualTo(KeyValuePair.Create(4, 8));
+        await set.FindNodeUpperBound(5).Pair.Should().BeEqualTo(KeyValuePair.Create(4, 8));
 
-        set.FindNodeLowerBound(0).ShouldBeNull();
-        set.FindNodeUpperBound(0).ShouldBeNull();
+        await set.FindNodeLowerBound(0).Should().BeNull();
+        await set.FindNodeUpperBound(0).Should().BeNull();
     }
 }

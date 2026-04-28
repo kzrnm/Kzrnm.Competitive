@@ -1,9 +1,11 @@
+using System.Runtime.InteropServices;
+
 namespace Kzrnm.Competitive.Testing.Graph;
 
 public class PathLoopTests
 {
-    [Fact]
-    public void Move()
+    [Test, MultipleAssertions]
+    public async Task Move()
     {
         const int N = 180;
         var arr = new int[N];
@@ -14,24 +16,23 @@ public class PathLoopTests
 
         for (int i = 0; i < N; i++)
             for (int k = 0; k < 20; k++)
-                pl[i].Move(k).ShouldBe((i + k) % arr.Length);
-        Span<ulong> ks = stackalloc ulong[1];
+                await pl[i].Move(k).Should().BeEqualTo((i + k) % arr.Length);
         for (int t = 0; t < 128; t++)
         {
-            rnd.NextBytes(ks.Cast<ulong, byte>());
-            var k = ks[0];
+            ulong k = 0;
+            rnd.NextBytes(MemoryMarshal.CreateSpan(ref k, 1).Cast<ulong, byte>());
             for (int i = 0; i < N; i++)
             {
-                pl[i].Move(k).ShouldBe((int)(((uint)i + k) % (uint)arr.Length));
-                pl[i].Move((BigInteger)k).ShouldBe((int)(((uint)i + k) % (uint)arr.Length));
+                await pl[i].Move(k).Should().BeEqualTo((int)(((uint)i + k) % (uint)arr.Length));
+                await pl[i].Move((BigInteger)k).Should().BeEqualTo((int)(((uint)i + k) % (uint)arr.Length));
                 if ((long)k >= 0)
-                    pl[i].Move((long)k).ShouldBe((int)(((uint)i + k) % (uint)arr.Length));
+                    await pl[i].Move((long)k).Should().BeEqualTo((int)(((uint)i + k) % (uint)arr.Length));
             }
         }
     }
 
-    [Fact]
-    public void Tree()
+    [Test, MultipleAssertions]
+    public async Task Tree()
     {
         var arr = new int[7]
         {
@@ -44,52 +45,52 @@ public class PathLoopTests
             1,
         };
         var pl = Enumerable.Range(0, arr.Length).Select(i => new PathLoop(arr, i)).ToArray();
-        pl[0].Move(1).ShouldBe(-1);
-        pl[1].Move(1).ShouldBe(0);
-        pl[2].Move(1).ShouldBe(2);
-        pl[3].Move(1).ShouldBe(1);
-        pl[4].Move(1).ShouldBe(3);
-        pl[5].Move(1).ShouldBe(2);
-        pl[6].Move(1).ShouldBe(1);
+        await pl[0].Move(1).Should().BeEqualTo(-1);
+        await pl[1].Move(1).Should().BeEqualTo(0);
+        await pl[2].Move(1).Should().BeEqualTo(2);
+        await pl[3].Move(1).Should().BeEqualTo(1);
+        await pl[4].Move(1).Should().BeEqualTo(3);
+        await pl[5].Move(1).Should().BeEqualTo(2);
+        await pl[6].Move(1).Should().BeEqualTo(1);
 
-        pl[0].Move(2).ShouldBe(-1);
-        pl[1].Move(2).ShouldBe(-1);
-        pl[2].Move(2).ShouldBe(2);
-        pl[3].Move(2).ShouldBe(0);
-        pl[4].Move(2).ShouldBe(1);
-        pl[5].Move(2).ShouldBe(2);
-        pl[6].Move(2).ShouldBe(0);
+        await pl[0].Move(2).Should().BeEqualTo(-1);
+        await pl[1].Move(2).Should().BeEqualTo(-1);
+        await pl[2].Move(2).Should().BeEqualTo(2);
+        await pl[3].Move(2).Should().BeEqualTo(0);
+        await pl[4].Move(2).Should().BeEqualTo(1);
+        await pl[5].Move(2).Should().BeEqualTo(2);
+        await pl[6].Move(2).Should().BeEqualTo(0);
 
-        pl[0].Move(3).ShouldBe(-1);
-        pl[1].Move(3).ShouldBe(-1);
-        pl[2].Move(3).ShouldBe(2);
-        pl[3].Move(3).ShouldBe(-1);
-        pl[4].Move(3).ShouldBe(0);
-        pl[5].Move(3).ShouldBe(2);
-        pl[6].Move(3).ShouldBe(-1);
+        await pl[0].Move(3).Should().BeEqualTo(-1);
+        await pl[1].Move(3).Should().BeEqualTo(-1);
+        await pl[2].Move(3).Should().BeEqualTo(2);
+        await pl[3].Move(3).Should().BeEqualTo(-1);
+        await pl[4].Move(3).Should().BeEqualTo(0);
+        await pl[5].Move(3).Should().BeEqualTo(2);
+        await pl[6].Move(3).Should().BeEqualTo(-1);
 
-        pl[0].Move(4).ShouldBe(-1);
-        pl[1].Move(4).ShouldBe(-1);
-        pl[2].Move(4).ShouldBe(2);
-        pl[3].Move(4).ShouldBe(-1);
-        pl[4].Move(4).ShouldBe(-1);
-        pl[5].Move(4).ShouldBe(2);
-        pl[6].Move(4).ShouldBe(-1);
+        await pl[0].Move(4).Should().BeEqualTo(-1);
+        await pl[1].Move(4).Should().BeEqualTo(-1);
+        await pl[2].Move(4).Should().BeEqualTo(2);
+        await pl[3].Move(4).Should().BeEqualTo(-1);
+        await pl[4].Move(4).Should().BeEqualTo(-1);
+        await pl[5].Move(4).Should().BeEqualTo(2);
+        await pl[6].Move(4).Should().BeEqualTo(-1);
 
-        pl[0].Move(5).ShouldBe(-1);
-        pl[1].Move(5).ShouldBe(-1);
-        pl[2].Move(5).ShouldBe(2);
-        pl[3].Move(5).ShouldBe(-1);
-        pl[4].Move(5).ShouldBe(-1);
-        pl[5].Move(5).ShouldBe(2);
-        pl[6].Move(5).ShouldBe(-1);
+        await pl[0].Move(5).Should().BeEqualTo(-1);
+        await pl[1].Move(5).Should().BeEqualTo(-1);
+        await pl[2].Move(5).Should().BeEqualTo(2);
+        await pl[3].Move(5).Should().BeEqualTo(-1);
+        await pl[4].Move(5).Should().BeEqualTo(-1);
+        await pl[5].Move(5).Should().BeEqualTo(2);
+        await pl[6].Move(5).Should().BeEqualTo(-1);
 
-        pl[0].Move(1L << 20).ShouldBe(-1);
-        pl[1].Move(1L << 20).ShouldBe(-1);
-        pl[2].Move(1L << 20).ShouldBe(2);
-        pl[3].Move(1L << 20).ShouldBe(-1);
-        pl[4].Move(1L << 20).ShouldBe(-1);
-        pl[5].Move(1L << 20).ShouldBe(2);
-        pl[6].Move(1L << 20).ShouldBe(-1);
+        await pl[0].Move(1L << 20).Should().BeEqualTo(-1);
+        await pl[1].Move(1L << 20).Should().BeEqualTo(-1);
+        await pl[2].Move(1L << 20).Should().BeEqualTo(2);
+        await pl[3].Move(1L << 20).Should().BeEqualTo(-1);
+        await pl[4].Move(1L << 20).Should().BeEqualTo(-1);
+        await pl[5].Move(1L << 20).Should().BeEqualTo(2);
+        await pl[6].Move(1L << 20).Should().BeEqualTo(-1);
     }
 }

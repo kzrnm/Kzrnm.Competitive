@@ -2,18 +2,18 @@ namespace Kzrnm.Competitive.Testing.Graph;
 
 public class PartiallyPersistentUnionFindTests
 {
-    [Fact]
-    public void Simple()
+    [Test, MultipleAssertions]
+    public async Task Simple()
     {
         var uf = new PartiallyPersistentUnionFind(2);
-        uf.Merge(0, 1).ShouldBeTrue();
-        uf.Same(0, 1, 0).ShouldBeFalse();
-        uf.Same(0, 1, 1).ShouldBeTrue();
-        uf.Size(0, 1).ShouldBe(2);
+        await uf.Merge(0, 1).Should().BeTrue();
+        await uf.Same(0, 1, 0).Should().BeFalse();
+        await uf.Same(0, 1, 1).Should().BeTrue();
+        await uf.Size(0, 1).Should().BeEqualTo(2);
     }
 
-    [Fact]
-    public void Line()
+    [Test, MultipleAssertions]
+    public async Task Line()
     {
         int n = 10000;
         var uf = new PartiallyPersistentUnionFind(n);
@@ -23,15 +23,15 @@ public class PartiallyPersistentUnionFindTests
         }
         for (int i = 0; i < n - 1; i++)
         {
-            uf.Size(0, i).ShouldBe(i + 1);
-            uf.Size(i, i).ShouldBe(i + 1);
+            await uf.Size(0, i).Should().BeEqualTo(i + 1);
+            await uf.Size(i, i).Should().BeEqualTo(i + 1);
         }
-        uf.Version.ShouldBe(n - 1);
-        uf.Size(0, uf.Version).ShouldBe(n);
+        await uf.Version.Should().BeEqualTo(n - 1);
+        await uf.Size(0, uf.Version).Should().BeEqualTo(n);
     }
 
-    [Fact]
-    public void LineReverse()
+    [Test, MultipleAssertions]
+    public async Task LineReverse()
     {
         int n = 50000;
         var uf = new PartiallyPersistentUnionFind(n);
@@ -39,7 +39,7 @@ public class PartiallyPersistentUnionFindTests
         {
             uf.Merge(i, i + 1);
         }
-        uf.Version.ShouldBe(n - 1);
-        uf.Size(0, uf.Version).ShouldBe(n);
+        await uf.Version.Should().BeEqualTo(n - 1);
+        await uf.Size(0, uf.Version).Should().BeEqualTo(n);
     }
 }

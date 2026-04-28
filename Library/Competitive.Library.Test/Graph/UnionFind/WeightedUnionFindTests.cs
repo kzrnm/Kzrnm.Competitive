@@ -2,27 +2,27 @@ namespace Kzrnm.Competitive.Testing.Graph;
 
 public class WeightedUnionFindTests
 {
-    [Fact]
-    public void Zero()
+    [Test]
+    public async Task Zero()
     {
         var uf = new IntWeightedUnionFind(0);
-        uf.Groups().ShouldBe([]);
+        await uf.Groups().Should().BeEmpty();
     }
 
-    [Fact]
-    public void Simple()
+    [Test, MultipleAssertions]
+    public async Task Simple()
     {
         var uf = new IntWeightedUnionFind(2);
-        uf.Same(0, 1).ShouldBeFalse();
-        uf.Merge(0, 1, 5).ShouldBeTrue();
-        uf.Same(0, 1).ShouldBeTrue();
-        uf.Size(0).ShouldBe(2);
-        uf.WeightDiff(0, 1).ShouldBe(5);
-        uf.WeightDiff(1, 0).ShouldBe(-5);
+        await uf.Same(0, 1).Should().BeFalse();
+        await uf.Merge(0, 1, 5).Should().BeTrue();
+        await uf.Same(0, 1).Should().BeTrue();
+        await uf.Size(0).Should().BeEqualTo(2);
+        await uf.WeightDiff(0, 1).Should().BeEqualTo(5);
+        await uf.WeightDiff(1, 0).Should().BeEqualTo(-5);
     }
 
-    [Fact]
-    public void Line()
+    [Test, MultipleAssertions]
+    public async Task Line()
     {
         int n = 10000;
         var uf = new IntWeightedUnionFind(n);
@@ -32,15 +32,15 @@ public class WeightedUnionFindTests
         }
         for (int i = 0; i < n; i++)
         {
-            uf.WeightDiff(0, i).ShouldBe(i);
-            uf.WeightDiff(10, i).ShouldBe(i - 10);
+            await uf.WeightDiff(0, i).Should().BeEqualTo(i);
+            await uf.WeightDiff(10, i).Should().BeEqualTo(i - 10);
         }
-        uf.Size(0).ShouldBe(n);
-        uf.Groups().Length.ShouldBe(1);
+        await uf.Size(0).Should().BeEqualTo(n);
+        await uf.Groups().Length.Should().BeEqualTo(1);
     }
 
-    [Fact]
-    public void LineReverse()
+    [Test, MultipleAssertions]
+    public async Task LineReverse()
     {
         int n = 10000;
         var uf = new IntWeightedUnionFind(n);
@@ -50,10 +50,10 @@ public class WeightedUnionFindTests
         }
         for (int i = 0; i < n; i++)
         {
-            uf.WeightDiff(0, i).ShouldBe(i);
-            uf.WeightDiff(10, i).ShouldBe(i - 10);
+            await uf.WeightDiff(0, i).Should().BeEqualTo(i);
+            await uf.WeightDiff(10, i).Should().BeEqualTo(i - 10);
         }
-        uf.Size(0).ShouldBe(n);
-        uf.Groups().Length.ShouldBe(1);
+        await uf.Size(0).Should().BeEqualTo(n);
+        await uf.Groups().Length.Should().BeEqualTo(1);
     }
 }

@@ -27,28 +27,28 @@ public class 木の子孫数Tests
         wgb.Add(3, 7, 7);
     }
 
-    public static TheoryData<int, int[]> Data => new()
-    {
-        { 0, [8, 4, 3, 2, 1, 1, 1, 1]},
-        { 1, [4, 8, 3, 2, 1, 1, 1, 1]},
-        { 2, [5, 4, 8, 2, 1, 1, 1, 1]},
-        { 3, [4, 6, 3, 8, 1, 1, 1, 1]},
-        { 4, [4, 7, 3, 2, 8, 1, 1, 1]},
-        { 5, [5, 4, 7, 2, 1, 8, 1, 1]},
-        { 6, [5, 4, 7, 2, 1, 1, 8, 1]},
-        { 7, [4, 6, 3, 7, 1, 1, 1, 8]},
-    };
+    public static IEnumerable<(int, int[])> Data =>
+    [
+        (0, [8, 4, 3, 2, 1, 1, 1, 1]),
+        (1, [4, 8, 3, 2, 1, 1, 1, 1]),
+        (2, [5, 4, 8, 2, 1, 1, 1, 1]),
+        (3, [4, 6, 3, 8, 1, 1, 1, 1]),
+        (4, [4, 7, 3, 2, 8, 1, 1, 1]),
+        (5, [5, 4, 7, 2, 1, 8, 1, 1]),
+        (6, [5, 4, 7, 2, 1, 1, 8, 1]),
+        (7, [4, 6, 3, 7, 1, 1, 1, 8]),
+    ];
 
-    [Theory]
-    [MemberData(nameof(Data))]
-    public void 重みなしグラフ(int root, int[] expected)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(Data))]
+    public async Task 重みなしグラフ(int root, int[] expected)
     {
-        gb.ToTree(root).DescendantsCounts().ShouldBe(expected);
+        await gb.ToTree(root).DescendantsCounts().Should().BeEquivalentOrderTo(expected);
     }
-    [Theory]
-    [MemberData(nameof(Data))]
-    public void 重み付きグラフ(int root, int[] expected)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(Data))]
+    public async Task 重み付きグラフ(int root, int[] expected)
     {
-        wgb.ToTree(root).DescendantsCounts().ShouldBe(expected);
+        await wgb.ToTree(root).DescendantsCounts().Should().BeEquivalentOrderTo(expected);
     }
 }

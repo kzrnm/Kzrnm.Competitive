@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree;
 
+[InheritsTests]
 public class RandomBinarySearchTreeTests : BinarySearchTreeTestsBase<RandomBinarySearchTreeNode<int, Starry>>
 {
     public RandomBinarySearchTreeTests()

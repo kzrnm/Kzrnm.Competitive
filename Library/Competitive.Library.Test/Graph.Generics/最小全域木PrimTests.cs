@@ -3,8 +3,8 @@ namespace Kzrnm.Competitive.Testing.Graph;
 
 public class 最小全域木PrimTests
 {
-    [Fact]
-    public void Int()
+    [Test, MultipleAssertions]
+    public async Task Int()
     {
         var gb = new WIntGraphBuilder(5, false);
         gb.Add(0, 1, 1);
@@ -18,8 +18,8 @@ public class 最小全域木PrimTests
         gb.Add(4, 0, 1);
         var graph = gb.ToGraph();
         var mst = graph.MinimumSpanningTreePrim();
-        mst.Cost.ShouldBe(13);
-        mst.Edges.ShouldBe([
+        await mst.Cost.Should().BeEqualTo(13);
+        await mst.Edges.Should().BeEquivalentOrderTo([
             (0, new WEdge<int>(1, 1)),
             (0, new WEdge<int>(4, 1)),
             (1, new WEdge<int>(2, 5)),
@@ -27,8 +27,8 @@ public class 最小全域木PrimTests
         ]);
     }
 
-    [Fact]
-    public void Root()
+    [Test, MultipleAssertions]
+    public async Task Root()
     {
         var gb = new WIntGraphBuilder(4, false);
         gb.Add(0, 1, 1);
@@ -37,37 +37,37 @@ public class 最小全域木PrimTests
         gb.Add(0, 3, 5);
         var graph = gb.ToGraph();
         var mst = graph.MinimumSpanningTreePrim();
-        mst.Cost.ShouldBe(7);
-        mst.Edges.ShouldBe([
+        await mst.Cost.Should().BeEqualTo(7);
+        await mst.Edges.Should().BeEquivalentOrderTo([
             (0, new WEdge<int>(1, 1)),
             (0, new WEdge<int>(2, 1)),
             (0, new WEdge<int>(3, 5)),
         ]);
         mst = graph.MinimumSpanningTreePrim(1);
-        mst.Cost.ShouldBe(7);
-        mst.Edges.ShouldBe([
+        await mst.Cost.Should().BeEqualTo(7);
+        await mst.Edges.Should().BeEquivalentOrderTo([
             (1, new WEdge<int>(0, 1)),
             (1, new WEdge<int>(2, 1)),
             (0, new WEdge<int>(3, 5)),
         ]);
         mst = graph.MinimumSpanningTreePrim(2);
-        mst.Cost.ShouldBe(7);
-        mst.Edges.ShouldBe([
+        await mst.Cost.Should().BeEqualTo(7);
+        await mst.Edges.Should().BeEquivalentOrderTo([
             (2, new WEdge<int>(0, 1)),
             (2, new WEdge<int>(1, 1)),
             (0, new WEdge<int>(3, 5)),
         ]);
         mst = graph.MinimumSpanningTreePrim(3);
-        mst.Cost.ShouldBe(7);
-        mst.Edges.ShouldBe([
+        await mst.Cost.Should().BeEqualTo(7);
+        await mst.Edges.Should().BeEquivalentOrderTo([
             (3, new WEdge<int>(0, 5)),
             (0, new WEdge<int>(1, 1)),
             (0, new WEdge<int>(2, 1)),
         ]);
     }
 
-    [Fact]
-    public void Long()
+    [Test, MultipleAssertions]
+    public async Task Long()
     {
         var gb = new WLongGraphBuilder(5, false);
         gb.Add(0, 1, 1);
@@ -81,8 +81,8 @@ public class 最小全域木PrimTests
         gb.Add(4, 0, 1);
         var graph = gb.ToGraph();
         var mst = graph.MinimumSpanningTreePrim(0);
-        mst.Cost.ShouldBe(13);
-        mst.Edges.ShouldBe([
+        await mst.Cost.Should().BeEqualTo(13);
+        await mst.Edges.Should().BeEquivalentOrderTo([
             (0, new WEdge<long>(1, 1)),
             (0, new WEdge<long>(4, 1)),
             (1, new WEdge<long>(2, 5)),

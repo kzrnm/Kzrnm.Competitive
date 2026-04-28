@@ -75,7 +75,7 @@ namespace Kzrnm.Competitive
             /// </summary>
             protected static readonly uint B = new T().GetBase();
             protected const ulong Mod = (1UL << 61) - 1;
-            protected static ulong[] pow = new ulong[1] { 1 };
+            protected static ulong[] pow = [1];
             [凾(256)]
             public static void ResizePow(int size)
             {

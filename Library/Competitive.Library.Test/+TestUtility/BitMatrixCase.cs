@@ -1,33 +1,51 @@
 using Kzrnm.Competitive.Internal;
-using Xunit.Sdk;
+using System.Collections;
+using System.Collections.Immutable;
 
 namespace Kzrnm.Competitive.Testing;
 
-public class BitMatrixCase : IXunitSerializable
+public readonly record struct BitMatrixCase
 {
+    public class Builder(bool[][] matrix)
+    {
+        public Builder(int height, int width) : this(Enumerable.Repeat(width, height).Select(w => new bool[w]).ToArray()) { }
+        public Builder(BitMatrixCase bmc) : this(bmc.ToBoolArray()) { }
+
+        public bool this[int h, int w]
+        {
+            get => matrix[h][w];
+            set => matrix[h][w] = value;
+        }
+
+        public int Height => matrix.Length;
+        public int Width => matrix.Length == 0 ? 0 : matrix[0].Length;
+
+        public BitMatrix64 ToBitMatrix64()
+            => new(matrix);
+        public BitMatrix<UInt128> ToBitMatrix128()
+            => new(matrix);
+        public BitOrMatrix ToBitOrMatrix()
+            => new(matrix.Select(c => new BitArray(c)).ToArray());
+        public BitMatrix ToBitMatrix()
+            => new(matrix.Select(c => new BitArray(c)).ToArray());
+    }
     public BitMatrixCase(ArrayMatrixKind kind)
     {
         if (kind == ArrayMatrixKind.Normal)
             throw new InvalidOperationException();
         this.Kind = kind;
     }
-    public BitMatrixCase(BitArrayCase[] cases)
+    public BitMatrixCase(ImmutableArray<BitArrayCase> cases)
     {
         if (cases.Length == 0 || cases[0].Length == 0)
             throw new InvalidOperationException();
         Kind = ArrayMatrixKind.Normal;
         this.cases = cases;
     }
-    public BitMatrixCase(BitMatrixCase other)
-    {
-        Kind = other.Kind;
-        cases = other.cases.Select(c => new BitArrayCase(c)).ToArray();
-    }
-    public BitMatrixCase(int height, int width) : this(Enumerable.Repeat(width, height).Select(w => new BitArrayCase(new bool[w])).ToArray()) { }
     public BitMatrixCase() : this([]) { }
 
-    public ArrayMatrixKind Kind { get; private set; }
-    BitArrayCase[] cases;
+    public ArrayMatrixKind Kind { get; }
+    readonly ImmutableArray<BitArrayCase> cases;
 
     public int Height => cases.Length;
     public int Width => cases[0].Length;
@@ -51,11 +69,8 @@ public class BitMatrixCase : IXunitSerializable
 
     public bool[][] ToBoolArray() => cases.Select(c => c.ToBoolArray()).ToArray();
 
-    public bool this[int h, int w]
-    {
-        get => cases[h][w];
-        set => cases[h][w] = value;
-    }
+    public bool this[int h, int w] => cases[h][w];
+
 
     public override string ToString()
     {
@@ -65,16 +80,6 @@ public class BitMatrixCase : IXunitSerializable
     }
 
     public IEnumerator<BitArrayCase> GetEnumerator() => ((IEnumerable<BitArrayCase>)cases).GetEnumerator();
-    void IXunitSerializable.Deserialize(IXunitSerializationInfo info)
-    {
-        cases = info.GetValue<BitArrayCase[]>(nameof(cases));
-    }
-
-    void IXunitSerializable.Serialize(IXunitSerializationInfo info)
-    {
-        info.AddValue(nameof(cases), cases);
-    }
-
     public static BitMatrixCase MakeRandomCase(Random random, int height, int width)
     {
         var b = new BitArrayCase[height];
@@ -82,12 +87,10 @@ public class BitMatrixCase : IXunitSerializable
         {
             b[i] = BitArrayCase.MakeRandomCase(random, width);
         }
-        return new BitMatrixCase(b);
+        return new BitMatrixCase(b.ToImmutableArray());
     }
 
-    public static IEnumerable<TheoryDataRow<BitMatrixCase>> RandomCases()
-        => RandomCases(384);
-    public static IEnumerable<TheoryDataRow<BitMatrixCase>> RandomCases(int maxWidth)
+    public static IEnumerable<BitMatrixCase> RandomCases(int maxWidth)
     {
         var rnd = new Random(227);
         for (int i = 1; i < 12; i++)
@@ -109,15 +112,13 @@ public class BitMatrixCase : IXunitSerializable
         }
     }
 
-    public static IEnumerable<TheoryDataRow<BitMatrixCase, BitMatrixCase>> RandomAddCases()
-        => RandomAddCases(384);
-    public static IEnumerable<TheoryDataRow<BitMatrixCase, BitMatrixCase>> RandomAddCases(int maxWidth)
+    public static IEnumerable<(BitMatrixCase, BitMatrixCase)> RandomAddCases(int maxWidth)
     {
         var rnd = new Random(227);
         yield return (new(ArrayMatrixKind.Zero), new(ArrayMatrixKind.Zero));
         yield return (new(ArrayMatrixKind.Zero), new(ArrayMatrixKind.Identity));
-        yield return (new(ArrayMatrixKind.Zero), new(MakeRandomCase(rnd, maxWidth, maxWidth)));
-        yield return (new(ArrayMatrixKind.Identity), new(MakeRandomCase(rnd, maxWidth, maxWidth)));
+        yield return (new(ArrayMatrixKind.Zero), MakeRandomCase(rnd, maxWidth, maxWidth));
+        yield return (new(ArrayMatrixKind.Identity), MakeRandomCase(rnd, maxWidth, maxWidth));
 
         for (int i = 1; i < 12; i++)
             for (int j = -1; j <= 1; j++)
@@ -138,19 +139,17 @@ public class BitMatrixCase : IXunitSerializable
         }
     }
 
-    public static IEnumerable<TheoryDataRow<BitMatrixCase, BitMatrixCase>> RandomMultiplyCases()
-        => RandomMultiplyCases(180);
-    public static IEnumerable<TheoryDataRow<BitMatrixCase, BitMatrixCase>> RandomMultiplyCases(int maxWidth)
+    public static IEnumerable<(BitMatrixCase, BitMatrixCase)> RandomMultiplyCases(int maxWidth)
     {
         var rnd = new Random(227);
         yield return (new(ArrayMatrixKind.Zero), new(ArrayMatrixKind.Zero));
         yield return (new(ArrayMatrixKind.Identity), new(ArrayMatrixKind.Zero));
         yield return (new(ArrayMatrixKind.Zero), new(ArrayMatrixKind.Identity));
         yield return (new(ArrayMatrixKind.Identity), new(ArrayMatrixKind.Identity));
-        yield return (new(ArrayMatrixKind.Zero), new(MakeRandomCase(rnd, maxWidth, maxWidth)));
-        yield return (new(MakeRandomCase(rnd, maxWidth, maxWidth)), new(ArrayMatrixKind.Zero));
-        yield return (new(ArrayMatrixKind.Identity), new(MakeRandomCase(rnd, maxWidth, maxWidth)));
-        yield return (new(MakeRandomCase(rnd, maxWidth, maxWidth)), new(ArrayMatrixKind.Identity));
+        yield return (new(ArrayMatrixKind.Zero), MakeRandomCase(rnd, maxWidth, maxWidth));
+        yield return (MakeRandomCase(rnd, maxWidth, maxWidth), new(ArrayMatrixKind.Zero));
+        yield return (new(ArrayMatrixKind.Identity), MakeRandomCase(rnd, maxWidth, maxWidth));
+        yield return (MakeRandomCase(rnd, maxWidth, maxWidth), new(ArrayMatrixKind.Identity));
 
         for (int i = 1; i < 12; i++)
             for (int j = -1; j <= 1; j++)
@@ -173,9 +172,7 @@ public class BitMatrixCase : IXunitSerializable
         }
     }
 
-    public static IEnumerable<TheoryDataRow<BitMatrixCase, BitArrayCase>> RandomMultiplyVectorCases()
-        => RandomMultiplyVectorCases(180);
-    public static IEnumerable<TheoryDataRow<BitMatrixCase, BitArrayCase>> RandomMultiplyVectorCases(int maxWidth)
+    public static IEnumerable<(BitMatrixCase, BitArrayCase)> RandomMultiplyVectorCases(int maxWidth)
     {
         var rnd = new Random(227);
 
@@ -199,14 +196,14 @@ public class BitMatrixCase : IXunitSerializable
     }
 
 
-    public static IEnumerable<TheoryDataRow<BitMatrixCase>> RandomPowCasesFixedSize(int size)
+    public static IEnumerable<BitMatrixCase> RandomPowCasesFixedSize(int size)
     {
         var rnd = new Random(227);
         for (int q = 0; q < 16; q++)
             yield return MakeRandomCase(rnd, size, size);
     }
 
-    public static IEnumerable<TheoryDataRow<BitMatrixCase>> RandomSquareCases()
+    public static IEnumerable<BitMatrixCase> RandomSquareCases()
     {
         var rnd = new Random(227);
 

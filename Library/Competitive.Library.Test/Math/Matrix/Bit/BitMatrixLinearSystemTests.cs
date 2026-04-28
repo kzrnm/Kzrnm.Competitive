@@ -5,7 +5,7 @@ namespace Kzrnm.Competitive.Testing.MathNS.Matrix;
 
 public class BitMatrixLinearSystemTests
 {
-    public static IEnumerable<TheoryDataRow<BitMatrixCase, BitArrayCase>> LinearSystemCases(int max)
+    public static IEnumerable<(BitMatrixCase, BitArrayCase)> LinearSystemCases(int max)
     {
         var rnd = new Random(227);
         for (int q = 0; q < 256; q++)
@@ -29,42 +29,42 @@ public class BitMatrixLinearSystemTests
         }
     }
 
-    [Theory]
-    [MemberData(nameof(LinearSystemCases), 63, DisableDiscoveryEnumeration = true)]
-    public void LinearSystem64(BitMatrixCase c, BitArrayCase vector)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(LinearSystemCases), Arguments = [63])]
+    public async Task LinearSystem64(BitMatrixCase c, BitArrayCase vector)
     {
         var mat = c.ToBitMatrix();
         var mat64 = c.ToBitMatrix64();
-        LinearSystemTestImpl(mat, mat64, vector);
+        await LinearSystemTestImpl(mat, mat64, vector);
     }
 
-    [Theory]
-    [MemberData(nameof(LinearSystemCases), 127, DisableDiscoveryEnumeration = true)]
-    public void LinearSystem128(BitMatrixCase c, BitArrayCase vector)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(LinearSystemCases), Arguments = [127])]
+    public async Task LinearSystem128(BitMatrixCase c, BitArrayCase vector)
     {
         var mat = c.ToBitMatrix();
         var mat128 = c.ToBitMatrix128();
-        LinearSystemTestImpl(mat, mat128, vector);
+        await LinearSystemTestImpl(mat, mat128, vector);
     }
 
 
-    [Theory]
-    [MemberData(nameof(LinearSystemCases), 240, DisableDiscoveryEnumeration = true)]
-    public void LinearSystemBitArrayOrBoolArray(BitMatrixCase c, BitArrayCase vector)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(LinearSystemCases), Arguments = [240])]
+    public async Task LinearSystemBitArrayOrBoolArray(BitMatrixCase c, BitArrayCase vector)
     {
         var mat = c.ToBitMatrix();
         var bitsResult = mat.LinearSystem(vector.ToBitArray());
         var boolsResult = mat.LinearSystem(vector.ToBoolArray());
 
-        bitsResult.Length.ShouldBe(boolsResult.Length);
+        await bitsResult.Length.Should().BeEqualTo(boolsResult.Length);
         for (int i = 0; i < bitsResult.Length; i++)
         {
-            bitsResult[i].Cast<bool>().ShouldBe(boolsResult[i].Cast<bool>());
+            await bitsResult[i].Cast<bool>().Should().BeEquivalentOrderTo(boolsResult[i].Cast<bool>());
         }
     }
 
 
-    static void LinearSystemTestImpl<T>(BitMatrix mat, BitMatrix<T> matT, BitArrayCase vector) where T : unmanaged, IBinaryInteger<T>
+    static async Task LinearSystemTestImpl<T>(BitMatrix mat, BitMatrix<T> matT, BitArrayCase vector) where T : unmanaged, IBinaryInteger<T>
     {
         var genericResult = matT.LinearSystem(ToNumber<T>(vector.ToBitArray()));
         var bitsResult = ToNumber<T>(mat.LinearSystem(vector.ToBitArray()));
@@ -74,8 +74,8 @@ public class BitMatrixLinearSystemTests
             ToNumber<T>(mat.LinearSystem(vector.ToBitArray()));
         }
 
-        genericResult.Length.ShouldBe(bitsResult.Length);
-        genericResult.ShouldBe(bitsResult);
+        await genericResult.Length.Should().BeEqualTo(bitsResult.Length);
+        await genericResult.Should().BeEquivalentOrderTo(bitsResult);
     }
 
     static T ToNumber<T>(BitArray bits) where T : IBinaryInteger<T>

@@ -4,12 +4,12 @@ namespace Kzrnm.Competitive.Testing.Bit.SubsetDp;
 
 public class ZetaMoebiusTransformTests
 {
-    [Theory]
-    [InlineData(1 << 1)]
-    [InlineData(1 << 2)]
-    [InlineData(1 << 3)]
-    [InlineData(1 << 4)]
-    public void SupersetZetaMoebiusTransform(int length)
+    [Test, MultipleAssertions]
+    [Arguments(1 << 1)]
+    [Arguments(1 << 2)]
+    [Arguments(1 << 3)]
+    [Arguments(1 << 4)]
+    public async Task SupersetZetaMoebiusTransform(int length)
     {
         var a = new int[length];
         var b = new int[length];
@@ -27,16 +27,16 @@ public class ZetaMoebiusTransformTests
         ZetaMoebiusTransform.SupersetZetaTransform(a2);
         ZetaMoebiusTransform.SupersetMoebiusTransform(b2);
 
-        a2.ShouldBe(b);
-        b2.ShouldBe(a);
+        await a2.Should().BeEquivalentOrderTo(b);
+        await b2.Should().BeEquivalentOrderTo(a);
     }
 
-    [Theory]
-    [InlineData(1 << 1)]
-    [InlineData(1 << 2)]
-    [InlineData(1 << 3)]
-    [InlineData(1 << 4)]
-    public void SubsetZetaMoebiusTransform(int length)
+    [Test, MultipleAssertions]
+    [Arguments(1 << 1)]
+    [Arguments(1 << 2)]
+    [Arguments(1 << 3)]
+    [Arguments(1 << 4)]
+    public async Task SubsetZetaMoebiusTransform(int length)
     {
         var a = new int[length];
         var b = new int[length];
@@ -54,7 +54,7 @@ public class ZetaMoebiusTransformTests
         ZetaMoebiusTransform.SubsetZetaTransform(a2);
         ZetaMoebiusTransform.SubsetMoebiusTransform(b2);
 
-        a2.ShouldBe(b);
-        b2.ShouldBe(a);
+        await a2.Should().BeEquivalentOrderTo(b);
+        await b2.Should().BeEquivalentOrderTo(a);
     }
 }

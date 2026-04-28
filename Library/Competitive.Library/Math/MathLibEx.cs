@@ -75,8 +75,8 @@ namespace Kzrnm.Competitive
         public static T[] Divisor<T>(T n)
             where T : IBinaryInteger<T>
         {
-            if (T.IsZero(n)) return Array.Empty<T>();
-            if (n <= T.One) return new T[] { T.One };
+            if (T.IsZero(n)) return [];
+            if (n <= T.One) return [T.One];
 
             var pairs = PrimeFactoring(n).ToArray();
             var list = new List<T>();

@@ -2,8 +2,8 @@ namespace Kzrnm.Competitive.Testing.Graph;
 
 public class 行列形式Tests
 {
-    [Fact]
-    public void Adjacency()
+    [Test, MultipleAssertions]
+    public async Task Adjacency()
     {
         var gb = new WIntGraphBuilder(5, false);
         gb.Add(0, 1, 1);
@@ -17,7 +17,7 @@ public class 行列形式Tests
         gb.Add(4, 0, 1);
 
         var g = gb.ToGraph();
-        g.Adjacency().ShouldBe(new ArrayMatrix<int>(new int[5, 5]
+        await g.Adjacency().Should().BeEqualTo(new ArrayMatrix<int>(new int[5, 5]
         {
             {  0, 1,  10,  30, 1 },
             {  1, 0,   5,   0, 0 },
@@ -26,7 +26,7 @@ public class 行列形式Tests
             {  1, 0,   6,   6, 0 },
         }));
 
-        g.AsUnweighted().Adjacency().ShouldBe(new ArrayMatrix<int>(new int[5, 5]
+        await g.AsUnweighted().Adjacency().Should().BeEqualTo(new ArrayMatrix<int>(new int[5, 5]
         {
             { 0, 1, 1, 1, 1 },
             { 1, 0, 1, 0, 0 },
@@ -36,8 +36,8 @@ public class 行列形式Tests
         }));
     }
 
-    [Fact]
-    public void Laplacian()
+    [Test]
+    public async Task Laplacian()
     {
         var gb = new WIntGraphBuilder(5, false);
         gb.Add(0, 1, 1);
@@ -50,7 +50,7 @@ public class 行列形式Tests
         gb.Add(4, 3, 6);
 
         var g = gb.ToGraph();
-        g.Laplacian().ShouldBe(new ArrayMatrix<int>(new int[5, 5]
+        await g.Laplacian().Should().BeEqualTo(new ArrayMatrix<int>(new int[5, 5]
         {
             { 4, -1, -1, -1, -1 },
             { -1, 2, -1, 0, 0 },

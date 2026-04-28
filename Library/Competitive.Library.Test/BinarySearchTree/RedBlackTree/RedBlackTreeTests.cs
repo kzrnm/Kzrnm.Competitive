@@ -2,6 +2,7 @@ using Kzrnm.Competitive.Internal;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree;
 
+[InheritsTests]
 public class RedBlackTreeTests : BinarySearchTreeTestsBase<RedBlackTreeNode<int, Starry>>
 {
     protected override RedBlackTree<int, Starry> Create()

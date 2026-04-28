@@ -2,32 +2,32 @@ namespace Kzrnm.Competitive.Testing.Bit;
 
 public class BitDebugTests
 {
-    [Fact]
-    public void IntArray()
+    [Test, MultipleAssertions]
+    public async Task IntArray()
     {
         var bd = new BitDebug(Enumerable.Range(0, 10).ToArray());
-        bd.Items.Length.ShouldBe(10);
-        bd.Items[0].ShouldBe(new("0000 [0]", 0));
-        bd.Items[1].ShouldBe(new("0001 [1]", 1));
-        bd.Items[2].ShouldBe(new("0010 [2]", 2));
-        bd.Items[3].ShouldBe(new("0011 [3]", 3));
-        bd.Items[4].ShouldBe(new("0100 [4]", 4));
-        bd.Items[5].ShouldBe(new("0101 [5]", 5));
-        bd.Items[6].ShouldBe(new("0110 [6]", 6));
-        bd.Items[7].ShouldBe(new("0111 [7]", 7));
-        bd.Items[8].ShouldBe(new("1000 [8]", 8));
-        bd.Items[9].ShouldBe(new("1001 [9]", 9));
+        await bd.Items.Should().HaveCount(10);
+        await bd.Items[0].Should().BeEqualTo(new("0000 [0]", 0));
+        await bd.Items[1].Should().BeEqualTo(new("0001 [1]", 1));
+        await bd.Items[2].Should().BeEqualTo(new("0010 [2]", 2));
+        await bd.Items[3].Should().BeEqualTo(new("0011 [3]", 3));
+        await bd.Items[4].Should().BeEqualTo(new("0100 [4]", 4));
+        await bd.Items[5].Should().BeEqualTo(new("0101 [5]", 5));
+        await bd.Items[6].Should().BeEqualTo(new("0110 [6]", 6));
+        await bd.Items[7].Should().BeEqualTo(new("0111 [7]", 7));
+        await bd.Items[8].Should().BeEqualTo(new("1000 [8]", 8));
+        await bd.Items[9].Should().BeEqualTo(new("1001 [9]", 9));
     }
-    [Fact]
-    public void StringArray()
+    [Test, MultipleAssertions]
+    public async Task StringArray()
     {
         var bd = new BitDebug(Enumerable.Range(0, 6).Select(n => n.ToString()).ToArray());
-        bd.Items.Length.ShouldBe(6);
-        bd.Items[0].ShouldBe(new("000 [0]", "0"));
-        bd.Items[1].ShouldBe(new("001 [1]", "1"));
-        bd.Items[2].ShouldBe(new("010 [2]", "2"));
-        bd.Items[3].ShouldBe(new("011 [3]", "3"));
-        bd.Items[4].ShouldBe(new("100 [4]", "4"));
-        bd.Items[5].ShouldBe(new("101 [5]", "5"));
+        await bd.Items.Should().HaveCount(6);
+        await bd.Items[0].Should().BeEqualTo(new("000 [0]", "0"));
+        await bd.Items[1].Should().BeEqualTo(new("001 [1]", "1"));
+        await bd.Items[2].Should().BeEqualTo(new("010 [2]", "2"));
+        await bd.Items[3].Should().BeEqualTo(new("011 [3]", "3"));
+        await bd.Items[4].Should().BeEqualTo(new("100 [4]", "4"));
+        await bd.Items[5].Should().BeEqualTo(new("101 [5]", "5"));
     }
 }

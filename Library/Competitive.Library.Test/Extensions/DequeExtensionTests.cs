@@ -4,61 +4,61 @@ namespace Kzrnm.Competitive.Testing.Extensions;
 
 public class DequeExtensionTests
 {
-    public static TheoryData<int> Lengths => new(Enumerable.Range(0, 18));
-    [Theory]
-    [MemberData(nameof(Lengths))]
-    public void ToDeque(int length)
+    public static IEnumerable<int> Lengths => Enumerable.Range(0, 18);
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(Lengths))]
+    public async Task ToDeque(int length)
     {
         var orig = Enumerable.Range(1, length).ToArray();
-        Impl(orig.ToDeque());
-        Impl(orig.AsSpan().ToDeque());
-        Impl(orig.AsEnumerable().ToDeque());
+        await Impl(orig.ToDeque());
+        await Impl(orig.AsSpan().ToDeque());
+        await Impl(orig.AsEnumerable().ToDeque());
 
-        void Impl(Deque<int> deque)
+        async Task Impl(Deque<int> deque)
         {
-            deque.Count.ShouldBe(length);
+            await deque.Should().HaveCount(length);
             for (int i = 0; i < orig.Length; i++)
             {
-                deque[i].ShouldBe(orig[i]);
+                await deque[i].Should().BeEqualTo(orig[i]);
             }
-            deque.ShouldBe(orig);
+            await deque.Should().BeEquivalentOrderTo(orig);
         }
     }
-    [Fact]
-    public void ToDequeEmpty()
+    [Test, MultipleAssertions]
+    public async Task ToDequeEmpty()
     {
         var orig = new int[0];
-        Impl(orig.ToDeque());
-        Impl(orig.AsSpan().ToDeque());
-        Impl(orig.AsEnumerable().ToDeque());
+        await Impl(orig.ToDeque());
+        await Impl(orig.AsSpan().ToDeque());
+        await Impl(orig.AsEnumerable().ToDeque());
 
-        static void Impl(Deque<int> deque)
+        static async Task Impl(Deque<int> deque)
         {
-            deque.Count.ShouldBe(0);
-            deque.ShouldBeEmpty();
-            deque.ShouldBe(new int[0]);
+            await deque.Should().HaveCount(0);
+            await deque.Should().BeEmpty();
+            await deque.Should().BeEquivalentOrderTo(new int[0]);
         }
     }
 
-    [Fact]
-    public void RemoveFirst()
+    [Test, MultipleAssertions]
+    public async Task RemoveFirst()
     {
         for (int i = 0; i <= 7; i++)
         {
             var deque = new Deque<int> { 1, 2, 3, 4, 5, 6, 7, };
             deque.RemoveFirst(i);
-            deque.ShouldBe(Enumerable.Range(i + 1, 7 - i));
+            await deque.Should().BeEquivalentOrderTo(Enumerable.Range(i + 1, 7 - i));
         }
     }
 
-    [Fact]
-    public void RemoveLast()
+    [Test, MultipleAssertions]
+    public async Task RemoveLast()
     {
         for (int i = 0; i <= 7; i++)
         {
             var deque = new Deque<int> { 1, 2, 3, 4, 5, 6, 7, };
             deque.RemoveLast(i);
-            deque.ShouldBe(Enumerable.Range(1, 7 - i));
+            await deque.Should().BeEquivalentOrderTo(Enumerable.Range(1, 7 - i));
         }
     }
 }

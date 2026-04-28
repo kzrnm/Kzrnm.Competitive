@@ -2,8 +2,8 @@ namespace Kzrnm.Competitive.Testing.Collection;
 
 public class RealTimeQueueTests
 {
-    [Fact]
-    public void Simple()
+    [Test, MultipleAssertions]
+    public async Task Simple()
     {
         const int N = 100;
         var queues = new RealTimeQueue<int>[N][];
@@ -20,15 +20,15 @@ public class RealTimeQueueTests
             for (int j = i + 1; j < N; j++)
             {
                 queues[i + 1][j] = queues[i][j].Dequeue(out var v);
-                v.ShouldBe(i);
+                await v.Should().BeEqualTo(i);
             }
         }
         for (int i = 0; i + 1 < N; i++)
         {
-            queues[i][i].ShouldBeSameAs(RealTimeQueue<int>.Empty);
+            await queues[i][i].Should().BeSameReferenceAs(RealTimeQueue<int>.Empty);
             for (int j = i + 1; j < N; j++)
             {
-                queues[i][j].ShouldBe(Enumerable.Range(i, j - i));
+                await queues[i][j].Should().BeEquivalentOrderTo(Enumerable.Range(i, j - i));
             }
         }
     }

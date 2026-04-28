@@ -4,29 +4,29 @@ namespace Kzrnm.Competitive.Testing.Number;
 
 public class ModLogTests
 {
-    [Theory]
-    [InlineData(2, 1, 5, 0)]
-    [InlineData(4, 7, 10, -1)]
-    [InlineData(8, 6, 10, 4)]
-    [InlineData(5, 2, 11, -1)]
-    [InlineData(5, 9, 11, 4)]
-    [InlineData(0, 2, 4, -1)]
-    [InlineData(0, 0, 1, 0)]
-    [InlineData(0, 0, 2, 1)]
-    [InlineData(0, 1, 2, 0)]
-    [InlineData(0, 0, 4, 1)]
-    [InlineData(0, 1, 4, 0)]
-    [InlineData(2, 0, 4, 2)]
-    [InlineData(2, 1, 4, 0)]
-    [InlineData(2, 2, 4, 1)]
-    [InlineData(2, 3, 4, -1)]
-    public void Solve(long a, long b, long p, long expected)
+    [Test]
+    [Arguments(2, 1, 5, 0)]
+    [Arguments(4, 7, 10, -1)]
+    [Arguments(8, 6, 10, 4)]
+    [Arguments(5, 2, 11, -1)]
+    [Arguments(5, 9, 11, 4)]
+    [Arguments(0, 2, 4, -1)]
+    [Arguments(0, 0, 1, 0)]
+    [Arguments(0, 0, 2, 1)]
+    [Arguments(0, 1, 2, 0)]
+    [Arguments(0, 0, 4, 1)]
+    [Arguments(0, 1, 4, 0)]
+    [Arguments(2, 0, 4, 2)]
+    [Arguments(2, 1, 4, 0)]
+    [Arguments(2, 2, 4, 1)]
+    [Arguments(2, 3, 4, -1)]
+    public async Task Solve(long a, long b, long p, long expected)
     {
-        ModLog.Solve(a, b, p).ShouldBe(expected, $"a={a}, b={b}, p={p}, expected={expected}");
+        await ModLog.Solve(a, b, p).Should().BeEqualTo(expected);
     }
 
-    [Fact]
-    public void Random()
+    [Test, MultipleAssertions]
+    public async Task Random()
     {
         var rnd = new Random(227);
         for (int q = 0; q < 100; q++)
@@ -36,31 +36,31 @@ public class ModLogTests
             long b = 1;
             for (int i = 0; i < 10; i++)
             {
-                ModLog.Solve(a, b, p).ShouldBe(i, $"a={a}, b={b}, p={p}, expected={i}");
+                await ModLog.Solve(a, b, p).Should().BeEqualTo(i);
                 b = b * a % p;
             }
         }
     }
 
-    [Fact]
-    public void Mod1()
+    [Test, MultipleAssertions]
+    public async Task Mod1()
     {
-        ModLog.Solve(0, 0, 1).ShouldBe(0);
-        ModLog.Solve(0, 0, 1, false).ShouldBe(1);
+        await ModLog.Solve(0, 0, 1).Should().BeEqualTo(0);
+        await ModLog.Solve(0, 0, 1, false).Should().BeEqualTo(1);
     }
 
-    [Fact]
-    public void Small()
+    [Test, MultipleAssertions]
+    public async Task Small()
     {
         for (int p = 2; p < 10; p++)
             for (int a = 0; a < p; a++)
                 for (int b = 0; b < p; b++)
                 {
                     var expected = Native(a, b, p, true);
-                    ModLog.Solve(a, b, p).ShouldBe(expected, $"a={a}, b={b}, p={p}, expected={expected}");
+                    await ModLog.Solve(a, b, p).Should().BeEqualTo(expected);
 
                     expected = Native(a, b, p, false);
-                    ModLog.Solve(a, b, p, false).ShouldBe(expected, $"a={a}, b={b}, p={p}, expected={expected}");
+                    await ModLog.Solve(a, b, p, false).Should().BeEqualTo(expected);
                 }
     }
 

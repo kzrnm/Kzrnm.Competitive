@@ -1,80 +1,80 @@
+using System.Collections.Immutable;
 using System.Runtime.InteropServices;
 
 namespace Kzrnm.Competitive.Testing.Bit;
 
 public class BitTests
 {
-    public static TheoryData<int, int, string> BitStringInt32_Data => new()
+    public static IEnumerable<(int, int, string)> BitStringInt32_Data =>
+    [
+        (0, 0, "0" ),
+        (1, 3, "001" ),
+        (2, 3, "010" ),
+        (3, 3, "011" ),
+        (4, 3, "100" ),
+        (8, 3, "1000" ),
+        (int.MaxValue, 32, "01111111111111111111111111111111" ),
+        (-1, 32, "11111111111111111111111111111111" ),
+        (int.MinValue, 32, "10000000000000000000000000000000" ),
+    ];
+    [Test]
+    [MethodDataSource(nameof(BitStringInt32_Data))]
+    [Property("Category", "BitString")]
+    public async Task BitStringInt32(int num, int len, string expected)
     {
-        { 0, 0, "0" },
-        { 1, 3, "001" },
-        { 2, 3, "010" },
-        { 3, 3, "011" },
-        { 4, 3, "100" },
-        { 8, 3, "1000" },
-
-        { int.MaxValue, 32, "01111111111111111111111111111111" },
-        { -1, 32, "11111111111111111111111111111111" },
-        { int.MinValue, 32, "10000000000000000000000000000000" },
-    };
-    [Theory]
-    [MemberData(nameof(BitStringInt32_Data))]
-    [Trait("Category", "BitString")]
-    public void BitStringInt32(int num, int len, string expected)
-    {
-        num.ToBitString(len).ShouldBe(expected);
+        await num.ToBitString(len).Should().BeEqualTo(expected);
     }
 
-    public static TheoryData<long, int, string> BitStringInt64_Data => new()
-    {
-        { 0, 0, "0" },
-        { 1, 3, "001" },
-        { 2, 3, "010" },
-        { 3, 3, "011" },
-        { 4, 3, "100" },
-        { 8, 3, "1000" },
+    public static IEnumerable<(long, int, string)> BitStringInt64_Data =>
+    [
+        (0, 0, "0" ),
+        (1, 3, "001" ),
+        (2, 3, "010" ),
+        (3, 3, "011" ),
+        (4, 3, "100" ),
+        (8, 3, "1000" ),
 
-        { long.MaxValue, 64, "0111111111111111111111111111111111111111111111111111111111111111" },
-        { -1, 64, "1111111111111111111111111111111111111111111111111111111111111111" },
-        { long.MinValue, 64, "1000000000000000000000000000000000000000000000000000000000000000" },
-    };
-    [Theory]
-    [MemberData(nameof(BitStringInt64_Data))]
-    [Trait("Category", "BitString")]
-    public void BitStringInt64(long num, int len, string expected)
+        (long.MaxValue, 64, "0111111111111111111111111111111111111111111111111111111111111111" ),
+        (-1, 64, "1111111111111111111111111111111111111111111111111111111111111111" ),
+        (long.MinValue, 64, "1000000000000000000000000000000000000000000000000000000000000000" ),
+    ];
+    [Test]
+    [MethodDataSource(nameof(BitStringInt64_Data))]
+    [Property("Category", "BitString")]
+    public async Task BitStringInt64(long num, int len, string expected)
     {
-        num.ToBitString(len).ShouldBe(expected);
+        await num.ToBitString(len).Should().BeEqualTo(expected);
     }
 
-    public static TheoryData<ulong, int, string> BitStringUInt64_Data => new()
-    {
-        { 0, 0, "0" },
-        { 1, 3, "001" },
-        { 2, 3, "010" },
-        { 3, 3, "011" },
-        { 4, 3, "100" },
-        { 8, 3, "1000" },
+    public static IEnumerable<(ulong, int, string)> BitStringUInt64_Data =>
+    [
+        (0, 0, "0" ),
+        (1, 3, "001" ),
+        (2, 3, "010" ),
+        (3, 3, "011" ),
+        (4, 3, "100" ),
+        (8, 3, "1000" ),
 
-        { ulong.MaxValue, 64, "1111111111111111111111111111111111111111111111111111111111111111" },
-    };
-    [Theory]
-    [MemberData(nameof(BitStringUInt64_Data))]
-    [Trait("Category", "BitString")]
-    public void BitStringUInt64(ulong num, int len, string expected)
+        (ulong.MaxValue, 64, "1111111111111111111111111111111111111111111111111111111111111111" ),
+    ];
+    [Test]
+    [MethodDataSource(nameof(BitStringUInt64_Data))]
+    [Property("Category", "BitString")]
+    public async Task BitStringUInt64(ulong num, int len, string expected)
     {
-        num.ToBitString(len).ShouldBe(expected);
+        await num.ToBitString(len).Should().BeEqualTo(expected);
     }
 
-    [Fact]
-    [Trait("Category", "BitString")]
-    public void BitStringDefault()
+    [Test, MultipleAssertions]
+    [Property("Category", "BitString")]
+    public async Task BitStringDefault()
     {
-        0.ToBitString().ShouldBe(new string('0', 32));
-        0L.ToBitString().ShouldBe(new string('0', 64));
-        0UL.ToBitString().ShouldBe(new string('0', 64));
+        await 0.ToBitString().Should().BeEqualTo(new string('0', 32));
+        await 0L.ToBitString().Should().BeEqualTo(new string('0', 64));
+        await 0UL.ToBitString().Should().BeEqualTo(new string('0', 64));
     }
 
-    public static IEnumerable<TheoryDataRow<uint, int[]>> BitEnumerateByte_Data()
+    public static IEnumerable<(uint, ImmutableArray<int>)> BitEnumerateByte_Data()
     {
         var s = new int[8];
         for (s[0] = 0; s[0] < 2; s[0]++)
@@ -94,45 +94,45 @@ public class BitTests
                                                 num |= 1u << i;
                                                 lst.Add(i);
                                             }
-                                        yield return (num, lst.ToArray());
+                                        yield return (num, lst.ToImmutableArray());
                                     }
     }
-    [Theory]
-    [MemberData(nameof(BitEnumerateByte_Data), DisableDiscoveryEnumeration = true)]
-    [Trait("Category", "BitEnumerate")]
-    public void BitEnumerateByte(uint num, int[] expected)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(BitEnumerateByte_Data))]
+    [Property("Category", "BitEnumerate")]
+    public async Task BitEnumerateByte(uint num, ImmutableArray<int> expected)
     {
-        num.Bits().ShouldBe(expected);
-        num.Bits().ToArray().ShouldBe(expected);
+        await num.Bits().Should().BeEquivalentOrderTo(expected);
+        await num.Bits().ToArray().Should().BeEquivalentOrderTo(expected);
     }
 
-    public static TheoryData<int, int[]> BitEnumerateInt32_Data => new()
-    {
-        { -1, [
+    public static IEnumerable<(int, int[])> BitEnumerateInt32_Data =>
+    [
+        (-1, [
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
             10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
             20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
             30, 31]
-        },
-        { int.MinValue, [31]},
-        { 1, [0]},
-        { 3, [0, 1 ]},
-        { 10, [1, 3]},
-        { 1 << 20, [20]},
-        { 0, [] },
-    };
-    [Theory]
-    [MemberData(nameof(BitEnumerateInt32_Data))]
-    [Trait("Category", "BitEnumerate")]
-    public void BitEnumerateInt32(int num, int[] expected)
+        ),
+        (int.MinValue, [31]),
+        (1, [0]),
+        (3, [0, 1 ]),
+        (10, [1, 3]),
+        (1 << 20, [20]),
+        (0, [] ),
+    ];
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(BitEnumerateInt32_Data))]
+    [Property("Category", "BitEnumerate")]
+    public async Task BitEnumerateInt32(int num, int[] expected)
     {
-        num.Bits().ShouldBe(expected);
-        num.Bits().ToArray().ShouldBe(expected);
+        await num.Bits().Should().BeEquivalentOrderTo(expected);
+        await num.Bits().ToArray().Should().BeEquivalentOrderTo(expected);
     }
 
-    public static TheoryData<uint, int[]> BitEnumerateUInt32_Data => new()
-    {
-        {
+    public static IEnumerable<(uint, int[])> BitEnumerateUInt32_Data =>
+    [
+        (
             uint.MaxValue,
             [
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -140,78 +140,80 @@ public class BitTests
             20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
             30, 31
             ]
-        },
-        { 1U << 31, [31]},
-        { 1, [0]},
-        { 3, [0, 1]},
-        { 10, [1, 3]},
-        { 1 << 20, [20]},
-        { 0, [] },
-    };
-    [Theory]
-    [MemberData(nameof(BitEnumerateUInt32_Data))]
-    [Trait("Category", "BitEnumerate")]
-    public void BitEnumerateUInt32(uint num, int[] expected)
+        ),
+        (1U << 31, [31]),
+        (1, [0]),
+        (3, [0, 1]),
+        (10, [1, 3]),
+        (1 << 20, [20]),
+        (0, [] ),
+    ];
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(BitEnumerateUInt32_Data))]
+    [Property("Category", "BitEnumerate")]
+    public async Task BitEnumerateUInt32(uint num, int[] expected)
     {
-        num.Bits().ShouldBe(expected);
-        num.Bits().ToArray().ShouldBe(expected);
+        await num.Bits().Should().BeEquivalentOrderTo(expected);
+        await num.Bits().ToArray().Should().BeEquivalentOrderTo(expected);
     }
 
-    public static TheoryData<long, int[]> BitEnumerateInt64_Data => new()
-    {
-        { -1, [
+    public static IEnumerable<(long, int[])> BitEnumerateInt64_Data =>
+    [
+        ( -1, [
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
             10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
             20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
             30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
             40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
             50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
-            60, 61, 62, 63] },
-        { long.MinValue, [63]},
-        { 1, [0]},
-        { 3, [0, 1]},
-        { 10, [1, 3]},
-        { 1L << 20, [20]},
-        { 0, [] },
-    };
-    [Theory]
-    [MemberData(nameof(BitEnumerateInt64_Data))]
-    [Trait("Category", "BitEnumerate")]
-    public void BitEnumerateInt64(long num, int[] expected)
+            60, 61, 62, 63]
+        ),
+        (long.MinValue, [63]),
+        (1, [0]),
+        (3, [0, 1]),
+        (10, [1, 3]),
+        (1L << 20, [20]),
+        (0, [] ),
+    ];
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(BitEnumerateInt64_Data))]
+    [Property("Category", "BitEnumerate")]
+    public async Task BitEnumerateInt64(long num, int[] expected)
     {
-        num.Bits().ShouldBe(expected);
-        num.Bits().ToArray().ShouldBe(expected);
+        await num.Bits().Should().BeEquivalentOrderTo(expected);
+        await num.Bits().ToArray().Should().BeEquivalentOrderTo(expected);
     }
 
-    public static TheoryData<ulong, int[]> BitEnumerateUInt64_Data => new()
-    {
-        { ulong.MaxValue, [
+    public static IEnumerable<(ulong, int[])> BitEnumerateUInt64_Data =>
+    [
+        ( ulong.MaxValue, [
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
             10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
             20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
             30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
             40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
             50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
-            60, 61, 62, 63] },
-        { 1UL << 63, [63]},
-        { 1, [0]},
-        { 3, [0, 1]},
-        { 10, [1, 3]},
-        { 1L << 20, [20]},
-        { 0, [] },
-    };
-    [Theory]
-    [MemberData(nameof(BitEnumerateUInt64_Data))]
-    [Trait("Category", "BitEnumerate")]
-    public void BitEnumerateUInt64(ulong num, int[] expected)
+            60, 61, 62, 63]
+        ),
+        (1UL << 63, [63]),
+        (1, [0]),
+        (3, [0, 1]),
+        (10, [1, 3]),
+        (1L << 20, [20]),
+        (0, [] ),
+    ];
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(BitEnumerateUInt64_Data))]
+    [Property("Category", "BitEnumerate")]
+    public async Task BitEnumerateUInt64(ulong num, int[] expected)
     {
-        num.Bits().ShouldBe(expected);
-        num.Bits().ToArray().ShouldBe(expected);
+        await num.Bits().Should().BeEquivalentOrderTo(expected);
+        await num.Bits().ToArray().Should().BeEquivalentOrderTo(expected);
     }
 
-    [Fact]
-    [Trait("Category", "BitEnumerate")]
-    public void BitEnumerateUInt64Random()
+    [Test, MultipleAssertions]
+    [Property("Category", "BitEnumerate")]
+    public async Task BitEnumerateUInt64Random()
     {
         var rnd = new Random(227);
         var array = new ulong[2000];
@@ -223,14 +225,13 @@ public class BitTests
             Array.Reverse(binary);
             foreach (var b in value.Bits())
             {
-                binary[b].ShouldBe('1');
+                await binary[b].Should().BeEqualTo('1');
                 binary[b] = '0';
             }
 
-            new string(binary).ShouldBe(zeroBinary);
+            await new string(binary).Should().BeEqualTo(zeroBinary);
 
-            value.Bits().ToArray()
-                .ShouldBe(value.Bits().Cast<int>().ToArray());
+            await value.Bits().ToArray().Should().BeEquivalentOrderTo(value.Bits().Cast<int>().ToArray());
         }
     }
 }

@@ -3,8 +3,8 @@ namespace Kzrnm.Competitive.Testing.Graph;
 
 public class 最短経路WarshallFloydTests
 {
-    [Fact]
-    public void Int()
+    [Test, MultipleAssertions]
+    public async Task Int()
     {
         var gb = new WIntGraphBuilder(5, true);
         gb.Add(0, 1, 1);
@@ -18,15 +18,15 @@ public class 最短経路WarshallFloydTests
         gb.Add(4, 3, 6);
         gb.Add(4, 0, 1);
         var res = gb.ToGraph().WarshallFloyd();
-        res[0].ShouldBe([0, 1, 6, 18, 12]);
-        res[1].ShouldBe([12, 0, 5, 17, 11]);
-        res[2].ShouldBe([7, 8, 0, 12, 6]);
-        res[3].ShouldBe([1073741823, 1073741823, 1073741823, 0, 1073741823]);
-        res[4].ShouldBe([1, 2, 7, 6, 0]);
+        await res[0].Should().BeEquivalentOrderTo([0, 1, 6, 18, 12]);
+        await res[1].Should().BeEquivalentOrderTo([12, 0, 5, 17, 11]);
+        await res[2].Should().BeEquivalentOrderTo([7, 8, 0, 12, 6]);
+        await res[3].Should().BeEquivalentOrderTo([1073741823, 1073741823, 1073741823, 0, 1073741823]);
+        await res[4].Should().BeEquivalentOrderTo([1, 2, 7, 6, 0]);
     }
 
-    [Fact]
-    public void Long()
+    [Test, MultipleAssertions]
+    public async Task Long()
     {
         var gb = new WLongGraphBuilder(5, true);
         gb.Add(0, 1, 1);
@@ -39,10 +39,10 @@ public class 最短経路WarshallFloydTests
         gb.Add(4, 3, 6);
         gb.Add(4, 0, 1);
         var res = gb.ToGraph().WarshallFloyd();
-        res[0].ShouldBe([0, 1, 6, 18, 12]);
-        res[1].ShouldBe([12, 0, 5, 17, 11]);
-        res[2].ShouldBe([7, 8, 0, 12, 6]);
-        res[3].ShouldBe([4611686018427387903, 4611686018427387903, 4611686018427387903, 0, 4611686018427387903]);
-        res[4].ShouldBe([1, 2, 7, 6, 0]);
+        await res[0].Should().BeEquivalentOrderTo([0L, 1, 6, 18, 12]);
+        await res[1].Should().BeEquivalentOrderTo([12L, 0, 5, 17, 11]);
+        await res[2].Should().BeEquivalentOrderTo([7L, 8, 0, 12, 6]);
+        await res[3].Should().BeEquivalentOrderTo([4611686018427387903L, 4611686018427387903, 4611686018427387903, 0, 4611686018427387903]);
+        await res[4].Should().BeEquivalentOrderTo([1L, 2, 7, 6, 0]);
     }
 }

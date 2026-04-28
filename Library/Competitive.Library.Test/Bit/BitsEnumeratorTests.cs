@@ -1,10 +1,11 @@
-using Xunit.Sdk;
+
+using System.Collections.Immutable;
 
 namespace Kzrnm.Competitive.Testing.Bit;
 
 public class BitsEnumeratorTests
 {
-    public static IEnumerable<TheoryDataRow<byte, int[]>> BitEnumerateByte_Data()
+    public static IEnumerable<(byte, ImmutableArray<int>)> BitEnumerateByte_Data()
     {
         var s = new int[8];
         for (s[0] = 0; s[0] < 2; s[0]++)
@@ -24,66 +25,54 @@ public class BitsEnumeratorTests
                                                 num |= (byte)(1 << i);
                                                 lst.Add(i);
                                             }
-                                        yield return (num, lst.ToArray());
+                                        yield return (num, lst.ToImmutableArray());
                                     }
     }
-    [Theory]
-    [MemberData(nameof(BitEnumerateByte_Data), DisableDiscoveryEnumeration = true)]
-    public void BitEnumerateByte(byte num, int[] expected)
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(BitEnumerateByte_Data))]
+    public async Task BitEnumerateByte(byte num, ImmutableArray<int> expected)
     {
-        new BitsEnumerator<byte>(num).ShouldBe(expected);
-        new BitsEnumerator<byte>(num).ToArray().ShouldBe(expected);
+        await new BitsEnumerator<byte>(num).Should().BeEquivalentOrderTo(expected);
+        await new BitsEnumerator<byte>(num).ToArray().Should().BeEquivalentOrderTo(expected);
     }
 
-    public static TheoryData<Int128, int[]> BitEnumerateInt128_Data => new()
+    public static IEnumerable<(Int128, int[])> BitEnumerateInt128_Data =>
+    [
+        (-1, Enumerable.Range(0,128).ToArray() ),
+        (Int128.MaxValue, Enumerable.Range(0,127).ToArray() ),
+        (Int128.MinValue, [127] ),
+        (1, [0] ),
+        (3, [0, 1 ] ),
+        (10, [1, 3] ),
+        (1 << 20, [20] ),
+        (Int128.One << 120, [120] ),
+        (new(1, 1), [0, 64] ),
+        (0, [] ),
+    ];
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(BitEnumerateInt128_Data))]
+    public async Task BitEnumerateInt128(Int128 num, int[] expected)
     {
-        { -1, Enumerable.Range(0,128).ToArray() },
-        { Int128.MaxValue, Enumerable.Range(0,127).ToArray() },
-        { Int128.MinValue, [127] },
-        { 1, [0] },
-        { 3, [0, 1 ] },
-        { 10, [1, 3] },
-        { 1 << 20, [20] },
-        { Int128.One << 120, [120] },
-        { new(1, 1), [0, 64] },
-        { 0, [] },
-    };
-    struct IInt128 : IXunitSerializable
-    {
-        public void Deserialize(IXunitSerializationInfo info)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Serialize(IXunitSerializationInfo info)
-        {
-            throw new NotImplementedException();
-        }
-    }
-    [Theory]
-    [MemberData(nameof(BitEnumerateInt128_Data))]
-    public void BitEnumerateInt128(Int128 num, int[] expected)
-    {
-        new BitsEnumerator<Int128>(num).ShouldBe(expected);
-        new BitsEnumerator<Int128>(num).ToArray().ShouldBe(expected);
+        await new BitsEnumerator<Int128>(num).Should().BeEquivalentOrderTo(expected);
+        await new BitsEnumerator<Int128>(num).ToArray().Should().BeEquivalentOrderTo(expected);
     }
 
-    public static TheoryData<UInt128, int[]> BitEnumerateUInt128_Data => new()
+    public static IEnumerable<(UInt128, int[])> BitEnumerateUInt128_Data =>
+    [
+        (UInt128.MaxValue, Enumerable.Range(0,128).ToArray() ),
+        (1, [0] ),
+        (3, [0, 1 ] ),
+        (10, [1, 3] ),
+        (1 << 20, [20] ),
+        (UInt128.One << 120, [120] ),
+        (new(1, 1), [0, 64] ),
+        (0, [] ),
+    ];
+    [Test, MultipleAssertions]
+    [MethodDataSource(nameof(BitEnumerateUInt128_Data))]
+    public async Task BitEnumerateUInt128(UInt128 num, int[] expected)
     {
-        { UInt128.MaxValue, Enumerable.Range(0,128).ToArray() },
-        { 1, [0] },
-        { 3, [0, 1 ] },
-        { 10, [1, 3] },
-        { 1 << 20, [20] },
-        { UInt128.One << 120, [120] },
-        { new(1, 1), [0, 64] },
-        { 0, [] },
-    };
-    [Theory]
-    [MemberData(nameof(BitEnumerateUInt128_Data))]
-    public void BitEnumerateUInt128(UInt128 num, int[] expected)
-    {
-        new BitsEnumerator<UInt128>(num).ShouldBe(expected);
-        new BitsEnumerator<UInt128>(num).ToArray().ShouldBe(expected);
+        await new BitsEnumerator<UInt128>(num).Should().BeEquivalentOrderTo(expected);
+        await new BitsEnumerator<UInt128>(num).ToArray().Should().BeEquivalentOrderTo(expected);
     }
 }

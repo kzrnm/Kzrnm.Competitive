@@ -2,41 +2,41 @@ namespace Kzrnm.Competitive.Testing.Extensions;
 
 public class UpdateExtensionTests
 {
-    [Fact]
-    public void UpdateMax()
+    [Test, MultipleAssertions]
+    public async Task UpdateMax()
     {
         int a = 0;
-        a.UpdateMax(10).ShouldBeTrue();
-        a.ShouldBe(10);
-        a.UpdateMax(0).ShouldBeFalse();
-        a.ShouldBe(10);
+        await a.UpdateMax(10).Should().BeTrue();
+        await a.Should().BeEqualTo(10);
+        await a.UpdateMax(0).Should().BeFalse();
+        await a.Should().BeEqualTo(10);
 
         var d = new DateTime(2000, 1, 1);
-        d.UpdateMax(new DateTime(2001, 1, 1)).ShouldBeTrue();
-        d.ShouldBe(new DateTime(2001, 1, 1));
-        d.UpdateMax(new DateTime(2000, 12, 1)).ShouldBeFalse();
-        d.ShouldBe(new DateTime(2001, 1, 1));
+        await d.UpdateMax(new DateTime(2001, 1, 1)).Should().BeTrue();
+        await d.Should().BeEqualTo(new DateTime(2001, 1, 1));
+        await d.UpdateMax(new DateTime(2000, 12, 1)).Should().BeFalse();
+        await d.Should().BeEqualTo(new DateTime(2001, 1, 1));
     }
 
-    [Fact]
-    public void UpdateMin()
+    [Test, MultipleAssertions]
+    public async Task UpdateMin()
     {
         int a = 0;
-        a.UpdateMin(-10).ShouldBeTrue();
-        a.ShouldBe(-10);
-        a.UpdateMin(0).ShouldBeFalse();
-        a.ShouldBe(-10);
+        await a.UpdateMin(-10).Should().BeTrue();
+        await a.Should().BeEqualTo(-10);
+        await a.UpdateMin(0).Should().BeFalse();
+        await a.Should().BeEqualTo(-10);
 
         DateTime d = new(2000, 1, 1);
-        d.UpdateMin(new DateTime(1999, 1, 1)).ShouldBeTrue();
-        d.ShouldBe(new DateTime(1999, 1, 1));
-        d.UpdateMin(new DateTime(2000, 12, 1)).ShouldBeFalse();
-        d.ShouldBe(new DateTime(1999, 1, 1));
+        await d.UpdateMin(new DateTime(1999, 1, 1)).Should().BeTrue();
+        await d.Should().BeEqualTo(new DateTime(1999, 1, 1));
+        await d.UpdateMin(new DateTime(2000, 12, 1)).Should().BeFalse();
+        await d.Should().BeEqualTo(new DateTime(1999, 1, 1));
     }
 
 
-    [Fact]
-    public void UpdateValues()
+    [Test, MultipleAssertions]
+    public async Task UpdateValues()
     {
         var rnd = new Random(227);
         for (int i = 0; i < 1000; i++)
@@ -47,23 +47,23 @@ public class UpdateExtensionTests
             byte num;
             {
                 num = 0;
-                num.UpdateMin(bytes).ShouldBeFalse();
-                num.ShouldBe(default);
+                await num.UpdateMin(bytes).Should().BeFalse();
+                await num.Should().BeEqualTo(default);
             }
             {
                 num = 0;
-                num.UpdateMax(bytes).ShouldBeTrue();
-                num.ShouldBe(bytes.Max());
+                await num.UpdateMax(bytes).Should().BeTrue();
+                await num.Should().BeEqualTo(bytes.Max());
             }
             {
                 num = byte.MaxValue;
-                num.UpdateMin(bytes).ShouldBeTrue();
-                num.ShouldBe(bytes.Min());
+                await num.UpdateMin(bytes).Should().BeTrue();
+                await num.Should().BeEqualTo(bytes.Min());
             }
             {
                 num = byte.MaxValue;
-                num.UpdateMax(bytes).ShouldBeFalse();
-                num.ShouldBe(byte.MaxValue);
+                await num.UpdateMax(bytes).Should().BeFalse();
+                await num.Should().BeEqualTo(byte.MaxValue);
             }
         }
     }

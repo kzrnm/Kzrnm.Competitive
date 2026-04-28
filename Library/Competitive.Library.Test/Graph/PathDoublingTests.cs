@@ -1,9 +1,11 @@
+using System.Runtime.InteropServices;
+
 namespace Kzrnm.Competitive.Testing.Graph;
 
 public class PathDoublingTests
 {
-    [Fact]
-    public void Move()
+    [Test, MultipleAssertions]
+    public async Task Move()
     {
         const int N = 100;
         var arr = new int[N];
@@ -14,23 +16,22 @@ public class PathDoublingTests
 
         for (int i = 0; i < N; i++)
             for (int k = 0; k < 20; k++)
-                db.Move(i, k).ShouldBe((i + k) % arr.Length);
-        Span<ulong> ks = stackalloc ulong[1];
+                await db.Move(i, k).Should().BeEqualTo((i + k) % arr.Length);
         for (int t = 0; t < 64; t++)
         {
-            rnd.NextBytes(ks.Cast<ulong, byte>());
-            var k = ks[0];
+            ulong k = 0;
+            rnd.NextBytes(MemoryMarshal.CreateSpan(ref k, 1).Cast<ulong, byte>());
             for (int i = 0; i < N; i++)
             {
-                db.Move(i, k).ShouldBe((int)(((uint)i + k) % (uint)arr.Length));
+                await db.Move(i, k).Should().BeEqualTo((int)(((uint)i + k) % (uint)arr.Length));
                 if ((long)k >= 0)
-                    db.Move(i, (long)k).ShouldBe((int)(((uint)i + k) % (uint)arr.Length));
+                    await db.Move(i, (long)k).Should().BeEqualTo((int)(((uint)i + k) % (uint)arr.Length));
             }
         }
     }
 
-    [Fact]
-    public void Tree()
+    [Test, MultipleAssertions]
+    public async Task Tree()
     {
         var arr = new int[7]
         {
@@ -43,52 +44,52 @@ public class PathDoublingTests
             1,
         };
         var db = new PathDoubling(arr);
-        db.Move(0, 1).ShouldBe(-1);
-        db.Move(1, 1).ShouldBe(0);
-        db.Move(2, 1).ShouldBe(2);
-        db.Move(3, 1).ShouldBe(1);
-        db.Move(4, 1).ShouldBe(3);
-        db.Move(5, 1).ShouldBe(2);
-        db.Move(6, 1).ShouldBe(1);
+        await db.Move(0, 1).Should().BeEqualTo(-1);
+        await db.Move(1, 1).Should().BeEqualTo(0);
+        await db.Move(2, 1).Should().BeEqualTo(2);
+        await db.Move(3, 1).Should().BeEqualTo(1);
+        await db.Move(4, 1).Should().BeEqualTo(3);
+        await db.Move(5, 1).Should().BeEqualTo(2);
+        await db.Move(6, 1).Should().BeEqualTo(1);
 
-        db.Move(0, 2).ShouldBe(-1);
-        db.Move(1, 2).ShouldBe(-1);
-        db.Move(2, 2).ShouldBe(2);
-        db.Move(3, 2).ShouldBe(0);
-        db.Move(4, 2).ShouldBe(1);
-        db.Move(5, 2).ShouldBe(2);
-        db.Move(6, 2).ShouldBe(0);
+        await db.Move(0, 2).Should().BeEqualTo(-1);
+        await db.Move(1, 2).Should().BeEqualTo(-1);
+        await db.Move(2, 2).Should().BeEqualTo(2);
+        await db.Move(3, 2).Should().BeEqualTo(0);
+        await db.Move(4, 2).Should().BeEqualTo(1);
+        await db.Move(5, 2).Should().BeEqualTo(2);
+        await db.Move(6, 2).Should().BeEqualTo(0);
 
-        db.Move(0, 3).ShouldBe(-1);
-        db.Move(1, 3).ShouldBe(-1);
-        db.Move(2, 3).ShouldBe(2);
-        db.Move(3, 3).ShouldBe(-1);
-        db.Move(4, 3).ShouldBe(0);
-        db.Move(5, 3).ShouldBe(2);
-        db.Move(6, 3).ShouldBe(-1);
+        await db.Move(0, 3).Should().BeEqualTo(-1);
+        await db.Move(1, 3).Should().BeEqualTo(-1);
+        await db.Move(2, 3).Should().BeEqualTo(2);
+        await db.Move(3, 3).Should().BeEqualTo(-1);
+        await db.Move(4, 3).Should().BeEqualTo(0);
+        await db.Move(5, 3).Should().BeEqualTo(2);
+        await db.Move(6, 3).Should().BeEqualTo(-1);
 
-        db.Move(0, 4).ShouldBe(-1);
-        db.Move(1, 4).ShouldBe(-1);
-        db.Move(2, 4).ShouldBe(2);
-        db.Move(3, 4).ShouldBe(-1);
-        db.Move(4, 4).ShouldBe(-1);
-        db.Move(5, 4).ShouldBe(2);
-        db.Move(6, 4).ShouldBe(-1);
+        await db.Move(0, 4).Should().BeEqualTo(-1);
+        await db.Move(1, 4).Should().BeEqualTo(-1);
+        await db.Move(2, 4).Should().BeEqualTo(2);
+        await db.Move(3, 4).Should().BeEqualTo(-1);
+        await db.Move(4, 4).Should().BeEqualTo(-1);
+        await db.Move(5, 4).Should().BeEqualTo(2);
+        await db.Move(6, 4).Should().BeEqualTo(-1);
 
-        db.Move(0, 5).ShouldBe(-1);
-        db.Move(1, 5).ShouldBe(-1);
-        db.Move(2, 5).ShouldBe(2);
-        db.Move(3, 5).ShouldBe(-1);
-        db.Move(4, 5).ShouldBe(-1);
-        db.Move(5, 5).ShouldBe(2);
-        db.Move(6, 5).ShouldBe(-1);
+        await db.Move(0, 5).Should().BeEqualTo(-1);
+        await db.Move(1, 5).Should().BeEqualTo(-1);
+        await db.Move(2, 5).Should().BeEqualTo(2);
+        await db.Move(3, 5).Should().BeEqualTo(-1);
+        await db.Move(4, 5).Should().BeEqualTo(-1);
+        await db.Move(5, 5).Should().BeEqualTo(2);
+        await db.Move(6, 5).Should().BeEqualTo(-1);
 
-        db.Move(0, 1L << 20).ShouldBe(-1);
-        db.Move(1, 1L << 20).ShouldBe(-1);
-        db.Move(2, 1L << 20).ShouldBe(2);
-        db.Move(3, 1L << 20).ShouldBe(-1);
-        db.Move(4, 1L << 20).ShouldBe(-1);
-        db.Move(5, 1L << 20).ShouldBe(2);
-        db.Move(6, 1L << 20).ShouldBe(-1);
+        await db.Move(0, 1L << 20).Should().BeEqualTo(-1);
+        await db.Move(1, 1L << 20).Should().BeEqualTo(-1);
+        await db.Move(2, 1L << 20).Should().BeEqualTo(2);
+        await db.Move(3, 1L << 20).Should().BeEqualTo(-1);
+        await db.Move(4, 1L << 20).Should().BeEqualTo(-1);
+        await db.Move(5, 1L << 20).Should().BeEqualTo(2);
+        await db.Move(6, 1L << 20).Should().BeEqualTo(-1);
     }
 }

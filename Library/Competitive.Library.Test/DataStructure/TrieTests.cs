@@ -10,68 +10,67 @@ public class TrieTests
             .GetValue(trie);
 
 
-    [Fact]
-    public void GetChildTest()
+    [Test]
+    public async Task GetChildTest()
     {
         var trie = new Trie<int, int>();
-        trie.GetChild([1, 2, 3]).ShouldBeNull();
+        await trie.GetChild([1, 2, 3]).Should().BeNull();
     }
 
-    [Fact]
-    public void AddTest()
+    [Test, MultipleAssertions]
+    public async Task AddTest()
     {
         var trie = new Trie<int, int>();
         trie.Add([1, 2, 3], -1);
-        trie.GetChild([1, 2, 3]).Value.ShouldBe(-1);
-        trie.HasValue.ShouldBeFalse();
+        await trie.GetChild([1, 2, 3]).Value.Should().BeEqualTo(-1);
+        await trie.HasValue.Should().BeFalse();
 
         SortedDictionary<int, Trie<int, int>> dic;
 
         dic = TrieDic(trie);
-        dic.ShouldContainKey(1);
-        dic.Count.ShouldBe(1);
+        await dic.Should().ContainKey(1);
+        await dic.Count.Should().BeEqualTo(1);
 
         trie = dic[1];
-        trie.HasValue.ShouldBeFalse();
+        await trie.HasValue.Should().BeFalse();
         dic = TrieDic(trie);
-        dic.ShouldContainKey(2);
-        dic.Count.ShouldBe(1);
+        await dic.Should().ContainKey(2);
+        await dic.Count.Should().BeEqualTo(1);
 
         trie = dic[2];
-        trie.HasValue.ShouldBeFalse();
+        await trie.HasValue.Should().BeFalse();
         dic = TrieDic(trie);
-        dic.ShouldContainKey(3);
-        dic.Count.ShouldBe(1);
+        await dic.Should().ContainKey(3);
+        await dic.Count.Should().BeEqualTo(1);
 
         trie = dic[3];
-        trie.HasValue.ShouldBeTrue();
-        trie.Value.ShouldBe(-1);
+        await trie.HasValue.Should().BeTrue();
+        await trie.Value.Should().BeEqualTo(-1);
         dic = TrieDic(trie);
-        dic.ShouldBeEmpty();
+        await dic.Should().BeEmpty();
     }
 
-    [Fact]
-    public void GetTest()
+    [Test, MultipleAssertions]
+    public async Task GetTest()
     {
         var trie = new Trie<int, int>();
         trie.Add([1, 2, 3], -1);
 
-        trie.TryGet([1, 2], out _).ShouldBeFalse();
-        trie.TryGet([1, 2, 2], out _).ShouldBeFalse();
-        trie.TryGet([1, 2, 3, 4], out _).ShouldBeFalse();
+        await trie.TryGet([1, 2], out _).Should().BeFalse();
+        await trie.TryGet([1, 2, 2], out _).Should().BeFalse();
+        await trie.TryGet([1, 2, 3, 4], out _).Should().BeFalse();
 
-        Should.Throw<KeyNotFoundException>(() => trie[[1, 2]]);
-        Should.Throw<KeyNotFoundException>(() => trie[[1, 2, 2]]);
-        Should.Throw<KeyNotFoundException>(() => trie[[1, 2, 3, 4]]);
+        await new Action(() => _ = trie[[1, 2]]).Should().ThrowExactly<KeyNotFoundException>();
+        await new Action(() => _ = trie[[1, 2, 2]]).Should().ThrowExactly<KeyNotFoundException>();
+        await new Action(() => _ = trie[[1, 2, 3, 4]]).Should().ThrowExactly<KeyNotFoundException>();
 
-        trie.TryGet([1, 2, 3], out var val).ShouldBeTrue();
-        val.ShouldBe(-1);
-        trie[[1, 2, 3]].ShouldBe(-1);
+        await trie.TryGet([1, 2, 3], out var val).Should().BeTrue();
+        await val.Should().BeEqualTo(-1);
+        await trie[[1, 2, 3]].Should().BeEqualTo(-1);
     }
 
-
-    [Fact]
-    public void IndexTest()
+    [Test, MultipleAssertions]
+    public async Task IndexTest()
     {
         var trie = new Trie<int, int>();
         trie.Add([1, 2, 3], 0);
@@ -82,68 +81,68 @@ public class TrieTests
         trie.Add([3, 2, 1], 5);
 
         for (int i = 0; i < 6; i++)
-            trie[i].ShouldBe(i);
+            await trie[i].Should().BeEqualTo(i);
 
-        Should.Throw<IndexOutOfRangeException>(() => trie[-1]);
-        Should.Throw<IndexOutOfRangeException>(() => trie[6]);
+        await new Action(() => _ = trie[-1]).Should().ThrowExactly<IndexOutOfRangeException>();
+        await new Action(() => _ = trie[6]).Should().ThrowExactly<IndexOutOfRangeException>();
     }
 
-    [Fact]
-    public void RemoveTest()
+    [Test, MultipleAssertions]
+    public async Task RemoveTest()
     {
         var trie = new Trie<int, int>();
         trie.Add([1, 2], 10);
         trie.Add([1, 2, 3], -1);
-        trie.GetChild([1, 2]).Value.ShouldBe(10);
-        trie.GetChild([1, 2, 3]).Value.ShouldBe(-1);
-        trie.HasValue.ShouldBeFalse();
+        await trie.GetChild([1, 2]).Value.Should().BeEqualTo(10);
+        await trie.GetChild([1, 2, 3]).Value.Should().BeEqualTo(-1);
+        await trie.HasValue.Should().BeFalse();
 
         Trie<int, int> tt;
         SortedDictionary<int, Trie<int, int>> dic;
 
         tt = trie;
         dic = TrieDic(tt);
-        dic.ShouldContainKey(1);
-        dic.Count.ShouldBe(1);
+        await dic.Should().ContainKey(1);
+        await dic.Count.Should().BeEqualTo(1);
 
         tt = dic[1];
-        tt.HasValue.ShouldBeFalse();
+        await tt.HasValue.Should().BeFalse();
         dic = TrieDic(tt);
-        dic.ShouldContainKey(2);
-        dic.Count.ShouldBe(1);
+        await dic.Should().ContainKey(2);
+        await dic.Count.Should().BeEqualTo(1);
 
         tt = dic[2];
-        tt.HasValue.ShouldBeTrue();
-        tt.Value.ShouldBe(10);
+        await tt.HasValue.Should().BeTrue();
+        await tt.Value.Should().BeEqualTo(10);
         dic = TrieDic(tt);
-        dic.ShouldContainKey(3);
-        dic.Count.ShouldBe(1);
+        await dic.Should().ContainKey(3);
+        await dic.Count.Should().BeEqualTo(1);
 
         tt = dic[3];
-        tt.HasValue.ShouldBeTrue();
-        tt.Value.ShouldBe(-1);
+        await tt.HasValue.Should().BeTrue();
+        await tt.Value.Should().BeEqualTo(-1);
         dic = TrieDic(tt);
-        dic.ShouldBeEmpty();
+        await dic.Should().BeEmpty();
 
         // remove last
         trie.Remove([1, 2, 3]);
 
         tt = trie;
         dic = TrieDic(tt);
-        dic.ShouldContainKey(1);
-        dic.Count.ShouldBe(1);
+        await dic.Should().ContainKey(1);
+        await dic.Count.Should().BeEqualTo(1);
 
         tt = dic[1];
-        tt.HasValue.ShouldBeFalse();
+        await tt.HasValue.Should().BeFalse();
         dic = TrieDic(tt);
-        dic.ShouldContainKey(2);
-        dic.Count.ShouldBe(1);
+        await dic.Should().ContainKey(2);
+        await dic.Count.Should().BeEqualTo(1);
 
         tt = dic[2];
-        tt.HasValue.ShouldBeTrue();
-        tt.Value.ShouldBe(10);
+        await tt.HasValue.Should().BeTrue();
+        await tt.Value.Should().BeEqualTo(10);
         dic = TrieDic(tt);
-        dic.ShouldBeEmpty();
+        await dic.Should().BeEmpty();
 
 
         // remove mid
@@ -152,26 +151,26 @@ public class TrieTests
 
         tt = trie;
         dic = TrieDic(tt);
-        dic.ShouldContainKey(1);
-        dic.Count.ShouldBe(1);
+        await dic.Should().ContainKey(1);
+        await dic.Count.Should().BeEqualTo(1);
 
         tt = dic[1];
-        tt.HasValue.ShouldBeFalse();
+        await tt.HasValue.Should().BeFalse();
         dic = TrieDic(tt);
-        dic.ShouldContainKey(2);
-        dic.Count.ShouldBe(1);
+        await dic.Should().ContainKey(2);
+        await dic.Count.Should().BeEqualTo(1);
 
         tt = dic[2];
-        tt.HasValue.ShouldBeFalse();
+        await tt.HasValue.Should().BeFalse();
         dic = TrieDic(tt);
-        dic.ShouldContainKey(3);
-        dic.Count.ShouldBe(1);
+        await dic.Should().ContainKey(3);
+        await dic.Count.Should().BeEqualTo(1);
 
         tt = dic[3];
-        tt.HasValue.ShouldBeTrue();
-        tt.Value.ShouldBe(-2);
+        await tt.HasValue.Should().BeTrue();
+        await tt.Value.Should().BeEqualTo(-2);
         dic = TrieDic(tt);
-        dic.ShouldBeEmpty();
+        await dic.Should().BeEmpty();
 
 
         // remove last one
@@ -179,36 +178,36 @@ public class TrieTests
 
         tt = trie;
         dic = TrieDic(tt);
-        dic.ShouldBeEmpty();
+        await dic.Should().BeEmpty();
     }
 
 
-    [Fact]
-    public void CountTest()
+    [Test, MultipleAssertions]
+    public async Task CountTest()
     {
         var trie = new Trie<int, int>();
-        trie.Count.ShouldBe(0);
+        await trie.Count.Should().BeEqualTo(0);
         trie.Add([1, 2, 3], -1);
         trie.Add([1, 2], -1);
         trie.Add([2, 2, 4], -1);
-        trie.Count.ShouldBe(3);
-        trie.GetChild([1, 2, 3]).Count.ShouldBe(1);
-        trie.GetChild([1, 2]).Count.ShouldBe(2);
+        await trie.Count.Should().BeEqualTo(3);
+        await trie.GetChild([1, 2, 3]).Count.Should().BeEqualTo(1);
+        await trie.GetChild([1, 2]).Count.Should().BeEqualTo(2);
 
         trie.Remove([2, 2, 4]);
-        trie.Count.ShouldBe(2);
-        trie.GetChild([1, 2, 3]).Count.ShouldBe(1);
-        trie.GetChild([1, 2]).Count.ShouldBe(2);
+        await trie.Count.Should().BeEqualTo(2);
+        await trie.GetChild([1, 2, 3]).Count.Should().BeEqualTo(1);
+        await trie.GetChild([1, 2]).Count.Should().BeEqualTo(2);
 
         trie.Remove([1, 2]);
-        trie.Count.ShouldBe(1);
-        trie.GetChild([1, 2, 3]).Count.ShouldBe(1);
-        trie.GetChild([1, 2]).Count.ShouldBe(1);
+        await trie.Count.Should().BeEqualTo(1);
+        await trie.GetChild([1, 2, 3]).Count.Should().BeEqualTo(1);
+        await trie.GetChild([1, 2]).Count.Should().BeEqualTo(1);
     }
 
 
-    [Fact]
-    public void AllEnumerateTest()
+    [Test, MultipleAssertions]
+    public async Task AllEnumerateTest()
     {
         var trie = new Trie<int, int>();
         trie.Add([1], -2);
@@ -219,27 +218,26 @@ public class TrieTests
         trie.Add([1, -2, 5], 6);
 
         var all = trie.All().GetEnumerator();
-        var expected = new (int[] key, int val)[]
-        {
-            (new int[] { 1 }, -2),
-            (new int[] { 1, -3 }, 35),
-            (new int[] { 1, -2 }, 8),
-            (new int[] { 1, -2, 5 }, 6),
-            (new int[] { 1, 2 }, 10),
-            (new int[] { 1, 2, 3 }, -1),
-    };
+        (int[] key, int val)[] expected = [
+            ([1], -2),
+            ([1, -3], 35),
+            ([1, -2], 8),
+            ([1, -2, 5], 6),
+            ([1, 2], 10),
+            ([1, 2, 3], -1),
+        ];
         foreach (var (exKey, exVal) in expected)
         {
-            all.MoveNext().ShouldBeTrue();
+            await all.MoveNext().Should().BeTrue();
             var (key, val) = all.Current;
-            key.ShouldBe(exKey);
-            val.ShouldBe(exVal);
+            await key.Should().BeEquivalentOrderTo(exKey);
+            await val.Should().BeEqualTo(exVal);
         }
-        all.MoveNext().ShouldBeFalse();
+        await all.MoveNext().Should().BeFalse();
     }
 
-    [Fact]
-    public void MatchGreedyTest()
+    [Test, MultipleAssertions]
+    public async Task MatchGreedyTest()
     {
         var trie = new Trie<int, int>();
         trie.Add([1], -2);
@@ -250,19 +248,17 @@ public class TrieTests
         trie.Add([1, -2, 5], 6);
 
         var greedy = trie.MatchGreedy([1, -2, 5, 20]).GetEnumerator();
-        var expected = new (int[] key, int val)[]
+        var list = new List<(int[] key, int val)>(3);
+        foreach (var (k, v) in greedy)
         {
-            (new int[] { 1 }, -2),
-            (new int[] { 1, -2 }, 8),
-            (new int[] { 1, -2, 5 }, 6),
-        };
-        foreach (var (exKey, exVal) in expected)
-        {
-            greedy.MoveNext().ShouldBeTrue();
-            var (key, val) = greedy.Current;
-            key.ToArray().ShouldBe(exKey);
-            val.ShouldBe(exVal);
+            list.Add((k.ToArray(), v));
         }
-        greedy.MoveNext().ShouldBeFalse();
+
+        (int[] key, int val)[] expected = [
+            ([1], -2),
+            ([1, -2], 8),
+            ([1, -2, 5], 6),
+        ];
+        await list.Should().BeEquivalentOrderTo(expected);
     }
 }
