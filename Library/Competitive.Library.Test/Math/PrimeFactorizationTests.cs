@@ -3,28 +3,35 @@ namespace Kzrnm.Competitive.Testing.MathNS;
 [NotInParallel]
 public class PrimeFactorizationTests
 {
-    [Test, MultipleAssertions]
-    public async Task IsPrime()
+    PrimeNumber p = new(1 << 20);
+
+    public IEnumerable<(long Value, bool IsPrime)> IsPrime_Data()
     {
-        var p = new PrimeNumber(1 << 20);
         for (int i = 0; i < 2000; i++)
         {
             foreach (var start in new[] {
-            0,
-            (1L << 30) - 500,
-            1795265022 - 500,
-            4759123141 - 500,
-        })
+                0,
+                (1L << 30) - 500,
+                1795265022 - 500,
+                4759123141 - 500,
+            })
             {
                 var x = start + i;
-                await PrimeFactorization.IsPrime(x).Should().BeEqualTo(p.IsPrime(x));
+                yield return (x, p.IsPrime(x));
             }
         }
-        await PrimeFactorization.IsPrime(200560490131).Should().BeTrue();
-        await PrimeFactorization.IsPrime(92709568269121).Should().BeTrue();
-        await PrimeFactorization.IsPrime(9007199254740997).Should().BeTrue();
-        await PrimeFactorization.IsPrime(1162193L * 1347377).Should().BeFalse();
-        await PrimeFactorization.IsPrime(89652331L * 96325939).Should().BeFalse();
+        yield return (200560490131, true);
+        yield return (92709568269121, true);
+        yield return (9007199254740997, true);
+        yield return (1162193L * 1347377, false);
+        yield return (89652331L * 96325939, false);
+    }
+
+    [Test]
+    [InstanceMethodDataSource(nameof(IsPrime_Data))]
+    public async Task IsPrime(long value, bool isPrime)
+    {
+        await PrimeFactorization.IsPrime(value).Should().BeEqualTo(isPrime);
     }
 
     public static IEnumerable<(int, int[])> DivisorInt_Data =>

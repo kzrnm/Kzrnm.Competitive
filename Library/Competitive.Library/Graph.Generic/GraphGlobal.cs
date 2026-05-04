@@ -207,7 +207,7 @@ namespace Kzrnm.Competitive
             }
 
             [凾(256)]
-            public Csr<T> ToCsr() => new Csr<T>(Length, edges);
+            public Csr<T> ToCsr() => new Csr<T>(Length, edges.AsSpan());
         }
 
         public abstract class BuilderBase<Tg, Tr, Tn, Tt, Te>

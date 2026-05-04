@@ -1,4 +1,5 @@
 // https://nyaannyaan.github.io/library/modint/montgomery-modint.hpp
+using AtCoder;
 using AtCoder.Internal;
 using Kzrnm.Competitive.IO;
 using System;
@@ -12,7 +13,7 @@ namespace Kzrnm.Competitive
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "気にしない")]
     public struct DynamicMontgomeryModInt64<T> : IUtf8ConsoleWriterFormatter, IEquatable<DynamicMontgomeryModInt64<T>>, IFormattable
-        , INumKz<DynamicMontgomeryModInt64<T>>
+        , IIntBase<DynamicMontgomeryModInt64<T>>
         where T : struct
     {
         internal static ulong n2;

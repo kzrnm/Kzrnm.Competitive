@@ -6,7 +6,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
-    public readonly partial struct UInt512 : IBinaryInteger<UInt512>, IEquatable<UInt512>, IMinMaxValue<UInt512>
+    public readonly partial struct UInt512
     {
         static void ThrowOverflowException() => throw new OverflowException();
 

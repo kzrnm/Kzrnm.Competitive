@@ -12,14 +12,13 @@ namespace Kzrnm.Competitive
     /// 奇数オンリーの ModInt
     /// </summary>
     public readonly struct MontgomeryModInt<T> : IUtf8ConsoleWriterFormatter, IEquatable<MontgomeryModInt<T>>, IFormattable,
-        INumKz<MontgomeryModInt<T>>,
-        IModInt<MontgomeryModInt<T>>
+        IModIntNumberBase<MontgomeryModInt<T>>
         where T : struct, IStaticMod
     {
         internal readonly uint _v;
 
         static readonly T op = new T();
-        internal static readonly uint n2 = (uint)(((ulong)-op.Mod) % op.Mod);
+        internal static readonly ulong n2 = ((ulong)-op.Mod) % op.Mod;
         internal static readonly uint r = GetR();
         /// <summary>
         /// 1
@@ -298,5 +297,6 @@ namespace Kzrnm.Competitive
             => typeof(TFrom) == typeof(TTo)
             ? (r = (TTo)(object)v) is { }
             : TTo.TryConvertFromTruncating(v, out r) || TFrom.TryConvertToTruncating(v, out r);
+        static MontgomeryModInt<T> IModInt<MontgomeryModInt<T>>.Raw(int v) => new(Reduce((uint)v * n2));
     }
 }

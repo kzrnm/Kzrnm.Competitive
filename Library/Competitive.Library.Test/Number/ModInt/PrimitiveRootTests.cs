@@ -1,8 +1,8 @@
 namespace Kzrnm.Competitive.Testing.Number;
 
-[NotInParallel]
 public class PrimitiveRootTests
 {
+    [NotInParallel]
     [Test, MultipleAssertions]
     [Arguments(2, 1)]
     [Arguments(3, 2)]

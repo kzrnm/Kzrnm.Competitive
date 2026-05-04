@@ -1,3 +1,4 @@
+using AtCoder;
 using Kzrnm.Numerics.Logic;
 using System;
 using System.Buffers.Binary;
@@ -20,7 +21,7 @@ namespace Kzrnm.Competitive
     /// 符号なし 256 bit 整数
     /// <see cref="UInt128"/> の実装をもとにしている。
     /// </summary>
-    public readonly partial struct UInt256 : IBinaryInteger<UInt256>, IEquatable<UInt256>, IMinMaxValue<UInt256>, INumKz<UInt256>
+    public readonly partial struct UInt256 : IBinaryInteger<UInt256>, IEquatable<UInt256>, IMinMaxValue<UInt256>, IIntBase<UInt256>
     {
         /*
          * Original is UInt128

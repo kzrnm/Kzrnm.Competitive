@@ -73,7 +73,7 @@ public class RollingHashTests
                 for (int l2 = 0; l2 < str.Length; l2++)
                     for (int r2 = l2 + 1; r2 <= str.Length; r2++)
                     {
-                        if (str[l1..r1].SequenceEqual(str[l2..r2]))
+                        if (str.AsSpan()[l1..r1].SequenceEqual(str.AsSpan()[l2..r2]))
                         {
                             await rh[l1..r1].Should().BeEqualTo(rh[l2..r2]);
                         }

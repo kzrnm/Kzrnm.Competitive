@@ -17,7 +17,7 @@ namespace Kzrnm.Competitive
         /// Parent or size. A negative value indicates size, a positive value indicates parent.
         /// </summary>
         internal readonly int[] _ps;
-        internal readonly SimpleList<(int, int)> history = new();
+        internal readonly List<(int, int)> history = new();
         internal int snapVersion;
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace Kzrnm.Competitive
         {
             var (x, px) = history[^1];
             var (y, py) = history[^2];
-            history.RemoveLast(2);
+            history.RemoveRange(history.Count - 2, 2);
             _ps[x] = px;
             _ps[y] = py;
         }

@@ -13,11 +13,10 @@ namespace Kzrnm.Competitive
     /// 奇数オンリーの ModInt
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "気にしない")]
-    public struct DynamicMontgomeryModInt<T> : IUtf8ConsoleWriterFormatter, IEquatable<DynamicMontgomeryModInt<T>>, IFormattable, IModInt<DynamicMontgomeryModInt<T>>
-        , INumKz<DynamicMontgomeryModInt<T>>
+    public struct DynamicMontgomeryModInt<T> : IUtf8ConsoleWriterFormatter, IEquatable<DynamicMontgomeryModInt<T>>, IFormattable, IModIntNumberBase<DynamicMontgomeryModInt<T>>
         where T : struct
     {
-        internal static uint n2;
+        internal static ulong n2;
         internal static uint r;
         /// <summary>
         /// 1
@@ -214,82 +213,6 @@ namespace Kzrnm.Competitive
 
         public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider provider) => Value.TryFormat(destination, out charsWritten, format, provider);
         public string ToString(string format, IFormatProvider formatProvider) => Value.ToString(format, formatProvider);
-        static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.Abs(DynamicMontgomeryModInt<T> v) => v;
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsEvenInteger(DynamicMontgomeryModInt<T> v) => int.IsEvenInteger(v.Value);
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsOddInteger(DynamicMontgomeryModInt<T> v) => int.IsOddInteger(v.Value);
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsInteger(DynamicMontgomeryModInt<T> v) => true;
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsPositive(DynamicMontgomeryModInt<T> v) => true;
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsNegative(DynamicMontgomeryModInt<T> v) => false;
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsNormal(DynamicMontgomeryModInt<T> v) => v.Value != 0;
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.IsNaN(DynamicMontgomeryModInt<T> v) => false;
-        static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.MaxMagnitude(DynamicMontgomeryModInt<T> x, DynamicMontgomeryModInt<T> y) => new DynamicMontgomeryModInt<T>(int.Max(x.Value, y.Value));
-        static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.MaxMagnitudeNumber(DynamicMontgomeryModInt<T> x, DynamicMontgomeryModInt<T> y) => new DynamicMontgomeryModInt<T>(int.Max(x.Value, y.Value));
-        static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.MinMagnitude(DynamicMontgomeryModInt<T> x, DynamicMontgomeryModInt<T> y) => new DynamicMontgomeryModInt<T>(int.Min(x.Value, y.Value));
-        static DynamicMontgomeryModInt<T> INumberBase<DynamicMontgomeryModInt<T>>.MinMagnitudeNumber(DynamicMontgomeryModInt<T> x, DynamicMontgomeryModInt<T> y) => new DynamicMontgomeryModInt<T>(int.Min(x.Value, y.Value));
-
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.TryConvertFromChecked<TOther>(TOther v, out DynamicMontgomeryModInt<T> r)
-        {
-            if (WrapChecked(v, out long l))
-            {
-                r = new(l);
-                return true;
-            }
-            if (WrapChecked(v, out ulong u))
-            {
-                r = new(u);
-                return true;
-            }
-            r = default;
-            return false;
-        }
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.TryConvertFromSaturating<TOther>(TOther v, out DynamicMontgomeryModInt<T> r)
-        {
-            if (WrapSaturating(v, out long l))
-            {
-                r = new(l);
-                return true;
-            }
-            if (WrapSaturating(v, out ulong u))
-            {
-                r = new(u);
-                return true;
-            }
-            r = default;
-            return false;
-        }
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.TryConvertFromTruncating<TOther>(TOther v, out DynamicMontgomeryModInt<T> r)
-        {
-            if (WrapTruncating(v, out long l))
-            {
-                r = new(l);
-                return true;
-            }
-            if (WrapTruncating(v, out ulong u))
-            {
-                r = new(u);
-                return true;
-            }
-            r = default;
-            return false;
-        }
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.TryConvertToChecked<TOther>(DynamicMontgomeryModInt<T> v, out TOther r) where TOther : default => WrapChecked(v.Value, out r);
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.TryConvertToSaturating<TOther>(DynamicMontgomeryModInt<T> v, out TOther r) where TOther : default => WrapSaturating(v.Value, out r);
-        static bool INumberBase<DynamicMontgomeryModInt<T>>.TryConvertToTruncating<TOther>(DynamicMontgomeryModInt<T> v, out TOther r) where TOther : default => WrapTruncating(v.Value, out r);
-
-        [凾(256)]
-        static bool WrapChecked<TFrom, TTo>(TFrom v, out TTo r) where TFrom : INumberBase<TFrom> where TTo : INumberBase<TTo>
-            => typeof(TFrom) == typeof(TTo)
-            ? (r = (TTo)(object)v) is { }
-            : TTo.TryConvertFromChecked(v, out r) || TFrom.TryConvertToChecked(v, out r);
-        [凾(256)]
-        static bool WrapSaturating<TFrom, TTo>(TFrom v, out TTo r) where TFrom : INumberBase<TFrom> where TTo : INumberBase<TTo>
-            => typeof(TFrom) == typeof(TTo)
-            ? (r = (TTo)(object)v) is { }
-            : TTo.TryConvertFromSaturating(v, out r) || TFrom.TryConvertToSaturating(v, out r);
-        [凾(256)]
-        static bool WrapTruncating<TFrom, TTo>(TFrom v, out TTo r) where TFrom : INumberBase<TFrom> where TTo : INumberBase<TTo>
-            => typeof(TFrom) == typeof(TTo)
-            ? (r = (TTo)(object)v) is { }
-            : TTo.TryConvertFromTruncating(v, out r) || TFrom.TryConvertToTruncating(v, out r);
+        static DynamicMontgomeryModInt<T> IModInt<DynamicMontgomeryModInt<T>>.Raw(int v) => new(Reduce((uint)v * n2));
     }
 }

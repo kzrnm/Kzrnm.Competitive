@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using AtCoder;
 using Kzrnm.Numerics.Logic;
 using BigInteger = Kzrnm.Numerics.BigInteger;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -20,7 +21,7 @@ namespace Kzrnm.Competitive
     /// 符号なし 512 bit 整数
     /// <see cref="UInt128"/> の実装をもとにしている。
     /// </summary>
-    public readonly partial struct UInt512 : IBinaryInteger<UInt512>, IEquatable<UInt512>, IMinMaxValue<UInt512>, INumKz<UInt512>
+    public readonly partial struct UInt512 : IBinaryInteger<UInt512>, IEquatable<UInt512>, IMinMaxValue<UInt512>, IIntBase<UInt512>
     {
         /*
          * Original is UInt128

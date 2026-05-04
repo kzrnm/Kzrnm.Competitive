@@ -64,7 +64,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         Dictionary<int, int> PrimeFactoringFast(int num)
         {
-            if (num >= searches.Length) throw new ArgumentOutOfRangeException(nameof(num));
+            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(num, searches.Length);
             var primeFactors = new Dictionary<int, int>();
             while (num > 1)
             {
@@ -73,11 +73,12 @@ namespace Kzrnm.Competitive
             }
             return primeFactors;
         }
+        static ReadOnlySpan<int> _EratosthenesHeads => [0, 1, 2, 3, 2, 5, 2, 7, 2, 3, 2];
         [凾(256)]
         static (int[] primes, int[] searches) Eratosthenes(int n)
         {
             var searches = new int[n + 1];
-            Array.Copy(new int[11] { 0, 1, 2, 3, 2, 5, 2, 7, 2, 3, 2 }, searches, Math.Min(11, searches.Length));
+            _EratosthenesHeads.Slice(0, Math.Min(11, searches.Length)).CopyTo(searches);
 
             var primes = new List<int>(n) { 2, 3, 5, 7 };
             if (n < 11) return (primes.TakeWhile(p => p <= n).ToArray(), searches);

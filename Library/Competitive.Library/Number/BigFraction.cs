@@ -1,3 +1,4 @@
+using AtCoder;
 using System;
 using System.Numerics;
 using BigInteger = Kzrnm.Numerics.BigInteger;
@@ -7,7 +8,7 @@ namespace Kzrnm.Competitive
 {
     /// <summary>有理数を既約分数で表す</summary>
     public readonly struct BigFraction : IEquatable<BigFraction>, IComparable<BigFraction>
-        , INumKz<BigFraction>
+        , IIntBase<BigFraction>
     {
         public static readonly BigFraction NaN = new BigFraction(0, -1, true);
         public static bool IsNaN(BigFraction v) => v._denominator0 < 0;

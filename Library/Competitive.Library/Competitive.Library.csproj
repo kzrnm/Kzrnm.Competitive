@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>net9.0</TargetFrameworks>
     <DotnetVersion>$([System.Version]::Parse($([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)'))).Major)</DotnetVersion>
     <LangVersion Condition="'$(DotnetVersion)' != ''">$([MSBuild]::Add($(DotnetVersion), 4))</LangVersion>
     <RootNamespace>Kzrnm.Competitive</RootNamespace>
@@ -41,7 +41,7 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="Competitive.Library.Test" />
-    <PackageReference Include="ac-library-csharp" Version="3.9.2" />
+    <PackageReference Include="ac-library-csharp" Version="4.0.4" />
     <PackageReference Include="Kzrnm.BigInteger" Version="0.5.3-embedded" />
     <PackageReference Include="Competitive.IO" Version="3.0.0" />
     <PackageReference Include="Kzrnm.Competitive.Analyzer" Version="1.1.1">
@@ -67,16 +67,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Matrix5x5.cs</LastGenOutput>
     </None>
-    <Compile Update="Math\Matrix\Extensions\MatrixProdSimdStrassen.Simd.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>MatrixProdSimdStrassen.Simd.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Math\Matrix\Small\Extensions\MatrixProdStrassen.Simd.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>MatrixProdStrassen.Simd.tt</DependentUpon>
-    </Compile>
     <Compile Update="Math\Matrix\Small\Matrix5x5.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -91,9 +81,23 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Matrix6x6.tt</DependentUpon>
     </Compile>
+    <Compile Update="Math\Matrix\Extensions\MatrixProdSimdStrassen.Simd.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MatrixProdSimdStrassen.Simd.tt</DependentUpon>
+    </Compile>
     <None Update="Math\Matrix\Extensions\MatrixProdSimdStrassen.Simd.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MatrixProdSimdStrassen.Simd.cs</LastGenOutput>
     </None>
+    <None Update="Util\Xoshiro256.Ext.tt">
+      <LastGenOutput>Xoshiro256.Ext.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <Compile Update="Util\Xoshiro256.Ext.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Xoshiro256.Ext.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

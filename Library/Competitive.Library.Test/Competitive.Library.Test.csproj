@@ -36,6 +36,10 @@
   <ItemGroup>
     <Using Include="TUnit.Assertions.Should" />
     <Using Include="TUnit.Assertions.Should.Extensions" />
+    <AssemblyAttribute Include="TUnit.Core.Timeout">
+      <_Parameter1>60_000</_Parameter1>
+      <_Parameter1_IsLiteral>true</_Parameter1_IsLiteral>
+    </AssemblyAttribute>
   </ItemGroup>
 
   <ItemGroup>

@@ -11,20 +11,13 @@ namespace Kzrnm.Competitive
     {
         [凾(256)]
         public static ulong Div(this Barrett bt, ulong z)
-        {
-            var IM = bt.IM;
-            var Mod = bt.Mod;
-            var x = Mul128.Mul128Bit(z, IM);
-            var v = unchecked((uint)(z - x * Mod));
-            if (Mod <= v) --x;
-            return x;
-        }
+            => DivRem(bt, z).Quotient;
         [凾(256)]
         public static (ulong Quotient, uint Remainder) DivRem(this Barrett bt, ulong z)
         {
             var IM = bt.IM;
             var Mod = bt.Mod;
-            var x = Mul128.Mul128Bit(z, IM);
+            var x = System.Math.BigMul(IM, z, out _);
             var v = unchecked((uint)(z - x * Mod));
             if (Mod <= v)
             {

@@ -1,3 +1,4 @@
+using AtCoder;
 using System;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -5,7 +6,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive
 {
     /// <summary>有理数を既約分数で表す</summary>
-    public readonly struct Fraction : IEquatable<Fraction>, IComparable<Fraction>, INumKz<Fraction>
+    public readonly struct Fraction : IEquatable<Fraction>, IComparable<Fraction>, IIntBase<Fraction>
     {
         public static readonly Fraction NaN = new Fraction(0, -1, true);
         public static bool IsNaN(Fraction v) => v._denominator0 < 0;
