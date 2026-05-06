@@ -9,28 +9,6 @@ namespace Kzrnm.Competitive.Testing
     public static class RandomUtil
     {
         /// <summary>
-        /// Fisher–Yates shuffle
-        /// </summary>
-        public static T[] Shuffle<T>(this Random rnd, T[] array)
-        {
-            Shuffle(rnd, array.AsSpan());
-            return array;
-        }
-        /// <summary>
-        /// Fisher–Yates shuffle
-        /// </summary>
-        public static Span<T> Shuffle<T>(this Random rnd, Span<T> span)
-        {
-            for (var i = span.Length - 1; i > 0; --i)
-            {
-                var a = i;
-                var b = rnd.Next(i);
-                (span[a], span[b]) = (span[b], span[a]);
-            }
-            return span;
-        }
-
-        /// <summary>
         /// 英小文字からなる長さ <paramref name="length"/> の <see cref="string"/> を返します。
         /// </summary>
         public static string NextString(this Random rnd, int length)

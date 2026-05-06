@@ -6,7 +6,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive
 {
     // https://prng.di.unimi.it/xoshiro256starstar.c
-    public class Xoshiro256
+    public partial class Xoshiro256
     {
         ulong s0, s1, s2, s3;
         public Xoshiro256() : this(Random.Shared) { }
@@ -65,5 +65,109 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public ulong NextUInt64(ulong min, ulong max)
             => NextUInt64(max - min) + min;
+
+
+        /// <summary>
+        /// 32ビット乱数を返します。
+        /// </summary>
+        [凾(256)]
+        public long NextInt64()
+            => (long)NextUInt64();
+        /// <summary>
+        /// [0, <paramref name="max"/>) の64ビット乱数を返します。
+        /// </summary>
+        [凾(256)]
+        public long NextInt64(long max)
+            => NextInt64(0, max);
+
+        /// <summary>
+        /// [<paramref name="min"/>, <paramref name="max"/>) の64ビット乱数を返します。
+        /// </summary>
+        [凾(256)]
+        public long NextInt64(long min, long max)
+            => (long)NextUInt64((ulong)(max - min)) + min;
+
+
+        /// <summary>
+        /// 32ビット乱数を返します。
+        /// </summary>
+        [凾(256)]
+        public int NextInt32()
+            => (int)NextUInt64();
+
+        /// <summary>
+        /// [0, <paramref name="max"/>) の32ビット乱数を返します。
+        /// </summary>
+        [凾(256)]
+        public int NextInt32(int max)
+            => (int)NextUInt64((uint)max);
+
+        /// <summary>
+        /// [<paramref name="min"/>, <paramref name="max"/>) の32ビット乱数を返します。
+        /// </summary>
+        [凾(256)]
+        public int NextInt32(int min, int max)
+            => (int)NextUInt64((uint)(max - min)) + min;
+
+        /// <summary>
+        /// 32ビット乱数を返します。
+        /// </summary>
+        [凾(256)]
+        public uint NextUInt32()
+            => (uint)NextUInt64();
+
+        /// <summary>
+        /// [0, <paramref name="max"/>) の32ビット乱数を返します。
+        /// </summary>
+        [凾(256)]
+        public uint NextUInt32(uint max)
+            => (uint)NextUInt64(max);
+
+        /// <summary>
+        /// [<paramref name="min"/>, <paramref name="max"/>) の32ビット乱数を返します。
+        /// </summary>
+        [凾(256)]
+        public uint NextUInt32(uint min, uint max)
+            => (uint)NextUInt64(min, max);
+
+        [凾(256)]
+        public void NextBytes(Span<byte> bytes)
+        {
+            while (sizeof(ulong) <= bytes.Length)
+            {
+                MemoryMarshal.Write(bytes, NextUInt64());
+                bytes = bytes[sizeof(ulong)..];
+            }
+            if (bytes.IsEmpty) return;
+            var u = NextUInt64();
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                bytes[i] = (byte)u;
+                u >>= 8;
+            }
+        }
+
+        /// <summary>
+        /// Fisher–Yates shuffle
+        /// </summary>
+        [凾(256)]
+        public T[] Shuffle<T>(T[] array)
+        {
+            Shuffle(array.AsSpan());
+            return array;
+        }
+        /// <summary>
+        /// Fisher–Yates shuffle
+        /// </summary>
+        public Span<T> Shuffle<T>(Span<T> span)
+        {
+            for (var i = span.Length - 1; i > 0; --i)
+            {
+                var a = i;
+                var b = NextInt32(i);
+                (span[a], span[b]) = (span[b], span[a]);
+            }
+            return span;
+        }
     }
 }
