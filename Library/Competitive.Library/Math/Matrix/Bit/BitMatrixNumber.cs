@@ -306,7 +306,7 @@ namespace Kzrnm.Competitive
             for (int i = r; i < impl.Length; i++)
             {
                 if (T.IsOddInteger(impl[i] >> width))
-                    return Array.Empty<T>();
+                    return [];
             }
             if (idxs.IsEmpty)
             {
@@ -318,7 +318,7 @@ namespace Kzrnm.Competitive
                 return eres;
             }
             if (idxs[^1] == width)
-                return Array.Empty<T>();
+                return [];
 
             var used = new HashSet<int>(Enumerable.Range(0, w));
             var lst = new List<T>(w);

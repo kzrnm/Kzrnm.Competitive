@@ -12,7 +12,7 @@ namespace Kzrnm.Competitive
         {
             var e = collection.GetEnumerator();
             var ls = new List<(T, int C)>();
-            if (!e.MoveNext()) return Array.Empty<(T, int)>();
+            if (!e.MoveNext()) return [];
             var cur = e.Current;
             ls.Add((cur, 1));
             ref var t = ref ls.AsSpan()[^1].C;

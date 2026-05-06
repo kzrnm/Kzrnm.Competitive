@@ -1,3 +1,5 @@
+using System.Collections.Immutable;
+
 namespace Kzrnm.Competitive.Testing.MathNS;
 
 [NotInParallel]
@@ -27,14 +29,15 @@ public class PrimeFactorizationTests
         yield return (89652331L * 96325939, false);
     }
 
+    struct IsPrimeS { }
     [Test]
-    [InstanceMethodDataSource(nameof(IsPrime_Data))]
+    [MethodDataSource(nameof(IsPrime_Data))]
     public async Task IsPrime(long value, bool isPrime)
     {
-        await PrimeFactorization.IsPrime(value).Should().BeEqualTo(isPrime);
+        await PrimeFactorization<IsPrimeS>.IsPrime(value).Should().BeEqualTo(isPrime);
     }
 
-    public static IEnumerable<(int, int[])> DivisorInt_Data =>
+    public static IEnumerable<(int, ImmutableArray<int>)> DivisorInt_Data =>
     [
         (
             1,
@@ -42,7 +45,7 @@ public class PrimeFactorizationTests
         ),
         (
             1 << 16,
-            Enumerable.Range(0, 17).Select(i => 1 << i).ToArray()
+            Enumerable.Range(0, 17).Select(i => 1 << i).ToImmutableArray()
         ),
         (
             49,
@@ -69,7 +72,7 @@ public class PrimeFactorizationTests
 
     [Test]
     [MethodDataSource(nameof(DivisorInt_Data))]
-    public async Task DivisorInt(int num, int[] expected)
+    public async Task DivisorInt(int num, ImmutableArray<int> expected)
     {
         await PrimeFactorization.Divisor(num).Should().BeEquivalentOrderTo(expected);
     }

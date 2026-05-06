@@ -180,12 +180,12 @@ namespace Kzrnm.Competitive
             var runs = tmp.runs;
             var vis = new HashSet<int>[a.Length];
             var rt = new (int From, int ToExclusive)[runs.Length][];
-            rt[0] = Array.Empty<(int, int)>();
+            rt[0] = [];
             for (int ph = 1; ph < rt.Length; ph++)
             {
                 if (runs[ph] == null)
                 {
-                    rt[ph] = Array.Empty<(int, int)>();
+                    rt[ph] = [];
                     continue;
                 }
                 var run = runs[ph].AsSpan();

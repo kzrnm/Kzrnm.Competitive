@@ -31,7 +31,7 @@ namespace Kzrnm.Competitive.Internal
             if (!BitOperations.IsPow2(a.Length)) ThrowNotPow2(nameof(a));
             if (!BitOperations.IsPow2(b.Length)) ThrowNotPow2(nameof(b));
 
-            if (a.Length == 0) return Array.Empty<T>();
+            if (a.Length == 0) return [];
 
             var f = new T[a.Length];
             {

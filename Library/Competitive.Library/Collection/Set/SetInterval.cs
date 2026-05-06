@@ -34,7 +34,7 @@ namespace Kzrnm.Competitive
         {
             var list = new List<(T From, T ToExclusive)>(
                 collection.Where(t => t.From.CompareTo(t.ToExclusive) < 0));
-            if (list.Count == 0) return Array.Empty<(T From, T ToExclusive)>();
+            if (list.Count == 0) return [];
 
             list.Sort();
             var resList = new List<(T From, T ToExclusive)>(list.Count)

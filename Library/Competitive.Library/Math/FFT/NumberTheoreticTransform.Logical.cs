@@ -178,7 +178,7 @@ namespace Kzrnm.Competitive
         internal static MontgomeryModInt<T>[] MultiplyLogical(ReadOnlySpan<MontgomeryModInt<T>> a, ReadOnlySpan<MontgomeryModInt<T>> b)
         {
             if (a.Length == 0 || b.Length == 0)
-                return Array.Empty<MontgomeryModInt<T>>();
+                return [];
             var rt = new MontgomeryModInt<T>[a.Length + b.Length - 1];
             MultiplyLogical(a, b, rt);
             return rt;

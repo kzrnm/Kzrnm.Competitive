@@ -9,7 +9,7 @@ namespace Kzrnm.Competitive
 {
     public sealed class PersistentStackDoubling<T> : IImmutableStack<T>, IReadOnlyCollection<T>
     {
-        private PersistentStackDoubling() { _prevs = Array.Empty<PersistentStackDoubling<T>>(); }
+        private PersistentStackDoubling() { _prevs = []; }
         private PersistentStackDoubling(T head, PersistentStackDoubling<T> prev)
         {
             _head = head;

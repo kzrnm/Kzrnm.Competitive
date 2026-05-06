@@ -114,7 +114,7 @@ namespace Kzrnm.Competitive
         public (Polynomial<T> Quotient, Polynomial<T> Remainder) DivRem(Polynomial<T> rhs)
         {
             if (Coefficients.Length < rhs.Coefficients.Length)
-                return (new Polynomial<T>(Array.Empty<T>()), this);
+                return (new Polynomial<T>([]), this);
 
             var lp = (T[])Coefficients.Clone();
             var rp = rhs.Coefficients;

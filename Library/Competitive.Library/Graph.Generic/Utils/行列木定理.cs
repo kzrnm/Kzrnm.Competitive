@@ -19,7 +19,7 @@ namespace Kzrnm.Competitive
         public static LaplacianWrapper MatrixTreeTheorem<TEdge>(this IGraph<TEdge> graph)
             where TEdge : IGraphEdge
         {
-            if (graph.Length == 0) return new(new(Array.Empty<int>(), 0, 0));
+            if (graph.Length == 0) return new(new([], 0, 0));
             Contract.Assert(!graph[0].IsDirected, "graph は無向グラフである必要があります");
             return new(graph.Laplacian());
         }

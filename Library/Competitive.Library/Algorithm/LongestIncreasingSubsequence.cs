@@ -141,7 +141,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         static Result<T>[] Lis<T, Cp>(ReadOnlySpan<T> s, Cp op = default) where Cp : ICp<T>
         {
-            if (s.IsEmpty) return Array.Empty<Result<T>>();
+            if (s.IsEmpty) return [];
 
             // s[i] を最長増加部分列で使うときに使う直前の値のインデックス
             var prevs = new int[s.Length];

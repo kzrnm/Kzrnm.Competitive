@@ -88,7 +88,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static int[] Manacher2<T>(ReadOnlySpan<T> s)
         {
-            if (s.Length == 0) return Array.Empty<int>();
+            if (s.Length == 0) return [];
             var t = new Manacher2Val<T>[s.Length * 2 + 1];
             ref var sp = ref MemoryMarshal.GetReference(s);
             for (int i = 1; i < t.Length; i += 2)

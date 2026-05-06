@@ -78,7 +78,7 @@ namespace Kzrnm.Competitive
         static (int[] primes, int[] searches) Eratosthenes(int n)
         {
             var searches = new int[n + 1];
-            _EratosthenesHeads.Slice(0, Math.Min(11, searches.Length)).CopyTo(searches);
+            _EratosthenesHeads[..Math.Min(11, searches.Length)].CopyTo(searches);
 
             var primes = new List<int>(n) { 2, 3, 5, 7 };
             if (n < 11) return (primes.TakeWhile(p => p <= n).ToArray(), searches);

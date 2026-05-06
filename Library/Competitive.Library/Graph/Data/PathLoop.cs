@@ -31,7 +31,7 @@ namespace Kzrnm.Competitive
                 if ((uint)cur >= (uint)to.Length)
                 {
                     Straight = list.AsSpan().ToArray();
-                    Loop = Array.Empty<int>();
+                    Loop = [];
                     return;
                 }
             }

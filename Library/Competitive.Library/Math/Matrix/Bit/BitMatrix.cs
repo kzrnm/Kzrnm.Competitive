@@ -343,7 +343,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         BitArray[] LinearSystemImpl(BitArray[] impl)
         {
-            if (impl.Length == 0) return Array.Empty<BitArray>();
+            if (impl.Length == 0) return [];
             var idxs = GaussianEliminationImpl(impl, false).AsSpan();
             var r = idxs.Length;
             int w = _v[0].Length;
@@ -353,7 +353,7 @@ namespace Kzrnm.Competitive
             for (int i = r; i < impl.Length; i++)
             {
                 if (impl[i][^1])
-                    return Array.Empty<BitArray>();
+                    return [];
             }
             if (idxs.IsEmpty)
             {
@@ -367,7 +367,7 @@ namespace Kzrnm.Competitive
                 return eres;
             }
             if (idxs[^1] == w)
-                return Array.Empty<BitArray>();
+                return [];
 
             var used = new HashSet<int>(Enumerable.Range(0, w));
             var lst = new List<BitArray>(w);

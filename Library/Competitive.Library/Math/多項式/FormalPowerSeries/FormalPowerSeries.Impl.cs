@@ -156,7 +156,7 @@ namespace Kzrnm.Competitive
         public FpsImpl<T> Divide(ReadOnlySpan<MontgomeryModInt<T>> rhs)
         {
             if (Length < rhs.Length)
-                return Set(Array.Empty<MontgomeryModInt<T>>());
+                return Set([]);
 
             if (rhs.Length <= 64)
                 return DivideNative(rhs);

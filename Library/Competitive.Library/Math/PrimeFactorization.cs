@@ -35,12 +35,12 @@ namespace Kzrnm.Competitive
         /// 257 未満の素数。ReadOnlySpan&lt;byte&gt; に直接代入するとアロケーションが発生しない。
         /// </summary>
         /// <returns></returns>
-        static ReadOnlySpan<byte> SmallPrimes() => new byte[]
-        {
+        static ReadOnlySpan<byte> SmallPrimes() =>
+        [
             2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73,
             79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163,
             167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251
-        };
+        ];
 
         /// <summary>
         /// <paramref name="n"/> が素数であるかどうかを判定します。
@@ -71,10 +71,7 @@ namespace Kzrnm.Competitive
                 int ni = (int)n;
                 if (DynamicMontgomeryModInt<ModId>.Mod != ni)
                     DynamicMontgomeryModInt<ModId>.Mod = ni;
-                return MillerRabin(ni,
-                    n <= 61
-                    ? new DynamicMontgomeryModInt<ModId>[] { 2, 7 }
-                    : new DynamicMontgomeryModInt<ModId>[] { 2, 7, 61 });
+                return MillerRabin(ni, (DynamicMontgomeryModInt<ModId>[])[2, 7, 61]);
             }
             else
             {
@@ -82,7 +79,7 @@ namespace Kzrnm.Competitive
                     DynamicMontgomeryModInt64<ModId>.Mod = n;
                 return MillerRabin(n,
                     n <= 1795265022
-                    ? new DynamicMontgomeryModInt64<ModId>[] { 2, 325, 9375, 28178, 450775, 9780504 }
+                    ? [2, 325, 9375, 28178, 450775, 9780504]
                     : new DynamicMontgomeryModInt64<ModId>[] { 2, 325, 9375, 28178, 450775, 9780504, 1795265022 });
             }
         }
@@ -276,8 +273,8 @@ namespace Kzrnm.Competitive
         public static T[] Divisor<T>(T n)
             where T : IBinaryInteger<T>
         {
-            if (T.IsZero(n)) return Array.Empty<T>();
-            if (n <= T.One) return new T[] { T.One };
+            if (T.IsZero(n)) return [];
+            if (n <= T.One) return [T.One];
 
             var pairs = PrimeFactoring(n).ToArray();
             var list = new List<T>();

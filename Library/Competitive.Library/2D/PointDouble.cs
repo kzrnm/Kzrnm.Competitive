@@ -140,8 +140,8 @@ namespace Kzrnm.Competitive
             // https://en.wikipedia.org/wiki/Graham_scan
             switch (points.Length)
             {
-                case 0: return Array.Empty<int>();
-                case 1: return new int[1];
+                case 0: return [];
+                case 1: return [0];
             }
 
             var idx = new int[points.Length];
@@ -296,23 +296,22 @@ namespace Kzrnm.Competitive
             var d = l * r * r - k * k;
 
             if (d < 0)
-                return Array.Empty<P>();
+                return [];
 
             var apl = a / l;
             var bpl = b / l;
             var xc = p.X - apl * k;
             var yc = p.Y - bpl * k;
             if (d == 0)
-                return new[] { new P(xc, yc), };
+                return [new P(xc, yc)];
 
             var ds = Math.Sqrt(d);
             var xd = bpl * ds;
             var yd = apl * ds;
-            return new[]
-            {
+            return [
                 new P(xc - xd, yc + yd),
                 new P(xc + xd, yc - yd),
-            };
+            ];
         }
 
         /// <summary>
@@ -403,7 +402,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public static (P, P, P)[] 三角形に分割(ReadOnlySpan<P> s)
         {
-            if (s.Length < 3) return Array.Empty<(P, P, P)>();
+            if (s.Length < 3) return [];
 
             var ret = new (P, P, P)[s.Length - 2];
             int a = 0;

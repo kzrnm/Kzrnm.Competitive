@@ -129,7 +129,7 @@ namespace Kzrnm.Competitive
              where TMod : struct, IStaticMod
         {
             if (a.Length == 0 || b.Length == 0)
-                return Array.Empty<uint>();
+                return [];
             var r = new uint[a.Length + b.Length - 1];
             ConvolutionImpl(a, b, r, op);
             return r;
@@ -288,7 +288,7 @@ namespace Kzrnm.Competitive
                 {
                     if (n == 0 || m == 0)
                     {
-                        return Array.Empty<ulong>();
+                        return [];
                     }
                     var r = new ulong[n + m - 1];
                     ref var rPtr = ref MemoryMarshal.GetReference(r.AsSpan());
@@ -384,7 +384,7 @@ namespace Kzrnm.Competitive
                 {
                     if (n == 0 || m == 0)
                     {
-                        return Array.Empty<long>();
+                        return [];
                     }
                     var r = new long[n + m - 1];
                     ref var rPtr = ref MemoryMarshal.GetReference(r.AsSpan());
@@ -509,7 +509,7 @@ namespace Kzrnm.Competitive
                 {
                     if (n == 0 || m == 0)
                     {
-                        return Array.Empty<UInt128>();
+                        return [];
                     }
                     var r = new UInt128[n + m - 1];
                     ref var rPtr = ref MemoryMarshal.GetReference(r.AsSpan());

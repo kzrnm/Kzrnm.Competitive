@@ -202,7 +202,7 @@ namespace Kzrnm.Competitive.Internal
             for (int i = r; i < impl.Length; i++)
             {
                 if (!EqualityComparer<T>.Default.Equals(impl[i][^1], default))
-                    return Array.Empty<T[]>();
+                    return [];
             }
             if (idxs.IsEmpty)
             {
@@ -216,7 +216,7 @@ namespace Kzrnm.Competitive.Internal
                 return eres;
             }
             if (idxs[^1] == w)
-                return Array.Empty<T[]>();
+                return [];
 
             var used = new HashSet<int>(Enumerable.Range(0, w));
             var lst = new List<T[]>(w);
