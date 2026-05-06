@@ -201,7 +201,7 @@ namespace Kzrnm.Competitive
             var leaderBuf = new int[_ps.Length];
             var id = new int[_ps.Length];
             var gr = new int[_ps.Length];
-            var resultList = new List<int[]>(_ps.Length);
+            List<int[]> resultList = new(_ps.Length);
             for (int i = 0; i < leaderBuf.Length; i++)
             {
                 leaderBuf[i] = Leader(i);
@@ -222,10 +222,5 @@ namespace Kzrnm.Competitive
             }
             return (result, gr);
         }
-    }
-
-    public interface IWeight<T> : ISegtreeOperator<T>
-    {
-
     }
 }

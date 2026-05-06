@@ -91,7 +91,7 @@ public class SuffixArrayTests
             var str = "abcaabca";
             var sa = SuffixArray.Create(str);
             var saNative = GetNative(str.AsSpan());
-            
+
             await using var multi = Assert.MultipleAsync();
             multi.Add(sa.LongestCommonPrefix(0, 3).Should().BeEqualTo(1));
             multi.Add(sa.LongestCommonPrefix(0, 4).Should().BeEqualTo(4));

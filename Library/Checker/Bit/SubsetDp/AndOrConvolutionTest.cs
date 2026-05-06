@@ -1,6 +1,6 @@
 using Kzrnm.Competitive.IO;
 using System;
-using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 using ModInt = AtCoder.StaticModInt<AtCoder.Mod998244353>;
 
 namespace Kzrnm.Competitive.Collection;
@@ -11,8 +11,8 @@ internal class AndOrConvolutionTest : BaseSolver
     public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
     {
         int size = 1 << cr.Int();
-        var a = MemoryMarshal.Cast<int, ModInt>(cr.Repeat(size).Int());
-        var b = MemoryMarshal.Cast<int, ModInt>(cr.Repeat(size).Int());
+        var a = Unsafe.BitCast<Span<int>, Span<ModInt>>(cr.Repeat(size).Int());
+        var b = Unsafe.BitCast<Span<int>, Span<ModInt>>(cr.Repeat(size).Int());
         var and = AndConvolution.Convolution(a, b);
 
         a.Reverse();

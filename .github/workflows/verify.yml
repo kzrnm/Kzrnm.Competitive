@@ -41,28 +41,6 @@ env:
   TZ: Asia/Tokyo
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    defaults:
-      run:
-        working-directory: Library
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: |
-            8.0.x
-            9.0.x
-      - uses: actions/cache@v5
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-      - name: Test
-        run: dotnet test --solution $WORKFLOW_BUILD_SLN
-
   setup:
     runs-on: ubuntu-latest
     defaults:
@@ -74,8 +52,8 @@ jobs:
       - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
-            8.0.x
             9.0.x
+            10.0.x
       - uses: actions/cache@v5
         with:
           path: ~/.nuget/packages
@@ -97,10 +75,17 @@ jobs:
       - name: Build
         run: dotnet build $WORKFLOW_BUILD_SLN -c Release
       - name: Unit test
-        run: dotnet test --project $UNITTEST_CSPROJ --no-build -c Release --report-competitive-verifier="${{runner.temp}}/VerifierCsUnitTestResult"
+        run: dotnet test --project $UNITTEST_CSPROJ --report-competitive-verifier="${{runner.temp}}/VerifierCsUnitTestResult"
         timeout-minutes: 10
         env:
           UNITTEST_CSPROJ: Competitive.Library.Test/Competitive.Library.Test.csproj
+
+      - name: Upload HTML Test Report
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: TUnitReport
+          path: '**/*-report.html'
 
       - name: Resolve
         shell: bash
@@ -112,6 +97,7 @@ jobs:
           VERIFY_CSPROJ: Checker/Checker.csproj
           FRAMEWORKS: | 
             net9.0
+            net10.0
 
       - name: cs-resolve
         uses: competitive-verifier/actions/cs-resolve@v2
@@ -233,10 +219,10 @@ jobs:
       - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
-            8.0.x
             9.0.x
+            10.0.x
       - name: Download binaries
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: binary-${{github.sha}}
           path: Library/Checker/bin/Release
@@ -289,6 +275,9 @@ jobs:
           download-all: true
           artifact-root: .artifacts/
 
+      - name: Extract TUnitReport
+        run: |
+          mv "${{ steps.all-artifacts.outputs.artifacts-root }}/TUnitReport" .competitive-verifier/docs/static/
       - name: Extract bundled
         shell: bash
         run: |

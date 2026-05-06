@@ -7,8 +7,8 @@ namespace Kzrnm.Competitive
     /// </summary>
     public static class Tens
     {
-        public static ReadOnlySpan<int> Ints => new[]
-        {
+        public static ReadOnlySpan<int> Ints =>
+        [
             1,
             10,
             100,
@@ -19,9 +19,9 @@ namespace Kzrnm.Competitive
             10000000,
             100000000,
             1000000000,
-        };
-        public static ReadOnlySpan<long> Longs => new[]
-        {
+        ];
+        public static ReadOnlySpan<long> Longs =>
+        [
             1,
             10,
             100,
@@ -41,6 +41,6 @@ namespace Kzrnm.Competitive
             10000000000000000,
             100000000000000000,
             1000000000000000000,
-        };
+        ];
     }
 }
