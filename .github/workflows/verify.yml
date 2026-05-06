@@ -80,12 +80,18 @@ jobs:
         env:
           UNITTEST_CSPROJ: Competitive.Library.Test/Competitive.Library.Test.csproj
 
+      - name: Flattern HTML Test Report
+        shell: pwsh
+        run: |
+          mkdir ${{runner.temp}}/TUnitReport
+          Move-Item (Get-ChildItem -Recurse *-report.html) -Destination ${{runner.temp}}/TUnitReport -Force
+
       - name: Upload HTML Test Report
         uses: actions/upload-artifact@v7
         if: always()
         with:
           name: TUnitReport
-          path: '**/*-report.html'
+          path: '${{runner.temp}}/TUnitReport/*-report.html'
 
       - name: Resolve
         shell: bash
@@ -276,8 +282,15 @@ jobs:
           artifact-root: .artifacts/
 
       - name: Extract TUnitReport
+        shell: bash
         run: |
-          mv "${{ steps.all-artifacts.outputs.artifacts-root }}/TUnitReport" .competitive-verifier/docs/static/
+          cd .competitive-verifier/docs/static/
+          mv "${{ steps.all-artifacts.outputs.artifacts-root }}/TUnitReport" .
+          echo '' >> ../index.md
+          echo '' >> ../index.md
+          echo '## Unit test' >> ../index.md
+          echo '' >> ../index.md
+          ls TUnitReport/*-report.html | sed 's|TUnitReport/||' | xargs -I@ echo '- [@]({{ "TUnitReport/@" | relative_url }})' >> ../index.md
       - name: Extract bundled
         shell: bash
         run: |
