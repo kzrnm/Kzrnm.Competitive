@@ -28,6 +28,8 @@ public class BitsEnumeratorTests
                                         yield return (num, lst.ToImmutableArray());
                                     }
     }
+
+    [ThousandOfTestcases]
     [Test, MultipleAssertions]
     [MethodDataSource(nameof(BitEnumerateByte_Data))]
     public async Task BitEnumerateByte(byte num, ImmutableArray<int> expected)

@@ -257,6 +257,7 @@ public class MathLibExTests
             yield return (int)(rnd.NextUInt64() >> 33);
     }
 
+    [ThousandOfTestcases]
     [Test]
     [MethodDataSource(nameof(PrimeFactoringIntStress_Data))]
     public async Task PrimeFactoringIntStress(int num)

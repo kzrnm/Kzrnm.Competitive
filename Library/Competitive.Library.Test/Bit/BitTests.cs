@@ -97,6 +97,8 @@ public class BitTests
                                         yield return (num, lst.ToImmutableArray());
                                     }
     }
+
+    [ThousandOfTestcases]
     [Test, MultipleAssertions]
     [MethodDataSource(nameof(BitEnumerateByte_Data))]
     [Property("Category", "BitEnumerate")]

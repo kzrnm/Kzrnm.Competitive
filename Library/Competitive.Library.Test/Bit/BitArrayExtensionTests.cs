@@ -3,6 +3,7 @@ using System.Collections;
 
 namespace Kzrnm.Competitive.Testing.Bit;
 
+[ThousandOfTestcases]
 public class BitArrayExtensionTests
 {
     [Test, MultipleAssertions]

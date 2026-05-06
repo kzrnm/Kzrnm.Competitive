@@ -3,6 +3,7 @@ using System.Numerics;
 
 namespace Kzrnm.Competitive.Testing.MathNS.Matrix;
 
+[ThousandOfTestcases]
 public class BitMatrixLinearSystemTests
 {
     public static IEnumerable<(BitMatrixCase, BitArrayCase)> LinearSystemCases(int max)

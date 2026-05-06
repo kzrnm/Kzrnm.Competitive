@@ -162,6 +162,8 @@ public class SimdModMatrixTests
             foreach (var b in nums)
                 yield return (a, b);
     }
+
+    [ThousandOfTestcases]
     [Test, MultipleAssertions]
     [MethodDataSource(nameof(AddRandom_Data))]
     public async Task AddRandom(int h, int w)

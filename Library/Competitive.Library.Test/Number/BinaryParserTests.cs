@@ -1,5 +1,6 @@
 namespace Kzrnm.Competitive.Testing.Number;
 
+[ThousandOfTestcases]
 public class BinaryParserTests
 {
     public static IEnumerable<uint> ParseUInt32_Data()
@@ -47,7 +48,7 @@ public class BinaryParserTests
     }
 
     [Test, MultipleAssertions]
-    [MethodDataSource(typeof(BitArrayCase), nameof(BitArrayCase.LongBinaryTexts))]
+    [MethodDataSource<BitArrayCase>(nameof(BitArrayCase.LongBinaryTexts))]
     public async Task ParseBitArray(string input)
     {
         var bits = BinaryParser.ParseBitArray(input);

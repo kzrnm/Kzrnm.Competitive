@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 namespace Kzrnm.Competitive.Testing.MathNS.Matrix;
 
 using ModInt = StaticModInt<Mod1000000007>;
+[ThousandOfTestcases]
 public class ArrayMatrixCharacteristricPolynomialTests
 {
     public static IEnumerable<ImmutableArray<int>> Size3_Data()

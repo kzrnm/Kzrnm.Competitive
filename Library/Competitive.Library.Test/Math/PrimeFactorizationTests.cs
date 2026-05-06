@@ -30,6 +30,8 @@ public class PrimeFactorizationTests
     }
 
     struct IsPrimeS { }
+
+    [ThousandOfTestcases]
     [Test]
     [MethodDataSource(nameof(IsPrime_Data))]
     public async Task IsPrime(long value, bool isPrime)

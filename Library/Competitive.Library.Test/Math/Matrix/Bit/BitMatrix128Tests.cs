@@ -4,6 +4,7 @@ using BitMatrix128 = Kzrnm.Competitive.BitMatrix<System.UInt128>;
 
 namespace Kzrnm.Competitive.Testing.MathNS.Matrix;
 
+[ThousandOfTestcases]
 public class BitMatrix128Tests
 {
     [Test, MultipleAssertions]

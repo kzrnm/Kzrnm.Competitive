@@ -3,6 +3,7 @@ using System.Text;
 
 namespace Kzrnm.Competitive.Testing.MathNS.Matrix;
 
+[ThousandOfTestcases]
 public class BitMatrix64Tests
 {
     [Test]
