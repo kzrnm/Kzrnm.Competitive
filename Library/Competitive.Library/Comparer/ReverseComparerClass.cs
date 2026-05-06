@@ -9,7 +9,7 @@ namespace Kzrnm.Competitive
         {
             this.orig = orig;
         }
-        public static ReverseComparerClass<T> Default { get; } = new ReverseComparerClass<T>(Comparer<T>.Default);
+        public static ReverseComparerClass<T> Default { get; } = new(Comparer<T>.Default);
         readonly IComparer<T> orig;
         [凾(256)]
         public int Compare(T x, T y) => orig.Compare(y, x);

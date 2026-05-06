@@ -28,7 +28,7 @@ namespace Kzrnm.Competitive
                 var f2 = (Expression<Func<T, K>>)new ParameterReplaceVisitor(expression.Parameters[0], paramB).Visit(expression);
                 var compExp = Expression.Lambda<Comparison<T>>(Expression.Call(
                         expression.Body,
-                        typeof(K).GetMethod(nameof(IComparable<K>.CompareTo), new[] { typeof(K) }),
+                        typeof(K).GetMethod(nameof(IComparable<K>.CompareTo), [typeof(K)]),
                         f2.Body),
                         paramA, paramB);
                 func = compExp.Compile();

@@ -31,8 +31,9 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public long Distance2(P other)
         {
-            var u = other.X - X;
-            var v = other.Y - Y;
+            long
+                u = other.X - X,
+                v = other.Y - Y;
             return u * u + v * v;
         }
         /// <summary>
@@ -70,13 +71,14 @@ namespace Kzrnm.Competitive
         {
             // 90°回転させると x の符号が同じなら tan(θ) の大小関係が θ の大小関係と等しくなる。
             // x=0
-            var x1 = -Y;
-            var y1 = X;
-            var x2 = -other.Y;
-            var y2 = other.X;
+            long
+                x1 = -Y,
+                y1 = X,
+                x2 = -other.Y,
+                y2 = other.X;
 
-            int xo1 = x1 > 0 ? 1 : 0;
-            int xo2 = x2 > 0 ? 1 : 0;
+            int xo1 = x1 > 0 ? 1 : 0,
+                xo2 = x2 > 0 ? 1 : 0;
 
             int cmp = xo1 - xo2;
             if (cmp != 0) return cmp;
@@ -111,10 +113,11 @@ namespace Kzrnm.Competitive
         [凾(256)]
         static int CrossSign(in P origin, in P p1, in P p2)
         {
-            var x1 = p1.X - origin.X;
-            var y1 = p1.Y - origin.Y;
-            var x2 = p2.X - origin.X;
-            var y2 = p2.Y - origin.Y;
+            long
+                x1 = p1.X - origin.X,
+                y1 = p1.Y - origin.Y,
+                x2 = p2.X - origin.X,
+                y2 = p2.Y - origin.Y;
             return Math.Sign(x1 * y2 - y1 * x2);
         }
 
@@ -234,10 +237,11 @@ namespace Kzrnm.Competitive
                 return 1;
             }
 
-            var ta = (a2.X - b2.X) * (a1.Y - a2.Y) + (a2.Y - b2.Y) * (a2.X - a1.X);
-            var tb = (a2.X - b2.X) * (b1.Y - a2.Y) + (a2.Y - b2.Y) * (a2.X - b1.X);
-            var tc = (a1.X - b1.X) * (a2.Y - a1.Y) + (a1.Y - b1.Y) * (a1.X - a2.X);
-            var td = (a1.X - b1.X) * (b2.Y - a1.Y) + (a1.Y - b1.Y) * (a1.X - b2.X);
+            long
+                ta = (a2.X - b2.X) * (a1.Y - a2.Y) + (a2.Y - b2.Y) * (a2.X - a1.X),
+                tb = (a2.X - b2.X) * (b1.Y - a2.Y) + (a2.Y - b2.Y) * (a2.X - b1.X),
+                tc = (a1.X - b1.X) * (a2.Y - a1.Y) + (a1.Y - b1.Y) * (a1.X - a2.X),
+                td = (a1.X - b1.X) * (b2.Y - a1.Y) + (a1.Y - b1.Y) * (a1.X - b2.X);
 
             return -Math.Max(Math.Sign(tc) * Math.Sign(td), Math.Sign(ta) * Math.Sign(tb));
         }

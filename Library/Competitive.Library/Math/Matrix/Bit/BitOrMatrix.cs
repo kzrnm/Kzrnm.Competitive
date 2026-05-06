@@ -202,15 +202,12 @@ namespace Kzrnm.Competitive
             hs.Add(kind);
             if (kind == Kd.Normal)
             {
-                var len = Width >> 5;
-                var ex = (1u << (Width & 31)) - 1;
                 hs.Add(Height);
                 hs.Add(Width);
                 foreach (var row in _v)
                 {
-                    var a = row.GetArray();
-                    hs.Add(ex == 0 ? 0 : a[len] & ex);
-                    hs.AddBytes(MemoryMarshal.AsBytes(a.AsSpan(0, len)));
+                    var a = row.AsSpan();
+                    hs.AddBytes(MemoryMarshal.AsBytes(a));
                 }
             }
             return hs.ToHashCode();

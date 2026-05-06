@@ -11,7 +11,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static T[] Flatten<T>(this IEnumerable<IEnumerable<T>> collection)
         {
-            var ls = new List<T>();
+            List<T> ls = [];
             foreach (var col in collection)
                 ls.AddRange(col);
             return ls.ToArray();
@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static T[] Flatten<T>(this IEnumerable<(T, T)> collection)
         {
-            var ls = new List<T>();
+            List<T> ls = [];
             foreach (var (a, b) in collection)
             {
                 ls.Add(a);
@@ -38,7 +38,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static T[] Flatten<T>(this IEnumerable<(T, T, T)> collection)
         {
-            var ls = new List<T>();
+            List<T> ls = [];
             foreach (var (a, b, c) in collection)
             {
                 ls.Add(a);

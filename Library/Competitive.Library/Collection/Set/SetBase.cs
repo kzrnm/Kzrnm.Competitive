@@ -349,7 +349,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         [凾(256)]
         public IEnumerable<T> Reversed()
         {
-            var e = new ValueEnumerator(this, true, null);
+            ValueEnumerator e = new(this, true, null);
             while (e.MoveNext()) yield return e.Current;
         }
 
@@ -362,7 +362,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         [凾(256)]
         public IEnumerable<T> EnumerateItem(Node from = null, bool reverse = false)
         {
-            var e = new ValueEnumerator(this, reverse, from);
+            ValueEnumerator e = new(this, reverse, from);
             while (e.MoveNext()) yield return e.Current;
         }
         /// <summary>
@@ -374,7 +374,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         [凾(256)]
         public IEnumerable<Node> EnumerateNode(Node from = null, bool reverse = false)
         {
-            var e = new Enumerator(this, reverse, from);
+            Enumerator e = new(this, reverse, from);
             while (e.MoveNext()) yield return e.Current;
         }
         #endregion Enumerate
@@ -616,7 +616,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
 
 
         [凾(256)]
-        public ValueEnumerator GetEnumerator() => new ValueEnumerator(this);
+        public ValueEnumerator GetEnumerator() => new(this);
         IEnumerator<T> IEnumerable<T>.GetEnumerator() => new ValueEnumerator(this);
         IEnumerator IEnumerable.GetEnumerator() => new ValueEnumerator(this);
 
@@ -633,7 +633,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             internal Enumerator(SetBase<T, TCmp, Node, TOp> set, bool reverse, Node startNode)
             {
                 tree = set;
-                stack = new Deque<Node>(2 * Log2(tree.Count + 1));
+                stack = new(2 * Log2(tree.Count + 1));
                 current = null;
                 this.reverse = reverse;
                 if (startNode == null) IntializeAll();
@@ -736,11 +736,11 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
             private Enumerator inner;
             internal ValueEnumerator(SetBase<T, TCmp, Node, TOp> set)
             {
-                inner = new Enumerator(set);
+                inner = new(set);
             }
             internal ValueEnumerator(SetBase<T, TCmp, Node, TOp> set, bool reverse, Node startNode)
             {
-                inner = new Enumerator(set, reverse, startNode);
+                inner = new(set, reverse, startNode);
             }
 
             public T Current => inner.CurrentValue();

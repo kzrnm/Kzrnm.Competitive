@@ -1,10 +1,11 @@
 using Kzrnm.Competitive;
 using Kzrnm.Competitive.IO;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
-[module: System.Runtime.CompilerServices.SkipLocalsInit]
-internal partial class Program
+[module: SkipLocalsInit]
+partial class Program
 {
     public PropertyConsoleReader cr;
     public Utf8ConsoleWriter cw;

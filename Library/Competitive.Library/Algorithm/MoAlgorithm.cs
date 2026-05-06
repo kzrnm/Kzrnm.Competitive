@@ -18,7 +18,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public MoAlgorithm()
         {
-            builder = new List<(int From, int ToExclusive, int Index)>();
+            builder = [];
         }
         /// <summary>
         /// 平方分割でオフラインクエリを計算する

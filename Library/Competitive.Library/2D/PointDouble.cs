@@ -65,13 +65,14 @@ namespace Kzrnm.Competitive
         {
             // 90°回転させると x の符号が同じなら tan(θ) の大小関係が θ の大小関係と等しくなる。
             // x=0
-            var x1 = -Y;
-            var y1 = X;
-            var x2 = -other.Y;
-            var y2 = other.X;
+            double
+                x1 = -Y,
+                y1 = X,
+                x2 = -other.Y,
+                y2 = other.X;
 
-            int xo1 = x1 > 0 ? 1 : 0;
-            int xo2 = x2 > 0 ? 1 : 0;
+            int xo1 = x1 > 0 ? 1 : 0,
+                xo2 = x2 > 0 ? 1 : 0;
 
             int cmp = xo1 - xo2;
             if (cmp != 0) return cmp;
@@ -107,10 +108,11 @@ namespace Kzrnm.Competitive
         [凾(256)]
         static int CrossSign(in P origin, in P p1, in P p2)
         {
-            var x1 = p1.X - origin.X;
-            var y1 = p1.Y - origin.Y;
-            var x2 = p2.X - origin.X;
-            var y2 = p2.Y - origin.Y;
+            double
+                x1 = p1.X - origin.X,
+                y1 = p1.Y - origin.Y,
+                x2 = p2.X - origin.X,
+                y2 = p2.Y - origin.Y;
             return Math.Sign(x1 * y2 - y1 * x2);
         }
 
@@ -122,8 +124,9 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public P Rotate(double theta)
         {
-            var sin = Math.Sin(theta);
-            var cos = Math.Cos(theta);
+            double
+                sin = Math.Sin(theta),
+                cos = Math.Cos(theta);
             return new P(cos * X - sin * Y, sin * X + cos * Y);
         }
 
@@ -208,8 +211,9 @@ namespace Kzrnm.Competitive
             double res = (points[^1].X - points[0].X) * (points[^1].Y + points[0].Y);
             for (int i = 1; i < points.Length; i++)
             {
-                var p1 = points[i - 1];
-                var p2 = points[i];
+                P
+                    p1 = points[i - 1],
+                    p2 = points[i];
                 res += (p1.X - p2.X) * (p1.Y + p2.Y);
             }
             return Math.Abs(res);
@@ -220,13 +224,15 @@ namespace Kzrnm.Competitive
         /// </summary>
         public static P 外心(P a, P b, P c)
         {
-            var ab = a.Distance(b);
-            var cb = c.Distance(b);
-            var ac = a.Distance(c);
+            double
+                ab = a.Distance(b),
+                cb = c.Distance(b),
+                ac = a.Distance(c);
 
-            var cosA = (ab * ab + ac * ac - cb * cb) / 2 / ab / ac;
-            var cosB = (ab * ab + cb * cb - ac * ac) / 2 / ab / cb;
-            var cosC = (cb * cb + ac * ac - ab * ab) / 2 / cb / ac;
+            double
+                cosA = (ab * ab + ac * ac - cb * cb) / 2 / ab / ac,
+                cosB = (ab * ab + cb * cb - ac * ac) / 2 / ab / cb,
+                cosC = (cb * cb + ac * ac - ab * ab) / 2 / cb / ac;
 
             var d = cb * cosA + ac * cosB + ab * cosC;
             return new P(cb * cosA * a.X / d, cb * cosA * a.Y / d)
@@ -389,10 +395,11 @@ namespace Kzrnm.Competitive
                 return 1;
             }
 
-            var ta = (a2.X - b2.X) * (a1.Y - a2.Y) + (a2.Y - b2.Y) * (a2.X - a1.X);
-            var tb = (a2.X - b2.X) * (b1.Y - a2.Y) + (a2.Y - b2.Y) * (a2.X - b1.X);
-            var tc = (a1.X - b1.X) * (a2.Y - a1.Y) + (a1.Y - b1.Y) * (a1.X - a2.X);
-            var td = (a1.X - b1.X) * (b2.Y - a1.Y) + (a1.Y - b1.Y) * (a1.X - b2.X);
+            double
+                ta = (a2.X - b2.X) * (a1.Y - a2.Y) + (a2.Y - b2.Y) * (a2.X - a1.X),
+                tb = (a2.X - b2.X) * (b1.Y - a2.Y) + (a2.Y - b2.Y) * (a2.X - b1.X),
+                tc = (a1.X - b1.X) * (a2.Y - a1.Y) + (a1.Y - b1.Y) * (a1.X - a2.X),
+                td = (a1.X - b1.X) * (b2.Y - a1.Y) + (a1.Y - b1.Y) * (a1.X - b2.X);
 
             return -Math.Max(Math.Sign(tc) * Math.Sign(td), Math.Sign(ta) * Math.Sign(tb));
         }

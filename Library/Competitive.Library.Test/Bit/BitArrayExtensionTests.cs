@@ -13,11 +13,14 @@ public class BitArrayExtensionTests
         b[0] = false;
         b[64] = false;
 
-        var arr = b.GetArray();
-        await arr.Length.Should().BeEqualTo(3);
-        await arr[0].Should().BeEqualTo(unchecked((uint)-2));
-        await arr[1].Should().BeEqualTo(unchecked((uint)-1));
-        await (arr[2] & 0b111111).Should().BeEqualTo(0b111110u);
+        await b.AsSpan().Length.Should().BeEqualTo(3);
+        await b.AsSpan().ToArray().Should().BeEquivalentOrderTo([unchecked((uint)-2), unchecked((uint)-1), 0b111110u]);
+
+        b.Length = 32 * 3;
+        await b.AsSpan().ToArray().Should().BeEquivalentOrderTo([unchecked((uint)-2), unchecked((uint)-1), 0b111110u]);
+
+        b.Length = 32 * 3 + 1;
+        await b.AsSpan().ToArray().Should().BeEquivalentOrderTo([unchecked((uint)-2), unchecked((uint)-1), 0b111110u, 0u]);
     }
 
     [Test, MultipleAssertions]

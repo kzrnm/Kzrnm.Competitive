@@ -56,7 +56,7 @@ namespace Kzrnm.Competitive
         {
             if (Count == 0)
             {
-                result = new KeyValuePair<T, int>();
+                result = new();
                 return false;
             }
             result = Dequeue();

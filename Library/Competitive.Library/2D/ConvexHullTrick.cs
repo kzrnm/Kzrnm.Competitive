@@ -18,8 +18,7 @@ namespace Kzrnm.Competitive
         where TCmp : struct, IConvexHullTrickOperator<T>
     {
         static TCmp cmp = default;
-        public readonly T XINF;
-        public readonly T YINF;
+        public readonly T XINF, YINF;
         bool[] u;
         T[] xs, p, q;
         readonly int size;
@@ -34,7 +33,7 @@ namespace Kzrnm.Competitive
             XINF = xinf;
             YINF = yinf;
 
-            size = BitOperationsEx.RoundUpToPowerOf2(Length);
+            size = (int)BitOperations.RoundUpToPowerOf2((uint)Length);
             int n2 = size << 1;
             u = new bool[n2];
             this.xs = new T[n2];
@@ -53,8 +52,11 @@ namespace Kzrnm.Competitive
         /// </summary>
         public void AddSegmentLine(T a, T b, int l, int r)
         {
-            int l0 = l + size, r0 = r + size;
-            int s0 = l, t0 = r, sz = 1;
+            int l0 = l + size,
+                r0 = r + size,
+                s0 = l,
+                t0 = r,
+                sz = 1;
             while (l0 < r0)
             {
                 if ((r0 & 1) != 0)
@@ -86,9 +88,9 @@ namespace Kzrnm.Competitive
 
                 T lx = xs[l], mx = xs[m], rx = xs[r - 1];
                 T pk = p[k], qk = q[k];
-                bool left = cmp.UseLeft((a * lx) + b, (pk * lx) + qk);
-                bool mid = cmp.UseLeft((a * mx) + b, (pk * mx) + qk);
-                bool right = cmp.UseLeft((a * rx) + b, (pk * rx) + qk);
+                bool left = cmp.UseLeft((a * lx) + b, (pk * lx) + qk),
+                    mid = cmp.UseLeft((a * mx) + b, (pk * mx) + qk),
+                    right = cmp.UseLeft((a * rx) + b, (pk * rx) + qk);
                 if (left && right)
                 {
                     p[k] = a; q[k] = b;

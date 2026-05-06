@@ -11,7 +11,6 @@ namespace Kzrnm.Competitive
 {
     public static class Bit
     {
-#if NET8_0_OR_GREATER
         /// <summary>
         /// <paramref name="num"/> を長さ <see cref="Unsafe.SizeOf{T}()"/> × 8 の 2 進数文字列にします。
         /// </summary>
@@ -26,28 +25,6 @@ namespace Kzrnm.Competitive
         {
             return num.ToString($"B{size}", null);
         }
-#else
-        /// <summary>
-        /// <paramref name="num"/> を長さ <paramref name="size"/> 以上の 2 進数文字列にします。
-        /// </summary>
-        [凾(256)]
-        public static string ToBitString(this int num, int size = sizeof(int) * 8) => Convert.ToString(num, 2).PadLeft(size, '0');
-        /// <summary>
-        /// <paramref name="num"/> を長さ <paramref name="size"/> 以上の 2 進数文字列にします。
-        /// </summary>
-        [凾(256)]
-        public static string ToBitString(this uint num, int size = sizeof(uint) * 8) => Convert.ToString((int)num, 2).PadLeft(size, '0');
-        /// <summary>
-        /// <paramref name="num"/> を長さ <paramref name="size"/> 以上の 2 進数文字列にします。
-        /// </summary>
-        [凾(256)]
-        public static string ToBitString(this long num, int size = sizeof(long) * 8) => Convert.ToString(num, 2).PadLeft(size, '0');
-        /// <summary>
-        /// <paramref name="num"/> を長さ <paramref name="size"/> 以上の 2 進数文字列にします。
-        /// </summary>
-        [凾(256)]
-        public static string ToBitString(this ulong num, int size = sizeof(ulong) * 8) => Convert.ToString(unchecked((long)num), 2).PadLeft(size, '0');
-#endif
 
         /// <summary>
         /// <paramref name="num"/> の <paramref name="index"/> 番目のビットが立っているかを返します。
@@ -59,22 +36,22 @@ namespace Kzrnm.Competitive
         /// <paramref name="num"/> の立っているビットを列挙します。
         /// </summary>
         [凾(256)]
-        public static Enumerator Bits(this int num) => new Enumerator((uint)num);
+        public static Enumerator Bits(this int num) => new((uint)num);
         /// <summary>
         /// <paramref name="num"/> の立っているビットを列挙します。
         /// </summary>
         [凾(256)]
-        public static Enumerator Bits(this uint num) => new Enumerator(num);
+        public static Enumerator Bits(this uint num) => new(num);
         /// <summary>
         /// <paramref name="num"/> の立っているビットを列挙します。
         /// </summary>
         [凾(256)]
-        public static Enumerator Bits(this long num) => new Enumerator((ulong)num);
+        public static Enumerator Bits(this long num) => new((ulong)num);
         /// <summary>
         /// <paramref name="num"/> の立っているビットを列挙します。
         /// </summary>
         [凾(256)]
-        public static Enumerator Bits(this ulong num) => new Enumerator(num);
+        public static Enumerator Bits(this ulong num) => new(num);
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
         public struct Enumerator : IEnumerable<int>, IEnumerator<int>
         {

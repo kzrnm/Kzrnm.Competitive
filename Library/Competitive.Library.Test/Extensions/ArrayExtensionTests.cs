@@ -184,6 +184,7 @@ public class ArrayExtensionTests
     }
 
 
+    [NotInParallel("GetOrDummy")]
     [Test, MultipleAssertions]
     public async Task GetOrDummy()
     {
@@ -209,6 +210,7 @@ public class ArrayExtensionTests
         await arr.Should().BeEquivalentOrderTo([43L, 24, 33]);
     }
 
+    [NotInParallel("GetOrDummy")]
     [Test]
     [Arguments(0, 43)]
     [Arguments(1, 24)]
@@ -221,6 +223,7 @@ public class ArrayExtensionTests
         await span.GetOrDummy(index).Should().BeEqualTo(expected);
     }
 
+    [NotInParallel("GetOrDummy")]
     [Test]
     [Arguments(0, int.MinValue, 43)]
     [Arguments(1, int.MinValue, 24)]
@@ -233,6 +236,7 @@ public class ArrayExtensionTests
         await span.GetOrDummy(index, dummy).Should().BeEqualTo(expected);
     }
 
+    [NotInParallel("GetOrDummy")]
     [Test]
     [Arguments(0, 43)]
     [Arguments(1, 24)]
@@ -249,6 +253,7 @@ public class ArrayExtensionTests
         await span.GetOrDummy(index).Should().BeEqualTo(expected);
     }
 
+    [NotInParallel("GetOrDummy")]
     [Test]
     [Arguments(0, 43)]
     [Arguments(1, 24)]
@@ -261,6 +266,7 @@ public class ArrayExtensionTests
         await span.GetOrDummy(index).Should().BeEqualTo(expected);
     }
 
+    [NotInParallel("GetOrDummy")]
     [Test, MultipleAssertions]
     public async Task GetOrDummy2()
     {
@@ -305,6 +311,7 @@ public class ArrayExtensionTests
     }
 
 
+    [NotInParallel("GetOrDummy")]
     [Test, MultipleAssertions]
     public async Task GetOrDummy3()
     {

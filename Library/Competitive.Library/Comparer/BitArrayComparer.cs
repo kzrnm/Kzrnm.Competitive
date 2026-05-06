@@ -10,8 +10,8 @@ namespace Kzrnm.Competitive
         {
             IsReverse = isReverse;
         }
-        public static BitArrayComparer Default => new BitArrayComparer(false);
-        public static BitArrayComparer Reverse => new BitArrayComparer(true);
+        public static BitArrayComparer Default => new(false);
+        public static BitArrayComparer Reverse => new(true);
         public int Compare(BitArray x, BitArray y)
         {
             if (IsReverse)

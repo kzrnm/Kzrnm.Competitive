@@ -30,7 +30,7 @@ namespace Kzrnm.Competitive
             Coefficients = span.ToArray();
         }
 
-        [凾(256)] public static implicit operator Polynomial<T>(T v) => new(new[] { v });
+        [凾(256)] public static implicit operator Polynomial<T>(T v) => new([v]);
 
         public override string ToString() => string.Join(", ", Coefficients);
 

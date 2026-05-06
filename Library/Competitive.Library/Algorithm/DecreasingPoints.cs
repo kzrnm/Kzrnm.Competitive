@@ -22,16 +22,16 @@ namespace Kzrnm.Competitive
      * 
      * Y
      * ↑
-     * │ *
+     * │ @
      * │
-     * │       *
+     * │       @
      * │
-     * │        $  *
-     * │    +           $  *
+     * │        $  @
+     * │    +           $  @
      * │           +  +
-     * │                     *
+     * │                     @
      * └───────────────────────→ X
-     * * は採用される。
+     * @ は採用される。
      * $ は strict じゃないときは採用される。
      * 
      */
@@ -114,8 +114,8 @@ namespace Kzrnm.Competitive
                 ys[i] = s[idx[i]].Y;
 
 
-            var ls = new List<U> { ys[0] };
-            var li = new List<int> { idx[0] };
+            List<U> ls = [ys[0]];
+            List<int> li = [idx[0]];
             for (int i = 1; i < xs.Length; i++)
             {
                 Debug.Assert(ls.Count > 0);

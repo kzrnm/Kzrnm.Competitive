@@ -10,12 +10,10 @@ public class SourceExpanderTest
     public async Task LanguageVersion()
     {
         var embedded = await EmbeddedData.LoadFromAssembly(typeof(Global));
-#if NET7_0
-        const string expected = "11.0";
-#elif NET8_0
-        const string expected = "12.0";
-#elif NET9_0
+#if NET9_0
         const string expected = "13.0";
+#elif NET10_0
+        const string expected = "14.0";
 #endif
         await embedded.AssemblyMetadatas.Should().ContainKey("SourceExpander.EmbeddedLanguageVersion");
         await embedded.AssemblyMetadatas.Should().ContainKeyWithValue("SourceExpander.EmbeddedLanguageVersion", expected);

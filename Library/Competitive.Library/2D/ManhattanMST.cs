@@ -24,7 +24,7 @@ namespace Kzrnm.Competitive
 
 
         internal static class Impl<T>
-            where T : INumberBase<T>, IMinMaxValue<T>, IComparisonOperators<T, T, bool>, IComparable<T>
+            where T : INumber<T>, IMinMaxValue<T>
         {
             readonly record struct MaxFw(T Value, int Index) : IAdditionOperators<MaxFw, MaxFw, MaxFw>, ISubtractionOperators<MaxFw, MaxFw, MaxFw>, IAdditiveIdentity<MaxFw, MaxFw>
             {
@@ -47,7 +47,7 @@ namespace Kzrnm.Competitive
             /// <param name="ps">座標の一覧</param>
             public static (int Index1, int Index2)[] Solve((T, T)[] ps)
             {
-                var edgesList = new List<(int Index1, int Index2)>(ps.Length * 4);
+                List<(int Index1, int Index2)> edgesList = new(ps.Length * 4);
                 var minf = MaxFw.AdditiveIdentity;
                 ps = ((T, T)[])ps.Clone();
                 for (int ph = 0; ph < 4; ph++)
@@ -57,7 +57,7 @@ namespace Kzrnm.Competitive
 
                     var xv = ps.Select(p => p.Item1).Distinct().ToArray();
                     Array.Sort(xv);
-                    var fw = new FenwickTree<MaxFw>(ps.Length);
+                    FenwickTree<MaxFw> fw = new(ps.Length);
                     fw.data.AsSpan().Fill(minf);
                     foreach (var ix in ids)
                     {
@@ -77,7 +77,7 @@ namespace Kzrnm.Competitive
                 }
                 edgesList.Select(new Dist(ps).Convert).ToArray().AsSpan(0, edgesList.Count).Sort(edgesList.AsSpan());
 
-                var uf = new UnionFind(ps.Length);
+                UnionFind uf = new(ps.Length);
                 var res = new (int Index1, int Index2)[ps.Length - 1];
                 int ri = 0;
                 foreach (var (ix1, ix2) in edgesList.AsSpan())

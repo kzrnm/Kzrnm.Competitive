@@ -129,7 +129,7 @@ namespace Kzrnm.Competitive
                 for (int i = arr.Length >> 3 << 3; i < arr.Length; i++)
                     arr[i] += Unsafe.Add(ref op, i);
             }
-            var brr = MemoryMarshal.Cast<MontgomeryModInt<T>, Vector256<uint>>(arr);
+            var brr = MemoryMarshal.Cast<MontgomeryModInt<T>, Vector256<uint>>(arr.AsSpan());
             var os = MemoryMarshal.Cast<MontgomeryModInt<T>, Vector256<uint>>(other._v.AsSpan());
             if (os.Length > 0)
             {
@@ -184,7 +184,7 @@ namespace Kzrnm.Competitive
                 for (int i = arr.Length >> 3 << 3; i < arr.Length; i++)
                     arr[i] -= Unsafe.Add(ref op, i);
             }
-            var brr = MemoryMarshal.Cast<MontgomeryModInt<T>, Vector256<uint>>(arr);
+            var brr = MemoryMarshal.Cast<MontgomeryModInt<T>, Vector256<uint>>(arr.AsSpan());
             var os = MemoryMarshal.Cast<MontgomeryModInt<T>, Vector256<uint>>(other._v.AsSpan());
             if (os.Length > 0)
             {

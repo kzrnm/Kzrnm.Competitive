@@ -20,52 +20,52 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static PriorityQueueOp<T, TOp> Create<T, TOp>()
             where TOp : struct, IComparer<T>
-            => new PriorityQueueOp<T, TOp>(default(TOp));
+            => new(default(TOp));
 
         [凾(256)]
         public static PriorityQueueOp<T, TOp> Create<T, TOp>(TOp comparer)
             where TOp : IComparer<T>
-            => new PriorityQueueOp<T, TOp>(comparer);
+            => new(comparer);
 
         [凾(256)]
         public static PriorityQueueOp<T, TOp> Create<T, TOp>(int capacity)
             where TOp : IComparer<T>
-            => new PriorityQueueOp<T, TOp>(capacity, default(TOp));
+            => new(capacity, default(TOp));
 
         [凾(256)]
         public static PriorityQueueOp<T, TOp> Create<T, TOp>(int capacity, TOp comparer)
             where TOp : IComparer<T>
-            => new PriorityQueueOp<T, TOp>(capacity, comparer);
+            => new(capacity, comparer);
 
         [凾(256)]
         public static PriorityQueueOp<TKey, TValue, DefaultComparerStruct<TKey>> CreateDictionary<TKey, TValue>()
             where TKey : IComparable<TKey>
-            => new PriorityQueueOp<TKey, TValue, DefaultComparerStruct<TKey>>();
+            => new();
 
         [凾(256)]
         public static PriorityQueueOp<TKey, TValue, DefaultComparerStruct<TKey>> CreateDictionary<TKey, TValue>(int capacity)
             where TKey : IComparable<TKey>
-            => new PriorityQueueOp<TKey, TValue, DefaultComparerStruct<TKey>>(capacity);
+            => new(capacity);
 
         [凾(256)]
         public static PriorityQueueOp<TKey, TValue, TOp> CreateDictionary<TKey, TValue, TOp>()
             where TOp : struct, IComparer<TKey>
-            => new PriorityQueueOp<TKey, TValue, TOp>(default(TOp));
+            => new(default(TOp));
 
         [凾(256)]
         public static PriorityQueueOp<TKey, TValue, TOp> CreateDictionary<TKey, TValue, TOp>(TOp comparer)
             where TOp : IComparer<TKey>
-            => new PriorityQueueOp<TKey, TValue, TOp>(comparer);
+            => new(comparer);
 
         [凾(256)]
         public static PriorityQueueOp<TKey, TValue, TOp> CreateDictionary<TKey, TValue, TOp>(int capacity)
             where TOp : IComparer<TKey>
-            => new PriorityQueueOp<TKey, TValue, TOp>(capacity, default(TOp));
+            => new(capacity, default(TOp));
 
         [凾(256)]
         public static PriorityQueueOp<TKey, TValue, TOp> CreateDictionary<TKey, TValue, TOp>(int capacity, TOp comparer)
             where TOp : IComparer<TKey>
-            => new PriorityQueueOp<TKey, TValue, TOp>(capacity, comparer);
+            => new(capacity, comparer);
 
 
         [凾(256)]

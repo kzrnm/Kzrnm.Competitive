@@ -16,9 +16,9 @@ namespace Kzrnm.Competitive
         [凾(256)] public static Grid<int> GridInt(this ConsoleReader cr, int H, int W, int defaultValue = default) => Create(cr.Grid<int>(H, W), defaultValue);
         [凾(256)] public static Grid<long> GridLong(this ConsoleReader cr, int H, int W, long defaultValue = default) => Create(cr.Grid<long>(H, W), defaultValue);
         [凾(256)] public static Grid<ulong> GridULong(this ConsoleReader cr, int H, int W, ulong defaultValue = default) => Create(cr.Grid<ulong>(H, W), defaultValue);
-        [凾(256)] public static Grid<char> Create(string[] d, char defaultValue = default) => new Grid<char>(d.Flatten(), d.Length, d[0].Length, defaultValue);
-        [凾(256)] public static Grid<IO.Ascii> Create(Asciis[] d, char defaultValue = default) => new Grid<IO.Ascii>(d.Flatten(), d.Length, d[0].Length, defaultValue);
-        [凾(256)] public static Grid<T> Create<T>(T[][] d, T defaultValue = default) => new Grid<T>(d.Flatten(), d.Length, d[0].Length, defaultValue);
+        [凾(256)] public static Grid<char> Create(string[] d, char defaultValue = default) => new(d.Flatten(), d.Length, d[0].Length, defaultValue);
+        [凾(256)] public static Grid<IO.Ascii> Create(Asciis[] d, char defaultValue = default) => new(d.Flatten(), d.Length, d[0].Length, defaultValue);
+        [凾(256)] public static Grid<T> Create<T>(T[][] d, T defaultValue = default) => new(d.Flatten(), d.Length, d[0].Length, defaultValue);
 
         [凾(256)]
         public static void WriteGrid(this Utf8ConsoleWriter cw, Grid<char> grid)
@@ -40,8 +40,7 @@ namespace Kzrnm.Competitive
     public class Grid<T>
     {
         public int Size => data.Length;
-        public readonly int H;
-        public readonly int W;
+        public readonly int H, W;
         public readonly T[] data;
         internal readonly T defaultValue;
         public Grid(int H, int W, T defaultValue = default) : this(new T[H * W].Fill(defaultValue), H, W, defaultValue) { }
@@ -49,7 +48,7 @@ namespace Kzrnm.Competitive
         {
             AtCoder.Internal.Contract.Assert(H * W == data.Length);
         }
-        public Grid(Grid<T> other) : this((T[])other.data.Clone(), other.H, other.W, other.defaultValue)
+        public Grid(Grid<T> other) : this(other.data.ToArray(), other.H, other.W, other.defaultValue)
         {
             AtCoder.Internal.Contract.Assert(other.H * other.W == other.data.Length);
         }
@@ -92,14 +91,14 @@ namespace Kzrnm.Competitive
         T defaultReference;
 
         public Span<T> RowSpan(int h) => (uint)h < (uint)H ? data.AsSpan(h * W, W) : default;
-        public Grid<T> Clone() => new Grid<T>(this);
+        public Grid<T> Clone() => new(this);
 
         static string ToStringNoSplit(Grid<T> grid)
         {
             var H = grid.H;
             var W = grid.W;
             var data = grid.data;
-            var sb = new StringBuilder();
+            StringBuilder sb = new();
             for (int h = 0; h + 1 < H; h++)
             {
                 Ap(sb, data.AsSpan(h * W, W));
@@ -118,7 +117,7 @@ namespace Kzrnm.Competitive
         }
         string ToStringSplit()
         {
-            var sb = new StringBuilder();
+            StringBuilder sb = new();
             for (int h = 0; h < H; h++)
             {
                 sb.Append(this[h, 0]);
@@ -148,7 +147,7 @@ namespace Kzrnm.Competitive
         {
             int H = this.H;
             int W = this.W;
-            var g = new Grid<T>(W, H, defaultValue);
+            Grid<T> g = new(W, H, defaultValue);
             for (int h = 0; h < H; h++)
                 for (int w = 0; w < W; w++)
                     g[w, H - h - 1] = this[h, w];
@@ -160,7 +159,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         public Grid<T> Rotate180()
         {
-            var g = new Grid<T>(this);
+            Grid<T> g = new(this);
             g.data.AsSpan().Reverse();
             return g;
         }
@@ -172,7 +171,7 @@ namespace Kzrnm.Competitive
         {
             int H = this.H;
             int W = this.W;
-            var g = new Grid<T>(W, H, defaultValue);
+            Grid<T> g = new(W, H, defaultValue);
             for (int h = 0; h < H; h++)
                 for (int w = 0; w < W; w++)
                     g[W - w - 1, h] = this[h, w];
@@ -186,7 +185,7 @@ namespace Kzrnm.Competitive
         {
             int H = this.H;
             int W = this.W;
-            var g = new Grid<T>(W, H, defaultValue);
+            Grid<T> g = new(W, H, defaultValue);
             for (int h = 0; h < H; h++)
                 for (int w = 0; w < W; w++)
                     g[w, h] = this[h, w];
@@ -200,14 +199,14 @@ namespace Kzrnm.Competitive
         public MoveEnumerator Moves(int index)
         {
             var (h, w) = FromIndex(index);
-            return new MoveEnumerator(this, h, w);
+            return new(this, h, w);
         }
 
         /// <summary>
         /// 対象の上下左右の座標を返します。
         /// </summary>
         [凾(256)]
-        public MoveEnumerator Moves(int h, int w) => new MoveEnumerator(this, h, w);
+        public MoveEnumerator Moves(int h, int w) => new(this, h, w);
         public readonly record struct Position(int Index, int Width)
         {
             [凾(256)]
@@ -256,7 +255,7 @@ namespace Kzrnm.Competitive
                             dh = 1;
                             break;
                     }
-                    return new Position(grid.Index(origH + dh, origW + dw), grid.W);
+                    return new(grid.Index(origH + dh, origW + dw), grid.W);
                 }
             }
 
@@ -305,7 +304,7 @@ namespace Kzrnm.Competitive
             public void Dispose() { }
         }
 
-        public Enumerator GetEnumerator() => new Enumerator(this);
+        public Enumerator GetEnumerator() => new(this);
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
         public struct Enumerator
         {
@@ -337,7 +336,7 @@ namespace Kzrnm.Competitive
             public override string ToString()
             {
                 if (line is char[] chrs)
-                    return new string(chrs);
+                    return new(chrs);
                 if (line is IO.Ascii[] asciis)
                     return new Asciis(Unsafe.As<byte[]>(asciis)).ToString();
                 return string.Join(", ", line);
@@ -358,7 +357,7 @@ namespace Kzrnm.Competitive
                         var line = new T[grid.W];
                         for (int w = 0; w < grid.W; w++)
                             line[w] = grid[h, w];
-                        items[h] = new DebugLine(line);
+                        items[h] = new(line);
                     }
                     return items;
                 }

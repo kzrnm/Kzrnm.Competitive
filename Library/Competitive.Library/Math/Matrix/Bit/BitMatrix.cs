@@ -190,7 +190,7 @@ namespace Kzrnm.Competitive
         {
             var val = _v;
             var b = new BitArray(val.Length);
-            var a = b.GetArray();
+            var a = b.AsSpan();
             for (int i = 0; i < val.Length;)
             {
                 ref var t = ref a[i >> 5];
@@ -424,8 +424,8 @@ namespace Kzrnm.Competitive
             //return rt;
             if (l >= r) return false;
 
-            var u = a.GetArray();
-            var v = b.GetArray();
+            var u = a.AsSpan();
+            var v = b.AsSpan();
 
             var smask = ~((1u << (l & 31)) - 1);
             var s = l >> 5;
@@ -493,15 +493,12 @@ namespace Kzrnm.Competitive
             hs.Add(kind);
             if (kind == Kd.Normal)
             {
-                var len = Width >> 5;
-                var ex = (1u << (Width & 31)) - 1;
                 hs.Add(Height);
                 hs.Add(Width);
                 foreach (var row in _v)
                 {
-                    var a = row.GetArray();
-                    hs.Add(ex == 0 ? 0 : a[len] & ex);
-                    hs.AddBytes(MemoryMarshal.AsBytes(a.AsSpan(0, len)));
+                    var a = row.AsSpan();
+                    hs.AddBytes(MemoryMarshal.AsBytes(a));
                 }
             }
             return hs.ToHashCode();

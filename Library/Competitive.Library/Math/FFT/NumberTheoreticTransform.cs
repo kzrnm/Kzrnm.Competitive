@@ -184,7 +184,7 @@ namespace Kzrnm.Competitive
         {
             var am = MemoryMarshal.Cast<StaticModInt<T>, uint>(a);
             var bm = MemoryMarshal.Cast<StaticModInt<T>, uint>(b);
-            return MemoryMarshal.Cast<uint, StaticModInt<T>>(Multiply(am, bm));
+            return Unsafe.BitCast<Span<uint>, Span<StaticModInt<T>>>(Multiply(am, bm));
         }
 
         [凾(256)]

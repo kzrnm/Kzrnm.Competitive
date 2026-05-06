@@ -76,7 +76,7 @@ namespace Kzrnm.Competitive
         public FpsImpl<T> Add(MontgomeryModInt<T> v)
         {
             if (Length == 0)
-                Set(new MontgomeryModInt<T>[] { v });
+                Set([v]);
             else
                 a[0] += v;
             return this;
@@ -106,7 +106,7 @@ namespace Kzrnm.Competitive
         public FpsImpl<T> Subtract(MontgomeryModInt<T> v)
         {
             if (Length == 0)
-                Set(new MontgomeryModInt<T>[] { -v });
+                Set([-v]);
             else
                 a[0] -= v;
             return this;

@@ -50,7 +50,7 @@ namespace Kzrnm.Competitive
         public static uint[] Convolution<TMod>(ReadOnlySpan<int> a, ReadOnlySpan<int> b)
               where TMod : struct, IStaticMod
               => Convolution<TMod>(MemoryMarshal.Cast<int, uint>(a), MemoryMarshal.Cast<int, uint>(b));
-
+#if !NET10_0_OR_GREATER
         /// <summary>
         /// 任意 Mod で畳み込みを計算します。
         /// </summary>
@@ -78,6 +78,7 @@ namespace Kzrnm.Competitive
         public static MontgomeryModInt<TMod>[] Convolution<TMod>(Span<MontgomeryModInt<TMod>> a, Span<MontgomeryModInt<TMod>> b)
              where TMod : struct, IStaticMod
             => Convolution((ReadOnlySpan<MontgomeryModInt<TMod>>)a, b);
+#endif
         /// <summary>
         /// 任意 Mod で畳み込みを計算します。
         /// </summary>
@@ -208,6 +209,7 @@ namespace Kzrnm.Competitive
             }
         }
 
+#if !NET10_0_OR_GREATER
         /// <summary>
         /// 64 bit で畳み込みを計算します。
         /// </summary>
@@ -253,6 +255,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         [凾(256)]
         public static ulong[] ConvolutionULong(Span<ulong> a, Span<ulong> b) => ConvolutionULong((ReadOnlySpan<ulong>)a, b);
+#endif
 
         /// <summary>
         /// 64 bit で畳み込みを計算します。
@@ -303,7 +306,7 @@ namespace Kzrnm.Competitive
                     a.Select(n => (MontgomeryModInt<FFTMod3>)n), b.Select(n => (MontgomeryModInt<FFTMod3>)n));
             }
         }
-
+#if !NET10_0_OR_GREATER
         /// <summary>
         /// 64 bit で畳み込みを計算します。
         /// </summary>
@@ -349,6 +352,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         [凾(256)]
         public static long[] ConvolutionLong(Span<long> a, Span<long> b) => ConvolutionLong((ReadOnlySpan<long>)a, b);
+#endif
 
         /// <summary>
         /// 64 bit で畳み込みを計算します。
