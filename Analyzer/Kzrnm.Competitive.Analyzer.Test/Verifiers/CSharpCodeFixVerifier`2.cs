@@ -59,7 +59,7 @@ namespace Kzrnm.Competitive.Analyzer.Test
             public Test()
             {
                 CompilerDiagnostics = CompilerDiagnostics.None;
-                ReferenceAssemblies = ReferenceAssemblies.WithPackages(ReferencesHelper.Packages);
+                ReferenceAssemblies = ReferenceAssemblies.Net.Net100.WithPackages(ReferencesHelper.Packages);
             }
             protected override CompilationOptions CreateCompilationOptions()
             {

@@ -418,12 +418,13 @@ $$TypeDefinition$$ OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int v, int size) Operate((int v, int size) x, (int v, int size) y) => default;
+
+    public (int v, int size) Identity => default;
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int v, int size) Mapping((int b, int c) f, (int v, int size) x) => default;
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int b, int c) Composition((int b, int c) nf, (int b, int c) cf) => default;
-
-    public (int v, int size) Identity => default;
 
     public (int b, int c) FIdentity => default;
 }
@@ -480,12 +481,13 @@ $$TypeDefinition$$ OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int v, int size) Operate((int v, int size) x, (int v, int size) y) => default;
+
+    public (int v, int size) Identity => default;
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int v, int size) Mapping((int b, int c) f, (int v, int size) x) => default;
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int b, int c) Composition((int b, int c) nf, (int b, int c) cf) => default;
-
-    public (int v, int size) Identity => default;
 
     public (int b, int c) FIdentity => default;
 }
@@ -542,12 +544,13 @@ $$TypeDefinition$$ OpSeg : AtCoder.ILazySegtreeOperator<(int v, int size), (int 
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int v, int size) Operate((int v, int size) x, (int v, int size) y) => default;
+
+    public (int v, int size) Identity => default;
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int v, int size) Mapping((int b, int c) f, (int v, int size) x) => default;
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int b, int c) Composition((int b, int c) nf, (int b, int c) cf) => default;
-
-    public (int v, int size) Identity => default;
 
     public (int b, int c) FIdentity => default;
 }
@@ -604,12 +607,13 @@ $$TypeDefinition$$ OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int v, int size) Operate((int v, int size) x, (int v, int size) y) => default;
+
+    public (int v, int size) Identity => default;
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int v, int size) Mapping((int b, int c) f, (int v, int size) x) => default;
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public (int b, int c) Composition((int b, int c) nf, (int b, int c) cf) => default;
-
-    public (int v, int size) Identity => default;
 
     public (int b, int c) FIdentity => default;
 }
