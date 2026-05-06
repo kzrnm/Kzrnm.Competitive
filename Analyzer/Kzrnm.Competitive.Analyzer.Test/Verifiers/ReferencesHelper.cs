@@ -5,9 +5,8 @@ namespace Kzrnm.Competitive.Analyzer.Test;
 
 internal static class ReferencesHelper
 {
-    internal static ImmutableArray<PackageIdentity> Packages
-        = ImmutableArray.Create(
-            new PackageIdentity("ac-library-csharp", "4.0.4"),
-            new PackageIdentity("Kzrnm.Competitive", "2023.1201.2013")
-            );
+    internal static ImmutableArray<PackageIdentity> Packages = [
+        new("ac-library-csharp", "3.8.0"),
+        new("Kzrnm.Competitive", "2023.1201.2013"),
+    ];
 }
