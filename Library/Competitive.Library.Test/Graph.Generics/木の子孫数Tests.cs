@@ -43,12 +43,12 @@ public class 木の子孫数Tests
     [MethodDataSource(nameof(Data))]
     public async Task 重みなしグラフ(int root, int[] expected)
     {
-        await gb.ToTree(root).DescendantsCounts().Should().BeEquivalentOrderTo(expected);
+        await gb.ToTree(root).DescendantsCounts().Should().BeStrictlyEquivalentTo(expected);
     }
     [Test, MultipleAssertions]
     [MethodDataSource(nameof(Data))]
     public async Task 重み付きグラフ(int root, int[] expected)
     {
-        await wgb.ToTree(root).DescendantsCounts().Should().BeEquivalentOrderTo(expected);
+        await wgb.ToTree(root).DescendantsCounts().Should().BeStrictlyEquivalentTo(expected);
     }
 }

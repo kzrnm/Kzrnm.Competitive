@@ -19,7 +19,7 @@ public class 最小有向全域木Tests
         gb.Add(4, 1, 4424223);
         var graph = gb.ToGraph();
         var mst = graph.DirectedMinimumSpanningTree(0);
-        await mst.Edges.Should().BeEquivalentOrderTo([
+        await mst.Edges.Should().BeStrictlyEquivalentTo([
             (0, new WEdge<int>(4, 423)),
             (0, new WEdge<int>(3, 16)),
             (0, new WEdge<int>(2, 104)),
@@ -28,7 +28,7 @@ public class 最小有向全域木Tests
         await mst.Cost.Should().BeEqualTo(423 + 16 + 104 + 442);
 
         mst = graph.DirectedMinimumSpanningTree(3);
-        await mst.Edges.Should().BeEquivalentOrderTo([
+        await mst.Edges.Should().BeStrictlyEquivalentTo([
             (3, new WEdge<int>(4, 5024224)),
             (0, new WEdge<int>(2, 104)),
             (0, new WEdge<int>(1, 442)),
@@ -53,7 +53,7 @@ public class 最小有向全域木Tests
         gb.Add(4, 1, 4424223);
         var graph = gb.ToGraph();
         var mst = graph.DirectedMinimumSpanningTree(0);
-        await mst.Edges.Should().BeEquivalentOrderTo([
+        await mst.Edges.Should().BeStrictlyEquivalentTo([
             (0, new WEdge<long>(4, 423)),
             (0, new WEdge<long>(3, 16)),
             (0, new WEdge<long>(2, 104)),
@@ -62,7 +62,7 @@ public class 最小有向全域木Tests
         await mst.Cost.Should().BeEqualTo(423 + 16 + 104 + 442);
 
         mst = graph.DirectedMinimumSpanningTree(3);
-        await mst.Edges.Should().BeEquivalentOrderTo([
+        await mst.Edges.Should().BeStrictlyEquivalentTo([
             (3, new WEdge<long>(4, 5024224)),
             (0, new WEdge<long>(2, 104)),
             (0, new WEdge<long>(1, 442)),

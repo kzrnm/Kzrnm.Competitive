@@ -1,5 +1,7 @@
 using Kzrnm.Competitive;
 using System.Collections;
+using TUnit.Core.Executors;
+using TUnit.Core.Hooks;
 
 namespace Kzrnm.Competitive.Testing.Bit;
 
@@ -14,14 +16,13 @@ public class BitArrayExtensionTests
         b[0] = false;
         b[64] = false;
 
-        await b.AsSpan().Length.Should().BeEqualTo(3);
-        await b.AsSpan().ToArray().Should().BeEquivalentOrderTo([unchecked((uint)-2), unchecked((uint)-1), 0b111110u]);
+        await b.AsSpan().ToArray().Should().BeStrictlyEquivalentTo([unchecked((uint)-2), unchecked((uint)-1), 0b111110u]);
 
         b.Length = 32 * 3;
-        await b.AsSpan().ToArray().Should().BeEquivalentOrderTo([unchecked((uint)-2), unchecked((uint)-1), 0b111110u]);
+        await b.AsSpan().ToArray().Should().BeStrictlyEquivalentTo([unchecked((uint)-2), unchecked((uint)-1), 0b111110u]);
 
         b.Length = 32 * 3 + 1;
-        await b.AsSpan().ToArray().Should().BeEquivalentOrderTo([unchecked((uint)-2), unchecked((uint)-1), 0b111110u, 0u]);
+        await b.AsSpan().ToArray().Should().BeStrictlyEquivalentTo([unchecked((uint)-2), unchecked((uint)-1), 0b111110u, 0u]);
     }
 
     [Test, MultipleAssertions]
@@ -30,7 +31,8 @@ public class BitArrayExtensionTests
         var b = new BitArray(0);
         b.CopyTo(Array.Empty<int>());
     }
-    [Test, MultipleAssertions]
+
+    [Test]
     [MethodDataSource(typeof(BitArrayCase), nameof(BitArrayCase.RandomCases))]
     public async Task CopyToInt(BitArrayCase c)
     {
@@ -50,7 +52,7 @@ public class BitArrayExtensionTests
             exps = exps[1..];
         }
 
-        await dst.Should().BeEquivalentOrderTo(exp);
+        await dst.Should().BeStrictlyEquivalentTo(exp);
     }
     [Test, MultipleAssertions]
     [MethodDataSource(typeof(BitArrayCase), nameof(BitArrayCase.RandomCases))]
@@ -71,7 +73,7 @@ public class BitArrayExtensionTests
                 }
             exps = exps[1..];
         }
-        await dst.Should().BeEquivalentOrderTo(exp);
+        await dst.Should().BeStrictlyEquivalentTo(exp);
     }
     [Test, MultipleAssertions]
     [MethodDataSource(typeof(BitArrayCase), nameof(BitArrayCase.RandomCases))]
@@ -81,7 +83,7 @@ public class BitArrayExtensionTests
         var b = c.ToBitArray();
         var dst = new bool[b.Length];
         b.CopyTo(dst);
-        await dst.Should().BeEquivalentOrderTo(exp);
+        await dst.Should().BeStrictlyEquivalentTo(exp);
     }
     [Test, MultipleAssertions]
     [MethodDataSource(typeof(BitArrayCase), nameof(BitArrayCase.RandomCases))]
@@ -90,7 +92,7 @@ public class BitArrayExtensionTests
         var b = c.ToBitArray();
         var other = new BitArray((int[])(object)b.ToUInt32Array());
         await other.Length.Should().BeEqualTo((b.Length + 31) / 32 * 32);
-        await b.Cast<bool>().Should().BeEquivalentOrderTo(other.Cast<bool>().Take(b.Length));
+        await b.Cast<bool>().Should().BeStrictlyEquivalentTo(other.Cast<bool>().Take(b.Length));
     }
 
     [Test, MultipleAssertions]
@@ -135,11 +137,11 @@ public class BitArrayExtensionTests
 
             if (b[i])
                 expected.Add(i);
-        await b.OnBits().Should().BeEquivalentOrderTo(expected);
+        await b.OnBits().Should().BeStrictlyEquivalentTo(expected);
         ++b.Length;
         b[^1] = true;
         expected.Add(b.Length - 1);
-        await b.OnBits().Should().BeEquivalentOrderTo(expected);
+        await b.OnBits().Should().BeStrictlyEquivalentTo(expected);
     }
 
     [Test, MultipleAssertions]

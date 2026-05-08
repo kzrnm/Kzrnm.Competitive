@@ -24,8 +24,8 @@ public class BoolArrayExtensionTests
     [MethodDataSource(nameof(Arrays))]
     public async Task ToBoolArray(int[] array, int length, bool[] expected)
     {
-        await array.ToBoolArray(length).Should().BeEquivalentOrderTo(expected);
-        await array.AsSpan().ToBoolArray(length).Should().BeEquivalentOrderTo(expected);
-        await array.AsEnumerable().ToBoolArray(length).Should().BeEquivalentOrderTo(expected);
+        await array.ToBoolArray(length).Should().BeStrictlyEquivalentTo(expected);
+        await array.AsSpan().ToBoolArray(length).Should().BeStrictlyEquivalentTo(expected);
+        await array.AsEnumerable().ToBoolArray(length).Should().BeStrictlyEquivalentTo(expected);
     }
 }

@@ -6,7 +6,7 @@ public class EulerPhiTests
     public async Task Table()
     {
         var t = EulerPhi.Table(20);
-        await t.Should().BeEquivalentOrderTo([0, 1, 1, 2, 2, 4, 2, 6, 4, 6, 4, 10, 4, 12, 6, 8, 8, 16, 6, 18, 8]);
+        await t.Should().BeStrictlyEquivalentTo([0, 1, 1, 2, 2, 4, 2, 6, 4, 6, 4, 10, 4, 12, 6, 8, 8, 16, 6, 18, 8]);
         for (int i = 1; i < t.Length; i++)
         {
             await EulerPhi.Solve(i).Should().BeEqualTo(t[i]);

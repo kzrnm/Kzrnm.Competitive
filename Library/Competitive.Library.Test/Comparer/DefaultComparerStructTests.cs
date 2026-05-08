@@ -29,7 +29,7 @@ public class DefaultComparerStructTests
             382174879
         };
         Array.Sort(arr, new DefaultComparerStruct<int>());
-        await arr.Should().BeEquivalentOrderTo([
+        await arr.Should().BeStrictlyEquivalentTo([
             49770599,
             98686814,
             216600710,

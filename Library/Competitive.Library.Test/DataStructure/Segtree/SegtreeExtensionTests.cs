@@ -12,7 +12,7 @@ public class SegtreeExtensionTests
             var seg = new Segtree<int, Op>(i);
             for (int j = 0; j < i; j++)
                 seg[j] = j;
-            await seg.ToArray().Should().BeEquivalentOrderTo(Enumerable.Range(0, i));
+            await seg.ToArray().Should().BeStrictlyEquivalentTo(Enumerable.Range(0, i));
         }
     }
     readonly struct Op : ISegtreeOperator<int>

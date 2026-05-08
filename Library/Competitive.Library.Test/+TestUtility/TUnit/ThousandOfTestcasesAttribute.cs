@@ -4,6 +4,13 @@ class ThousandOfTestcasesAttribute() : SkipAttribute("https://github.com/thomhur
 {
     public override Task<bool> ShouldSkip(TestRegisteredContext context)
     {
-        return Task.FromResult(Environment.GetEnvironmentVariable("CI").Equals("true", StringComparison.OrdinalIgnoreCase));
+        return Task.FromResult(
+#if AOT
+            false
+#else
+            true
+#endif
+
+            && "true".Equals(Environment.GetEnvironmentVariable("CI"), StringComparison.OrdinalIgnoreCase));
     }
 }

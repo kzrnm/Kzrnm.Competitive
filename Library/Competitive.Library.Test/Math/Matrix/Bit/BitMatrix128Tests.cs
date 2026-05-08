@@ -23,7 +23,7 @@ public class BitMatrix128Tests
                     expected[i] |= UInt128.One << j;
             }
         }
-        await new BitMatrix128(input.ToBoolArray())._v.Should().BeEquivalentOrderTo(expected);
+        await new BitMatrix128(input.ToBoolArray())._v.Should().BeStrictlyEquivalentTo(expected);
     }
 
     [Test, MultipleAssertions]

@@ -190,8 +190,8 @@ public class PointIntTests
     [MethodDataSource(nameof(ConvexHull_Data))]
     public async Task ConvexHull(Point[] points, int[] expectedNotStrict, int[] expectedStrict)
     {
-        await Point.ConvexHull(points).Should().BeEquivalentOrderTo(expectedNotStrict);
-        await Point.ConvexHull(points, true).Should().BeEquivalentOrderTo(expectedStrict);
+        await Point.ConvexHull(points).Should().BeStrictlyEquivalentTo(expectedNotStrict);
+        await Point.ConvexHull(points, true).Should().BeStrictlyEquivalentTo(expectedStrict);
     }
 
     [Test]

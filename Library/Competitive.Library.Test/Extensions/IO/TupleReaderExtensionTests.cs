@@ -21,7 +21,7 @@ public class TupleReaderExtensionTests
             -5 -6
             -7 -8
             """);
-        await cr.Repeat(4).IntInt().Should().BeEquivalentOrderTo([
+        await cr.Repeat(4).IntInt().Should().BeStrictlyEquivalentTo([
             (1, 2),
             (13, 14),
             (-5, -6),
@@ -39,7 +39,7 @@ public class TupleReaderExtensionTests
             -5 -6
             -7 -8
             """);
-        await cr.Repeat(4).Int0Int().Should().BeEquivalentOrderTo([
+        await cr.Repeat(4).Int0Int().Should().BeStrictlyEquivalentTo([
             (0, 2),
             (12, 14),
             (-6, -6),
@@ -57,7 +57,7 @@ public class TupleReaderExtensionTests
             -5 -6
             -7 -8
             """);
-        await cr.Repeat(4).Int0Int0().Should().BeEquivalentOrderTo([
+        await cr.Repeat(4).Int0Int0().Should().BeStrictlyEquivalentTo([
             (0, 1),
             (12, 13),
             (-6, -7),
@@ -75,7 +75,7 @@ public class TupleReaderExtensionTests
             -5 -6
             -7 -8
             """);
-        await cr.Repeat(4).IntInt0().Should().BeEquivalentOrderTo([
+        await cr.Repeat(4).IntInt0().Should().BeStrictlyEquivalentTo([
             (1, 1),
             (13, 13),
             (-5, -7),

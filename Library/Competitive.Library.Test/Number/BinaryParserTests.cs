@@ -52,7 +52,7 @@ public class BinaryParserTests
     public async Task ParseBitArray(string input)
     {
         var bits = BinaryParser.ParseBitArray(input);
-        await bits.Cast<bool>().Should().BeEquivalentOrderTo(input.Select(c => c != '0').ToArray());
+        await bits.Cast<bool>().Should().BeStrictlyEquivalentTo(input.Select(c => c != '0').ToArray());
 
         await bits.Length.Should().BeEqualTo(input.Length);
 

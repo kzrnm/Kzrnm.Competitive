@@ -255,18 +255,18 @@ public class GridTests
             [7, 8, 9],
             [10, 11, 12],
         ], -1);
-        await grid.Moves(0, 0).Select(ToTuples).Should().BeEquivalentOrderTo([(0, 1), (1, 0)]);
-        await grid.Moves(0, 1).Select(ToTuples).Should().BeEquivalentOrderTo([(0, 0), (0, 2), (1, 1)]);
-        await grid.Moves(0, 2).Select(ToTuples).Should().BeEquivalentOrderTo([(0, 1), (1, 2)]);
-        await grid.Moves(1, 0).Select(ToTuples).Should().BeEquivalentOrderTo([(0, 0), (1, 1), (2, 0)]);
-        await grid.Moves(1, 1).Select(ToTuples).Should().BeEquivalentOrderTo([(1, 0), (0, 1), (1, 2), (2, 1)]);
-        await grid.Moves(1, 2).Select(ToTuples).Should().BeEquivalentOrderTo([(1, 1), (0, 2), (2, 2)]);
-        await grid.Moves(2, 0).Select(ToTuples).Should().BeEquivalentOrderTo([(1, 0), (2, 1), (3, 0)]);
-        await grid.Moves(2, 1).Select(ToTuples).Should().BeEquivalentOrderTo([(2, 0), (1, 1), (2, 2), (3, 1)]);
-        await grid.Moves(2, 2).Select(ToTuples).Should().BeEquivalentOrderTo([(2, 1), (1, 2), (3, 2)]);
-        await grid.Moves(3, 0).Select(ToTuples).Should().BeEquivalentOrderTo([(2, 0), (3, 1)]);
-        await grid.Moves(3, 1).Select(ToTuples).Should().BeEquivalentOrderTo([(3, 0), (2, 1), (3, 2)]);
-        await grid.Moves(3, 2).Select(ToTuples).Should().BeEquivalentOrderTo([(3, 1), (2, 2)]);
+        await grid.Moves(0, 0).Select(ToTuples).Should().BeStrictlyEquivalentTo([(0, 1), (1, 0)]);
+        await grid.Moves(0, 1).Select(ToTuples).Should().BeStrictlyEquivalentTo([(0, 0), (0, 2), (1, 1)]);
+        await grid.Moves(0, 2).Select(ToTuples).Should().BeStrictlyEquivalentTo([(0, 1), (1, 2)]);
+        await grid.Moves(1, 0).Select(ToTuples).Should().BeStrictlyEquivalentTo([(0, 0), (1, 1), (2, 0)]);
+        await grid.Moves(1, 1).Select(ToTuples).Should().BeStrictlyEquivalentTo([(1, 0), (0, 1), (1, 2), (2, 1)]);
+        await grid.Moves(1, 2).Select(ToTuples).Should().BeStrictlyEquivalentTo([(1, 1), (0, 2), (2, 2)]);
+        await grid.Moves(2, 0).Select(ToTuples).Should().BeStrictlyEquivalentTo([(1, 0), (2, 1), (3, 0)]);
+        await grid.Moves(2, 1).Select(ToTuples).Should().BeStrictlyEquivalentTo([(2, 0), (1, 1), (2, 2), (3, 1)]);
+        await grid.Moves(2, 2).Select(ToTuples).Should().BeStrictlyEquivalentTo([(2, 1), (1, 2), (3, 2)]);
+        await grid.Moves(3, 0).Select(ToTuples).Should().BeStrictlyEquivalentTo([(2, 0), (3, 1)]);
+        await grid.Moves(3, 1).Select(ToTuples).Should().BeStrictlyEquivalentTo([(3, 0), (2, 1), (3, 2)]);
+        await grid.Moves(3, 2).Select(ToTuples).Should().BeStrictlyEquivalentTo([(3, 1), (2, 2)]);
 
         static (int, int) ToTuples(Grid<int>.Position p)
         {
@@ -274,18 +274,18 @@ public class GridTests
             return (h, w);
         }
 
-        await grid.Moves(0).Select(ToInt).Should().BeEquivalentOrderTo([1, 3]);
-        await grid.Moves(1).Select(ToInt).Should().BeEquivalentOrderTo([0, 2, 4]);
-        await grid.Moves(2).Select(ToInt).Should().BeEquivalentOrderTo([1, 5]);
-        await grid.Moves(3).Select(ToInt).Should().BeEquivalentOrderTo([0, 4, 6]);
-        await grid.Moves(4).Select(ToInt).Should().BeEquivalentOrderTo([3, 1, 5, 7]);
-        await grid.Moves(5).Select(ToInt).Should().BeEquivalentOrderTo([4, 2, 8]);
-        await grid.Moves(6).Select(ToInt).Should().BeEquivalentOrderTo([3, 7, 9]);
-        await grid.Moves(7).Select(ToInt).Should().BeEquivalentOrderTo([6, 4, 8, 10]);
-        await grid.Moves(8).Select(ToInt).Should().BeEquivalentOrderTo([7, 5, 11]);
-        await grid.Moves(9).Select(ToInt).Should().BeEquivalentOrderTo([6, 10]);
-        await grid.Moves(10).Select(ToInt).Should().BeEquivalentOrderTo([9, 7, 11]);
-        await grid.Moves(11).Select(ToInt).Should().BeEquivalentOrderTo([10, 8]);
+        await grid.Moves(0).Select(ToInt).Should().BeStrictlyEquivalentTo([1, 3]);
+        await grid.Moves(1).Select(ToInt).Should().BeStrictlyEquivalentTo([0, 2, 4]);
+        await grid.Moves(2).Select(ToInt).Should().BeStrictlyEquivalentTo([1, 5]);
+        await grid.Moves(3).Select(ToInt).Should().BeStrictlyEquivalentTo([0, 4, 6]);
+        await grid.Moves(4).Select(ToInt).Should().BeStrictlyEquivalentTo([3, 1, 5, 7]);
+        await grid.Moves(5).Select(ToInt).Should().BeStrictlyEquivalentTo([4, 2, 8]);
+        await grid.Moves(6).Select(ToInt).Should().BeStrictlyEquivalentTo([3, 7, 9]);
+        await grid.Moves(7).Select(ToInt).Should().BeStrictlyEquivalentTo([6, 4, 8, 10]);
+        await grid.Moves(8).Select(ToInt).Should().BeStrictlyEquivalentTo([7, 5, 11]);
+        await grid.Moves(9).Select(ToInt).Should().BeStrictlyEquivalentTo([6, 10]);
+        await grid.Moves(10).Select(ToInt).Should().BeStrictlyEquivalentTo([9, 7, 11]);
+        await grid.Moves(11).Select(ToInt).Should().BeStrictlyEquivalentTo([10, 8]);
 
         static int ToInt(Grid<int>.Position p)
         {
@@ -319,15 +319,15 @@ public class GridTests
         ], -1);
         var clone = grid.Clone();
 
-        await grid.data.Should().BeEquivalentOrderTo([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
-        await clone.data.Should().BeEquivalentOrderTo([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+        await grid.data.Should().BeStrictlyEquivalentTo([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+        await clone.data.Should().BeStrictlyEquivalentTo([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
         await grid[-1].Should().BeEqualTo(-1);
         await clone[-1].Should().BeEqualTo(-1);
 
         grid[0, 0] = 100;
         grid[1, 0] = 200;
-        await grid.data.Should().BeEquivalentOrderTo([100, 2, 3, 200, 5, 6, 7, 8, 9, 10, 11, 12]);
-        await clone.data.Should().BeEquivalentOrderTo([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+        await grid.data.Should().BeStrictlyEquivalentTo([100, 2, 3, 200, 5, 6, 7, 8, 9, 10, 11, 12]);
+        await clone.data.Should().BeStrictlyEquivalentTo([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
         await grid[-1].Should().BeEqualTo(-1);
         await clone[-1].Should().BeEqualTo(-1);
     }
@@ -344,13 +344,13 @@ public class GridTests
         ], -1);
 
         var rot = grid.Rotate90();
-        await rot.data.Should().BeEquivalentOrderTo(Grid.Create([
+        await rot.data.Should().BeStrictlyEquivalentTo(Grid.Create([
             [10, 7, 4, 1],
             [11, 8, 5, 2],
             [12, 9, 6, 3],
         ]).data);
         await rot.defaultValue.Should().BeEqualTo(grid.defaultValue);
-        await grid.data.Should().BeEquivalentOrderTo([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+        await grid.data.Should().BeStrictlyEquivalentTo([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
     }
 
 
@@ -366,14 +366,14 @@ public class GridTests
         ], -1);
 
         var rot = grid.Rotate180();
-        await rot.data.Should().BeEquivalentOrderTo(Grid.Create([
+        await rot.data.Should().BeStrictlyEquivalentTo(Grid.Create([
             [12, 11, 10],
             [9, 8, 7],
             [6, 5, 4],
             [3, 2, 1],
         ]).data);
         await rot.defaultValue.Should().BeEqualTo(grid.defaultValue);
-        await grid.data.Should().BeEquivalentOrderTo([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+        await grid.data.Should().BeStrictlyEquivalentTo([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
     }
 
     [Test, MultipleAssertions]
@@ -388,13 +388,13 @@ public class GridTests
         ], -1);
 
         var rot = grid.Rotate270();
-        await rot.data.Should().BeEquivalentOrderTo(Grid.Create([
+        await rot.data.Should().BeStrictlyEquivalentTo(Grid.Create([
             [3, 6, 9, 12],
             [2, 5, 8, 11],
             [1, 4, 7, 10],
         ]).data);
         await rot.defaultValue.Should().BeEqualTo(grid.defaultValue);
-        await grid.data.Should().BeEquivalentOrderTo([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+        await grid.data.Should().BeStrictlyEquivalentTo([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
     }
 
     [Test, MultipleAssertions]
@@ -409,13 +409,13 @@ public class GridTests
         ], -1);
 
         var tr = grid.Transpose();
-        await tr.data.Should().BeEquivalentOrderTo(Grid.Create([
+        await tr.data.Should().BeStrictlyEquivalentTo(Grid.Create([
             [1, 4, 7, 10],
             [2, 5, 8, 11],
             [3, 6, 9, 12],
         ]).data);
         await tr.defaultValue.Should().BeEqualTo(grid.defaultValue);
-        await grid.data.Should().BeEquivalentOrderTo([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+        await grid.data.Should().BeStrictlyEquivalentTo([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
     }
 
     [Test, MultipleAssertions]
@@ -429,7 +429,7 @@ public class GridTests
         foreach (var tuple in grid)
             lst.Add(tuple);
 
-        await lst.Should().BeEquivalentOrderTo(
+        await lst.Should().BeStrictlyEquivalentTo(
         [
             ('1', 0, 0),
             ('2', 0, 1),

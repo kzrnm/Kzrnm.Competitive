@@ -121,12 +121,12 @@ public class LinearRecurrenceTest
             {
                 {
                     var recurrence = LinearRecurrence.Recurrence<Mod998244353>([a0, a1, a2], [1, 1, 1], len);
-                    await recurrence.Should().BeEquivalentOrderTo(native998244353[..len]);
+                    await recurrence.Should().BeStrictlyEquivalentTo(native998244353[..len]);
                 }
 
                 {
                     var recurrence = LinearRecurrence.Recurrence<Mod1000000007>([a0, a1, a2], [1, 1, 1], len);
-                    await recurrence.Should().BeEquivalentOrderTo(native1000000007[..len]);
+                    await recurrence.Should().BeStrictlyEquivalentTo(native1000000007[..len]);
                 }
             }
         }
@@ -143,12 +143,12 @@ public class LinearRecurrenceTest
             {
                 {
                     var recurrence = LinearRecurrence.Recurrence<Mod998244353>([a0, a1], [1, 1, 1], len);
-                    await recurrence.Should().BeEquivalentOrderTo(native998244353[..len]);
+                    await recurrence.Should().BeStrictlyEquivalentTo(native998244353[..len]);
                 }
 
                 {
                     var recurrence = LinearRecurrence.Recurrence<Mod1000000007>([a0, a1], [1, 1, 1], len);
-                    await recurrence.Should().BeEquivalentOrderTo(native1000000007[..len]);
+                    await recurrence.Should().BeStrictlyEquivalentTo(native1000000007[..len]);
                 }
             }
         }
@@ -165,12 +165,12 @@ public class LinearRecurrenceTest
             {
                 {
                     var recurrence = LinearRecurrence.Recurrence<Mod998244353>([a0], [1, 1, 1], len);
-                    await recurrence.Should().BeEquivalentOrderTo(native998244353[..len]);
+                    await recurrence.Should().BeStrictlyEquivalentTo(native998244353[..len]);
 
                 }
                 {
                     var recurrence = LinearRecurrence.Recurrence<Mod1000000007>([a0], [1, 1, 1], len);
-                    await recurrence.Should().BeEquivalentOrderTo(native1000000007[..len]);
+                    await recurrence.Should().BeStrictlyEquivalentTo(native1000000007[..len]);
                 }
 
             }

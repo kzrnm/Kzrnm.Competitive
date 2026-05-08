@@ -27,8 +27,8 @@ public class ZetaMoebiusTransformTests
         ZetaMoebiusTransform.SupersetZetaTransform(a2);
         ZetaMoebiusTransform.SupersetMoebiusTransform(b2);
 
-        await a2.Should().BeEquivalentOrderTo(b);
-        await b2.Should().BeEquivalentOrderTo(a);
+        await a2.Should().BeStrictlyEquivalentTo(b);
+        await b2.Should().BeStrictlyEquivalentTo(a);
     }
 
     [Test, MultipleAssertions]
@@ -54,7 +54,7 @@ public class ZetaMoebiusTransformTests
         ZetaMoebiusTransform.SubsetZetaTransform(a2);
         ZetaMoebiusTransform.SubsetMoebiusTransform(b2);
 
-        await a2.Should().BeEquivalentOrderTo(b);
-        await b2.Should().BeEquivalentOrderTo(a);
+        await a2.Should().BeStrictlyEquivalentTo(b);
+        await b2.Should().BeStrictlyEquivalentTo(a);
     }
 }

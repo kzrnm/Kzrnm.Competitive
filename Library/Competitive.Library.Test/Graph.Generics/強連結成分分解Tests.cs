@@ -35,7 +35,7 @@ public class 強連結成分分解Tests
             var gs = g.SccNewGraph().ToGraph().AsArray();
             for (int i = 0; i < gs.Length; i++)
             {
-                await gs[i].Value.Should().BeEquivalentOrderTo(ids.Index().Where(t => t.Item == i).Select(t => t.Index));
+                await gs[i].Value.Should().BeStrictlyEquivalentTo(ids.Index().Where(t => t.Item == i).Select(t => t.Index));
             }
         }
     }
@@ -61,46 +61,46 @@ public class 強連結成分分解Tests
 
         for (int i = 0; i < 2; i++)
         {
-            await ids.Should().BeEquivalentOrderTo([0, 1, 2, 3, 3, 4, 5, 3]);
-            await scc[0].Should().BeEquivalentOrderTo([0]);
-            await scc[1].Should().BeEquivalentOrderTo([1]);
-            await scc[2].Should().BeEquivalentOrderTo([2]);
-            await scc[3].Should().BeEquivalentOrderTo([3, 4, 7]);
-            await scc[4].Should().BeEquivalentOrderTo([5]);
-            await scc[5].Should().BeEquivalentOrderTo([6]);
+            await ids.Should().BeStrictlyEquivalentTo([0, 1, 2, 3, 3, 4, 5, 3]);
+            await scc[0].Should().BeStrictlyEquivalentTo([0]);
+            await scc[1].Should().BeStrictlyEquivalentTo([1]);
+            await scc[2].Should().BeStrictlyEquivalentTo([2]);
+            await scc[3].Should().BeStrictlyEquivalentTo([3, 4, 7]);
+            await scc[4].Should().BeStrictlyEquivalentTo([5]);
+            await scc[5].Should().BeStrictlyEquivalentTo([6]);
 
             (scc, ids) = g.SccGroupsAndIds();
         }
 
         var newGraph = g.SccNewGraph().ToGraph();
-        await newGraph[0].Value.Should().BeEquivalentOrderTo([0]);
-        await newGraph[1].Value.Should().BeEquivalentOrderTo([1]);
-        await newGraph[2].Value.Should().BeEquivalentOrderTo([2]);
-        await newGraph[3].Value.Should().BeEquivalentOrderTo([3, 4, 7]);
-        await newGraph[4].Value.Should().BeEquivalentOrderTo([5]);
-        await newGraph[5].Value.Should().BeEquivalentOrderTo([6]);
+        await newGraph[0].Value.Should().BeStrictlyEquivalentTo([0]);
+        await newGraph[1].Value.Should().BeStrictlyEquivalentTo([1]);
+        await newGraph[2].Value.Should().BeStrictlyEquivalentTo([2]);
+        await newGraph[3].Value.Should().BeStrictlyEquivalentTo([3, 4, 7]);
+        await newGraph[4].Value.Should().BeStrictlyEquivalentTo([5]);
+        await newGraph[5].Value.Should().BeStrictlyEquivalentTo([6]);
 
-        await newGraph[0].Children.Should().BeEquivalentOrderTo([new GraphEdge(1)]);
-        await newGraph[1].Children.Should().BeEquivalentOrderTo([new GraphEdge(2)]);
-        await newGraph[2].Children.Should().BeEquivalentOrderTo([new GraphEdge(3)]);
-        await newGraph[3].Children.Should().BeEquivalentOrderTo([new GraphEdge(4), new GraphEdge(5)]);
-        await newGraph[4].Children.Should().BeEquivalentOrderTo([new GraphEdge(5)]);
+        await newGraph[0].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(1)]);
+        await newGraph[1].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(2)]);
+        await newGraph[2].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(3)]);
+        await newGraph[3].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(4), new GraphEdge(5)]);
+        await newGraph[4].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(5)]);
         await newGraph[5].Children.Should().BeEmpty();
 
         newGraph = g.SccNewGraph(false).ToGraph();
-        await newGraph[0].Value.Should().BeEquivalentOrderTo([0]);
-        await newGraph[1].Value.Should().BeEquivalentOrderTo([1]);
-        await newGraph[2].Value.Should().BeEquivalentOrderTo([2]);
-        await newGraph[3].Value.Should().BeEquivalentOrderTo([3, 4, 7]);
-        await newGraph[4].Value.Should().BeEquivalentOrderTo([5]);
-        await newGraph[5].Value.Should().BeEquivalentOrderTo([6]);
+        await newGraph[0].Value.Should().BeStrictlyEquivalentTo([0]);
+        await newGraph[1].Value.Should().BeStrictlyEquivalentTo([1]);
+        await newGraph[2].Value.Should().BeStrictlyEquivalentTo([2]);
+        await newGraph[3].Value.Should().BeStrictlyEquivalentTo([3, 4, 7]);
+        await newGraph[4].Value.Should().BeStrictlyEquivalentTo([5]);
+        await newGraph[5].Value.Should().BeStrictlyEquivalentTo([6]);
 
-        await newGraph[0].Children.Should().BeEquivalentOrderTo([new GraphEdge(1)]);
-        await newGraph[1].Children.Should().BeEquivalentOrderTo([new GraphEdge(0), new GraphEdge(2)]);
-        await newGraph[2].Children.Should().BeEquivalentOrderTo([new GraphEdge(1), new GraphEdge(3)]);
-        await newGraph[3].Children.Should().BeEquivalentOrderTo([new GraphEdge(2), new GraphEdge(4), new GraphEdge(5)]);
-        await newGraph[4].Children.Should().BeEquivalentOrderTo([new GraphEdge(3), new GraphEdge(5)]);
-        await newGraph[5].Children.Should().BeEquivalentOrderTo([new GraphEdge(3), new GraphEdge(4)]);
+        await newGraph[0].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(1)]);
+        await newGraph[1].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(0), new GraphEdge(2)]);
+        await newGraph[2].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(1), new GraphEdge(3)]);
+        await newGraph[3].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(2), new GraphEdge(4), new GraphEdge(5)]);
+        await newGraph[4].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(3), new GraphEdge(5)]);
+        await newGraph[5].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(3), new GraphEdge(4)]);
     }
     [Test, MultipleAssertions]
     public async Task 重み付きグラフ()
@@ -123,45 +123,45 @@ public class 強連結成分分解Tests
 
         for (int i = 0; i < 2; i++)
         {
-            await ids.Should().BeEquivalentOrderTo([0, 1, 2, 3, 3, 4, 5, 3]);
-            await scc[0].Should().BeEquivalentOrderTo([0]);
-            await scc[1].Should().BeEquivalentOrderTo([1]);
-            await scc[2].Should().BeEquivalentOrderTo([2]);
-            await scc[3].Should().BeEquivalentOrderTo([3, 4, 7]);
-            await scc[4].Should().BeEquivalentOrderTo([5]);
-            await scc[5].Should().BeEquivalentOrderTo([6]);
+            await ids.Should().BeStrictlyEquivalentTo([0, 1, 2, 3, 3, 4, 5, 3]);
+            await scc[0].Should().BeStrictlyEquivalentTo([0]);
+            await scc[1].Should().BeStrictlyEquivalentTo([1]);
+            await scc[2].Should().BeStrictlyEquivalentTo([2]);
+            await scc[3].Should().BeStrictlyEquivalentTo([3, 4, 7]);
+            await scc[4].Should().BeStrictlyEquivalentTo([5]);
+            await scc[5].Should().BeStrictlyEquivalentTo([6]);
 
             (scc, ids) = g.SccGroupsAndIds();
         }
 
         var newGraph = g.SccNewGraph().ToGraph();
-        await newGraph[0].Value.Should().BeEquivalentOrderTo([0]);
-        await newGraph[1].Value.Should().BeEquivalentOrderTo([1]);
-        await newGraph[2].Value.Should().BeEquivalentOrderTo([2]);
-        await newGraph[3].Value.Should().BeEquivalentOrderTo([3, 4, 7]);
-        await newGraph[4].Value.Should().BeEquivalentOrderTo([5]);
-        await newGraph[5].Value.Should().BeEquivalentOrderTo([6]);
+        await newGraph[0].Value.Should().BeStrictlyEquivalentTo([0]);
+        await newGraph[1].Value.Should().BeStrictlyEquivalentTo([1]);
+        await newGraph[2].Value.Should().BeStrictlyEquivalentTo([2]);
+        await newGraph[3].Value.Should().BeStrictlyEquivalentTo([3, 4, 7]);
+        await newGraph[4].Value.Should().BeStrictlyEquivalentTo([5]);
+        await newGraph[5].Value.Should().BeStrictlyEquivalentTo([6]);
 
-        await newGraph[0].Children.Should().BeEquivalentOrderTo([new GraphEdge(1)]);
-        await newGraph[1].Children.Should().BeEquivalentOrderTo([new GraphEdge(2)]);
-        await newGraph[2].Children.Should().BeEquivalentOrderTo([new GraphEdge(3)]);
-        await newGraph[3].Children.Should().BeEquivalentOrderTo([new GraphEdge(4), new GraphEdge(5)]);
-        await newGraph[4].Children.Should().BeEquivalentOrderTo([new GraphEdge(5)]);
+        await newGraph[0].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(1)]);
+        await newGraph[1].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(2)]);
+        await newGraph[2].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(3)]);
+        await newGraph[3].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(4), new GraphEdge(5)]);
+        await newGraph[4].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(5)]);
         await newGraph[5].Children.Should().BeEmpty();
 
         newGraph = g.SccNewGraph(false).ToGraph();
-        await newGraph[0].Value.Should().BeEquivalentOrderTo([0]);
-        await newGraph[1].Value.Should().BeEquivalentOrderTo([1]);
-        await newGraph[2].Value.Should().BeEquivalentOrderTo([2]);
-        await newGraph[3].Value.Should().BeEquivalentOrderTo([3, 4, 7]);
-        await newGraph[4].Value.Should().BeEquivalentOrderTo([5]);
-        await newGraph[5].Value.Should().BeEquivalentOrderTo([6]);
+        await newGraph[0].Value.Should().BeStrictlyEquivalentTo([0]);
+        await newGraph[1].Value.Should().BeStrictlyEquivalentTo([1]);
+        await newGraph[2].Value.Should().BeStrictlyEquivalentTo([2]);
+        await newGraph[3].Value.Should().BeStrictlyEquivalentTo([3, 4, 7]);
+        await newGraph[4].Value.Should().BeStrictlyEquivalentTo([5]);
+        await newGraph[5].Value.Should().BeStrictlyEquivalentTo([6]);
 
-        await newGraph[0].Children.Should().BeEquivalentOrderTo([new GraphEdge(1)]);
-        await newGraph[1].Children.Should().BeEquivalentOrderTo([new GraphEdge(0), new GraphEdge(2)]);
-        await newGraph[2].Children.Should().BeEquivalentOrderTo([new GraphEdge(1), new GraphEdge(3)]);
-        await newGraph[3].Children.Should().BeEquivalentOrderTo([new GraphEdge(2), new GraphEdge(4), new GraphEdge(5)]);
-        await newGraph[4].Children.Should().BeEquivalentOrderTo([new GraphEdge(3), new GraphEdge(5)]);
-        await newGraph[5].Children.Should().BeEquivalentOrderTo([new GraphEdge(3), new GraphEdge(4)]);
+        await newGraph[0].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(1)]);
+        await newGraph[1].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(0), new GraphEdge(2)]);
+        await newGraph[2].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(1), new GraphEdge(3)]);
+        await newGraph[3].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(2), new GraphEdge(4), new GraphEdge(5)]);
+        await newGraph[4].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(3), new GraphEdge(5)]);
+        await newGraph[5].Children.Should().BeStrictlyEquivalentTo([new GraphEdge(3), new GraphEdge(4)]);
     }
 }

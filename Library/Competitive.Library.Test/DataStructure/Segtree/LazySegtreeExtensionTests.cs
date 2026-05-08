@@ -12,7 +12,7 @@ public class LazySegtreeExtensionTests
             var seg = new LazySegtree<int, int, Op>(i);
             for (int j = 0; j < seg.Length - j; j++)
                 seg.Apply(j, seg.Length - j, 1);
-            await seg.ToArray().Should().BeEquivalentOrderTo(CreateExpected(i));
+            await seg.ToArray().Should().BeStrictlyEquivalentTo(CreateExpected(i));
         }
 
         static int[] CreateExpected(int length)

@@ -13,6 +13,6 @@ public class KMPTests
     public async Task Matches(string pattern, string target, int[] indexes)
     {
         var kmp = KMP.Create(pattern);
-        await kmp.Matches(target).ToList().Should().BeEquivalentOrderTo(indexes);
+        await kmp.Matches(target).ToList().Should().BeStrictlyEquivalentTo(indexes);
     }
 }

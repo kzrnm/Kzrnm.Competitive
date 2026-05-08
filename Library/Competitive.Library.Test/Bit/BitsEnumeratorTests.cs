@@ -34,8 +34,8 @@ public class BitsEnumeratorTests
     [MethodDataSource(nameof(BitEnumerateByte_Data))]
     public async Task BitEnumerateByte(byte num, ImmutableArray<int> expected)
     {
-        await new BitsEnumerator<byte>(num).Should().BeEquivalentOrderTo(expected);
-        await new BitsEnumerator<byte>(num).ToArray().Should().BeEquivalentOrderTo(expected);
+        await new BitsEnumerator<byte>(num).Should().BeStrictlyEquivalentTo(expected);
+        await new BitsEnumerator<byte>(num).ToArray().Should().BeStrictlyEquivalentTo(expected);
     }
 
     public static IEnumerable<(Int128, int[])> BitEnumerateInt128_Data =>
@@ -55,8 +55,8 @@ public class BitsEnumeratorTests
     [MethodDataSource(nameof(BitEnumerateInt128_Data))]
     public async Task BitEnumerateInt128(Int128 num, int[] expected)
     {
-        await new BitsEnumerator<Int128>(num).Should().BeEquivalentOrderTo(expected);
-        await new BitsEnumerator<Int128>(num).ToArray().Should().BeEquivalentOrderTo(expected);
+        await new BitsEnumerator<Int128>(num).Should().BeStrictlyEquivalentTo(expected);
+        await new BitsEnumerator<Int128>(num).ToArray().Should().BeStrictlyEquivalentTo(expected);
     }
 
     public static IEnumerable<(UInt128, int[])> BitEnumerateUInt128_Data =>
@@ -74,7 +74,7 @@ public class BitsEnumeratorTests
     [MethodDataSource(nameof(BitEnumerateUInt128_Data))]
     public async Task BitEnumerateUInt128(UInt128 num, int[] expected)
     {
-        await new BitsEnumerator<UInt128>(num).Should().BeEquivalentOrderTo(expected);
-        await new BitsEnumerator<UInt128>(num).ToArray().Should().BeEquivalentOrderTo(expected);
+        await new BitsEnumerator<UInt128>(num).Should().BeStrictlyEquivalentTo(expected);
+        await new BitsEnumerator<UInt128>(num).ToArray().Should().BeStrictlyEquivalentTo(expected);
     }
 }

@@ -41,7 +41,92 @@ env:
   TZ: Asia/Tokyo
 
 jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Library
+    timeout-minutes: 10
+    outputs:
+      expand-test: ${{steps.expand-test.outcome}}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            9.0.x
+            10.0.x
+      - uses: actions/cache@v5
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      - name: Unit test
+        continue-on-error: true
+        run: dotnet test --project $UNITTEST_CSPROJ --report-competitive-verifier="${{runner.temp}}/VerifierCsUnitTestResult"
+        timeout-minutes: 10
+        env:
+          UNITTEST_CSPROJ: Competitive.Library.Test/Competitive.Library.Test.csproj
+      - name: Expand Test
+        run: dotnet build Expand.Test/Expand.Test.csproj
+        continue-on-error: true
+        id: expand-test
+
+      - name: Upload VerifierCsUnitTestResult
+        uses: actions/upload-artifact@v7
+        with:
+          name: VerifierCsUnitTestResult
+          path: ${{runner.temp}}/VerifierCsUnitTestResult/*
+
+      - name: Upload HTML Test Report
+        uses: actions/upload-artifact@v7
+        with:
+          name: TestReport
+          path: Library/**/*-report.html
+
+  unittest-aot:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Library
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            9.0.x
+            10.0.x
+      - uses: actions/cache@v5
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/Directory.Build.props') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: publish AOT test
+        run: dotnet publish $UNITTEST_CSPROJ -c Release --use-current-runtime -f net10.0 --output bld/ -p:PublishAot=true
+        env:
+          UNITTEST_CSPROJ: Competitive.Library.Test/Competitive.Library.Test.csproj
+      - name: Unit test AOT
+        continue-on-error: true
+        run: bld/Competitive.Library.Test
+        timeout-minutes: 10
+
+      - name: Rename HTML Test Report
+        shell: pwsh
+        run: |
+          Get-ChildItem -Recurse *-report.html | %{ Rename-Item $_ -NewName $_.Name.Replace("-report.html","-aot-report.html")}
+
+      - name: Upload HTML Test Report
+        uses: actions/upload-artifact@v7
+        with:
+          name: TestReport-aot
+          path: Library/**/*-report.html
+
   setup:
+    needs: [unittest, unittest-aot]
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -74,34 +159,34 @@ jobs:
 
       - name: Build
         run: dotnet build $WORKFLOW_BUILD_SLN -c Release
-      - name: Unit test
-        run: dotnet test --project $UNITTEST_CSPROJ --report-competitive-verifier="${{runner.temp}}/VerifierCsUnitTestResult"
-        timeout-minutes: 10
-        env:
-          UNITTEST_CSPROJ: Competitive.Library.Test/Competitive.Library.Test.csproj
 
-      - name: Flattern HTML Test Report
-        shell: pwsh
-        run: |
-          mkdir ${{runner.temp}}/TUnitReport
-          Move-Item (Get-ChildItem -Recurse *-report.html) -Destination ${{runner.temp}}/TUnitReport -Force
-
-      - name: Upload HTML Test Report
-        uses: actions/upload-artifact@v7
-        if: always()
+      - name: 7-zip binaries(DLL)
+        run: 7z a binary-${{github.sha}}.7z -r Checker/bin/Release
+      - name: Download VerifierCsUnitTestResult
+        uses: actions/download-artifact@v8
         with:
-          name: TUnitReport
-          path: '${{runner.temp}}/TUnitReport/*-report.html'
+          name: VerifierCsUnitTestResult
+          path: ${{runner.temp}}/VerifierCsUnitTestResult
 
       - name: Resolve
         shell: bash
         run: |
           for FRAMEWORK in $FRAMEWORKS; do
+            echo "::group::Resolve $FRAMEWORK"
             dotnet run --project $VERIFY_CSPROJ --framework $FRAMEWORK --no-launch-profile --no-build -c Release | tee "${{runner.temp}}/problems-$FRAMEWORK.json"
+            echo ::endgroup::
+
+            echo "::group::Publish $FRAMEWORK AOT"
+            dotnet publish $VERIFY_CSPROJ -c Release --use-current-runtime --framework $FRAMEWORK -p:PublishAot=true --output "publish/$FRAMEWORK"
+            echo ::endgroup::
+
+            echo "::group::Resolve $FRAMEWORK AOT"
+            publish/$FRAMEWORK/Checker | tee "${{runner.temp}}/problems-$FRAMEWORK-aot.json"
+            echo ::endgroup::
           done
         env:
           VERIFY_CSPROJ: Checker/Checker.csproj
-          FRAMEWORKS: | 
+          FRAMEWORKS: |
             net9.0
             net10.0
 
@@ -121,10 +206,8 @@ jobs:
           problems: ${{runner.temp}}/problems-*.json
           msbuild-properties: Configuration=Release
 
-      - name: Expand Test
-        run: dotnet build Expand.Test/Expand.Test.csproj
-        continue-on-error: true
-        id: expand-test
+      - name: 7-zip binaries(AOT)
+        run: 7z a binary-${{github.sha}}.7z -r publish
 
       - name: Update TITLE
         shell: python
@@ -156,7 +239,7 @@ jobs:
               "verification": [
                   {
                       "type": "const",
-                      "status": "${{steps.expand-test.outcome == 'success' && 'success' || 'failure'}}"
+                      "status": "${{needs.unittest.outputs.expand-test == 'success' && 'success' || 'failure'}}"
                   }
               ],
               "document_attributes": {}
@@ -173,8 +256,8 @@ jobs:
       - name: Upload binaries
         uses: actions/upload-artifact@v7
         with:
-          name: binary-${{github.sha}}
-          path: Library/Checker/bin/Release
+          path: Library/binary-${{github.sha}}.7z
+          archive: false
 
   verify:
     runs-on: ubuntu-latest
@@ -194,6 +277,32 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 123456789
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: |
+            9.0.x
+            10.0.x
+      - name: Download binaries
+        uses: actions/download-artifact@v8
+        with:
+          name: binary-${{github.sha}}.7z
+          path: ${{runner.temp}}
+      - name: Extract binaries
+        run: 7z x ${{runner.temp}}/binary-${{github.sha}}.7z
+
+      - name: Warm up checker
+        run: |
+          for checker in $(ls Checker/bin/Release/*/Checker.dll); do
+            echo "::group::Warm up $checker"
+            dotnet $checker
+            echo ::endgroup::
+          done
+          for checker in $(ls publish/*/Checker); do
+            echo "::group::NativeAOT $checker"
+            $checker
+            echo ::endgroup::
+          done
 
       - name: Restore cached results
         if: ${{ ! inputs.ignore_prev_result }}
@@ -221,24 +330,6 @@ jobs:
 
       - name: Download verify_files.json
         uses: competitive-verifier/actions/download-verify-artifact@v2
-
-      - uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: |
-            9.0.x
-            10.0.x
-      - name: Download binaries
-        uses: actions/download-artifact@v8
-        with:
-          name: binary-${{github.sha}}
-          path: Library/Checker/bin/Release
-
-      - name: Warm up checker
-        run: |
-          for checker in $(ls Checker/bin/Release/*/Checker.dll); do
-            echo "Warm up $checker"
-            dotnet $checker
-          done
 
       - name: Verify
         uses: competitive-verifier/actions/verify@v2
@@ -284,13 +375,15 @@ jobs:
       - name: Extract TUnitReport
         shell: bash
         run: |
-          cd .competitive-verifier/docs/static/
-          mv "${{ steps.all-artifacts.outputs.artifacts-root }}/TUnitReport" .
+          mkdir TUnitReport
+          find "${{ steps.all-artifacts.outputs.artifacts-root }}"/TestReport* -name "*-report.html" | xargs -I@ mv @ TUnitReport/
           echo '' >> ../index.md
           echo '' >> ../index.md
           echo '## Unit test' >> ../index.md
           echo '' >> ../index.md
           ls TUnitReport/*-report.html | sed 's|TUnitReport/||' | xargs -I@ echo '- [@]({{ "TUnitReport/@" | relative_url }})' >> ../index.md
+        working-directory: Library/.competitive-verifier/docs/static/
+
       - name: Extract bundled
         shell: bash
         run: |
@@ -330,7 +423,7 @@ jobs:
           verify-result: ${{github.workspace}}/Library/.competitive-verifier/merged-result.json
           destination: ${{github.workspace}}/_jekyll
           write-summary: true
-         
+
       - name: Replace csproj with xml
         run: |
           sed -ie "s/pathExtension: csproj/pathExtension: xml/" ${{github.workspace}}/_jekyll/Expand.Test/Expand.Test.csproj.md

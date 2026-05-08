@@ -15,18 +15,18 @@ public class SimdModMatrixTests
         [
             [1, 2, 3],
             [4, 5, 6],
-        ]).ToArray().Should().BeEquivalentOrderTo((MontgomeryModInt[][])[
+        ]).ToArray().Should().BeStrictlyEquivalentTo((MontgomeryModInt[][])[
             [1, 2, 3],
             [4, 5, 6],
-        ]);
+        ], CollectionEqualityComparer<MontgomeryModInt>.Default);
         await new SimdModMatrix(new MontgomeryModInt[,]
         {
             { 1, 2, 3 },
             { 4, 5, 6 },
-        }).ToArray().Should().BeEquivalentOrderTo((MontgomeryModInt[][])[
+        }).ToArray().Should().BeStrictlyEquivalentTo((MontgomeryModInt[][])[
             [1, 2, 3],
             [4, 5, 6],
-        ]);
+        ], CollectionEqualityComparer<MontgomeryModInt>.Default);
     }
 
     [Test, MultipleAssertions]
@@ -84,10 +84,10 @@ public class SimdModMatrixTests
         {
             { 1, 2, 3 },
             { 4, 5, 6 },
-        })).ToArray().Should().BeEquivalentOrderTo((MontgomeryModInt[][])[
+        })).ToArray().Should().BeStrictlyEquivalentTo((MontgomeryModInt[][])[
             [-1, -2, -3],
             [-4, -5, -6],
-        ]);
+        ], CollectionEqualityComparer<MontgomeryModInt>.Default);
     }
 
     public static IEnumerable<(SimdModMatrix, SimdModMatrix, SimdModMatrix)> Add_Data =>
@@ -179,7 +179,7 @@ public class SimdModMatrixTests
 
             await got.Height.Should().BeEqualTo(expected.Height);
             await got.Width.Should().BeEqualTo(expected.Width);
-            await got._v.Should().BeEquivalentOrderTo(expected._v);
+            await got._v.Should().BeStrictlyEquivalentTo(expected._v);
 
             (a, b) = (b, a);
         }
@@ -285,7 +285,7 @@ public class SimdModMatrixTests
 
             await got.Height.Should().BeEqualTo(expected.Height);
             await got.Width.Should().BeEqualTo(expected.Width);
-            await got._v.Should().BeEquivalentOrderTo(expected._v);
+            await got._v.Should().BeStrictlyEquivalentTo(expected._v);
 
             (a, b) = (b, a);
         }
@@ -379,7 +379,7 @@ public class SimdModMatrixTests
 
             await got.Height.Should().BeEqualTo(expected.Height);
             await got.Width.Should().BeEqualTo(expected.Width);
-            await got._v.Should().BeEquivalentOrderTo(expected._v);
+            await got._v.Should().BeStrictlyEquivalentTo(expected._v);
         }
     }
 
@@ -450,8 +450,8 @@ public class SimdModMatrixTests
     [MethodDataSource(nameof(MultiplyVector_Data))]
     public async Task MultiplyVector(SimdModMatrix mat, MontgomeryModInt[] vector, MontgomeryModInt[] expected)
     {
-        await (mat * vector).Should().BeEquivalentOrderTo(expected);
-        await mat.Multiply(vector).Should().BeEquivalentOrderTo(expected);
+        await (mat * vector).Should().BeStrictlyEquivalentTo(expected);
+        await mat.Multiply(vector).Should().BeStrictlyEquivalentTo(expected);
     }
 
     [Test, MultipleAssertions]
@@ -463,10 +463,10 @@ public class SimdModMatrixTests
             { 1, 2 },
             { 3, 4 },
         });
-        await orig.Pow(5).ToArray().Should().BeEquivalentOrderTo((MontgomeryModInt[][])[
+        await orig.Pow(5).ToArray().Should().BeStrictlyEquivalentTo((MontgomeryModInt[][])[
             [1069, 1558],
             [2337, 3406],
-        ]);
+        ], CollectionEqualityComparer<MontgomeryModInt>.Default);
         var cur = orig;
         for (int i = 1; i < 10; i++)
         {
@@ -617,8 +617,8 @@ public class SimdModMatrixTests
             [0,1,0],
             [0,0,1],
         ];
-        await (orig * inv).ToArray().Should().BeEquivalentOrderTo(id);
-        await (inv * orig).ToArray().Should().BeEquivalentOrderTo(id);
+        await (orig * inv).ToArray().Should().BeStrictlyEquivalentTo(id, CollectionEqualityComparer<MontgomeryModInt>.Default);
+        await (inv * orig).ToArray().Should().BeStrictlyEquivalentTo(id, CollectionEqualityComparer<MontgomeryModInt>.Default);
     }
 
 
@@ -795,6 +795,6 @@ public class SimdModMatrixTests
         var got = matrix.LinearSystem(vector);
         await got.Length.Should().BeEqualTo(expected.Length);
         for (int i = 0; i < got.Length; i++)
-            await got[i].Should().BeEquivalentOrderTo(expected[i]);
+            await got[i].Should().BeStrictlyEquivalentTo(expected[i]);
     }
 }

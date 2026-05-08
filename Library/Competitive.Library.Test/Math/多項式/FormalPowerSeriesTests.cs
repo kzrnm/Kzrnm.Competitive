@@ -31,14 +31,14 @@ public class FormalPowerSeriesTest
         {
             var modArray = array.Select(v => (MontgomeryModInt<T>)v).ToArray();
             var f = new FormalPowerSeries<T>(array);
-            await f.Coefficients().ToArray().Should().BeEquivalentOrderTo(modArray);
+            await f.Coefficients().ToArray().Should().BeStrictlyEquivalentTo(modArray);
 
             for (int len = 0; len < modArray.Length; len++)
             {
-                await f.Coefficients(len).ToArray().Should().BeEquivalentOrderTo(modArray[..len]);
+                await f.Coefficients(len).ToArray().Should().BeStrictlyEquivalentTo(modArray[..len]);
             }
 
-            await f.Coefficients(modArray.Length + 2).ToArray().Should().BeEquivalentOrderTo(modArray.Append(default).Append(default));
+            await f.Coefficients(modArray.Length + 2).ToArray().Should().BeStrictlyEquivalentTo(modArray.Append(default).Append(default));
         }
     }
 
@@ -63,20 +63,20 @@ public class FormalPowerSeriesTest
                 var lhs = new FormalPowerSeries<T>(lhsArray);
                 var orig = lhs._cs.ToArray();
 
-                await (lhs + rhs)._cs.Should().BeEquivalentOrderTo(expected._cs);
-                await (lhs + rhs._cs)._cs.Should().BeEquivalentOrderTo(expected._cs);
+                await (lhs + rhs)._cs.Should().BeStrictlyEquivalentTo(expected._cs);
+                await (lhs + rhs._cs)._cs.Should().BeStrictlyEquivalentTo(expected._cs);
 
-                await lhs._cs.Should().BeEquivalentOrderTo(orig);
+                await lhs._cs.Should().BeStrictlyEquivalentTo(orig);
             }
             {
                 var lhs = new FormalPowerSeries<T>(lhsArray);
-                await lhs.AddSelf(rhs)._cs.Should().BeEquivalentOrderTo(expected._cs);
-                await lhs._cs.Should().BeEquivalentOrderTo(expected._cs);
+                await lhs.AddSelf(rhs)._cs.Should().BeStrictlyEquivalentTo(expected._cs);
+                await lhs._cs.Should().BeStrictlyEquivalentTo(expected._cs);
             }
             {
                 var lhs = new FormalPowerSeries<T>(lhsArray);
-                await lhs.AddSelf(rhs._cs)._cs.Should().BeEquivalentOrderTo(expected._cs);
-                await lhs._cs.Should().BeEquivalentOrderTo(expected._cs);
+                await lhs.AddSelf(rhs._cs)._cs.Should().BeStrictlyEquivalentTo(expected._cs);
+                await lhs._cs.Should().BeStrictlyEquivalentTo(expected._cs);
             }
         }
     }
@@ -101,20 +101,20 @@ public class FormalPowerSeriesTest
                 var lhs = new FormalPowerSeries<T>(lhsArray);
                 var orig = lhs._cs.ToArray();
 
-                await (lhs - rhs)._cs.Should().BeEquivalentOrderTo(expected._cs);
-                await (lhs - rhs._cs)._cs.Should().BeEquivalentOrderTo(expected._cs);
+                await (lhs - rhs)._cs.Should().BeStrictlyEquivalentTo(expected._cs);
+                await (lhs - rhs._cs)._cs.Should().BeStrictlyEquivalentTo(expected._cs);
 
-                await lhs._cs.Should().BeEquivalentOrderTo(orig);
+                await lhs._cs.Should().BeStrictlyEquivalentTo(orig);
             }
             {
                 var lhs = new FormalPowerSeries<T>(lhsArray);
-                await lhs.SubtractSelf(rhs)._cs.Should().BeEquivalentOrderTo(expected._cs);
-                await lhs._cs.Should().BeEquivalentOrderTo(expected._cs);
+                await lhs.SubtractSelf(rhs)._cs.Should().BeStrictlyEquivalentTo(expected._cs);
+                await lhs._cs.Should().BeStrictlyEquivalentTo(expected._cs);
             }
             {
                 var lhs = new FormalPowerSeries<T>(lhsArray);
-                await lhs.SubtractSelf(rhs._cs)._cs.Should().BeEquivalentOrderTo(expected._cs);
-                await lhs._cs.Should().BeEquivalentOrderTo(expected._cs);
+                await lhs.SubtractSelf(rhs._cs)._cs.Should().BeStrictlyEquivalentTo(expected._cs);
+                await lhs._cs.Should().BeStrictlyEquivalentTo(expected._cs);
             }
         }
     }
@@ -134,7 +134,7 @@ public class FormalPowerSeriesTest
             var value = new FormalPowerSeries<T>(valueArray.Select(n => new MontgomeryModInt<T>(n)).ToArray());
             var expected = new FormalPowerSeries<T>(expectedArray.Select(n => new MontgomeryModInt<T>(n)).ToArray());
 
-            await (-value)._cs.Should().BeEquivalentOrderTo(expected._cs);
+            await (-value)._cs.Should().BeStrictlyEquivalentTo(expected._cs);
         }
     }
     [Test, MultipleAssertions]
@@ -158,20 +158,20 @@ public class FormalPowerSeriesTest
                 var lhs = new FormalPowerSeries<T>(lhsArray);
                 var orig = lhs._cs.ToArray();
 
-                await (lhs * rhs)._cs.Should().BeEquivalentOrderTo(expected._cs);
-                await (lhs * rhs._cs)._cs.Should().BeEquivalentOrderTo(expected._cs);
+                await (lhs * rhs)._cs.Should().BeStrictlyEquivalentTo(expected._cs);
+                await (lhs * rhs._cs)._cs.Should().BeStrictlyEquivalentTo(expected._cs);
 
-                await lhs._cs.Should().BeEquivalentOrderTo(orig);
+                await lhs._cs.Should().BeStrictlyEquivalentTo(orig);
             }
             {
                 var lhs = new FormalPowerSeries<T>(lhsArray);
-                await lhs.MultiplySelf(rhs)._cs.Should().BeEquivalentOrderTo(expected._cs);
-                await lhs._cs.Should().BeEquivalentOrderTo(expected._cs);
+                await lhs.MultiplySelf(rhs)._cs.Should().BeStrictlyEquivalentTo(expected._cs);
+                await lhs._cs.Should().BeStrictlyEquivalentTo(expected._cs);
             }
             {
                 var lhs = new FormalPowerSeries<T>(lhsArray);
-                await lhs.MultiplySelf(rhs._cs)._cs.Should().BeEquivalentOrderTo(expected._cs);
-                await lhs._cs.Should().BeEquivalentOrderTo(expected._cs);
+                await lhs.MultiplySelf(rhs._cs)._cs.Should().BeStrictlyEquivalentTo(expected._cs);
+                await lhs._cs.Should().BeStrictlyEquivalentTo(expected._cs);
             }
         }
     }
@@ -196,7 +196,7 @@ public class FormalPowerSeriesTest
             var rhs = new FormalPowerSeries<T>(rhsArray);
             var expected = new FormalPowerSeries<T>(expectedArray);
 
-            await (lhs / rhs)._cs.Should().BeEquivalentOrderTo(expected._cs);
+            await (lhs / rhs)._cs.Should().BeStrictlyEquivalentTo(expected._cs);
         }
     }
 
@@ -224,9 +224,9 @@ public class FormalPowerSeriesTest
             var p = lhs * rhs + rem;
             var (q, r) = p.DivRem(rhs);
 
-            await q._cs.Should().BeEquivalentOrderTo((p / rhs)._cs);
-            await r._cs.Should().BeEquivalentOrderTo((p % rhs)._cs);
-            await (q * rhs + r)._cs.Should().BeEquivalentOrderTo(p._cs);
+            await q._cs.Should().BeStrictlyEquivalentTo((p / rhs)._cs);
+            await r._cs.Should().BeStrictlyEquivalentTo((p % rhs)._cs);
+            await (q * rhs + r)._cs.Should().BeStrictlyEquivalentTo(p._cs);
         }
     }
 
@@ -248,7 +248,7 @@ public class FormalPowerSeriesTest
             var fps = new FormalPowerSeries<T>(valueArray);
             var expected = new FormalPowerSeries<T>(expectedArray);
 
-            await (fps >> shift)._cs.Should().BeEquivalentOrderTo(expected._cs);
+            await (fps >> shift)._cs.Should().BeStrictlyEquivalentTo(expected._cs);
         }
     }
 
@@ -268,7 +268,7 @@ public class FormalPowerSeriesTest
             var fps = new FormalPowerSeries<T>(valueArray);
             var expected = new FormalPowerSeries<T>(expectedArray);
 
-            await (fps << shift)._cs.Should().BeEquivalentOrderTo(expected._cs);
+            await (fps << shift)._cs.Should().BeStrictlyEquivalentTo(expected._cs);
         }
     }
 
@@ -286,7 +286,7 @@ public class FormalPowerSeriesTest
         static async Task RunTest<T>(int[] valueArray, int[] expectedArray) where T : struct, IStaticMod
         {
             var fps = new FormalPowerSeries<T>(valueArray);
-            await fps.Derivative()._cs.Should().BeEquivalentOrderTo(expectedArray.Select(t => new MontgomeryModInt<T>(t)).ToArray());
+            await fps.Derivative()._cs.Should().BeStrictlyEquivalentTo(expectedArray.Select(t => new MontgomeryModInt<T>(t)).ToArray());
         }
     }
 
@@ -306,7 +306,7 @@ public class FormalPowerSeriesTest
         static async Task RunTest<T>(int[] valueArray, (int Numerator, int Denominator)[] expectedArray) where T : struct, IStaticMod
         {
             var fps = new FormalPowerSeries<T>(valueArray);
-            await fps.Integrate()._cs.Should().BeEquivalentOrderTo(expectedArray.Select(t => new MontgomeryModInt<T>(t.Numerator) / t.Denominator).ToArray());
+            await fps.Integrate()._cs.Should().BeStrictlyEquivalentTo(expectedArray.Select(t => new MontgomeryModInt<T>(t.Numerator) / t.Denominator).ToArray());
         }
     }
 
@@ -344,7 +344,7 @@ public class FormalPowerSeriesTest
         static async Task RunTest<T>(int[] fpsArray, int[] expected) where T : struct, IStaticMod
         {
             var fps = new FormalPowerSeries<T>(fpsArray);
-            await fps.Inv()._cs.Should().BeEquivalentOrderTo(new FormalPowerSeries<T>(expected)._cs);
+            await fps.Inv()._cs.Should().BeStrictlyEquivalentTo(new FormalPowerSeries<T>(expected)._cs);
         }
     }
 
@@ -368,7 +368,7 @@ public class FormalPowerSeriesTest
         static async Task RunTest<T>(int[] fpsArray, int[] expected) where T : struct, IStaticMod
         {
             var fps = new FormalPowerSeries<T>(fpsArray);
-            await fps.Exp()._cs.Should().BeEquivalentOrderTo(new FormalPowerSeries<T>(expected)._cs);
+            await fps.Exp()._cs.Should().BeStrictlyEquivalentTo(new FormalPowerSeries<T>(expected)._cs);
         }
     }
 
@@ -389,7 +389,7 @@ public class FormalPowerSeriesTest
         static async Task RunTest<T>(int[] fpsArray, int[] expected) where T : struct, IStaticMod
         {
             var fps = new FormalPowerSeries<T>(fpsArray);
-            await fps.Log()._cs.Should().BeEquivalentOrderTo(new FormalPowerSeries<T>(expected)._cs);
+            await fps.Log()._cs.Should().BeStrictlyEquivalentTo(new FormalPowerSeries<T>(expected)._cs);
         }
     }
 
@@ -419,19 +419,19 @@ public class FormalPowerSeriesTest
         await RunTest<Mod1000000007>([], 2, []);
 
         await new FormalPowerSeries<Mod998244353>([2, 3, 4, 5, 6])
-             .Pow(3, 13)._cs.Should().BeEquivalentOrderTo([(MontgomeryModInt<Mod998244353>)8, 36, 102, 231, 456, 735, 1024, 1257, 1344, 1169, 882, 540, 216]);
+             .Pow(3, 13)._cs.Should().BeStrictlyEquivalentTo([(MontgomeryModInt<Mod998244353>)8, 36, 102, 231, 456, 735, 1024, 1257, 1344, 1169, 882, 540, 216]);
         await new FormalPowerSeries<Mod998244353>([0, 0, 2, 3, 4, 5, 6])
-             .Pow(2, 13)._cs.Should().BeEquivalentOrderTo([(MontgomeryModInt<Mod998244353>)0, 0, 0, 0, 4, 12, 25, 44, 70, 76, 73, 60, 36]);
+             .Pow(2, 13)._cs.Should().BeStrictlyEquivalentTo([(MontgomeryModInt<Mod998244353>)0, 0, 0, 0, 4, 12, 25, 44, 70, 76, 73, 60, 36]);
 
         await new FormalPowerSeries<Mod1000000007>([2, 3, 4, 5, 6])
-             .Pow(3, 13)._cs.Should().BeEquivalentOrderTo([(MontgomeryModInt<Mod1000000007>)8, 36, 102, 231, 456, 735, 1024, 1257, 1344, 1169, 882, 540, 216]);
+             .Pow(3, 13)._cs.Should().BeStrictlyEquivalentTo([(MontgomeryModInt<Mod1000000007>)8, 36, 102, 231, 456, 735, 1024, 1257, 1344, 1169, 882, 540, 216]);
         await new FormalPowerSeries<Mod1000000007>([0, 0, 2, 3, 4, 5, 6])
-             .Pow(2, 13)._cs.Should().BeEquivalentOrderTo([(MontgomeryModInt<Mod1000000007>)0, 0, 0, 0, 4, 12, 25, 44, 70, 76, 73, 60, 36]);
+             .Pow(2, 13)._cs.Should().BeStrictlyEquivalentTo([(MontgomeryModInt<Mod1000000007>)0, 0, 0, 0, 4, 12, 25, 44, 70, 76, 73, 60, 36]);
 
         static async Task RunTest<T>(int[] fpsArray, int n, int[] expected) where T : struct, IStaticMod
         {
             var fps = new FormalPowerSeries<T>(fpsArray);
-            await fps.Pow(n)._cs.Should().BeEquivalentOrderTo(new FormalPowerSeries<T>(expected)._cs);
+            await fps.Pow(n)._cs.Should().BeStrictlyEquivalentTo(new FormalPowerSeries<T>(expected)._cs);
         }
     }
 

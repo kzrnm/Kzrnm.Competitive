@@ -34,7 +34,7 @@ public class ArrayComparerTests
         await arr.Should().HaveCount(expected.Length);
         for (int i = 0; i < arr.Length; i++)
         {
-            await arr[i].Should().BeEquivalentOrderTo(expected[i]);
+            await arr[i].Should().BeStrictlyEquivalentTo(expected[i]);
         }
     }
 
@@ -70,7 +70,7 @@ public class ArrayComparerTests
         await arr.Should().HaveCount(expected.Length);
         for (int i = 0; i < arr.Length; i++)
         {
-            await arr[i].Should().BeEquivalentOrderTo(expected[i]);
+            await arr[i].Should().BeStrictlyEquivalentTo(expected[i]);
         }
     }
 }

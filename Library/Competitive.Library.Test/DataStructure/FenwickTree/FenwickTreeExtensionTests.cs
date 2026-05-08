@@ -122,17 +122,17 @@ public class FenwickTreeExtensionTests
         {
             var fw1 = new IntFenwickTree(n);
             var fw2 = new IntFenwickTree(n);
-            await fw1.data.Should().BeEquivalentOrderTo(fw2.data);
+            await fw1.data.Should().BeStrictlyEquivalentTo(fw2.data);
 
             fw1.Add(nums[..n].Span);
             for (int i = 0; i < n; i++)
                 fw2.Add(i, i + 1);
-            await fw1.data.Should().BeEquivalentOrderTo(fw2.data);
+            await fw1.data.Should().BeStrictlyEquivalentTo(fw2.data);
 
             fw1.Add(nums[..(n / 2)].Span);
             for (int i = 0; i < (n / 2); i++)
                 fw2.Add(i, i + 1);
-            await fw1.data.Should().BeEquivalentOrderTo(fw2.data);
+            await fw1.data.Should().BeStrictlyEquivalentTo(fw2.data);
         }
     }
 
@@ -162,7 +162,7 @@ public class FenwickTreeExtensionTests
             {
                 expected[i].Sum += expected[i - 1].Sum;
             }
-            await fw.ToArray().Should().BeEquivalentOrderTo(expected);
+            await fw.ToArray().Should().BeStrictlyEquivalentTo(expected);
         }
     }
 }

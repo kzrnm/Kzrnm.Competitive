@@ -74,9 +74,9 @@ public class ConvolutionTests
         {
             b[i] = rnd.NextUInt();
         }
-        await NumberTheoreticTransform.Convolution<Mod998244353>(a, b).Should().BeEquivalentOrderTo(ConvNative(a, b, 998244353));
-        await NumberTheoreticTransform.Convolution<Mod1000000000>(a, b).Should().BeEquivalentOrderTo(ConvNative(a, b, 1000000000));
-        await NumberTheoreticTransform.Convolution<Mod1000000007>(a, b).Should().BeEquivalentOrderTo(ConvNative(a, b, 1000000007));
+        await NumberTheoreticTransform.Convolution<Mod998244353>(a, b).Should().BeStrictlyEquivalentTo(ConvNative(a, b, 998244353));
+        await NumberTheoreticTransform.Convolution<Mod1000000000>(a, b).Should().BeStrictlyEquivalentTo(ConvNative(a, b, 1000000000));
+        await NumberTheoreticTransform.Convolution<Mod1000000007>(a, b).Should().BeStrictlyEquivalentTo(ConvNative(a, b, 1000000007));
     }
 
 
@@ -96,7 +96,7 @@ public class ConvolutionTests
             b[i] = rnd.NextUInt();
         }
         for (int i = 0; i < 50; i++)
-            await NumberTheoreticTransform.Convolution(a, b, 5 + i).Should().BeEquivalentOrderTo(ConvNative(a, b, 5 + i));
+            await NumberTheoreticTransform.Convolution(a, b, 5 + i).Should().BeStrictlyEquivalentTo(ConvNative(a, b, 5 + i));
     }
 
     [Test, MultipleAssertions]
@@ -115,7 +115,7 @@ public class ConvolutionTests
             b[i] = rnd.NextUInt();
         }
         for (int i = 0; i < 50; i++)
-            await NumberTheoreticTransform.Convolution(a, b, 1000000005 + i).Should().BeEquivalentOrderTo(ConvNative(a, b, 1000000005 + i));
+            await NumberTheoreticTransform.Convolution(a, b, 1000000005 + i).Should().BeStrictlyEquivalentTo(ConvNative(a, b, 1000000005 + i));
     }
 
     [Test, MultipleAssertions]
@@ -138,7 +138,7 @@ public class ConvolutionTests
                     {
                         b[i] = rnd.NextUInt();
                     }
-                    await NumberTheoreticTransform.Convolution(a, b, 1000000000 + c).Should().BeEquivalentOrderTo(ConvNative(a, b, 1000000000 + c));
+                    await NumberTheoreticTransform.Convolution(a, b, 1000000000 + c).Should().BeStrictlyEquivalentTo(ConvNative(a, b, 1000000000 + c));
                 }
             }
     }
@@ -162,7 +162,7 @@ public class ConvolutionTests
                 {
                     b[i] = rnd.NextUInt();
                 }
-                await NumberTheoreticTransform.Convolution<Mod113>(a, b).Should().BeEquivalentOrderTo(ConvNative(a, b, 113));
+                await NumberTheoreticTransform.Convolution<Mod113>(a, b).Should().BeStrictlyEquivalentTo(ConvNative(a, b, 113));
             }
         }
     }
@@ -195,7 +195,7 @@ public class ConvolutionTests
                 {
                     b[i] = (uint)rnd.Next(int.MaxValue);
                 }
-                await NumberTheoreticTransform.ConvolutionULong(a, b).Should().BeEquivalentOrderTo(ConvNative(a, b));
+                await NumberTheoreticTransform.ConvolutionULong(a, b).Should().BeStrictlyEquivalentTo(ConvNative(a, b));
             }
         }
 
@@ -232,7 +232,7 @@ public class ConvolutionTests
                 {
                     b[i] = rnd.NextUInt();
                 }
-                await NumberTheoreticTransform.ConvolutionUInt128(a, b).Should().BeEquivalentOrderTo(ConvNative(a, b));
+                await NumberTheoreticTransform.ConvolutionUInt128(a, b).Should().BeStrictlyEquivalentTo(ConvNative(a, b));
             }
         }
 

@@ -17,11 +17,11 @@ public class 最短経路01BfsTests
         gb.Add(4, 3, 1);
         gb.Add(4, 0, 1);
         var graph = gb.ToGraph();
-        await graph.ShortestPath01Bfs(0).Should().BeEquivalentOrderTo([0, 1, 0, 1, 0]);
-        await graph.ShortestPath01Bfs(1).Should().BeEquivalentOrderTo([1, 0, 0, 1, 0]);
-        await graph.ShortestPath01Bfs(2).Should().BeEquivalentOrderTo([1, 2, 0, 1, 0]);
-        await graph.ShortestPath01Bfs(3).Should().BeEquivalentOrderTo([int.MaxValue, int.MaxValue, int.MaxValue, 0, int.MaxValue]);
-        await graph.ShortestPath01Bfs(4).Should().BeEquivalentOrderTo([1, 2, 1, 1, 0]);
+        await graph.ShortestPath01Bfs(0).Should().BeStrictlyEquivalentTo([0, 1, 0, 1, 0]);
+        await graph.ShortestPath01Bfs(1).Should().BeStrictlyEquivalentTo([1, 0, 0, 1, 0]);
+        await graph.ShortestPath01Bfs(2).Should().BeStrictlyEquivalentTo([1, 2, 0, 1, 0]);
+        await graph.ShortestPath01Bfs(3).Should().BeStrictlyEquivalentTo([int.MaxValue, int.MaxValue, int.MaxValue, 0, int.MaxValue]);
+        await graph.ShortestPath01Bfs(4).Should().BeStrictlyEquivalentTo([1, 2, 1, 1, 0]);
     }
 
     [Test, MultipleAssertions]
@@ -38,10 +38,10 @@ public class 最短経路01BfsTests
         gb.Add(4, 3, 1);
         gb.Add(4, 0, 1);
         var graph = gb.ToGraph();
-        await graph.ShortestPath01Bfs(0).Should().BeEquivalentOrderTo([0L, 1, 0, 1, 0]);
-        await graph.ShortestPath01Bfs(1).Should().BeEquivalentOrderTo([1L, 0, 0, 1, 0]);
-        await graph.ShortestPath01Bfs(2).Should().BeEquivalentOrderTo([1L, 2, 0, 1, 0]);
-        await graph.ShortestPath01Bfs(3).Should().BeEquivalentOrderTo([long.MaxValue, long.MaxValue, long.MaxValue, 0, long.MaxValue]);
-        await graph.ShortestPath01Bfs(4).Should().BeEquivalentOrderTo([1L, 2, 1, 1, 0]);
+        await graph.ShortestPath01Bfs(0).Should().BeStrictlyEquivalentTo([0L, 1, 0, 1, 0]);
+        await graph.ShortestPath01Bfs(1).Should().BeStrictlyEquivalentTo([1L, 0, 0, 1, 0]);
+        await graph.ShortestPath01Bfs(2).Should().BeStrictlyEquivalentTo([1L, 2, 0, 1, 0]);
+        await graph.ShortestPath01Bfs(3).Should().BeStrictlyEquivalentTo([long.MaxValue, long.MaxValue, long.MaxValue, 0, long.MaxValue]);
+        await graph.ShortestPath01Bfs(4).Should().BeStrictlyEquivalentTo([1L, 2, 1, 1, 0]);
     }
 }

@@ -16,8 +16,8 @@ public class DualSegtreeTests
     [Test, MultipleAssertions]
     public async Task Zero()
     {
-        await new DualSegtree<ModInt, Multiply>(0).d.Should().BeEquivalentOrderTo(Enumerable.Repeat(ModInt.One, 2));
-        await new DualSegtree<ModInt, Multiply>(20).d.Should().BeEquivalentOrderTo(Enumerable.Repeat(ModInt.One, 64));
+        await new DualSegtree<ModInt, Multiply>(0).d.Should().BeStrictlyEquivalentTo(Enumerable.Repeat(ModInt.One, 2));
+        await new DualSegtree<ModInt, Multiply>(20).d.Should().BeStrictlyEquivalentTo(Enumerable.Repeat(ModInt.One, 64));
     }
 
     [Test, MultipleAssertions]
@@ -92,24 +92,24 @@ public class DualSegtreeTests
     public async Task Usage()
     {
         var seg = new DualSegtree<ModInt, Multiply>([1, 2, 3]);
-        await seg.d.Should().BeEquivalentOrderTo([(ModInt)1, 1, 1, 1, 1, 2, 3, 1]);
+        await seg.d.Should().BeStrictlyEquivalentTo([(ModInt)1, 1, 1, 1, 1, 2, 3, 1]);
 
         seg[0] = 4;
-        await seg.d.Should().BeEquivalentOrderTo([(ModInt)1, 1, 1, 1, 4, 2, 3, 1]);
+        await seg.d.Should().BeStrictlyEquivalentTo([(ModInt)1, 1, 1, 1, 4, 2, 3, 1]);
 
         seg.Apply(0, 2);
-        await seg.d.Should().BeEquivalentOrderTo([(ModInt)1, 1, 1, 1, 8, 2, 3, 1]);
+        await seg.d.Should().BeStrictlyEquivalentTo([(ModInt)1, 1, 1, 1, 8, 2, 3, 1]);
 
         seg.Apply(0, 1, 2);
-        await seg.d.Should().BeEquivalentOrderTo([(ModInt)1, 1, 1, 1, 16, 2, 3, 1]);
+        await seg.d.Should().BeStrictlyEquivalentTo([(ModInt)1, 1, 1, 1, 16, 2, 3, 1]);
 
         seg.Apply(0, 2, 2);
-        await seg.d.Should().BeEquivalentOrderTo([(ModInt)1, 1, 2, 1, 16, 2, 3, 1]);
+        await seg.d.Should().BeStrictlyEquivalentTo([(ModInt)1, 1, 2, 1, 16, 2, 3, 1]);
 
         seg.Apply(0, 3, 2);
-        await seg.d.Should().BeEquivalentOrderTo([(ModInt)1, 1, 4, 1, 16, 2, 6, 1]);
+        await seg.d.Should().BeStrictlyEquivalentTo([(ModInt)1, 1, 4, 1, 16, 2, 6, 1]);
 
-        await seg.ToArray().Should().BeEquivalentOrderTo([(ModInt)64, 8, 6]);
-        await seg.d.Should().BeEquivalentOrderTo([(ModInt)1, 1, 1, 1, 64, 8, 6, 1]);
+        await seg.ToArray().Should().BeStrictlyEquivalentTo([(ModInt)64, 8, 6]);
+        await seg.d.Should().BeStrictlyEquivalentTo([(ModInt)1, 1, 1, 1, 64, 8, 6, 1]);
     }
 }

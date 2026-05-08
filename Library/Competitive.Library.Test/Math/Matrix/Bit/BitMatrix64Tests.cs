@@ -22,7 +22,7 @@ public class BitMatrix64Tests
                     expected[i] |= 1ul << j;
             }
         }
-        await new BitMatrix64(input.ToBoolArray())._v.Should().BeEquivalentOrderTo(expected);
+        await new BitMatrix64(input.ToBoolArray())._v.Should().BeStrictlyEquivalentTo(expected);
     }
 
     [Test, MultipleAssertions]

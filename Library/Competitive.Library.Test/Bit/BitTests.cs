@@ -104,8 +104,8 @@ public class BitTests
     [Property("Category", "BitEnumerate")]
     public async Task BitEnumerateByte(uint num, ImmutableArray<int> expected)
     {
-        await num.Bits().Should().BeEquivalentOrderTo(expected);
-        await num.Bits().ToArray().Should().BeEquivalentOrderTo(expected);
+        await num.Bits().Should().BeStrictlyEquivalentTo(expected);
+        await num.Bits().ToArray().Should().BeStrictlyEquivalentTo(expected);
     }
 
     public static IEnumerable<(int, int[])> BitEnumerateInt32_Data =>
@@ -128,8 +128,8 @@ public class BitTests
     [Property("Category", "BitEnumerate")]
     public async Task BitEnumerateInt32(int num, int[] expected)
     {
-        await num.Bits().Should().BeEquivalentOrderTo(expected);
-        await num.Bits().ToArray().Should().BeEquivalentOrderTo(expected);
+        await num.Bits().Should().BeStrictlyEquivalentTo(expected);
+        await num.Bits().ToArray().Should().BeStrictlyEquivalentTo(expected);
     }
 
     public static IEnumerable<(uint, int[])> BitEnumerateUInt32_Data =>
@@ -155,8 +155,8 @@ public class BitTests
     [Property("Category", "BitEnumerate")]
     public async Task BitEnumerateUInt32(uint num, int[] expected)
     {
-        await num.Bits().Should().BeEquivalentOrderTo(expected);
-        await num.Bits().ToArray().Should().BeEquivalentOrderTo(expected);
+        await num.Bits().Should().BeStrictlyEquivalentTo(expected);
+        await num.Bits().ToArray().Should().BeStrictlyEquivalentTo(expected);
     }
 
     public static IEnumerable<(long, int[])> BitEnumerateInt64_Data =>
@@ -182,8 +182,8 @@ public class BitTests
     [Property("Category", "BitEnumerate")]
     public async Task BitEnumerateInt64(long num, int[] expected)
     {
-        await num.Bits().Should().BeEquivalentOrderTo(expected);
-        await num.Bits().ToArray().Should().BeEquivalentOrderTo(expected);
+        await num.Bits().Should().BeStrictlyEquivalentTo(expected);
+        await num.Bits().ToArray().Should().BeStrictlyEquivalentTo(expected);
     }
 
     public static IEnumerable<(ulong, int[])> BitEnumerateUInt64_Data =>
@@ -209,8 +209,8 @@ public class BitTests
     [Property("Category", "BitEnumerate")]
     public async Task BitEnumerateUInt64(ulong num, int[] expected)
     {
-        await num.Bits().Should().BeEquivalentOrderTo(expected);
-        await num.Bits().ToArray().Should().BeEquivalentOrderTo(expected);
+        await num.Bits().Should().BeStrictlyEquivalentTo(expected);
+        await num.Bits().ToArray().Should().BeStrictlyEquivalentTo(expected);
     }
 
     [Test, MultipleAssertions]
@@ -233,7 +233,7 @@ public class BitTests
 
             await new string(binary).Should().BeEqualTo(zeroBinary);
 
-            await value.Bits().ToArray().Should().BeEquivalentOrderTo(value.Bits().Cast<int>().ToArray());
+            await value.Bits().ToArray().Should().BeStrictlyEquivalentTo(value.Bits().Cast<int>().ToArray());
         }
     }
 }

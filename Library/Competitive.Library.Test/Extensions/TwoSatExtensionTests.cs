@@ -12,7 +12,7 @@ public class TwoSatExtensionTests
         twoSat.And(2, true, 1, true);
 
         await twoSat.Satisfiable().Should().BeTrue();
-        await twoSat.Answer().Should().BeEquivalentOrderTo([true, true, true]);
+        await twoSat.Answer().Should().BeStrictlyEquivalentTo([true, true, true]);
     }
     [Test, MultipleAssertions]
     public async Task And_set1()
@@ -31,7 +31,7 @@ public class TwoSatExtensionTests
         twoSat.Set(2, false);
 
         await twoSat.Satisfiable().Should().BeTrue();
-        await twoSat.Answer().Should().BeEquivalentOrderTo([true, true, false]);
+        await twoSat.Answer().Should().BeStrictlyEquivalentTo([true, true, false]);
     }
     [Test, MultipleAssertions]
     public async Task Same()
@@ -41,7 +41,7 @@ public class TwoSatExtensionTests
         twoSat.And(1, true, 2, false);
 
         await twoSat.Satisfiable().Should().BeTrue();
-        await twoSat.Answer().Should().BeEquivalentOrderTo([true, true, false]);
+        await twoSat.Answer().Should().BeStrictlyEquivalentTo([true, true, false]);
     }
     [Test, MultipleAssertions]
     public async Task NotSame()
@@ -51,7 +51,7 @@ public class TwoSatExtensionTests
         twoSat.And(1, true, 2, false);
 
         await twoSat.Satisfiable().Should().BeTrue();
-        await twoSat.Answer().Should().BeEquivalentOrderTo([false, true, false]);
+        await twoSat.Answer().Should().BeStrictlyEquivalentTo([false, true, false]);
     }
     [Test, MultipleAssertions]
     public async Task IfThen1()
@@ -61,7 +61,7 @@ public class TwoSatExtensionTests
         twoSat.And(0, true, 2, false);
 
         await twoSat.Satisfiable().Should().BeTrue();
-        await twoSat.Answer().Should().BeEquivalentOrderTo([true, false, false]);
+        await twoSat.Answer().Should().BeStrictlyEquivalentTo([true, false, false]);
     }
     [Test, MultipleAssertions]
     public async Task IfThen2()
@@ -71,6 +71,6 @@ public class TwoSatExtensionTests
         twoSat.And(1, true, 2, false);
 
         await twoSat.Satisfiable().Should().BeTrue();
-        await twoSat.Answer().Should().BeEquivalentOrderTo([false, true, false]);
+        await twoSat.Answer().Should().BeStrictlyEquivalentTo([false, true, false]);
     }
 }

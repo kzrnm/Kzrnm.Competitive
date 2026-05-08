@@ -9,7 +9,7 @@ public class LcsTests
     [Arguments("bacds", "ababcsd", "bacd")]
     public async Task String(string s, string t, string expected)
     {
-        await StringLibEx.Lcs(s, t).Should().BeEquivalentOrderTo(expected.ToCharArray());
+        await StringLibEx.Lcs(s, t).Should().BeStrictlyEquivalentTo(expected.ToCharArray());
     }
 
     [Test]
@@ -19,6 +19,6 @@ public class LcsTests
     [Arguments(new[] { 1, 2, 3, 4, 5, 6, 7 }, new[] { 2, 3, 7, 6, 5, 4 }, new[] { 2, 3, 4 })]
     public async Task Int(int[] s, int[] t, int[] expected)
     {
-        await StringLibEx.Lcs(s, t).Should().BeEquivalentOrderTo(expected);
+        await StringLibEx.Lcs(s, t).Should().BeStrictlyEquivalentTo(expected);
     }
 }

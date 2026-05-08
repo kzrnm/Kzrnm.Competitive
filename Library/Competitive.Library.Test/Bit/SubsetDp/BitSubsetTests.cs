@@ -51,15 +51,15 @@ public class BitSubsetTests
     [MethodDataSource(nameof(Int32_Data))]
     public async Task Int32(Int32 num, ImmutableArray<Int32> expected)
     {
-        await num.BitSubset(false).Should().BeEquivalentOrderTo(expected);
-        await num.BitSubset().Should().BeEquivalentOrderTo(expected.Skip(1));
+        await num.BitSubset(false).Should().BeStrictlyEquivalentTo(expected);
+        await num.BitSubset().Should().BeStrictlyEquivalentTo(expected.Skip(1));
 
-        await num.BitSubset(false).ToArray().Should().BeEquivalentOrderTo(expected);
-        await num.BitSubset().ToArray().Should().BeEquivalentOrderTo(expected.Skip(1));
+        await num.BitSubset(false).ToArray().Should().BeStrictlyEquivalentTo(expected);
+        await num.BitSubset().ToArray().Should().BeStrictlyEquivalentTo(expected.Skip(1));
 
-        await Combinations(num.BitSubsetCombination(false)).Should().BeEquivalentOrderTo(
+        await Combinations(num.BitSubsetCombination(false)).Should().BeStrictlyEquivalentTo(
             expected.Take(expected.Length / 2).Select(b => (b, num & ~b)));
-        await Combinations(num.BitSubsetCombination()).Should().BeEquivalentOrderTo(
+        await Combinations(num.BitSubsetCombination()).Should().BeStrictlyEquivalentTo(
             expected.Take(expected.Length / 2).Skip(1).Select(b => (b, num & ~b)));
     }
 
@@ -94,15 +94,15 @@ public class BitSubsetTests
     [MethodDataSource(nameof(UInt32_Data))]
     public async Task UInt32(UInt32 num, ImmutableArray<uint> expected)
     {
-        await num.BitSubset(false).Should().BeEquivalentOrderTo(expected);
-        await num.BitSubset().Should().BeEquivalentOrderTo(expected.Skip(1));
+        await num.BitSubset(false).Should().BeStrictlyEquivalentTo(expected);
+        await num.BitSubset().Should().BeStrictlyEquivalentTo(expected.Skip(1));
 
-        await num.BitSubset(false).ToArray().Should().BeEquivalentOrderTo(expected);
-        await num.BitSubset().ToArray().Should().BeEquivalentOrderTo(expected.Skip(1));
+        await num.BitSubset(false).ToArray().Should().BeStrictlyEquivalentTo(expected);
+        await num.BitSubset().ToArray().Should().BeStrictlyEquivalentTo(expected.Skip(1));
 
-        await Combinations(num.BitSubsetCombination(false)).Should().BeEquivalentOrderTo(
+        await Combinations(num.BitSubsetCombination(false)).Should().BeStrictlyEquivalentTo(
             expected.Take(expected.Length / 2).Select(b => (b, num & ~b)));
-        await Combinations(num.BitSubsetCombination()).Should().BeEquivalentOrderTo(
+        await Combinations(num.BitSubsetCombination()).Should().BeStrictlyEquivalentTo(
             expected.Take(expected.Length / 2).Skip(1).Select(b => (b, num & ~b)));
     }
 
@@ -136,15 +136,15 @@ public class BitSubsetTests
     [MethodDataSource(nameof(Int64_Data))]
     public async Task Int64(Int64 num, ImmutableArray<Int64> expected)
     {
-        await num.BitSubset(false).Should().BeEquivalentOrderTo(expected);
-        await num.BitSubset().Should().BeEquivalentOrderTo(expected.Skip(1));
+        await num.BitSubset(false).Should().BeStrictlyEquivalentTo(expected);
+        await num.BitSubset().Should().BeStrictlyEquivalentTo(expected.Skip(1));
 
-        await num.BitSubset(false).ToArray().Should().BeEquivalentOrderTo(expected);
-        await num.BitSubset().ToArray().Should().BeEquivalentOrderTo(expected.Skip(1));
+        await num.BitSubset(false).ToArray().Should().BeStrictlyEquivalentTo(expected);
+        await num.BitSubset().ToArray().Should().BeStrictlyEquivalentTo(expected.Skip(1));
 
-        await Combinations(num.BitSubsetCombination(false)).Should().BeEquivalentOrderTo(
+        await Combinations(num.BitSubsetCombination(false)).Should().BeStrictlyEquivalentTo(
             expected.Take(expected.Length / 2).Select(b => (b, num & ~b)));
-        await Combinations(num.BitSubsetCombination()).Should().BeEquivalentOrderTo(
+        await Combinations(num.BitSubsetCombination()).Should().BeStrictlyEquivalentTo(
             expected.Take(expected.Length / 2).Skip(1).Select(b => (b, num & ~b)));
     }
 
@@ -178,15 +178,15 @@ public class BitSubsetTests
     [MethodDataSource(nameof(UInt64_Data))]
     public async Task UInt64(UInt64 num, ImmutableArray<UInt64> expected)
     {
-        await num.BitSubset(false).Should().BeEquivalentOrderTo(expected);
-        await num.BitSubset().Should().BeEquivalentOrderTo(expected.Skip(1));
+        await num.BitSubset(false).Should().BeStrictlyEquivalentTo(expected);
+        await num.BitSubset().Should().BeStrictlyEquivalentTo(expected.Skip(1));
 
-        await num.BitSubset(false).ToArray().Should().BeEquivalentOrderTo(expected);
-        await num.BitSubset().ToArray().Should().BeEquivalentOrderTo(expected.Skip(1));
+        await num.BitSubset(false).ToArray().Should().BeStrictlyEquivalentTo(expected);
+        await num.BitSubset().ToArray().Should().BeStrictlyEquivalentTo(expected.Skip(1));
 
-        await Combinations(num.BitSubsetCombination(false)).Should().BeEquivalentOrderTo(
+        await Combinations(num.BitSubsetCombination(false)).Should().BeStrictlyEquivalentTo(
             expected.Take(expected.Length / 2).Select(b => (b, num & ~b)));
-        await Combinations(num.BitSubsetCombination()).Should().BeEquivalentOrderTo(
+        await Combinations(num.BitSubsetCombination()).Should().BeStrictlyEquivalentTo(
             expected.Take(expected.Length / 2).Skip(1).Select(b => (b, num & ~b)));
     }
 }

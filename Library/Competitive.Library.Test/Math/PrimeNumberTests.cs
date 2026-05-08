@@ -8,13 +8,13 @@ public class PrimeNumberTests
     [Test, MultipleAssertions]
     public async Task PrimeTest()
     {
-        await new PrimeNumber(5).Should().BeEquivalentOrderTo([2, 3, 5]);
-        await new PrimeNumber(6).Should().BeEquivalentOrderTo([2, 3, 5]);
-        await new PrimeNumber(7).Should().BeEquivalentOrderTo([2, 3, 5, 7]);
-        await new PrimeNumber(9).Should().BeEquivalentOrderTo([2, 3, 5, 7]);
-        await new PrimeNumber(10).Should().BeEquivalentOrderTo([2, 3, 5, 7]);
-        await new PrimeNumber(11).Should().BeEquivalentOrderTo([2, 3, 5, 7, 11]);
-        await new PrimeNumber(20).Should().BeEquivalentOrderTo([2, 3, 5, 7, 11, 13, 17, 19]);
+        await new PrimeNumber(5).Should().BeStrictlyEquivalentTo([2, 3, 5]);
+        await new PrimeNumber(6).Should().BeStrictlyEquivalentTo([2, 3, 5]);
+        await new PrimeNumber(7).Should().BeStrictlyEquivalentTo([2, 3, 5, 7]);
+        await new PrimeNumber(9).Should().BeStrictlyEquivalentTo([2, 3, 5, 7]);
+        await new PrimeNumber(10).Should().BeStrictlyEquivalentTo([2, 3, 5, 7]);
+        await new PrimeNumber(11).Should().BeStrictlyEquivalentTo([2, 3, 5, 7, 11]);
+        await new PrimeNumber(20).Should().BeStrictlyEquivalentTo([2, 3, 5, 7, 11, 13, 17, 19]);
     }
 
 

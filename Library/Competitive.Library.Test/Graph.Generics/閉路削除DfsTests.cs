@@ -16,7 +16,7 @@ public class 閉路削除DfsTests
         gb.Add(4, 7);
         gb.Add(7, 3);
         var es = gb.ToGraph().RemoveCycle();
-        await es.Order().Should().BeEquivalentOrderTo(new (int, GraphEdge)[] {
+        await es.Order().Should().BeStrictlyEquivalentTo(new (int, GraphEdge)[] {
             (4, new(5)),
             (3, new(5)),
             (5, new(6)),
@@ -39,7 +39,7 @@ public class 閉路削除DfsTests
         gb.Add(4, 7, 7);
         gb.Add(7, 3, 8);
         var es = gb.ToGraph().RemoveCycle();
-        await es.Order().Should().BeEquivalentOrderTo(new (int, WEdge<int>)[] {
+        await es.Order().Should().BeStrictlyEquivalentTo(new (int, WEdge<int>)[] {
             (4, new(5, 5)),
             (3, new(5, 5)),
             (5, new(6, 6)),
@@ -61,7 +61,7 @@ public class 閉路削除DfsTests
         gb.Add(5, 6);
         gb.Add(4, 7);
         var es = gb.ToGraph().RemoveCycle();
-        await es.Order().Should().BeEquivalentOrderTo(new (int, GraphEdge)[] {
+        await es.Order().Should().BeStrictlyEquivalentTo(new (int, GraphEdge)[] {
             (4, new(7)),
             (5, new(6)),
             (2, new(3)),

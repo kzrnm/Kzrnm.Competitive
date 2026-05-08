@@ -1,4 +1,5 @@
 using System.Reflection;
+using TUnit.Core.Converters;
 
 namespace Kzrnm.Competitive.Testing.DataStructure;
 
@@ -230,7 +231,7 @@ public class TrieTests
         {
             await all.MoveNext().Should().BeTrue();
             var (key, val) = all.Current;
-            await key.Should().BeEquivalentOrderTo(exKey);
+            await key.Should().BeStrictlyEquivalentTo(exKey);
             await val.Should().BeEqualTo(exVal);
         }
         await all.MoveNext().Should().BeFalse();
@@ -259,6 +260,8 @@ public class TrieTests
             ([1, -2], 8),
             ([1, -2, 5], 6),
         ];
-        await list.Should().BeEquivalentOrderTo(expected);
+        await list.Should()
+            .BeStrictlyEquivalentTo(expected,
+            comparer: EqualityComparer<(int[] key, int val)>.Create((t1, t2) => t1.key.SequenceEqual(t2.key) && t1.val == t2.val));
     }
 }

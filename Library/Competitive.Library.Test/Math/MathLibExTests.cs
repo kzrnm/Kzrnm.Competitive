@@ -159,7 +159,7 @@ public class MathLibExTests
     [MethodDataSource(nameof(DivisorInt_Data))]
     public async Task DivisorInt(int num, int[] expected)
     {
-        await MathLibEx.Divisor(num).Should().BeEquivalentOrderTo(expected);
+        await MathLibEx.Divisor(num).Should().BeStrictlyEquivalentTo(expected);
     }
 
     [Test, MultipleAssertions]
@@ -167,16 +167,16 @@ public class MathLibExTests
     {
         var divisor6480 = MathLibEx.Divisor(6480);
         await divisor6480.Length.Should().BeEqualTo(50);
-        await divisor6480[..26].Should().BeEquivalentOrderTo([1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 27, 30, 36, 40, 45, 48, 54, 60, 72, 80, 81]);
-        await divisor6480[^4..].Should().BeEquivalentOrderTo([1620, 2160, 3240, 6480]);
+        await divisor6480[..26].Should().BeStrictlyEquivalentTo([1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 27, 30, 36, 40, 45, 48, 54, 60, 72, 80, 81]);
+        await divisor6480[^4..].Should().BeStrictlyEquivalentTo([1620, 2160, 3240, 6480]);
 
         await MathLibEx.Divisor(2095133040).Length.Should().BeEqualTo(1600); //高度合成数
     }
     [Test, MultipleAssertions]
     public async Task DivisorLong()
     {
-        await MathLibEx.Divisor(1L).Should().BeEquivalentOrderTo([1L]);
-        await MathLibEx.Divisor(128100283921).Should().BeEquivalentOrderTo([
+        await MathLibEx.Divisor(1L).Should().BeStrictlyEquivalentTo([1L]);
+        await MathLibEx.Divisor(128100283921).Should().BeStrictlyEquivalentTo([
               1,
             71,
             5041,
@@ -184,7 +184,7 @@ public class MathLibExTests
             25411681,
             1804229351,
             128100283921]);
-        await MathLibEx.Divisor(132147483703).Should().BeEquivalentOrderTo([1, 132147483703]);
+        await MathLibEx.Divisor(132147483703).Should().BeStrictlyEquivalentTo([1, 132147483703]);
         await MathLibEx.Divisor(963761198400).Length.Should().BeEqualTo(6720); //高度合成数
     }
 
@@ -239,7 +239,7 @@ public class MathLibExTests
     [MethodDataSource(nameof(PrimeFactoringInt_Data))]
     public async Task PrimeFactoringInt(int num, Dictionary<int, int> expected)
     {
-        await MathLibEx.PrimeFactoring(num).Should().BeEquivalentTo(expected);
+        await MathLibEx.PrimeFactoring(num).Should().BeStrictlyEquivalentTo(expected);
     }
 
     public static IEnumerable<int> PrimeFactoringIntStress_Data()
@@ -312,7 +312,7 @@ public class MathLibExTests
     [MethodDataSource(nameof(PrimeFactoringLong_Data))]
     public async Task PrimeFactoringLong(long num, Dictionary<long, int> expected)
     {
-        await MathLibEx.PrimeFactoring(num).Should().BeEquivalentOrderTo(expected);
+        await MathLibEx.PrimeFactoring(num).Should().BeStrictlyEquivalentTo(expected);
     }
 
     [Test, MultipleAssertions]

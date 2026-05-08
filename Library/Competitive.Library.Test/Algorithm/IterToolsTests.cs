@@ -43,7 +43,7 @@ public class IterToolsTest
     [MethodDataSource(nameof(Permutations_Data))]
     public async Task Permutations(int[] collection, int[][] expected)
     {
-        await IterTools.Permutations(collection).Should().BeEquivalentOrderTo(expected);
+        await IterTools.Permutations(collection).Should().BeStrictlyEquivalentTo(expected, CollectionEqualityComparer<int>.Default);
     }
 
     public static IEnumerable<(int[], int, int[][])> Combinations_Data =>
@@ -93,7 +93,7 @@ public class IterToolsTest
     [MethodDataSource(nameof(Combinations_Data))]
     public async Task Combinations(int[] collection, int k, int[][] expected)
     {
-        await IterTools.Combinations(collection, k).Should().BeEquivalentOrderTo(expected);
+        await IterTools.Combinations(collection, k).Should().BeStrictlyEquivalentTo(expected, CollectionEqualityComparer<int>.Default);
     }
 
 
@@ -201,6 +201,6 @@ public class IterToolsTest
     [MethodDataSource(nameof(CombinationsWithReplacement_Data))]
     public async Task CombinationsWithReplacement(int[] collection, int k, int[][] expected)
     {
-        await IterTools.CombinationsWithReplacement(collection, k).Should().BeEquivalentOrderTo(expected);
+        await IterTools.CombinationsWithReplacement(collection, k).Should().BeStrictlyEquivalentTo(expected, CollectionEqualityComparer<int>.Default);
     }
 }

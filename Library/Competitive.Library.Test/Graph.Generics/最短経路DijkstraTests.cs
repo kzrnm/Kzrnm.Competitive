@@ -27,7 +27,7 @@ public class 最短経路DijkstraTests
 
             for (int i = 0; i < size; i++)
             {
-                await graph.Dijkstra(i).Should().BeEquivalentOrderTo(expecteds[i]);
+                await graph.Dijkstra(i).Should().BeStrictlyEquivalentTo(expecteds[i]);
             }
         }
     }
@@ -46,35 +46,35 @@ public class 最短経路DijkstraTests
         gb.Add(4, 3, 6);
         gb.Add(4, 0, 1);
         var graph = gb.ToGraph();
-        await graph.Dijkstra(0).Should().BeEquivalentOrderTo([
+        await graph.Dijkstra(0).Should().BeStrictlyEquivalentTo([
             0,
             1,
             6,
             18,
             12,
         ]);
-        await graph.Dijkstra(1).Should().BeEquivalentOrderTo([
+        await graph.Dijkstra(1).Should().BeStrictlyEquivalentTo([
             12,
             0,
             5,
             17,
             11,
         ]);
-        await graph.Dijkstra(2).Should().BeEquivalentOrderTo([
+        await graph.Dijkstra(2).Should().BeStrictlyEquivalentTo([
             7,
             8,
             0,
             12,
             6,
         ]);
-        await graph.Dijkstra(3).Should().BeEquivalentOrderTo([
+        await graph.Dijkstra(3).Should().BeStrictlyEquivalentTo([
             int.MaxValue,
             int.MaxValue,
             int.MaxValue,
             0,
             int.MaxValue,
         ]);
-        await graph.Dijkstra(4).Should().BeEquivalentOrderTo([
+        await graph.Dijkstra(4).Should().BeStrictlyEquivalentTo([
             1,
             2,
             7,
@@ -82,35 +82,35 @@ public class 最短経路DijkstraTests
             0,
         ]);
 
-        await graph.DijkstraWithRoute(0).ToObject().Should().BeEquivalentOrderTo([
+        await graph.DijkstraWithRoute(0).ToObject().Should().BeStrictlyEquivalentTo([
             new DijkstraWithRouteResult<int, WEdge<int>>(0, []),
             new(1, [new(1, 1)]),
             new(6, [new(2, 5), new(1, 1)]),
             new(18, [new(3, 6), new(4, 6), new(2, 5), new(1, 1)]),
             new(12, [new(4, 6), new(2, 5), new(1, 1)]),
         ]);
-        await graph.DijkstraWithRoute(1).ToObject().Should().BeEquivalentOrderTo([
+        await graph.DijkstraWithRoute(1).ToObject().Should().BeStrictlyEquivalentTo([
             new DijkstraWithRouteResult<int, WEdge<int>>(12, [new(0, 1), new(4, 6), new(2, 5)]),
             new(0, []),
             new(5, [new(2, 5)]),
             new(17, [new(3, 6), new(4, 6), new(2, 5)]),
             new(11, [new(4, 6), new(2, 5)]),
         ]);
-        await graph.DijkstraWithRoute(2).ToObject().Should().BeEquivalentOrderTo([
+        await graph.DijkstraWithRoute(2).ToObject().Should().BeStrictlyEquivalentTo([
             new DijkstraWithRouteResult<int, WEdge<int>>(7, [new(0, 1), new(4, 6)]),
             new(8, [new(1, 1), new(0, 1), new(4, 6)]),
             new(0, []),
             new(12, [new(3, 6), new(4, 6)]),
             new(6, [new(4, 6)]),
         ]);
-        await graph.DijkstraWithRoute(3).ToObject().Should().BeEquivalentOrderTo([
+        await graph.DijkstraWithRoute(3).ToObject().Should().BeStrictlyEquivalentTo([
             new DijkstraWithRouteResult<int, WEdge<int>>(int.MaxValue, null),
             new(int.MaxValue, null),
             new(int.MaxValue, null),
             new(0, []),
             new(int.MaxValue, null),
         ]);
-        await graph.DijkstraWithRoute(4).ToObject().Should().BeEquivalentOrderTo([
+        await graph.DijkstraWithRoute(4).ToObject().Should().BeStrictlyEquivalentTo([
             new DijkstraWithRouteResult<int, WEdge<int>>(1, [new(0, 1)]),
             new(2, [new(1, 1), new(0, 1)]),
             new(7, [new(2, 5), new(1, 1), new(0, 1)]),
@@ -134,35 +134,35 @@ public class 最短経路DijkstraTests
         gb.Add(4, 3, LARGE + 6);
         gb.Add(4, 0, LARGE + 1);
         var graph = gb.ToGraph();
-        await graph.Dijkstra(0).Should().BeEquivalentOrderTo([
+        await graph.Dijkstra(0).Should().BeStrictlyEquivalentTo([
             0,
             1 * LARGE + 1,
             2 * LARGE + 6,
             4 * LARGE + 18,
             3 * LARGE + 12,
         ]);
-        await graph.Dijkstra(1).Should().BeEquivalentOrderTo([
+        await graph.Dijkstra(1).Should().BeStrictlyEquivalentTo([
             3 * LARGE + 12,
             0L,
             1 * LARGE + 5,
             3 * LARGE + 17,
             2 * LARGE + 11,
         ]);
-        await graph.Dijkstra(2).Should().BeEquivalentOrderTo([
+        await graph.Dijkstra(2).Should().BeStrictlyEquivalentTo([
             2 * LARGE + 7,
             3 * LARGE + 8,
             0L,
             2 * LARGE + 12,
             1 * LARGE + 6,
         ]);
-        await graph.Dijkstra(3).Should().BeEquivalentOrderTo([
+        await graph.Dijkstra(3).Should().BeStrictlyEquivalentTo([
             long.MaxValue,
             long.MaxValue,
             long.MaxValue,
             0L,
             long.MaxValue,
         ]);
-        await graph.Dijkstra(4).Should().BeEquivalentOrderTo([
+        await graph.Dijkstra(4).Should().BeStrictlyEquivalentTo([
             1 * LARGE + 1,
             2 * LARGE + 2,
             3 * LARGE + 7,
@@ -170,35 +170,35 @@ public class 最短経路DijkstraTests
             0L,
         ]);
 
-        await graph.DijkstraWithRoute(0).ToObject().Should().BeEquivalentOrderTo([
+        await graph.DijkstraWithRoute(0).ToObject().Should().BeStrictlyEquivalentTo([
             new DijkstraWithRouteResult<long, WEdge<long>>(0, []),
             new(1 * LARGE + 1, [new(1, LARGE + 1)]),
             new(2 * LARGE + 6, [new(2, LARGE + 5), new(1, LARGE + 1)]),
             new(4 * LARGE + 18, [new(3, LARGE + 6), new(4, LARGE + 6), new(2, LARGE + 5), new(1, LARGE + 1)]),
             new(3 * LARGE + 12, [new(4, LARGE + 6), new(2, LARGE + 5), new(1, LARGE + 1)]),
         ]);
-        await graph.DijkstraWithRoute(1).ToObject().Should().BeEquivalentOrderTo([
+        await graph.DijkstraWithRoute(1).ToObject().Should().BeStrictlyEquivalentTo([
             new DijkstraWithRouteResult<long, WEdge<long>>(3 * LARGE + 12, [new(0, LARGE + 1), new(4, LARGE + 6), new(2, LARGE + 5)]),
             new(0L, []),
             new(1 * LARGE + 5, [new(2, LARGE + 5)]),
             new(3 * LARGE + 17, [new(3, LARGE + 6), new(4, LARGE + 6), new(2, LARGE + 5)]),
             new(2 * LARGE + 11, [new(4, LARGE + 6), new(2, LARGE + 5)]),
         ]);
-        await graph.DijkstraWithRoute(2).ToObject().Should().BeEquivalentOrderTo([
+        await graph.DijkstraWithRoute(2).ToObject().Should().BeStrictlyEquivalentTo([
             new DijkstraWithRouteResult<long, WEdge<long>>(2 * LARGE + 7, [new(0, LARGE + 1), new(4, LARGE + 6)]),
             new(3 * LARGE + 8, [new(1, LARGE + 1), new(0, LARGE + 1), new(4, LARGE + 6)]),
             new(0L, []),
             new(2 * LARGE + 12, [new(3, LARGE + 6), new(4, LARGE + 6)]),
             new(1 * LARGE + 6, [new(4, LARGE + 6)]),
         ]);
-        await graph.DijkstraWithRoute(3).ToObject().Should().BeEquivalentOrderTo([
+        await graph.DijkstraWithRoute(3).ToObject().Should().BeStrictlyEquivalentTo([
             new DijkstraWithRouteResult<long, WEdge<long>>(long.MaxValue, null),
             new(long.MaxValue, null),
             new(long.MaxValue, null),
             new(0L, []),
             new(long.MaxValue, null),
         ]);
-        await graph.DijkstraWithRoute(4).ToObject().Should().BeEquivalentOrderTo([
+        await graph.DijkstraWithRoute(4).ToObject().Should().BeStrictlyEquivalentTo([
             new DijkstraWithRouteResult<long, WEdge<long>>(1 * LARGE + 1, [new(0, LARGE + 1)]),
             new(2 * LARGE + 2, [new(1, LARGE + 1), new(0, LARGE + 1)]),
             new(3 * LARGE + 7, [new(2, LARGE + 5), new(1, LARGE + 1), new(0, LARGE + 1)]),

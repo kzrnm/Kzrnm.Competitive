@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -7,6 +8,7 @@ namespace Kzrnm.Competitive
 {
     public static class ExComparer<T>
     {
+        [RequiresUnreferencedCode("Expression.Compile may not work correctly when trimming is enabled.")]
         class ExpressionComparer<K> : IComparer<T> where K : IComparable<K>
         {
             class ParameterReplaceVisitor : ExpressionVisitor
@@ -38,6 +40,7 @@ namespace Kzrnm.Competitive
             public override bool Equals(object obj) => obj is ExpressionComparer<K> c && func == c.func;
             public override int GetHashCode() => func.GetHashCode();
         }
+        [RequiresUnreferencedCode("Expression.Compile may not work correctly when trimming is enabled.")]
         public static IComparer<T> CreateExp<K>(Expression<Func<T, K>> expression) where K : IComparable<K> => new ExpressionComparer<K>(expression);
     }
 }

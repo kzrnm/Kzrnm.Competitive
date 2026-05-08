@@ -3,8 +3,11 @@
     <CompilerVisibleProperty Include="CompetitiveAnalyzer_UseMethodImplNumeric" />
   </ItemGroup>
   <PropertyGroup>
-    <SourceExpanderVersion>8.2.0</SourceExpanderVersion>
+    <SourceExpanderVersion>8.3.0</SourceExpanderVersion>
     <CompetitiveAnalyzer_UseMethodImplNumeric>True</CompetitiveAnalyzer_UseMethodImplNumeric>
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
+
+    <OptimizationPreference>Speed</OptimizationPreference>
+    <IlcInstructionSet>native</IlcInstructionSet>
   </PropertyGroup>
 </Project>

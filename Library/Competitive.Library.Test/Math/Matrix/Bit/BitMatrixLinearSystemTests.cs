@@ -60,7 +60,7 @@ public class BitMatrixLinearSystemTests
         await bitsResult.Length.Should().BeEqualTo(boolsResult.Length);
         for (int i = 0; i < bitsResult.Length; i++)
         {
-            await bitsResult[i].Cast<bool>().Should().BeEquivalentOrderTo(boolsResult[i].Cast<bool>());
+            await bitsResult[i].Cast<bool>().Should().BeStrictlyEquivalentTo(boolsResult[i].Cast<bool>());
         }
     }
 
@@ -76,7 +76,7 @@ public class BitMatrixLinearSystemTests
         }
 
         await genericResult.Length.Should().BeEqualTo(bitsResult.Length);
-        await genericResult.Should().BeEquivalentOrderTo(bitsResult);
+        await genericResult.Should().BeStrictlyEquivalentTo(bitsResult);
     }
 
     static T ToNumber<T>(BitArray bits) where T : IBinaryInteger<T>

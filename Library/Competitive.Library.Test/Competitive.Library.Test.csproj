@@ -11,6 +11,9 @@
     <OutputType>Exe</OutputType>
     <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
     <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+
+    <IsAotCompatible>true</IsAotCompatible>
+    <DefineConstants Condition="'$(PublishAot)' == 'true'">$(DefineConstants);AOT</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -28,7 +31,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SourceExpander.Embedder.Testing" Version="8.2.0" />
+    <PackageReference Include="SourceExpander.Embedder.Testing" Version="8.3.0" />
     <PackageReference Include="TUnit.Assertions.Should" Version="1.43.11-beta" />
     <ProjectReference Include="..\Competitive.Library\Competitive.Library.csproj" />
   </ItemGroup>

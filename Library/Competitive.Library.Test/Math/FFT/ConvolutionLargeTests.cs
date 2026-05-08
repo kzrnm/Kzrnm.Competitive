@@ -4,15 +4,6 @@ namespace Kzrnm.Competitive.Testing.MathNS;
 
 public class ConvolutionLargeTests
 {
-#pragma warning disable IDE0079
-#pragma warning disable xUnit1004 // Test methods should not be skipped
-#pragma warning restore IDE0079
-    public static bool LibraryTest
-#if LIBRARY
-        => true;
-#else
-        => false;
-#endif
     private readonly struct Mod998244353 : IStaticMod
     {
         public uint Mod => 998244353;
@@ -20,7 +11,7 @@ public class ConvolutionLargeTests
     }
 
     [Test, MultipleAssertions]
-    [Skip("重いので飛ばす")]
+    [TooHeavySkip]
     public async Task Large998244353_2_23_Alpha()
     {
         var len = NumberTheoreticTransform<Mod998244353>.NttLength();
@@ -40,7 +31,7 @@ public class ConvolutionLargeTests
     }
 
     [Test, MultipleAssertions]
-    [Skip("重いので飛ばす")]
+    [TooHeavySkip]
     public async Task Large998244353_2_24()
     {
         var len = NumberTheoreticTransform<Mod998244353>.NttLength();
@@ -88,7 +79,7 @@ public class ConvolutionLargeTests
     [MethodDataSource(nameof(EmptyIntTestData))]
     public async Task EmptyInt(int[] a, int[] b, uint[] expected)
     {
-        await ConvolutionLarge.Convolution<Mod998244353>(a, b).Should().BeEquivalentOrderTo(expected);
+        await ConvolutionLarge.Convolution<Mod998244353>(a, b).Should().BeStrictlyEquivalentTo(expected);
     }
 
     [Test, MultipleAssertions]
@@ -110,7 +101,7 @@ public class ConvolutionLargeTests
                     b[i] = rnd.NextUInt() % 998244353;
                 }
 
-                await ConvolutionLarge.Convolution<Mod998244353>(a, b).Should().BeEquivalentOrderTo(ConvNative(a, b, 998244353));
+                await ConvolutionLarge.Convolution<Mod998244353>(a, b).Should().BeStrictlyEquivalentTo(ConvNative(a, b, 998244353));
             }
     }
 }

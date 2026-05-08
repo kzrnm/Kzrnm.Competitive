@@ -29,7 +29,7 @@ public class KnapsackTests
             -4611686018427386836,
         };
 
-        await Knapsack.SmallWeight(w.Zip(v).ToArray(), W).Should().BeEquivalentOrderTo(expected[..(W + 1)]);
+        await Knapsack.SmallWeight(w.Zip(v).ToArray(), W).Should().BeStrictlyEquivalentTo(expected[..(W + 1)]);
     }
 
     [Test]
@@ -60,6 +60,6 @@ public class KnapsackTests
             11,
         };
 
-        await Knapsack.SmallValue(w.Zip(v).ToArray()).Should().BeEquivalentOrderTo(expected);
+        await Knapsack.SmallValue(w.Zip(v).ToArray()).Should().BeStrictlyEquivalentTo(expected);
     }
 }

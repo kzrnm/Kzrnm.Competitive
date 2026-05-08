@@ -19,7 +19,7 @@ public class オイラー路Tests
         gb.Add(7, 0);
         var (from, edges) = gb.ToGraph().EulerianTrail();
         await from.Should().BeEqualTo(0);
-        await edges.Should().BeEquivalentOrderTo([
+        await edges.Should().BeStrictlyEquivalentTo([
             new GraphEdge(1),
             new GraphEdge(2),
             new GraphEdge(3),
@@ -49,7 +49,7 @@ public class オイラー路Tests
         gb.Add(7, 0);
         var (from, edges) = gb.ToGraph().EulerianTrail();
         await from.Should().BeEqualTo(0);
-        await edges.Should().BeEquivalentOrderTo([
+        await edges.Should().BeStrictlyEquivalentTo([
             new GraphEdge(1),
             new GraphEdge(2),
             new GraphEdge(3),
@@ -79,7 +79,7 @@ public class オイラー路Tests
         gb.Add(7, 0, 10);
         var (from, edges) = gb.ToGraph().EulerianTrail();
         await from.Should().BeEqualTo(0);
-        await edges.Should().BeEquivalentOrderTo([
+        await edges.Should().BeStrictlyEquivalentTo([
             new WEdge<int>(1, 1),
             new WEdge<int>(2, 2),
             new WEdge<int>(3, 3),
