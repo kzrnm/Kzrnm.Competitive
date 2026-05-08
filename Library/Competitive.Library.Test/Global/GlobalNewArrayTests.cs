@@ -7,7 +7,7 @@ public class GlobalNewArrayTests
     {
         var arr = Global.NewArray(2, 1);
         await arr.Length.Should().BeEqualTo(2);
-        await arr.Should().BeEquivalentOrderTo(Enumerable.Repeat(1, 2));
+        await arr.Should().BeStrictlyEquivalentTo(Enumerable.Repeat(1, 2));
     }
     [Test, MultipleAssertions]
     public async Task NewArrayFunc1()
@@ -21,7 +21,7 @@ public class GlobalNewArrayTests
     {
         var arr = Global.NewArray(2, 3, 1);
         await arr.SelectMany(a => a).Count().Should().BeEqualTo(6);
-        await arr.SelectMany(a => a).Should().BeEquivalentOrderTo(Enumerable.Repeat(1, 6));
+        await arr.SelectMany(a => a).Should().BeStrictlyEquivalentTo(Enumerable.Repeat(1, 6));
     }
     [Test, MultipleAssertions]
     public async Task NewArrayFunc2()
@@ -35,7 +35,7 @@ public class GlobalNewArrayTests
     {
         var arr = Global.NewArray(2, 3, 5, 1);
         await arr.SelectMany(a => a).SelectMany(a => a).Count().Should().BeEqualTo(30);
-        await arr.SelectMany(a => a).SelectMany(a => a).Should().BeEquivalentOrderTo(Enumerable.Repeat(1, 30));
+        await arr.SelectMany(a => a).SelectMany(a => a).Should().BeStrictlyEquivalentTo(Enumerable.Repeat(1, 30));
     }
     [Test, MultipleAssertions]
     public async Task NewArrayFunc3()
@@ -49,7 +49,7 @@ public class GlobalNewArrayTests
     {
         var arr = Global.NewArray(2, 3, 5, 7, 1);
         await arr.SelectMany(a => a).SelectMany(a => a).SelectMany(a => a).Count().Should().BeEqualTo(210);
-        await arr.SelectMany(a => a).SelectMany(a => a).SelectMany(a => a).Should().BeEquivalentOrderTo(Enumerable.Repeat(1, 210));
+        await arr.SelectMany(a => a).SelectMany(a => a).SelectMany(a => a).Should().BeStrictlyEquivalentTo(Enumerable.Repeat(1, 210));
     }
     [Test, MultipleAssertions]
     public async Task NewArrayFunc4()

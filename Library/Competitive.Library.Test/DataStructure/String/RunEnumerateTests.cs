@@ -40,7 +40,7 @@ public class RunEnumerateTests
             await got.Length.Should().BeEqualTo(expected.Length);
             for (int i = 0; i < got.Length; i++)
             {
-                await got[i].Should().BeEquivalentOrderTo(expected[i]);
+                await got[i].Should().BeStrictlyEquivalentTo(expected[i]);
             }
         }
     }

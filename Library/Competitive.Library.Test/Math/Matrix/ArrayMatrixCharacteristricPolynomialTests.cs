@@ -6,7 +6,6 @@ using System.Runtime.InteropServices;
 namespace Kzrnm.Competitive.Testing.MathNS.Matrix;
 
 using ModInt = StaticModInt<Mod1000000007>;
-[ThousandOfTestcases]
 public class ArrayMatrixCharacteristricPolynomialTests
 {
     public static IEnumerable<ImmutableArray<int>> Size3_Data()
@@ -41,8 +40,8 @@ public class ArrayMatrixCharacteristricPolynomialTests
             new([-v[3 * 1 + 0]]), new([-v[3 * 1 + 1], 1]), new([-v[3 * 1 + 2]]),
             new([-v[3 * 2 + 0]]), new([-v[3 * 2 + 1]]), new([-v[3 * 2 + 2], 1]))
             .Determinant();
-        await new ArrayMatrix<ModInt>(a, 3, 3).CharacteristricPolynomial().Should().BeEquivalentOrderTo(expected.Coefficients);
-        await new ArrayMatrix<ModInt>(a, 3, 3).CharacteristricPolynomial(false).Should().BeEquivalentOrderTo((-expected).Coefficients);
+        await new ArrayMatrix<ModInt>(a, 3, 3).CharacteristricPolynomial().Should().BeStrictlyEquivalentTo(expected.Coefficients);
+        await new ArrayMatrix<ModInt>(a, 3, 3).CharacteristricPolynomial(false).Should().BeStrictlyEquivalentTo((-expected).Coefficients);
     }
 
     public static IEnumerable<ImmutableArray<int>> Size4_Data()
@@ -78,7 +77,7 @@ public class ArrayMatrixCharacteristricPolynomialTests
             new([-v[4 * 2 + 0]]), new([-v[4 * 2 + 1]]), new([-v[4 * 2 + 2], 1]), new([-v[4 * 2 + 3]]),
             new([-v[4 * 3 + 0]]), new([-v[4 * 3 + 1]]), new([-v[4 * 3 + 2]]), new([-v[4 * 3 + 3], 1]))
             .Determinant();
-        await new ArrayMatrix<ModInt>(a, 4, 4).CharacteristricPolynomial().Should().BeEquivalentOrderTo(expected.Coefficients);
+        await new ArrayMatrix<ModInt>(a, 4, 4).CharacteristricPolynomial().Should().BeStrictlyEquivalentTo(expected.Coefficients);
     }
 
     class PolynominalMatrix3x3<T> where T : INumberBase<T>

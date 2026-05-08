@@ -22,7 +22,7 @@ public class SetDictionaryTests
         set.Add(1, 10);
         set.Add(2, 11);
         set.Add(3, 12);
-        await set.ToArray().Should().BeEquivalentTo(new Dictionary<int, int>
+        await set.ToArray().Should().BeStrictlyEquivalentTo(new Dictionary<int, int>
         {
             {1,5},
             {2,6},
@@ -35,7 +35,7 @@ public class SetDictionaryTests
             {9,4},
         });
         set.Remove(5);
-        await set.ToArray().Should().BeEquivalentTo(new Dictionary<int, int>
+        await set.ToArray().Should().BeStrictlyEquivalentTo(new Dictionary<int, int>
         {
             {1,5},
             {2,6},
@@ -83,7 +83,7 @@ public class SetDictionaryTests
         await set.TryGetUpperBound(9, out _).Should().BeFalse();
 
         set.RemoveNode(set.FindNodeLowerBound(5));
-        await set.ToArray().Should().BeEquivalentTo(new Dictionary<int, int>
+        await set.ToArray().Should().BeStrictlyEquivalentTo(new Dictionary<int, int>
         {
             {1,5},
             {2,6},
@@ -95,7 +95,7 @@ public class SetDictionaryTests
         });
 
         set.RemoveNode(set.FindNodeLowerBound(0));
-        await set.ToArray().Should().BeEquivalentTo(new Dictionary<int, int>
+        await set.ToArray().Should().BeStrictlyEquivalentTo(new Dictionary<int, int>
         {
             {2,6},
             {3,7},
@@ -106,7 +106,7 @@ public class SetDictionaryTests
         });
 
         set.RemoveNode(set.FindNodeLowerBound(9));
-        await set.ToArray().Should().BeEquivalentTo(new Dictionary<int, int>
+        await set.ToArray().Should().BeStrictlyEquivalentTo(new Dictionary<int, int>
         {
             {2,6},
             {3,7},
@@ -135,7 +135,7 @@ public class SetDictionaryTests
         set.Add(1, 10);
         set.Add(2, 11);
         set.Add(3, 12);
-        await set.ToArray().Should().BeEquivalentOrderTo([
+        await set.ToArray().Should().BeStrictlyEquivalentTo([
             KeyValuePair.Create(1,5),
             KeyValuePair.Create(1,10),
             KeyValuePair.Create(2,6),
@@ -151,7 +151,7 @@ public class SetDictionaryTests
             KeyValuePair.Create(9,4),
         ]);
         set.Remove(5);
-        await set.ToArray().Should().BeEquivalentOrderTo([
+        await set.ToArray().Should().BeStrictlyEquivalentTo([
             KeyValuePair.Create(1,5),
             KeyValuePair.Create(1,10),
             KeyValuePair.Create(2,6),
@@ -221,7 +221,7 @@ public class SetDictionaryTests
         set.Add(1, 10);
         set.Add(2, 11);
         set.Add(3, 12);
-        await set.ToArray().Should().BeEquivalentTo(new Dictionary<int, int>
+        await set.ToArray().Should().BeStrictlyEquivalentTo(new Dictionary<int, int>
         {
             {9,4},
             {8,3},
@@ -234,7 +234,7 @@ public class SetDictionaryTests
             {1,5},
         });
         set.Remove(5);
-        await set.ToArray().Should().BeEquivalentTo(new Dictionary<int, int>
+        await set.ToArray().Should().BeStrictlyEquivalentTo(new Dictionary<int, int>
         {
             {9,4},
             {8,3},

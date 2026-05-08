@@ -41,7 +41,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
                     await tree[i].Should().BeEqualTo(expected[i]);
                 }
             }
-            await tree.Should().BeEquivalentOrderTo(p);
+            await tree.Should().BeStrictlyEquivalentTo(p);
             await Test();
 
 
@@ -69,13 +69,13 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
     {
         var tree = Create(new int[10]);
         await tree.AllProd.Should().BeEqualTo(0);
-        await tree.Should().BeEquivalentOrderTo([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+        await tree.Should().BeStrictlyEquivalentTo([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
         tree = tree.Apply(0, 3, 5);
-        await tree.Should().BeEquivalentOrderTo([5, 5, 5, 0, 0, 0, 0, 0, 0, 0]);
+        await tree.Should().BeStrictlyEquivalentTo([5, 5, 5, 0, 0, 0, 0, 0, 0, 0]);
         await tree.Prod(0, 1).Should().BeEqualTo(5);
         await tree.AllProd.Should().BeEqualTo(15);
         tree = tree.Apply(2, 3, -10);
-        await tree.Should().BeEquivalentOrderTo([5, 5, -5, 0, 0, 0, 0, 0, 0, 0]);
+        await tree.Should().BeStrictlyEquivalentTo([5, 5, -5, 0, 0, 0, 0, 0, 0, 0]);
         await tree.Prod(2, 3).Should().BeEqualTo(-5);
         await tree.Prod(2, 4).Should().BeEqualTo(-5);
         await tree.Prod(1, 4).Should().BeEqualTo(0);
@@ -102,7 +102,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
         {
             savedTree.Add(tree);
             savedExpects.Add(expected.ToArray());
-            await tree.Should().BeEquivalentOrderTo(expected);
+            await tree.Should().BeStrictlyEquivalentTo(expected);
             for (int i = 0; i < N; i++)
                 await tree[i].Should().BeEqualTo(expected[i]);
         }
@@ -124,7 +124,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
         }
 
         for (int i = 0; i < savedTree.Count; i++)
-            await savedTree[i].Should().BeEquivalentOrderTo(savedExpects[i]);
+            await savedTree[i].Should().BeStrictlyEquivalentTo(savedExpects[i]);
     }
 
     [Test, MultipleAssertions]
@@ -148,7 +148,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
         {
             savedTree.Add(tree);
             savedExpects.Add(list.ToArray());
-            await tree.Should().BeEquivalentOrderTo(list);
+            await tree.Should().BeStrictlyEquivalentTo(list);
             for (int i = 0; i < list.Count; i++)
                 await tree[i].Should().BeEqualTo(list[i]);
         }
@@ -185,7 +185,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
         }
 
         for (int i = 0; i < savedTree.Count; i++)
-            await savedTree[i].Should().BeEquivalentOrderTo(savedExpects[i]);
+            await savedTree[i].Should().BeStrictlyEquivalentTo(savedExpects[i]);
     }
 
     [Test, MultipleAssertions]
@@ -209,7 +209,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
         {
             savedTree.Add(tree);
             savedExpects.Add(list.ToArray());
-            await tree.Should().BeEquivalentOrderTo(list);
+            await tree.Should().BeStrictlyEquivalentTo(list);
             for (int i = 0; i < list.Count; i++)
                 await tree[i].Should().BeEqualTo(list[i]);
         }
@@ -232,7 +232,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
         }
 
         for (int i = 0; i < savedTree.Count; i++)
-            await savedTree[i].Should().BeEquivalentOrderTo(savedExpects[i]);
+            await savedTree[i].Should().BeStrictlyEquivalentTo(savedExpects[i]);
     }
 
     [Test, MultipleAssertions]
@@ -251,7 +251,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
         {
             savedTree.Add(tree);
             savedExpects.Add(list.ToArray());
-            await tree.Should().BeEquivalentOrderTo(list);
+            await tree.Should().BeStrictlyEquivalentTo(list);
             for (int i = 0; i < list.Count; i++)
                 await tree[i].Should().BeEqualTo(list[i]);
         }
@@ -272,7 +272,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
         }
 
         for (int i = 0; i < savedTree.Count; i++)
-            await savedTree[i].Should().BeEquivalentOrderTo(savedExpects[i]);
+            await savedTree[i].Should().BeStrictlyEquivalentTo(savedExpects[i]);
     }
 
     [Test, MultipleAssertions]
@@ -291,7 +291,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
         {
             savedTree.Add(tree);
             savedExpects.Add(list.ToArray());
-            await tree.Should().BeEquivalentOrderTo(list);
+            await tree.Should().BeStrictlyEquivalentTo(list);
             for (int i = 0; i < list.Count; i++)
                 await tree[i].Should().BeEqualTo(list[i]);
         }
@@ -312,7 +312,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
         }
 
         for (int i = 0; i < savedTree.Count; i++)
-            await savedTree[i].Should().BeEquivalentOrderTo(savedExpects[i]);
+            await savedTree[i].Should().BeStrictlyEquivalentTo(savedExpects[i]);
     }
 
     [Test, MultipleAssertions]
@@ -331,7 +331,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
         {
             savedTree.Add(tree);
             savedExpects.Add(list.ToArray());
-            await tree.Should().BeEquivalentOrderTo(list);
+            await tree.Should().BeStrictlyEquivalentTo(list);
             for (int i = 0; i < list.Count; i++)
                 await tree[i].Should().BeEqualTo(list[i]);
         }
@@ -345,7 +345,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
         }
 
         for (int i = 0; i < savedTree.Count; i++)
-            await savedTree[i].Should().BeEquivalentOrderTo(savedExpects[i]);
+            await savedTree[i].Should().BeStrictlyEquivalentTo(savedExpects[i]);
     }
 
     [Test, MultipleAssertions]
@@ -369,7 +369,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
         {
             savedTree.Add(tree);
             savedExpects.Add(list.ToArray());
-            await tree.Should().BeEquivalentOrderTo(list);
+            await tree.Should().BeStrictlyEquivalentTo(list);
             for (int i = 0; i < list.Count; i++)
                 await tree[i].Should().BeEqualTo(list[i]);
         }
@@ -387,6 +387,6 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
         }
 
         for (int i = 0; i < savedTree.Count; i++)
-            await savedTree[i].Should().BeEquivalentOrderTo(savedExpects[i]);
+            await savedTree[i].Should().BeStrictlyEquivalentTo(savedExpects[i]);
     }
 }

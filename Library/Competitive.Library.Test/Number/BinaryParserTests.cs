@@ -1,6 +1,5 @@
 namespace Kzrnm.Competitive.Testing.Number;
 
-[ThousandOfTestcases]
 public class BinaryParserTests
 {
     public static IEnumerable<uint> ParseUInt32_Data()
@@ -17,6 +16,7 @@ public class BinaryParserTests
         }
     }
 
+    [ThousandOfTestcases]
     [Test]
     [MethodDataSource(nameof(ParseUInt32_Data))]
     public async Task ParseUInt32(uint num)
@@ -39,6 +39,7 @@ public class BinaryParserTests
         }
     }
 
+    [ThousandOfTestcases]
     [Test]
     [MethodDataSource(nameof(ParseUInt64_Data))]
     public async Task ParseUInt64(ulong num)
@@ -47,12 +48,13 @@ public class BinaryParserTests
         await BinaryParser.ParseUInt64(str).Should().BeEqualTo(num);
     }
 
+    [ThousandOfTestcases]
     [Test, MultipleAssertions]
     [MethodDataSource<BitArrayCase>(nameof(BitArrayCase.LongBinaryTexts))]
     public async Task ParseBitArray(string input)
     {
         var bits = BinaryParser.ParseBitArray(input);
-        await bits.Cast<bool>().Should().BeEquivalentOrderTo(input.Select(c => c != '0').ToArray());
+        await bits.Cast<bool>().Should().BeStrictlyEquivalentTo(input.Select(c => c != '0').ToArray());
 
         await bits.Length.Should().BeEqualTo(input.Length);
 

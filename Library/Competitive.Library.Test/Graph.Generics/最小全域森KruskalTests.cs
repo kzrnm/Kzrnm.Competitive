@@ -19,7 +19,7 @@ public class 最小全域森KruskalTests
         var graph = gb.ToGraph();
         var res = graph.MinimumSpanningForestKruskal();
         await res.Length.Should().BeEqualTo(1);
-        await res[0].Should().BeEquivalentOrderTo([
+        await res[0].Should().BeStrictlyEquivalentTo([
             (0, new GraphEdge(1)),
             (0, new GraphEdge(2)),
             (0, new GraphEdge(3)),
@@ -40,15 +40,15 @@ public class 最小全域森KruskalTests
         var graph = gb.ToGraph();
         var res = graph.MinimumSpanningForestKruskal();
         await res.Length.Should().BeEqualTo(3);
-        await res[0].Should().BeEquivalentOrderTo([
+        await res[0].Should().BeStrictlyEquivalentTo([
             (0, new GraphEdge(1)),
             (0, new GraphEdge(2)),
         ]);
-        await res[1].Should().BeEquivalentOrderTo([
+        await res[1].Should().BeStrictlyEquivalentTo([
             (3, new GraphEdge(4)),
             (4, new GraphEdge(7)),
         ]);
-        await res[2].Should().BeEquivalentOrderTo([
+        await res[2].Should().BeStrictlyEquivalentTo([
             (5, new GraphEdge(6)),
         ]);
     }
@@ -63,7 +63,7 @@ public class 最小全域森KruskalTests
         var graph = gb.ToGraph();
         var res = graph.MinimumSpanningForestKruskal();
         await res.Length.Should().BeEqualTo(1);
-        await res[0].Should().BeEquivalentOrderTo([
+        await res[0].Should().BeStrictlyEquivalentTo([
             (0, new GraphEdge(2)),
             (1, new GraphEdge(3)),
             (2, new GraphEdge(3)),
@@ -86,7 +86,7 @@ public class 最小全域森KruskalTests
         var graph = gb.ToGraph();
         var res = graph.MinimumSpanningForestKruskal();
         await res.Length.Should().BeEqualTo(1);
-        await res[0].Should().BeEquivalentOrderTo([
+        await res[0].Should().BeStrictlyEquivalentTo([
             (0, new WEdge<int>(1, 1)),
             (0, new WEdge<int>(4, 1)),
             (1, new WEdge<int>(2, 5)),
@@ -110,7 +110,7 @@ public class 最小全域森KruskalTests
         var graph = gb.ToGraph();
         var res = graph.MinimumSpanningForestKruskal();
         await res.Length.Should().BeEqualTo(1);
-        await res[0].Should().BeEquivalentOrderTo([
+        await res[0].Should().BeStrictlyEquivalentTo([
             (0, new WEdge<long>(1, 1)),
             (0, new WEdge<long>(4, 1)),
             (1, new WEdge<long>(2, 5)),
@@ -132,15 +132,15 @@ public class 最小全域森KruskalTests
         var graph = gb.ToGraph();
         var res = graph.MinimumSpanningForestKruskal();
         await res.Length.Should().BeEqualTo(3);
-        await res[0].Should().BeEquivalentOrderTo([
+        await res[0].Should().BeStrictlyEquivalentTo([
             (0, new WEdge<int>(1, 1)),
             (0, new WEdge<int>(2, 2)),
         ]);
-        await res[1].Should().BeEquivalentOrderTo([
+        await res[1].Should().BeStrictlyEquivalentTo([
             (3, new WEdge<int>(4, 4)),
             (4, new WEdge<int>(7, 5)),
         ]);
-        await res[2].Should().BeEquivalentOrderTo([
+        await res[2].Should().BeStrictlyEquivalentTo([
             (5, new WEdge<int>(6, 6)),
         ]);
     }
@@ -155,7 +155,7 @@ public class 最小全域森KruskalTests
         var graph = gb.ToGraph();
         var res = graph.MinimumSpanningForestKruskal();
         await res.Length.Should().BeEqualTo(1);
-        await res[0].Should().BeEquivalentOrderTo([
+        await res[0].Should().BeStrictlyEquivalentTo([
             (0, new WEdge<int>(2, 1)),
             (1, new WEdge<int>(3, 1)),
             (2, new WEdge<int>(3, 10)),

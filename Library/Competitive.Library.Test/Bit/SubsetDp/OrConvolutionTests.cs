@@ -20,7 +20,7 @@ public class OrConvolutionTests
                 a[i] = (uint)rnd.Next(100);
                 b[i] = (uint)rnd.Next(100);
             }
-            await OrConvolution.Convolution(a, b).Should().BeEquivalentOrderTo(Naive(a, b));
+            await OrConvolution.Convolution(a, b).Should().BeStrictlyEquivalentTo(Naive(a, b));
         }
     }
 
@@ -39,7 +39,7 @@ public class OrConvolutionTests
                 a[i] = rnd.Next(int.MaxValue / len);
                 b[i] = rnd.Next(int.MaxValue / len);
             }
-            await OrConvolution.Convolution(a, b).Should().BeEquivalentOrderTo(Naive(a, b));
+            await OrConvolution.Convolution(a, b).Should().BeStrictlyEquivalentTo(Naive(a, b));
         }
     }
 
@@ -57,7 +57,7 @@ public class OrConvolutionTests
                 a[i] = rnd.Next();
                 b[i] = rnd.Next();
             }
-            await OrConvolution.Convolution(a, b).Should().BeEquivalentOrderTo(Naive(a, b));
+            await OrConvolution.Convolution(a, b).Should().BeStrictlyEquivalentTo(Naive(a, b));
         }
     }
 
@@ -75,7 +75,7 @@ public class OrConvolutionTests
                 a[i] = rnd.Next();
                 b[i] = rnd.Next();
             }
-            await OrConvolution.Convolution(a, b).Should().BeEquivalentOrderTo(Naive(a, b));
+            await OrConvolution.Convolution(a, b).Should().BeStrictlyEquivalentTo(Naive(a, b));
         }
     }
 

@@ -339,7 +339,7 @@ public class Matrix4x4Tests
             (9, 10, 11, 12),
             (13, 14, 15, 16)
         );
-        await mat.AsSpan().ToArray().Should().BeEquivalentOrderTo([
+        await mat.AsSpan().ToArray().Should().BeStrictlyEquivalentTo([
              1L, 2L, 3L, 4L,
              5L, 6L, 7L, 8L,
              9L,10L,11L,12L,
@@ -357,7 +357,7 @@ public class Matrix4x4Tests
             ((UInt24)9, (UInt24)10, (UInt24)11, (UInt24)12),
             ((UInt24)13, (UInt24)14, (UInt24)15, (UInt24)16)
         );
-        await mat.AsSpan().ToArray().Should().BeEquivalentOrderTo([
+        await mat.AsSpan().ToArray().Should().BeStrictlyEquivalentTo([
             (UInt24)1, (UInt24)2, (UInt24)3, (UInt24)4,
             (UInt24)5, (UInt24)6, (UInt24)7, (UInt24)8,
             (UInt24)9, (UInt24)10,(UInt24)11,(UInt24)12,

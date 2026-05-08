@@ -193,8 +193,8 @@ public class PointDoubleTests
     [MethodDataSource(nameof(ConvexHull_Data))]
     public async Task ConvexHull(Point[] points, int[] expectedNotStrict, int[] expectedStrict)
     {
-        await Point.ConvexHull(points).Should().BeEquivalentOrderTo(expectedNotStrict);
-        await Point.ConvexHull(points, true).Should().BeEquivalentOrderTo(expectedStrict);
+        await Point.ConvexHull(points).Should().BeStrictlyEquivalentTo(expectedNotStrict);
+        await Point.ConvexHull(points, true).Should().BeStrictlyEquivalentTo(expectedStrict);
     }
     public static IEnumerable<(Point, Point, Point, Point)> 外心_Data => [
         (new (0,0), new (1,0), new (0,1), new (0.5000000000000001,0.5000000000000001)),
@@ -280,7 +280,7 @@ public class PointDoubleTests
     [MethodDataSource(nameof(直線と円の交点_Data))]
     public async Task 直線と円の交点(double a, double b, double c, Point p, double r, Point[] expected)
     {
-        await Point.直線と円の交点(a, b, c, p, r).Order().Should().BeEquivalentOrderTo(expected.Order());
+        await Point.直線と円の交点(a, b, c, p, r).Order().Should().BeStrictlyEquivalentTo(expected.Order());
     }
 
     public static IEnumerable<(Point, double, Point, double, Point[])> 円の交点_Data => [
@@ -295,7 +295,7 @@ public class PointDoubleTests
     [MethodDataSource(nameof(円の交点_Data))]
     public async Task 円の交点(Point p1, double r1, Point p2, double r2, Point[] expected)
     {
-        await Point.円の交点(p1, r1, p2, r2).Order().Should().BeEquivalentOrderTo(expected.Order());
+        await Point.円の交点(p1, r1, p2, r2).Order().Should().BeStrictlyEquivalentTo(expected.Order());
     }
 
     public static IEnumerable<(Point, double, Point, double, CirclePosition)> 円の位置関係_Data => [
@@ -395,7 +395,7 @@ public class PointDoubleTests
     [MethodDataSource(nameof(三角形に分割_Data))]
     public async Task 三角形に分割(Point[] input, (Point, Point, Point)[] expected)
     {
-        await Point.三角形に分割(input).Should().BeEquivalentOrderTo(expected);
+        await Point.三角形に分割(input).Should().BeStrictlyEquivalentTo(expected);
     }
 
     [Test]

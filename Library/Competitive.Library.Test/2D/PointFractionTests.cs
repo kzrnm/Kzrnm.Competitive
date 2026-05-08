@@ -193,8 +193,8 @@ public class PointFractionTests
     [MethodDataSource(nameof(ConvexHull_Data))]
     public async Task ConvexHull(Point[] points, int[] expectedNotStrict, int[] expectedStrict)
     {
-        await Point.ConvexHull(points).Should().BeEquivalentOrderTo(expectedNotStrict);
-        await Point.ConvexHull(points, true).Should().BeEquivalentOrderTo(expectedStrict);
+        await Point.ConvexHull(points).Should().BeStrictlyEquivalentTo(expectedNotStrict);
+        await Point.ConvexHull(points, true).Should().BeStrictlyEquivalentTo(expectedStrict);
     }
 
     public static IEnumerable<(Point, Fraction, Fraction, Fraction, double)> 直線との距離_Data =>
@@ -350,7 +350,7 @@ public class PointFractionTests
     [MethodDataSource(nameof(三角形に分割_Data))]
     public async Task 三角形に分割(Point[] input, (Point, Point, Point)[] expected)
     {
-        await Point.三角形に分割(input).Should().BeEquivalentOrderTo(expected);
+        await Point.三角形に分割(input).Should().BeStrictlyEquivalentTo(expected);
     }
 
     [Test]

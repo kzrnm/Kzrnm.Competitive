@@ -25,7 +25,7 @@ public class BitArrayComparerTests
         await arr.Should().HaveCount(expected.Length);
         for (int i = 0; i < arr.Length; i++)
         {
-            await arr[i].ToUInt32Array().Should().BeEquivalentOrderTo(expected[i]);
+            await arr[i].ToUInt32Array().Should().BeStrictlyEquivalentTo(expected[i]);
         }
     }
 
@@ -50,7 +50,7 @@ public class BitArrayComparerTests
         await arr.Should().HaveCount(expected.Length);
         for (int i = 0; i < arr.Length; i++)
         {
-            await arr[i].ToUInt32Array().Should().BeEquivalentOrderTo(expected[i]);
+            await arr[i].ToUInt32Array().Should().BeStrictlyEquivalentTo(expected[i]);
         }
     }
 }

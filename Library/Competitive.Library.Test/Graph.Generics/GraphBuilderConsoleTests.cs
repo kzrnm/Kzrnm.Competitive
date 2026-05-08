@@ -57,8 +57,8 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
         for (int i = 0; i < graph.Length; i++)
         {
             await graph[i].IsDirected.Should().BeFalse();
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
-            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeStrictlyEquivalentTo(expectedParents[i]);
         }
     }
 
@@ -106,8 +106,8 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
         for (int i = 0; i < graph.Length; i++)
         {
             await graph[i].IsDirected.Should().BeFalse();
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
-            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeStrictlyEquivalentTo(expectedParents[i]);
         }
     }
 
@@ -167,8 +167,8 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
         for (int i = 0; i < graph.Length; i++)
         {
             await graph[i].IsDirected.Should().BeTrue();
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
-            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeStrictlyEquivalentTo(expectedParents[i]);
         }
     }
 
@@ -212,7 +212,7 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
             await graph[i].Parent.Should().BeEqualTo(expectedParent[i]);
         }
     }
@@ -257,7 +257,7 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
             await graph[i].Parent.Should().BeEqualTo(expectedParent[i]);
         }
     }
@@ -303,7 +303,7 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
             await graph[i].Parent.Should().BeEqualTo(expectedParent[i]);
         }
     }
@@ -349,7 +349,7 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
             await graph[i].Parent.Should().BeEqualTo(expectedParent[i]);
         }
     }
@@ -399,8 +399,8 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
         for (int i = 0; i < graph.Length; i++)
         {
             await graph[i].IsDirected.Should().BeFalse();
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
-            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeStrictlyEquivalentTo(expectedParents[i]);
         }
     }
 
@@ -460,8 +460,8 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
         for (int i = 0; i < graph.Length; i++)
         {
             await graph[i].IsDirected.Should().BeTrue();
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
-            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeStrictlyEquivalentTo(expectedParents[i]);
         }
     }
 
@@ -522,8 +522,8 @@ public class GraphBuilderConsoleTests : GraphBuilderConsoleTestsBase
         for (int i = 0; i < graph.Length; i++)
         {
             await graph[i].IsDirected.Should().BeTrue();
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
-            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeStrictlyEquivalentTo(expectedParents[i]);
         }
     }
 }
@@ -576,8 +576,8 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
         for (int i = 0; i < graph.Length; i++)
         {
             await graph[i].IsDirected.Should().BeFalse();
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
-            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeStrictlyEquivalentTo(expectedParents[i]);
         }
     }
 
@@ -637,8 +637,8 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
         for (int i = 0; i < graph.Length; i++)
         {
             await graph[i].IsDirected.Should().BeTrue();
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
-            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeStrictlyEquivalentTo(expectedParents[i]);
         }
     }
 
@@ -698,8 +698,8 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
         for (int i = 0; i < graph.Length; i++)
         {
             await graph[i].IsDirected.Should().BeTrue();
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
-            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeStrictlyEquivalentTo(expectedParents[i]);
         }
     }
 
@@ -743,7 +743,7 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
             await graph[i].Parent.Should().BeEqualTo(expectedParent[i]);
         }
     }
@@ -788,7 +788,7 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
             await graph[i].Parent.Should().BeEqualTo(expectedParent[i]);
         }
     }
@@ -838,8 +838,8 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
         for (int i = 0; i < graph.Length; i++)
         {
             await graph[i].IsDirected.Should().BeFalse();
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
-            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeStrictlyEquivalentTo(expectedParents[i]);
         }
     }
 
@@ -899,8 +899,8 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
         for (int i = 0; i < graph.Length; i++)
         {
             await graph[i].IsDirected.Should().BeTrue();
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
-            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeStrictlyEquivalentTo(expectedParents[i]);
         }
     }
 
@@ -960,8 +960,8 @@ public class WGraphBuilderInt32CreateTests : GraphBuilderConsoleTestsBase
         for (int i = 0; i < graph.Length; i++)
         {
             await graph[i].IsDirected.Should().BeTrue();
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
-            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeStrictlyEquivalentTo(expectedParents[i]);
         }
     }
 }
@@ -1013,8 +1013,8 @@ public class WGraphBuilderInt64CreateTests : GraphBuilderConsoleTestsBase
         for (int i = 0; i < graph.Length; i++)
         {
             await graph[i].IsDirected.Should().BeFalse();
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
-            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeStrictlyEquivalentTo(expectedParents[i]);
         }
     }
 
@@ -1074,8 +1074,8 @@ public class WGraphBuilderInt64CreateTests : GraphBuilderConsoleTestsBase
         for (int i = 0; i < graph.Length; i++)
         {
             await graph[i].IsDirected.Should().BeTrue();
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
-            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeStrictlyEquivalentTo(expectedParents[i]);
         }
     }
 
@@ -1119,7 +1119,7 @@ public class WGraphBuilderInt64CreateTests : GraphBuilderConsoleTestsBase
 
         for (int i = 0; i < graph.Length; i++)
         {
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
             await graph[i].Parent.Should().BeEqualTo(expectedParent[i]);
         }
     }
@@ -1170,8 +1170,8 @@ public class WGraphBuilderInt64CreateTests : GraphBuilderConsoleTestsBase
         for (int i = 0; i < graph.Length; i++)
         {
             await graph[i].IsDirected.Should().BeFalse();
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
-            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeStrictlyEquivalentTo(expectedParents[i]);
         }
     }
 
@@ -1231,8 +1231,8 @@ public class WGraphBuilderInt64CreateTests : GraphBuilderConsoleTestsBase
         for (int i = 0; i < graph.Length; i++)
         {
             await graph[i].IsDirected.Should().BeTrue();
-            await graph[i].Children.Should().BeEquivalentOrderTo(expectedChildren[i]);
-            await graph[i].Parents.Should().BeEquivalentOrderTo(expectedParents[i]);
+            await graph[i].Children.Should().BeStrictlyEquivalentTo(expectedChildren[i]);
+            await graph[i].Parents.Should().BeStrictlyEquivalentTo(expectedParents[i]);
         }
     }
 }

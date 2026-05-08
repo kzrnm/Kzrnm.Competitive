@@ -28,7 +28,7 @@ public class BankersQueueTests
             await queues[i][i].Should().BeSameReferenceAs(BankersQueue<int>.Empty);
             for (int j = i + 1; j < N; j++)
             {
-                await queues[i][j].Should().BeEquivalentOrderTo(Enumerable.Range(i, j - i));
+                await queues[i][j].Should().BeStrictlyEquivalentTo(Enumerable.Range(i, j - i));
             }
         }
     }

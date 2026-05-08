@@ -54,7 +54,7 @@ public class LongestIncreasingSubsequenceTests
     public async Task Strictly(ImmutableArray<int> input, ImmutableArray<LongestIncreasingSubsequence.Result<int>> expected)
     {
         var s = input.ToArray();
-        await LongestIncreasingSubsequence.Lis(s).Should().BeEquivalentOrderTo(expected);
+        await LongestIncreasingSubsequence.Lis(s).Should().BeStrictlyEquivalentTo(expected);
     }
 
     public static IEnumerable<(ImmutableArray<int> input, ImmutableArray<LongestIncreasingSubsequence.Result<int>> expected)> NotStrictly_Data() =>
@@ -65,7 +65,7 @@ public class LongestIncreasingSubsequenceTests
     public async Task NotStrictly(ImmutableArray<int> input, ImmutableArray<LongestIncreasingSubsequence.Result<int>> expected)
     {
         var s = input.ToArray();
-        await LongestIncreasingSubsequence.Lis(s, false).Should().BeEquivalentOrderTo(expected);
+        await LongestIncreasingSubsequence.Lis(s, false).Should().BeStrictlyEquivalentTo(expected);
     }
 
     public static IEnumerable<(ImmutableArray<int> input, ImmutableArray<LongestIncreasingSubsequence.Result<int>> expected)> ReverseStrictly_Data() =>
@@ -76,7 +76,7 @@ public class LongestIncreasingSubsequenceTests
     public async Task ReverseStrictly(ImmutableArray<int> input, ImmutableArray<LongestIncreasingSubsequence.Result<int>> expected)
     {
         var s = input.ToArray();
-        await LongestIncreasingSubsequence.Lis(s, new ReverseComparer<int>()).Should().BeEquivalentOrderTo(expected);
+        await LongestIncreasingSubsequence.Lis(s, new ReverseComparer<int>()).Should().BeStrictlyEquivalentTo(expected);
     }
 
     public static IEnumerable<(ImmutableArray<int> input, ImmutableArray<LongestIncreasingSubsequence.Result<int>> expected)> ReverseNotStrictly_Data() =>
@@ -87,7 +87,7 @@ public class LongestIncreasingSubsequenceTests
     public async Task ReverseNotStrictly(ImmutableArray<int> input, ImmutableArray<LongestIncreasingSubsequence.Result<int>> expected)
     {
         var s = input.ToArray();
-        await LongestIncreasingSubsequence.Lis(s, new ReverseComparer<int>(), false).Should().BeEquivalentOrderTo(expected);
+        await LongestIncreasingSubsequence.Lis(s, new ReverseComparer<int>(), false).Should().BeStrictlyEquivalentTo(expected);
     }
 
     static (ImmutableArray<int> input, ImmutableArray<LongestIncreasingSubsequence.Result<int>> expected)[] ToParams(IEnumerable<CaseData> d, Func<CaseData, ImmutableArray<(int Value, int Index)>> expectedFunc)

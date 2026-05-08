@@ -29,7 +29,7 @@ public class ReverseComparerTests
             382174879
         };
         Array.Sort(arr, new ReverseComparer<int>());
-        await arr.Should().BeEquivalentOrderTo([
+        await arr.Should().BeStrictlyEquivalentTo([
             2014529243,
             1983045250,
             1850902760,

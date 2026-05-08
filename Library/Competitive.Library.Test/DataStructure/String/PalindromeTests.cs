@@ -46,7 +46,7 @@ public class PalindromeTests
     [Arguments("aaaaa", new int[] { 1, 2, 3, 2, 1, })]
     public async Task Manacher(string s, int[] expected)
     {
-        await Palindrome.Manacher(s).Should().BeEquivalentOrderTo(expected);
+        await Palindrome.Manacher(s).Should().BeStrictlyEquivalentTo(expected);
     }
 
     [Test, MultipleAssertions]
@@ -55,7 +55,7 @@ public class PalindromeTests
     [Arguments("aaaaa", new int[] { 1, 2, 3, 4, 5, 4, 3, 2, 1, })]
     public async Task Manacher2(string s, int[] expected)
     {
-        await Palindrome.Manacher2(s).Should().BeEquivalentOrderTo(expected);
+        await Palindrome.Manacher2(s).Should().BeStrictlyEquivalentTo(expected);
         await expected.Length.Should().BeEqualTo(Math.Max(s.Length * 2 - 1, 0));
     }
 }

@@ -1,4 +1,4 @@
-#if !LIBRARY
+#if !LIBRARY && !AOT
 using Kzrnm.Competitive;
 using SourceExpander;
 
@@ -22,10 +22,6 @@ public class SourceExpanderTest
     [Test, Kzrnm.Competitive.Testing.MultipleAssertions]
     public async Task EmbeddedSource()
     {
-        var list = new List<string> { "apple", "banana", "cherry" };
-        await Assert.That(list).Contains("banana");
-        await list.Should().Contain("banana");
-
         var embedded = await EmbeddedData.LoadFromAssembly(typeof(Global));
         await embedded.AssemblyMetadatas.Should().ContainKey("SourceExpander.EmbeddedSourceCode.GZipBase32768");
         await embedded.SourceFiles.Select(s => s.FileName).Should().HaveAtLeast(3);

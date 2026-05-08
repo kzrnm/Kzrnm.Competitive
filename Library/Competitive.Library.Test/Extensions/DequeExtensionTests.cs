@@ -21,7 +21,7 @@ public class DequeExtensionTests
             {
                 await deque[i].Should().BeEqualTo(orig[i]);
             }
-            await deque.Should().BeEquivalentOrderTo(orig);
+            await deque.Should().BeStrictlyEquivalentTo(orig);
         }
     }
     [Test, MultipleAssertions]
@@ -36,7 +36,7 @@ public class DequeExtensionTests
         {
             await deque.Should().HaveCount(0);
             await deque.Should().BeEmpty();
-            await deque.Should().BeEquivalentOrderTo(new int[0]);
+            await deque.Should().BeStrictlyEquivalentTo(new int[0]);
         }
     }
 
@@ -47,7 +47,7 @@ public class DequeExtensionTests
         {
             var deque = new Deque<int> { 1, 2, 3, 4, 5, 6, 7, };
             deque.RemoveFirst(i);
-            await deque.Should().BeEquivalentOrderTo(Enumerable.Range(i + 1, 7 - i));
+            await deque.Should().BeStrictlyEquivalentTo(Enumerable.Range(i + 1, 7 - i));
         }
     }
 
@@ -58,7 +58,7 @@ public class DequeExtensionTests
         {
             var deque = new Deque<int> { 1, 2, 3, 4, 5, 6, 7, };
             deque.RemoveLast(i);
-            await deque.Should().BeEquivalentOrderTo(Enumerable.Range(1, 7 - i));
+            await deque.Should().BeStrictlyEquivalentTo(Enumerable.Range(1, 7 - i));
         }
     }
 }

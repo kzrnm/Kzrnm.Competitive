@@ -5,10 +5,9 @@ namespace Kzrnm.Competitive.Testing.MathNS;
 [NotInParallel]
 public class PrimeFactorizationTests
 {
-    PrimeNumber p = new(1 << 20);
-
-    public IEnumerable<(long Value, bool IsPrime)> IsPrime_Data()
+    public static IEnumerable<(long Value, bool IsPrime)> IsPrime_Data()
     {
+        PrimeNumber p = new(1 << 20);
         for (int i = 0; i < 2000; i++)
         {
             foreach (var start in new[] {
@@ -29,14 +28,12 @@ public class PrimeFactorizationTests
         yield return (89652331L * 96325939, false);
     }
 
-    struct IsPrimeS { }
-
     [ThousandOfTestcases]
     [Test]
     [MethodDataSource(nameof(IsPrime_Data))]
     public async Task IsPrime(long value, bool isPrime)
     {
-        await PrimeFactorization<IsPrimeS>.IsPrime(value).Should().BeEqualTo(isPrime);
+        await PrimeFactorization.IsPrime(value).Should().BeEqualTo(isPrime);
     }
 
     public static IEnumerable<(int, ImmutableArray<int>)> DivisorInt_Data =>
@@ -76,7 +73,7 @@ public class PrimeFactorizationTests
     [MethodDataSource(nameof(DivisorInt_Data))]
     public async Task DivisorInt(int num, ImmutableArray<int> expected)
     {
-        await PrimeFactorization.Divisor(num).Should().BeEquivalentOrderTo(expected);
+        await PrimeFactorization.Divisor(num).Should().BeStrictlyEquivalentTo(expected);
     }
 
     [Test, MultipleAssertions]
@@ -84,16 +81,16 @@ public class PrimeFactorizationTests
     {
         var divisor6480 = PrimeFactorization.Divisor(6480);
         await divisor6480.Length.Should().BeEqualTo(50);
-        await divisor6480[..26].Should().BeEquivalentOrderTo([1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 27, 30, 36, 40, 45, 48, 54, 60, 72, 80, 81]);
-        await divisor6480[^4..].Should().BeEquivalentOrderTo([1620, 2160, 3240, 6480]);
+        await divisor6480[..26].Should().BeStrictlyEquivalentTo([1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 27, 30, 36, 40, 45, 48, 54, 60, 72, 80, 81]);
+        await divisor6480[^4..].Should().BeStrictlyEquivalentTo([1620, 2160, 3240, 6480]);
 
         await PrimeFactorization.Divisor(2095133040).Length.Should().BeEqualTo(1600); //高度合成数
     }
     [Test, MultipleAssertions]
     public async Task DivisorLong()
     {
-        await PrimeFactorization.Divisor(1L).Should().BeEquivalentOrderTo([1L]);
-        await PrimeFactorization.Divisor(128100283921).Should().BeEquivalentOrderTo([
+        await PrimeFactorization.Divisor(1L).Should().BeStrictlyEquivalentTo([1L]);
+        await PrimeFactorization.Divisor(128100283921).Should().BeStrictlyEquivalentTo([
             1,
             71,
             5041,
@@ -101,12 +98,12 @@ public class PrimeFactorizationTests
             25411681,
             1804229351,
             128100283921]);
-        await PrimeFactorization.Divisor(132147483703).Should().BeEquivalentOrderTo([1, 132147483703]);
+        await PrimeFactorization.Divisor(132147483703).Should().BeStrictlyEquivalentTo([1, 132147483703]);
         await PrimeFactorization.Divisor(963761198400).Length.Should().BeEqualTo(6720); //高度合成数
         await PrimeFactorization.Divisor(897612484786617600).Length.Should().BeEqualTo(103680); //高度合成数
 
-        await PrimeFactorization.Divisor(9007199254740997).Should().BeEquivalentOrderTo([1, 9007199254740997]);
-        await PrimeFactorization.Divisor(89652331L * 96325939).Should().BeEquivalentOrderTo([
+        await PrimeFactorization.Divisor(9007199254740997).Should().BeStrictlyEquivalentTo([1, 9007199254740997]);
+        await PrimeFactorization.Divisor(89652331L * 96325939).Should().BeStrictlyEquivalentTo([
             1,
             89652331,
             96325939,
@@ -266,7 +263,7 @@ public class PrimeFactorizationTests
     [MethodDataSource(nameof(StressDivisor_Data))]
     public async Task StressDivisor(long n)
     {
-        await PrimeFactorization.Divisor(n).Should().BeEquivalentOrderTo(NaiveDivisor(n));
+        await PrimeFactorization.Divisor(n).Should().BeStrictlyEquivalentTo(NaiveDivisor(n));
     }
 
     [Test, MultipleAssertions]
@@ -274,7 +271,7 @@ public class PrimeFactorizationTests
     {
         for (int i = 1; i < 257 * 257 + 50; i++)
             await PrimeFactorization.Divisor(i)
-                     .Should().BeEquivalentOrderTo(NaiveDivisor(i).Select(n => checked((int)n)));
+                     .Should().BeStrictlyEquivalentTo(NaiveDivisor(i).Select(n => checked((int)n)));
     }
 
 

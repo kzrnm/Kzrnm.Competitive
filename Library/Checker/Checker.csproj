@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -8,6 +8,10 @@
     <RootNamespace>Kzrnm.Competitive</RootNamespace>
     <Configurations>Debug;Release;Library</Configurations>
     <StartupObject>Program</StartupObject>
+
+    <IsAotCompatible>true</IsAotCompatible>
+
+    <DefineConstants Condition="'$(PublishAot)' == 'true'">$(DefineConstants);AOT</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,7 +19,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="CompetitiveVerifierProblem" Version="*" />
+    <PackageReference Include="CompetitiveVerifierProblem" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -16,11 +16,11 @@ public class 最短経路BellmanFordTests
         gb.Add(4, 3, 6);
         gb.Add(4, 0, 1);
         var graph = gb.ToGraph();
-        await graph.BellmanFord(0).Should().BeEquivalentOrderTo([0, 1, 6, 18, 12]);
-        await graph.BellmanFord(1).Should().BeEquivalentOrderTo([12, 0, 5, 17, 11]);
-        await graph.BellmanFord(2).Should().BeEquivalentOrderTo([7, 8, 0, 12, 6]);
-        await graph.BellmanFord(3).Should().BeEquivalentOrderTo([1073741823, 1073741823, 1073741823, 0, 1073741823]);
-        await graph.BellmanFord(4).Should().BeEquivalentOrderTo([1, 2, 7, 6, 0]);
+        await graph.BellmanFord(0).Should().BeStrictlyEquivalentTo([0, 1, 6, 18, 12]);
+        await graph.BellmanFord(1).Should().BeStrictlyEquivalentTo([12, 0, 5, 17, 11]);
+        await graph.BellmanFord(2).Should().BeStrictlyEquivalentTo([7, 8, 0, 12, 6]);
+        await graph.BellmanFord(3).Should().BeStrictlyEquivalentTo([1073741823, 1073741823, 1073741823, 0, 1073741823]);
+        await graph.BellmanFord(4).Should().BeStrictlyEquivalentTo([1, 2, 7, 6, 0]);
     }
 
     [Test, MultipleAssertions]
@@ -37,11 +37,11 @@ public class 最短経路BellmanFordTests
         gb.Add(4, 3, 6);
         gb.Add(4, 0, 1);
         var graph = gb.ToGraph();
-        await graph.BellmanFord(0).Should().BeEquivalentOrderTo([0L, 1, 6, 18, 12]);
-        await graph.BellmanFord(1).Should().BeEquivalentOrderTo([12L, 0, 5, 17, 11]);
-        await graph.BellmanFord(2).Should().BeEquivalentOrderTo([7L, 8, 0, 12, 6]);
-        await graph.BellmanFord(3).Should().BeEquivalentOrderTo([4611686018427387903L, 4611686018427387903, 4611686018427387903, 0, 4611686018427387903]);
-        await graph.BellmanFord(4).Should().BeEquivalentOrderTo([1L, 2, 7, 6, 0]);
+        await graph.BellmanFord(0).Should().BeStrictlyEquivalentTo([0L, 1, 6, 18, 12]);
+        await graph.BellmanFord(1).Should().BeStrictlyEquivalentTo([12L, 0, 5, 17, 11]);
+        await graph.BellmanFord(2).Should().BeStrictlyEquivalentTo([7L, 8, 0, 12, 6]);
+        await graph.BellmanFord(3).Should().BeStrictlyEquivalentTo([4611686018427387903L, 4611686018427387903, 4611686018427387903, 0, 4611686018427387903]);
+        await graph.BellmanFord(4).Should().BeStrictlyEquivalentTo([1L, 2, 7, 6, 0]);
     }
 
     [Test, MultipleAssertions]
@@ -58,11 +58,11 @@ public class 最短経路BellmanFordTests
         gb.Add(4, 3, 6);
         gb.Add(4, 0, 1);
         var graph = gb.ToGraph();
-        await graph.BellmanFord(0).Should().BeEquivalentOrderTo([0L, 1, 6, -599, 12]);
-        await graph.BellmanFord(1).Should().BeEquivalentOrderTo([12L, 0, 5, -600, 11]);
-        await graph.BellmanFord(2).Should().BeEquivalentOrderTo([7L, 8, 0, -605, 6]);
-        await graph.BellmanFord(3).Should().BeEquivalentOrderTo([4611686018427387903L, 4611686018427387903, 4611686018427387903, 0, 4611686018427387903]);
-        await graph.BellmanFord(4).Should().BeEquivalentOrderTo([1L, 2, 7, -598, 0]);
+        await graph.BellmanFord(0).Should().BeStrictlyEquivalentTo([0L, 1, 6, -599, 12]);
+        await graph.BellmanFord(1).Should().BeStrictlyEquivalentTo([12L, 0, 5, -600, 11]);
+        await graph.BellmanFord(2).Should().BeStrictlyEquivalentTo([7L, 8, 0, -605, 6]);
+        await graph.BellmanFord(3).Should().BeStrictlyEquivalentTo([4611686018427387903L, 4611686018427387903, 4611686018427387903, 0, 4611686018427387903]);
+        await graph.BellmanFord(4).Should().BeStrictlyEquivalentTo([1L, 2, 7, -598, 0]);
     }
 
     [Test, MultipleAssertions]

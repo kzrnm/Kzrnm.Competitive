@@ -18,6 +18,7 @@
     "System.Diagnostics.DebuggerTypeProxyAttribute",
     "System.Diagnostics.DebuggerVisualizerAttribute",
     "System.ComponentModel.EditorBrowsableAttribute",
+    "System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute",
     "AtCoder.IsOperatorAttribute"
   ]
 }

@@ -18,7 +18,7 @@ public class 最小全域木BfsTests
         var graph = gb.ToGraph();
         var mst = graph.MinimumSpanningTreeBfs();
         await mst.Cost.Should().BeEqualTo(4);
-        await mst.Edges.Should().BeEquivalentOrderTo([
+        await mst.Edges.Should().BeStrictlyEquivalentTo([
             (0, new GraphEdge(1)),
             (0, new GraphEdge(2)),
             (0, new GraphEdge(3)),
@@ -41,7 +41,7 @@ public class 最小全域木BfsTests
         var graph = gb.ToGraph();
         var mst = graph.MinimumSpanningTreeBfs();
         await mst.Cost.Should().BeEqualTo(4);
-        await mst.Edges.Should().BeEquivalentOrderTo([
+        await mst.Edges.Should().BeStrictlyEquivalentTo([
             (0, new WEdge<int>(1, 1)),
             (0, new WEdge<int>(2, 10)),
             (0, new WEdge<int>(3, 30)),

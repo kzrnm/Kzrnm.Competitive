@@ -32,7 +32,7 @@ public class NttTests
         var b = (MontgomeryModInt<Mod998244353>[])a.Clone();
         NumberTheoreticTransform<Mod998244353>.Ntt(a);
         NumberTheoreticTransform<Mod998244353>.NttLogical(b);
-        await a.Should().BeEquivalentOrderTo(b);
+        await a.Should().BeStrictlyEquivalentTo(b);
     }
 
     [Test]
@@ -49,7 +49,7 @@ public class NttTests
         var b = (MontgomeryModInt<Mod998244353>[])a.Clone();
         NumberTheoreticTransform<Mod998244353>.INtt(a);
         NumberTheoreticTransform<Mod998244353>.INttLogical(b);
-        await a.Should().BeEquivalentOrderTo(b);
+        await a.Should().BeStrictlyEquivalentTo(b);
     }
 
     [Test, MultipleAssertions]
@@ -64,7 +64,7 @@ public class NttTests
         for (int i = 0; i < n; i++) a[i] = rnd.NextUInt();
         for (int i = 0; i < m; i++) b[i] = rnd.NextUInt();
         var expected = ConvNative(a, b);
-        await NumberTheoreticTransform<Mod998244353>.MultiplyLogical(a, b).Should().BeEquivalentOrderTo(expected);
-        await NumberTheoreticTransform<Mod998244353>.Multiply(a, b).Should().BeEquivalentOrderTo(expected);
+        await NumberTheoreticTransform<Mod998244353>.MultiplyLogical(a, b).Should().BeStrictlyEquivalentTo(expected);
+        await NumberTheoreticTransform<Mod998244353>.Multiply(a, b).Should().BeStrictlyEquivalentTo(expected);
     }
 }

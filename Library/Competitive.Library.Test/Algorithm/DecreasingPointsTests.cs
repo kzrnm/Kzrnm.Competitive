@@ -40,7 +40,7 @@ public class DecreasingPointsTests
     {
         var points = input.ToArray();
         var expected = Naive(points, true);
-        await DecreasingPoints.Points(points).Should().BeEquivalentOrderTo(expected);
+        await DecreasingPoints.Points(points).Should().BeStrictlyEquivalentTo(expected);
     }
 
     [Test]
@@ -49,7 +49,7 @@ public class DecreasingPointsTests
     {
         var points = input.ToArray();
         var expected = Naive(points, false);
-        await DecreasingPoints.Points(points, strict: false).Should().BeEquivalentOrderTo(expected);
+        await DecreasingPoints.Points(points, strict: false).Should().BeStrictlyEquivalentTo(expected);
     }
 
     [Test]
@@ -58,7 +58,7 @@ public class DecreasingPointsTests
     {
         var points = input.ToArray();
         var expected = Naive(points, true, ReverseComparerClass<double>.Default, ReverseComparerClass<int>.Default);
-        await DecreasingPoints.Points(points, ReverseComparerClass<double>.Default, ReverseComparerClass<int>.Default).Should().BeEquivalentOrderTo(expected);
+        await DecreasingPoints.Points(points, ReverseComparerClass<double>.Default, ReverseComparerClass<int>.Default).Should().BeStrictlyEquivalentTo(expected);
     }
 
     [Test]
@@ -67,7 +67,7 @@ public class DecreasingPointsTests
     {
         var points = input.ToArray();
         var expected = Naive(points, false, ReverseComparerClass<double>.Default, ReverseComparerClass<int>.Default);
-        await DecreasingPoints.Points(points, ReverseComparerClass<double>.Default, ReverseComparerClass<int>.Default, strict: false).Should().BeEquivalentOrderTo(expected);
+        await DecreasingPoints.Points(points, ReverseComparerClass<double>.Default, ReverseComparerClass<int>.Default, strict: false).Should().BeStrictlyEquivalentTo(expected);
     }
 
     internal static DecreasingPoints.Result<T, U>[] Naive<T, U>((T X, U Y)[] points, bool strict, IComparer<T> cmpX = null, IComparer<U> cmpY = null)

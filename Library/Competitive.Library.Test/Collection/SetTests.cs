@@ -7,7 +7,7 @@ public class SetTests
     {
         for (int i = 0; i < 64; i++)
             await new Set<int>(Enumerable.Range(0, i).Reverse().Concat(Enumerable.Range(0, i)))
-                 .Should().BeEquivalentOrderTo(Enumerable.Range(0, i));
+                 .Should().BeStrictlyEquivalentTo(Enumerable.Range(0, i));
     }
 
     [Test, MultipleAssertions]
@@ -15,7 +15,7 @@ public class SetTests
     {
         for (int i = 0; i < 64; i++)
             await new Set<int>(Enumerable.Range(0, i).Reverse().Concat(Enumerable.Range(0, i)), true)
-                 .Should().BeEquivalentOrderTo(Enumerable.Range(0, i).SelectMany(n => new[] { n, n }));
+                 .Should().BeStrictlyEquivalentTo(Enumerable.Range(0, i).SelectMany(n => new[] { n, n }));
     }
 
     [Test, MultipleAssertions]
@@ -24,11 +24,11 @@ public class SetTests
         var set = new Set<int>([6, 7, 8, 1, 2, 3, 4, 5, 1, 2, 3]);
         set.Add(9);
         set.Add(5);
-        await set.Should().BeEquivalentOrderTo((int[])[1, 2, 3, 4, 5, 6, 7, 8, 9]);
+        await set.Should().BeStrictlyEquivalentTo((int[])[1, 2, 3, 4, 5, 6, 7, 8, 9]);
         await set.Should().HaveCount(9);
         set.Remove(5);
         await set.Should().HaveCount(8);
-        await set.Should().BeEquivalentOrderTo((int[])[1, 2, 3, 4, 6, 7, 8, 9]);
+        await set.Should().BeStrictlyEquivalentTo((int[])[1, 2, 3, 4, 6, 7, 8, 9]);
         await set.FindByIndex(8).Should().BeNull();
         await set.FindByIndex(7).Value.Should().BeEqualTo(9);
         await set.FindNode(5).Should().BeNull();
@@ -89,18 +89,18 @@ public class SetTests
         await set.FindNodeReverseUpperBound(1).Should().BeNull();
 
         set.RemoveNode(set.FindNodeLowerBound(5));
-        await set.Should().BeEquivalentOrderTo((int[])[1, 2, 3, 4, 7, 8, 9]);
+        await set.Should().BeStrictlyEquivalentTo((int[])[1, 2, 3, 4, 7, 8, 9]);
 
-        await set.Reversed().Should().BeEquivalentOrderTo([9, 8, 7, 4, 3, 2, 1]);
-        await set.EnumerateItem().Should().BeEquivalentOrderTo([1, 2, 3, 4, 7, 8, 9]);
-        await set.EnumerateItem(set.FindNodeLowerBound(5)).Should().BeEquivalentOrderTo([7, 8, 9]);
-        await set.EnumerateItem(set.FindNodeLowerBound(5), true).Should().BeEquivalentOrderTo([7, 4, 3, 2, 1]);
+        await set.Reversed().Should().BeStrictlyEquivalentTo([9, 8, 7, 4, 3, 2, 1]);
+        await set.EnumerateItem().Should().BeStrictlyEquivalentTo([1, 2, 3, 4, 7, 8, 9]);
+        await set.EnumerateItem(set.FindNodeLowerBound(5)).Should().BeStrictlyEquivalentTo([7, 8, 9]);
+        await set.EnumerateItem(set.FindNodeLowerBound(5), true).Should().BeStrictlyEquivalentTo([7, 4, 3, 2, 1]);
 
         set.RemoveNode(set.FindNodeLowerBound(0));
-        await set.Should().BeEquivalentOrderTo((int[])[2, 3, 4, 7, 8, 9]);
+        await set.Should().BeStrictlyEquivalentTo((int[])[2, 3, 4, 7, 8, 9]);
 
         set.RemoveNode(set.FindNodeLowerBound(9));
-        await set.Should().BeEquivalentOrderTo((int[])[2, 3, 4, 7, 8]);
+        await set.Should().BeStrictlyEquivalentTo((int[])[2, 3, 4, 7, 8]);
     }
     [Test, MultipleAssertions]
     public async Task MultiSet()
@@ -108,19 +108,19 @@ public class SetTests
         var set = new Set<int>([6, 7, 8, 1, 2, 3, 4, 5, 1, 2, 3], true);
         set.Add(9);
         set.Add(5);
-        await set.Should().BeEquivalentOrderTo((int[])[1, 1, 2, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9]);
+        await set.Should().BeStrictlyEquivalentTo((int[])[1, 1, 2, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9]);
         await set.Should().HaveCount(13);
         set.Remove(5);
         await set.Should().HaveCount(12);
-        await set.Should().BeEquivalentOrderTo((int[])[1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9]);
+        await set.Should().BeStrictlyEquivalentTo((int[])[1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9]);
         await set.FindByIndex(12).Should().BeNull();
         await set.FindByIndex(11).Value.Should().BeEqualTo(9);
         await set.FindNode(5).Should().NotBeNull();
 
-        await set.Reversed().Should().BeEquivalentOrderTo([9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1]);
-        await set.EnumerateItem().Should().BeEquivalentOrderTo([1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9]);
-        await set.EnumerateItem(set.FindNodeLowerBound(6)).Should().BeEquivalentOrderTo([6, 7, 8, 9]);
-        await set.EnumerateItem(set.FindNodeLowerBound(6), true).Should().BeEquivalentOrderTo([6, 5, 4, 3, 3, 2, 2, 1, 1]);
+        await set.Reversed().Should().BeStrictlyEquivalentTo([9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1]);
+        await set.EnumerateItem().Should().BeStrictlyEquivalentTo([1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9]);
+        await set.EnumerateItem(set.FindNodeLowerBound(6)).Should().BeStrictlyEquivalentTo([6, 7, 8, 9]);
+        await set.EnumerateItem(set.FindNodeLowerBound(6), true).Should().BeStrictlyEquivalentTo([6, 5, 4, 3, 3, 2, 2, 1, 1]);
 
         await set.FindNodeLowerBound(3).Value.Should().BeEqualTo(3);
         await set.FindNodeUpperBound(3).Value.Should().BeEqualTo(4);
@@ -163,11 +163,11 @@ public class SetTests
         var set = new Set<int, ReverseComparer<int>>([6, 7, 8, 1, 2, 3, 4, 5, 1, 2, 3]);
         set.Add(9);
         set.Add(5);
-        await set.Should().BeEquivalentOrderTo((int[])[9, 8, 7, 6, 5, 4, 3, 2, 1]);
+        await set.Should().BeStrictlyEquivalentTo((int[])[9, 8, 7, 6, 5, 4, 3, 2, 1]);
         await set.Should().HaveCount(9);
         set.Remove(5);
         await set.Should().HaveCount(8);
-        await set.Should().BeEquivalentOrderTo((int[])[9, 8, 7, 6, 4, 3, 2, 1]);
+        await set.Should().BeStrictlyEquivalentTo((int[])[9, 8, 7, 6, 4, 3, 2, 1]);
         await set.FindByIndex(8).Should().BeNull();
         await set.FindByIndex(7).Value.Should().BeEqualTo(1);
         await set.FindNode(5).Should().BeNull();
@@ -227,15 +227,15 @@ public class SetTests
         {
             IList<int> arr = Enumerable.Range(0, count).ToArray();
             var set = new Set<int>(arr);
-            await set.Reversed().Should().BeEquivalentOrderTo(arr.Reverse());
-            await set.EnumerateItem().Should().BeEquivalentOrderTo(arr);
-            await set.EnumerateItem(reverse: true).Should().BeEquivalentOrderTo(arr.Reverse());
+            await set.Reversed().Should().BeStrictlyEquivalentTo(arr.Reverse());
+            await set.EnumerateItem().Should().BeStrictlyEquivalentTo(arr);
+            await set.EnumerateItem(reverse: true).Should().BeStrictlyEquivalentTo(arr.Reverse());
 
             for (int i = 0; i < count; i++)
             {
-                await set.EnumerateItem(set.FindByIndex(i)).Should().BeEquivalentOrderTo(arr.Skip(i));
+                await set.EnumerateItem(set.FindByIndex(i)).Should().BeStrictlyEquivalentTo(arr.Skip(i));
                 await set.EnumerateItem(set.FindByIndex(i), true)
-                    .Should().BeEquivalentOrderTo(arr.Take(i + 1).Reverse());
+                    .Should().BeStrictlyEquivalentTo(arr.Take(i + 1).Reverse());
             }
         }
     }
@@ -245,15 +245,15 @@ public class SetTests
     {
         var arr = new[] { 1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9 };
         var set = new Set<int>(arr, true);
-        await set.Reversed().Should().BeEquivalentOrderTo([9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1]);
-        await set.EnumerateItem().Should().BeEquivalentOrderTo([1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9]);
-        await set.EnumerateItem(reverse: true).Should().BeEquivalentOrderTo([9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1]);
+        await set.Reversed().Should().BeStrictlyEquivalentTo([9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1]);
+        await set.EnumerateItem().Should().BeStrictlyEquivalentTo([1, 1, 2, 2, 3, 3, 4, 5, 6, 7, 8, 9]);
+        await set.EnumerateItem(reverse: true).Should().BeStrictlyEquivalentTo([9, 8, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1]);
 
         for (int i = 0; i < arr.Length; i++)
         {
-            await set.EnumerateItem(set.FindByIndex(i)).Should().BeEquivalentOrderTo(arr.Skip(i));
+            await set.EnumerateItem(set.FindByIndex(i)).Should().BeStrictlyEquivalentTo(arr.Skip(i));
             await set.EnumerateItem(set.FindByIndex(i), true)
-                .Should().BeEquivalentOrderTo(arr.Take(i + 1).Reverse());
+                .Should().BeStrictlyEquivalentTo(arr.Take(i + 1).Reverse());
         }
     }
 }

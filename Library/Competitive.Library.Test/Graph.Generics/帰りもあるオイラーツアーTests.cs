@@ -15,7 +15,7 @@ public class 帰りもあるオイラーツアーTests
         gb.Add(3, 7);
         var tree = gb.ToTree();
         var tour = tree.EulerianTour();
-        await tour.Events.Should().BeEquivalentOrderTo(new 帰りもあるオイラーツアー<GraphEdge>.Event[] {
+        await tour.Events.Should().BeStrictlyEquivalentTo(new 帰りもあるオイラーツアー<GraphEdge>.Event[] {
             new (-1, new (0), true),
             new (0, new (1), true),
             new (1, new (3), true),
@@ -33,7 +33,7 @@ public class 帰りもあるオイラーツアーTests
             new (0, new (2), false),
             new (-1, new (0), false),
         });
-        await Enumerable.Range(0, 8).Select(i => tour[i]).Should().BeEquivalentOrderTo([
+        await Enumerable.Range(0, 8).Select(i => tour[i]).Should().BeStrictlyEquivalentTo([
             (0, 15), (1, 8), (9, 14), (2, 5), (6, 7), (12, 13), (10, 11), (3, 4)
         ]);
     }
@@ -50,7 +50,7 @@ public class 帰りもあるオイラーツアーTests
         gb.Add(3, 7, 7);
         var tree = gb.ToTree();
         var tour = tree.EulerianTour();
-        await tour.Events.Should().BeEquivalentOrderTo([
+        await tour.Events.Should().BeStrictlyEquivalentTo([
             new 帰りもあるオイラーツアー<WEdge<int>>.Event(-1, new WEdge<int>(0, 0), true),
             new 帰りもあるオイラーツアー<WEdge<int>>.Event(0, new WEdge<int>(1, 1), true),
             new 帰りもあるオイラーツアー<WEdge<int>>.Event(1, new WEdge<int>(3, 3), true),
@@ -68,7 +68,7 @@ public class 帰りもあるオイラーツアーTests
             new 帰りもあるオイラーツアー<WEdge<int>>.Event(0, new WEdge<int>(2, 2), false),
             new 帰りもあるオイラーツアー<WEdge<int>>.Event(-1, new WEdge<int>(0, 0), false)
         ]);
-        await Enumerable.Range(0, 8).Select(i => tour[i]).Should().BeEquivalentOrderTo([
+        await Enumerable.Range(0, 8).Select(i => tour[i]).Should().BeStrictlyEquivalentTo([
             (0, 15), (1, 8), (9, 14), (2, 5), (6, 7), (12, 13), (10, 11), (3, 4)
         ]);
     }

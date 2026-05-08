@@ -21,14 +21,14 @@ public class MoAlgorithmTests
             mo.AddQuery(l, r);
             expected[i] = fw[l..r];
         }
-        await mo.Solve<long, St>(new St(array)).Should().BeEquivalentOrderTo(expected);
+        await mo.Solve<long, St>(new St(array)).Should().BeStrictlyEquivalentTo(expected);
 
         var results = new long[N];
         results.AsSpan().Fill(long.MinValue);
         long current1 = 0;
         mo.Solve(i => current1 += array[i], i => current1 -= array[i],
             update: i => results[i] = current1);
-        await results.Should().BeEquivalentOrderTo(expected);
+        await results.Should().BeStrictlyEquivalentTo(expected);
 
         long current2 = 0;
         results.AsSpan().Fill(long.MinValue);
@@ -36,7 +36,7 @@ public class MoAlgorithmTests
             i => current2 += array[i], i => current2 += array[i],
             i => current2 -= array[i], i => current2 -= array[i],
             update: i => results[i] = current2);
-        await results.Should().BeEquivalentOrderTo(expected);
+        await results.Should().BeStrictlyEquivalentTo(expected);
     }
 }
 class St(long[] array) : IMoAlgorithmState<long>

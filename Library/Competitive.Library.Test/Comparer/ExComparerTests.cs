@@ -1,5 +1,8 @@
-namespace Kzrnm.Competitive.Testing.Comparer;
+#if !AOT
+using System.Diagnostics.CodeAnalysis;
 
+namespace Kzrnm.Competitive.Testing.Comparer;
+[RequiresUnreferencedCode("Expression.Compile may not work correctly when trimming is enabled.")]
 public class ExComparerTests
 {
     [Test]
@@ -29,7 +32,7 @@ public class ExComparerTests
             382174879
         };
         Array.Sort(arr, ExComparer<int>.CreateExp(i => Math.Abs(i)));
-        await arr.Should().BeEquivalentOrderTo([
+        await arr.Should().BeStrictlyEquivalentTo([
             -49770599,
             -98686814,
             216600710,
@@ -53,3 +56,4 @@ public class ExComparerTests
            ]);
     }
 }
+#endif

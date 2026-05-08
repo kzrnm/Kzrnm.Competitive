@@ -42,8 +42,8 @@ public class 木の探索Tests
     [MethodDataSource(nameof(BfsData))]
     public async Task Bfs(int root, int[] expected)
     {
-        await gb.ToTree(root).BfsDescendant().Should().BeEquivalentOrderTo(expected);
-        await wgb.ToTree(root).BfsDescendant().Should().BeEquivalentOrderTo(expected);
+        await gb.ToTree(root).BfsDescendant().Should().BeStrictlyEquivalentTo(expected);
+        await wgb.ToTree(root).BfsDescendant().Should().BeStrictlyEquivalentTo(expected);
     }
 
     public static IEnumerable<(int, int[])> DfsData =>
@@ -62,8 +62,8 @@ public class 木の探索Tests
     [MethodDataSource(nameof(DfsData))]
     public async Task Dfs(int root, int[] expected)
     {
-        await gb.ToTree(root).DfsDescendant().Should().BeEquivalentOrderTo(expected);
-        await wgb.ToTree(root).DfsDescendant().Should().BeEquivalentOrderTo(expected);
+        await gb.ToTree(root).DfsDescendant().Should().BeStrictlyEquivalentTo(expected);
+        await wgb.ToTree(root).DfsDescendant().Should().BeStrictlyEquivalentTo(expected);
     }
 
     public static IEnumerable<(int, int[])> DfsLeafData =>
@@ -82,8 +82,8 @@ public class 木の探索Tests
     [MethodDataSource(nameof(DfsLeafData))]
     public async Task DfsLeaf(int root, int[] expected)
     {
-        await gb.ToTree(root).DfsDescendantLeaf().Should().BeEquivalentOrderTo(expected);
-        await wgb.ToTree(root).DfsDescendantLeaf().Should().BeEquivalentOrderTo(expected);
+        await gb.ToTree(root).DfsDescendantLeaf().Should().BeStrictlyEquivalentTo(expected);
+        await wgb.ToTree(root).DfsDescendantLeaf().Should().BeStrictlyEquivalentTo(expected);
     }
 
     public static IEnumerable<(int, int[])> DfsEventsData =>
@@ -102,7 +102,7 @@ public class 木の探索Tests
     [MethodDataSource(nameof(DfsEventsData))]
     public async Task DfsEvents(int root, int[] expected)
     {
-        await gb.ToTree(root).DfsDescendantEvents().Should().BeEquivalentOrderTo(expected);
-        await wgb.ToTree(root).DfsDescendantEvents().Should().BeEquivalentOrderTo(expected);
+        await gb.ToTree(root).DfsDescendantEvents().Should().BeStrictlyEquivalentTo(expected);
+        await wgb.ToTree(root).DfsDescendantEvents().Should().BeStrictlyEquivalentTo(expected);
     }
 }

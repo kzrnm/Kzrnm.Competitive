@@ -96,7 +96,7 @@ public class SuffixArrayTests
             multi.Add(sa.LongestCommonPrefix(0, 3).Should().BeEqualTo(1));
             multi.Add(sa.LongestCommonPrefix(0, 4).Should().BeEqualTo(4));
 
-            multi.Add(sa.SA.Should().BeEquivalentOrderTo([
+            multi.Add(sa.SA.Should().BeStrictlyEquivalentTo([
                 7, // a
                 3, // aabca
                 4, // abca
@@ -106,7 +106,7 @@ public class SuffixArrayTests
                 6, // ca
                 2,  // caabca
             ]));
-            multi.Add(sa.LcpArray.Should().BeEquivalentOrderTo([
+            multi.Add(sa.LcpArray.Should().BeStrictlyEquivalentTo([
                 1, // a - aabca
                 1, // aabca - abca
                 4, // abca - abcaabca
@@ -115,7 +115,7 @@ public class SuffixArrayTests
                 0, // bcaabca - ca
                 2,  // ca - caabca
             ]));
-            multi.Add(sa.Rank.Should().BeEquivalentOrderTo([3, 5, 7, 1, 2, 4, 6, 0]));
+            multi.Add(sa.Rank.Should().BeStrictlyEquivalentTo([3, 5, 7, 1, 2, 4, 6, 0]));
 
             for (int i = 0; i < str.Length; i++)
                 for (int j = i; j < str.Length; j++)

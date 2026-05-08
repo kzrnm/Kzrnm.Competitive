@@ -4,7 +4,6 @@ using System.Text;
 
 namespace Kzrnm.Competitive.Testing.MathNS.Matrix;
 
-[ThousandOfTestcases]
 public class BitOrMatrixTests
 {
     [Test]

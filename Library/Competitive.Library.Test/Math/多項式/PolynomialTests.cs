@@ -7,48 +7,48 @@ public class PolynomialTests
     {
         await (new IntPolynomial([1, 2, 3])
             + new IntPolynomial([0, 5, 0, 2]))
-            .Coefficients.Should().BeEquivalentOrderTo([1, 7, 3, 2]);
+            .Coefficients.Should().BeStrictlyEquivalentTo([1, 7, 3, 2]);
         await (new IntPolynomial([0, 5, 0, 2])
             + new IntPolynomial([1, 2, 3]))
-            .Coefficients.Should().BeEquivalentOrderTo([1, 7, 3, 2]);
+            .Coefficients.Should().BeStrictlyEquivalentTo([1, 7, 3, 2]);
     }
     [Test, MultipleAssertions]
     public async Task Subtract()
     {
         await (new IntPolynomial([1, 2, 3])
             - new IntPolynomial([0, 5, 0, 2]))
-            .Coefficients.Should().BeEquivalentOrderTo([1, -3, 3, -2]);
+            .Coefficients.Should().BeStrictlyEquivalentTo([1, -3, 3, -2]);
         await (new IntPolynomial([0, 5, 0, 2])
             - new IntPolynomial([1, 2, 3]))
-            .Coefficients.Should().BeEquivalentOrderTo([-1, 3, -3, 2]);
+            .Coefficients.Should().BeStrictlyEquivalentTo([-1, 3, -3, 2]);
     }
     [Test, MultipleAssertions]
     public async Task Minus()
     {
         await (-new IntPolynomial([1, 2, 3]))
-            .Coefficients.Should().BeEquivalentOrderTo([-1, -2, -3]);
+            .Coefficients.Should().BeStrictlyEquivalentTo([-1, -2, -3]);
         await (-new IntPolynomial([-1, -2, -3]))
-            .Coefficients.Should().BeEquivalentOrderTo([1, 2, 3]);
+            .Coefficients.Should().BeStrictlyEquivalentTo([1, 2, 3]);
     }
     [Test, MultipleAssertions]
     public async Task Multiply()
     {
         await (new IntPolynomial([1, 2, 3])
             * new IntPolynomial([0, 5, 0, 2]))
-            .Coefficients.Should().BeEquivalentOrderTo([0, 5, 10, 17, 4, 6]);
+            .Coefficients.Should().BeStrictlyEquivalentTo([0, 5, 10, 17, 4, 6]);
         await (new IntPolynomial([0, 5, 0, 2])
             * new IntPolynomial([1, 2, 3]))
-            .Coefficients.Should().BeEquivalentOrderTo([0, 5, 10, 17, 4, 6]);
+            .Coefficients.Should().BeStrictlyEquivalentTo([0, 5, 10, 17, 4, 6]);
     }
     [Test, MultipleAssertions]
     public async Task Divide()
     {
         await (new IntPolynomial([0, 5, 10, 17, 4, 6])
             / new IntPolynomial([0, 5, 0, 2]))
-            .Coefficients.Should().BeEquivalentOrderTo([1, 2, 3]);
+            .Coefficients.Should().BeStrictlyEquivalentTo([1, 2, 3]);
         await (new IntPolynomial([0, 5, 10, 17, 4, 6])
             / new IntPolynomial([1, 2, 3]))
-            .Coefficients.Should().BeEquivalentOrderTo([0, 5, 0, 2]);
+            .Coefficients.Should().BeStrictlyEquivalentTo([0, 5, 0, 2]);
         await (new IntPolynomial([1, 2, 3])
             / new IntPolynomial([0, 5, 10, 17, 4, 6]))
             .Coefficients.Should().BeEmpty();
@@ -59,7 +59,7 @@ public class PolynomialTests
         await new IntPolynomial([0, 5, 10, 17, 4, 6])
              .Derivative()
              .Coefficients
-             .Should().BeEquivalentOrderTo([5, 20, 51, 16, 30]);
+             .Should().BeStrictlyEquivalentTo([5, 20, 51, 16, 30]);
     }
     [Test, MultipleAssertions]
     public async Task Integrate()
@@ -67,7 +67,7 @@ public class PolynomialTests
         await new DoublePolynomial([0, 5, 10, 17, 4, 6])
             .Integrate()
             .Coefficients
-            .Should().BeEquivalentOrderTo([0, 0, 5 / 2.0, 10 / 3.0, 17 / 4.0, 4 / 5.0, 6 / 6.0]);
+            .Should().BeStrictlyEquivalentTo([0, 0, 5 / 2.0, 10 / 3.0, 17 / 4.0, 4 / 5.0, 6 / 6.0]);
     }
     [Test, MultipleAssertions]
     public async Task Eval()

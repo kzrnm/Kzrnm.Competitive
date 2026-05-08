@@ -100,7 +100,7 @@ public class BinaryTrieTests
         await nodes[1].Exist.Should().BeEqualTo(1);
         await nodes[1].Left.Should().BeNull();
         await nodes[1].Right.Should().BeNull();
-        await nodes[2].Accepts.ToArray().Should().BeEquivalentOrderTo([0]);
+        await nodes[2].Accepts.ToArray().Should().BeStrictlyEquivalentTo([0]);
         await nodes[2].Exist.Should().BeEqualTo(2);
         await nodes[2].Left.Should().BeNull();
         await nodes[2].Right.Should().BeNull();
@@ -112,7 +112,7 @@ public class BinaryTrieTests
 
         bt.Add(0, 3, idx: 1);
         nodes = Enumerable.Range(0, 8).Select(i => bt.Find((byte)i)).ToArray();
-        await nodes[0].Accepts.ToArray().Should().BeEquivalentOrderTo([1]);
+        await nodes[0].Accepts.ToArray().Should().BeStrictlyEquivalentTo([1]);
         await nodes[0].Exist.Should().BeEqualTo(3);
         await nodes[0].Left.Should().BeNull();
         await nodes[0].Right.Should().BeNull();
@@ -120,7 +120,7 @@ public class BinaryTrieTests
         await nodes[1].Exist.Should().BeEqualTo(1);
         await nodes[1].Left.Should().BeNull();
         await nodes[1].Right.Should().BeNull();
-        await nodes[2].Accepts.ToArray().Should().BeEquivalentOrderTo([0]);
+        await nodes[2].Accepts.ToArray().Should().BeStrictlyEquivalentTo([0]);
         await nodes[2].Exist.Should().BeEqualTo(2);
         await nodes[2].Left.Should().BeNull();
         await nodes[2].Right.Should().BeNull();
@@ -132,7 +132,7 @@ public class BinaryTrieTests
 
         bt.Add(2, -2, idx: 2);
         nodes = Enumerable.Range(0, 8).Select(i => bt.Find((byte)i)).ToArray();
-        await nodes[0].Accepts.ToArray().Should().BeEquivalentOrderTo([1]);
+        await nodes[0].Accepts.ToArray().Should().BeStrictlyEquivalentTo([1]);
         await nodes[0].Exist.Should().BeEqualTo(3);
         await nodes[0].Left.Should().BeNull();
         await nodes[0].Right.Should().BeNull();
@@ -140,7 +140,7 @@ public class BinaryTrieTests
         await nodes[1].Exist.Should().BeEqualTo(1);
         await nodes[1].Left.Should().BeNull();
         await nodes[1].Right.Should().BeNull();
-        await nodes[2].Accepts.ToArray().Should().BeEquivalentOrderTo([0, 2]);
+        await nodes[2].Accepts.ToArray().Should().BeStrictlyEquivalentTo([0, 2]);
         await nodes[2].Exist.Should().BeEqualTo(0);
         await nodes[2].Left.Should().BeNull();
         await nodes[2].Right.Should().BeNull();
@@ -152,12 +152,12 @@ public class BinaryTrieTests
 
         bt.Decrement(1, clear: true);
         nodes = Enumerable.Range(0, 8).Select(i => bt.Find((byte)i)).ToArray();
-        await nodes[0].Accepts.ToArray().Should().BeEquivalentOrderTo([1]);
+        await nodes[0].Accepts.ToArray().Should().BeStrictlyEquivalentTo([1]);
         await nodes[0].Exist.Should().BeEqualTo(3);
         await nodes[0].Left.Should().BeNull();
         await nodes[0].Right.Should().BeNull();
         await nodes[1].Should().BeNull();
-        await nodes[2].Accepts.ToArray().Should().BeEquivalentOrderTo([0, 2]);
+        await nodes[2].Accepts.ToArray().Should().BeStrictlyEquivalentTo([0, 2]);
         await nodes[2].Exist.Should().BeEqualTo(0);
         await nodes[2].Left.Should().BeNull();
         await nodes[2].Right.Should().BeNull();

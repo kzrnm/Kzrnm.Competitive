@@ -3,7 +3,6 @@ using System.Numerics;
 
 namespace Kzrnm.Competitive.Testing.MathNS.Matrix;
 
-[ThousandOfTestcases]
 public class BitMatrixLinearSystemTests
 {
     public static IEnumerable<(BitMatrixCase, BitArrayCase)> LinearSystemCases(int max)
@@ -60,10 +59,9 @@ public class BitMatrixLinearSystemTests
         await bitsResult.Length.Should().BeEqualTo(boolsResult.Length);
         for (int i = 0; i < bitsResult.Length; i++)
         {
-            await bitsResult[i].Cast<bool>().Should().BeEquivalentOrderTo(boolsResult[i].Cast<bool>());
+            await bitsResult[i].Cast<bool>().Should().BeStrictlyEquivalentTo(boolsResult[i].Cast<bool>());
         }
     }
-
 
     static async Task LinearSystemTestImpl<T>(BitMatrix mat, BitMatrix<T> matT, BitArrayCase vector) where T : unmanaged, IBinaryInteger<T>
     {
@@ -76,7 +74,7 @@ public class BitMatrixLinearSystemTests
         }
 
         await genericResult.Length.Should().BeEqualTo(bitsResult.Length);
-        await genericResult.Should().BeEquivalentOrderTo(bitsResult);
+        await genericResult.Should().BeStrictlyEquivalentTo(bitsResult);
     }
 
     static T ToNumber<T>(BitArray bits) where T : IBinaryInteger<T>

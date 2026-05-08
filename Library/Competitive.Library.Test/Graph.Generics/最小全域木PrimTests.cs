@@ -19,7 +19,7 @@ public class 最小全域木PrimTests
         var graph = gb.ToGraph();
         var mst = graph.MinimumSpanningTreePrim();
         await mst.Cost.Should().BeEqualTo(13);
-        await mst.Edges.Should().BeEquivalentOrderTo([
+        await mst.Edges.Should().BeStrictlyEquivalentTo([
             (0, new WEdge<int>(1, 1)),
             (0, new WEdge<int>(4, 1)),
             (1, new WEdge<int>(2, 5)),
@@ -38,28 +38,28 @@ public class 最小全域木PrimTests
         var graph = gb.ToGraph();
         var mst = graph.MinimumSpanningTreePrim();
         await mst.Cost.Should().BeEqualTo(7);
-        await mst.Edges.Should().BeEquivalentOrderTo([
+        await mst.Edges.Should().BeStrictlyEquivalentTo([
             (0, new WEdge<int>(1, 1)),
             (0, new WEdge<int>(2, 1)),
             (0, new WEdge<int>(3, 5)),
         ]);
         mst = graph.MinimumSpanningTreePrim(1);
         await mst.Cost.Should().BeEqualTo(7);
-        await mst.Edges.Should().BeEquivalentOrderTo([
+        await mst.Edges.Should().BeStrictlyEquivalentTo([
             (1, new WEdge<int>(0, 1)),
             (1, new WEdge<int>(2, 1)),
             (0, new WEdge<int>(3, 5)),
         ]);
         mst = graph.MinimumSpanningTreePrim(2);
         await mst.Cost.Should().BeEqualTo(7);
-        await mst.Edges.Should().BeEquivalentOrderTo([
+        await mst.Edges.Should().BeStrictlyEquivalentTo([
             (2, new WEdge<int>(0, 1)),
             (2, new WEdge<int>(1, 1)),
             (0, new WEdge<int>(3, 5)),
         ]);
         mst = graph.MinimumSpanningTreePrim(3);
         await mst.Cost.Should().BeEqualTo(7);
-        await mst.Edges.Should().BeEquivalentOrderTo([
+        await mst.Edges.Should().BeStrictlyEquivalentTo([
             (3, new WEdge<int>(0, 5)),
             (0, new WEdge<int>(1, 1)),
             (0, new WEdge<int>(2, 1)),
@@ -82,7 +82,7 @@ public class 最小全域木PrimTests
         var graph = gb.ToGraph();
         var mst = graph.MinimumSpanningTreePrim(0);
         await mst.Cost.Should().BeEqualTo(13);
-        await mst.Edges.Should().BeEquivalentOrderTo([
+        await mst.Edges.Should().BeStrictlyEquivalentTo([
             (0, new WEdge<long>(1, 1)),
             (0, new WEdge<long>(4, 1)),
             (1, new WEdge<long>(2, 5)),

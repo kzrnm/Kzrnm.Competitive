@@ -307,7 +307,7 @@ public class Matrix3x3Tests
             (4, 5, 6),
             (7, 8, 9)
         );
-        await mat.AsSpan().ToArray().Should().BeEquivalentOrderTo([
+        await mat.AsSpan().ToArray().Should().BeStrictlyEquivalentTo([
             1L, 2L, 3L,
             4L, 5L, 6L,
             7L, 8L, 9L
@@ -323,7 +323,7 @@ public class Matrix3x3Tests
             ((UInt24)4, (UInt24)5, (UInt24)6),
             ((UInt24)7, (UInt24)8, (UInt24)9)
         );
-        await mat.AsSpan().ToArray().Should().BeEquivalentOrderTo([
+        await mat.AsSpan().ToArray().Should().BeStrictlyEquivalentTo([
             (UInt24)1, (UInt24)2, (UInt24)3,
             (UInt24)4, (UInt24)5, (UInt24)6,
             (UInt24)7, (UInt24)8, (UInt24)9

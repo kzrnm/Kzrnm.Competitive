@@ -50,7 +50,7 @@ public abstract class BinarySearchTreeTestsBase<Node>
                         await tree[i].Should().BeEqualTo(expected[i]);
                     }
             }
-            await tree.Should().BeEquivalentOrderTo(p);
+            await tree.Should().BeStrictlyEquivalentTo(p);
             await Test();
 
 
@@ -68,9 +68,9 @@ public abstract class BinarySearchTreeTestsBase<Node>
     {
         var tree = Create(new int[10]);
         await tree.AllProd.Should().BeEqualTo(0);
-        await tree.Should().BeEquivalentOrderTo([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+        await tree.Should().BeStrictlyEquivalentTo([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
         tree[0] = tree[1] = tree[2] = 5;
-        await tree.Should().BeEquivalentOrderTo([5, 5, 5, 0, 0, 0, 0, 0, 0, 0]);
+        await tree.Should().BeStrictlyEquivalentTo([5, 5, 5, 0, 0, 0, 0, 0, 0, 0]);
         await tree.Prod(0, 1).Should().BeEqualTo(5);
         await tree.Prod(0, 2).Should().BeEqualTo(10);
         await tree.Prod(0, 3).Should().BeEqualTo(15);
@@ -92,7 +92,7 @@ public abstract class BinarySearchTreeTestsBase<Node>
         }
         async Task Test()
         {
-            await tree.Should().BeEquivalentOrderTo(list);
+            await tree.Should().BeStrictlyEquivalentTo(list);
             for (int i = 0; i < list.Count; i++)
                 await tree[i].Should().BeEqualTo(list[i]);
         }
@@ -140,7 +140,7 @@ public abstract class BinarySearchTreeTestsBase<Node>
         }
         async Task Test()
         {
-            await tree.Should().BeEquivalentOrderTo(list);
+            await tree.Should().BeStrictlyEquivalentTo(list);
             for (int i = 0; i < list.Count; i++)
                 await tree[i].Should().BeEqualTo(list[i]);
         }
@@ -175,7 +175,7 @@ public abstract class BinarySearchTreeTestsBase<Node>
         }
         async Task Test()
         {
-            await tree.Should().BeEquivalentOrderTo(list);
+            await tree.Should().BeStrictlyEquivalentTo(list);
             for (int i = 0; i < list.Count; i++)
                 await tree[i].Should().BeEqualTo(list[i]);
         }
@@ -208,7 +208,7 @@ public abstract class BinarySearchTreeTestsBase<Node>
         }
         async Task Test()
         {
-            await tree.Should().BeEquivalentOrderTo(list);
+            await tree.Should().BeStrictlyEquivalentTo(list);
             for (int i = 0; i < list.Count; i++)
                 await tree[i].Should().BeEqualTo(list[i]);
         }
@@ -247,7 +247,7 @@ public abstract class BinarySearchTreeTestsBase<Node>
             }
             async Task Test()
             {
-                await tree.Should().BeEquivalentOrderTo(list);
+                await tree.Should().BeStrictlyEquivalentTo(list);
                 for (int i = 0; i < list.Count; i++)
                     await tree[i].Should().BeEqualTo(list[i]);
             }
@@ -279,7 +279,7 @@ public abstract class BinarySearchTreeTestsBase<Node>
         }
         async Task Test()
         {
-            await tree.Should().BeEquivalentOrderTo(list);
+            await tree.Should().BeStrictlyEquivalentTo(list);
             for (int i = 0; i < list.Count; i++)
                 await tree[i].Should().BeEqualTo(list[i]);
         }

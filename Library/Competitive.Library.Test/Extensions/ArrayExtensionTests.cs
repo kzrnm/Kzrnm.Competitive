@@ -7,7 +7,7 @@ public class ArrayExtensionTests
     [Test]
     public async Task Fill()
     {
-        await new string[100].Fill("🦈").Should().BeEquivalentOrderTo(Enumerable.Repeat("🦈", 100));
+        await new string[100].Fill("🦈").Should().BeStrictlyEquivalentTo(Enumerable.Repeat("🦈", 100));
     }
 
     [Test]
@@ -44,7 +44,7 @@ public class ArrayExtensionTests
     [MethodDataSource(nameof(SortString_Data))]
     public async Task SortString(string[] input, string[] expected)
     {
-        await input.Sort().Should().BeEquivalentOrderTo(expected);
+        await input.Sort().Should().BeStrictlyEquivalentTo(expected);
     }
 
     public static IEnumerable<(string[], string[])> SortSelect_Data =>
@@ -74,7 +74,7 @@ public class ArrayExtensionTests
     [MethodDataSource(nameof(SortSelect_Data))]
     public async Task SortSelect(string[] input, string[] expected)
     {
-        await input.Sort(s => s.Length).Should().BeEquivalentOrderTo(expected);
+        await input.Sort(s => s.Length).Should().BeStrictlyEquivalentTo(expected);
     }
 
     public static IEnumerable<(string[], string[])> SortComparison_Data =>
@@ -104,7 +104,7 @@ public class ArrayExtensionTests
     [MethodDataSource(nameof(SortComparison_Data))]
     public async Task SortComparison(string[] input, string[] expected)
     {
-        await input.Sort((s1, s2) => s1.Length.CompareTo(s2.Length)).Should().BeEquivalentOrderTo(expected);
+        await input.Sort((s1, s2) => s1.Length.CompareTo(s2.Length)).Should().BeStrictlyEquivalentTo(expected);
     }
 
     public static IEnumerable<(string[], StringComparison, string[])> SortComparer_Data =>
@@ -135,7 +135,7 @@ public class ArrayExtensionTests
     [MethodDataSource(nameof(SortComparer_Data))]
     public async Task SortComparer(string[] input, StringComparison comparisonType, string[] expected)
     {
-        await input.Sort(StringComparer.FromComparison(comparisonType)).Should().BeEquivalentOrderTo(expected);
+        await input.Sort(StringComparer.FromComparison(comparisonType)).Should().BeStrictlyEquivalentTo(expected);
     }
 
     public static IEnumerable<(string[], string[])> Reverse_Data =>
@@ -165,7 +165,7 @@ public class ArrayExtensionTests
     [MethodDataSource(nameof(Reverse_Data))]
     public async Task Reverse(string[] input, string[] expected)
     {
-        await input.Reverse().Should().BeEquivalentOrderTo(expected);
+        await input.Reverse().Should().BeStrictlyEquivalentTo(expected);
     }
 
     [Test]
@@ -196,7 +196,7 @@ public class ArrayExtensionTests
         await arr.GetOrDummy(2).Should().BeEqualTo(8373);
         await arr.GetOrDummy(-1, int.MaxValue).Should().BeEqualTo(int.MaxValue);
         await arr.GetOrDummy(3, int.MinValue).Should().BeEqualTo(int.MinValue);
-        await arr.Should().BeEquivalentOrderTo([43L, 24, 8373]);
+        await arr.Should().BeStrictlyEquivalentTo([43L, 24, 8373]);
 
         arr.GetOrDummy(2) = 33;
         arr.GetOrDummy(3) = 55;
@@ -207,7 +207,7 @@ public class ArrayExtensionTests
         await arr.GetOrDummy(2).Should().BeEqualTo(33);
         await arr.GetOrDummy(-1, int.MaxValue).Should().BeEqualTo(int.MaxValue);
         await arr.GetOrDummy(3, int.MinValue).Should().BeEqualTo(int.MinValue);
-        await arr.Should().BeEquivalentOrderTo([43L, 24, 33]);
+        await arr.Should().BeStrictlyEquivalentTo([43L, 24, 33]);
     }
 
     [NotInParallel("GetOrDummy")]
@@ -283,8 +283,8 @@ public class ArrayExtensionTests
         await arr.GetOrDummy(1, 3, int.MinValue).Should().BeEqualTo(int.MinValue);
         await arr.GetOrDummy(-1, -1, int.MaxValue).Should().BeEqualTo(int.MaxValue);
         await arr.GetOrDummy(2, 3, int.MinValue).Should().BeEqualTo(int.MinValue);
-        await arr[0].Should().BeEquivalentOrderTo([43L, 24, 8373]);
-        await arr[1].Should().BeEquivalentOrderTo([-13L, -4, 54]);
+        await arr[0].Should().BeStrictlyEquivalentTo([43L, 24, 8373]);
+        await arr[1].Should().BeStrictlyEquivalentTo([-13L, -4, 54]);
 
         arr.GetOrDummy(0, 2) = 33;
         arr.GetOrDummy(0, 3) = 55;
@@ -306,8 +306,8 @@ public class ArrayExtensionTests
         await arr.GetOrDummy(1, 1).Should().BeEqualTo(-4);
         await arr.GetOrDummy(1, 2).Should().BeEqualTo(-3);
 
-        await arr[0].Should().BeEquivalentOrderTo([43L, 24, 33]);
-        await arr[1].Should().BeEquivalentOrderTo([-13L, -4, -3]);
+        await arr[0].Should().BeStrictlyEquivalentTo([43L, 24, 33]);
+        await arr[1].Should().BeStrictlyEquivalentTo([-13L, -4, -3]);
     }
 
 
@@ -345,10 +345,10 @@ public class ArrayExtensionTests
         await arr.GetOrDummy(1, 1, -1, int.MinValue).Should().BeEqualTo(int.MinValue);
         await arr.GetOrDummy(1, 1, 2, int.MaxValue).Should().BeEqualTo(int.MaxValue);
         await arr.GetOrDummy(1, 1, -1, int.MinValue).Should().BeEqualTo(int.MinValue);
-        await arr[0][0].Should().BeEquivalentOrderTo([1L, 2]);
-        await arr[0][1].Should().BeEquivalentOrderTo([3L, 4]);
-        await arr[1][0].Should().BeEquivalentOrderTo([5L, 6]);
-        await arr[1][1].Should().BeEquivalentOrderTo([7L, 8]);
+        await arr[0][0].Should().BeStrictlyEquivalentTo([1L, 2]);
+        await arr[0][1].Should().BeStrictlyEquivalentTo([3L, 4]);
+        await arr[1][0].Should().BeStrictlyEquivalentTo([5L, 6]);
+        await arr[1][1].Should().BeStrictlyEquivalentTo([7L, 8]);
 
         arr.GetOrDummy(0, 0, 0) += 10;
         arr.GetOrDummy(0, 0, 1) += 10;
@@ -375,10 +375,10 @@ public class ArrayExtensionTests
         await arr.GetOrDummy(1, 0, 1).Should().BeEqualTo(16);
         await arr.GetOrDummy(1, 1, 0).Should().BeEqualTo(17);
         await arr.GetOrDummy(1, 1, 1).Should().BeEqualTo(18);
-        await arr[0][0].Should().BeEquivalentOrderTo([11L, 12]);
-        await arr[0][1].Should().BeEquivalentOrderTo([13L, 14]);
-        await arr[1][0].Should().BeEquivalentOrderTo([15L, 16]);
-        await arr[1][1].Should().BeEquivalentOrderTo([17L, 18]);
+        await arr[0][0].Should().BeStrictlyEquivalentTo([11L, 12]);
+        await arr[0][1].Should().BeStrictlyEquivalentTo([13L, 14]);
+        await arr[1][0].Should().BeStrictlyEquivalentTo([15L, 16]);
+        await arr[1][1].Should().BeStrictlyEquivalentTo([17L, 18]);
     }
 
 

@@ -187,7 +187,7 @@ public class MontgomeryModIntTests
                 arr[i] = v;
                 expected[i] = v % 101;
             }
-            await arr.Select(m => m.Value).ToArray().Should().BeEquivalentOrderTo(expected);
+            await arr.Select(m => m.Value).ToArray().Should().BeStrictlyEquivalentTo(expected);
         }
     }
 

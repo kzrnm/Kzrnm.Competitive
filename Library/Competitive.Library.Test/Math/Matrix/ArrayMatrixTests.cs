@@ -13,18 +13,18 @@ public class ArrayMatrixTests
         [
             [1, 2, 3],
             [4, 5, 6],
-        ]).ToArray().Should().BeEquivalentOrderTo((int[][])[
+        ]).ToArray().Should().BeStrictlyEquivalentTo((int[][])[
             [1, 2, 3],
             [4, 5, 6],
-        ]);
+        ], CollectionEqualityComparer<int>.Default);
         await new ArrayMatrix<int>(new int[,]
         {
             { 1, 2, 3 },
             { 4, 5, 6 },
-        }).ToArray().Should().BeEquivalentOrderTo((int[][])[
+        }).ToArray().Should().BeStrictlyEquivalentTo((int[][])[
             [1, 2, 3],
             [4, 5, 6],
-        ]);
+        ], CollectionEqualityComparer<int>.Default);
     }
 
     [Test, MultipleAssertions]
@@ -89,10 +89,10 @@ public class ArrayMatrixTests
         {
             { 1, 2, 3 },
             { 4, 5, 6 },
-        })).ToArray().Should().BeEquivalentOrderTo((int[][])[
+        })).ToArray().Should().BeStrictlyEquivalentTo((int[][])[
             [-1, -2, -3],
             [-4, -5, -6],
-        ]);
+        ], CollectionEqualityComparer<int>.Default);
     }
 
     public static IEnumerable<(ArrayMatrix<int>, ArrayMatrix<int>, ArrayMatrix<int>)> Add_Data =>
@@ -410,8 +410,8 @@ public class ArrayMatrixTests
     [MethodDataSource(nameof(MultiplyVector_Data))]
     public async Task MultiplyVector(ArrayMatrix<long> mat, long[] vector, long[] expected)
     {
-        await (mat * vector).Should().BeEquivalentOrderTo(expected);
-        await mat.Multiply(vector).Should().BeEquivalentOrderTo(expected);
+        await (mat * vector).Should().BeStrictlyEquivalentTo(expected);
+        await mat.Multiply(vector).Should().BeStrictlyEquivalentTo(expected);
     }
 
     [Test, MultipleAssertions]
@@ -423,10 +423,10 @@ public class ArrayMatrixTests
             { 1, 2 },
             { 3, 4 },
         });
-        await orig.Pow(5).ToArray().Should().BeEquivalentOrderTo((int[][])[
+        await orig.Pow(5).ToArray().Should().BeStrictlyEquivalentTo((int[][])[
             [1069, 1558],
             [2337, 3406],
-        ]);
+        ], CollectionEqualityComparer<int>.Default);
         var cur = orig;
         for (int i = 1; i < 10; i++)
         {
@@ -566,19 +566,19 @@ public class ArrayMatrixTests
             {-10, 10, 3}
         });
         var inv = orig.Inv();
-        await inv.ToArray().Should().BeEquivalentOrderTo((Fraction[][])[
+        await inv.ToArray().Should().BeStrictlyEquivalentTo((Fraction[][])[
             [new Fraction(-146,319), new Fraction(-93,319), new Fraction(-243,319)],
             [new Fraction(-131,319), new Fraction(-90,319), new Fraction(-194,319)],
             [new Fraction(-50,319), new Fraction(-10,319), new Fraction(-57,319)],
-        ]);
+        ], CollectionEqualityComparer<Fraction>.Default);
         var id = new Fraction[][]
         {
             [1,0,0],
             [0,1,0],
             [0,0,1],
         };
-        await (orig * inv).ToArray().Should().BeEquivalentOrderTo(id);
-        await (inv * orig).ToArray().Should().BeEquivalentOrderTo(id);
+        await (orig * inv).ToArray().Should().BeStrictlyEquivalentTo(id, CollectionEqualityComparer<Fraction>.Default);
+        await (inv * orig).ToArray().Should().BeStrictlyEquivalentTo(id, CollectionEqualityComparer<Fraction>.Default);
     }
 
 
@@ -755,6 +755,6 @@ public class ArrayMatrixTests
         var got = matrix.LinearSystem(vector);
         await got.Length.Should().BeEqualTo(expected.Length);
         for (int i = 0; i < got.Length; i++)
-            await got[i].Should().BeEquivalentOrderTo(expected[i]);
+            await got[i].Should().BeStrictlyEquivalentTo(expected[i]);
     }
 }
