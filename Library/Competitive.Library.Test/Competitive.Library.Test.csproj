@@ -25,14 +25,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TUnit" Version="1.43.41" />
+    <PackageReference Include="TUnit" Version="1.53.0" />
     <PackageReference Include="CompetitiveVerifierResolverTestLogger" Version="3.0.0" />
     <PackageReference Include="IsExternalInit" Version="1.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="SourceExpander.Embedder.Testing" Version="8.3.0" />
-    <PackageReference Include="TUnit.Assertions.Should" Version="1.43.11-beta" />
+    <PackageReference Include="TUnit.Assertions.Should" Version="1.53.0-beta" />
     <ProjectReference Include="..\Competitive.Library\Competitive.Library.csproj" />
   </ItemGroup>
 
