@@ -28,6 +28,7 @@ namespace Kzrnm.Competitive
         public static implicit operator O(decimal v) => cw.WriteLine(v);
         public static implicit operator O(char v) => cw.WriteLine(v);
         public static implicit operator O(ROSc v) => cw.WriteLine(v);
+        public static implicit operator O(Span<char> v) => cw.WriteLine(v);
         public static implicit operator O(ROSb v) => cw.WriteLine(v);
         public static implicit operator O(char[] v) => cw.WriteLine(v.AsSpan());
         public static implicit operator O(string v) => cw.WriteLine(v.AsSpan());
