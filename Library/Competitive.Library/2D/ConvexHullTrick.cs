@@ -27,7 +27,7 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 使用する <paramref name="xs"/> の値を初期化します。<paramref name="xs"/> はソート済みであること。
         /// </summary>
-        public ConvexHullTrick(T[] xs, T xinf, T yinf)
+        public ConvexHullTrick(ReadOnlySpan<T> xs, T xinf, T yinf)
         {
             Length = xs.Length;
             XINF = xinf;
@@ -37,7 +37,7 @@ namespace Kzrnm.Competitive
             int n2 = size << 1;
             u = new bool[n2];
             this.xs = new T[n2];
-            xs.AsSpan().CopyTo(this.xs);
+            xs.CopyTo(this.xs);
             this.xs.AsSpan(Length).Fill(XINF);
             p = new T[n2];
             q = new T[n2];
@@ -144,21 +144,15 @@ namespace Kzrnm.Competitive
     /// <para>Convex Hull Trick(Li-Chao (Segment) Tree)</para>
     /// <para>直線 Ax+B 追加をいくつか追加して、区間[l,r]の最小値を求める</para>
     /// </summary>
-    public class MinConvexHullTrick<T> : ConvexHullTrick<T, MinConvexHullTrickOperator<T>>
-        where T : struct, INumberBase<T>, IComparable<T>
-    {
-        public MinConvexHullTrick(T[] xs, T xinf, T yinf) : base(xs, xinf, yinf) { }
-    }
+    public class MinConvexHullTrick<T>(ReadOnlySpan<T> xs, T xinf, T yinf) : ConvexHullTrick<T, MinConvexHullTrickOperator<T>>(xs, xinf, yinf)
+        where T : struct, INumberBase<T>, IComparable<T>;
 
     /// <summary>
     /// <para>Convex Hull Trick(Li-Chao (Segment) Tree)</para>
     /// <para>直線 Ax+B 追加をいくつか追加して、区間[l,r]の最大値を求める</para>
     /// </summary>
-    public class MaxConvexHullTrick<T> : ConvexHullTrick<T, MaxConvexHullTrickOperator<T>>
-        where T : struct, INumberBase<T>, IComparable<T>
-    {
-        public MaxConvexHullTrick(T[] xs, T xinf, T yinf) : base(xs, xinf, yinf) { }
-    }
+    public class MaxConvexHullTrick<T>(ReadOnlySpan<T> xs, T xinf, T yinf) : ConvexHullTrick<T, MaxConvexHullTrickOperator<T>>(xs, xinf, yinf)
+        where T : struct, INumberBase<T>, IComparable<T>;
 
     /// <summary>
     /// <para>Convex Hull Trick(Li-Chao (Segment) Tree)</para>
@@ -169,11 +163,11 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 使用する <paramref name="xs"/> の値を初期化します。<paramref name="xs"/> はソート済みであること。
         /// </summary>
-        public LongMinConvexHullTrick(long[] xs) : this(xs, xs[^1] + 1, long.MaxValue) { }
+        public LongMinConvexHullTrick(ReadOnlySpan<long> xs) : this(xs, xs[^1] + 1, long.MaxValue) { }
         /// <summary>
         /// 使用する <paramref name="xs"/> の値を初期化します。<paramref name="xs"/> はソート済みであること。
         /// </summary>
-        public LongMinConvexHullTrick(long[] xs, long xinf, long yinf) : base(xs, xinf, yinf) { }
+        public LongMinConvexHullTrick(ReadOnlySpan<long> xs, long xinf, long yinf) : base(xs, xinf, yinf) { }
     }
     /// <summary>
     /// <para>Convex Hull Trick(Li-Chao (Segment) Tree)</para>
@@ -184,11 +178,11 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 使用する <paramref name="xs"/> の値を初期化します。<paramref name="xs"/> はソート済みであること。
         /// </summary>
-        public LongMaxConvexHullTrick(long[] xs) : this(xs, xs[^1] + 1, long.MinValue) { }
+        public LongMaxConvexHullTrick(ReadOnlySpan<long> xs) : this(xs, xs[^1] + 1, long.MinValue) { }
         /// <summary>
         /// 使用する <paramref name="xs"/> の値を初期化します。<paramref name="xs"/> はソート済みであること。
         /// </summary>
-        public LongMaxConvexHullTrick(long[] xs, long xinf, long yinf) : base(xs, xinf, yinf) { }
+        public LongMaxConvexHullTrick(ReadOnlySpan<long> xs, long xinf, long yinf) : base(xs, xinf, yinf) { }
     }
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0251:メンバーを 'readonly' にする", Justification = "いらん")]
     public struct MinConvexHullTrickOperator<T> : IConvexHullTrickOperator<T>

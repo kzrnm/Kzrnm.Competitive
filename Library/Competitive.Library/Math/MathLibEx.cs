@@ -39,7 +39,7 @@ namespace Kzrnm.Competitive
         /// 最大公約数
         /// </summary>
         [凾(256)]
-        public static T Gcd<T>(params T[] nums)
+        public static T Gcd<T>(params ReadOnlySpan<T> nums)
             where T : IBinaryInteger<T>
         {
             var gcd = nums[0];
@@ -60,7 +60,7 @@ namespace Kzrnm.Competitive
         /// 最小公倍数
         /// </summary>
         [凾(256)]
-        public static T Lcm<T>(params T[] nums)
+        public static T Lcm<T>(params ReadOnlySpan<T> nums)
             where T : IBinaryInteger<T>
         {
             var lcm = nums[0];
