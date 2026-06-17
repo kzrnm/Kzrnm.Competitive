@@ -6,7 +6,7 @@ namespace Kzrnm.Competitive
     public static class __CollectionExtension_CompressCount
     {
         /// <summary>
-        /// 連続する要素をひとまとめにした配列を返す。
+        /// 連続する要素をひとまとめにした配列を返す。ランレングス圧縮
         /// </summary>
         public static (T Value, int Count)[] CompressCount<T>(this IEnumerable<T> collection)
         {
