@@ -10,18 +10,20 @@ namespace Kzrnm.Competitive
     using Rhf2 = RollingHash.Rhf<Rh2>;
     public class RollingHash : RollingHashBase<Rhf1, Rhf2>
     {
-        [凾(256)]
-        public static RollingHash Create(string s)
-            => new(s.Length, Rhf1.Create<char>(s), Rhf2.Create<char>(s));
-        [凾(256)]
-        public static RollingHash Create(Asciis s)
-            => new(s.Length, Rhf1.Create(s.AsSpan()), Rhf2.Create(s.AsSpan()));
+#if !NET10_0_OR_GREATER
         [凾(256)]
         public static RollingHash Create<T>(T[] s) where T : IBinaryInteger<T>
             => new(s.Length, Rhf1.Create<T>(s), Rhf2.Create<T>(s));
         [凾(256)]
         public static RollingHash Create<T>(Span<T> s) where T : IBinaryInteger<T>
             => new(s.Length, Rhf1.Create<T>(s), Rhf2.Create<T>(s));
+#endif
+        [凾(256)]
+        public static RollingHash Create(string s)
+            => new(s.Length, Rhf1.Create<char>(s), Rhf2.Create<char>(s));
+        [凾(256)]
+        public static RollingHash Create(Asciis s)
+            => new(s.Length, Rhf1.Create(s.AsSpan()), Rhf2.Create(s.AsSpan()));
         [凾(256)]
         public static RollingHash Create<T>(ReadOnlySpan<T> s) where T : IBinaryInteger<T>
             => new(s.Length, Rhf1.Create(s), Rhf2.Create(s));

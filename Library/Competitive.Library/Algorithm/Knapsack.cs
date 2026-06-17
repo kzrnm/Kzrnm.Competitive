@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -7,6 +6,14 @@ namespace Kzrnm.Competitive
 {
     public static class Knapsack
     {
+#if !NET10_0_OR_GREATER
+        /// <inheritdoc cref="SmallWeight{T}(ReadOnlySpan{ValueTuple{int, T}}, int)"/>
+        public static T[] SmallWeight<T>((int W, T V)[] wv, int W) where T : INumber<T>, IMinMaxValue<T>
+            => SmallWeight((ReadOnlySpan<(int, T)>)wv, W);
+        /// <inheritdoc cref="SmallWeight{T}(ReadOnlySpan{ValueTuple{int, T}}, int)"/>
+        public static T[] SmallWeight<T>(Span<(int W, T V)> wv, int W) where T : INumber<T>, IMinMaxValue<T>
+            => SmallWeight((ReadOnlySpan<(int, T)>)wv, W);
+#endif
         /// <summary>
         /// 重さ <paramref name="wv"/>[i].W, 価値 <paramref name="wv"/>[i].V の品物を、重さの和が <paramref name="W"/> 以下になるように0個または1個選んだときの価値の和の最大値を返します。
         /// </summary>
@@ -15,7 +22,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(NW)</para>
         /// <para>制約: <paramref name="wv"/>.W は非負である</para>
         /// </remarks>
-        public static T[] SmallWeight<T>((int W, T V)[] wv, int W) where T : INumber<T>, IMinMaxValue<T>
+        public static T[] SmallWeight<T>(ReadOnlySpan<(int W, T V)> wv, int W) where T : INumber<T>, IMinMaxValue<T>
         {
             var rt = new T[W + 1];
             rt.AsSpan(1).Fill(T.MinValue / (T.One + T.One));
@@ -31,6 +38,14 @@ namespace Kzrnm.Competitive
             return rt;
         }
 
+#if !NET10_0_OR_GREATER
+        /// <inheritdoc cref="SmallWeightUnlimited{T}(ReadOnlySpan{ValueTuple{int, T}}, int)"/>
+        public static T[] SmallWeightUnlimited<T>((int W, T V)[] wv, int W) where T : INumber<T>, IMinMaxValue<T>
+            => SmallWeightUnlimited((ReadOnlySpan<(int, T)>)wv, W);
+        /// <inheritdoc cref="SmallWeightUnlimited{T}(ReadOnlySpan{ValueTuple{int, T}}, int)"/>
+        public static T[] SmallWeightUnlimited<T>(Span<(int W, T V)> wv, int W) where T : INumber<T>, IMinMaxValue<T>
+            => SmallWeightUnlimited((ReadOnlySpan<(int, T)>)wv, W);
+#endif
         /// <summary>
         /// 重さ <paramref name="wv"/>[i].W, 価値 <paramref name="wv"/>[i].V の品物を、重さの和が <paramref name="W"/> 以下になるように0個以上選んだときの価値の和の最大値を返します。
         /// </summary>
@@ -39,7 +54,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(NW)</para>
         /// <para>制約: <paramref name="wv"/>.W は非負である</para>
         /// </remarks>
-        public static T[] SmallWeightUnlimited<T>((int W, T V)[] wv, int W) where T : INumber<T>, IMinMaxValue<T>
+        public static T[] SmallWeightUnlimited<T>(ReadOnlySpan<(int W, T V)> wv, int W) where T : INumber<T>, IMinMaxValue<T>
         {
             var rt = new T[W + 1];
             rt.AsSpan(1).Fill(T.MinValue / (T.One + T.One));
@@ -55,6 +70,16 @@ namespace Kzrnm.Competitive
             return rt;
         }
 
+#if !NET10_0_OR_GREATER
+        /// <inheritdoc cref="SmallValue{T}(ReadOnlySpan{ValueTuple{T, int}})"/>
+        [凾(256)]
+        public static T[] SmallValue<T>((T W, int V)[] wv) where T : INumber<T>, IMinMaxValue<T>
+            => SmallValue((ReadOnlySpan<(T, int)>)wv);
+        /// <inheritdoc cref="SmallValue{T}(ReadOnlySpan{ValueTuple{T, int}})"/>
+        [凾(256)]
+        public static T[] SmallValue<T>(Span<(T W, int V)> wv) where T : INumber<T>, IMinMaxValue<T>
+            => SmallValue((ReadOnlySpan<(T, int)>)wv);
+#endif
         /// <summary>
         /// 重さ <paramref name="wv"/>[i].W, 価値 <paramref name="wv"/>[i].V の品物を、0個または1個選んだときの重さの和の最小値を返します。
         /// </summary>
@@ -64,9 +89,17 @@ namespace Kzrnm.Competitive
         /// <para>制約: <paramref name="wv"/>.W は非負である</para>
         /// </remarks>
         [凾(256)]
-        public static T[] SmallValue<T>((T W, int V)[] wv) where T : INumber<T>, IMinMaxValue<T>
+        public static T[] SmallValue<T>(ReadOnlySpan<(T W, int V)> wv) where T : INumber<T>, IMinMaxValue<T>
             => SmallValue(wv, T.MaxValue / (T.One + T.One));
 
+#if !NET10_0_OR_GREATER
+        /// <inheritdoc cref="SmallValue{T}(ReadOnlySpan{ValueTuple{T, int}}, T)"/>
+        public static T[] SmallValue<T>((T W, int V)[] wv, T INF) where T : INumber<T>
+            => SmallValue((ReadOnlySpan<(T, int)>)wv, INF);
+        /// <inheritdoc cref="SmallValue{T}(ReadOnlySpan{ValueTuple{T, int}}, T)"/>
+        public static T[] SmallValue<T>(Span<(T W, int V)> wv, T INF) where T : INumber<T>
+            => SmallValue((ReadOnlySpan<(T, int)>)wv, INF);
+#endif
         /// <summary>
         /// 重さ <paramref name="wv"/>[i].W, 価値 <paramref name="wv"/>[i].V の品物を、0個または1個選んだときの重さの和の最小値を返します。
         /// </summary>
@@ -75,9 +108,11 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(N Sum(V))</para>
         /// <para>制約: <paramref name="wv"/>.W は非負である</para>
         /// </remarks>
-        public static T[] SmallValue<T>((T W, int V)[] wv, T INF) where T : INumber<T>
+        public static T[] SmallValue<T>(ReadOnlySpan<(T W, int V)> wv, T INF) where T : INumber<T>
         {
-            var rt = new T[wv.Sum(t => t.V) + 1];
+            int vs = 0;
+            foreach (var (_, v) in wv) vs += v;
+            var rt = new T[vs + 1];
             rt.AsSpan(1).Fill(INF);
             foreach (var (w, v) in wv)
             {

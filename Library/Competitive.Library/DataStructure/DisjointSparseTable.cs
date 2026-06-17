@@ -13,21 +13,21 @@ namespace Kzrnm.Competitive
 
     [DebuggerDisplay(nameof(Length) + " = {" + nameof(Length) + "}")]
     [DebuggerTypeProxy(typeof(DisjointSparseTable<,>.DebugView))]
-    public class DisjointSparseTable<TValue, TOp> where TOp : struct, ISparseTableOperator<TValue>
+    public class DisjointSparseTable<T, TOp> where TOp : struct, ISparseTableOperator<T>
     {
         static TOp op = default;
-        protected readonly TValue[][] st;
+        protected readonly T[][] st;
         public int Length { get; }
-        public DisjointSparseTable(TValue[] array)
+        public DisjointSparseTable(T[] array)
         {
             Contract.Assert(array.Length > 0, nameof(array) + " must not be empty");
             Length = array.Length;
-            st = new TValue[BitOperations.Log2((uint)Length) + 1][];
-            st[0] = (TValue[])array.Clone();
+            st = new T[BitOperations.Log2((uint)Length) + 1][];
+            st[0] = (T[])array.Clone();
             for (int h = 1; h < st.Length; h++)
             {
                 int s = 1 << h;
-                st[h] = new TValue[array.Length];
+                st[h] = new T[array.Length];
                 for (int i = 0; i < array.Length; i += (s << 1))
                 {
                     int t = Math.Min(i + s, array.Length);
@@ -44,10 +44,10 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        public TValue Slice(int l, int length) => Prod(l, l + length);
+        public T Slice(int l, int length) => Prod(l, l + length);
 
         [凾(256)]
-        public TValue Prod(int l, int r)
+        public T Prod(int l, int r)
         {
             Contract.Assert((uint)l < (uint)Length, "l < Length");
             Contract.Assert((uint)r <= (uint)Length, "r <= Length");
@@ -61,7 +61,7 @@ namespace Kzrnm.Competitive
         [DebuggerDisplay("{" + nameof(Value) + "}", Name = "{" + nameof(Key) + ",nq}")]
         readonly struct DebugItem
         {
-            public DebugItem(int l, int r, TValue value)
+            public DebugItem(int l, int r, T value)
             {
                 L = l;
                 R = r;
@@ -73,13 +73,13 @@ namespace Kzrnm.Competitive
             public int R { get; }
             [DebuggerBrowsable(0)]
             public string Key => R - L == 1 ? $"[{L}]" : $"[{L}-{R})";
-            public TValue Value { get; }
+            public T Value { get; }
         }
         [SourceExpander.NotEmbeddingSource]
         class DebugView
         {
-            readonly DisjointSparseTable<TValue, TOp> st;
-            public DebugView(DisjointSparseTable<TValue, TOp> st)
+            readonly DisjointSparseTable<T, TOp> st;
+            public DebugView(DisjointSparseTable<T, TOp> st)
             {
                 this.st = st;
             }

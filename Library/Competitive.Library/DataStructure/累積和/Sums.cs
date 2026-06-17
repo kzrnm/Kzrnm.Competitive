@@ -10,6 +10,20 @@ namespace Kzrnm.Competitive
     /// </summary>
     public static class Sums
     {
+#if !NET10_0_OR_GREATER
+        /// <summary>
+        /// <paramref name="orig"/> の累積和を返します。
+        /// </summary>
+        [凾(256)]
+        public static T[] Accumulate<T>(Span<T> orig, T defaultValue = default) where T : IAdditionOperators<T, T, T>
+            => Accumulate((ReadOnlySpan<T>)orig, defaultValue);
+        /// <summary>
+        /// <paramref name="orig"/> の累積和を返します。
+        /// </summary>
+        [凾(256)]
+        public static T[] Accumulate<T>(T[] orig, T defaultValue = default) where T : IAdditionOperators<T, T, T>
+            => Accumulate((ReadOnlySpan<T>)orig, defaultValue);
+#endif
         /// <summary>
         /// <paramref name="orig"/> の累積和を返します。
         /// </summary>
@@ -26,18 +40,6 @@ namespace Kzrnm.Competitive
         /// <paramref name="orig"/> の累積和を返します。
         /// </summary>
         [凾(256)]
-        public static T[] Accumulate<T>(Span<T> orig, T defaultValue = default) where T : IAdditionOperators<T, T, T>
-            => Accumulate((ReadOnlySpan<T>)orig, defaultValue);
-        /// <summary>
-        /// <paramref name="orig"/> の累積和を返します。
-        /// </summary>
-        [凾(256)]
-        public static T[] Accumulate<T>(T[] orig, T defaultValue = default) where T : IAdditionOperators<T, T, T>
-            => Accumulate((ReadOnlySpan<T>)orig, defaultValue);
-        /// <summary>
-        /// <paramref name="orig"/> の累積和を返します。
-        /// </summary>
-        [凾(256)]
         public static T[] Accumulate<T>(IList<T> orig, T defaultValue = default) where T : IAdditionOperators<T, T, T>
         {
             var impl = new T[orig.Count + 1];
@@ -47,12 +49,7 @@ namespace Kzrnm.Competitive
             return impl;
         }
 
-        /// <summary>
-        /// <paramref name="orig"/> の累積和を範囲演算で取得できるデータ構造を返します。
-        /// </summary>
-        [凾(256)]
-        public static Sums<T> Create<T>(ReadOnlySpan<T> orig, T defaultValue = default) where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>
-            => new(Accumulate(orig, defaultValue));
+#if !NET10_0_OR_GREATER
         /// <summary>
         /// <paramref name="orig"/> の累積和を範囲演算で取得できるデータ構造を返します。
         /// </summary>
@@ -64,6 +61,13 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)]
         public static Sums<T> Create<T>(T[] orig, T defaultValue = default) where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>
+            => new(Accumulate(orig, defaultValue));
+#endif
+        /// <summary>
+        /// <paramref name="orig"/> の累積和を範囲演算で取得できるデータ構造を返します。
+        /// </summary>
+        [凾(256)]
+        public static Sums<T> Create<T>(ReadOnlySpan<T> orig, T defaultValue = default) where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>
             => new(Accumulate(orig, defaultValue));
         /// <summary>
         /// <paramref name="orig"/> の累積和を範囲演算で取得できるデータ構造を返します。

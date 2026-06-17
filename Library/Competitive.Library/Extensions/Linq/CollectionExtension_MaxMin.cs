@@ -6,9 +6,7 @@ namespace Kzrnm.Competitive
 {
     public static class __CollectionExtension_MinMax
     {
-        /// <summary>
-        /// 最大値と最小値を取得する。空ならデフォルト
-        /// </summary>
+        /// <inheritdoc cref="MinMax{T}(ReadOnlySpan{T})"/>
         [凾(256)]
         public static (T Min, T Max) MinMax<T>(this IEnumerable<T> collection) where T : IComparable<T>
         {
@@ -28,12 +26,6 @@ namespace Kzrnm.Competitive
         /// 最大値と最小値を取得する。空ならデフォルト
         /// </summary>
         [凾(256)]
-        public static (T Min, T Max) MinMax<T>(this Span<T> collection) where T : IComparable<T>
-               => MinMax((ReadOnlySpan<T>)collection);
-        /// <summary>
-        /// 最大値と最小値を取得する。空ならデフォルト
-        /// </summary>
-        [凾(256)]
         public static (T Min, T Max) MinMax<T>(this ReadOnlySpan<T> collection) where T : IComparable<T>
         {
             if (collection.IsEmpty) return default((T, T));
@@ -46,5 +38,11 @@ namespace Kzrnm.Competitive
             }
             return (min, max);
         }
+#if !NET10_0_OR_GREATER
+        /// <inheritdoc cref="MinMax{T}(ReadOnlySpan{T})"/>
+        [凾(256)]
+        public static (T Min, T Max) MinMax<T>(this Span<T> collection) where T : IComparable<T>
+               => MinMax((ReadOnlySpan<T>)collection);
+#endif
     }
 }

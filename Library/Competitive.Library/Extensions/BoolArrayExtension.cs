@@ -6,23 +6,19 @@ namespace Kzrnm.Competitive
 {
     public static class __BoolArrayExtension
     {
-        /// <summary>
-        /// 長さ <paramref name="length"/> の bool 配列を作成し、<paramref name="nums"/> に含まれるインデックスを true に設定します。
-        /// </summary>
+#if !NET10_0_OR_GREATER
+        /// <inheritdoc cref="ToBoolArray(ReadOnlySpan{int}, int)"/>
         [凾(256)]
         public static bool[] ToBoolArray(this int[] nums, int length)
             => ToBoolArray((ReadOnlySpan<int>)nums, length);
-        /// <summary>
-        /// 長さ <paramref name="length"/> の bool 配列を作成し、<paramref name="nums"/> に含まれるインデックスを true に設定します。
-        /// </summary>
+        /// <inheritdoc cref="ToBoolArray(ReadOnlySpan{int}, int)"/>
         [凾(256)]
         public static bool[] ToBoolArray(this Span<int> nums, int length)
             => ToBoolArray((ReadOnlySpan<int>)nums, length);
-        /// <summary>
-        /// 長さ <paramref name="length"/> の bool 配列を作成し、<paramref name="nums"/> に含まれるインデックスを true に設定します。
-        /// </summary>
+#endif
+        /// <inheritdoc cref="ToBoolArray(ReadOnlySpan{int}, int)"/>
         [凾(256)]
-        public static bool[] ToBoolArray(this ReadOnlySpan<int> nums, int length)
+        public static bool[] ToBoolArray(this IEnumerable<int> nums, int length)
         {
             var a = new bool[length];
             foreach (var n in nums)
@@ -34,7 +30,7 @@ namespace Kzrnm.Competitive
         /// 長さ <paramref name="length"/> の bool 配列を作成し、<paramref name="nums"/> に含まれるインデックスを true に設定します。
         /// </summary>
         [凾(256)]
-        public static bool[] ToBoolArray(this IEnumerable<int> nums, int length)
+        public static bool[] ToBoolArray(this ReadOnlySpan<int> nums, int length)
         {
             var a = new bool[length];
             foreach (var n in nums)

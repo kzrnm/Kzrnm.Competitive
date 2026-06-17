@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -22,6 +23,7 @@ namespace Kzrnm.Competitive
             => ref CollectionsMarshal.GetValueRefOrAddDefault(dict, key, out exists);
 
         [凾(256)]
+        [OverloadResolutionPriority(1)]
         public static Span<TTo> Cast<TFrom, TTo>(this Span<TFrom> span)
             where TFrom : struct
             where TTo : struct
@@ -32,6 +34,7 @@ namespace Kzrnm.Competitive
             where TTo : struct
             => MemoryMarshal.Cast<TFrom, TTo>(span);
         [凾(256)]
+        [OverloadResolutionPriority(1)]
         public static ref T GetReference<T>(this Span<T> span) => ref MemoryMarshal.GetReference(span);
         [凾(256)]
         public static ref T GetReference<T>(this ReadOnlySpan<T> span) => ref MemoryMarshal.GetReference(span);

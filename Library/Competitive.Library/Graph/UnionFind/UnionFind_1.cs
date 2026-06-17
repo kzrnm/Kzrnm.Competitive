@@ -25,9 +25,9 @@ namespace Kzrnm.Competitive
         /// </remarks>
         /// <param name="datas">各頂点の初期値</param>
         /// <param name="mergeFunc">頂点の持つ値のマージを行う関数。第一引数の方が親になる。</param>
-        public UnionFind(T[] datas, Func<T, T, T> mergeFunc)
+        public UnionFind(ReadOnlySpan<T> datas, Func<T, T, T> mergeFunc)
         {
-            _datas = (T[])datas.Clone();
+            _datas = datas.ToArray();
             _merge = mergeFunc;
             _ps = new int[_datas.Length];
             _ps.AsSpan().Fill(-1);

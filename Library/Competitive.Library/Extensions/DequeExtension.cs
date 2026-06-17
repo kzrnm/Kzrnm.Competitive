@@ -7,6 +7,16 @@ namespace Kzrnm.Competitive
 {
     public static class __DequeExtension
     {
+#if !NET10_0_OR_GREATER
+        /// <inheritdoc cref="ToDeque{T}(IEnumerable{T})"/>
+        [凾(256)]
+        public static Deque<T> ToDeque<T>(this T[] collection)
+            => ToDeque((ReadOnlySpan<T>)collection);
+        /// <inheritdoc cref="ToDeque{T}(IEnumerable{T})"/>
+        [凾(256)]
+        public static Deque<T> ToDeque<T>(this Span<T> collection)
+            => ToDeque((ReadOnlySpan<T>)collection);
+#endif
         /// <summary>
         /// <paramref name="collection"/> から <see cref="Deque{T}"/> を作成します。
         /// </summary>
@@ -28,21 +38,7 @@ namespace Kzrnm.Competitive
             }
             return deq;
         }
-        /// <summary>
-        /// <paramref name="collection"/> から <see cref="Deque{T}"/> を作成します。
-        /// </summary>
-        [凾(256)]
-        public static Deque<T> ToDeque<T>(this T[] collection)
-            => ToDeque((ReadOnlySpan<T>)collection);
-        /// <summary>
-        /// <paramref name="collection"/> から <see cref="Deque{T}"/> を作成します。
-        /// </summary>
-        [凾(256)]
-        public static Deque<T> ToDeque<T>(this Span<T> collection)
-            => ToDeque((ReadOnlySpan<T>)collection);
-        /// <summary>
-        /// <paramref name="collection"/> から <see cref="Deque{T}"/> を作成します。
-        /// </summary>
+        /// <inheritdoc cref="ToDeque{T}(IEnumerable{T})"/>
         [凾(256)]
         public static Deque<T> ToDeque<T>(this ReadOnlySpan<T> collection)
         {

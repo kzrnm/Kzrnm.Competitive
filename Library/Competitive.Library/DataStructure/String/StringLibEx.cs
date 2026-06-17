@@ -10,15 +10,17 @@ namespace Kzrnm.Competitive
 {
     public static class StringLibEx
     {
-        /// <inheritdoc cref="LcsTable{T}(ReadOnlySpan{T}, ReadOnlySpan{T})"/>
-        [凾(256)]
-        public static int[][] LcsTable(string s, string t) => LcsTable(s.AsSpan(), t);
+#if !NET10_0_OR_GREATER
         /// <inheritdoc cref="LcsTable{T}(ReadOnlySpan{T}, ReadOnlySpan{T})"/>
         [凾(256)]
         public static int[][] LcsTable<T>(T[] s, T[] t) => LcsTable((ReadOnlySpan<T>)s, t);
         /// <inheritdoc cref="LcsTable{T}(ReadOnlySpan{T}, ReadOnlySpan{T})"/>
         [凾(256)]
         public static int[][] LcsTable<T>(Span<T> s, Span<T> t) => LcsTable((ReadOnlySpan<T>)s, t);
+#endif
+        /// <inheritdoc cref="LcsTable{T}(ReadOnlySpan{T}, ReadOnlySpan{T})"/>
+        [凾(256)]
+        public static int[][] LcsTable(string s, string t) => LcsTable(s.AsSpan(), t);
         /// <summary>
         /// <paramref name="s"/>[..i] と <paramref name="t"/>[..j] の LCS(最長共通部分列)長を table[i][j] に保持する2次元配列を返します。
         /// </summary>
@@ -47,15 +49,17 @@ namespace Kzrnm.Competitive
             return dp;
         }
 
-        /// <inheritdoc cref="Lcs{T}(ReadOnlySpan{T}, ReadOnlySpan{T})"/>
-        [凾(256)]
-        public static char[] Lcs(string s, string t) => Lcs(s.AsSpan(), t);
+#if !NET10_0_OR_GREATER
         /// <inheritdoc cref="Lcs{T}(ReadOnlySpan{T}, ReadOnlySpan{T})"/>
         [凾(256)]
         public static T[] Lcs<T>(T[] s, T[] t) => Lcs((ReadOnlySpan<T>)s, t);
         /// <inheritdoc cref="Lcs{T}(ReadOnlySpan{T}, ReadOnlySpan{T})"/>
         [凾(256)]
         public static T[] Lcs<T>(Span<T> s, Span<T> t) => Lcs((ReadOnlySpan<T>)s, t);
+#endif
+        /// <inheritdoc cref="Lcs{T}(ReadOnlySpan{T}, ReadOnlySpan{T})"/>
+        [凾(256)]
+        public static char[] Lcs(string s, string t) => Lcs(s.AsSpan(), t);
         /// <summary>
         /// <paramref name="s"/> と <paramref name="t"/> の LCS(最長共通部分列)を返します。
         /// </summary>
@@ -90,10 +94,7 @@ namespace Kzrnm.Competitive
             return list.ToArray();
         }
 
-        /// <inheritdoc cref="Period{T}(ReadOnlySpan{T})"/>
-        [凾(256)]
-        public static int Period(string s)
-            => Period<char>(s);
+#if !NET10_0_OR_GREATER
         /// <inheritdoc cref="Period{T}(ReadOnlySpan{T})"/>
         [凾(256)]
         public static int Period<T>(T[] s)
@@ -102,6 +103,11 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static int Period<T>(Span<T> s)
             => Period((ReadOnlySpan<T>)s);
+#endif
+        /// <inheritdoc cref="Period{T}(ReadOnlySpan{T})"/>
+        [凾(256)]
+        public static int Period(string s)
+            => Period<char>(s);
 
         /// <summary>
         /// <paramref name="s"/> の最短の周期を返します。
@@ -127,14 +133,7 @@ namespace Kzrnm.Competitive
             return s.Length;
         }
 
-        /// <inheritdoc cref="RunEnumerate{T}(ReadOnlySpan{T})"/>
-        [凾(256)]
-        public static (int From, int ToExclusive)[][] RunEnumerate(Asciis s)
-            => RunEnumerate(s.AsSpan());
-        /// <inheritdoc cref="RunEnumerate{T}(ReadOnlySpan{T})"/>
-        [凾(256)]
-        public static (int From, int ToExclusive)[][] RunEnumerate(string s)
-            => RunEnumerate<char>(s);
+#if !NET10_0_OR_GREATER
         /// <inheritdoc cref="RunEnumerate{T}(ReadOnlySpan{T})"/>
         [凾(256)]
         public static (int From, int ToExclusive)[][] RunEnumerate<T>(T[] s)
@@ -143,6 +142,15 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static (int From, int ToExclusive)[][] RunEnumerate<T>(Span<T> s)
             => RunEnumerate((ReadOnlySpan<T>)s);
+#endif
+        /// <inheritdoc cref="RunEnumerate{T}(ReadOnlySpan{T})"/>
+        [凾(256)]
+        public static (int From, int ToExclusive)[][] RunEnumerate(Asciis s)
+            => RunEnumerate(s.AsSpan());
+        /// <inheritdoc cref="RunEnumerate{T}(ReadOnlySpan{T})"/>
+        [凾(256)]
+        public static (int From, int ToExclusive)[][] RunEnumerate(string s)
+            => RunEnumerate<char>(s);
 
         /// <summary>
         /// <paramref name="s"/> の run を返します。

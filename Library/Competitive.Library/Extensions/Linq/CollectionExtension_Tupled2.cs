@@ -5,22 +5,14 @@ namespace Kzrnm.Competitive
 {
     public static class __CollectionExtension_Tupled2
     {
-        /// <summary>
-        /// コレクションの要素2つずつをまとめた配列を返します。
-        /// </summary>
-        /// <example>
-        /// [1, 2, 3] → [(1,2), (2,3)]
-        /// </example>
+#if !NET10_0_OR_GREATER
+        /// <inheritdoc cref="Tupled2{T}(ReadOnlySpan{T})"/>
         [凾(256)]
         public static (T, T)[] Tupled2<T>(this T[] a) => Tupled2((ReadOnlySpan<T>)a);
-        /// <summary>
-        /// コレクションの要素2つずつをまとめた配列を返します。
-        /// </summary>
-        /// <example>
-        /// [1, 2, 3] → [(1,2), (2,3)]
-        /// </example>
+        /// <inheritdoc cref="Tupled2{T}(ReadOnlySpan{T})"/>
         [凾(256)]
         public static (T, T)[] Tupled2<T>(this Span<T> a) => Tupled2((ReadOnlySpan<T>)a);
+#endif
         /// <summary>
         /// コレクションの要素2つずつをまとめた配列を返します。
         /// </summary>

@@ -53,11 +53,31 @@ namespace Kzrnm.Competitive
             }
         }
 
+#if !NET10_0_OR_GREATER
         [凾(256)]
         public static Result<T, U>[] Points<T, U>((T X, U Y)[] s, bool strict = true) where T : IComparable<T> where U : IComparable<U>
-            => Points(s, strict, new V<T, U>());
+            => Points((ReadOnlySpan<(T, U)>)s, strict, new V<T, U>());
         [凾(256)]
         public static Result<T, U>[] Points<T, U, TCmp, UCmp>((T X, U Y)[] s, TCmp tCmp, UCmp uCmp, bool strict = true)
+            where TCmp : IComparer<T>
+            where UCmp : IComparer<U>
+            => Points((ReadOnlySpan<(T, U)>)s, strict, new C<T, U, TCmp, UCmp> { tc = tCmp, uc = uCmp });
+
+        [凾(256)]
+        public static Result<T, U>[] Points<T, U>(Span<(T X, U Y)> s, bool strict = true) where T : IComparable<T> where U : IComparable<U>
+            => Points((ReadOnlySpan<(T, U)>)s, strict, new V<T, U>());
+        [凾(256)]
+        public static Result<T, U>[] Points<T, U, TCmp, UCmp>(Span<(T X, U Y)> s, TCmp tCmp, UCmp uCmp, bool strict = true)
+            where TCmp : IComparer<T>
+            where UCmp : IComparer<U>
+            => Points((ReadOnlySpan<(T, U)>)s, strict, new C<T, U, TCmp, UCmp> { tc = tCmp, uc = uCmp });
+#endif
+
+        [凾(256)]
+        public static Result<T, U>[] Points<T, U>(ReadOnlySpan<(T X, U Y)> s, bool strict = true) where T : IComparable<T> where U : IComparable<U>
+            => Points(s, strict, new V<T, U>());
+        [凾(256)]
+        public static Result<T, U>[] Points<T, U, TCmp, UCmp>(ReadOnlySpan<(T X, U Y)> s, TCmp tCmp, UCmp uCmp, bool strict = true)
             where TCmp : IComparer<T>
             where UCmp : IComparer<U>
             => Points(s, strict, new C<T, U, TCmp, UCmp> { tc = tCmp, uc = uCmp });
@@ -91,14 +111,10 @@ namespace Kzrnm.Competitive
 #pragma warning restore IDE0251 // メンバーを 'readonly' にする
 
         [凾(256)]
-        static Result<T, U>[] Points<T, U, Cp>((T X, U Y)[] s, bool strict, Cp op = default) where Cp : ICp<T, U>
+        static Result<T, U>[] Points<T, U, Cp>(ReadOnlySpan<(T X, U Y)> s, bool strict, Cp op = default) where Cp : ICp<T, U>
         {
-            if (s.Length == 0)
-#if NET8_0_OR_GREATER
-                return [];
-#else
-                return Array.Empty<Result<T, U>>();
-#endif
+            if (s.Length == 0) return [];
+
             Span<T> xs = new T[s.Length];
             Span<U> ys = new U[s.Length];
             Span<int> idx = new int[s.Length];

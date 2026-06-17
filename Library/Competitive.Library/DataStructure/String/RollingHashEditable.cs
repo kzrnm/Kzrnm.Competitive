@@ -13,15 +13,17 @@ namespace Kzrnm.Competitive
     /// </summary>
     public class RollingHashEditable : RollingHashBase<Rhf1, Rhf2>
     {
-        [凾(256)]
-        public static RollingHashEditable Create(string s)
-            => Create(SegVals<char>(s));
+#if !NET10_0_OR_GREATER
         [凾(256)]
         public static RollingHashEditable Create<T>(T[] s) where T : IBinaryInteger<T>
             => Create(SegVals<T>(s));
         [凾(256)]
         public static RollingHashEditable Create<T>(Span<T> s) where T : IBinaryInteger<T>
             => Create(SegVals<T>(s));
+#endif
+        [凾(256)]
+        public static RollingHashEditable Create(string s)
+            => Create(SegVals<char>(s));
         [凾(256)]
         public static RollingHashEditable Create<T>(ReadOnlySpan<T> s) where T : IBinaryInteger<T>
             => Create(SegVals(s));

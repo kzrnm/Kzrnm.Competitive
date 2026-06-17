@@ -15,6 +15,7 @@ namespace Kzrnm.Competitive
         /// <param name="pattern">検索したいパターン</param>
         [凾(256)]
         public static BoyerMoore<T> Create<T>(ReadOnlySpan<T> pattern) => new BoyerMoore<T>(pattern);
+#if !NET10_0_OR_GREATER
         /// <summary>
         /// BoyerMoore法で検索するパターンを初期化する
         /// </summary>
@@ -27,6 +28,7 @@ namespace Kzrnm.Competitive
         /// <param name="pattern">検索したいパターン</param>
         [凾(256)]
         public static BoyerMoore<T> Create<T>(T[] pattern) => new BoyerMoore<T>(pattern);
+#endif
         /// <summary>
         /// BoyerMoore法で検索するパターンを初期化する
         /// </summary>

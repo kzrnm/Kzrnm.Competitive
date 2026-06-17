@@ -5,9 +5,15 @@ namespace Kzrnm.Competitive
 {
     public static class __CollectionExtension_SpanSelect
     {
+#if !NET10_0_OR_GREATER
         [凾(256)]
         public static TResult[] Select<TSource, TResult>(this Span<TSource> source, Func<TSource, TResult> selector)
             => Select((ReadOnlySpan<TSource>)source, selector);
+
+        [凾(256)]
+        public static TResult[] Select<TSource, TResult>(this Span<TSource> source, Func<TSource, int, TResult> selector)
+            => Select((ReadOnlySpan<TSource>)source, selector);
+#endif
         [凾(256)]
         public static TResult[] Select<TSource, TResult>(this ReadOnlySpan<TSource> source, Func<TSource, TResult> selector)
         {
@@ -16,9 +22,6 @@ namespace Kzrnm.Competitive
                 res[i] = selector(source[i]);
             return res;
         }
-        [凾(256)]
-        public static TResult[] Select<TSource, TResult>(this Span<TSource> source, Func<TSource, int, TResult> selector)
-            => Select((ReadOnlySpan<TSource>)source, selector);
         [凾(256)]
         public static TResult[] Select<TSource, TResult>(this ReadOnlySpan<TSource> source, Func<TSource, int, TResult> selector)
         {

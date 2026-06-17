@@ -18,7 +18,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <param name="to">数値 i からの遷移先</param>
         /// <param name="start">どの頂点からのパスを見るか</param>
-        public PathLoop(int[] to, int start)
+        public PathLoop(ReadOnlySpan<int> to, int start)
         {
             var used = new int[to.Length];
             var list = new List<int>(to.Length);

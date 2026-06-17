@@ -6,12 +6,21 @@ namespace Kzrnm.Competitive
 {
     public static class __CollectionExtension_MinBy
     {
+#if !NET10_0_OR_GREATER
         [凾(256)]
         public static (int index, T min) MinBy<T>(this T[] arr) where T : IComparable<T>
              => MinBy((ReadOnlySpan<T>)arr);
         [凾(256)]
         public static (int index, T min) MinBy<T>(this Span<T> arr) where T : IComparable<T>
              => MinBy((ReadOnlySpan<T>)arr);
+
+        [凾(256)]
+        public static (int index, T min) MinBy<T, TMin>(this T[] arr, Func<T, TMin> minBySelector) where TMin : IComparable<TMin>
+            => MinBy((ReadOnlySpan<T>)arr, minBySelector);
+        [凾(256)]
+        public static (int index, T min) MinBy<T, TMin>(this Span<T> arr, Func<T, TMin> minBySelector) where TMin : IComparable<TMin>
+            => MinBy((ReadOnlySpan<T>)arr, minBySelector);
+#endif
         [凾(256)]
         public static (int index, T min) MinBy<T>(this ReadOnlySpan<T> arr) where T : IComparable<T>
         {
@@ -27,12 +36,7 @@ namespace Kzrnm.Competitive
             }
             return (minIndex, min);
         }
-        [凾(256)]
-        public static (int index, T min) MinBy<T, TMin>(this T[] arr, Func<T, TMin> minBySelector) where TMin : IComparable<TMin>
-            => MinBy((ReadOnlySpan<T>)arr, minBySelector);
-        [凾(256)]
-        public static (int index, T min) MinBy<T, TMin>(this Span<T> arr, Func<T, TMin> minBySelector) where TMin : IComparable<TMin>
-            => MinBy((ReadOnlySpan<T>)arr, minBySelector);
+
         [凾(256)]
         public static (int index, T min) MinBy<T, TMin>(this ReadOnlySpan<T> arr, Func<T, TMin> minBySelector) where TMin : IComparable<TMin>
 

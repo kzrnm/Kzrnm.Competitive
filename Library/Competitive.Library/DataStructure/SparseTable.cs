@@ -12,21 +12,21 @@ namespace Kzrnm.Competitive
     /// </summary>
     [DebuggerDisplay(nameof(Length) + " = {" + nameof(Length) + "}")]
     [DebuggerTypeProxy(typeof(SparseTable<,>.DebugView))]
-    public class SparseTable<TValue, TOp> where TOp : struct, ISparseTableOperator<TValue>
+    public class SparseTable<T, TOp> where TOp : struct, ISparseTableOperator<T>
     {
         static TOp op = default;
-        protected readonly TValue[][] st;
+        protected readonly T[][] st;
         public int Length { get; }
-        public SparseTable(TValue[] array)
+        public SparseTable(T[] array)
         {
             Contract.Assert(array.Length > 0, nameof(array) + " must not be empty");
             Length = array.Length;
-            st = new TValue[BitOperations.Log2((uint)Length) + 1][];
-            st[0] = (TValue[])array.Clone();
+            st = new T[BitOperations.Log2((uint)Length) + 1][];
+            st[0] = (T[])array.Clone();
             for (int k = 1; k < st.Length; k++)
             {
                 var stp = st[k - 1];
-                var sti = st[k] = new TValue[Length - (1 << k) + 1];
+                var sti = st[k] = new T[Length - (1 << k) + 1];
                 var d = 1 << (k - 1);
                 for (int i = 0; i < sti.Length; i++)
                     sti[i] = op.Operate(stp[i], stp[i + d]);
@@ -34,10 +34,10 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        public TValue Slice(int l, int length) => Prod(l, l + length);
+        public T Slice(int l, int length) => Prod(l, l + length);
 
         [凾(256)]
-        public TValue Prod(int l, int r)
+        public T Prod(int l, int r)
         {
             Contract.Assert((uint)l < (uint)Length, "l < Length");
             Contract.Assert((uint)r <= (uint)Length, "r <= Length");
@@ -52,7 +52,7 @@ namespace Kzrnm.Competitive
         readonly record struct DebugItem(
             [property: DebuggerBrowsable(0)] int L,
             [property: DebuggerBrowsable(0)] int R,
-            TValue Value)
+            T Value)
         {
 
             [DebuggerBrowsable(0)]
@@ -61,8 +61,8 @@ namespace Kzrnm.Competitive
         [SourceExpander.NotEmbeddingSource]
         class DebugView
         {
-            readonly SparseTable<TValue, TOp> st;
-            public DebugView(SparseTable<TValue, TOp> st)
+            readonly SparseTable<T, TOp> st;
+            public DebugView(SparseTable<T, TOp> st)
             {
                 this.st = st;
             }

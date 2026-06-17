@@ -9,22 +9,12 @@ namespace Kzrnm.Competitive
     /// </summary>
     public static class InversionNumber
     {
-        /// <summary>
-        /// <para><paramref name="s"/> の転倒数を返します。</para>
-        /// </summary>
-        /// <remarks>
-        /// <para>転倒数: i &lt; j かつ s[i] &gt; s[j] を満たす組み合わせの個数</para>
-        /// <para>計算量: |<paramref name="s"/>| log |<paramref name="s"/>|</para>
-        /// </remarks>
+#if !NET10_0_OR_GREATER
+        /// <inheritdoc cref="Inversion{T}(ReadOnlySpan{T})"/>
         [凾(256)] public static long Inversion<T>(T[] s) where T : IComparable<T> => Inversion((ReadOnlySpan<T>)s);
-        /// <summary>
-        /// <para><paramref name="s"/> の転倒数を返します。</para>
-        /// </summary>
-        /// <remarks>
-        /// <para>転倒数: i &lt; j かつ s[i] &gt; s[j] を満たす組み合わせの個数</para>
-        /// <para>計算量: |<paramref name="s"/>| log |<paramref name="s"/>|</para>
-        /// </remarks>
+        /// <inheritdoc cref="Inversion{T}(ReadOnlySpan{T})"/>
         [凾(256)] public static long Inversion<T>(Span<T> s) where T : IComparable<T> => Inversion((ReadOnlySpan<T>)s);
+#endif
         /// <summary>
         /// <para><paramref name="s"/> の転倒数を返します。</para>
         /// </summary>
@@ -34,7 +24,7 @@ namespace Kzrnm.Competitive
         /// </remarks>
         [凾(256)]
         public static long Inversion<T>(ReadOnlySpan<T> s) where T : IComparable<T>
-            => Inversion(ZahyoCompress.CompressedArray(s));
+            => Impl(ZahyoCompress.CompressedArray(s));
 
         /// <summary>
         /// <para><paramref name="s"/> の転倒数を返します。</para>
@@ -44,26 +34,8 @@ namespace Kzrnm.Competitive
         /// <para>転倒数: i &lt; j かつ s[i] &gt; s[j] を満たす組み合わせの個数</para>
         /// <para>計算量: |<paramref name="s"/>| log |<paramref name="s"/>|</para>
         /// </remarks>
-        [凾(256)] public static long Inversion(int[] s) => Inversion((ReadOnlySpan<int>)s);
-        /// <summary>
-        /// <para><paramref name="s"/> の転倒数を返します。</para>
-        /// </summary>
-        /// <remarks>
-        /// <para>制約: 0 ≦ s[i] ≦ s.Length </para>
-        /// <para>転倒数: i &lt; j かつ s[i] &gt; s[j] を満たす組み合わせの個数</para>
-        /// <para>計算量: |<paramref name="s"/>| log |<paramref name="s"/>|</para>
-        /// </remarks>
-        [凾(256)] public static long Inversion(Span<int> s) => Inversion((ReadOnlySpan<int>)s);
-        /// <summary>
-        /// <para><paramref name="s"/> の転倒数を返します。</para>
-        /// </summary>
-        /// <remarks>
-        /// <para>制約: 0 ≦ s[i] ≦ s.Length </para>
-        /// <para>転倒数: i &lt; j かつ s[i] &gt; s[j] を満たす組み合わせの個数</para>
-        /// <para>計算量: |<paramref name="s"/>| log |<paramref name="s"/>|</para>
-        /// </remarks>
         [凾(256)]
-        public static long Inversion(ReadOnlySpan<int> s)
+        static long Impl(int[] s)
         {
             long r = 0;
             var fw = new FenwickTree<int>(s.Length + 1);

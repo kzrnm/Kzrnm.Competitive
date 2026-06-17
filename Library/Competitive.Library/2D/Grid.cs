@@ -37,12 +37,12 @@ namespace Kzrnm.Competitive
 
     [DebuggerDisplay("""{ToStringSplit().Replace("\r\n","\n"),raw}""")]
     [DebuggerTypeProxy(typeof(Grid<>.DebugView))]
-    public class Grid<T>
+    public class Grid<T>(T[] data, int H, int W, T defaultValue)
     {
         public int Size => data.Length;
-        public readonly int H, W;
-        public readonly T[] data;
-        internal readonly T defaultValue;
+        public readonly int H = H, W = W;
+        public readonly T[] data = data;
+        internal readonly T defaultValue = defaultValue;
         public Grid(int H, int W, T defaultValue = default) : this(new T[H * W].Fill(defaultValue), H, W, defaultValue) { }
         public Grid(ReadOnlySpan<T> data, int H, int W, T defaultValue = default) : this(data.ToArray(), H, W, defaultValue)
         {
@@ -51,13 +51,6 @@ namespace Kzrnm.Competitive
         public Grid(Grid<T> other) : this(other.data.ToArray(), other.H, other.W, other.defaultValue)
         {
             AtCoder.Internal.Contract.Assert(other.H * other.W == other.data.Length);
-        }
-        internal Grid(T[] data, int H, int W, T defaultValue)
-        {
-            this.H = H;
-            this.W = W;
-            this.data = data;
-            this.defaultValue = defaultValue;
         }
         [凾(256)]
         public int Index(int h, int w) =>

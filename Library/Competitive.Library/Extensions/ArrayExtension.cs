@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -59,15 +60,17 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static T[] Reverse<T>(this T[] a) { Array.Reverse(a); return a; }
 
+
         /// <summary>
         /// <paramref name="a"/>[<paramref name="index"/>] を返します。<paramref name="index"/> が負ならば <paramref name="a"/>[<paramref name="a"/>.Length + <paramref name="index"/>] を返します。
         /// </summary>
         [凾(256)]
-        public static ref T Get<T>(this T[] a, int index)
+        public static ref T Get<T>(this Span<T> a, int index)
         {
             if (index < 0) index += a.Length;
             return ref a[index];
         }
+
 
         /// <summary>
         /// <paramref name="a"/>[<paramref name="index"/>] を返します。配列の範囲外ならば <paramref name="dummy"/> を返します。
@@ -80,10 +83,9 @@ namespace Kzrnm.Competitive
             Dummy<T>.dummy = dummy;
             return ref Dummy<T>.dummy;
         }
-        /// <summary>
-        /// <paramref name="a"/>[<paramref name="index"/>] を返します。配列の範囲外ならば <paramref name="dummy"/> を返します。
-        /// </summary>
+        /// <inheritdoc cref="GetOrDummy{T}(ReadOnlySpan{T}, int, T)"/>
         [凾(256)]
+        [OverloadResolutionPriority(1)]
         public static ref T GetOrDummy<T>(this Span<T> a, int index, T dummy = default)
         {
             if ((uint)index < (uint)a.Length)
@@ -91,12 +93,6 @@ namespace Kzrnm.Competitive
             Dummy<T>.dummy = dummy;
             return ref Dummy<T>.dummy;
         }
-        /// <summary>
-        /// <paramref name="a"/>[<paramref name="index"/>] を返します。配列の範囲外ならば <paramref name="dummy"/> を返します。
-        /// </summary>
-        [凾(256)]
-        public static ref T GetOrDummy<T>(this T[] a, int index, T dummy = default)
-            => ref GetOrDummy(a.AsSpan(), index, dummy);
 
         /// <summary>
         /// <paramref name="a"/>[<paramref name="ix1"/>][<paramref name="ix2"/>] を返します。配列の範囲外ならば <paramref name="dummy"/> を返します。
@@ -131,22 +127,10 @@ namespace Kzrnm.Competitive
 
 
         // 見つかったら検索を終えるので LowerBound よりも少し速いかも
-        /// <summary>
-        /// <para>ソート済みの <paramref name="a"/> から <paramref name="value"/> のインデックスを返します。</para>
-        /// <para><paramref name="a"/> に <paramref name="value"/> が複数存在するならばそのいずれかのインデックスを返します。</para>
-        /// <para><paramref name="a"/> に <paramref name="value"/> が含まれなければ <paramref name="value"/> を超える最小のインデックスを返します。</para>
-        /// </summary>
-        /// <remarks>制約: <paramref name="a"/> はソート済みであること</remarks>
+        /// <inheritdoc cref="FindByBinarySearch{T, TCv}(ReadOnlySpan{T}, TCv)"/> 
         [凾(256)]
-        public static int FindByBinarySearch<T, TCv>(this T[] a, TCv value) where TCv : IComparable<T> => FindByBinarySearch((ReadOnlySpan<T>)a, value);
-        /// <summary>
-        /// <para>ソート済みの <paramref name="a"/> から <paramref name="value"/> のインデックスを返します。</para>
-        /// <para><paramref name="a"/> に <paramref name="value"/> が複数存在するならばそのいずれかのインデックスを返します。</para>
-        /// <para><paramref name="a"/> に <paramref name="value"/> が含まれなければ <paramref name="value"/> を超える最小のインデックスを返します。</para>
-        /// </summary>
-        /// <remarks>制約: <paramref name="a"/> はソート済みであること</remarks>
-        [凾(256)]
-        public static int FindByBinarySearch<T, TCv>(this Span<T> a, TCv value) where TCv : IComparable<T> => FindByBinarySearch((ReadOnlySpan<T>)a, value);
+        public static int FindByBinarySearch<T, TCv>(this Span<T> a, TCv value) where TCv : IComparable<T>
+            => FindByBinarySearch((ReadOnlySpan<T>)a, value);
         /// <summary>
         /// <para>ソート済みの <paramref name="a"/> から <paramref name="value"/> のインデックスを返します。</para>
         /// <para><paramref name="a"/> に <paramref name="value"/> が複数存在するならばそのいずれかのインデックスを返します。</para>
@@ -161,5 +145,20 @@ namespace Kzrnm.Competitive
                 ix = ~ix;
             return ix;
         }
+
+#if !NET10_0_OR_GREATER
+        /// <inheritdoc cref="Get{T}(Span{T}, int)"/>
+        [凾(256)]
+        public static ref T Get<T>(this T[] a, int index)
+            => ref Get(a.AsSpan(), index);
+        /// <inheritdoc cref="GetOrDummy{T}(ReadOnlySpan{T}, int, T)"/>
+        [凾(256)]
+        public static ref T GetOrDummy<T>(this T[] a, int index, T dummy = default)
+            => ref GetOrDummy(a.AsSpan(), index, dummy);
+        /// <inheritdoc cref="FindByBinarySearch{T, TCv}(ReadOnlySpan{T}, TCv)"/> 
+        [凾(256)]
+        public static int FindByBinarySearch<T, TCv>(this T[] a, TCv value) where TCv : IComparable<T>
+            => FindByBinarySearch((ReadOnlySpan<T>)a, value);
+#endif
     }
 }

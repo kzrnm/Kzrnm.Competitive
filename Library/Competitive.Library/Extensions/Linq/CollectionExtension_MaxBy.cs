@@ -6,12 +6,21 @@ namespace Kzrnm.Competitive
 {
     public static class __CollectionExtension_MaxBy
     {
+#if !NET10_0_OR_GREATER
         [凾(256)]
         public static (int index, T max) MaxBy<T>(this T[] arr) where T : IComparable<T>
              => MaxBy((ReadOnlySpan<T>)arr);
         [凾(256)]
         public static (int index, T max) MaxBy<T>(this Span<T> arr) where T : IComparable<T>
              => MaxBy((ReadOnlySpan<T>)arr);
+
+        [凾(256)]
+        public static (int index, T max) MaxBy<T, TMax>(this T[] arr, Func<T, TMax> maxBySelector) where TMax : IComparable<TMax>
+            => MaxBy((ReadOnlySpan<T>)arr, maxBySelector);
+        [凾(256)]
+        public static (int index, T max) MaxBy<T, TMax>(this Span<T> arr, Func<T, TMax> maxBySelector) where TMax : IComparable<TMax>
+            => MaxBy((ReadOnlySpan<T>)arr, maxBySelector);
+#endif
         [凾(256)]
         public static (int index, T max) MaxBy<T>(this ReadOnlySpan<T> arr) where T : IComparable<T>
         {
@@ -27,12 +36,6 @@ namespace Kzrnm.Competitive
             }
             return (maxIndex, max);
         }
-        [凾(256)]
-        public static (int index, T max) MaxBy<T, TMax>(this T[] arr, Func<T, TMax> maxBySelector) where TMax : IComparable<TMax>
-            => MaxBy((ReadOnlySpan<T>)arr, maxBySelector);
-        [凾(256)]
-        public static (int index, T max) MaxBy<T, TMax>(this Span<T> arr, Func<T, TMax> maxBySelector) where TMax : IComparable<TMax>
-            => MaxBy((ReadOnlySpan<T>)arr, maxBySelector);
         [凾(256)]
         public static (int index, T max) MaxBy<T, TMax>(this ReadOnlySpan<T> arr, Func<T, TMax> maxBySelector) where TMax : IComparable<TMax>
         {

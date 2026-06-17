@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -15,23 +16,12 @@ namespace Kzrnm.Competitive
         /// 座標圧縮を行う
         /// </summary>
         [凾(256)]
+        [OverloadResolutionPriority(1)]
         public static ZahyoCompress<T> Create<T>(IEnumerable<T> orig) => new ZahyoCompress<T>(orig).Compress();
 
-        /// <summary>
-        /// 座標圧縮を行う
-        /// </summary>
+        /// <inheritdoc cref="Create{T}(IEnumerable{T})"/>
         [凾(256)]
         public static ZahyoCompress<T> Create<T>(ReadOnlySpan<T> orig) => new ZahyoCompress<T>(orig).Compress();
-        /// <summary>
-        /// 座標圧縮を行う
-        /// </summary>
-        [凾(256)]
-        public static ZahyoCompress<T> Create<T>(Span<T> orig) => new ZahyoCompress<T>(orig).Compress();
-        /// <summary>
-        /// 座標圧縮を行う
-        /// </summary>
-        [凾(256)]
-        public static ZahyoCompress<T> Create<T>(T[] orig) => new ZahyoCompress<T>((ReadOnlySpan<T>)orig).Compress();
 
         /// <summary>
         /// 座標圧縮後の値に置換した配列を取得する
@@ -39,16 +29,18 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static int[] CompressedArray<T>(ReadOnlySpan<T> orig) => new ZahyoCompress<T>(orig).Replace(orig);
 
-        /// <summary>
-        /// 座標圧縮後の値に置換した配列を取得する
-        /// </summary>
+#if !NET10_0_OR_GREATER
+        /// <inheritdoc cref="Create{T}(IEnumerable{T})"/>
         [凾(256)]
-        public static int[] CompressedArray<T>(Span<T> orig) => CompressedArray((ReadOnlySpan<T>)orig);
-        /// <summary>
-        /// 座標圧縮後の値に置換した配列を取得する
-        /// </summary>
+        public static ZahyoCompress<T> Create<T>(Span<T> orig) => new ZahyoCompress<T>(orig).Compress();
+
+        /// <inheritdoc cref="CompressedArray{T}(ReadOnlySpan{T})"/>
         [凾(256)]
         public static int[] CompressedArray<T>(T[] orig) => CompressedArray((ReadOnlySpan<T>)orig);
+        /// <inheritdoc cref="CompressedArray{T}(ReadOnlySpan{T})"/>
+        [凾(256)]
+        public static int[] CompressedArray<T>(Span<T> orig) => CompressedArray((ReadOnlySpan<T>)orig);
+#endif
     }
     /// <summary>
     /// 座標圧縮を行う
@@ -56,7 +48,6 @@ namespace Kzrnm.Competitive
     public class ZahyoCompress<T>
     {
         public ZahyoCompress() { data = new(); }
-        public ZahyoCompress(T[] arr) : this(arr.AsSpan()) { }
         public ZahyoCompress(IEnumerable<T> collection) { data = new(collection); }
         public ZahyoCompress(ReadOnlySpan<T> span) : this()
         {
@@ -129,11 +120,13 @@ namespace Kzrnm.Competitive
             original = Original;
         }
 
+#if !NET10_0_OR_GREATER
         /// <summary>
         /// 座標圧縮後の値に置換した配列を返します
         /// </summary>
         [凾(256)]
         public int[] Replace(T[] orig) => Replace((ReadOnlySpan<T>)orig);
+#endif
 
         /// <summary>
         /// 座標圧縮後の値に置換した配列を返します

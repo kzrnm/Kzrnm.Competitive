@@ -7,19 +7,13 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive
 {
     /// <summary>
-    /// Mo's algorithm. 平方分割
+    /// Mo's algorithm. 平方分割でオフラインクエリを計算する
     /// </summary>
-    public class MoAlgorithm
+    public class MoAlgorithm()
     {
         int Max;
-        readonly List<(int From, int ToExclusive, int Index)> builder;
-        /// <summary>
-        /// 平方分割でオフラインクエリを計算する
-        /// </summary>
-        public MoAlgorithm()
-        {
-            builder = [];
-        }
+        readonly List<(int From, int ToExclusive, int Index)> builder = [];
+
         /// <summary>
         /// 平方分割でオフラインクエリを計算する
         /// </summary>

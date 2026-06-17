@@ -16,26 +16,12 @@ namespace Kzrnm.Competitive
             [凾(256)] public static implicit operator T(Result<T> r) => r.Value;
         }
 
-        /// <summary>
-        /// <para><paramref name="s"/> のある1つの最長増加部分列と使用したインデックスを返します。</para>
-        /// <para><paramref name="strict"/> が <see langword="true"/> ならば狭義単調増加、 <see langword="false"/> ならば広義単調増加な列を返します。</para>
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量: |<paramref name="s"/>| log |<paramref name="s"/>|</para>
-        /// </remarks>
-        /// <param name="s">元となるリスト</param>
-        /// <param name="strict">狭義単調増加か否か</param>
+#if !NET10_0_OR_GREATER
+        /// <inheritdoc cref="Lis{T}(ReadOnlySpan{T}, bool)"/>
         [凾(256)] public static Result<T>[] Lis<T>(T[] s, bool strict = true) where T : IComparable<T> => Lis((ReadOnlySpan<T>)s, strict);
-        /// <summary>
-        /// <para><paramref name="s"/> のある1つの最長増加部分列と使用したインデックスを返します。</para>
-        /// <para><paramref name="strict"/> が <see langword="true"/> ならば狭義単調増加、 <see langword="false"/> ならば広義単調増加な列を返します。</para>
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量: |<paramref name="s"/>| log |<paramref name="s"/>|</para>
-        /// </remarks>
-        /// <param name="s">元となるリスト</param>
-        /// <param name="strict">狭義単調増加か否か</param>
+        /// <inheritdoc cref="Lis{T}(ReadOnlySpan{T}, bool)"/>
         [凾(256)] public static Result<T>[] Lis<T>(Span<T> s, bool strict = true) where T : IComparable<T> => Lis((ReadOnlySpan<T>)s, strict);
+#endif
         /// <summary>
         /// <para><paramref name="s"/> のある1つの最長増加部分列と使用したインデックスを返します。</para>
         /// <para><paramref name="strict"/> が <see langword="true"/> ならば狭義単調増加、 <see langword="false"/> ならば広義単調増加な列を返します。</para>
@@ -52,28 +38,14 @@ namespace Kzrnm.Competitive
             : Lis<T, Vl<T>>(s);
 
 
-        /// <summary>
-        /// <para><paramref name="s"/> のある1つの最長増加部分列と使用したインデックスを返します。</para>
-        /// <para><paramref name="strict"/> が <see langword="true"/> ならば狭義単調増加、 <see langword="false"/> ならば広義単調増加な列を返します。</para>
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量: |<paramref name="s"/>| log |<paramref name="s"/>|</para>
-        /// </remarks>
-        /// <param name="s">元となるリスト</param>
-        /// <param name="cmp"><see cref="IComparer{T}"/>の実装</param>
-        /// <param name="strict">狭義単調増加か否か</param>
-        [凾(256)] public static Result<T>[] Lis<T, TCmp>(T[] s, TCmp cmp, bool strict = true) where TCmp : IComparer<T> => Lis((ReadOnlySpan<T>)s, cmp, strict);
-        /// <summary>
-        /// <para><paramref name="s"/> のある1つの最長増加部分列と使用したインデックスを返します。</para>
-        /// <para><paramref name="strict"/> が <see langword="true"/> ならば狭義単調増加、 <see langword="false"/> ならば広義単調増加な列を返します。</para>
-        /// </summary>
-        /// <remarks>
-        /// <para>計算量: |<paramref name="s"/>| log |<paramref name="s"/>|</para>
-        /// </remarks>
-        /// <param name="s">元となるリスト</param>
-        /// <param name="cmp"><see cref="IComparer{T}"/>の実装</param>
-        /// <param name="strict">狭義単調増加か否か</param>
-        [凾(256)] public static Result<T>[] Lis<T, TCmp>(Span<T> s, TCmp cmp, bool strict = true) where TCmp : IComparer<T> => Lis((ReadOnlySpan<T>)s, cmp, strict);
+#if !NET10_0_OR_GREATER
+        /// <inheritdoc cref="Lis{T, TCmp}(ReadOnlySpan{T}, TCmp, bool)"/>
+        [凾(256)] public static Result<T>[] Lis<T, TCmp>(T[] s, TCmp cmp, bool strict = true) where TCmp : IComparer<T>
+            => Lis((ReadOnlySpan<T>)s, cmp, strict);
+        /// <inheritdoc cref="Lis{T, TCmp}(ReadOnlySpan{T}, TCmp, bool)"/>
+        [凾(256)] public static Result<T>[] Lis<T, TCmp>(Span<T> s, TCmp cmp, bool strict = true) where TCmp : IComparer<T>
+            => Lis((ReadOnlySpan<T>)s, cmp, strict);
+#endif
         /// <summary>
         /// <para><paramref name="s"/> のある1つの最長増加部分列と使用したインデックスを返します。</para>
         /// <para><paramref name="strict"/> が <see langword="true"/> ならば狭義単調増加、 <see langword="false"/> ならば広義単調増加な列を返します。</para>

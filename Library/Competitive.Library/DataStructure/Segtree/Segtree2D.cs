@@ -6,12 +6,6 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 // https://nyaannyaan.github.io/library/data-structure-2d/2d-segment-tree.hpp
 namespace Kzrnm.Competitive
 {
-    ///// <summary>
-    ///// <see cref="AtCoder.Segtree{TValue, TOp}"/> を2次元配列上で扱います。
-    ///// </summary>
-    //public class Segtree2D
-    //{
-    //}
     /// <summary>
     /// 大きさ H × W の2次元配列に対し、
     /// <list type="bullet">
@@ -24,11 +18,11 @@ namespace Kzrnm.Competitive
     /// </list>
     /// <para>を O(log H log W) で求めることが出来るデータ構造です。</para>
     /// </summary>
-    public class Segtree2D<TValue, TOp> where TOp : struct, ISegtreeOperator<TValue>
+    public class Segtree2D<T, TOp> where TOp : struct, ISegtreeOperator<T>
     {
         static readonly TOp op = default;
         internal readonly int logH, logW, H, W;
-        public readonly TValue[] d;
+        public readonly T[] d;
 
 
         /// <summary>
@@ -45,7 +39,7 @@ namespace Kzrnm.Competitive
             logW = InternalBit.CeilPow2(w);
             H = 1 << logH;
             W = 1 << logW;
-            d = new TValue[4 * H * W];
+            d = new T[4 * H * W];
             d.AsSpan().Fill(op.Identity);
         }
 
@@ -53,7 +47,7 @@ namespace Kzrnm.Competitive
         /// 大きさ h=<paramref name="v"/>.Length × w=<paramref name="v"/>[0].Length の2次元配列 a　を持つ <see cref="Segtree2D{TValue, TOp}"/> クラスの新しいインスタンスを作ります。初期値は <paramref name="v"/> です。
         /// </summary>
         /// <param name="v">初期配列</param>
-        public Segtree2D(TValue[][] v) : this(v.Length, v[0].Length)
+        public Segtree2D(T[][] v) : this(v.Length, v[0].Length)
         {
             for (int h = 0; h < v.Length; h++)
                 v[h].CopyTo(d.AsSpan(2 * (h + H) * W + W, W));
@@ -79,7 +73,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量(get): O(1)</para>
         /// </remarks>
         /// <returns></returns>
-        public TValue this[int h, int w]
+        public T this[int h, int w]
         {
             [凾(256)]
             set
@@ -104,7 +98,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(log H log W)</para>
         /// </remarks>
         [凾(256)]
-        public TValue Prod(int h1, int w1, int h2, int w2)
+        public T Prod(int h1, int w1, int h2, int w2)
         {
             var res = op.Identity;
             if (h1 >= h2 || w1 >= w2) return res;
@@ -126,7 +120,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(log W)</para>
         /// </remarks>
         [凾(256)]
-        TValue Prod(int h, int w1, int w2)
+        T Prod(int h, int w1, int w2)
         {
             var res = op.Identity;
             for (; w1 < w2; w1 >>= 1, w2 >>= 1)

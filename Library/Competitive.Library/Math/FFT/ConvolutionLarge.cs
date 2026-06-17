@@ -10,19 +10,7 @@ namespace Kzrnm.Competitive
 
     public static class ConvolutionLarge
     {
-        /// <summary>
-        /// Ntt 可能な長さより大きな長さの畳み込みを計算します。
-        /// </summary>
-        /// <remarks>
-        /// <para><paramref name="a"/>, <paramref name="b"/> の少なくとも一方が空の場合は空配列を返します。</para>
-        /// <para>制約:</para>
-        /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|))</para>
-        /// </remarks>
-        [凾(256)]
-        public static uint[] Convolution<T>(ReadOnlySpan<int> a, ReadOnlySpan<int> b)
-              where T : struct, IStaticMod
-              => Convolution<T>(MemoryMarshal.Cast<int, uint>(a), MemoryMarshal.Cast<int, uint>(b));
-
+#if !NET10_0_OR_GREATER
         /// <summary>
         /// Ntt 可能な長さより大きな長さの畳み込みを計算します。
         /// </summary>
@@ -71,6 +59,8 @@ namespace Kzrnm.Competitive
         public static MontgomeryModInt<T>[] Convolution<T>(Span<MontgomeryModInt<T>> a, Span<MontgomeryModInt<T>> b)
              where T : struct, IStaticMod
             => Convolution((ReadOnlySpan<MontgomeryModInt<T>>)a, b);
+#endif
+
         /// <summary>
         /// Ntt 可能な長さより大きな長さの畳み込みを計算します。
         /// </summary>
@@ -109,6 +99,18 @@ namespace Kzrnm.Competitive
             return rt;
         }
 
+        /// <summary>
+        /// Ntt 可能な長さより大きな長さの畳み込みを計算します。
+        /// </summary>
+        /// <remarks>
+        /// <para><paramref name="a"/>, <paramref name="b"/> の少なくとも一方が空の場合は空配列を返します。</para>
+        /// <para>制約:</para>
+        /// <para>計算量: O((|<paramref name="a"/>|+|<paramref name="b"/>|)log(|<paramref name="a"/>|+|<paramref name="b"/>|))</para>
+        /// </remarks>
+        [凾(256)]
+        public static uint[] Convolution<T>(ReadOnlySpan<int> a, ReadOnlySpan<int> b)
+              where T : struct, IStaticMod
+              => Convolution<T>(MemoryMarshal.Cast<int, uint>(a), MemoryMarshal.Cast<int, uint>(b));
 
         /// <summary>
         /// Ntt 可能な長さより大きな長さの畳み込みを計算します。

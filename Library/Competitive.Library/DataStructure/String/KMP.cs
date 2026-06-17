@@ -15,6 +15,7 @@ namespace Kzrnm.Competitive
         /// <param name="pattern">検索したいパターン</param>
         [凾(256)]
         public static KMP<T> Create<T>(ReadOnlySpan<T> pattern) => new KMP<T>(pattern);
+#if !NET10_0_OR_GREATER
         /// <summary>
         /// KMP法で検索するパターンを初期化します。
         /// </summary>
@@ -27,6 +28,7 @@ namespace Kzrnm.Competitive
         /// <param name="pattern">検索したいパターン</param>
         [凾(256)]
         public static KMP<T> Create<T>(T[] pattern) => new KMP<T>(pattern);
+#endif
         /// <summary>
         /// KMP法で検索するパターンを初期化します。
         /// </summary>

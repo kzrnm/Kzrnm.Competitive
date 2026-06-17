@@ -10,42 +10,42 @@ namespace Kzrnm.Competitive
     /// <para>冪等: 操作を何回行っても集合が等しければ等しくなる性質(最小値・最大値など)</para>
     /// </summary>
 
-    [DebuggerDisplay("H = {" + nameof(Length) + "}, W = {" + nameof(st) + "[0][0]." + nameof(Grid<TValue>.W) + "}")]
-    public class SparseTable2D<TValue, TOp> where TOp : struct, ISparseTableOperator<TValue>
+    [DebuggerDisplay("H = {" + nameof(Length) + "}, W = {" + nameof(st) + "[0][0]." + nameof(Grid<T>.W) + "}")]
+    public class SparseTable2D<T, TOp> where TOp : struct, ISparseTableOperator<T>
     {
         static TOp op = default;
-        readonly Grid<TValue>[][] st;
+        readonly Grid<T>[][] st;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public int Length { get; }
 
-        static Grid<TValue> ToGrid(TValue[][] array)
+        static Grid<T> ToGrid(T[][] array)
         {
             Contract.Assert(array.Length > 0 && array[0].Length > 0, nameof(array) + " must not be empty");
-            var g = new Grid<TValue>(array.Length, array[0].Length);
+            var g = new Grid<T>(array.Length, array[0].Length);
             for (int i = 0; i < array.Length; i++)
                 for (int j = 0; j < array[i].Length; j++)
                     g[i, j] = array[i][j];
             return g;
         }
-        public SparseTable2D(TValue[][] array) : this(ToGrid(array)) { }
-        public SparseTable2D(Grid<TValue> grid)
+        public SparseTable2D(T[][] array) : this(ToGrid(array)) { }
+        public SparseTable2D(Grid<T> grid)
         {
             Contract.Assert(grid.H > 0 && grid.W > 0, nameof(grid) + " must not be empty");
             int H = grid.H;
             int W = grid.W;
             Length = H;
-            st = new Grid<TValue>[BitOperations.Log2((uint)H) + 1][];
+            st = new Grid<T>[BitOperations.Log2((uint)H) + 1][];
 
             var lw = BitOperations.Log2((uint)W) + 1;
             for (int i = 0; i < st.Length; i++)
-                st[i] = new Grid<TValue>[lw];
+                st[i] = new Grid<T>[lw];
 
             st[0][0] = grid.Clone();
 
             for (int k = 1; k < st.Length; k++)
             {
                 var stp = st[k - 1][0];
-                var sti = st[k][0] = new Grid<TValue>(H - (1 << k) + 1, W, grid.defaultValue);
+                var sti = st[k][0] = new Grid<T>(H - (1 << k) + 1, W, grid.defaultValue);
                 for (int i = 0; i < sti.H; i++)
                     for (int j = 0; j < W; j++)
                         sti[i, j] = op.Operate(stp[i, j], stp[i + (1 << (k - 1)), j]);
@@ -55,7 +55,7 @@ namespace Kzrnm.Competitive
                 for (int l = 1; l < st[k].Length; ++l)
                 {
                     var stp = st[k][l - 1];
-                    var sti = st[k][l] = new Grid<TValue>(H - (1 << k) + 1, W - (1 << l) + 1, grid.defaultValue);
+                    var sti = st[k][l] = new Grid<T>(H - (1 << k) + 1, W - (1 << l) + 1, grid.defaultValue);
                     for (int i = 0; i < sti.H; i++)
                         for (int j = 0; j < sti.W; j++)
                             sti[i, j] = op.Operate(stp[i, j], stp[i, j + (1 << (l - 1))]);
@@ -65,7 +65,7 @@ namespace Kzrnm.Competitive
 
 
         [凾(256)]
-        public TValue Prod(int lh, int rh, int lw, int rw)
+        public T Prod(int lh, int rh, int lw, int rw)
         {
             Contract.Assert((uint)lh < (uint)st[0][0].H, "l < H");
             Contract.Assert((uint)rh <= (uint)st[0][0].H, "r <= H");
@@ -84,12 +84,12 @@ namespace Kzrnm.Competitive
 
         [凾(256)]
         public Slicer Slice(int lh, int length) => new Slicer(this, lh, lh + length);
-        public readonly record struct Slicer(SparseTable2D<TValue, TOp> impl, int l, int r)
+        public readonly record struct Slicer(SparseTable2D<T, TOp> impl, int l, int r)
         {
 
             public int Length => impl.st[0][0].W;
             [凾(256)]
-            public TValue Slice(int lw, int length)
+            public T Slice(int lw, int length)
             {
                 var rw = lw + length;
                 return impl.Prod(l, r, lw, rw);

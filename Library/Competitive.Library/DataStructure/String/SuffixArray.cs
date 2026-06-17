@@ -7,11 +7,7 @@ namespace Kzrnm.Competitive
 {
     public class SuffixArray
     {
-        /// <inheritdoc cref="Create{T}(ReadOnlySpan{T})"/>
-        [凾(256)]
-        public static SuffixArray Create(string s)
-            => Create<char>(s);
-
+#if !NET10_0_OR_GREATER
         /// <inheritdoc cref="Create{T}(ReadOnlySpan{T})"/>
         [凾(256)]
         public static SuffixArray Create<T>(Span<T> s)
@@ -21,6 +17,11 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static SuffixArray Create<T>(T[] s)
             => Create((ReadOnlySpan<T>)s);
+#endif
+        /// <inheritdoc cref="Create{T}(ReadOnlySpan{T})"/>
+        [凾(256)]
+        public static SuffixArray Create(string s)
+            => Create<char>(s);
 
         /// <summary>
         /// 数列 <paramref name="s"/> の Suffix Array を構築します。

@@ -18,17 +18,6 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(3^n) ただし |<paramref name="a"/>| = 2^n</para>
         /// </remarks>
         [凾(256)]
-        public static void SupersetZetaTransform<T>(T[] a) where T : IAdditionOperators<T, T, T>
-            => SupersetZetaTransform(a.AsSpan());
-        /// <summary>
-        /// <paramref name="a"/> を b[S] = ∑ S⊂T <paramref name="a"/>[T] となる b に変換します。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約:</para>
-        /// <para>- |<paramref name="a"/>| は 2の冪乗</para>
-        /// <para>計算量: O(3^n) ただし |<paramref name="a"/>| = 2^n</para>
-        /// </remarks>
-        [凾(256)]
         public static void SupersetZetaTransform<T>(Span<T> a) where T : IAdditionOperators<T, T, T>
         {
             if (!BitOperations.IsPow2(a.Length)) ThrowNotPow2(nameof(a));
@@ -46,17 +35,6 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(3^n) ただし |<paramref name="b"/>| = 2^n</para>
         /// </remarks>
         [凾(256)]
-        public static void SupersetMoebiusTransform<T>(T[] b) where T : ISubtractionOperators<T, T, T>
-            => SupersetMoebiusTransform(b.AsSpan());
-        /// <summary>
-        /// <paramref name="b"/>[S] = ∑ S⊂T a[T] となっている <paramref name="b"/> を a に変換します。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約:</para>
-        /// <para>- |<paramref name="b"/>| は 2の冪乗</para>
-        /// <para>計算量: O(3^n) ただし |<paramref name="b"/>| = 2^n</para>
-        /// </remarks>
-        [凾(256)]
         public static void SupersetMoebiusTransform<T>(Span<T> b) where T : ISubtractionOperators<T, T, T>
         {
             if (!BitOperations.IsPow2(b.Length)) ThrowNotPow2(nameof(b));
@@ -65,18 +43,6 @@ namespace Kzrnm.Competitive
                     b[j] -= b[j | i];
         }
 
-
-        /// <summary>
-        /// <paramref name="a"/> を b[S] = ∑ T⊂S <paramref name="a"/>[T] となる b に変換します。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約:</para>
-        /// <para>- |<paramref name="a"/>| は 2の冪乗</para>
-        /// <para>計算量: O(3^n) ただし |<paramref name="a"/>| = 2^n</para>
-        /// </remarks>
-        [凾(256)]
-        public static void SubsetZetaTransform<T>(T[] a) where T : IAdditionOperators<T, T, T>
-            => SubsetZetaTransform(a.AsSpan());
         /// <summary>
         /// <paramref name="a"/> を b[S] = ∑ T⊂S <paramref name="a"/>[T] となる b に変換します。
         /// </summary>
@@ -103,17 +69,6 @@ namespace Kzrnm.Competitive
         /// <para>計算量: O(3^n) ただし |<paramref name="b"/>| = 2^n</para>
         /// </remarks>
         [凾(256)]
-        public static void SubsetMoebiusTransform<T>(T[] b) where T : ISubtractionOperators<T, T, T>
-            => SubsetMoebiusTransform(b.AsSpan());
-        /// <summary>
-        /// <paramref name="b"/>[S] = ∑ T⊂S a[T] となっている <paramref name="b"/> を a に変換します。
-        /// </summary>
-        /// <remarks>
-        /// <para>制約:</para>
-        /// <para>- |<paramref name="b"/>| は 2の冪乗</para>
-        /// <para>計算量: O(3^n) ただし |<paramref name="b"/>| = 2^n</para>
-        /// </remarks>
-        [凾(256)]
         public static void SubsetMoebiusTransform<T>(Span<T> b) where T : ISubtractionOperators<T, T, T>
         {
             if (!BitOperations.IsPow2(b.Length)) ThrowNotPow2(nameof(b));
@@ -121,5 +76,27 @@ namespace Kzrnm.Competitive
                 foreach (var j in (~i & b.Length - 1).BitSubset(false))
                     b[j | i] -= b[j];
         }
+
+#if !NET10_0_OR_GREATER
+        /// <inheritdoc cref="SupersetZetaTransform{T}(Span{T})"/>
+        [凾(256)]
+        public static void SupersetZetaTransform<T>(T[] a) where T : IAdditionOperators<T, T, T>
+            => SupersetZetaTransform(a.AsSpan());
+
+        /// <inheritdoc cref="SupersetMoebiusTransform{T}(Span{T})"/>
+        [凾(256)]
+        public static void SupersetMoebiusTransform<T>(T[] b) where T : ISubtractionOperators<T, T, T>
+            => SupersetMoebiusTransform(b.AsSpan());
+
+        /// <inheritdoc cref="SubsetZetaTransform{T}(Span{T})"/>
+        [凾(256)]
+        public static void SubsetZetaTransform<T>(T[] a) where T : IAdditionOperators<T, T, T>
+            => SubsetZetaTransform(a.AsSpan());
+
+        /// <inheritdoc cref="SubsetMoebiusTransform{T}(Span{T})"/>
+        [凾(256)]
+        public static void SubsetMoebiusTransform<T>(T[] b) where T : ISubtractionOperators<T, T, T>
+            => SubsetMoebiusTransform(b.AsSpan());
+#endif
     }
 }

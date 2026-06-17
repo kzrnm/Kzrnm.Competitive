@@ -8,8 +8,8 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// 現在のセグ木の中身を配列にコピーして返します。
         /// </summary>
-        public static TValue[] ToArray<TValue, F, TOp>(this LazySegtree<TValue, F, TOp> seg)
-            where TOp : struct, ILazySegtreeOperator<TValue, F>
+        public static T[] ToArray<T, F, TOp>(this LazySegtree<T, F, TOp> seg)
+            where TOp : struct, ILazySegtreeOperator<T, F>
         {
             var data = seg.d;
             var p = data.Length / 2;

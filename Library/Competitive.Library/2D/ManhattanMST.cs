@@ -14,11 +14,21 @@ namespace Kzrnm.Competitive
     /// </summary>
     public static class ManhattanMST
     {
+#if !NET10_0_OR_GREATER
+        /// <inheritdoc cref="Solve{T}(ReadOnlySpan{ValueTuple{T, T}})"/>
+        public static (int Index1, int Index2)[] Solve<T>((T, T)[] ps)
+            where T : INumber<T>, IMinMaxValue<T>
+            => Impl<T>.Solve(ps);
+        /// <inheritdoc cref="Solve{T}(ReadOnlySpan{ValueTuple{T, T}})"/>
+        public static (int Index1, int Index2)[] Solve<T>(Span<(T, T)> ps)
+            where T : INumber<T>, IMinMaxValue<T>
+            => Impl<T>.Solve(ps);
+#endif
         /// <summary>
         /// マンハッタン距離 |x2-x1| + |y2-y1| での最小全域木を構築する
         /// </summary>
         /// <param name="ps">座標の一覧</param>
-        public static (int Index1, int Index2)[] Solve<T>((T, T)[] ps)
+        public static (int Index1, int Index2)[] Solve<T>(ReadOnlySpan<(T, T)> ps)
             where T : INumber<T>, IMinMaxValue<T>
             => Impl<T>.Solve(ps);
 
@@ -45,40 +55,40 @@ namespace Kzrnm.Competitive
             /// マンハッタン距離 |x2-x1| + |y2-y1| での最小全域木を構築する
             /// </summary>
             /// <param name="ps">座標の一覧</param>
-            public static (int Index1, int Index2)[] Solve((T, T)[] ps)
+            public static (int Index1, int Index2)[] Solve(ReadOnlySpan<(T, T)> ps)
             {
                 List<(int Index1, int Index2)> edgesList = new(ps.Length * 4);
                 var minf = MaxFw.AdditiveIdentity;
-                ps = ((T, T)[])ps.Clone();
+                var p = ps.ToArray();
                 for (int ph = 0; ph < 4; ph++)
                 {
-                    var ids = Enumerable.Range(0, ps.Length).ToArray();
-                    Array.Sort(ps.Select(p => (-(p.Item1 + p.Item2), -p.Item2)).ToArray(), ids);
+                    var ids = Enumerable.Range(0, p.Length).ToArray();
+                    Array.Sort(p.Select(p => (-(p.Item1 + p.Item2), -p.Item2)).ToArray(), ids);
 
-                    var xv = ps.Select(p => p.Item1).Distinct().ToArray();
+                    var xv = p.Select(p => p.Item1).Distinct().ToArray();
                     Array.Sort(xv);
-                    FenwickTree<MaxFw> fw = new(ps.Length);
+                    FenwickTree<MaxFw> fw = new(p.Length);
                     fw.data.AsSpan().Fill(minf);
                     foreach (var ix in ids)
                     {
-                        var xi = xv.LowerBound(ps[ix].Item1);
+                        var xi = xv.LowerBound(p[ix].Item1);
                         var max = fw.Sum(xi + 1);
                         if (max.Index > 0)
                             edgesList.Add((ix, max.Index - 1));
-                        var x = ps[ix].Item1 - ps[ix].Item2;
+                        var x = p[ix].Item1 - p[ix].Item2;
                         fw.Add(xi, new(x, ix + 1));
                     }
 
-                    for (int i = 0; i < ps.Length; i++)
-                        ps[i] = (ps[i].Item2, ps[i].Item1);
+                    for (int i = 0; i < p.Length; i++)
+                        p[i] = (p[i].Item2, p[i].Item1);
                     if (ph == 1)
-                        for (int i = 0; i < ps.Length; i++)
-                            ps[i].Item2 = -ps[i].Item2;
+                        for (int i = 0; i < p.Length; i++)
+                            p[i].Item2 = -p[i].Item2;
                 }
-                edgesList.Select(new Dist(ps).Convert).ToArray().AsSpan(0, edgesList.Count).Sort(edgesList.AsSpan());
+                edgesList.Select(new Dist(p).Convert).ToArray().AsSpan(0, edgesList.Count).Sort(edgesList.AsSpan());
 
-                UnionFind uf = new(ps.Length);
-                var res = new (int Index1, int Index2)[ps.Length - 1];
+                UnionFind uf = new(p.Length);
+                var res = new (int Index1, int Index2)[p.Length - 1];
                 int ri = 0;
                 foreach (var (ix1, ix2) in edgesList.AsSpan())
                 {

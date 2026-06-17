@@ -11,18 +11,16 @@ namespace Kzrnm.Competitive
     /// </summary>
     public static class XorConvolution
     {
-        /// <summary>
-        /// XOR 畳み込み。c[i^j] = ∑ <paramref name="a"/>[i] <paramref name="b"/>[j] となる c を返します。
-        /// </summary>
+#if !NET10_0_OR_GREATER
+        /// <inheritdoc cref="Convolution{T}(ReadOnlySpan{T}, ReadOnlySpan{T})"/>
         [凾(256)]
         public static T[] Convolution<T>(T[] a, T[] b) where T : INumberBase<T>
             => Convolution((ReadOnlySpan<T>)a, b);
-        /// <summary>
-        /// XOR 畳み込み。c[i^j] = ∑ <paramref name="a"/>[i] <paramref name="b"/>[j] となる c を返します。
-        /// </summary>
+        /// <inheritdoc cref="Convolution{T}(ReadOnlySpan{T}, ReadOnlySpan{T})"/>
         [凾(256)]
         public static T[] Convolution<T>(Span<T> a, Span<T> b) where T : INumberBase<T>
             => Convolution((ReadOnlySpan<T>)a, b);
+#endif
         /// <summary>
         /// XOR 畳み込み。c[i^j] = ∑ <paramref name="a"/>[i] <paramref name="b"/>[j] となる c を返します。
         /// </summary>
