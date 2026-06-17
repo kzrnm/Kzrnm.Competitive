@@ -36,7 +36,7 @@ namespace Kzrnm.Competitive
     }
 
     /// <summary>
-    /// 2 次元平面上にある点が事前に与えられているとき、点への重みの加算と範囲内の重みの総和を求めるデータ構造。
+    /// 2 次元平面上にある点が事前に与えられているとき、点への重みの加算と範囲内の重みの総和を求めるデータ構造。X 座標を可変とする。
     /// </summary>
     /// <typeparam name="F">点の座標</typeparam>
     /// <typeparam name="T">重み</typeparam>
@@ -123,7 +123,7 @@ namespace Kzrnm.Competitive
     }
 
     /// <summary>
-    /// 2 次元平面上にある点が事前に与えられているとき、点への重みの加算と範囲内の重みの総和を求めるデータ構造。
+    /// 2 次元平面上にある点が事前に与えられているとき、点への重みの加算と範囲内の重みの総和を求めるデータ構造。X 座標は配列のインデックスとする。
     /// </summary>
     /// <typeparam name="F">点の高さ</typeparam>
     /// <typeparam name="T">重み</typeparam>
