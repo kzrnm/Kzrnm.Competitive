@@ -48,6 +48,7 @@ namespace Kzrnm.Competitive
     public class ZahyoCompress<T>
     {
         public ZahyoCompress() { data = new(); }
+        [OverloadResolutionPriority(1)]
         public ZahyoCompress(IEnumerable<T> collection) { data = new(collection); }
         public ZahyoCompress(ReadOnlySpan<T> span) : this()
         {
