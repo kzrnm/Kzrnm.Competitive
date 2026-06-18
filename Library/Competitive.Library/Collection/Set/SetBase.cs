@@ -247,7 +247,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         [凾(256)]
         public Node FindNodeLowerBound(T item) => BinarySearch<SetLower>(item).node;
         /// <summary>
-        /// <paramref name="item"/> 以上の最初のインデックスを返します。
+        /// <paramref name="item"/> 以上の最初のインデックスを返します。なければ Count を返します。
         /// </summary>
         [凾(256)]
         public int LowerBoundIndex(T item) => BinarySearch<SetLower>(item).index;
@@ -272,7 +272,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         [凾(256)]
         public Node FindNodeUpperBound(T item) => BinarySearch<SetUpper>(item).node;
         /// <summary>
-        /// <paramref name="item"/> を超える最初のインデックスを返します。
+        /// <paramref name="item"/> を超える最初のインデックスを返します。なければ Count を返します。
         /// </summary>
         [凾(256)]
         public int UpperBoundIndex(T item) => BinarySearch<SetUpper>(item).index;
@@ -298,7 +298,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         [凾(256)]
         public Node FindNodeReverseLowerBound(T item) => BinarySearch<SetLowerRev>(item).node;
         /// <summary>
-        /// <paramref name="item"/> 以下の最後のインデックスを返します。
+        /// <paramref name="item"/> 以下の最後のインデックスを返します。なければ -1 を返します。
         /// </summary>
         [凾(256)]
         public int ReverseLowerBoundIndex(T item) => BinarySearch<SetLowerRev>(item).index;
@@ -324,7 +324,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         [凾(256)]
         public Node FindNodeReverseUpperBound(T item) => BinarySearch<SetUpperRev>(item).node;
         /// <summary>
-        /// <paramref name="item"/> 未満の最後のインデックスを返します。
+        /// <paramref name="item"/> 未満の最後のインデックスを返します。なければ -1 を返します。
         /// </summary>
         [凾(256)]
         public int ReverseUpperBoundIndex(T item) => BinarySearch<SetUpperRev>(item).index;

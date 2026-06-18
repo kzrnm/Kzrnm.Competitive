@@ -46,7 +46,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)] public Node FindNodeLowerBound<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new SetLower()).node;
         /// <summary>
-        /// <paramref name="item"/> 以上の最初のインデックスを返します。
+        /// <paramref name="item"/> 以上の最初のインデックスを返します。なければ Count を返します。
         /// </summary>
         [凾(256)] public int LowerBoundIndex<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new SetLower()).index;
         /// <summary>
@@ -69,7 +69,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)] public Node FindNodeUpperBound<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new SetUpper()).node;
         /// <summary>
-        /// <paramref name="item"/> を超える最初のインデックスを返します。
+        /// <paramref name="item"/> を超える最初のインデックスを返します。なければ Count を返します。
         /// </summary>
         [凾(256)] public int UpperBoundIndex<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new SetUpper()).index;
         /// <summary>
@@ -93,7 +93,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)] public Node FindNodeReverseLowerBound<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new SetLowerRev()).node;
         /// <summary>
-        /// <paramref name="item"/> 以下の最後のインデックスを返します。
+        /// <paramref name="item"/> 以下の最後のインデックスを返します。なければ -1 を返します。
         /// </summary>
         [凾(256)] public int ReverseLowerBoundIndex<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new SetLowerRev()).index;
         /// <summary>
@@ -117,7 +117,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)] public Node FindNodeReverseUpperBound<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new SetUpperRev()).node;
         /// <summary>
-        /// <paramref name="item"/> 未満の最後のインデックスを返します。
+        /// <paramref name="item"/> 未満の最後のインデックスを返します。なければ -1 を返します。
         /// </summary>
         [凾(256)] public int ReverseUpperBoundIndex<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new SetUpperRev()).index;
         /// <summary>

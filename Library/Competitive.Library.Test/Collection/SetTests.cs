@@ -101,6 +101,18 @@ public class SetTests
 
         set.RemoveNode(set.FindNodeLowerBound(9));
         await set.Should().BeStrictlyEquivalentTo((int[])[2, 3, 4, 7, 8]);
+
+        await set.LowerBoundIndex(3).Should().BeEqualTo(1);
+        await set.UpperBoundIndex(3).Should().BeEqualTo(2);
+
+        await set.LowerBoundIndex(8).Should().BeEqualTo(4);
+        await set.UpperBoundIndex(8).Should().BeEqualTo(5);
+
+        await set.ReverseLowerBoundIndex(3).Should().BeEqualTo(1);
+        await set.ReverseUpperBoundIndex(3).Should().BeEqualTo(0);
+
+        await set.ReverseLowerBoundIndex(2).Should().BeEqualTo(0);
+        await set.ReverseUpperBoundIndex(2).Should().BeEqualTo(-1);
     }
     [Test, MultipleAssertions]
     public async Task MultiSet()

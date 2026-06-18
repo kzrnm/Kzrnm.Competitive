@@ -564,7 +564,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         [凾(256)]
         public PersistentSetNode<T, TKey, TNOp> FindNodeLowerBound(TKey item, IComparer<TKey> comparer) => BinarySearch<L>(item, comparer).node;
         /// <summary>
-        /// <paramref name="item"/> 以上の最初のインデックスを返します。
+        /// <paramref name="item"/> 以上の最初のインデックスを返します。なければ Count を返します。
         /// </summary>
         [凾(256)]
         public int LowerBoundIndex(TKey item, IComparer<TKey> comparer) => BinarySearch<L>(item, comparer).index;
@@ -579,7 +579,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         [凾(256)]
         public PersistentSetNode<T, TKey, TNOp> FindNodeUpperBound(TKey item, IComparer<TKey> comparer) => BinarySearch<U>(item, comparer).node;
         /// <summary>
-        /// <paramref name="item"/> を超える最初のインデックスを返します。
+        /// <paramref name="item"/> を超える最初のインデックスを返します。なければ Count を返します。
         /// </summary>
         [凾(256)]
         public int UpperBoundIndex(TKey item, IComparer<TKey> comparer) => BinarySearch<U>(item, comparer).index;
@@ -595,7 +595,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         [凾(256)]
         public PersistentSetNode<T, TKey, TNOp> FindNodeReverseLowerBound(TKey item, IComparer<TKey> comparer) => BinarySearch<LR>(item, comparer).node;
         /// <summary>
-        /// <paramref name="item"/> 以下の最後のインデックスを返します。
+        /// <paramref name="item"/> 以下の最後のインデックスを返します。なければ -1 を返します。
         /// </summary>
         [凾(256)]
         public int ReverseLowerBoundIndex(TKey item, IComparer<TKey> comparer) => BinarySearch<LR>(item, comparer).index;
@@ -611,7 +611,7 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         [凾(256)]
         public PersistentSetNode<T, TKey, TNOp> FindNodeReverseUpperBound(TKey item, IComparer<TKey> comparer) => BinarySearch<UR>(item, comparer).node;
         /// <summary>
-        /// <paramref name="item"/> 未満の最後のインデックスを返します。
+        /// <paramref name="item"/> 未満の最後のインデックスを返します。なければ -1 を返します。
         /// </summary>
         [凾(256)]
         public int ReverseUpperBoundIndex(TKey item, IComparer<TKey> comparer) => BinarySearch<UR>(item, comparer).index;

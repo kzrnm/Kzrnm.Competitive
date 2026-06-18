@@ -149,7 +149,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)] public Node FindNodeLowerBound(TKey item) => BinarySearch(new C(comparer, item), new SetLower()).node;
         /// <summary>
-        /// <paramref name="item"/> 以上の最初のインデックスを返します。
+        /// <paramref name="item"/> 以上の最初のインデックスを返します。なければ Count を返します。
         /// </summary>
         [凾(256)] public int LowerBoundIndex(TKey item) => BinarySearch(new C(comparer, item), new SetLower()).index;
         /// <summary>
@@ -189,7 +189,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)] public Node FindNodeUpperBound(TKey item) => BinarySearch(new C(comparer, item), new SetUpper()).node;
         /// <summary>
-        /// <paramref name="item"/> を超える最初のインデックスを返します。
+        /// <paramref name="item"/> を超える最初のインデックスを返します。なければ Count を返します。
         /// </summary>
         [凾(256)] public int UpperBoundIndex(TKey item) => BinarySearch(new C(comparer, item), new SetUpper()).index;
         /// <summary>
@@ -230,7 +230,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)] public Node FindNodeReverseLowerBound(TKey item) => BinarySearch(new C(comparer, item), new SetLowerRev()).node;
         /// <summary>
-        /// <paramref name="item"/> 以下の最後のインデックスを返します。
+        /// <paramref name="item"/> 以下の最後のインデックスを返します。なければ -1 を返します。
         /// </summary>
         [凾(256)] public int ReverseLowerBoundIndex(TKey item) => BinarySearch(new C(comparer, item), new SetLowerRev()).index;
         /// <summary>
@@ -271,7 +271,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)] public Node FindNodeReverseUpperBound(TKey item) => BinarySearch(new C(comparer, item), new SetUpperRev()).node;
         /// <summary>
-        /// <paramref name="item"/> 未満の最後のインデックスを返します。
+        /// <paramref name="item"/> 未満の最後のインデックスを返します。なければ -1 を返します。
         /// </summary>
         [凾(256)] public int ReverseUpperBoundIndex(TKey item) => BinarySearch(new C(comparer, item), new SetUpperRev()).index;
         /// <summary>
