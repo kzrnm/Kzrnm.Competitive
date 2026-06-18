@@ -3,8 +3,11 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace Kzrnm.Competitive.Analyzer.IntToLong;
+
+using static Constants;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public class Analyzer : DiagnosticAnalyzer
@@ -16,6 +19,7 @@ public class Analyzer : DiagnosticAnalyzer
     {
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
         context.EnableConcurrentExecution();
+
         context.RegisterSyntaxNodeAction(AnalyzeIntToLongSyntaxNode,
             SyntaxKind.LeftShiftExpression, SyntaxKind.MultiplyExpression);
     }
@@ -24,6 +28,8 @@ public class Analyzer : DiagnosticAnalyzer
     {
         var semanticModel = context.SemanticModel;
         var node = context.Node;
+
+        var modIntType = context.Compilation.GetTypeByMetadataName(AtCoder_IModInt);
 
         var typeInfo = semanticModel.GetTypeInfo(node, cancellationToken: context.CancellationToken);
         if (typeInfo.Type.SpecialType is
@@ -37,25 +43,25 @@ public class Analyzer : DiagnosticAnalyzer
             containsMultiply |= node.Kind() is
                 SyntaxKind.MultiplyExpression
                 or SyntaxKind.LeftShiftExpression;
-            if (semanticModel.GetTypeInfo(node, cancellationToken: context.CancellationToken)
-                .ConvertedType.SpecialType is var convertedType && convertedType is SpecialType.System_Int64 or SpecialType.System_UInt64)
-            {
-                var isUnsigned = convertedType is SpecialType.System_UInt64;
 
-                var diagnostic = node.Kind() switch
-                {
-                    SyntaxKind.MultiplyExpression
+            bool mayBeOverflow = node.Kind() is SyntaxKind.MultiplyExpression
                     or SyntaxKind.LeftShiftExpression
                     or SyntaxKind.DivideExpression
                     or SyntaxKind.ModuloExpression
-                    or SyntaxKind.RightShiftExpression
-                        => DiagnosticDescriptors.KZCOMPETITIVE0001_OverflowInt32(context.Node, isUnsigned),
-                    _ => null,
-                };
+                    or SyntaxKind.RightShiftExpression;
 
-                if (diagnostic != null)
-                    context.ReportDiagnostic(diagnostic);
-                return;
+            if (mayBeOverflow)
+            {
+                var convertedType = semanticModel.GetTypeInfo(node, cancellationToken: context.CancellationToken).ConvertedType;
+
+                if (convertedType.SpecialType is SpecialType.System_Int64 or SpecialType.System_UInt64
+                    || convertedType.SpecialType is SpecialType.None
+                        && convertedType.AllInterfaces.Select(t => t.OriginalDefinition).Contains(modIntType, SymbolEqualityComparer.Default))
+                {
+                    var isUnsigned = typeInfo.Type.SpecialType is SpecialType.System_UInt32;
+                    context.ReportDiagnostic(DiagnosticDescriptors.KZCOMPETITIVE0001_OverflowInt32(context.Node, isUnsigned));
+                    return;
+                }
             }
         }
 

@@ -270,35 +270,14 @@ namespace Kzrnm.Competitive
         /// <summary>
         /// <paramref name="n"/> の約数を返します。
         /// </summary>
+        [凾(256)]
         public static T[] Divisor<T>(T n)
             where T : IBinaryInteger<T>
         {
             if (T.IsZero(n)) return [];
             if (n <= T.One) return [T.One];
 
-            var pairs = PrimeFactoring(n).ToArray();
-            var list = new List<T>();
-            var st = new Stack<(int pi, T x, int pc)>();
-            st.Push((0, T.One, ~pairs[0].Value));
-            while (st.TryPop(out var tup))
-            {
-                var (pi, x, pc) = tup;
-                if (pc < 0)
-                {
-                    st.Push((pi, x, ~pc));
-                    if (++pi < pairs.Length)
-                        st.Push((pi, x, ~pairs[pi].Value));
-                    else
-                        list.Add(x);
-                }
-                else if (pc > 0)
-                {
-                    st.Push((pi, x * pairs[pi].Key, ~--pc));
-                }
-            }
-
-            list.Sort();
-            return list.ToArray();
+            return Internal.Divisors.Divisor(PrimeFactoring(n).ToArray());
         }
     }
 }

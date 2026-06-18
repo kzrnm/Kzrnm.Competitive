@@ -1,9 +1,6 @@
-using Kzrnm.Competitive.Analyzer.Diagnostics;
-using Microsoft.CodeAnalysis;
 using VerifyCS = Kzrnm.Competitive.Analyzer.Test.CSharpCodeFixVerifier<
     Kzrnm.Competitive.Analyzer.IntToLong.Analyzer,
     Kzrnm.Competitive.Analyzer.IntToLong.CodeFixProvider>;
-using System.Threading.Tasks;
 
 namespace Kzrnm.Competitive.Analyzer.Test;
 
@@ -40,6 +37,8 @@ public static class Example
             (ulong)u << 5,
             (ulong)u >> 5,
         };
+
+        AtCoder.StaticModInt<AtCoder.Mod998244353> num = 2L * 3;
 
         return (toLong, toULong);
     }
@@ -86,6 +85,8 @@ public static class Example
             u >> 5,
         };
 
+        AtCoder.StaticModInt<AtCoder.Mod998244353> num = 2 * 3;
+
         return (toLong, toULong);
     }
 }
@@ -126,6 +127,8 @@ public static class Example
             u >> 5,
         };
 
+        AtCoder.StaticModInt<AtCoder.Mod998244353> num = 2L * 3;
+
         return (toLong, toULong);
     }
 }
@@ -152,6 +155,7 @@ public static class Example
                 VerifyCS.Diagnostic().WithSpan(29, 13, 29, 18).WithArguments("u * u"),
                 VerifyCS.Diagnostic().WithSpan(30, 13, 30, 19).WithArguments("u << 5"),
                 VerifyCS.Diagnostic().WithSpan(31, 13, 31, 20).WithArguments("u << 40"),
+                VerifyCS.Diagnostic().WithSpan(35, 58, 35, 63).WithArguments("2 * 3"),
             ],
             fixedSource,
             cancellationToken);

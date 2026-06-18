@@ -5,6 +5,9 @@ internal static class Constants
     public const string AtCoder_IsOperatorAttribute
         = "AtCoder.IsOperatorAttribute";
 
+    public const string AtCoder_IModInt
+        = "AtCoder.IModInt`1";
+
     public const string System_Runtime_CompilerServices_MethodImplAttribute
         = "System.Runtime.CompilerServices.MethodImplAttribute";
     public const string System_Runtime_CompilerServices_MethodImplOptions

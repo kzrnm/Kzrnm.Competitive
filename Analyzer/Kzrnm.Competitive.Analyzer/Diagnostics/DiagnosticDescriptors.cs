@@ -12,10 +12,10 @@ public static class DiagnosticDescriptors
         => Diagnostic.Create(
             descriptor: KZCOMPETITIVE0001_OverflowInt32_Descriptor,
             location: node.GetLocation(),
-            properties: ImmutableDictionary.CreateRange(new[]
-            {
+            properties: ImmutableDictionary.CreateRange(
+            [
                 new KeyValuePair<string, string>("IsUnsigned", isUnsigned?"true":"false"),
-            }),
+            ]),
             messageArgs: node.ToString());
     public static readonly DiagnosticDescriptor KZCOMPETITIVE0001_OverflowInt32_Descriptor = new(
         nameof(KZCOMPETITIVE0001),

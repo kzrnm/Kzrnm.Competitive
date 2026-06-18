@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -17,6 +18,31 @@ namespace Kzrnm.Competitive
         {
             (primes, searches) = Eratosthenes(max);
         }
+
+        /// <summary>
+        /// <paramref name="n"/> の約数を返します。
+        /// </summary>
+        [凾(256)]
+        public long[] Divisor(long n)
+        {
+            if (n == 0) return [];
+            if (n == 1) return [1];
+
+            return Internal.Divisors.Divisor(PrimeFactoring(n).ToArray());
+        }
+
+        /// <summary>
+        /// <paramref name="n"/> の約数を返します。
+        /// </summary>
+        [凾(256)]
+        public int[] Divisor(int n)
+        {
+            if (n == 0) return [];
+            if (n == 1) return [1];
+
+            return Internal.Divisors.Divisor(PrimeFactoring(n).ToArray());
+        }
+
         [凾(256)]
         public Dictionary<long, int> PrimeFactoring(long num)
         {
