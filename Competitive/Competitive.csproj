@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -23,8 +23,8 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <ExpandArgs>--writefile</ExpandArgs>
-    <ExpandArgs2>--writefile --toclipboard</ExpandArgs2>
+    <ExpandArgs>--writefile --toclipboard</ExpandArgs>
+    <ExpandArgs Condition="'$(NoClipboard)' != ''">--writefile</ExpandArgs>
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
     <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
   </PropertyGroup>
