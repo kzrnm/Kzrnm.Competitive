@@ -552,7 +552,7 @@ build_property.CompetitiveAnalyzer_UseMethodImplNumeric = true
             },
         };
         test.ExpectedDiagnostics.Add(VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(5, 1, 12, 2).WithArguments("Composition, Mapping, Operate"));
-        await test.RunAsync(CancellationToken.None);
+        await test.RunAsync(cancellationToken);
     }
 
     [Test]

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -14,8 +14,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ac-library-csharp" Version="3.9.1" />
-    <PackageReference Include="Kzrnm.Competitive" Version="2025.108.2144" />
+    <PackageReference Include="ac-library-csharp" Version="4.0.5" />
+    <PackageReference Include="Kzrnm.Competitive" Version="2026.617.127" />
   </ItemGroup>
 
   <ItemGroup>

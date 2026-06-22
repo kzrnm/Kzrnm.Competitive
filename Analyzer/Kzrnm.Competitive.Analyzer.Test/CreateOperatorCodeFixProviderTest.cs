@@ -20,10 +20,10 @@ public partial class CreateOperatorCodeFixProviderTest
 
     static DiagnosticDescriptor KZCOMPETITIVE0004 => DiagnosticDescriptors.KZCOMPETITIVE0004_DefineOperatorType_Descriptor;
 
-    static async Task VerifyCodeFixAsync(string source, DiagnosticResult expected, string fixedSource, Action<Test>? updateTest = null)
-        => await VerifyCodeFixAsync(source, [expected], fixedSource, updateTest: updateTest);
+    static async Task VerifyCodeFixAsync(string source, DiagnosticResult expected, string fixedSource, Action<Test>? updateTest = null, CancellationToken cancellationToken = default)
+        => await VerifyCodeFixAsync(source, [expected], fixedSource, updateTest: updateTest, cancellationToken: cancellationToken);
 
-    static async Task VerifyCodeFixAsync(string source, DiagnosticResult[] expected, string fixedSource, Action<Test>? updateTest = null)
+    static async Task VerifyCodeFixAsync(string source, DiagnosticResult[] expected, string fixedSource, Action<Test>? updateTest = null, CancellationToken cancellationToken = default)
     {
         foreach (var languageVersion in new LanguageVersion[]
         {
@@ -41,10 +41,35 @@ public partial class CreateOperatorCodeFixProviderTest
 
             updateTest?.Invoke(test);
 
-            await test.RunAsync(CancellationToken.None);
+            await test.RunAsync(cancellationToken);
         }
     }
 
+    static async Task VerifyCodeFixAsync(string source, DiagnosticResult[] expected, (string equivalenceKey, string fixedSource)[] fixedSources, Action<Test>? updateTest = null, CancellationToken cancellationToken = default)
+    {
+        foreach (var languageVersion in new LanguageVersion[]
+        {
+            LanguageVersion.CSharp7_1,
+            LanguageVersion.CSharp7_2,
+            LanguageVersion.CSharp10,
+        })
+        {
+            foreach ((string equivalenceKey, string fixedSource) in fixedSources)
+            {
+                var test = new Test(languageVersion)
+                {
+                    TestCode = source,
+                    CodeActionEquivalenceKey = equivalenceKey,
+                    FixedCode = ConvertFixedSource(fixedSource, languageVersion),
+                };
+                test.ExpectedDiagnostics.AddRange(expected);
+
+                updateTest?.Invoke(test);
+
+                await test.RunAsync(cancellationToken);
+            }
+        }
+    }
 
     [GeneratedRegex(@"\$\$([^\$]*)\$\$")]
     private static partial Regex ConvertFixedSourceRegex();
@@ -73,7 +98,7 @@ public partial class CreateOperatorCodeFixProviderTest
 
     #region StaticModInt
     [Test]
-    public async Task StaticModInt_Using()
+    public async Task StaticModInt_Using(CancellationToken cancellationToken)
     {
         var source = """
 using AtCoder;
@@ -100,11 +125,11 @@ $$TypeDefinition$$ Op : IStaticMod
 """;
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(4, 5, 4, 21).WithArguments("Op"),
-            fixedSource);
+            fixedSource, cancellationToken: cancellationToken);
     }
 
     [Test]
-    public async Task StaticModInt_Qualified_Using()
+    public async Task StaticModInt_Qualified_Using(CancellationToken cancellationToken)
     {
         var source = """
 using AtCoder;
@@ -131,11 +156,11 @@ $$TypeDefinition$$ Op : IStaticMod
 """;
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(4, 13, 4, 29).WithArguments("Op"),
-            fixedSource);
+            fixedSource, cancellationToken: cancellationToken);
     }
 
     [Test]
-    public async Task StaticModInt_Qualified()
+    public async Task StaticModInt_Qualified(CancellationToken cancellationToken)
     {
         var source = """
 class Program
@@ -160,13 +185,13 @@ $$TypeDefinition$$ Op : AtCoder.IStaticMod
 """;
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(3, 13, 3, 29).WithArguments("Op"),
-            fixedSource);
+            fixedSource, cancellationToken: cancellationToken);
     }
     #endregion StaticModInt
 
     #region Segtree
     [Test]
-    public async Task Segtree_Using()
+    public async Task Segtree_Using(CancellationToken cancellationToken)
     {
         var source = """
 using AtCoder;
@@ -214,11 +239,11 @@ $$TypeDefinition$$ OpSeg : ISegtreeOperator<int>
 """;
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(6, 5, 6, 24).WithArguments("OpSeg"),
-            fixedSource);
+            fixedSource, cancellationToken: cancellationToken);
     }
 
     [Test]
-    public async Task Segtree_Qualified_Using()
+    public async Task Segtree_Qualified_Using(CancellationToken cancellationToken)
     {
         var source = """
 using AtCoder;
@@ -266,11 +291,11 @@ $$TypeDefinition$$ OpSeg : ISegtreeOperator<int>
 """;
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(6, 13, 6, 32).WithArguments("OpSeg"),
-            fixedSource);
+            fixedSource, cancellationToken: cancellationToken);
     }
 
     [Test]
-    public async Task Segtree_Qualified()
+    public async Task Segtree_Qualified(CancellationToken cancellationToken)
     {
         var source = """
 class Program
@@ -314,11 +339,11 @@ $$TypeDefinition$$ OpSeg : AtCoder.ISegtreeOperator<int>
 """;
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(4, 13, 4, 32).WithArguments("OpSeg"),
-            fixedSource);
+            fixedSource, cancellationToken: cancellationToken);
     }
 
     [Test]
-    public async Task Segtree_Using_With_System_Runtime_CompilerServices()
+    public async Task Segtree_Using_With_System_Runtime_CompilerServices(CancellationToken cancellationToken)
     {
         var source = """
 using AtCoder;
@@ -366,13 +391,13 @@ $$TypeDefinition$$ OpSeg : ISegtreeOperator<int>
 """;
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(6, 5, 6, 24).WithArguments("OpSeg"),
-            fixedSource);
+            fixedSource, cancellationToken: cancellationToken);
     }
     #endregion Segtree
 
     #region LazySegtree
     [Test]
-    public async Task LazySegtree_Using()
+    public async Task LazySegtree_Using(CancellationToken cancellationToken)
     {
         var source = """
 using AtCoder;
@@ -431,11 +456,11 @@ $$TypeDefinition$$ OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c
 """;
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(6, 5, 6, 58).WithArguments("OpSeg"),
-            fixedSource);
+            fixedSource, cancellationToken: cancellationToken);
     }
 
     [Test]
-    public async Task LazySegtree_Qualified_Using()
+    public async Task LazySegtree_Qualified_Using(CancellationToken cancellationToken)
     {
         var source = """
 using AtCoder;
@@ -494,11 +519,11 @@ $$TypeDefinition$$ OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c
 """;
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(6, 13, 6, 66).WithArguments("OpSeg"),
-            fixedSource);
+            fixedSource, cancellationToken: cancellationToken);
     }
 
     [Test]
-    public async Task LazySegtree_Qualified()
+    public async Task LazySegtree_Qualified(CancellationToken cancellationToken)
     {
         var source = """
 using System.Runtime.CompilerServices;
@@ -557,11 +582,11 @@ $$TypeDefinition$$ OpSeg : AtCoder.ILazySegtreeOperator<(int v, int size), (int 
 """;
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(6, 13, 6, 66).WithArguments("OpSeg"),
-            fixedSource);
+            fixedSource, cancellationToken: cancellationToken);
     }
 
     [Test]
-    public async Task LazySegtree_Using_With_System_Runtime_CompilerServices()
+    public async Task LazySegtree_Using_With_System_Runtime_CompilerServices(CancellationToken cancellationToken)
     {
         var source = """
 using AtCoder;
@@ -620,13 +645,13 @@ $$TypeDefinition$$ OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c
 """;
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(6, 5, 6, 58).WithArguments("OpSeg"),
-            fixedSource);
+            fixedSource, cancellationToken: cancellationToken);
     }
     #endregion LazySegtree
 
     #region Others
     [Test]
-    public async Task ICompare()
+    public async Task ICompare(CancellationToken cancellationToken)
     {
         var source = """
 using System;
@@ -656,11 +681,11 @@ $$TypeDefinition$$ Op : System.Collections.Generic.IComparer<short>
 """;
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(6, 5, 6, 23).WithArguments("Op"),
-            fixedSource);
+            fixedSource, cancellationToken: cancellationToken);
     }
 
     [Test]
-    public async Task AnyDefinedType()
+    public async Task AnyDefinedType(CancellationToken cancellationToken)
     {
         var source = """
 using AtCoder;
@@ -719,11 +744,11 @@ $$TypeDefinition$$ Op : IAny<(int, long)>
 """;
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(12, 5, 12, 29).WithArguments("Op"),
-           fixedSource);
+           fixedSource, cancellationToken: cancellationToken);
     }
 
     [Test]
-    public async Task AnyDefinedMethod()
+    public async Task AnyDefinedMethod(CancellationToken cancellationToken)
     {
         var source = """
 using AtCoder;
@@ -774,11 +799,11 @@ $$TypeDefinition$$ Op : IAny<(int n, long m)>
 """;
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(14, 9, 14, 31).WithArguments("Op"),
-           fixedSource);
+           fixedSource, cancellationToken: cancellationToken);
     }
 
     [Test]
-    public async Task Array()
+    public async Task Array(CancellationToken cancellationToken)
     {
         var source = """
 using AtCoder;
@@ -821,11 +846,11 @@ $$TypeDefinition$$ BigOp : IAny<System.Numerics.BigInteger[]>
 """;
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(13, 9, 13, 47).WithArguments("BigOp"),
-            fixedSource);
+            fixedSource, cancellationToken: cancellationToken);
     }
 
     [Test]
-    public async Task Generic()
+    public async Task Generic(CancellationToken cancellationToken)
     {
         var source = """
 using AtCoder;
@@ -868,11 +893,11 @@ $$TypeDefinition$$ ModOp : IAny<StaticModInt<Mod1000000007>>
 """;
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(13, 9, 13, 46).WithArguments("ModOp"),
-            fixedSource);
+            fixedSource, cancellationToken: cancellationToken);
     }
 
     [Test]
-    public async Task NumOperatorAndShiftOperator()
+    public async Task NumOperatorAndShiftOperator(CancellationToken cancellationToken)
     {
         var source = """
 using AtCoder.Operators;
@@ -978,11 +1003,11 @@ $$TypeDefinition$$ Op : ICastOperator<short, char>, INumOperator<float>, INumOpe
 """;
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(8, 9, 8, 14).WithArguments("Op"),
-            fixedSource);
+            fixedSource, cancellationToken: cancellationToken);
     }
 
     [Test]
-    public async Task UsingAlias()
+    public async Task UsingAlias(CancellationToken cancellationToken)
     {
         var source = """
 using AtCoder;
@@ -1032,11 +1057,11 @@ $$TypeDefinition$$ OpSeg : ISegtreeOperator<ModInt>
 """;
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(7, 5, 7, 27).WithArguments("OpSeg"),
-            fixedSource);
+            fixedSource, cancellationToken: cancellationToken);
     }
 
     [Test]
-    public async Task MethodImplAlias()
+    public async Task MethodImplAlias(CancellationToken cancellationToken)
     {
         var source = """
 using AtCoder;
@@ -1087,11 +1112,11 @@ $$TypeDefinition$$ OpSeg : ISegtreeOperator<long>
 
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(7, 5, 7, 25).WithArguments("OpSeg"),
-            fixedSource);
+            fixedSource, cancellationToken: cancellationToken);
     }
 
     [Test]
-    public async Task MethodImpl256()
+    public async Task MethodImpl256(CancellationToken cancellationToken)
     {
         var source = """
 using AtCoder;
@@ -1150,7 +1175,7 @@ build_property.CompetitiveAnalyzer_UseMethodImplNumeric = true
 
 
     [Test]
-    public async Task Virtual()
+    public async Task Virtual(CancellationToken cancellationToken)
     {
         var source = """
 using AtCoder;
@@ -1190,11 +1215,11 @@ $$TypeDefinition$$ Op : IAny
 """;
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(12, 9, 12, 14).WithArguments("Op"),
-           fixedSource);
+           fixedSource, cancellationToken: cancellationToken);
     }
 
     [Test]
-    public async Task StaticAbstract()
+    public async Task StaticAbstract(CancellationToken cancellationToken)
     {
         var source = """
 using AtCoder;
@@ -1244,11 +1269,11 @@ $$TypeDefinition$$ Op : IAny<(int n, long m)>
 """;
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(14, 9, 14, 31).WithArguments("Op"),
-           fixedSource);
+           fixedSource, cancellationToken: cancellationToken);
     }
 
     [Test]
-    public async Task StaticVirtual()
+    public async Task StaticVirtual(CancellationToken cancellationToken)
     {
         var source = """
 using AtCoder;
@@ -1292,7 +1317,84 @@ $$TypeDefinition$$ Op : IAny<(int n, long m)>
 """;
         await VerifyCodeFixAsync(source,
             VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(14, 9, 14, 31).WithArguments("Op"),
-           fixedSource);
+           fixedSource, cancellationToken: cancellationToken);
+    }
+
+    [Test]
+    public async Task MultiCandidates(CancellationToken cancellationToken)
+    {
+        var source = """
+using Kzrnm.Competitive;
+using System.Runtime.CompilerServices;
+class Program
+{
+    static void Run()
+    {
+        __BinarySearchEx.BinarySearch<Op>();
+    }
+}
+""";
+        var fixedSource = """
+using Kzrnm.Competitive;
+using System.Runtime.CompilerServices;
+class Program
+{
+    static void Run()
+    {
+        __BinarySearchEx.BinarySearch<Op>();
+    }
+}
+
+$$TypeDefinition$$ Op : IOk<int>
+{
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool Ok(int value) => default;
+}
+""";
+        await VerifyCodeFixAsync(source,
+            [VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(7, 26, 7, 42).WithArguments("Op")],
+            [
+                ("Op:IOk<int>", source +
+                """
+                
+                
+                $$TypeDefinition$$ Op : IOk<int>
+                {
+                    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                    public bool Ok(int value) => default;
+                }
+                """),
+                ("Op:IOk<long>", source +
+                """
+                
+                
+                $$TypeDefinition$$ Op : IOk<long>
+                {
+                    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                    public bool Ok(long value) => default;
+                }
+                """),
+                ("Op:IOk<ulong>", source +
+                """
+                
+                
+                $$TypeDefinition$$ Op : IOk<ulong>
+                {
+                    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                    public bool Ok(ulong value) => default;
+                }
+                """),
+                ("Op:IOk<double>", source +
+                """
+                
+                
+                $$TypeDefinition$$ Op : IOk<double>
+                {
+                    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                    public bool Ok(double value) => default;
+                }
+                """),
+            ], cancellationToken: cancellationToken);
     }
     #endregion Others
 }

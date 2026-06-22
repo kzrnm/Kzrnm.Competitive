@@ -55,6 +55,10 @@ public static class Example
 
         //3.Other<Op>(2);
 
+        //__BinarySearchEx.BinarySearch<Op>(1, 1);
+
+        //__BinarySearchEx.BinarySearch<Op>();
+
         return v;
     }
 }

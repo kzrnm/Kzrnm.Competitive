@@ -5,9 +5,8 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Kzrnm.Competitive.Analyzer.CreateOperator;
 
-internal abstract class OperatorEnumerateMember : EnumerateMember
+internal abstract class OperatorEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol, AnalyzerConfig config) : EnumerateMember(semanticModel, typeSymbol, config)
 {
-    protected OperatorEnumerateMember(SemanticModel semanticModel, ITypeSymbol typeSymbol, AnalyzerConfig config) : base(semanticModel, typeSymbol, config) { }
     protected abstract SyntaxKind? GetSyntaxKind(IMethodSymbol symbol);
 
     protected override MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol, bool isStatic)

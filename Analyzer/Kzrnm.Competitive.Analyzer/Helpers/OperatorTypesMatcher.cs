@@ -4,16 +4,10 @@ namespace Kzrnm.Competitive.Analyzer.Helpers;
 
 using static Constants;
 
-public class OperatorTypesMatcher
+public class OperatorTypesMatcher(INamedTypeSymbol isOperator, INamedTypeSymbol iComparer)
 {
-    public INamedTypeSymbol IsOperatorAttribute { get; }
-    public INamedTypeSymbol IComparer { get; }
-
-    public OperatorTypesMatcher(INamedTypeSymbol isOperator, INamedTypeSymbol iComparer)
-    {
-        IsOperatorAttribute = isOperator;
-        IComparer = iComparer;
-    }
+    public INamedTypeSymbol IsOperatorAttribute { get; } = isOperator;
+    public INamedTypeSymbol IComparer { get; } = iComparer;
 
     public bool IsMatch(ITypeSymbol typeSymbol)
     {
@@ -27,6 +21,7 @@ public class OperatorTypesMatcher
         }
         return false;
     }
+
     public static bool TryParseTypes(Compilation compilation, out OperatorTypesMatcher types)
     {
         types = null;

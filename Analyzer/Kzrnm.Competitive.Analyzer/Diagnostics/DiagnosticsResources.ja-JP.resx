@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -122,5 +122,17 @@
   </data>
   <data name="KZCOMPETITIVE0001_MessageFormat" xml:space="preserve">
     <value>32bit整数から64bit整数へ暗黙的キャスト: '{0}'</value>
+  </data>
+  <data name="KZCOMPETITIVE0003" xml:space="preserve">
+    <value>オペレーター型は MethodImpl 属性があったほうが良い</value>
+  </data>
+  <data name="KZCOMPETITIVE0003_MessageFormat" xml:space="preserve">
+    <value>オペレーター型 '{0}'は MethodImpl 属性があったほうが良い</value>
+  </data>
+  <data name="KZCOMPETITIVE0004" xml:space="preserve">
+    <value>オペレーター型が未定義</value>
+  </data>
+  <data name="KZCOMPETITIVE0004_MessageFormat" xml:space="preserve">
+    <value>オペレーター型: '{0}' が未定義</value>
   </data>
 </root>

@@ -4,10 +4,15 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
+using System.Data;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Kzrnm.Competitive.Analyzer.CreateOperator;
 
@@ -29,93 +34,126 @@ public class CodeFixProvider : Microsoft.CodeAnalysis.CodeFixes.CodeFixProvider
         var diagnostic = context.Diagnostics[0];
         var diagnosticSpan = diagnostic.Location.SourceSpan;
 
-        if (root.FindNode(diagnosticSpan)
-            is not GenericNameSyntax genericNode)
+        if (root.FindNode(diagnosticSpan) is not GenericNameSyntax genericNode)
             return;
 
         var semanticModel = await context.Document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 
-        ImmutableArray<ITypeParameterSymbol> originalTypes;
-        ImmutableArray<ITypeSymbol> writtenTypes;
-        switch (semanticModel.GetSymbolInfo(genericNode, context.CancellationToken).Symbol)
-        {
-            case INamedTypeSymbol symbol:
-                originalTypes = symbol.TypeParameters;
-                writtenTypes = symbol.TypeArguments;
-                break;
-            case IMethodSymbol symbol:
-                originalTypes = symbol.TypeParameters;
-                writtenTypes = symbol.TypeArguments;
-                break;
-            default:
-                return;
-        }
-
-
-        var writtenTypeSyntaxes = genericNode.TypeArgumentList.Arguments;
-
-        if (originalTypes.Length != writtenTypes.Length)
-            return;
-
         if (!OperatorTypesMatcher.TryParseTypes(semanticModel.Compilation, out var types))
             return;
 
+        var targetCandidates = semanticModel.GetSymbolInfo(genericNode, context.CancellationToken) switch
+        {
+            { Symbol: INamedTypeSymbol symbol } => [types.EnumerateTypeSymbols(symbol)],
+            { Symbol: IMethodSymbol symbol } => [types.EnumerateTypeSymbols(symbol)],
+            { CandidateSymbols: { Length: > 0 } candidateSymbols } => candidateSymbols.Select(types.EnumerateTypeSymbols).ToArray(),
+            _ => [],
+        };
+
         var defaultSet = ImmutableHashSet.Create<ITypeSymbol>(SymbolEqualityComparer.Default);
-        var genericDicBuilder = ImmutableDictionary.CreateBuilder<ITypeParameterSymbol, ITypeSymbol>(SymbolEqualityComparer.Default);
-        var constraintDicBuilder = ImmutableDictionary.CreateBuilder<string, ImmutableHashSet<ITypeSymbol>>();
-        for (int i = 0; i < originalTypes.Length; i++)
+
+        ImmutableDictionary<string, ImmutableArray<ITypeSymbol>>
+            BuildConstraintArrays((IEnumerable<GenericParameterSymbol>, IEnumerable<GenericParameterSymbol>) candidate)
         {
-            var writtenTypeSyntax = writtenTypeSyntaxes[i];
-            var originalType = originalTypes[i];
-            var constraintTypes = originalType.ConstraintTypes;
-            var writtenType = writtenTypes[i];
-
-            if (!constraintTypes
-                .OfType<INamedTypeSymbol>()
-                .Select(ty => ty.ConstructedFrom)
-                .Any(ty => types.IsMatch(ty)))
+            var (definedTypes, notDefinedOperators) = candidate;
+            var genericDicBuilder = ImmutableDictionary.CreateBuilder<ITypeParameterSymbol, ITypeSymbol>(SymbolEqualityComparer.Default);
+            foreach (var (originalType, writtenType) in definedTypes)
             {
-                genericDicBuilder.Add(originalType, writtenType);
-                continue;
+                genericDicBuilder[originalType] = writtenType;
             }
 
-            if (writtenType.TypeKind == TypeKind.Error)
+            var constraintDicBuilder = ImmutableDictionary.CreateBuilder<string, ImmutableHashSet<ITypeSymbol>>();
+            foreach (var (originalType, writtenType) in notDefinedOperators)
             {
-                var name = writtenType.Name;
-                var typeSymbols = constraintDicBuilder.GetValueOrDefault(name, defaultSet);
-                constraintDicBuilder[name] = typeSymbols.Union(constraintTypes);
+                var typeSymbols = constraintDicBuilder.GetValueOrDefault(writtenType.Name, defaultSet);
+                constraintDicBuilder[writtenType.Name] = typeSymbols.Union(originalType.ConstraintTypes);
             }
+
+            var constraintArrayDic = ImmutableDictionary.CreateBuilder<string, ImmutableArray<ITypeSymbol>>();
+            if (constraintDicBuilder.Count > 0)
+            {
+                var genericDic = genericDicBuilder.ToImmutable();
+                foreach (var p in constraintDicBuilder)
+                {
+                    constraintArrayDic[p.Key]
+                        = [.. p.Value.Select(sy => SymbolHelpers.ReplaceGenericType(sy, genericDic)).OrderBy(sy => sy.ToDisplayString())];
+                }
+            }
+            return constraintArrayDic.ToImmutable();
         }
-        if (constraintDicBuilder.Count == 0)
+
+
+        var operatorTypeSyntaxBuilder = new OperatorTypeSyntaxBuilder(semanticModel, config, context.Document, root);
+
+        CodeAction ToAction(ImmutableDictionary<string, ImmutableArray<ITypeSymbol>> constraints)
+        {
+            var title = string.Join(", ", constraints.Select(p => $"{p.Key}:{string.Join(", ", p.Value.Select(s => s.ToMinimalDisplayString(semanticModel, diagnosticSpan.Start)))}"));
+            return ToActionSingle(constraints, title);
+        }
+        CodeAction ToActionSingle(ImmutableDictionary<string, ImmutableArray<ITypeSymbol>> constraints, string title)
+        {
+            Task<Document> CreateChangedDocument(CancellationToken cancellationToken) =>
+                operatorTypeSyntaxBuilder.AddOperatorType(constraints);
+
+            return CodeAction.Create(createChangedDocument: CreateChangedDocument, title: title, equivalenceKey: title);
+        }
+
+        var constraintsDicts = targetCandidates.Select(BuildConstraintArrays)
+            .Where(d => d.Count > 0)
+            .Distinct(new ConstraintArraysEqualityComparer())
+            .ToArray();
+
+        if (constraintsDicts.Length == 0)
             return;
+        else if (constraintsDicts.Length == 1)
+            context.RegisterCodeFix(ToActionSingle(constraintsDicts[0], title), diagnostic);
+        else
+            context.RegisterCodeFix(CodeAction.Create(title: title, [.. constraintsDicts.Select(ToAction)], true), diagnostic);
 
-        var genericDic = genericDicBuilder.ToImmutable();
-        var constraintArrayDic = ImmutableDictionary.CreateBuilder<string, ImmutableArray<ITypeSymbol>>();
-        foreach (var p in constraintDicBuilder)
-        {
-            constraintArrayDic[p.Key]
-                = p.Value.Select(sy => SymbolHelpers.ReplaceGenericType(sy, genericDic))
-                .OrderBy(sy => sy.ToDisplayString())
-                .ToImmutableArray();
-        }
 
-        var action = CodeAction.Create(title: title,
-           createChangedDocument: c => new OperatorTypeSyntaxBuilder(semanticModel, config).AddOperatorType(
-               context.Document,
-               root,
-               constraintArrayDic.ToImmutable()),
-           equivalenceKey: title);
-        context.RegisterCodeFix(action, diagnostic);
     }
 
-    private class OperatorTypeSyntaxBuilder(SemanticModel semanticModel, AnalyzerConfig config)
+    private class ConstraintArraysEqualityComparer : IEqualityComparer<ImmutableDictionary<string, ImmutableArray<ITypeSymbol>>>
+    {
+        public bool Equals(ImmutableDictionary<string, ImmutableArray<ITypeSymbol>> x, ImmutableDictionary<string, ImmutableArray<ITypeSymbol>> y)
+        {
+            if (x.Count != y.Count)
+                return false;
+
+            foreach (var (key, constraints) in x)
+            {
+                if (!y.TryGetValue(key, out var other))
+                    return false;
+
+                if (!constraints.SequenceEqual<ISymbol>(other, SymbolEqualityComparer.Default))
+                    return false;
+            }
+
+            return true;
+        }
+
+        public int GetHashCode(ImmutableDictionary<string, ImmutableArray<ITypeSymbol>> obj)
+        {
+            var hash = obj.Count.GetHashCode();
+            foreach ((string key, ImmutableArray<ITypeSymbol> constraints) in obj)
+            {
+                hash = hash * 31 + key.GetHashCode();
+                foreach (var c in constraints)
+                    hash = hash * 31 + SymbolEqualityComparer.Default.GetHashCode(c);
+            }
+            return hash;
+        }
+    }
+
+    private class OperatorTypeSyntaxBuilder(
+        SemanticModel semanticModel,
+        AnalyzerConfig config,
+        Document document,
+        CompilationUnitSyntax root)
     {
         private readonly int origPosition = semanticModel.SyntaxTree.Length;
 
-        public async Task<Document> AddOperatorType(
-            Document document,
-            CompilationUnitSyntax root,
-            ImmutableDictionary<string, ImmutableArray<ITypeSymbol>> constraintDic)
+        public async Task<Document> AddOperatorType(ImmutableDictionary<string, ImmutableArray<ITypeSymbol>> constraintDic)
         {
             bool hasMethod = false;
             var usings = root.Usings.ToNamespaceHashSet();
@@ -153,6 +191,14 @@ public class CodeFixProvider : Microsoft.CodeAnalysis.CodeFixes.CodeFixProvider
                 }
             }
 
+            var dec = DeclarationSyntax(
+                operatorTypeName, (semanticModel.SyntaxTree.Options as CSharpParseOptions)?.LanguageVersion)
+                .WithBaseList(SyntaxFactory.BaseList(
+                    constraints.Select(c => (BaseTypeSyntax)SyntaxFactory.SimpleBaseType(c.ToTypeSyntax(semanticModel, origPosition))).ToSeparatedSyntaxList()))
+                .WithMembers(SyntaxFactory.List(members.Distinct(MemberDeclarationEqualityComparer.Default)));
+            return (dec, hasMethod);
+
+
             static TypeDeclarationSyntax DeclarationSyntax(string operatorTypeName, LanguageVersion? languageVersion)
             {
                 switch ((int?)languageVersion)
@@ -172,17 +218,6 @@ public class CodeFixProvider : Microsoft.CodeAnalysis.CodeFixes.CodeFixProvider
                         return SyntaxFactory.StructDeclaration(operatorTypeName);
                 }
             }
-
-
-            var dec = DeclarationSyntax(operatorTypeName, semanticModel.SyntaxTree.Options switch
-            {
-                CSharpParseOptions parseOptions => parseOptions.LanguageVersion,
-                _ => null,
-            })
-                .WithBaseList(SyntaxFactory.BaseList(
-                    constraints.Select(c => (BaseTypeSyntax)SyntaxFactory.SimpleBaseType(c.ToTypeSyntax(semanticModel, origPosition))).ToSeparatedSyntaxList()))
-                .WithMembers(SyntaxFactory.List(members.Distinct(MemberDeclarationEqualityComparer.Default)));
-            return (dec, hasMethod);
         }
     }
 }

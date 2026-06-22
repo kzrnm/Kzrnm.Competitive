@@ -36,56 +36,20 @@ public class Analyzer : DiagnosticAnalyzer
 
         if (genericNode.TypeArgumentList.Arguments.Any(sy => sy.IsKind(SyntaxKind.OmittedTypeArgument)))
             return;
-        var concurrentBuild = context.Compilation.Options.ConcurrentBuild;
 
-        ImmutableArray<ITypeParameterSymbol> originalTypes;
-        ImmutableArray<ITypeSymbol> writtenTypes;
-        switch (semanticModel.GetSymbolInfo(genericNode, context.CancellationToken).Symbol)
+        var notDefined = semanticModel.GetSymbolInfo(genericNode, context.CancellationToken) switch
         {
-            case INamedTypeSymbol symbol:
-                originalTypes = symbol.TypeParameters;
-                writtenTypes = symbol.TypeArguments;
-                break;
-            case IMethodSymbol symbol:
-                originalTypes = symbol.TypeParameters;
-                writtenTypes = symbol.TypeArguments;
-                break;
-            default:
-                return;
-        }
+            { Symbol: INamedTypeSymbol symbol } => [types.EnumerateNotDefinedTypes(symbol)],
+            { Symbol: IMethodSymbol symbol } => [types.EnumerateNotDefinedTypes(symbol)],
+            { CandidateSymbols: { Length: > 0 } candidateSymbols } => candidateSymbols.Select(types.EnumerateNotDefinedTypes),
+            _ => [],
+        };
+        var notDefinedTypes = notDefined.SelectMany(t => t.Select(s => s.WrittenType.Name)).Distinct().ToArray();
 
-        if (originalTypes.Length == 0 || originalTypes.Length != writtenTypes.Length)
-            return;
-
-        var notDefinedTypes = new List<string>();
-        for (int i = 0; i < originalTypes.Length; i++)
+        if (notDefinedTypes.Length > 0)
         {
-            var originalType = originalTypes[i];
-            var writtenType = writtenTypes[i];
-
-            if (concurrentBuild)
-            {
-                if (!originalType.ConstraintTypes.OfType<INamedTypeSymbol>()
-                      .AsParallel(context.CancellationToken)
-                      .Any(s => types.IsMatch(s.ConstructedFrom)))
-                    continue;
-            }
-            else
-            {
-                if (!originalType.ConstraintTypes.OfType<INamedTypeSymbol>()
-                      .Do(_ => context.CancellationToken.ThrowIfCancellationRequested())
-                      .Any(s => types.IsMatch(s.ConstructedFrom)))
-                    continue;
-            }
-
-            if (writtenType.TypeKind == TypeKind.Error)
-                notDefinedTypes.Add(writtenType.Name.ToString());
+            var diagnostic = DiagnosticDescriptors.KZCOMPETITIVE0004_DefineOperatorType(genericNode.GetLocation(), notDefinedTypes);
+            context.ReportDiagnostic(diagnostic);
         }
-        if (notDefinedTypes.Count == 0)
-            return;
-
-        var diagnostic = DiagnosticDescriptors.KZCOMPETITIVE0004_DefineOperatorType(
-            genericNode.GetLocation(), notDefinedTypes);
-        context.ReportDiagnostic(diagnostic);
     }
 }

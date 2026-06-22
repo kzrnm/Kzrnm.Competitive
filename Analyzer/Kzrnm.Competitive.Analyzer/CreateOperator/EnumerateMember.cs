@@ -66,19 +66,17 @@ internal class EnumerateMember
                 .WithExpressionBody(SyntaxHelpers.ArrowDefault)
                 .WithSemicolonToken(SyntaxHelpers.SemicolonToken);
         else if (symbol.GetMethod == null)
-            return dec.AddAccessorListAccessors(new AccessorDeclarationSyntax[]
-            {
+            return dec.AddAccessorListAccessors([
                 AccessorDeclaration(SyntaxKind.SetAccessorDeclaration)
                     .WithSemicolonToken(SyntaxHelpers.SemicolonToken),
-            });
+            ]);
 
-        return dec.AddAccessorListAccessors(new AccessorDeclarationSyntax[]
-        {
+        return dec.AddAccessorListAccessors([
             AccessorDeclaration(SyntaxKind.SetAccessorDeclaration)
                 .WithSemicolonToken(SyntaxHelpers.SemicolonToken),
             AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
                 .WithSemicolonToken(SyntaxHelpers.SemicolonToken)
-        });
+        ]);
     }
     protected virtual MethodDeclarationSyntax CreateMethodSyntax(IMethodSymbol symbol, bool isStatic)
     {
