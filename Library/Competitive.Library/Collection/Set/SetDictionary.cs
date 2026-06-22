@@ -15,7 +15,7 @@ namespace Kzrnm.Competitive
         where TKey : IComparable<TKey>
     {
         public SetDictionary(bool isMulti = false) : base(isMulti, new()) { }
-        public SetDictionary(IDictionary<TKey, TValue> dict, bool isMulti = false) : base(isMulti, new(), dict) { }
+        public SetDictionary(IEnumerable<KeyValuePair<TKey, TValue>> dict, bool isMulti = false) : base(isMulti, new(), dict) { }
 
         #region IDictionary
         ICollection<TKey> IDictionary<TKey, TValue>.Keys
