@@ -1334,60 +1334,35 @@ class Program
     }
 }
 """;
-        var fixedSource = """
-using Kzrnm.Competitive;
-using System.Runtime.CompilerServices;
-class Program
-{
-    static void Run()
-    {
-        __BinarySearchEx.BinarySearch<Op>();
-    }
-}
-
-$$TypeDefinition$$ Op : IOk<int>
-{
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Ok(int value) => default;
-}
-""";
         await VerifyCodeFixAsync(source,
             [VerifyCS.Diagnostic(KZCOMPETITIVE0004).WithSpan(7, 26, 7, 42).WithArguments("Op")],
             [
-                ("Op:IOk<int>", source +
+                ("Op:IOk<int>", source + Environment.NewLine + Environment.NewLine +
                 """
-                
-                
                 $$TypeDefinition$$ Op : IOk<int>
                 {
                     [MethodImpl(MethodImplOptions.AggressiveInlining)]
                     public bool Ok(int value) => default;
                 }
                 """),
-                ("Op:IOk<long>", source +
+                ("Op:IOk<long>", source + Environment.NewLine + Environment.NewLine +
                 """
-                
-                
                 $$TypeDefinition$$ Op : IOk<long>
                 {
                     [MethodImpl(MethodImplOptions.AggressiveInlining)]
                     public bool Ok(long value) => default;
                 }
                 """),
-                ("Op:IOk<ulong>", source +
+                ("Op:IOk<ulong>", source + Environment.NewLine + Environment.NewLine +
                 """
-                
-                
                 $$TypeDefinition$$ Op : IOk<ulong>
                 {
                     [MethodImpl(MethodImplOptions.AggressiveInlining)]
                     public bool Ok(ulong value) => default;
                 }
                 """),
-                ("Op:IOk<double>", source +
+                ("Op:IOk<double>", source + Environment.NewLine + Environment.NewLine +
                 """
-                
-                
                 $$TypeDefinition$$ Op : IOk<double>
                 {
                     [MethodImpl(MethodImplOptions.AggressiveInlining)]
