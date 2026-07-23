@@ -8,6 +8,10 @@
     <File Path=".editorconfig" />
     <File Path="Directory.Build.props" />
   </Folder>
+  <Folder Name="/Solution Items/Tools/">
+    <File Path="tools/AtCoder.psm1" />
+    <File Path="tools/toggle-main.ps1" />
+  </Folder>
   <Project Path="Competitive.Runner/Competitive.Runner.csproj" />
   <Project Path="Competitive/Competitive.csproj" />
   <Project Path="Library/Competitive.Library/Competitive.Library.csproj" />

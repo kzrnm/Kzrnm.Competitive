@@ -193,7 +193,7 @@ function Get-Parsed-Input {
     $lines = $document.GetElementById("task-statement").
     GetElementsByClassName("part") |
     Where-Object { $_.GetElementsByTagName("h3")[0].TextContent -like "入*力" } |
-    ForEach-Object { $_.GetElementsByTagName('pre')[0].InnerHtml -split "`n" }
+    ForEach-Object { ($_.GetElementsByTagName('pre') | Select-Object -Last 1).InnerHtml -split "`n" }
     for ($i = 0; $i -lt $lines.Length; $i++) {
         $line = [string[]](([Xml]"<root>$($lines[$i])</root>").GetElementsByTagName('var') |
             ForEach-Object ChildNodes |
