@@ -34,10 +34,10 @@ namespace Kzrnm.Competitive
             fac[0] = fac[1] = T.One;
             finv[0] = finv[1] = T.One;
             for (var i = 2; i < max; i++)
-                fac[i] = fac[i - 1] * T.CreateTruncating(i);
+                fac[i] = fac[i - 1] * T.Raw(i);
             finv[^1] = fac[^1].Inv();
             for (int i = finv.Length - 2; i >= 2; i--)
-                finv[i] = finv[i + 1] * T.CreateTruncating(i + 1);
+                finv[i] = finv[i + 1] * T.Raw(i + 1);
         }
 
         ///<summary>組み合わせ関数(二項係数)</summary>
