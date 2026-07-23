@@ -6,7 +6,7 @@ namespace Kzrnm.Competitive.Internal
     internal static class Divisors
     {
         /// <summary>
-        /// <paramref name="n"/> の約数を返します。
+        /// 素因数分解の結果から約数を列挙します。
         /// </summary>
         public static T[] Divisor<T>(KeyValuePair<T, int>[] pairs)
             where T : IBinaryInteger<T>

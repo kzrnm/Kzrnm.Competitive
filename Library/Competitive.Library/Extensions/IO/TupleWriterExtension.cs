@@ -1,8 +1,9 @@
+using Kzrnm.Competitive.IO;
 using System;
 using System.Collections.Generic;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
-namespace Kzrnm.Competitive.IO
+namespace Kzrnm.Competitive
 {
     public static class __Utf8ConsoleWriter__TupleWriterExtension
     {

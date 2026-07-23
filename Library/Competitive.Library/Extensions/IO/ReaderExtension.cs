@@ -1,6 +1,7 @@
+using Kzrnm.Competitive.IO;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
-namespace Kzrnm.Competitive.IO
+namespace Kzrnm.Competitive
 {
     public static class _ReaderExtension
     {
