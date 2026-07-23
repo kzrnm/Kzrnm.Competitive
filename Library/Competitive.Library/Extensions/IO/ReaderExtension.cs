@@ -12,7 +12,16 @@ namespace Kzrnm.Competitive
         /// <param name="diff"></param>
         /// <returns></returns>
         [凾(256)]
-        public static byte[] AsciiToNum(this ConsoleReader cr, int diff = 'A')
+        public static byte[] AsciiToNum(this ConsoleReader cr, char diff = 'A')
+            => AsciiToNum(cr, (int)diff);
+        /// <summary>
+        /// <see cref="ConsoleReader.Ascii()"/> の各要素から <paramref name="diff"/> を引いた配列を返します。
+        /// </summary>
+        /// <param name="cr"></param>
+        /// <param name="diff"></param>
+        /// <returns></returns>
+        [凾(256)]
+        public static byte[] AsciiToNum(this ConsoleReader cr, int diff)
         {
             var a = cr.Ascii().d;
             for (int i = 0; i < a.Length; i++)
