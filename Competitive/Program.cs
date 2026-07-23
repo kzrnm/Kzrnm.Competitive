@@ -15,6 +15,7 @@ using System.Runtime.Intrinsics;
 using System.Text;
 using System.Text.RegularExpressions;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
+using Ascii = Kzrnm.Competitive.IO.Ascii;
 using static System.Math;
 using static Kzrnm.Competitive.BitOperationsEx;
 using static Kzrnm.Competitive.Global;
