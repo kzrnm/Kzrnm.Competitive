@@ -157,14 +157,13 @@ namespace Competitive.Runner
             "Kzrnm.Competitive" => "Kzrnm",
             _ => m.Value,
         };
-
-        [GeneratedRegex(@"#if !LOCAL_RUNNING\n(.*)#endif\n", RegexOptions.Singleline)]
-        private static partial Regex NotLocalRunning();
+        [GeneratedRegex(@"#if SUBMIT\n(.*)#endif\n", RegexOptions.Singleline)]
+        private static partial Regex ForSubmit { get; }
         [GeneratedRegex(@"\[(MI|MethodImpl|凾)\(((MethodImplOptions\.)?AggressiveInlining|256)")]
-        private static partial Regex AggressiveInliningRegex();
+        private static partial Regex AggressiveInliningRegex { get; }
 
         [GeneratedRegex(@"(?<!\.)ReadOnlySpan<((c)har|(b)yte)>")]
-        private static partial Regex ReadOnlySpanText();
+        private static partial Regex ReadOnlySpanText { get; }
         static string FormatCode(string expandedCode)
         {
             expandedCode = expandedCode
@@ -172,9 +171,9 @@ namespace Competitive.Runner
                 .Replace("using 凾", "using MAttribute")
                 .Replace("using M=MethodImplAttribute;", "")
                 .Replace("using MI=System.Runtime.CompilerServices.MethodImplAttribute;", "");
-            expandedCode = NotLocalRunning().Replace(expandedCode, "$1");
-            expandedCode = AggressiveInliningRegex().Replace(expandedCode, "[M(256");
-            expandedCode = ReadOnlySpanText().Replace(expandedCode, "ROS$2$3 ");
+            expandedCode = ForSubmit.Replace(expandedCode, "$1");
+            expandedCode = AggressiveInliningRegex.Replace(expandedCode, "[M(256");
+            expandedCode = ReadOnlySpanText.Replace(expandedCode, "ROS$2$3 ");
             expandedCode = SimpleReplaceTarget().Replace(expandedCode, SimpleReplace);
 
             if (expandedCode.Replace("namespace AtCoder.Extension", "namespace MyAtCoder.Extension") is var rep && rep.Length != expandedCode.Length)

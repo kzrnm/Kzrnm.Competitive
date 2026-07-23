@@ -22,6 +22,7 @@ partial class Program
             Calc();
         cw.Flush();
     }
+    static void Main() => new Program(new(), new()).Run();
 }
 [SourceExpander.NotEmbeddingSource]
 partial class Program

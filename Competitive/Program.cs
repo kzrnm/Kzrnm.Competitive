@@ -35,11 +35,10 @@ using MontgomeryModIntFactor = Kzrnm.Competitive.ModIntFactor<Kzrnm.Competitive.
 partial class Program
 {
     const bool __ManyTestCases = false;
-#if !LOCAL_RUNNING
-    static void Main() => new Program(new(), new()).Run();
+#if SUBMIT
     [凾(256)]
 #endif
-    private ConsoleOutput? Calc()
+    ConsoleOutput? Calc()
     {
         return null;
     }
