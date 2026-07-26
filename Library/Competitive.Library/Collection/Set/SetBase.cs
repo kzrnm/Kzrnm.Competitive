@@ -382,6 +382,9 @@ https://github.com/dotnet/runtime/blob/master/LICENSE.TXT
         #region ICollection<T> members
         void ICollection<T>.Add(T item) => DoAdd(item);
 
+        /// <summary>
+        /// <paramref name="item"/> を追加します。変更されない(Set が Multi でなく追加済)場合は <see langword="false" /> を返す。
+        /// </summary>
         [凾(256)]
         public bool Add(T item) => DoAdd(item);
         protected bool DoAdd(T item)
