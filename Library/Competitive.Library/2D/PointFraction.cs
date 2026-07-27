@@ -222,7 +222,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)]
         public (Fraction A, Fraction B, Fraction C) 垂直二等分線(P other)
-            => (X - other.X, Y - other.Y, (X * X - other.X * other.X + Y * Y - other.Y * other.Y) / -2);
+            => (2 * (other.X - X), 2 * (other.Y - Y), (X + other.X) * (X - other.X) + (Y + other.Y) * (Y - other.Y));
 
 
         /// <summary>

@@ -259,7 +259,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)]
         public (double A, double B, double C) 垂直二等分線(P other)
-            => (X - other.X, Y - other.Y, (X * X - other.X * other.X + Y * Y - other.Y * other.Y) * -.5);
+            => (2 * (other.X - X), 2 * (other.Y - Y), (X + other.X) * (X - other.X) + (Y + other.Y) * (Y - other.Y));
 
 
         /// <summary>

@@ -216,6 +216,13 @@ namespace Kzrnm.Competitive
             => (other.Y - Y, X - other.X, Y * (other.X - X) - X * (other.Y - Y));
 
         /// <summary>
+        /// 2点の垂直二等分線 A*x+B*y+C=0
+        /// </summary>
+        [凾(256)]
+        public (long A, long B, long C) 垂直二等分線(P other)
+            => (2 * (other.X - X), 2 * (other.Y - Y), (X + other.X) * (X - other.X) + (Y + other.Y) * (Y - other.Y));
+
+        /// <summary>
         /// <para><paramref name="a1"/> から <paramref name="b1"/>までの線分と<paramref name="a2"/> から <paramref name="b2"/>までの線分が交差しているかを返します。</para>
         /// <para>端点で交差していれば 0, 端点以外で交差していれば 1, 交差していなければ -1 を返します。</para>
         /// </summary>

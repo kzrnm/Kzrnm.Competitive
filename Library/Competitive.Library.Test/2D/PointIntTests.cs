@@ -194,6 +194,36 @@ public class PointIntTests
         await Point.ConvexHull(points, true).Should().BeStrictlyEquivalentTo(expectedStrict);
     }
 
+    public static IEnumerable<(Point, Point, (long, long, long))> 直線_Data =>
+    [
+        (new (0,0), new (1,1), (1, -1, 0)),
+        (new (1,0), new (1,1), (1, 0, -1)),
+        (new (0,1), new (1,1), (0, -1, 1)),
+        (new (-1,10), new (10,2), (-8, -11, 102)),
+    ];
+
+    [Test]
+    [MethodDataSource(nameof(直線_Data))]
+    public async Task 直線(Point p1, Point p2, (long, long, long) expected)
+    {
+        await p1.直線(p2).Should().BeEqualTo(expected);
+    }
+
+    public static IEnumerable<(Point, Point, (long, long, long))> 垂直二等分線_Data =>
+    [
+        (new (0,0), new (1,1), (2, 2, -2)),
+        (new (1,0), new (1,1), (0, 2, -1)),
+        (new (0,1), new (1,1), (2, 0, -1)),
+        (new (-1,10), new (10,2), (22, -16, -3)),
+        (new (-1,1234567), new (98765,2468), (197532, -2464198, 1514395061241)),
+    ];
+    [Test]
+    [MethodDataSource(nameof(垂直二等分線_Data))]
+    public async Task 垂直二等分線(Point p1, Point p2, (long, long, long) expected)
+    {
+        await p1.垂直二等分線(p2).Should().BeEqualTo(expected);
+    }
+
     [Test]
     public async Task ConsoleWriter()
     {

@@ -235,10 +235,11 @@ public class PointDoubleTests
     }
 
     public static IEnumerable<(Point, Point, LineEquation)> 垂直二等分線_Data => [
-        (new (0,0), new (1,1), (-1, -1, 1)),
-        (new (1,0), new (1,1), (0, -1, 0.5)),
-        (new (0,1), new (1,1), (-1, 0, 0.5)),
-        (new (-1,10), new (10,2), (-11, 8, 1.5)),
+        (new (0,0), new (1,1), (2, 2, -2)),
+        (new (1,0), new (1,1), (0, 2, -1)),
+        (new (0,1), new (1,1), (2, 0, -1)),
+        (new (-1,10), new (10,2), (22, -16, -3)),
+        (new (-1,1234567), new (98765,2468), (197532, -2464198, 1514395061241)),
     ];
     [Test]
     [MethodDataSource(nameof(垂直二等分線_Data))]
