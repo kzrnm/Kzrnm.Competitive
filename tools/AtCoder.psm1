@@ -183,17 +183,10 @@ class ATTuples {
         return "$($this.typename)[] $($this.varname);"
     }
 }
-function Get-Parsed-Input {
-    param(
-        [Parameter(Mandatory = $true)]
-        [AngleSharp.Html.Dom.IHtmlDocument]
-        $document
-    )
+function parseInputVariable {
+    param ([Parameter(Mandatory = $true, Position = 0)][string]$html)
 
-    $lines = $document.GetElementById("task-statement").
-    GetElementsByClassName("part") |
-    Where-Object { $_.GetElementsByTagName("h3")[0].TextContent -like "入*力" } |
-    ForEach-Object { ($_.GetElementsByTagName('pre') | Select-Object -Last 1).InnerHtml -split "`n" }
+    $lines = ($html -split "`n")
     for ($i = 0; $i -lt $lines.Length; $i++) {
         $line = [string[]](([Xml]"<root>$($lines[$i])</root>").GetElementsByTagName('var') |
             ForEach-Object ChildNodes |
@@ -270,6 +263,30 @@ function Get-Parsed-Input {
         }
     }
 }
+function Get-Parsed-Input {
+    param(
+        [Parameter(Mandatory = $true)]
+        [AngleSharp.Html.Dom.IHtmlDocument]
+        $document
+    )
+
+    $preTags = $document.GetElementById("task-statement").
+    GetElementsByClassName("part") |
+    Where-Object { $_.GetElementsByTagName("h3")[0].TextContent -like "入*力" } |
+    ForEach-Object { $_.GetElementsByTagName('pre') }
+
+    $first = parseInputVariable ($preTags[0].InnerHtml)
+
+    if ($preTags.Length -gt 1 -and ($first.Length -eq 2)) {
+        $v0 = $first[0]
+        $v1 = $first[1]
+        if (($v0 -is [ATVariable]) -and ($v0.name -eq 'T') -and ($v1 -is [ATArray]) -and ($v1.name -like '*{case}') -and ($v1.length -eq 'T') ) {
+            return Add-Member 'IsManyCase' $true -InputObject (parseInputVariable ($preTags[1].InnerHtml)) -PassThru
+        }
+    }
+
+    return $first
+}
 function Get-ModInt {
     param(
         [Parameter(Mandatory = $true)]
@@ -312,7 +329,7 @@ function Update-Input {
     if ($modInt) {
         $main = ($main -replace "(using \S+ = .+)(AtCoder\.Mod\d+)(.*)", ('$1' + "AtCoder.Mod$modInt" + '$3'))
     }
-    $main = ($main -replace 'const bool __ManyTestCases = true', 'const bool __ManyTestCases = false')
+    $main = ($main -replace 'const bool __ManyTestCases = [^;]*', ('const bool __ManyTestCases = ' + ($vars.IsManyCase ? 'true':'false')))
     ($main -replace 'ConsoleOutput\? Calc\((.*)\)[\s\S]*', ('ConsoleOutput? Calc($1)')) > $mainPath
     "$indent{" >> $mainPath
     $vars | ForEach-Object { $indent * 2 + ($StaticField ? $_.ToInit() : $_.ToDefineInit()) } >> $mainPath
