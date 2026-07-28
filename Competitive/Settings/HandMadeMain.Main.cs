@@ -157,7 +157,7 @@ namespace Competitive.Runner
             "Kzrnm.Competitive" => "Kzrnm",
             _ => m.Value,
         };
-        [GeneratedRegex(@"#if SUBMIT\n(.*)#endif\n", RegexOptions.Singleline)]
+        [GeneratedRegex(@"#if SUBMIT\n(.*?)#endif\n", RegexOptions.Singleline)]
         private static partial Regex ForSubmit { get; }
         [GeneratedRegex(@"\[(MI|MethodImpl|凾)\(((MethodImplOptions\.)?AggressiveInlining|256)")]
         private static partial Regex AggressiveInliningRegex { get; }
