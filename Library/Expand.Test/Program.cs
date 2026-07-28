@@ -1,4 +1,4 @@
-﻿namespace SourceExpander.Testing
+namespace SourceExpander.Testing
 {
     using AtCoder;
     using AtCoder.Extension;
@@ -33,7 +33,6 @@
     partial class Program
     {
         const bool __ManyTestCases = false;
-        static void Main() => new Program(new(), new()).Run();
         [凾(256)]
         private ConsoleOutput? Calc()
         {
