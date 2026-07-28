@@ -28,9 +28,8 @@ public class PrimeFactorizationTests
         yield return (89652331L * 96325939, false);
     }
 
-    [ThousandOfTestcases]
     [Test]
-    [MethodDataSource(nameof(IsPrime_Data))]
+    [MethodDataSource(nameof(IsPrime_Data), DeferEnumeration = true)]
     public async Task IsPrime(long value, bool isPrime)
     {
         await PrimeFactorization.IsPrime(value).Should().BeEqualTo(isPrime);

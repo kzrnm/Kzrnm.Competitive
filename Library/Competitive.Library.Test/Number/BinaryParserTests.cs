@@ -16,9 +16,8 @@ public class BinaryParserTests
         }
     }
 
-    [ThousandOfTestcases]
     [Test]
-    [MethodDataSource(nameof(ParseUInt32_Data))]
+    [MethodDataSource(nameof(ParseUInt32_Data), DeferEnumeration = true)]
     public async Task ParseUInt32(uint num)
     {
         var str = System.Convert.ToString(num, 2);
@@ -39,18 +38,16 @@ public class BinaryParserTests
         }
     }
 
-    [ThousandOfTestcases]
     [Test]
-    [MethodDataSource(nameof(ParseUInt64_Data))]
+    [MethodDataSource(nameof(ParseUInt64_Data), DeferEnumeration = true)]
     public async Task ParseUInt64(ulong num)
     {
         var str = System.Convert.ToString((long)num, 2);
         await BinaryParser.ParseUInt64(str).Should().BeEqualTo(num);
     }
 
-    [ThousandOfTestcases]
     [Test, MultipleAssertions]
-    [MethodDataSource<BitArrayCase>(nameof(BitArrayCase.LongBinaryTexts))]
+    [MethodDataSource<BitArrayCase>(nameof(BitArrayCase.LongBinaryTexts), DeferEnumeration = true)]
     public async Task ParseBitArray(string input)
     {
         var bits = BinaryParser.ParseBitArray(input);

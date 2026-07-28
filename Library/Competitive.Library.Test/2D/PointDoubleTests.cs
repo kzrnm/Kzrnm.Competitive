@@ -113,13 +113,12 @@ public class PointDoubleTests
             6
         ),
         (
-            new Point[]
-            {
+            [
                 new(1.1,0.51),
                 new(1.95,6.4423),
                 new(4.341,1.2265),
                 new(4.5,4),
-            },
+            ],
             9.7425693
         ),
     ];
@@ -273,9 +272,9 @@ public class PointDoubleTests
     }
 
     public static IEnumerable<(double, double, double, Point, double, Point[])> 直線と円の交点_Data => [
-        (1, -1, 1, new (0, 0), 0.1, Array.Empty<Point>()),
-        (0, -1, 1, new (0, 0), 1, new Point[]{ new (0, 1) }),
-        (1, -1, 1, new (0, 0), 1, new Point[]{ new (-1, 0), new (0, 1) }),
+        (1, -1, 1, new (0, 0), 0.1, []),
+        (0, -1, 1, new (0, 0), 1, [new (0, 1)]),
+        (1, -1, 1, new (0, 0), 1, [new (-1, 0), new (0, 1)]),
     ];
     [Test]
     [MethodDataSource(nameof(直線と円の交点_Data))]
@@ -285,12 +284,12 @@ public class PointDoubleTests
     }
 
     public static IEnumerable<(Point, double, Point, double, Point[])> 円の交点_Data => [
-        (new (-1, -1), 10, new (1, 2), 1, Array.Empty<Point>()),
-        (new (5, 0), 5, new (1, 0), 1, new Point[]{ new (0, 0) }),
-        (new (-1, 0), 1.2, new (1, 0), 1.2, new Point[]{ new (0, 0.6633249580710799), new (0, -0.6633249580710799) }),
-        (new (0, 0), 1, new (1, 1), 1, new Point[]{ new (0, 1), new (1, 0) }),
-        (new (-1, 0), 1, new (1, 0), 1, new Point[]{ new (0, 0) }),
-        (new (-1, 0), 0.8, new (1, 0), 1, Array.Empty<Point>()),
+        (new (-1, -1), 10, new (1, 2), 1, []),
+        (new (5, 0), 5, new (1, 0), 1, [new (0, 0)]),
+        (new (-1, 0), 1.2, new (1, 0), 1.2, [new (0, 0.6633249580710799), new (0, -0.6633249580710799)]),
+        (new (0, 0), 1, new (1, 1), 1, [new (0, 1), new (1, 0)]),
+        (new (-1, 0), 1, new (1, 0), 1, [new (0, 0)]),
+        (new (-1, 0), 0.8, new (1, 0), 1, []),
     ];
     [Test]
     [MethodDataSource(nameof(円の交点_Data))]

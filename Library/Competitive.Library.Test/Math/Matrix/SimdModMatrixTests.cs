@@ -163,9 +163,8 @@ public class SimdModMatrixTests
                 yield return (a, b);
     }
 
-    [ThousandOfTestcases]
     [Test, MultipleAssertions]
-    [MethodDataSource(nameof(AddRandom_Data))]
+    [MethodDataSource(nameof(AddRandom_Data), DeferEnumeration = true)]
     public async Task AddRandom(int h, int w)
     {
         var rnd = new Random(227);

@@ -98,9 +98,8 @@ public class BitTests
                                     }
     }
 
-    [ThousandOfTestcases]
     [Test, MultipleAssertions]
-    [MethodDataSource(nameof(BitEnumerateByte_Data))]
+    [MethodDataSource(nameof(BitEnumerateByte_Data), DeferEnumeration = true)]
     [Property("Category", "BitEnumerate")]
     public async Task BitEnumerateByte(uint num, ImmutableArray<int> expected)
     {

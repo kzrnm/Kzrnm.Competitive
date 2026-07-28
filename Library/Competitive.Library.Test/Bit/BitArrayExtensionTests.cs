@@ -29,9 +29,8 @@ public class BitArrayExtensionTests
         b.CopyTo(Array.Empty<int>());
     }
 
-    [ThousandOfTestcases]
     [Test]
-    [MethodDataSource(typeof(BitArrayCase), nameof(BitArrayCase.RandomCases))]
+    [MethodDataSource(typeof(BitArrayCase), nameof(BitArrayCase.RandomCases), DeferEnumeration = true)]
     public async Task CopyToInt(BitArrayCase c)
     {
         var b = c.ToBitArray();

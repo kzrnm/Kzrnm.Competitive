@@ -29,9 +29,8 @@ public class BitsEnumeratorTests
                                     }
     }
 
-    [ThousandOfTestcases]
     [Test, MultipleAssertions]
-    [MethodDataSource(nameof(BitEnumerateByte_Data))]
+    [MethodDataSource(nameof(BitEnumerateByte_Data), DeferEnumeration = true)]
     public async Task BitEnumerateByte(byte num, ImmutableArray<int> expected)
     {
         await new BitsEnumerator<byte>(num).Should().BeStrictlyEquivalentTo(expected);
