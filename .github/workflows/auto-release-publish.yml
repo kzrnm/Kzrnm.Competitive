@@ -78,11 +78,22 @@ jobs:
           path: bin/Packages/Release
 
   publish:
+    runs-on: ubuntu-latest
     needs: [get-version, build]
-    uses: kzrnm/dotnet-actions/.github/workflows/publish.yml@v2
     if: fromJson(needs.get-version.outputs.release)
-    with:
-      artifact-name: dist
-      version: ${{needs.get-version.outputs.date}}
-    secrets:
-      NUGET_KEY: ${{ secrets.NUGET_KEY }}
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - name: NuGet login
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: naminodarie
+      - name: Publish NuGet & Release
+        uses: kzrnm/dotnet-actions/actions/publish@v2
+        id: get-version
+        with:
+          artifact-name: dist
+          version: ${{needs.get-version.outputs.date}}
+          NUGET_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}

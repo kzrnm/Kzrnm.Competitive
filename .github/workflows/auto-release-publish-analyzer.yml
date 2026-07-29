@@ -70,28 +70,22 @@ jobs:
     needs: [get-version, build, format]
     if: ${{ needs.get-version.outputs.is-new == 'true' }}
     permissions:
+      id-token: write
       contents: write
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v8
+      - name: NuGet login
+        uses: NuGet/login@v1
+        id: login
         with:
-          name: dist
-          path: dist
-      - name: Upload nuget
-        run: dotnet nuget push "./dist/*.nupkg" --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_KEY }}
-      - name: Push tag
-        id: tag-version
-        uses: mathieudutour/github-tag-action@v6.2
+          user: naminodarie
+      - name: Publish NuGet & Release
+        uses: kzrnm/dotnet-actions/actions/publish@v2
+        id: get-version
         with:
-          github_token: ${{github.token}}
-          custom_tag: ${{ needs.get-version.outputs.version }}
-          tag_prefix: "Analyzer-v"
-      - name: Create release
-        uses: ncipollo/release-action@v1
-        id: create-release
-        with:
-          tag: ${{ steps.tag-version.outputs.new_tag }}
-          name: "Analyzer: Version ${{ needs.get-version.outputs.version }}"
-          artifacts: "./dist/*.nupkg,./dist/*.snupkg"
-          prerelease: ${{ needs.get-version.outputs.is-prerelease == 'true' }}
+          artifact-name: dist
+          version: ${{ needs.get-version.outputs.version }}
+          is-prerelease: ${{ needs.get-version.outputs.is-prerelease == 'true' }}
+          NUGET_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+          tag-prefix: Analyzer-v
+          release-name-prefix: "Analyzer: Version "
           makeLatest: "false"
