@@ -159,7 +159,7 @@ namespace Competitive.Runner
         };
         [GeneratedRegex(@"#if SUBMIT\n(.*?)#endif\n", RegexOptions.Singleline)]
         private static partial Regex ForSubmit { get; }
-        [GeneratedRegex(@"\[(MI|MethodImpl|凾)\(((MethodImplOptions\.)?AggressiveInlining|256)")]
+        [GeneratedRegex(@"\[(MI|MethodImpl|凾)\(((MethodImplOptions\.)?\w+|\d+)")]
         private static partial Regex AggressiveInliningRegex { get; }
 
         [GeneratedRegex(@"(?<!\.)ReadOnlySpan<((c)har|(b)yte)>")]

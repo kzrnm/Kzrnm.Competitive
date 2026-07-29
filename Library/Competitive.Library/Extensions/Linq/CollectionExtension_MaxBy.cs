@@ -54,6 +54,10 @@ namespace Kzrnm.Competitive
             }
             return (maxIndex, max);
         }
+
+        /// <summary>
+        /// <see cref="System.Linq.Enumerable.MaxBy{TSource, TKey}(IEnumerable{TSource}, Func{TSource, TKey})"/> と競合しないように 2 をつけている。
+        /// </summary>
         [凾(256)]
         public static (TSource item, TMax max) MaxBy2<TSource, TMax>
             (this IEnumerable<TSource> source, Func<TSource, TMax> maxBySelector)
