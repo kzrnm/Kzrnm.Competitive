@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Text;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -31,7 +30,7 @@ namespace Kzrnm.Competitive
         public static void WriteGrid(this Utf8ConsoleWriter cw, Grid<IO.Ascii> grid)
         {
             for (int i = 0; i < grid.H; i++)
-                cw.WriteLine(MemoryMarshal.Cast<IO.Ascii, byte>(grid.RowSpan(i)));
+                cw.WriteLine(Unsafe.BitCast<ReadOnlySpan<IO.Ascii>, ReadOnlySpan<byte>>(grid.RowSpan(i)));
         }
         [凾(256)]
         public static void WriteGrid<T>(this Utf8ConsoleWriter cw, Grid<T> grid)
