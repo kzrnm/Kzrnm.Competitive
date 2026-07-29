@@ -137,11 +137,9 @@ namespace Competitive.Runner
                 Console.WriteLine(expandedCode);
         }
 
-
-        [GeneratedRegex(
-            @"(Property)?(Console|Repeat)(Reader|Writer)|ConsoleOutput|bufferSize|EnsureBuf|FillEntireNumber|Write(Many|LineJoin)|Kzrnm\.Competitive(?!/b)|(?<!\.)ReadOnlySpan<(char|byte)>")]
-        private static partial Regex SimpleReplaceTarget();
-        private static string SimpleReplace(Match m) => m.ValueSpan switch
+        [GeneratedRegex(@"(Property)?(Console|Repeat)(Reader|Writer)|ConsoleOutput|bufferSize|EnsureBuf|FillEntireNumber|Write(Many|LineJoin)|Kzrnm\.Competitive(?!/b)|(?<!\.)ReadOnlySpan<(char|byte)>")]
+        private static partial Regex ReplaceMetches { get; }
+        static string ReplaceMatch(Match m) => m.ValueSpan switch
         {
             "PropertyConsoleReader" => "PrpConR",
             "ConsoleWriter" => "ConW",
@@ -157,10 +155,17 @@ namespace Competitive.Runner
             "Kzrnm.Competitive" => "Kzrnm",
             _ => m.Value,
         };
+
+        [GeneratedRegex(@"(MethodImplOptions\.)?AggressiveInlining")]
+        private static partial Regex AggressiveInlining { get; }
+        [GeneratedRegex(@"\[(MI|MethodImpl|凾)\(")]
+        private static partial Regex SimpleMethodImpl { get; }
+
+        [GeneratedRegex(@"using (M\=MethodImplAttribute|MI=System\.Runtime\.CompilerServices\.MethodImplAttribute);")]
+        private static partial Regex UsingMethodImpl { get; }
+
         [GeneratedRegex(@"#if SUBMIT\n(.*?)#endif\n", RegexOptions.Singleline)]
         private static partial Regex ForSubmit { get; }
-        [GeneratedRegex(@"\[(MI|MethodImpl|凾)\(((MethodImplOptions\.)?\w+|\d+)")]
-        private static partial Regex AggressiveInliningRegex { get; }
 
         [GeneratedRegex(@"(?<!\.)ReadOnlySpan<((c)har|(b)yte)>")]
         private static partial Regex ReadOnlySpanText { get; }
@@ -168,13 +173,13 @@ namespace Competitive.Runner
         {
             expandedCode = expandedCode
                 .Replace("\r\n", "\n")
-                .Replace("using 凾", "using MAttribute")
-                .Replace("using M=MethodImplAttribute;", "")
-                .Replace("using MI=System.Runtime.CompilerServices.MethodImplAttribute;", "");
+                .Replace("using 凾", "using MAttribute");
             expandedCode = ForSubmit.Replace(expandedCode, "$1");
-            expandedCode = AggressiveInliningRegex.Replace(expandedCode, "[M(256");
+            expandedCode = UsingMethodImpl.Replace(expandedCode, "");
+            expandedCode = AggressiveInlining.Replace(expandedCode, "256");
             expandedCode = ReadOnlySpanText.Replace(expandedCode, "ROS$2$3 ");
-            expandedCode = SimpleReplaceTarget().Replace(expandedCode, SimpleReplace);
+            expandedCode = SimpleMethodImpl.Replace(expandedCode, "[M(");
+            expandedCode = ReplaceMetches.Replace(expandedCode, ReplaceMatch);
 
             if (expandedCode.Replace("namespace AtCoder.Extension", "namespace MyAtCoder.Extension") is var rep && rep.Length != expandedCode.Length)
             {
