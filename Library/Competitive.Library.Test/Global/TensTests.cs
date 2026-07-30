@@ -14,10 +14,10 @@ public class TensTests
     [Test, MultipleAssertions]
     public async Task Longs()
     {
-        await Tens.Longs[0].Should().BeEqualTo(1);
-        for (int i = 1; i < Tens.Longs.Length; i++)
+        await Tens.ULongs[0].Should().BeEqualTo(1ul);
+        for (int i = 1; i < Tens.ULongs.Length; i++)
         {
-            await Tens.Longs[i].Should().BeEqualTo(Tens.Longs[i - 1] * 10);
+            await Tens.ULongs[i].Should().BeEqualTo(Tens.ULongs[i - 1] * 10);
         }
     }
 }
