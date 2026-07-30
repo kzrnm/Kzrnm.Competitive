@@ -42,6 +42,7 @@ namespace Kzrnm.Competitive
         /// </summary>
         F Composition(F nf, F cf);
     }
+    /// <inheritdoc />
     public class SegtreeBeats : SegtreeBeats<BeatsVal, BeatsFn, BeatsOp>
     {
         /// <inheritdoc cref="SegtreeBeats{TValue, F, TOp}.SegtreeBeats(int)"/>
@@ -52,11 +53,11 @@ namespace Kzrnm.Competitive
         public SegtreeBeats(IEnumerable<long> v) : base(v.Select(v => new BeatsVal(v)).ToArray()) { }
 
         [凾(256)]
-        public static BeatsFn MinOp(long num) => new BeatsFn { min = num, max = long.MinValue >> 2 };
+        public static BeatsFn MinOp(long num) => BeatsFn.Min(num);
         [凾(256)]
-        public static BeatsFn MaxOp(long num) => new BeatsFn { min = long.MaxValue >> 2, max = num };
+        public static BeatsFn MaxOp(long num) => BeatsFn.Max(num);
         [凾(256)]
-        public static BeatsFn AddOp(long num) => new BeatsFn { min = long.MaxValue >> 2, max = long.MinValue >> 2, sum = num };
+        public static BeatsFn AddOp(long num) => BeatsFn.Add(num);
     }
     namespace Internal.SegBeats
     {
@@ -82,11 +83,19 @@ namespace Kzrnm.Competitive
                 maxCnt = cnt;
             }
         }
-        public struct BeatsFn
+        /// <summary>
+        /// 各要素に対して以下を作用させる。
+        /// <list type="bullet">
+        /// <item><description>max 未満なら max に更新</description></item>
+        /// <item><description>min 以上なら min に更新</description></item>
+        /// <item><description>add を加算</description></item>
+        /// </list>
+        /// </summary>
+        public readonly record struct BeatsFn(long min, long max, long add)
         {
-            public long min;
-            public long max;
-            public long sum;
+            [凾(256)] public static BeatsFn Min(long min) => new(min, long.MinValue >> 2, 0);
+            [凾(256)] public static BeatsFn Max(long max) => new(long.MaxValue >> 2, max, 0);
+            [凾(256)] public static BeatsFn Add(long add) => new(long.MaxValue >> 2, long.MinValue >> 2, add);
         }
         public readonly struct BeatsOp : ISegtreeBeatsOperator<BeatsVal, BeatsFn>
         {
@@ -154,13 +163,13 @@ namespace Kzrnm.Competitive
                 }
                 if (x.min == x.max || f.max == f.min || f.max >= x.max || f.min <= x.min)
                 {
-                    res = new BeatsVal(Min(f.min, Max(x.min, f.max)) + f.sum, x.cnt);
+                    res = new BeatsVal(Min(f.min, Max(x.min, f.max)) + f.add, x.cnt);
                     return true;
                 }
                 if (x.min2 == x.max)
                 {
-                    x.min = x.max2 = Max(x.min, f.max) + f.sum;
-                    x.max = x.min2 = Min(x.max, f.min) + f.sum;
+                    x.min = x.max2 = Max(x.min, f.max) + f.add;
+                    x.max = x.min2 = Min(x.max, f.min) + f.add;
                     x.sum = x.min * x.minCnt + x.max * x.maxCnt;
                     res = x;
                     return true;
@@ -169,11 +178,11 @@ namespace Kzrnm.Competitive
                 {
                     var nxt_lo = Max(x.min, f.max);
                     var nxt_hi = Min(x.max, f.min);
-                    x.sum += (nxt_lo - x.min) * x.minCnt - (x.max - nxt_hi) * x.maxCnt + f.sum * x.cnt;
-                    x.min = nxt_lo + f.sum;
-                    x.max = nxt_hi + f.sum;
-                    x.min2 += f.sum;
-                    x.max2 += f.sum;
+                    x.sum += (nxt_lo - x.min) * x.minCnt - (x.max - nxt_hi) * x.maxCnt + f.add * x.cnt;
+                    x.min = nxt_lo + f.add;
+                    x.max = nxt_hi + f.add;
+                    x.min2 += f.add;
+                    x.max2 += f.add;
                     res = x;
                     return true;
                 }
@@ -184,9 +193,9 @@ namespace Kzrnm.Competitive
             [凾(256)]
             public BeatsFn Composition(BeatsFn nf, BeatsFn cf) => new BeatsFn
             {
-                max = Max(nf.max, Min(cf.max + cf.sum, nf.min)) - cf.sum,
-                min = Min(nf.min, Max(cf.min + cf.sum, nf.max)) - cf.sum,
-                sum = cf.sum + nf.sum,
+                max = Max(nf.max, Min(cf.max + cf.add, nf.min)) - cf.add,
+                min = Min(nf.min, Max(cf.min + cf.add, nf.max)) - cf.add,
+                add = cf.add + nf.add,
             };
         }
     }
@@ -215,10 +224,8 @@ namespace Kzrnm.Competitive
 
         internal readonly int log;
         internal readonly int size;
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public readonly TValue[] d;
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public readonly F[] lz;
+        internal readonly TValue[] d;
+        internal readonly F[] lz;
 
 
         /// <summary>
@@ -259,13 +266,11 @@ namespace Kzrnm.Competitive
 
 
         [凾(256)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public void Update(int k) => d[k] = op.Operate(d[2 * k], d[2 * k + 1]);
+        internal void Update(int k) => d[k] = op.Operate(d[2 * k], d[2 * k + 1]);
 
 
         [凾(256)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public void AllApply(int k, F f)
+        internal void AllApply(int k, F f)
         {
             var success = op.Mapping(f, d[k], out var res);
             d[k] = res;
@@ -281,8 +286,7 @@ namespace Kzrnm.Competitive
         }
 
         [凾(256)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public void Push(int k)
+        internal void Push(int k)
         {
             AllApply(2 * k, lz[k]);
             AllApply(2 * k + 1, lz[k]);
