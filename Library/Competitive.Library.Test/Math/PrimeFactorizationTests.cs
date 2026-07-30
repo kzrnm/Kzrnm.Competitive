@@ -28,11 +28,11 @@ public class PrimeFactorizationTests
         yield return (89652331L * 96325939, false);
     }
 
-    [Test]
-    [MethodDataSource(nameof(IsPrime_Data), DeferEnumeration = true)]
-    public async Task IsPrime(long value, bool isPrime)
+    [Test, MultipleAssertions]
+    public async Task IsPrime()
     {
-        await PrimeFactorization.IsPrime(value).Should().BeEqualTo(isPrime);
+        foreach (var (value, isPrime) in IsPrime_Data())
+            await PrimeFactorization.IsPrime(value).Should().BeEqualTo(isPrime);
     }
 
     public static IEnumerable<(int, ImmutableArray<int>)> DivisorInt_Data =>
@@ -72,12 +72,14 @@ public class PrimeFactorizationTests
     [MethodDataSource(nameof(DivisorInt_Data))]
     public async Task DivisorInt(int num, ImmutableArray<int> expected)
     {
+        await Task.Delay(400);
         await PrimeFactorization.Divisor(num).Should().BeStrictlyEquivalentTo(expected);
     }
 
     [Test, MultipleAssertions]
     public async Task DivisorIntLarge()
     {
+        await Task.Delay(400);
         var divisor6480 = PrimeFactorization.Divisor(6480);
         await divisor6480.Length.Should().BeEqualTo(50);
         await divisor6480[..26].Should().BeStrictlyEquivalentTo([1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 27, 30, 36, 40, 45, 48, 54, 60, 72, 80, 81]);
@@ -85,9 +87,11 @@ public class PrimeFactorizationTests
 
         await PrimeFactorization.Divisor(2095133040).Length.Should().BeEqualTo(1600); //高度合成数
     }
+
     [Test, MultipleAssertions]
     public async Task DivisorLong()
     {
+        await Task.Delay(400);
         await PrimeFactorization.Divisor(1L).Should().BeStrictlyEquivalentTo([1L]);
         await PrimeFactorization.Divisor(128100283921).Should().BeStrictlyEquivalentTo([
             1,
@@ -161,6 +165,7 @@ public class PrimeFactorizationTests
     [MethodDataSource(nameof(PrimeFactoringInt_Data))]
     public async Task PrimeFactoringInt(int num, (int, int)[] expected)
     {
+        await Task.Delay(400);
         var f = PrimeFactorization.PrimeFactoring(num);
         await f.Should().HaveCount(expected.Length);
         foreach (var (k, count) in expected)
@@ -243,6 +248,7 @@ public class PrimeFactorizationTests
     [MethodDataSource(nameof(PrimeFactoringLong_Data))]
     public async Task PrimeFactoringLong(long num, (long, int)[] expected)
     {
+        await Task.Delay(400);
         var f = PrimeFactorization.PrimeFactoring(num);
         await f.Should().HaveCount(expected.Length);
         foreach (var (k, count) in expected)
@@ -262,12 +268,14 @@ public class PrimeFactorizationTests
     [MethodDataSource(nameof(StressDivisor_Data))]
     public async Task StressDivisor(long n)
     {
+        await Task.Delay(400);
         await PrimeFactorization.Divisor(n).Should().BeStrictlyEquivalentTo(NaiveDivisor(n));
     }
 
     [Test, MultipleAssertions]
     public async Task SmallDivisor()
     {
+        await Task.Delay(400);
         for (int i = 1; i < 257 * 257 + 50; i++)
             await PrimeFactorization.Divisor(i)
                      .Should().BeStrictlyEquivalentTo(NaiveDivisor(i).Select(n => checked((int)n)));
