@@ -13,6 +13,7 @@ public class AggressiveInliningTests
     [Test]
     public async Task Empty(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = @"
 using System.Collections.Generic;
 struct IntComparer : IComparer<int>
@@ -26,6 +27,7 @@ struct IntComparer : IComparer<int>
     [Test]
     public async Task NumOperator(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = @"
 using AtCoder.Operators;
 using System;
@@ -57,7 +59,7 @@ struct BoolOp : INumOperator<bool>
     }
 }
 ";
-
+        // lang=C#
         var fixedSource = @"
 using AtCoder.Operators;
 using System;
@@ -116,6 +118,7 @@ struct BoolOp : INumOperator<bool>
     [Test]
     public async Task SegtreeOperator(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = @"
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -125,6 +128,7 @@ struct OpSeg : ISegtreeOperator<int>
     public int Operate(int x, int y) => System.Math.Max(x, y);
 }
 ";
+        // lang=C#
         var fixedSource = @"
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -145,6 +149,8 @@ struct OpSeg : ISegtreeOperator<int>
     [Test]
     public async Task SegtreeOperator_With_AggressiveInlining(CancellationToken cancellationToken)
     {
+
+        // lang=C#
         var source = @"
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -161,6 +167,7 @@ struct OpSeg : ISegtreeOperator<int>
     [Test]
     public async Task LazySegtreeOperator(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = @"
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -173,6 +180,7 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 ";
+        // lang=C#
         var fixedSource = @"
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -198,6 +206,7 @@ struct Op : ILazySegtreeOperator<long, int>
     [Test]
     public async Task LazySegtreeOperator_Without_Using(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = @"
 using AtCoder;
 struct Op : ILazySegtreeOperator<long, int>
@@ -209,6 +218,7 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 ";
+        // lang=C#
         var fixedSource = @"
 using AtCoder;
 struct Op : ILazySegtreeOperator<long, int>
@@ -233,6 +243,7 @@ VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(3, 1, 10, 2).WithArguments("Comp
     [Test]
     public async Task LazySegtreeOperator_With_AggressiveInlining(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = @"
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -254,6 +265,7 @@ struct Op : ILazySegtreeOperator<long, int>
     [Test]
     public async Task LazySegtreeOperator_With_Qualified_AggressiveInlining(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = @"
 using AtCoder;
 struct Op : ILazySegtreeOperator<long, int>
@@ -274,6 +286,7 @@ struct Op : ILazySegtreeOperator<long, int>
     [Test]
     public async Task LazySegtreeOperator_Without_AggressiveInlining(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = @"
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -289,6 +302,7 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 ";
+        // lang=C#
         var fixedSource = @"
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -314,6 +328,7 @@ VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(4, 1, 14, 2).WithArguments("Comp
     [Test]
     public async Task LazySegtreeOperator_Without_AggressiveInlining_Equal_Colon(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = @"
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -329,6 +344,7 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 ";
+        // lang=C#
         var fixedSource = @"
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -354,6 +370,7 @@ VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(4, 1, 14, 2).WithArguments("Comp
     [Test]
     public async Task LazySegtreeOperator_With_ArgumentList(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = @"
 using System;
 using AtCoder;
@@ -373,6 +390,7 @@ struct Op : ILazySegtreeOperator<long, int>
 [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
 sealed class MyAttribute : Attribute{}
 ";
+        // lang=C#
         var fixedSource = @"
 using System;
 using AtCoder;
@@ -402,6 +420,7 @@ VerifyCS.Diagnostic(KZCOMPETITIVE0003).WithSpan(5, 1, 16, 2).WithArguments("Comp
     [Test]
     public async Task LazySegtreeOperator_With_Alias_AggressiveInlining(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = @"
 using AtCoder;
 using MI = System.Runtime.CompilerServices.MethodImplAttribute;
@@ -424,6 +443,7 @@ struct Op : ILazySegtreeOperator<long, int>
     [Test]
     public async Task AnyDefinedType(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = @"
 using AtCoder;
 [IsOperator]
@@ -439,6 +459,7 @@ struct Def<T> : IAny<T> {
     }
 }
 ";
+        // lang=C#
         var fixedSource = @"
 using AtCoder;
 [IsOperator]
@@ -467,6 +488,7 @@ struct Def<T> : IAny<T> {
     [Test]
     public async Task UsingAlias(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = @"
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -480,6 +502,7 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 ";
+        // lang=C#
         var fixedSource = @"
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -506,6 +529,7 @@ struct Op : ILazySegtreeOperator<long, int>
     [Test]
     public async Task MethodImpl256(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = @"
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -519,6 +543,7 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 ";
+        // lang=C#
         var fixedSource = @"
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -558,6 +583,7 @@ build_property.CompetitiveAnalyzer_UseMethodImplNumeric = true
     [Test]
     public async Task Class(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = @"
 using AtCoder;
 [IsOperator]
@@ -573,6 +599,7 @@ class Def<T> : IAny<T> {
     }
 }
 ";
+        // lang=C#
         var fixedSource = @"
 using AtCoder;
 [IsOperator]
@@ -601,6 +628,7 @@ class Def<T> : IAny<T> {
     [Test]
     public async Task RecordClass(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = @"
 using AtCoder;
 [IsOperator]
@@ -616,6 +644,7 @@ record Def<T> : IAny<T> {
     }
 }
 ";
+        // lang=C#
         var fixedSource = @"
 using AtCoder;
 [IsOperator]
@@ -643,6 +672,7 @@ record Def<T> : IAny<T> {
     [Test]
     public async Task RecordStruct(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = @"
 using AtCoder;
 [IsOperator]
@@ -658,6 +688,7 @@ record struct Def<T> : IAny<T> {
     }
 }
 ";
+        // lang=C#
         var fixedSource = @"
 using AtCoder;
 [IsOperator]
@@ -687,6 +718,7 @@ record struct Def<T> : IAny<T> {
     [Test]
     public async Task StaticAbstract(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = @"
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -701,6 +733,7 @@ public class Impl : IInterface
     public static int Merge(int a, int b) => a + b;
 }
 ";
+        // lang=C#
         var fixedSource = @"
 using AtCoder;
 using System.Runtime.CompilerServices;

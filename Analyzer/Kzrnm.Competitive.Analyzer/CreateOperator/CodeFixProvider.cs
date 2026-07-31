@@ -109,8 +109,6 @@ public class CodeFixProvider : Microsoft.CodeAnalysis.CodeFixes.CodeFixProvider
             context.RegisterCodeFix(ToActionSingle(constraintsDicts[0], title), diagnostic);
         else
             context.RegisterCodeFix(CodeAction.Create(title: title, [.. constraintsDicts.Select(ToAction)], true), diagnostic);
-
-
     }
 
     private class ConstraintArraysEqualityComparer : IEqualityComparer<ImmutableDictionary<string, ImmutableArray<ITypeSymbol>>>

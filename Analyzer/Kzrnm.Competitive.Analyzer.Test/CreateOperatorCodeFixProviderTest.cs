@@ -100,6 +100,7 @@ public partial class CreateOperatorCodeFixProviderTest
     [Test]
     public async Task StaticModInt_Using(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using AtCoder;
 class Program
@@ -108,6 +109,7 @@ class Program
     StaticModInt<Mod1000000007> defined;
 }
 """;
+        // lang=C#
         var fixedSource = """
 using AtCoder;
 class Program
@@ -131,6 +133,7 @@ $$TypeDefinition$$ Op : IStaticMod
     [Test]
     public async Task StaticModInt_Qualified_Using(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using AtCoder;
 class Program
@@ -139,6 +142,7 @@ class Program
     AtCoder.StaticModInt<Mod1000000007> defined;
 }
 """;
+        // lang=C#
         var fixedSource = """
 using AtCoder;
 class Program
@@ -162,6 +166,7 @@ $$TypeDefinition$$ Op : IStaticMod
     [Test]
     public async Task StaticModInt_Qualified(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 class Program
 {
@@ -169,6 +174,7 @@ class Program
     AtCoder.StaticModInt<AtCoder.Mod1000000007> defined;
 }
 """;
+        // lang=C#
         var fixedSource = """
 class Program
 {
@@ -193,6 +199,7 @@ $$TypeDefinition$$ Op : AtCoder.IStaticMod
     [Test]
     public async Task Segtree_Using(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -211,6 +218,7 @@ struct MinOp : ISegtreeOperator<int>
     }
 }
 """;
+        // lang=C#
         var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -245,6 +253,7 @@ $$TypeDefinition$$ OpSeg : ISegtreeOperator<int>
     [Test]
     public async Task Segtree_Qualified_Using(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -263,6 +272,7 @@ struct MinOp : ISegtreeOperator<int>
     }
 }
 """;
+        // lang=C#
         var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -297,6 +307,7 @@ $$TypeDefinition$$ OpSeg : ISegtreeOperator<int>
     [Test]
     public async Task Segtree_Qualified(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 class Program
 {
@@ -313,6 +324,7 @@ struct MinOp : AtCoder.ISegtreeOperator<int>
     }
 }
 """;
+        // lang=C#
         var fixedSource = """
 class Program
 {
@@ -345,6 +357,7 @@ $$TypeDefinition$$ OpSeg : AtCoder.ISegtreeOperator<int>
     [Test]
     public async Task Segtree_Using_With_System_Runtime_CompilerServices(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -363,6 +376,7 @@ struct MinOp : ISegtreeOperator<int>
     }
 }
 """;
+        // lang=C#
         var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -399,6 +413,7 @@ $$TypeDefinition$$ OpSeg : ISegtreeOperator<int>
     [Test]
     public async Task LazySegtree_Using(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -419,6 +434,7 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 """;
+        // lang=C#
         var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -462,6 +478,7 @@ $$TypeDefinition$$ OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c
     [Test]
     public async Task LazySegtree_Qualified_Using(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -482,6 +499,7 @@ struct Op : AtCoder.ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 """;
+        // lang=C#
         var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -525,6 +543,7 @@ $$TypeDefinition$$ OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c
     [Test]
     public async Task LazySegtree_Qualified(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using System.Runtime.CompilerServices;
 
@@ -545,6 +564,7 @@ struct Op : AtCoder.ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 """;
+        // lang=C#
         var fixedSource = """
 using System.Runtime.CompilerServices;
 
@@ -588,6 +608,7 @@ $$TypeDefinition$$ OpSeg : AtCoder.ILazySegtreeOperator<(int v, int size), (int 
     [Test]
     public async Task LazySegtree_Using_With_System_Runtime_CompilerServices(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -608,6 +629,7 @@ struct Op : ILazySegtreeOperator<long, int>
     public long Operate(long x, long y) => 0L;
 }
 """;
+        // lang=C#
         var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -653,6 +675,7 @@ $$TypeDefinition$$ OpSeg : ILazySegtreeOperator<(int v, int size), (int b, int c
     [Test]
     public async Task ICompare(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using System;
 using AtCoder;
@@ -663,6 +686,7 @@ class Program
     Type Type = typeof(Generic<,>);
 }
 """;
+        // lang=C#
         var fixedSource = """
 using System;
 using AtCoder;
@@ -687,6 +711,7 @@ $$TypeDefinition$$ Op : System.Collections.Generic.IComparer<short>
     [Test]
     public async Task AnyDefinedType(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -709,6 +734,7 @@ struct Def<T> : IAny<T> {
     public T Prop2 { set; get; }
 }
 """;
+        // lang=C#
         var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -750,6 +776,7 @@ $$TypeDefinition$$ Op : IAny<(int, long)>
     [Test]
     public async Task AnyDefinedMethod(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -768,6 +795,7 @@ class Program
     }
 }
 """;
+        // lang=C#
         var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -805,6 +833,7 @@ $$TypeDefinition$$ Op : IAny<(int n, long m)>
     [Test]
     public async Task Array(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -822,6 +851,7 @@ class Program
     }
 }
 """;
+        // lang=C#
         var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -852,6 +882,7 @@ $$TypeDefinition$$ BigOp : IAny<System.Numerics.BigInteger[]>
     [Test]
     public async Task Generic(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -869,6 +900,7 @@ class Program
     }
 }
 """;
+        // lang=C#
         var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -899,6 +931,7 @@ $$TypeDefinition$$ ModOp : IAny<StaticModInt<Mod1000000007>>
     [Test]
     public async Task NumOperatorAndShiftOperator(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using AtCoder.Operators;
 using System.Runtime.CompilerServices;
@@ -911,6 +944,7 @@ class Program
     }
 }
 """;
+        // lang=C#
         var fixedSource = """
 using AtCoder.Operators;
 using System.Runtime.CompilerServices;
@@ -1009,6 +1043,7 @@ $$TypeDefinition$$ Op : ICastOperator<short, char>, INumOperator<float>, INumOpe
     [Test]
     public async Task UsingAlias(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -1028,6 +1063,7 @@ struct MinOp : ISegtreeOperator<int>
     }
 }
 """;
+        // lang=C#
         var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -1063,6 +1099,7 @@ $$TypeDefinition$$ OpSeg : ISegtreeOperator<ModInt>
     [Test]
     public async Task MethodImplAlias(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -1082,6 +1119,7 @@ struct MinOp : ISegtreeOperator<int>
     }
 }
 """;
+        // lang=C#
         var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -1118,6 +1156,7 @@ $$TypeDefinition$$ OpSeg : ISegtreeOperator<long>
     [Test]
     public async Task MethodImpl256(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -1136,6 +1175,7 @@ struct MinOp : ISegtreeOperator<int>
     }
 }
 """;
+        // lang=C#
         var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -1177,6 +1217,7 @@ build_property.CompetitiveAnalyzer_UseMethodImplNumeric = true
     [Test]
     public async Task Virtual(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -1193,6 +1234,7 @@ class Program
     }
 }
 """;
+        // lang=C#
         var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -1221,6 +1263,7 @@ $$TypeDefinition$$ Op : IAny
     [Test]
     public async Task StaticAbstract(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -1239,6 +1282,7 @@ class Program
     }
 }
 """;
+        // lang=C#
         var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -1275,6 +1319,7 @@ $$TypeDefinition$$ Op : IAny<(int n, long m)>
     [Test]
     public async Task StaticVirtual(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -1293,6 +1338,7 @@ class Program
     }
 }
 """;
+        // lang=C#
         var fixedSource = """
 using AtCoder;
 using System.Runtime.CompilerServices;
@@ -1323,6 +1369,7 @@ $$TypeDefinition$$ Op : IAny<(int n, long m)>
     [Test]
     public async Task MultiCandidates(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 using Kzrnm.Competitive;
 using System.Runtime.CompilerServices;

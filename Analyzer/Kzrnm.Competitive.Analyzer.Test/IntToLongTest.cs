@@ -9,6 +9,7 @@ public class IntToLongTest
     [Test]
     public async Task Empty(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 public static class Example
 {
@@ -50,6 +51,7 @@ public static class Example
     [Test]
     public async Task Hit(CancellationToken cancellationToken)
     {
+        // lang=C#
         var source = """
 public static class Example
 {
@@ -92,6 +94,7 @@ public static class Example
 }
 """;
 
+        // lang=C#
         var fixedSource = """
 public static class Example
 {

@@ -13,6 +13,7 @@ public class SymbolHelperTest
     private readonly CSharpCompilation compilation;
     public SymbolHelperTest()
     {
+        // lang=C#
         trees[0] = (CSharpSyntaxTree)CSharpSyntaxTree.ParseText(@"namespace TestAssembly.TA {
     public class Foo { 
         static ConstraintGenerics<Foo, Bar, IGenerics<Foo, Bar>> field1;
