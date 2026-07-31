@@ -9,3 +9,4 @@ Rule ID | Category | Severity | Notes
 KZCOMPETITIVE0001 | Overflow | Warning | 32 bit number expression is assigned to 64 bit number
 KZCOMPETITIVE0003 | Type Define | Info | Some operator methods don't have `MethodImpl` attribute
 KZCOMPETITIVE0004 | Type Define | Error | Not defined operator type
+KZCOMPETITIVE0005 | Type Define | Warning | `Clone()` method requires cast

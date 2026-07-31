@@ -65,5 +65,22 @@ public static class DiagnosticDescriptors
         DiagnosticSeverity.Error,
         isEnabledByDefault: true
         );
+
+    public static Diagnostic KZCOMPETITIVE0005_CastClone(Location location)
+        => Diagnostic.Create(KZCOMPETITIVE0005_CastClone_Descriptor, location);
+    public static readonly DiagnosticDescriptor KZCOMPETITIVE0005_CastClone_Descriptor = new(
+        nameof(KZCOMPETITIVE0005),
+        new LocalizableResourceString(
+            nameof(KZCOMPETITIVE0005),
+            ResourceManager,
+            typeof(DiagnosticsResources)),
+        new LocalizableResourceString(
+            nameof(KZCOMPETITIVE0005),
+            ResourceManager,
+            typeof(DiagnosticsResources)),
+        "Type Define",
+        DiagnosticSeverity.Warning,
+        isEnabledByDefault: true
+        );
 }
 

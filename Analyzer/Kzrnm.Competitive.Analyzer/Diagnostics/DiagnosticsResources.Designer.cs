@@ -113,5 +113,14 @@ namespace Kzrnm.Competitive.Analyzer.Diagnostics {
                 return ResourceManager.GetString("KZCOMPETITIVE0004_MessageFormat", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Clone() method requires cast に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string KZCOMPETITIVE0005 {
+            get {
+                return ResourceManager.GetString("KZCOMPETITIVE0005", resourceCulture);
+            }
+        }
     }
 }

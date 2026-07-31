@@ -135,4 +135,7 @@
   <data name="KZCOMPETITIVE0004_MessageFormat" xml:space="preserve">
     <value>Not defined operator type: '{0}'</value>
   </data>
+  <data name="KZCOMPETITIVE0005" xml:space="preserve">
+    <value>Clone() method requires cast</value>
+  </data>
 </root>

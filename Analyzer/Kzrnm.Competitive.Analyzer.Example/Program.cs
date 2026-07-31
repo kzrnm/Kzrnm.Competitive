@@ -32,6 +32,10 @@ public static class Example
         };
 #pragma warning restore KZCOMPETITIVE0001 // 32bit整数の乗算演算子が64bit整数に代入されています
 
+#pragma warning disable KZCOMPETITIVE0005 // Clone() はキャストが必要
+        _ = toLong.Clone();
+#pragma warning restore KZCOMPETITIVE0005 // Clone() はキャストが必要
+
         return (toLong, toULong);
     }
 

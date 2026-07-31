@@ -135,4 +135,7 @@
   <data name="KZCOMPETITIVE0004_MessageFormat" xml:space="preserve">
     <value>オペレーター型: '{0}' が未定義</value>
   </data>
+  <data name="KZCOMPETITIVE0005" xml:space="preserve">
+    <value>Clone() はキャストが必要</value>
+  </data>
 </root>
