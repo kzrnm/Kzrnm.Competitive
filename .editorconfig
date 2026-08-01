@@ -29,3 +29,5 @@ dotnet_diagnostic.CS9192.severity = none
 
 # IDE0040: アクセシビリティ修飾子を追加します
 dotnet_style_require_accessibility_modifiers = omit_if_default
+
+csharp_style_namespace_declarations = block_scoped:suggestion
