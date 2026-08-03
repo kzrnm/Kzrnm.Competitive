@@ -154,13 +154,21 @@ namespace Kzrnm.Competitive
             }
 
             [凾(256)]
-            public static void Apply(TSelf t, F f)
+            public static TSelf Apply(TSelf t, F f)
             {
-                if (t == null) return;
-                t.Lazy = op.Composition(f, t.Lazy);
-                Propagate(ref t);
+                if (t != null)
+                {
+                    t.Lazy = op.Composition(f, t.Lazy);
+                    Propagate(ref t);
+                }
+                return t;
             }
-            [凾(256)] public static void Reverse(TSelf t) => t?.Toggle();
+            [凾(256)]
+            public static TSelf Reverse(TSelf t)
+            {
+                t?.Toggle();
+                return t;
+            }
             [凾(256)]
             void Toggle()
             {

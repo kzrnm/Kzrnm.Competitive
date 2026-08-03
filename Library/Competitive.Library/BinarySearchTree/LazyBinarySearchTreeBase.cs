@@ -34,24 +34,22 @@ namespace Kzrnm.Competitive.Internal
     /// <typeparam name="Nd">ノード</typeparam>
     public interface ILazyBbstNode<T, F, Nd> : IBbstNode<T, Nd> where Nd : class, ILazyBbstNode<T, F, Nd>
     {
-        static abstract void Apply(Nd t, F f);
+        static abstract Nd Apply(Nd t, F f);
         [凾(256)]
         static virtual void Apply(ref Nd t, int l, int r, F f)
         {
             if (l >= r) return;
             var (x, y1, y2) = Nd.Split(t, l, r);
-            y1 = Nd.Copy(y1);
-            Nd.Apply(y1, f);
+            y1 = Nd.Apply(Nd.Copy(y1), f);
             t = Nd.Merge(x, y1, y2);
         }
-        static abstract void Reverse(Nd t);
+        static abstract Nd Reverse(Nd t);
         [凾(256)]
         static virtual void Reverse(ref Nd t, int l, int r)
         {
             if (l >= r) return;
             var (x, y1, y2) = Nd.Split(t, l, r);
-            y1 = Nd.Copy(y1);
-            Nd.Reverse(y1);
+            y1 = Nd.Reverse(Nd.Copy(y1));
             t = Nd.Merge(x, y1, y2);
         }
     }

@@ -107,7 +107,12 @@ namespace Kzrnm.Competitive.Internal.Bbst
         [SourceExpander.NotEmbeddingSource]
         public override string ToString() => $"Size = {Size}, Value = {Value}, Sum = {Sum}, Lazy = {Lazy}";
 
-        [凾(256)] public static void Reverse(LazyRandomBinarySearchTreeNode<T, F, TOp> t) => t?.Toggle();
+        [凾(256)]
+        public static LazyRandomBinarySearchTreeNode<T, F, TOp> Reverse(LazyRandomBinarySearchTreeNode<T, F, TOp> t)
+        {
+            t?.Toggle();
+            return t;
+        }
         [凾(256)]
         void Toggle()
         {
@@ -117,11 +122,14 @@ namespace Kzrnm.Competitive.Internal.Bbst
         }
 
         [凾(256)]
-        public static void Apply(LazyRandomBinarySearchTreeNode<T, F, TOp> t, F f)
+        public static LazyRandomBinarySearchTreeNode<T, F, TOp> Apply(LazyRandomBinarySearchTreeNode<T, F, TOp> t, F f)
         {
-            if (t == null) return;
-            t.Lazy = op.Composition(f, t.Lazy);
-            Propagate(ref t);
+            if (t != null)
+            {
+                t.Lazy = op.Composition(f, t.Lazy);
+                Propagate(ref t);
+            }
+            return t;
         }
     }
 }

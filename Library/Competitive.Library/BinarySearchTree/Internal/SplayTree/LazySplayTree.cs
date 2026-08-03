@@ -74,12 +74,15 @@ namespace Kzrnm.Competitive.Internal.Bbst
         }
 
         [凾(256)]
-        static void ILazyBbstNode<T, F, LazySplayTreeNode<T, F, TOp>>.Apply(LazySplayTreeNode<T, F, TOp> t, F f)
+        public static LazySplayTreeNode<T, F, TOp> Apply(LazySplayTreeNode<T, F, TOp> t, F f)
         {
-            if (t == null) return;
-            Splay(t);
-            t.Apply(f);
-            Push(t);
+            if (t != null)
+            {
+                Splay(t);
+                t.Apply(f);
+                Push(t);
+            }
+            return t;
         }
 
         [凾(256)]
@@ -91,8 +94,11 @@ namespace Kzrnm.Competitive.Internal.Bbst
         }
 
         [凾(256)]
-        static void ILazyBbstNode<T, F, LazySplayTreeNode<T, F, TOp>>.Reverse(LazySplayTreeNode<T, F, TOp> t)
-            => t?.Reverse();
+        public static LazySplayTreeNode<T, F, TOp> Reverse(LazySplayTreeNode<T, F, TOp> t)
+        {
+            t?.Reverse();
+            return t;
+        }
         [凾(256)]
         public void Reverse()
         {
