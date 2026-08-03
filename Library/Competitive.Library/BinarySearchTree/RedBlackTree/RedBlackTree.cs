@@ -72,9 +72,11 @@ namespace Kzrnm.Competitive
             }
             public RedBlackTreeNode(TSelf left, TSelf right)
             {
+                Debug.Assert(left is not null);
+                Debug.Assert(right is not null);
                 IsBlack = false;
-                Data = new Internal { left = left, right = right, };
-                Size = (left?.Size ?? 0) + (right?.Size ?? 0);
+                Data = new Internal { left = left, right = right, Level = left.UpperLevel };
+                Size = left.Size + right.Size;
                 Sum = op.Operate(GetSum(left), GetSum(right));
             }
 
@@ -90,8 +92,9 @@ namespace Kzrnm.Competitive
                 if (t == null) return t;
                 if (t.Data is Internal e)
                 {
-                    t.Size = (e.left?.Size ?? 0) + (e.right?.Size ?? 0);
+                    t.Size = e.left.Size + e.right.Size;
                     t.Sum = op.Operate(GetSum(e.left), GetSum(e.right));
+                    e.Level = e.left.UpperLevel;
                 }
                 else if (t.Data is Leaf lf)
                 {

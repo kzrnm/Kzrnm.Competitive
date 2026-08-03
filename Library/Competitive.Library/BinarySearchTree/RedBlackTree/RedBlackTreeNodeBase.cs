@@ -18,26 +18,99 @@ namespace Kzrnm.Competitive.Internal
     /// <summary>
     /// 赤黒木のノード
     /// </summary>
+    [DebuggerDisplay("{" + nameof(DebuggerDisplay) + "(),nq}")]
     public class RedBlackTreeNodeBase<TSelf, T>
         where TSelf : RedBlackTreeNodeBase<TSelf, T>, IRedBlackTreeNode<T, TSelf>
     {
-        public abstract class D { }
+        public interface D
+        {
+            int Level { get; }
+        }
         public class Internal : D
         {
             public TSelf left, right;
-            public int Level;
+            public int Level { get; set; }
         }
         public class Leaf : D
         {
             public T Value { get; internal set; }
+            public int Level => 0;
         }
-        public bool IsBlack;
+        protected bool IsBlack;
+        protected int UpperLevel => Data.Level + (IsBlack ? 1 : 0);
         public int Size { get; protected set; }
         public T Sum { get; protected set; }
 
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public D Data;
 
+        [SourceExpander.NotEmbeddingSource]
+        string DebuggerDisplay()
+        {
+            var black = IsBlack ? "B" : "";
+            if (Data is Leaf lf)
+                return $"Value = {lf.Value}, Size = {Size}, Level = {Data.Level}{black}";
+            else
+                return $"Sum = {Sum}, Size = {Size}, Level = {Data.Level}{black}";
+        }
+
+        [SourceExpander.NotEmbeddingSource]
+        private void Validate()
+        {
+            if (Data is Leaf)
+            {
+                if (!IsBlack)
+                    throw new InvalidProgramException("葉は Black であるべき");
+                if (Size != 1)
+                    throw new InvalidProgramException("葉のサイズは 1 であるべき");
+                return;
+            }
+            var e = (Internal)Data;
+            if (e.left is null)
+                throw new InvalidProgramException("左には要素があるはず");
+            if (e.right is null)
+                throw new InvalidProgramException("右には要素があるはず");
+            if (e.Level <= 0)
+                throw new InvalidProgramException("Level は正の数");
+
+            if (!IsBlack)
+            {
+                if (!e.left.IsBlack)
+                    throw new InvalidProgramException("赤の親は黒");
+                if (!e.right.IsBlack)
+                    throw new InvalidProgramException("赤の親は黒");
+            }
+            if (e.Level != e.left.UpperLevel)
+                throw new InvalidProgramException("左とレベルが不整合");
+            if (e.Level != e.right.UpperLevel)
+                throw new InvalidProgramException("右とレベルが不整合");
+
+            e.left.Validate();
+            e.right.Validate();
+        }
+
+        public static (TSelf, TSelf) Split(TSelf t, int k)
+        {
+            if (t == null) return (null, null);
+            TSelf.Propagate(ref t);
+            if (k == 0) return (null, t);
+            if (k >= t.Size) return (t, null);
+            if (t.Data is Internal tt)
+            {
+                var lc = tt.left.Size;
+                if (k < lc)
+                {
+                    var (p1, p2) = TSelf.Split(tt.left, k);
+                    return (p1, TSelf.Merge(p2, tt.right));
+                }
+                else
+                {
+                    var (p1, p2) = TSelf.Split(tt.right, k - lc);
+                    return (TSelf.Merge(tt.left, p1), p2);
+                }
+            }
+            return (null, t);
+        }
         public static TSelf Merge(TSelf l, TSelf r)
         {
             if (l == null || r == null) return l ?? r;
@@ -59,8 +132,9 @@ namespace Kzrnm.Competitive.Internal
                 Debug.Assert(ri != null);
                 TSelf.Propagate(ref r);
                 var c = ri.left = SubMerge(l, ri.left);
+                Debug.Assert(c.Data is Internal);
                 var ci = Unsafe.As<Internal>(c.Data);
-                if (r.IsBlack && !c.IsBlack && (ci.left?.IsBlack == false))
+                if (r.IsBlack && !c.IsBlack && ci.left.IsBlack is false)
                 {
                     r.IsBlack = false;
                     c.IsBlack = true;
@@ -75,8 +149,9 @@ namespace Kzrnm.Competitive.Internal
                 Debug.Assert(li != null);
                 TSelf.Propagate(ref l);
                 var c = li.right = SubMerge(li.right, r);
+                Debug.Assert(c.Data is Internal);
                 var ci = Unsafe.As<Internal>(c.Data);
-                if (l.IsBlack && !c.IsBlack && (ci.right?.IsBlack == false))
+                if (l.IsBlack && !c.IsBlack && ci.right?.IsBlack is false)
                 {
                     l.IsBlack = false;
                     c.IsBlack = true;
@@ -138,28 +213,6 @@ namespace Kzrnm.Competitive.Internal
             return TSelf.Update(c);
         }
 
-        public static (TSelf, TSelf) Split(TSelf t, int k)
-        {
-            if (t == null) return (null, null);
-            TSelf.Propagate(ref t);
-            if (k == 0) return (null, t);
-            if (k >= t.Size) return (t, null);
-            if (t.Data is Internal tt)
-            {
-                var lc = tt.left.Size;
-                if (k < lc)
-                {
-                    var (p1, p2) = TSelf.Split(tt.left, k);
-                    return (p1, TSelf.Merge(p2, tt.right));
-                }
-                else
-                {
-                    var (p1, p2) = TSelf.Split(tt.right, k - lc);
-                    return (TSelf.Merge(tt.left, p1), p2);
-                }
-            }
-            return (null, t);
-        }
         public static void SetValue(ref TSelf t, int k, T x)
         {
             TSelf.Propagate(ref t);

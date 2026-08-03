@@ -75,9 +75,11 @@ namespace Kzrnm.Competitive
             }
             public LazyRedBlackTreeNode(TSelf left, TSelf right)
             {
+                Debug.Assert(left is not null);
+                Debug.Assert(right is not null);
                 IsBlack = false;
-                Data = new Internal { left = left, right = right, };
-                Size = (left?.Size ?? 0) + (right?.Size ?? 0);
+                Data = new Internal { left = left, right = right, Level = left.UpperLevel };
+                Size = left.Size + right.Size;
                 Sum = op.Operate(GetSum(left), GetSum(right));
                 Lazy = op.FIdentity;
             }
@@ -89,46 +91,47 @@ namespace Kzrnm.Competitive
                 var lazy = !EqualityComparer<F>.Default.Equals(t.Lazy, op.FIdentity);
                 var rev = t.IsReverse;
 
-                if (!lazy && !rev) return;
-
-                var e = t.Data as Internal;
-
-                if (e != null)
+                if (lazy || rev)
                 {
-                    if (e.left != null)
-                        e.left = TSelf.Copy(e.left);
-                    if (e.right != null)
-                        e.right = TSelf.Copy(e.right);
-                }
-                if (lazy)
-                {
-                    if (t.Data is Leaf lv)
-                    {
-                        lv.Value = op.Mapping(t.Lazy, lv.Value, 1);
-                    }
-                    else if (e != null)
+                    var e = t.Data as Internal;
+
+                    if (e != null)
                     {
                         if (e.left != null)
-                        {
-                            e.left.Lazy = op.Composition(t.Lazy, e.left.Lazy);
-                            e.left.Sum = op.Mapping(t.Lazy, e.left.Sum, e.left.Size);
-                        }
+                            e.left = TSelf.Copy(e.left);
                         if (e.right != null)
-                        {
-                            e.right.Lazy = op.Composition(t.Lazy, e.right.Lazy);
-                            e.right.Sum = op.Mapping(t.Lazy, e.right.Sum, e.right.Size);
-                        }
+                            e.right = TSelf.Copy(e.right);
                     }
-                    t.Lazy = op.FIdentity;
+                    if (lazy)
+                    {
+                        if (t.Data is Leaf lv)
+                        {
+                            lv.Value = op.Mapping(t.Lazy, lv.Value, 1);
+                        }
+                        else if (e != null)
+                        {
+                            if (e.left != null)
+                            {
+                                e.left.Lazy = op.Composition(t.Lazy, e.left.Lazy);
+                                e.left.Sum = op.Mapping(t.Lazy, e.left.Sum, e.left.Size);
+                            }
+                            if (e.right != null)
+                            {
+                                e.right.Lazy = op.Composition(t.Lazy, e.right.Lazy);
+                                e.right.Sum = op.Mapping(t.Lazy, e.right.Sum, e.right.Size);
+                            }
+                        }
+                        t.Lazy = op.FIdentity;
+                    }
+                    if (rev && e != null)
+                    {
+                        if (e.left != null)
+                            Reverse(e.left);
+                        if (e.right != null)
+                            Reverse(e.right);
+                    }
+                    t.IsReverse = false;
                 }
-                if (rev && e != null)
-                {
-                    if (e.left != null)
-                        Reverse(e.left);
-                    if (e.right != null)
-                        Reverse(e.right);
-                }
-                t.IsReverse = false;
                 TSelf.Update(t);
             }
 
@@ -138,8 +141,9 @@ namespace Kzrnm.Competitive
                 if (t == null) return t;
                 if (t.Data is Internal e)
                 {
-                    t.Size = (e.left?.Size ?? 0) + (e.right?.Size ?? 0);
+                    t.Size = e.left.Size + e.right.Size;
                     t.Sum = op.Operate(GetSum(e.left), GetSum(e.right));
+                    e.Level = e.left.UpperLevel;
                 }
                 else if (t.Data is Leaf lf)
                 {

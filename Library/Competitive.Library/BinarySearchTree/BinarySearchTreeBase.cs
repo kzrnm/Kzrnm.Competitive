@@ -149,7 +149,7 @@ namespace Kzrnm.Competitive
             /// <paramref name="a"/> と <paramref name="b"/> と <paramref name="c"/> をマージします。
             /// </summary>
             [凾(256)]
-            static virtual Nd Merge(Nd a, Nd b, Nd c) => Nd.Merge(Nd.Merge(a, b), c);
+            static virtual Nd Merge(Nd a, Nd b, Nd c) => Nd.Merge(a, Nd.Merge(b, c));
 
             /// <summary>
             /// <paramref name="t"/> を <paramref name="t"/>[0..<paramref name="k"/>] と <paramref name="t"/>[<paramref name="k"/>..] に分割します。
