@@ -54,8 +54,8 @@ namespace Kzrnm.Competitive.Internal
                 return $"Sum = {Sum}, Size = {Size}, Level = {Data.Level}{black}";
         }
 
-        [SourceExpander.NotEmbeddingSource]
-        private void Validate()
+        [Conditional("DEBUG")]
+        public void Validate()
         {
             if (Data is Leaf)
             {
@@ -95,21 +95,20 @@ namespace Kzrnm.Competitive.Internal
             TSelf.Propagate(ref t);
             if (k == 0) return (null, t);
             if (k >= t.Size) return (t, null);
-            if (t.Data is Internal tt)
+            Debug.Assert(t.Data is Internal);
+            var tt = Unsafe.As<Internal>(t.Data);
+            var lc = tt.left.Size;
+            if (k < lc)
             {
-                var lc = tt.left.Size;
-                if (k < lc)
-                {
-                    var (p1, p2) = TSelf.Split(tt.left, k);
-                    return (p1, TSelf.Merge(p2, tt.right));
-                }
-                else
-                {
-                    var (p1, p2) = TSelf.Split(tt.right, k - lc);
-                    return (TSelf.Merge(tt.left, p1), p2);
-                }
+                var (p1, p2) = TSelf.Split(tt.left, k);
+                return (p1, TSelf.Merge(p2, tt.right));
             }
-            return (null, t);
+            else if (k > lc)
+            {
+                var (p1, p2) = TSelf.Split(tt.right, k - lc);
+                return (TSelf.Merge(tt.left, p1), p2);
+            }
+            return (tt.left, tt.right);
         }
         public static TSelf Merge(TSelf l, TSelf r)
         {
@@ -122,19 +121,34 @@ namespace Kzrnm.Competitive.Internal
         [凾(256)]
         static TSelf SubMerge(TSelf l, TSelf r)
         {
-            var li = l.Data as Internal;
-            var ri = r.Data as Internal;
-
-            var ld = (li?.Level ?? 0).CompareTo(ri?.Level ?? 0);
-
-            if (ld < 0)
+            var ld = l.Data.Level.CompareTo(r.Data.Level);
+            if (ld == 0)
             {
-                Debug.Assert(ri != null);
+                if (l.IsBlack != r.IsBlack)
+                {
+                    if (l.IsBlack)
+                    {
+                        r = TSelf.Copy(r);
+                        r.IsBlack = true;
+                    }
+                    else
+                    {
+                        l = TSelf.Copy(l);
+                        l.IsBlack = true;
+                    }
+                }
+                return TSelf.Create(l, r);
+            }
+            else if (ld < 0)
+            {
+                Debug.Assert(r.Data is Internal);
                 TSelf.Propagate(ref r);
-                var c = ri.left = SubMerge(l, ri.left);
-                Debug.Assert(c.Data is Internal);
+                var ri = Unsafe.As<Internal>(r.Data);
+                ref var c = ref ri.left;
+                c = SubMerge(l, c);
                 var ci = Unsafe.As<Internal>(c.Data);
-                if (r.IsBlack && !c.IsBlack && ci.left.IsBlack is false)
+
+                if (r.IsBlack && !c.IsBlack && !ci.left.IsBlack)
                 {
                     r.IsBlack = false;
                     c.IsBlack = true;
@@ -144,14 +158,16 @@ namespace Kzrnm.Competitive.Internal
                 }
                 return TSelf.Update(r);
             }
-            else if (ld > 0)
+            else
             {
-                Debug.Assert(li != null);
+                Debug.Assert(l.Data is Internal);
                 TSelf.Propagate(ref l);
-                var c = li.right = SubMerge(li.right, r);
-                Debug.Assert(c.Data is Internal);
+                var li = Unsafe.As<Internal>(l.Data);
+                ref var c = ref li.right;
+                c = SubMerge(c, r);
                 var ci = Unsafe.As<Internal>(c.Data);
-                if (l.IsBlack && !c.IsBlack && ci.right?.IsBlack is false)
+
+                if (l.IsBlack && !c.IsBlack && !ci.right.IsBlack)
                 {
                     l.IsBlack = false;
                     c.IsBlack = true;
@@ -161,7 +177,6 @@ namespace Kzrnm.Competitive.Internal
                 }
                 return TSelf.Update(l);
             }
-            return TSelf.Create(l, r);
         }
         [凾(256)]
         static TSelf RotateRight(TSelf t, TSelf c)
