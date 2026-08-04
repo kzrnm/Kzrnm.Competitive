@@ -1,5 +1,3 @@
-using TUnit.Assertions.Core;
-
 namespace Kzrnm.Competitive.Testing.DataStructure;
 
 public class WaveletMatrixTests

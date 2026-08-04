@@ -3,7 +3,6 @@ using AtCoder;
 using AtCoder.Internal;
 using Kzrnm.Competitive.IO;
 using System;
-using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
