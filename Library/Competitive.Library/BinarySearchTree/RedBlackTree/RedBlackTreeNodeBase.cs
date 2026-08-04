@@ -9,9 +9,12 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.Internal
 {
-    public interface IRedBlackTreeNode<T, Nd> : IBbstNode<T, Nd> where Nd : class, IRedBlackTreeNode<T, Nd>
+    public interface IRedBlackTreeNode<T, Nd> : IBbstNode<T, Nd> where Nd : RedBlackTreeNodeBase<Nd, T>, IRedBlackTreeNode<T, Nd>
     {
         static abstract Nd Create(Nd left, Nd right);
+
+        [SourceExpander.NotEmbeddingSource]
+        static void IBbstNode<Nd>.Validate(Nd t) => t?.Validate();
     }
 
     // https://ei1333.github.io/library/structure/bbst/lazy-red-black-tree.hpp

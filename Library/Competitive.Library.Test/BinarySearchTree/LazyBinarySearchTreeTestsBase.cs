@@ -36,10 +36,12 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
             for (int i = 0; i < n; i++)
                 p[i] = (i * i + 100) % 31;
             var tree = Create(p);
+            tree.Validate();
             var expected = new SLazySegtree<int, int, SumOp>(p);
 
             async Task Test()
             {
+                tree.Validate();
                 for (int l = 0; l <= n; l++)
                     for (int r = l; r <= n; r++)
                     {
@@ -87,6 +89,7 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
         }
         async Task Test()
         {
+            tree.Validate();
             await tree.AllProd.Should().BeEqualTo(expected.AllProd);
             for (int l = 0; l <= n; l++)
                 for (int r = l; r <= n; r++)
@@ -123,6 +126,7 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
 
         async Task Test()
         {
+            tree.Validate();
             await tree.Should().BeStrictlyEquivalentTo(expected);
             for (int i = 0; i < N; i++)
                 await tree[i].Should().BeEqualTo(expected[i]);
@@ -162,11 +166,11 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
         }
         async Task Test()
         {
+            tree.Validate();
             await tree.Should().BeStrictlyEquivalentTo(list);
             for (int i = 0; i < list.Count; i++)
                 await tree[i].Should().BeEqualTo(list[i]);
         }
-
 
         tree.AddLast(-1);
         list.Add(-1);
@@ -216,6 +220,7 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
         }
         async Task Test()
         {
+            tree.Validate();
             await tree.Should().BeStrictlyEquivalentTo(list);
             for (int i = 0; i < list.Count; i++)
                 await tree[i].Should().BeEqualTo(list[i]);
@@ -251,6 +256,7 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
         }
         async Task Test()
         {
+            tree.Validate();
             await tree.Should().BeStrictlyEquivalentTo(list);
             for (int i = 0; i < list.Count; i++)
                 await tree[i].Should().BeEqualTo(list[i]);
@@ -284,11 +290,11 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
         }
         async Task Test()
         {
+            tree.Validate();
             await tree.Should().BeStrictlyEquivalentTo(list);
             for (int i = 0; i < list.Count; i++)
                 await tree[i].Should().BeEqualTo(list[i]);
         }
-
 
         await Test();
 
@@ -323,6 +329,7 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
             }
             async Task Test()
             {
+                tree.Validate();
                 await tree.Should().BeStrictlyEquivalentTo(list);
                 for (int i = 0; i < list.Count; i++)
                     await tree[i].Should().BeEqualTo(list[i]);
@@ -355,6 +362,7 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
         }
         async Task Test()
         {
+            tree.Validate();
             await tree.Should().BeStrictlyEquivalentTo(list);
             for (int i = 0; i < list.Count; i++)
                 await tree[i].Should().BeEqualTo(list[i]);

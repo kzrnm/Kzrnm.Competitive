@@ -3,6 +3,7 @@ using Kzrnm.Competitive.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -130,6 +131,13 @@ namespace Kzrnm.Competitive
             bool ICollection<T>.Contains(T item) { throw new NotSupportedException(); }
             int IList<T>.IndexOf(T item) { throw new NotSupportedException(); }
             bool ICollection<T>.Remove(T item) { throw new NotSupportedException(); }
+
+            /// <summary>
+            /// 可能なら二分木の状態が正常か確認します
+            /// </summary>
+            [Conditional("DEBUG")]
+            [SourceExpander.NotEmbeddingSource]
+            internal void Validate() => Nd.Validate(root);
         }
 
         /// <summary>
@@ -177,6 +185,12 @@ namespace Kzrnm.Competitive
             /// 更新後に何かしら設定します。
             /// </summary>
             static abstract Nd Update(Nd t);
+
+            /// <summary>
+            /// 可能なら二分木の状態が正常か確認します
+            /// </summary>
+            [SourceExpander.NotEmbeddingSource]
+            static virtual void Validate(Nd t) { }
         }
 
         /// <summary>
