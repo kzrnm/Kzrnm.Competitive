@@ -7,9 +7,10 @@
     <RootNamespace>Kzrnm.Competitive</RootNamespace>
     <OutputType>Library</OutputType>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <NoWarn>$(NoWarn);1701;1702;CA1034;CA1036;CA1815;CA2211;CS1591</NoWarn>
+    <NoWarn>$(NoWarn);1701;1702;CA1034;CA1036;CA1815;CA2211;CS1591;CA1816</NoWarn>
     <NoWarn>$(NoWarn);IDE0305;IDE0044;IDE0062;IDE0130;EMBED0004;EMBED0010</NoWarn>
     <NoWarn>$(NoWarn);IDE1006;IDE0034;IDE0028;IDE0290;IDE0340</NoWarn>
+    <NoWarn Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= 10.0">$(NoWarn);IDE0031</NoWarn>
 
     <IsAotCompatible>true</IsAotCompatible>
 

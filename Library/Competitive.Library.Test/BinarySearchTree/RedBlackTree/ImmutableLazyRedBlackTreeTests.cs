@@ -2,9 +2,11 @@ using Kzrnm.Competitive.Internal;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree;
 
+using Node = ImmutableLazyRedBlackTreeNode<int, int, SumOp>;
+
 [InheritsTests]
 public class ImmutableLazyRedBlackTreeTests
-    : ImmutableLazyBinarySearchTreeTestsBase<ImmutableLazyRedBlackTreeNode<int, int, SumOp>, ImmutableLazyRedBlackTree<int, int, SumOp>>
+    : ImmutableLazyBinarySearchTreeTestsBase<Node, ImmutableLazyRedBlackTree<int, int, SumOp>.Mk, Node.Op, ImmutableLazyRedBlackTree<int, int, SumOp>>
 {
     protected override ImmutableLazyRedBlackTree<int, int, SumOp> Empty
         => ImmutableLazyRedBlackTree<int, int, SumOp>.Empty;

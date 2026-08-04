@@ -1,7 +1,6 @@
 using Kzrnm.Competitive.Internal;
 using System;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -10,11 +9,14 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 永続伝播反転可能赤黒木
     /// </summary>
-    [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public sealed class ImmutableLazyRedBlackTree<T>
-        : ImmutableBinarySearchTreeBase<T, ImmutableLazyRedBlackTreeNode<T, byte, SingleBbstOp<T>>, ImmutableLazyRedBlackTree<T>>
-        , IImmutableBbst<T, ImmutableLazyRedBlackTreeNode<T, byte, SingleBbstOp<T>>, ImmutableLazyRedBlackTree<T>>
+        : ImmutableBinarySearchTreeBase<T, ImmutableLazyRedBlackTree<T>, ImmutableLazyRedBlackTreeNode<T, byte, SingleBbstOp<T>>, ImmutableLazyRedBlackTree<T>.Mk, ImmutableLazyRedBlackTreeNode<T, byte, SingleBbstOp<T>>.Op>
     {
+        public struct Mk : IImmutableBbstMaker<ImmutableLazyRedBlackTree<T>, ImmutableLazyRedBlackTreeNode<T, byte, SingleBbstOp<T>>>
+        {
+            [凾(256)]
+            public static ImmutableLazyRedBlackTree<T> Create(ImmutableLazyRedBlackTreeNode<T, byte, SingleBbstOp<T>> node) => new(node);
+        }
         [凾(256)] public static ImmutableLazyRedBlackTree<T> Create(ImmutableLazyRedBlackTreeNode<T, byte, SingleBbstOp<T>> node) => new(node);
         [凾(256)] public static ImmutableLazyRedBlackTree<T> Create() => Empty;
 #if NET9_0_OR_GREATER
@@ -25,22 +27,20 @@ namespace Kzrnm.Competitive
 #endif
         ImmutableLazyRedBlackTree(ReadOnlySpan<T> v) : base(v) { }
         public ImmutableLazyRedBlackTree(ImmutableLazyRedBlackTreeNode<T, byte, SingleBbstOp<T>> root) : base(root) { }
-        public ImmutableLazyRedBlackTreeNode<T, byte, SingleBbstOp<T>>.Enumerator GetEnumerator()
-        {
-            ImmutableLazyRedBlackTreeNode<T, byte, SingleBbstOp<T>>.GetEnumerator(ref root);
-            return new(root);
-        }
     }
 
     /// <summary>
     /// 永続遅延伝播反転可能赤黒木
     /// </summary>
-    [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     public sealed class ImmutableLazyRedBlackTree<T, F, TOp>
-        : ImmutableLazyBinarySearchTreeBase<T, F, ImmutableLazyRedBlackTreeNode<T, F, TOp>, ImmutableLazyRedBlackTree<T, F, TOp>>
-        , IImmutableBbst<T, ImmutableLazyRedBlackTreeNode<T, F, TOp>, ImmutableLazyRedBlackTree<T, F, TOp>>
+        : ImmutableLazyBinarySearchTreeBase<T, F, ImmutableLazyRedBlackTree<T, F, TOp>, ImmutableLazyRedBlackTreeNode<T, F, TOp>, ImmutableLazyRedBlackTree<T, F, TOp>.Mk, ImmutableLazyRedBlackTreeNode<T, F, TOp>.Op>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
+        public struct Mk : IImmutableBbstMaker<ImmutableLazyRedBlackTree<T, F, TOp>, ImmutableLazyRedBlackTreeNode<T, F, TOp>>
+        {
+            [凾(256)]
+            public static ImmutableLazyRedBlackTree<T, F, TOp> Create(ImmutableLazyRedBlackTreeNode<T, F, TOp> node) => new(node);
+        }
         [凾(256)] public static ImmutableLazyRedBlackTree<T, F, TOp> Create(ImmutableLazyRedBlackTreeNode<T, F, TOp> node) => new(node);
         [凾(256)] public static ImmutableLazyRedBlackTree<T, F, TOp> Create() => Empty;
 #if NET9_0_OR_GREATER
@@ -51,46 +51,41 @@ namespace Kzrnm.Competitive
 #endif
         private ImmutableLazyRedBlackTree(ReadOnlySpan<T> v) : base(v) { }
         public ImmutableLazyRedBlackTree(ImmutableLazyRedBlackTreeNode<T, F, TOp> root) : base(root) { }
-        public ImmutableLazyRedBlackTreeNode<T, F, TOp>.Enumerator GetEnumerator()
-        {
-            ImmutableLazyRedBlackTreeNode<T, F, TOp>.GetEnumerator(ref root);
-            return new(root);
-        }
     }
 
     namespace Internal
     {
         public class ImmutableLazyRedBlackTreeNode<T, F, TOp>
-            : LazyRedBlackTreeNode<T, F, TOp, ImmutableLazyRedBlackTreeNode<T, F, TOp>>
-            , IRedBlackTreeNode<T, ImmutableLazyRedBlackTreeNode<T, F, TOp>>, IBbstNode<T, ImmutableLazyRedBlackTreeNode<T, F, TOp>>
-            , ILazyBbstNode<T, F, ImmutableLazyRedBlackTreeNode<T, F, TOp>>
+            : RedBlackTreeNodeBase<ImmutableLazyRedBlackTreeNode<T, F, TOp>, T>, ILazyRbtNode<F>
             where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
         {
-            ImmutableLazyRedBlackTreeNode(D d) : base(
-                d is Internal e
-                ? new Internal { left = e.left, right = e.right, Level = e.Level }
-                : new Leaf { Value = Unsafe.As<Leaf>(d).Value }
-            )
-            { }
-            public ImmutableLazyRedBlackTreeNode(T v) : base(v) { }
-            public ImmutableLazyRedBlackTreeNode(ImmutableLazyRedBlackTreeNode<T, F, TOp> left, ImmutableLazyRedBlackTreeNode<T, F, TOp> right) : base(left, right) { }
-            [凾(256)] public static ImmutableLazyRedBlackTreeNode<T, F, TOp> Create(T v) => new(v);
-            [凾(256)] public static ImmutableLazyRedBlackTreeNode<T, F, TOp> Create(ImmutableLazyRedBlackTreeNode<T, F, TOp> left, ImmutableLazyRedBlackTreeNode<T, F, TOp> right) => new(left, right);
-            [凾(256)]
-            static T IBbstNode<T, ImmutableLazyRedBlackTreeNode<T, F, TOp>>.Sum(ImmutableLazyRedBlackTreeNode<T, F, TOp> t)
-                => GetSum(t);
-            [凾(256)]
-            static ImmutableLazyRedBlackTreeNode<T, F, TOp> IBbstNode<T, ImmutableLazyRedBlackTreeNode<T, F, TOp>>.Copy(ImmutableLazyRedBlackTreeNode<T, F, TOp> t)
+            public F Lazy { get; set; }
+            public bool IsReverse { get; set; }
+            public ImmutableLazyRedBlackTreeNode(ImmutableLazyRedBlackTreeNode<T, F, TOp> other) : base(other)
             {
-                if (t == null) return t;
-                return new(t.Data)
-                {
-                    IsBlack = t.IsBlack,
-                    Size = t.Size,
-                    Sum = t.Sum,
-                    Lazy = t.Lazy,
-                    IsReverse = t.IsReverse,
-                };
+                Lazy = other.Lazy;
+                IsReverse = other.IsReverse;
+            }
+            public ImmutableLazyRedBlackTreeNode(T v) : base(v)
+            {
+                Lazy = new TOp().FIdentity;
+            }
+            public ImmutableLazyRedBlackTreeNode(ImmutableLazyRedBlackTreeNode<T, F, TOp> left, ImmutableLazyRedBlackTreeNode<T, F, TOp> right)
+                : base(left, right, new TOp().Operate(left != null ? left.Sum : new TOp().Identity, right != null ? right.Sum : new TOp().Identity))
+            {
+                Lazy = new TOp().FIdentity;
+            }
+
+            [SourceExpander.NotEmbeddingSource]
+            public override string ToString() => $"Lazy = {Lazy}{(IsReverse ? "!" : "")} {base.ToString()}";
+            public struct Op : IRbtNodeOp<T, F, TOp, ImmutableLazyRedBlackTreeNode<T, F, TOp>, Op>
+            {
+                [凾(256)]
+                public static ImmutableLazyRedBlackTreeNode<T, F, TOp> Create(ImmutableLazyRedBlackTreeNode<T, F, TOp> left, ImmutableLazyRedBlackTreeNode<T, F, TOp> right) => new(left, right);
+                [凾(256)]
+                public static ImmutableLazyRedBlackTreeNode<T, F, TOp> Create(T v) => new(v);
+                [凾(256)]
+                public static ImmutableLazyRedBlackTreeNode<T, F, TOp> Copy(ImmutableLazyRedBlackTreeNode<T, F, TOp> t) => t == null ? t : new(t);
             }
         }
     }

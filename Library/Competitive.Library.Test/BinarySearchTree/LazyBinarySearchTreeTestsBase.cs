@@ -15,11 +15,12 @@ public readonly struct SumOp : IReversibleBinarySearchTreeOperator<int, int>
     public int Mapping(int f, int x, int size) => f * size + x;
     public int Operate(int x, int y) => x + y;
 }
-public abstract class LazyBinarySearchTreeTestsBase<Node>
-    where Node : class, ILazyBbstNode<int, int, Node>
+public abstract class LazyBinarySearchTreeTestsBase<Node, N>
+    where Node : class, IBbstNode
+    where N : ILazyBbstNodeOp<int, int, Node, N>
 {
-    protected abstract LazyBinarySearchTreeBase<int, int, Node> Create();
-    protected abstract LazyBinarySearchTreeBase<int, int, Node> Create(IEnumerable<int> values);
+    protected abstract LazyBinarySearchTreeBase<int, int, Node, N> Create();
+    protected abstract LazyBinarySearchTreeBase<int, int, Node, N> Create(IEnumerable<int> values);
 
     [Test]
     public async Task Zero()
@@ -27,7 +28,7 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
         await Create().AllProd.Should().BeEqualTo(0);
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task NaiveProd()
     {
         for (int n = 0; n <= 30; n++)
@@ -76,7 +77,7 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
         }
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task Usage()
     {
         const int n = 10;
@@ -112,7 +113,7 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
         await Test();
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task Reverse()
     {
         const int N = 8;
@@ -149,7 +150,7 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
         }
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task InsertAndReverse()
     {
         var list = Enumerable.Range(0, 8).ToList();
@@ -203,7 +204,7 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
         }
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task AddAndSetValue()
     {
         var list = Enumerable.Range(0, 8).ToList();
@@ -244,7 +245,7 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
         }
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task AddRange()
     {
         var list = Enumerable.Range(0, 8).ToList();
@@ -278,7 +279,7 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
         }
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task InsertRange()
     {
         var list = Enumerable.Range(0, 8).ToList();
@@ -312,7 +313,7 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
         }
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task RemoveAt()
     {
         foreach (var list in new[]
@@ -345,7 +346,7 @@ public abstract class LazyBinarySearchTreeTestsBase<Node>
         }
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task RemoveRange()
     {
         var list = Enumerable.Range(0, 100).ToList();

@@ -2,8 +2,10 @@ using Kzrnm.Competitive.Internal.Bbst;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree;
 
+using Node = SplayTreeNode<int, Starry>;
+
 [InheritsTests]
-public class SplayTreeTests : BinarySearchTreeTestsBase<SplayTreeNode<int, Starry>>
+public class SplayTreeTests : BinarySearchTreeTestsBase<Node, Node.Op>
 {
     protected override SplayTree<int, Starry> Create()
         => new SplayTree<int, Starry>();

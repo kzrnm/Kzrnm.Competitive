@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 
 namespace Kzrnm.Competitive.Testing.Comparer;
+
 [RequiresUnreferencedCode("Expression.Compile may not work correctly when trimming is enabled.")]
 public class ExComparerTests
 {
