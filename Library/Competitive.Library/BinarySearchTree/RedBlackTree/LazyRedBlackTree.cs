@@ -72,22 +72,45 @@ namespace Kzrnm.Competitive
             where Nd : RedBlackTreeNodeBase<Nd, T>, ILazyRbtNode<F>
             where N : IRbtNodeOp<T, F, TOp, Nd, N>
         {
-            [凾(256)]
             static Nd ILazyBbstNodeOp<T, F, Nd, N>.Apply(Nd t, F f)
+                => throw new NotImplementedException();
+
+            [凾(256)]
+            static void ILazyBbstNodeOp<T, F, Nd, N>.Apply(ref Nd t, int l, int r, F f)
             {
-                if (t != null)
+                if (l >= r)
+                    return;
+                Debug.Assert(t != null);
+
+                N.Propagate(ref t);
+                if (l == 0 && t.Size == r)
                 {
-                    var op = new TOp();
                     if (t.IsLeaf)
                     {
-                        t.Sum = op.Mapping(f, t.Sum, 1);
-                        t.Lazy = op.FIdentity;
+                        t.Sum = new TOp().Mapping(f, t.Sum, 1);
+                        t.Lazy = new TOp().FIdentity;
                     }
                     else
-                        t.Lazy = op.Composition(f, t.Lazy);
-                    N.Propagate(ref t);
+                    {
+                        t.Sum = new TOp().Mapping(f, t.Sum, t.Size);
+                        t.Lazy = f;
+                    }
+                    return;
                 }
-                return t;
+
+                Debug.Assert(!t.IsLeaf);
+
+                if (t.Left.Size <= l)
+                    N.Apply(ref t.Right, l - t.Left.Size, r - t.Left.Size, f);
+                else if (r <= t.Left.Size)
+                    N.Apply(ref t.Left, l, r, f);
+                else
+                {
+                    N.Apply(ref t.Left, l, t.Left.Size, f);
+                    N.Apply(ref t.Right, 0, r - t.Left.Size, f);
+                }
+
+                t = N.Update(t);
             }
 
             [凾(256)]
@@ -139,6 +162,8 @@ namespace Kzrnm.Competitive
                     N.Update(t);
                 }
             }
+
+            [凾(256)] static T IRbtNodeOp<T, Nd, N>.Prod(T l, T r) => new TOp().Operate(l, r);
 
             [凾(256)]
             static T IBbstNodeOp<T, Nd, N>.Sum(Nd t) => t != null ? t.Sum : new TOp().Identity;

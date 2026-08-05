@@ -50,7 +50,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
             }
 
             [凾(256)]
-            public static void Push(RandomBinarySearchTreeNode<T, TOp> t)
+            public static void Push(RandomBinarySearchTreeNode<T, TOp> _)
             {
             }
 

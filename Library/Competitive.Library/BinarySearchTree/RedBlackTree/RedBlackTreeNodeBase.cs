@@ -146,6 +146,35 @@ namespace Kzrnm.Competitive.Internal
             }
         }
 
+        /// <summary>
+        /// <paramref name="t"/>[<paramref name="l"/>..<paramref name="r"/>] の総積を返します。
+        /// </summary>
+        [凾(256)]
+        static T IBbstNodeOp<T, Nd, N>.Prod(ref Nd t, int l, int r)
+        {
+            if (l >= r)
+                return N.Sum(null);
+
+            N.Propagate(ref t);
+
+            if (l == 0 && t.Size == r)
+                return N.Sum(t);
+            if (t.Left.Size <= l)
+                return N.Prod(ref t.Right, l - t.Left.Size, r - t.Left.Size);
+            if (r <= t.Left.Size)
+                return N.Prod(ref t.Left, l, r);
+
+            var lt = N.Prod(ref t.Left, l, t.Left.Size);
+            var rt = N.Prod(ref t.Right, 0, r - t.Left.Size);
+
+            return N.Prod(lt, rt);
+        }
+
+        /// <summary>
+        /// モノイド<paramref name="l"/>, <paramref name="r"/>] の総積を返します。
+        /// </summary>
+        [凾(256)]
+        static abstract T Prod(T l, T r);
 
         [凾(256)]
         static void IBbstNodeOp<T, Nd, N>.SetValue(ref Nd t, int k, T x)

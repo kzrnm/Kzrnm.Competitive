@@ -39,7 +39,7 @@ namespace Kzrnm.Competitive
             where TOp : struct, ISegtreeOperator<T>
         {
             public RedBlackTreeNode(T v) : base(v) { }
-            public RedBlackTreeNode(RedBlackTreeNode<T, TOp> left, RedBlackTreeNode<T, TOp> right) 
+            public RedBlackTreeNode(RedBlackTreeNode<T, TOp> left, RedBlackTreeNode<T, TOp> right)
                 : base(left, right, new TOp().Operate(left != null ? left.Sum : new TOp().Identity, right != null ? right.Sum : new TOp().Identity)) { }
 
             public struct Op : IRbtNodeOp<T, TOp, RedBlackTreeNode<T, TOp>, Op>
@@ -58,6 +58,8 @@ namespace Kzrnm.Competitive
         {
             [凾(256)]
             static void IBbstNodeOp<Nd, N>.Propagate(ref Nd t) => t = N.Copy(t);
+
+            [凾(256)] static T IRbtNodeOp<T, Nd, N>.Prod(T l, T r) => new TOp().Operate(l, r);
 
             [凾(256)]
             static T IBbstNodeOp<T, Nd, N>.Sum(Nd t) => t != null ? t.Sum : new TOp().Identity;
