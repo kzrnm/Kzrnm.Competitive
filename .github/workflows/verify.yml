@@ -177,7 +177,7 @@ jobs:
             echo ::endgroup::
 
             echo "::group::Publish $FRAMEWORK AOT"
-            dotnet publish $VERIFY_CSPROJ -c Release --use-current-runtime --framework $FRAMEWORK -p:PublishAot=true --output "publish/$FRAMEWORK"
+            dotnet publish $VERIFY_CSPROJ -c Release --use-current-runtime --framework $FRAMEWORK -p:PublishAot=true -p:IlcInstructionSet=avx2 --output "publish/$FRAMEWORK"
             echo ::endgroup::
 
             echo "::group::Resolve $FRAMEWORK AOT"
