@@ -1,7 +1,9 @@
+using AtCoder;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -9,10 +11,15 @@ namespace Kzrnm.Competitive
 {
     namespace Internal
     {
-        public interface IImmutableBbst<T, Nd, TSelf> : IImmutableList<T>
-            where TSelf : IImmutableBbst<T, Nd, TSelf>
+        /// <summary>
+        /// 根から平衡二分探索木を作る
+        /// </summary>
+        /// <typeparam name="Tr">平衡二分探索木</typeparam>
+        /// <typeparam name="Nd">ノード</typeparam>
+        [IsOperator]
+        public interface IImmutableBbstMaker<Tr, Nd>
         {
-            static abstract TSelf Create(Nd node);
+            static abstract Tr Create(Nd node);
         }
 
         /// <summary>
@@ -20,12 +27,16 @@ namespace Kzrnm.Competitive
         /// </summary>
         /// <typeparam name="T">モノイド</typeparam>
         /// <typeparam name="Nd">ノード</typeparam>
+        /// <typeparam name="M">平衡二分探索木生成型</typeparam>
+        /// <typeparam name="N">ノード操作型</typeparam>
         /// <typeparam name="TSelf">自身の型</typeparam>
-        public abstract class ImmutableBinarySearchTreeBase<T, Nd, TSelf> : IImmutableList<T>
-            where Nd : class, IBbstNode<T, Nd>
-            where TSelf : ImmutableBinarySearchTreeBase<T, Nd, TSelf>, IImmutableBbst<T, Nd, TSelf>
+        public abstract class ImmutableBinarySearchTreeBase<T, TSelf, Nd, M, N> : IImmutableList<T>
+            where Nd : class, IBbstNode
+            where M : IImmutableBbstMaker<TSelf, Nd>
+            where N : IBbstNodeOp<T, Nd, N>
+            where TSelf : ImmutableBinarySearchTreeBase<T, TSelf, Nd, M, N>
         {
-            protected ImmutableBinarySearchTreeBase(ReadOnlySpan<T> v) : this(Nd.Build(v)) { }
+            protected ImmutableBinarySearchTreeBase(ReadOnlySpan<T> v) : this(N.Build(v)) { }
             protected ImmutableBinarySearchTreeBase(Nd root)
             {
                 this.root = root;
@@ -36,8 +47,8 @@ namespace Kzrnm.Competitive
             protected Nd root;
             public T this[int index]
             {
-                get => Nd.GetValue(ref root, index);
-                set => Nd.SetValue(ref root, index, value);
+                get => N.GetValue(ref root, index);
+                set => N.SetValue(ref root, index, value);
             }
 
             /// <summary>
@@ -47,12 +58,12 @@ namespace Kzrnm.Competitive
             public TSelf SetItem(int index, T value)
             {
                 var t = root;
-                Nd.SetValue(ref t, index, value);
-                return TSelf.Create(t);
+                N.SetValue(ref t, index, value);
+                return M.Create(t);
             }
             IImmutableList<T> IImmutableList<T>.SetItem(int index, T value) => SetItem(index, value);
 
-            static readonly TSelf _empty = TSelf.Create(null);
+            static readonly TSelf _empty = M.Create(null);
             /// <summary>
             /// 空の二分探索木を返します。
             /// </summary>
@@ -66,12 +77,12 @@ namespace Kzrnm.Competitive
             /// <summary>
             /// [<paramref name="l"/>..<paramref name="r"/>] の総積を返します。
             /// </summary>
-            [凾(256)] public T Prod(int l, int r) => Nd.Prod(ref root, l, r);
+            [凾(256)] public T Prod(int l, int r) => N.Prod(ref root, l, r);
             [凾(256)] public T Slice(int l, int length) => Prod(l, l + length);
             /// <summary>
             /// 総積を返します。
             /// </summary>
-            public T AllProd => Nd.Sum(root);
+            public T AllProd => N.Sum(root);
 
             IImmutableList<T> IImmutableList<T>.Add(T value) => AddLast(value);
 
@@ -82,8 +93,8 @@ namespace Kzrnm.Competitive
             public TSelf AddFirst(T item)
             {
                 var t = root;
-                Nd.AddFirst(ref t, item);
-                return TSelf.Create(t);
+                N.AddFirst(ref t, item);
+                return M.Create(t);
             }
 
             /// <summary>
@@ -93,15 +104,15 @@ namespace Kzrnm.Competitive
             public TSelf AddLast(T item)
             {
                 var t = root;
-                Nd.AddLast(ref t, item);
-                return TSelf.Create(t);
+                N.AddLast(ref t, item);
+                return M.Create(t);
             }
 
             /// <summary>
             /// 末尾に <paramref name="items"/> を追加します。
             /// </summary>
             [凾(256)]
-            public TSelf AddRange(IEnumerable<T> items) => TSelf.Create(Nd.Merge(root, Nd.Build(items.ToArray())));
+            public TSelf AddRange(IEnumerable<T> items) => M.Create(N.Merge(root, N.Build(items.ToArray())));
             IImmutableList<T> IImmutableList<T>.AddRange(IEnumerable<T> items) => AddRange(items);
 
 
@@ -112,8 +123,8 @@ namespace Kzrnm.Competitive
             public TSelf Insert(int index, T item)
             {
                 var t = root;
-                Nd.Insert(ref t, index, item);
-                return TSelf.Create(t);
+                N.Insert(ref t, index, item);
+                return M.Create(t);
             }
 
             /// <summary>
@@ -123,8 +134,8 @@ namespace Kzrnm.Competitive
             public TSelf InsertRange(int index, IEnumerable<T> items)
             {
                 var t = root;
-                Nd.Insert(ref t, index, Nd.Build(items.ToArray()));
-                return TSelf.Create(t);
+                N.Insert(ref t, index, N.Build(items.ToArray()));
+                return M.Create(t);
             }
 
             IImmutableList<T> IImmutableList<T>.Insert(int index, T element) => Insert(index, element);
@@ -138,8 +149,8 @@ namespace Kzrnm.Competitive
             public TSelf RemoveAt(int index)
             {
                 var t = root;
-                Nd.Erase(ref t, index);
-                return TSelf.Create(t);
+                N.Erase(ref t, index);
+                return M.Create(t);
             }
             IImmutableList<T> IImmutableList<T>.RemoveAt(int index) => RemoveAt(index);
 
@@ -147,13 +158,13 @@ namespace Kzrnm.Competitive
             public TSelf RemoveRange(int index, int count)
             {
                 var t = root;
-                Nd.Erase(ref t, index, count);
-                return TSelf.Create(t);
+                N.Erase(ref t, index, count);
+                return M.Create(t);
             }
             IImmutableList<T> IImmutableList<T>.RemoveRange(int index, int count) => RemoveRange(index, count);
 
             [凾(256)]
-            public TSelf Clear() => TSelf.Create(null);
+            public TSelf Clear() => _empty;
             IImmutableList<T> IImmutableList<T>.Clear() => Clear();
 
             [凾(256)]
@@ -163,8 +174,8 @@ namespace Kzrnm.Competitive
                     array[arrayIndex++] = v;
             }
 
-            IEnumerator<T> IEnumerable<T>.GetEnumerator() => Nd.GetEnumerator(ref root);
-            IEnumerator IEnumerable.GetEnumerator() => Nd.GetEnumerator(ref root);
+            IEnumerator<T> IEnumerable<T>.GetEnumerator() => N.GetEnumerator(ref root);
+            IEnumerator IEnumerable.GetEnumerator() => N.GetEnumerator(ref root);
 
             int IImmutableList<T>.IndexOf(T item, int index, int count, IEqualityComparer<T> equalityComparer) { throw new NotSupportedException(); }
             int IImmutableList<T>.LastIndexOf(T item, int index, int count, IEqualityComparer<T> equalityComparer) { throw new NotSupportedException(); }
@@ -172,7 +183,16 @@ namespace Kzrnm.Competitive
             IImmutableList<T> IImmutableList<T>.RemoveAll(Predicate<T> match) { throw new NotSupportedException(); }
             IImmutableList<T> IImmutableList<T>.Replace(T oldValue, T newValue, IEqualityComparer<T> equalityComparer) { throw new NotSupportedException(); }
             IImmutableList<T> IImmutableList<T>.RemoveRange(IEnumerable<T> items, IEqualityComparer<T> equalityComparer) { throw new NotSupportedException(); }
-        }
 
+            [SourceExpander.NotEmbeddingSource]
+            public override string ToString() => root?.ToString() ?? "empty";
+
+            /// <summary>
+            /// 可能なら二分木の状態が正常か確認します
+            /// </summary>
+            [Conditional("DEBUG")]
+            [SourceExpander.NotEmbeddingSource]
+            internal void Validate() => N.Validate(root);
+        }
     }
 }

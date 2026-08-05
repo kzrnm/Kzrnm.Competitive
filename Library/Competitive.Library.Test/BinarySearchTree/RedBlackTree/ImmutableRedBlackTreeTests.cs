@@ -2,9 +2,11 @@ using Kzrnm.Competitive.Internal;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree;
 
+using Node = ImmutableRedBlackTreeNode<int, SingleBbstOp<int>>;
+
 [InheritsTests]
 public class ImmutableRedBlackTreeTests
-    : ImmutableBinarySearchTreeTestsBase<ImmutableRedBlackTreeNode<int, SingleBbstOp<int>>, ImmutableRedBlackTree<int>>
+    : ImmutableBinarySearchTreeTestsBase<Node, ImmutableRedBlackTree<int>.Mk, Node.Op, ImmutableRedBlackTree<int>>
 {
     protected override bool UseProd => false;
     protected override ImmutableRedBlackTree<int> Empty

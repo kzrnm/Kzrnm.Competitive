@@ -23,8 +23,7 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 赤黒木
     /// </summary>
-    [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class RedBlackTree<T, TOp> : BinarySearchTreeBase<T, RedBlackTreeNode<T, TOp>>
+    public class RedBlackTree<T, TOp> : BinarySearchTreeBase<T, RedBlackTreeNode<T, TOp>, RedBlackTreeNode<T, TOp>.Op>
         where TOp : struct, ISegtreeOperator<T>
     {
         public RedBlackTree() { }
@@ -32,85 +31,55 @@ namespace Kzrnm.Competitive
         public RedBlackTree(T[] v) : base(v) { }
         public RedBlackTree(ReadOnlySpan<T> v) : base(v) { }
         public RedBlackTree(RedBlackTreeNode<T, TOp> root) : base(root) { }
-        public RedBlackTreeNode<T, TOp>.Enumerator GetEnumerator()
-        {
-            RedBlackTreeNode<T, TOp>.GetEnumerator(ref root);
-            return new(root);
-        }
     }
 
     namespace Internal
     {
-        public class RedBlackTreeNode<T, TOp>
-            : RedBlackTreeNode<T, TOp, RedBlackTreeNode<T, TOp>>
-            , IRedBlackTreeNode<T, RedBlackTreeNode<T, TOp>>, IBbstNode<T, RedBlackTreeNode<T, TOp>>
+        public class RedBlackTreeNode<T, TOp> : RedBlackTreeNodeBase<RedBlackTreeNode<T, TOp>, T>
             where TOp : struct, ISegtreeOperator<T>
         {
             public RedBlackTreeNode(T v) : base(v) { }
-            public RedBlackTreeNode(RedBlackTreeNode<T, TOp> left, RedBlackTreeNode<T, TOp> right) : base(left, right) { }
-            [凾(256)] public static RedBlackTreeNode<T, TOp> Create(T v) => new(v);
-            [凾(256)] public static RedBlackTreeNode<T, TOp> Create(RedBlackTreeNode<T, TOp> left, RedBlackTreeNode<T, TOp> right) => new(left, right);
-            [凾(256)]
-            static T IBbstNode<T, RedBlackTreeNode<T, TOp>>.Sum(RedBlackTreeNode<T, TOp> t)
-                => GetSum(t);
+            public RedBlackTreeNode(RedBlackTreeNode<T, TOp> left, RedBlackTreeNode<T, TOp> right)
+                : base(left, right, new TOp().Operate(left != null ? left.Sum : new TOp().Identity, right != null ? right.Sum : new TOp().Identity)) { }
+
+            public struct Op : IRbtNodeOp<T, TOp, RedBlackTreeNode<T, TOp>, Op>
+            {
+                [凾(256)]
+                public static RedBlackTreeNode<T, TOp> Create(RedBlackTreeNode<T, TOp> left, RedBlackTreeNode<T, TOp> right) => new(left, right);
+                [凾(256)]
+                public static RedBlackTreeNode<T, TOp> Create(T v) => new(v);
+            }
         }
-        public class RedBlackTreeNode<T, TOp, TSelf> : RedBlackTreeNodeBase<TSelf, T>
+
+        public interface IRbtNodeOp<T, TOp, Nd, N> : IRbtNodeOp<T, Nd, N>
             where TOp : struct, ISegtreeOperator<T>
-            where TSelf : RedBlackTreeNode<T, TOp, TSelf>, IRedBlackTreeNode<T, TSelf>
+            where Nd : RedBlackTreeNodeBase<Nd, T>
+            where N : IRbtNodeOp<T, TOp, Nd, N>
         {
-            internal static TOp op => new();
-            protected RedBlackTreeNode(D data)
-            {
-                Data = data;
-            }
-            public RedBlackTreeNode(T v)
-            {
-                IsBlack = true;
-                Data = new Leaf { Value = v };
-                Size = 1;
-                Sum = v;
-            }
-            public RedBlackTreeNode(TSelf left, TSelf right)
-            {
-                IsBlack = false;
-                Data = new Internal { left = left, right = right, };
-                Size = (left?.Size ?? 0) + (right?.Size ?? 0);
-                Sum = op.Operate(GetSum(left), GetSum(right));
-            }
+            [凾(256)]
+            static void IBbstNodeOp<Nd, N>.Propagate(ref Nd t) => t = N.Copy(t);
+
+            [凾(256)] static T IRbtNodeOp<T, Nd, N>.Prod(T l, T r) => new TOp().Operate(l, r);
 
             [凾(256)]
-            public static void Propagate(ref TSelf t)
-            {
-                t = TSelf.Copy(t);
-            }
+            static T IBbstNodeOp<T, Nd, N>.Sum(Nd t) => t != null ? t.Sum : new TOp().Identity;
 
             [凾(256)]
-            public static TSelf Update(TSelf t)
+            static Nd IBbstNodeOp<Nd, N>.Update(Nd t)
             {
                 if (t == null) return t;
-                if (t.Data is Internal e)
+
+                Debug.Assert(!t.IsLeaf || t.Size == 1);
+
+                if (!t.IsLeaf)
                 {
-                    t.Size = (e.left?.Size ?? 0) + (e.right?.Size ?? 0);
-                    t.Sum = op.Operate(GetSum(e.left), GetSum(e.right));
-                }
-                else if (t.Data is Leaf lf)
-                {
-                    t.Size = 1;
-                    t.Sum = lf.Value;
+                    TOp op = new();
+                    t.Sum = op.Operate(t.Left != null ? t.Left.Sum : op.Identity, t.Right != null ? t.Right.Sum : op.Identity);
+                    t.Size = t.Left.Size + t.Right.Size;
+                    t.Level = t.Left.UpperLevel();
                 }
                 return t;
             }
-
-            [凾(256)]
-            public static T GetSum(TSelf t)
-                => t != null ? t.Sum : op.Identity;
-
-            [SourceExpander.NotEmbeddingSource]
-            public override string ToString() => Data switch
-            {
-                Leaf lf => $"Size = {Size}, Value = {lf.Value}, Sum = {Sum}",
-                _ => $"Size = {Size}, Sum = {Sum}",
-            };
         }
     }
 }

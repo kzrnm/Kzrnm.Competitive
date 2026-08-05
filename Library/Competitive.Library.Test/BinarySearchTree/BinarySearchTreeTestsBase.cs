@@ -11,11 +11,12 @@ public readonly struct Starry : ISegtreeOperator<int>
     public int Operate(int x, int y) => x + y;
 }
 
-public abstract class BinarySearchTreeTestsBase<Node>
-    where Node : class, IBbstNode<int, Node>
+public abstract class BinarySearchTreeTestsBase<Node, N>
+    where Node : class, IBbstNode
+    where N : IBbstNodeOp<int, Node, N>
 {
-    protected abstract BinarySearchTreeBase<int, Node> Create();
-    protected abstract BinarySearchTreeBase<int, Node> Create(IEnumerable<int> values);
+    protected abstract BinarySearchTreeBase<int, Node, N> Create();
+    protected abstract BinarySearchTreeBase<int, Node, N> Create(IEnumerable<int> values);
 
     [Test]
     public async Task Zero()
@@ -63,7 +64,7 @@ public abstract class BinarySearchTreeTestsBase<Node>
         }
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task Usage()
     {
         var tree = Create(new int[10]);
@@ -80,7 +81,7 @@ public abstract class BinarySearchTreeTestsBase<Node>
         await tree.AllProd.Should().BeEqualTo(15);
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task Insert()
     {
         var list = Enumerable.Range(0, 8).ToList();
@@ -123,7 +124,7 @@ public abstract class BinarySearchTreeTestsBase<Node>
         }
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task AddAndSetValue()
     {
         var list = Enumerable.Range(0, 8).ToList();
@@ -163,7 +164,7 @@ public abstract class BinarySearchTreeTestsBase<Node>
         }
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task AddRange()
     {
         var list = Enumerable.Range(0, 8).ToList();
@@ -196,7 +197,7 @@ public abstract class BinarySearchTreeTestsBase<Node>
         }
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task InsertRange()
     {
         var list = Enumerable.Range(0, 8).ToList();
@@ -230,7 +231,7 @@ public abstract class BinarySearchTreeTestsBase<Node>
         }
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task RemoveAt()
     {
         foreach (var list in new[]
@@ -262,7 +263,7 @@ public abstract class BinarySearchTreeTestsBase<Node>
         }
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task RemoveRange()
     {
         var list = Enumerable.Range(0, 100).ToList();

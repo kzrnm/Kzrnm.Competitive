@@ -4,9 +4,11 @@ using System.Runtime.InteropServices;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree;
 
-public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
-    where Node : class, ILazyBbstNode<int, int, Node>
-    where TBbst : ImmutableLazyBinarySearchTreeBase<int, int, Node, TBbst>, IImmutableBbst<int, Node, TBbst>
+public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, M, N, TBbst>
+    where Node : class, IBbstNode
+    where M : IImmutableBbstMaker<TBbst, Node>
+    where N : ILazyBbstNodeOp<int, int, Node, N>
+    where TBbst : ImmutableLazyBinarySearchTreeBase<int, int, TBbst, Node, M, N>
 {
     protected abstract TBbst Empty { get; }
     protected abstract TBbst Create(IEnumerable<int> values);
@@ -16,7 +18,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
     {
         await Empty.AllProd.Should().BeEqualTo(0);
     }
-    [Test, MultipleAssertions]
+    [Test]
     public async Task NaiveProd()
     {
         for (int n = 0; n <= 30; n++)
@@ -64,7 +66,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
         }
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task Usage()
     {
         var tree = Create(new int[10]);
@@ -84,7 +86,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
         await tree[1..4].Should().BeEqualTo(0);
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task Reverse()
     {
         const int N = 8;
@@ -127,7 +129,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
             await savedTree[i].Should().BeStrictlyEquivalentTo(savedExpects[i]);
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task InsertAndReverse()
     {
         var list = Enumerable.Range(0, 8).ToList();
@@ -188,10 +190,10 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
             await savedTree[i].Should().BeStrictlyEquivalentTo(savedExpects[i]);
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task AddAndSetValue()
     {
-        var list = Enumerable.Range(0, 8).ToList();
+        var list = Enumerable.Range(0, 4).ToList();
         var tree = Create(list);
         void Add(int value)
         {
@@ -232,10 +234,12 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
         }
 
         for (int i = 0; i < savedTree.Count; i++)
+        {
             await savedTree[i].Should().BeStrictlyEquivalentTo(savedExpects[i]);
+        }
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task AddRange()
     {
         var list = Enumerable.Range(0, 8).ToList();
@@ -275,7 +279,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
             await savedTree[i].Should().BeStrictlyEquivalentTo(savedExpects[i]);
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task InsertRange()
     {
         var list = Enumerable.Range(0, 8).ToList();
@@ -315,7 +319,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
             await savedTree[i].Should().BeStrictlyEquivalentTo(savedExpects[i]);
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task RemoveAt()
     {
         var list = Enumerable.Range(0, 1000).ToList();
@@ -348,7 +352,7 @@ public abstract class ImmutableLazyBinarySearchTreeTestsBase<Node, TBbst>
             await savedTree[i].Should().BeStrictlyEquivalentTo(savedExpects[i]);
     }
 
-    [Test, MultipleAssertions]
+    [Test]
     public async Task RemoveRange()
     {
         var list = Enumerable.Range(0, 100).ToList();

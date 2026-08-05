@@ -1,5 +1,3 @@
-using Kzrnm.Competitive.IO;
-
 namespace Kzrnm.Competitive.Testing.IO;
 
 public class TupleWriterExtensionTests

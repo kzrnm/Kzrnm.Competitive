@@ -3,8 +3,10 @@ using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree;
 
+using Node = RandomBinarySearchTreeNode<int, Starry>;
+
 [InheritsTests]
-public class RandomBinarySearchTreeTests : BinarySearchTreeTestsBase<RandomBinarySearchTreeNode<int, Starry>>
+public class RandomBinarySearchTreeTests : BinarySearchTreeTestsBase<Node, Node.Op>
 {
     public RandomBinarySearchTreeTests()
     {

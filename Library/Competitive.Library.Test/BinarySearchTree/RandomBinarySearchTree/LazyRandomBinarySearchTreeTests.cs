@@ -3,8 +3,10 @@ using System.Runtime.CompilerServices;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree;
 
+using Node = LazyRandomBinarySearchTreeNode<int, int, SumOp>;
+
 [InheritsTests]
-public class LazyRandomBinarySearchTreeTests : LazyBinarySearchTreeTestsBase<LazyRandomBinarySearchTreeNode<int, int, SumOp>>
+public class LazyRandomBinarySearchTreeTests : LazyBinarySearchTreeTestsBase<Node, Node.Op>
 {
     public LazyRandomBinarySearchTreeTests()
     {
