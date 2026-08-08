@@ -1,0 +1,44 @@
+<h2>{{ include.title | default: 'Code' }}</h2>
+
+{{ include.header }}
+
+{%- include code.html extension=include.data.pathExtension embedded=include.data.embedded -%}
+
+{%- if include.data.testcases and include.data.testcases.size != 0 -%}
+{% assign test_cases_tag = include.test_cases_tag | default: 'h2' %}
+<{{test_cases_tag}}>Test cases</{{test_cases_tag}}>
+<table class="testcases-table" id="testcases">
+    <thead>
+        <tr>
+            <th class="col col1">Env</th>
+            <th class="col col2">Name</th>
+            <th class="col col3">Status</th>
+            <th class="col col4">Elapsed</th>
+            <th class="col col5">Memory</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%- for case in include.data.testcases -%}
+        {%- assign index = forloop.index | prepend: '0000' | slice: -4, 4 -%}
+        {%- assign environment = case.environment | xml_escape -%}
+        {%- assign name = case.name | xml_escape -%}
+        <tr>
+            <td class="col col1" data-sort="{{ index }} {{ environment }}">{{ environment }}</td>
+            <td class="col col2">{{ name }}</td>
+            {%- if case.status == "AC" -%}
+            <td class="col col3" data-sort="AC">{{ site.icons.TEST_ACCEPTED }}&nbsp;AC</td>
+            {%- else -%}
+            <td class="col col3" data-sort="WA">{{site.icons.TEST_WRONG_ANSWER}}&nbsp;{{ case.status | xml_escape }}</td>
+            {%- endif -%}
+            <td class="col col4" data-sort="{{ case.elapsed }}">{{ case.elapsed | times: 1000 | round }} ms</td>
+            <td class="col col5" data-sort="{{ case.memory }}">{{ case.memory | round }} MB</td>
+        </tr>
+        {%- endfor -%}
+    </tbody>
+</table>
+<script src="{{ "/assets/js/tablesort.min.js" | relative_url }}"></script>
+<script src="{{ "/assets/js/tablesort.number.min.js" | relative_url }}"></script>
+<script>
+  new Tablesort(document.getElementById('testcases'));
+</script>
+{%- endif -%}
