@@ -2,6 +2,8 @@ using AtCoder;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.Internal.Bbst
@@ -13,69 +15,51 @@ namespace Kzrnm.Competitive.Internal.Bbst
     public class RandomBinarySearchTree<T> : RandomBinarySearchTree<T, SingleBbstOp<T>>
     {
         public RandomBinarySearchTree() { }
-        public RandomBinarySearchTree(IEnumerable<T> v) : base(v) { }
+        public RandomBinarySearchTree(IEnumerable<T> v) : base(v.ToArray()) { }
         public RandomBinarySearchTree(T[] v) : base(v) { }
         public RandomBinarySearchTree(ReadOnlySpan<T> v) : base(v) { }
-        public RandomBinarySearchTree(RandomBinarySearchTreeNode<T, SingleBbstOp<T>> root) : base(root) { }
+        public RandomBinarySearchTree(int root) : base(root) { }
     }
 
     /// <summary>
     /// 乱択平衡二分探索木
     /// </summary>
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class RandomBinarySearchTree<T, TOp> : BinarySearchTreeBase<T, RandomBinarySearchTreeNode<T, TOp>, RandomBinarySearchTreeNode<T, TOp>.Op>
+    public class RandomBinarySearchTree<T, TOp> : BinarySearchTreeBase<T, int, RbstNode<T, TOp>.Op>
         where TOp : struct, ISegtreeOperator<T>
     {
         public RandomBinarySearchTree() { }
-        public RandomBinarySearchTree(IEnumerable<T> v) : base(v) { }
+        public RandomBinarySearchTree(IEnumerable<T> v) : base(v.ToArray()) { }
         public RandomBinarySearchTree(T[] v) : base(v) { }
         public RandomBinarySearchTree(ReadOnlySpan<T> v) : base(v) { }
-        public RandomBinarySearchTree(RandomBinarySearchTreeNode<T, TOp> root) : base(root) { }
+        public RandomBinarySearchTree(int root) : base(root) { }
     }
 
-    public class RandomBinarySearchTreeNode<T, TOp> : RandomBinarySearchTreeNodeBase<RandomBinarySearchTreeNode<T, TOp>, T>
+    [StructLayout(LayoutKind.Auto)]
+    public struct RbstNode<T, TOp> : IRbstNode<T, int>
         where TOp : struct, ISegtreeOperator<T>
     {
-        public struct Op : IRbstNodeOp<T, RandomBinarySearchTreeNode<T, TOp>, Op>
+        public struct Op : IRbstOp<T, TOp, RbstNode<T, TOp>, int, Op, PoolStructRefOp<RbstNode<T, TOp>>>
+                , IBbstStructNodeOp<T, RbstNode<T, TOp>, Op>
         {
-            [凾(256)]
-            public static RandomBinarySearchTreeNode<T, TOp> Create(T v) => new(v);
-
-            [凾(256)]
-            public static T Operate(T x, T y) => op.Operate(x, y);
-
-            [凾(256)]
-            public static void Propagate(ref RandomBinarySearchTreeNode<T, TOp> t)
-            {
-            }
-
-            [凾(256)]
-            public static void Push(RandomBinarySearchTreeNode<T, TOp> _)
-            {
-            }
-
-            [凾(256)]
-            public static T Sum(RandomBinarySearchTreeNode<T, TOp> t)
-                => t != null ? t.Sum : op.Identity;
-
-            [凾(256)]
-            public static RandomBinarySearchTreeNode<T, TOp> Update(RandomBinarySearchTreeNode<T, TOp> t)
-            {
-                if (t == null) return t;
-                t.Size = (t.left?.Size ?? 0) + (t.right?.Size ?? 0) + 1;
-                t.Sum = op.Operate(op.Operate(Sum(t.left), t.Value), Sum(t.right));
-                return t;
-            }
+            [凾(256)] public static RbstNode<T, TOp> CreateNode(T v) => new(v);
         }
 
-        static TOp op => new();
-        public RandomBinarySearchTreeNode(T v)
+        public int Parent { get; set; }
+        public int Left { get; set; }
+        public int Right { get; set; }
+        public T Value { get; set; }
+        public T Sum { get; set; }
+        public int Size { get; set; }
+
+        public RbstNode(T v)
         {
+            Parent = Left = Right = -1;
             Size = 1;
             Sum = Value = v;
         }
 
         [SourceExpander.NotEmbeddingSource]
-        public override string ToString() => $"Size = {Size}, Value = {Value}, Sum = {Sum}";
+        public readonly override string ToString() => $"Size = {Size}, Value = {Value}, Sum = {Sum}";
     }
 }

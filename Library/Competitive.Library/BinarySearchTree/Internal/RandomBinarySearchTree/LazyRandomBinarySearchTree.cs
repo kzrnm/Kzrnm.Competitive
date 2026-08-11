@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.Internal.Bbst
@@ -22,112 +23,89 @@ namespace Kzrnm.Competitive.Internal.Bbst
     /// 遅延伝播乱択平衡二分探索木
     /// </summary>
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class LazyRandomBinarySearchTree<T, F, TOp> : LazyBinarySearchTreeBase<T, F, LazyRandomBinarySearchTreeNode<T, F, TOp>, LazyRandomBinarySearchTreeNode<T, F, TOp>.Op>
+    public class LazyRandomBinarySearchTree<T, F, TOp> : LazyBinarySearchTreeBase<T, F, int, LazyRbstNode<T, F, TOp>.Op>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
         public LazyRandomBinarySearchTree() { }
-        public LazyRandomBinarySearchTree(IEnumerable<T> v) : base(v) { }
+        public LazyRandomBinarySearchTree(IEnumerable<T> v) : base(v.ToArray()) { }
         public LazyRandomBinarySearchTree(T[] v) : base(v) { }
         public LazyRandomBinarySearchTree(ReadOnlySpan<T> v) : base(v) { }
-        public LazyRandomBinarySearchTree(LazyRandomBinarySearchTreeNode<T, F, TOp> root) : base(root) { }
+        protected LazyRandomBinarySearchTree(int root) : base(root) { }
     }
 
-    public class LazyRandomBinarySearchTreeNode<T, F, TOp>
-        : RandomBinarySearchTreeNodeBase<LazyRandomBinarySearchTreeNode<T, F, TOp>, T>
+    [StructLayout(LayoutKind.Auto)]
+    public struct LazyRbstNode<T, F, TOp> : IRbstNode<T, int>, ILazyBbstNode<T, F, int>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
-        public struct Op : IRbstNodeOp<T, LazyRandomBinarySearchTreeNode<T, F, TOp>, Op>, ILazyBbstNodeOp<T, F, LazyRandomBinarySearchTreeNode<T, F, TOp>, Op>
+        public struct Op : ILazyRbstOp<T, F, TOp, LazyRbstNode<T, F, TOp>, int, Op, PoolStructRefOp<LazyRbstNode<T, F, TOp>>>
+                , IBbstStructNodeOp<T, LazyRbstNode<T, F, TOp>, Op>
         {
-
-            [凾(256)]
-            public static LazyRandomBinarySearchTreeNode<T, F, TOp> Create(T v) => new(v);
-
-            [凾(256)]
-            public static T Operate(T x, T y) => op.Operate(x, y);
-
-            [凾(256)]
-            public static LazyRandomBinarySearchTreeNode<T, F, TOp> Apply(LazyRandomBinarySearchTreeNode<T, F, TOp> t, F f)
-            {
-                if (t != null)
-                {
-                    t.Lazy = op.Composition(f, t.Lazy);
-                    Propagate(ref t);
-                }
-                return t;
-            }
-
-            [凾(256)]
-            public static void Propagate(ref LazyRandomBinarySearchTreeNode<T, F, TOp> t)
-            {
-                if (t == null) return;
-                var lazy = !EqualityComparer<F>.Default.Equals(t.Lazy, op.FIdentity);
-                var rev = t.IsReverse;
-
-                if (lazy)
-                {
-                    t.Value = op.Mapping(t.Lazy, t.Value, 1);
-                    if (t.left != null)
-                    {
-                        t.left.Lazy = op.Composition(t.Lazy, t.left.Lazy);
-                        t.left.Sum = op.Mapping(t.Lazy, t.left.Sum, t.left.Size);
-                    }
-                    if (t.right != null)
-                    {
-                        t.right.Lazy = op.Composition(t.Lazy, t.right.Lazy);
-                        t.right.Sum = op.Mapping(t.Lazy, t.right.Sum, t.right.Size);
-                    }
-                    t.Lazy = op.FIdentity;
-                }
-                if (rev)
-                {
-                    t.left?.Toggle();
-                    t.right?.Toggle();
-                    t.IsReverse = false;
-                }
-
-                t = Update(t);
-            }
-
-            [凾(256)]
-            public static LazyRandomBinarySearchTreeNode<T, F, TOp> Reverse(LazyRandomBinarySearchTreeNode<T, F, TOp> t)
-            {
-                t?.Toggle();
-                return t;
-            }
-
-            [凾(256)]
-            public static T Sum(LazyRandomBinarySearchTreeNode<T, F, TOp> t)
-                => t != null ? t.Sum : op.Identity;
-
-            [凾(256)]
-            public static LazyRandomBinarySearchTreeNode<T, F, TOp> Update(LazyRandomBinarySearchTreeNode<T, F, TOp> t)
-            {
-                if (t == null) return t;
-                t.Size = (t.left?.Size ?? 0) + (t.right?.Size ?? 0) + 1;
-                t.Sum = op.Operate(op.Operate(Sum(t.left), t.Value), Sum(t.right));
-                return t;
-            }
+            [凾(256)] public static LazyRbstNode<T, F, TOp> CreateNode(T v) => new(v);
         }
 
         static TOp op => new();
-        public F Lazy;
-        public bool IsReverse;
-        public LazyRandomBinarySearchTreeNode(T v)
+
+        public int Parent { get; set; }
+        public int Left { get; set; }
+        public int Right { get; set; }
+        public T Value { get; set; }
+        public T Sum { get; set; }
+        public int Size { get; set; }
+
+        public F Lazy { get; set; }
+        public bool Reversed { get; set; }
+        public LazyRbstNode(T v)
         {
+            Parent = Left = Right = -1;
             Size = 1;
             Sum = Value = v;
             Lazy = op.FIdentity;
         }
 
         [SourceExpander.NotEmbeddingSource]
-        public override string ToString() => $"Size = {Size}, Value = {Value}, Sum = {Sum}, Lazy = {Lazy}";
+        public readonly override string ToString() => $"Size = {Size}, Value = {Value}, Sum = {Sum}, Lazy = {Lazy}";
+    }
 
+    public interface ILazyRbstOp<T, F, TOp, Nd, R, N, C> : IRbstOp<T, TOp, Nd, R, N, C>, ILazyBbstOp<T, F, TOp, Nd, R, N, C>
+        where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
+        where Nd : IRbstNode<T, R>, ILazyBbstNode<T, F, R>
+        where N : ILazyRbstOp<T, F, TOp, Nd, R, N, C>
+        where C : IPoolRefOp<Nd, R>
+    {
         [凾(256)]
-        void Toggle()
+        static R IBbstOp<R, N>.Propagate(R t)
         {
-            (left, right) = (right, left);
-            Sum = op.Inverse(Sum);
-            IsReverse = !IsReverse;
+            if (C.IsNull(t)) return t;
+            var op = new TOp();
+            ref var d = ref C.Load(t);
+            var lazy = !EqualityComparer<F>.Default.Equals(d.Lazy, op.FIdentity);
+            var rev = d.Reversed;
+
+            if (lazy)
+            {
+                d.Value = op.Mapping(d.Lazy, d.Value, 1);
+                if (!C.IsNull(d.Left))
+                {
+                    ref var ln = ref C.Load(d.Left);
+                    ln.Lazy = op.Composition(d.Lazy, ln.Lazy);
+                    ln.Sum = op.Mapping(d.Lazy, ln.Sum, ln.Size);
+                }
+                if (!C.IsNull(d.Right))
+                {
+                    ref var rn = ref C.Load(d.Right);
+                    rn.Lazy = op.Composition(d.Lazy, rn.Lazy);
+                    rn.Sum = op.Mapping(d.Lazy, rn.Sum, rn.Size);
+                }
+                d.Lazy = op.FIdentity;
+            }
+            if (rev)
+            {
+                N.Reverse(d.Left);
+                N.Reverse(d.Right);
+                d.Reversed = false;
+            }
+
+            return N.Update(t);
         }
     }
 }

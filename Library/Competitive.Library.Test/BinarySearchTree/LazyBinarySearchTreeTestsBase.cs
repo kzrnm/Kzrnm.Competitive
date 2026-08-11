@@ -15,12 +15,16 @@ public readonly struct SumOp : IReversibleBinarySearchTreeOperator<int, int>
     public int Mapping(int f, int x, int size) => f * size + x;
     public int Operate(int x, int y) => x + y;
 }
-public abstract class LazyBinarySearchTreeTestsBase<Node, N>
-    where Node : class, IBbstNode
-    where N : ILazyBbstNodeOp<int, int, Node, N>
+public abstract class LazyBinarySearchTreeTestsBase<R, N>
+    where N : ILazyBbstOp<int, int, R, N>
 {
-    protected abstract LazyBinarySearchTreeBase<int, int, Node, N> Create();
-    protected abstract LazyBinarySearchTreeBase<int, int, Node, N> Create(IEnumerable<int> values);
+    [After(Test)]
+    public void Clear() => ClearNode();
+
+    protected virtual void ClearNode() { }
+    protected void ClearNode<Nd>() where Nd : struct => StructPool<Nd>.Default.Clear();
+    protected abstract LazyBinarySearchTreeBase<int, int, R, N> Create();
+    protected abstract LazyBinarySearchTreeBase<int, int, R, N> Create(IEnumerable<int> values);
 
     [Test]
     public async Task Zero()

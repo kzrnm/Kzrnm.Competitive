@@ -15,40 +15,42 @@ namespace Kzrnm.Competitive
         /// 根から平衡二分探索木を作る
         /// </summary>
         /// <typeparam name="Tr">平衡二分探索木</typeparam>
-        /// <typeparam name="Nd">ノード</typeparam>
+        /// <typeparam name="R">ノード参照</typeparam>
         [IsOperator]
-        public interface IImmutableBbstMaker<Tr, Nd>
+        public interface IImmutableBbstMaker<Tr, R>
         {
-            static abstract Tr Create(Nd node);
+            static abstract Tr Create(R node);
         }
 
         /// <summary>
         /// 永続化した平衡二分探索木を実装する
         /// </summary>
         /// <typeparam name="T">モノイド</typeparam>
-        /// <typeparam name="Nd">ノード</typeparam>
+        /// <typeparam name="R">ノード参照</typeparam>
         /// <typeparam name="M">平衡二分探索木生成型</typeparam>
         /// <typeparam name="N">ノード操作型</typeparam>
         /// <typeparam name="TSelf">自身の型</typeparam>
-        public abstract class ImmutableBinarySearchTreeBase<T, TSelf, Nd, M, N> : IImmutableList<T>
-            where Nd : class, IBbstNode
-            where M : IImmutableBbstMaker<TSelf, Nd>
-            where N : IBbstNodeOp<T, Nd, N>
-            where TSelf : ImmutableBinarySearchTreeBase<T, TSelf, Nd, M, N>
+        public abstract class ImmutableBinarySearchTreeBase<T, TSelf, R, M, N> : IImmutableList<T>
+            where M : IImmutableBbstMaker<TSelf, R>
+            where N : IBbstOp<T, R, N>
+            where TSelf : ImmutableBinarySearchTreeBase<T, TSelf, R, M, N>
         {
             protected ImmutableBinarySearchTreeBase(ReadOnlySpan<T> v) : this(N.Build(v)) { }
-            protected ImmutableBinarySearchTreeBase(Nd root)
+            protected ImmutableBinarySearchTreeBase(R root)
             {
                 this.root = root;
             }
             /// <summary>
             /// 二分木の根
             /// </summary>
-            protected Nd root;
+            protected R root;
             public T this[int index]
             {
-                get => N.GetValue(ref root, index);
-                set => N.SetValue(ref root, index, value);
+                get
+                {
+                    N.GetValue(root, index, out T x);
+                    return x;
+                }
             }
 
             /// <summary>
@@ -58,12 +60,12 @@ namespace Kzrnm.Competitive
             public TSelf SetItem(int index, T value)
             {
                 var t = root;
-                N.SetValue(ref t, index, value);
+                t = N.SetValue(t, index, value);
                 return M.Create(t);
             }
             IImmutableList<T> IImmutableList<T>.SetItem(int index, T value) => SetItem(index, value);
 
-            static readonly TSelf _empty = M.Create(null);
+            static readonly TSelf _empty = M.Create(N.Null);
             /// <summary>
             /// 空の二分探索木を返します。
             /// </summary>
@@ -72,12 +74,17 @@ namespace Kzrnm.Competitive
             /// <summary>
             /// 要素数を返します。
             /// </summary>
-            public int Count => root?.Size ?? 0;
+            public int Count => N.Size(root);
 
             /// <summary>
             /// [<paramref name="l"/>..<paramref name="r"/>] の総積を返します。
             /// </summary>
-            [凾(256)] public T Prod(int l, int r) => N.Prod(ref root, l, r);
+            [凾(256)]
+            public T Prod(int l, int r)
+            {
+                var t = root;
+                return N.Prod(ref t, l, r);
+            }
             [凾(256)] public T Slice(int l, int length) => Prod(l, l + length);
             /// <summary>
             /// 総積を返します。
@@ -112,7 +119,11 @@ namespace Kzrnm.Competitive
             /// 末尾に <paramref name="items"/> を追加します。
             /// </summary>
             [凾(256)]
-            public TSelf AddRange(IEnumerable<T> items) => M.Create(N.Merge(root, N.Build(items.ToArray())));
+            public TSelf AddRange(IEnumerable<T> items)
+            {
+                var t = root;
+                return M.Create(N.Merge(t, N.Build(items.ToArray())));
+            }
             IImmutableList<T> IImmutableList<T>.AddRange(IEnumerable<T> items) => AddRange(items);
 
 
@@ -174,8 +185,16 @@ namespace Kzrnm.Competitive
                     array[arrayIndex++] = v;
             }
 
-            IEnumerator<T> IEnumerable<T>.GetEnumerator() => N.GetEnumerator(ref root);
-            IEnumerator IEnumerable.GetEnumerator() => N.GetEnumerator(ref root);
+            IEnumerator<T> IEnumerable<T>.GetEnumerator()
+            {
+                var t = root;
+                return N.GetEnumerator(ref t);
+            }
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                var t = root;
+                return N.GetEnumerator(ref t);
+            }
 
             int IImmutableList<T>.IndexOf(T item, int index, int count, IEqualityComparer<T> equalityComparer) { throw new NotSupportedException(); }
             int IImmutableList<T>.LastIndexOf(T item, int index, int count, IEqualityComparer<T> equalityComparer) { throw new NotSupportedException(); }
@@ -185,7 +204,10 @@ namespace Kzrnm.Competitive
             IImmutableList<T> IImmutableList<T>.RemoveRange(IEnumerable<T> items, IEqualityComparer<T> equalityComparer) { throw new NotSupportedException(); }
 
             [SourceExpander.NotEmbeddingSource]
-            public override string ToString() => root?.ToString() ?? "empty";
+            public override string ToString() => Root?.ToString() ?? "empty";
+
+            [SourceExpander.NotEmbeddingSource]
+            object Root => N.DebugObject(root);
 
             /// <summary>
             /// 可能なら二分木の状態が正常か確認します

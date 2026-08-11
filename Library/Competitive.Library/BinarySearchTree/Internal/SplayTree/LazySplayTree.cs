@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.Internal.Bbst
@@ -12,105 +14,123 @@ namespace Kzrnm.Competitive.Internal.Bbst
     public class LazySplayTree<T> : LazySplayTree<T, byte, SingleBbstOp<T>>
     {
         public LazySplayTree() { }
-        public LazySplayTree(IEnumerable<T> v) : base(v) { }
+        public LazySplayTree(IEnumerable<T> v) : base(v.ToArray()) { }
         public LazySplayTree(T[] v) : base(v) { }
         public LazySplayTree(ReadOnlySpan<T> v) : base(v) { }
-        public LazySplayTree(LazySplayTreeNode<T, byte, SingleBbstOp<T>> root) : base(root) { }
     }
 
     /// <summary>
     /// 遅延伝播反転可能 Splay 木
     /// </summary>
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class LazySplayTree<T, F, TOp> : LazyBinarySearchTreeBase<T, F, LazySplayTreeNode<T, F, TOp>, LazySplayTreeNode<T, F, TOp>.Op>
+    public class LazySplayTree<T, F, TOp> : LazyBinarySearchTreeBase<T, F, int, LazySplayTreeNode<T, F, TOp>.Op>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
         public LazySplayTree() { }
-        public LazySplayTree(IEnumerable<T> v) : base(v) { }
+        public LazySplayTree(IEnumerable<T> v) : base(v.ToArray()) { }
         public LazySplayTree(T[] v) : base(v) { }
         public LazySplayTree(ReadOnlySpan<T> v) : base(v) { }
-        public LazySplayTree(LazySplayTreeNode<T, F, TOp> root) : base(root) { }
+        protected LazySplayTree(int root) : base(root) { }
     }
 
-    public class LazySplayTreeNode<T, F, TOp> : SplayTreeNodeBase<LazySplayTreeNode<T, F, TOp>, T>
+    [StructLayout(LayoutKind.Auto)]
+    public struct LazySplayTreeNode<T, F, TOp> : ISplayTreeNode<T, int>, ILazyBbstNode<T, F, int>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
-        public struct Op : ISplayTreePusher<T, LazySplayTreeNode<T, F, TOp>, Op>, ILazyBbstNodeOp<T, F, LazySplayTreeNode<T, F, TOp>, Op>
+        public struct Op : ILazySplayOp<T, F, TOp, LazySplayTreeNode<T, F, TOp>, int, Op, PoolStructRefOp<LazySplayTreeNode<T, F, TOp>>>, ILazyBbstOp<T, F, int, Op>
+            , IBbstStructNodeOp<T, LazySplayTreeNode<T, F, TOp>, Op>
         {
-            [凾(256)]
-            public static LazySplayTreeNode<T, F, TOp> Create(T v) => new(v);
-
-            [凾(256)]
-            public static T Operate(T x, T y) => op.Operate(x, y);
-
-            [凾(256)]
-            public static void Push(LazySplayTreeNode<T, F, TOp> t)
-            {
-                if (!EqualityComparer<F>.Default.Equals(t.Lazy, op.FIdentity))
-                {
-                    t.left?.Apply(t.Lazy);
-                    t.right?.Apply(t.Lazy);
-                    t.Lazy = op.FIdentity;
-                }
-                if (t.IsReverse)
-                {
-                    t.left?.Reverse();
-                    t.right?.Reverse();
-                    t.IsReverse = false;
-                }
-            }
-
-            [凾(256)]
-            public static LazySplayTreeNode<T, F, TOp> Apply(LazySplayTreeNode<T, F, TOp> t, F f)
-            {
-                if (t != null)
-                {
-                    ISplayTreePusher<T, LazySplayTreeNode<T, F, TOp>, Op>.Splay(t);
-                    t.Apply(f);
-                    Push(t);
-                }
-                return t;
-            }
-
-            [凾(256)]
-            public static LazySplayTreeNode<T, F, TOp> Reverse(LazySplayTreeNode<T, F, TOp> t)
-            {
-                t?.Reverse();
-                return t;
-            }
-
-            [凾(256)]
-            public static T Sum(LazySplayTreeNode<T, F, TOp> t)
-                => t != null ? t.Sum : op.Identity;
+            [凾(256)] public static LazySplayTreeNode<T, F, TOp> CreateNode(T v) => new(v);
         }
 
-        static TOp op => new();
-        public F Lazy;
-        public bool IsReverse;
+        public int Parent { get; set; }
+        public int Left { get; set; }
+        public int Right { get; set; }
+        public T Value { get; set; }
+        public T Sum { get; set; }
+        public int Size { get; set; }
+
+        public F Lazy { get; set; }
+        public bool Reversed { get; set; }
         public LazySplayTreeNode(T v)
         {
+            Parent = Left = Right = -1;
             Size = 1;
             Sum = Value = v;
-            Lazy = op.FIdentity;
-        }
-
-        [凾(256)]
-        public void Apply(F f)
-        {
-            Lazy = op.Composition(f, Lazy);
-            Value = op.Mapping(f, Value, 1);
-            Sum = op.Mapping(f, Sum, Size);
-        }
-
-        [凾(256)]
-        public void Reverse()
-        {
-            (left, right) = (right, left);
-            Sum = op.Inverse(Sum);
-            IsReverse = !IsReverse;
+            Lazy = new TOp().FIdentity;
         }
 
         [SourceExpander.NotEmbeddingSource]
-        public override string ToString() => $"Size = {Size}, Value = {Value}, Sum = {Sum}";
+        public readonly override string ToString() => $"Size = {Size}, Value = {Value}, Sum = {Sum}";
+    }
+
+
+    public interface ILazySplayOp<T, F, TOp, Nd, R, N, C> : ISplayTreePusher<T, Nd, R, N, C>, ILazyBbstOp<T, F, R, N>
+        where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
+        where Nd : ISplayTreeNode<T, R>, ILazyBbstNode<T, F, R>
+        where N : ILazySplayOp<T, F, TOp, Nd, R, N, C>
+        where C : IPoolRefOp<Nd, R>
+    {
+        [凾(256)]
+        static void ISplayTreePusher<T, Nd, R, N, C>.Push(R t)
+        {
+            ref var d = ref C.Load(t);
+            if (!EqualityComparer<F>.Default.Equals(d.Lazy, new TOp().FIdentity))
+            {
+                ApplyImpl(d.Left, d.Lazy);
+                ApplyImpl(d.Right, d.Lazy);
+                d.Lazy = new TOp().FIdentity;
+            }
+            if (d.Reversed)
+            {
+                N.Reverse(d.Left);
+                N.Reverse(d.Right);
+                d.Reversed = false;
+            }
+        }
+
+        [凾(256)]
+        static T ISplayTreePusher<T, Nd, R, N, C>.Prod(T x, T y) => new TOp().Operate(x, y);
+
+        [凾(256)]
+        static T IBbstOp<T, R, N>.Sum(R t)
+            => C.IsNull(t) ? new TOp().Identity : C.Load(t).Sum;
+
+        [凾(256)]
+        static void ApplyImpl(R t, F f)
+        {
+            if (!C.IsNull(t))
+            {
+                ref var dn = ref C.Load(t);
+                dn.Lazy = new TOp().Composition(f, dn.Lazy);
+                dn.Value = new TOp().Mapping(f, dn.Value, 1);
+                dn.Sum = new TOp().Mapping(f, dn.Sum, dn.Size);
+            }
+        }
+
+        [凾(256)]
+        static R ILazyBbstOp<T, F, R, N>.Apply(R t, F f)
+        {
+            if (!C.IsNull(t))
+            {
+                Splay(t);
+                ApplyImpl(t, f);
+                N.Push(t);
+            }
+            return t;
+        }
+
+        [凾(256)]
+        static R ILazyBbstOp<T, F, R, N>.Reverse(R t)
+        {
+            if (!C.IsNull(t))
+            {
+                ref var dn = ref C.Load(t);
+                (dn.Left, dn.Right) = (dn.Right, dn.Left);
+                dn.Sum = new TOp().Inverse(dn.Sum);
+                dn.Reversed = !dn.Reversed;
+            }
+            return t;
+        }
     }
 }

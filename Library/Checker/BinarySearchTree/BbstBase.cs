@@ -25,17 +25,20 @@ internal abstract class BbstBase : BaseSolver
         [凾(256)] public ModInt Inverse(ModInt v) => v;
     }
 }
-internal abstract class BbstBase<Nd, N> : BbstBase
-    where Nd : class, IBbstNode
-    where N : ILazyBbstNodeOp<ModInt, Mod998244353AffineTransformation, Nd, N>
+
+internal abstract class BbstBase<N> : BbstBase<int, N>
+    where N : ILazyBbstOp<ModInt, Mod998244353AffineTransformation, int, N>;
+
+internal abstract class BbstBase<R, N> : BbstBase
+    where N : ILazyBbstOp<ModInt, Mod998244353AffineTransformation, R, N>
 {
     public override ConsoleOutput? Solve(ConsoleReader cr, Utf8ConsoleWriter cw)
     {
         SolveImpl(cr, cw, CreateTree());
         return null;
     }
-    protected abstract LazyBinarySearchTreeBase<ModInt, Mod998244353AffineTransformation, Nd, N> CreateTree();
-    static void SolveImpl(ConsoleReader cr, Utf8ConsoleWriter cw, LazyBinarySearchTreeBase<ModInt, Mod998244353AffineTransformation, Nd, N> tree)
+    protected abstract LazyBinarySearchTreeBase<ModInt, Mod998244353AffineTransformation, R, N> CreateTree();
+    static void SolveImpl(ConsoleReader cr, Utf8ConsoleWriter cw, LazyBinarySearchTreeBase<ModInt, Mod998244353AffineTransformation, R, N> tree)
     {
         int N = cr;
         int Q = cr;

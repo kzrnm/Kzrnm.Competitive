@@ -1,5 +1,8 @@
+using AtCoder;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.Internal.Bbst
@@ -10,118 +13,103 @@ namespace Kzrnm.Competitive.Internal.Bbst
     public class LazyAvlTree<T> : LazyAvlTree<T, byte, SingleBbstOp<T>>
     {
         public LazyAvlTree() { }
-        public LazyAvlTree(IEnumerable<T> v) : base(v) { }
+        public LazyAvlTree(IEnumerable<T> v) : base(v.ToArray()) { }
         public LazyAvlTree(T[] v) : base(v) { }
         public LazyAvlTree(ReadOnlySpan<T> v) : base(v) { }
-        public LazyAvlTree(LazyAvlTreeNode<T, byte, SingleBbstOp<T>> root) : base(root) { }
+        public LazyAvlTree(int root) : base(root) { }
     }
 
     /// <summary>
     /// 遅延伝播反転可能AVL木
     /// </summary>
-    public class LazyAvlTree<T, F, TOp> : LazyBinarySearchTreeBase<T, F, LazyAvlTreeNode<T, F, TOp>, LazyAvlTreeNode<T, F, TOp>.Op>
+    public class LazyAvlTree<T, F, TOp> : LazyBinarySearchTreeBase<T, F, int, LazyAvlTreeNode<T, F, TOp>.Op>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
         public LazyAvlTree() { }
-        public LazyAvlTree(IEnumerable<T> v) : base(v) { }
+        public LazyAvlTree(IEnumerable<T> v) : base(v.ToArray()) { }
         public LazyAvlTree(T[] v) : base(v) { }
         public LazyAvlTree(ReadOnlySpan<T> v) : base(v) { }
-        public LazyAvlTree(LazyAvlTreeNode<T, F, TOp> root) : base(root) { }
+        public LazyAvlTree(int root) : base(root) { }
     }
 
-    public class LazyAvlTreeNode<T, F, TOp> : AvlTreeNodeBase<LazyAvlTreeNode<T, F, TOp>, T>, ILazyAvlNode<F>
+    [StructLayout(LayoutKind.Auto)]
+    public struct LazyAvlTreeNode<T, F, TOp> : IAvlNode<T, int>, ILazyBbstNode<T, F, int>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
-        public F Lazy { get; set; }
-        public bool IsReverse { get; set; }
-        public LazyAvlTreeNode(T v) : base(v)
+        public struct Op : ILazyAvlOp<T, F, TOp, LazyAvlTreeNode<T, F, TOp>, int, Op, PoolStructRefOp<LazyAvlTreeNode<T, F, TOp>>>
+                , IBbstStructNodeOp<T, LazyAvlTreeNode<T, F, TOp>, Op>
         {
+            [凾(256)] public static LazyAvlTreeNode<T, F, TOp> CreateNode(T v) => new(v);
+        }
+
+        public int Left { get; set; }
+        public int Right { get; set; }
+        public T Value { get; set; }
+        public T Sum { get; set; }
+        public int Height { get; set; }
+        public int Size { get; set; }
+        public F Lazy { get; set; }
+        public bool Reversed { get; set; }
+        public LazyAvlTreeNode(T v)
+        {
+            Left = Right = -1;
+            Height = 1;
+            Size = 1;
+            Sum = Value = v;
             Lazy = new TOp().FIdentity;
         }
 
         [SourceExpander.NotEmbeddingSource]
-        public override string ToString() => $"Lazy = {Lazy}{(IsReverse ? "!" : "")} {base.ToString()}";
-
-        public struct Op : IAvlNodeOp<T, F, TOp, LazyAvlTreeNode<T, F, TOp>, Op>
-        {
-            [凾(256)]
-            public static LazyAvlTreeNode<T, F, TOp> Create(T v) => new(v);
-        }
+        public readonly override string ToString() => $"Size = {Size} Lazy = {Lazy}{(Reversed ? "!" : "")} Value = {Value} Sum = {Sum}";
     }
 
-    public interface ILazyAvlNode<F> : IBbstNode
-    {
-        F Lazy { get; set; }
-        bool IsReverse { get; set; }
-    }
-
-    public interface IAvlNodeOp<T, F, TOp, Nd, N> : IAvlNodeOp<T, Nd, N>, ILazyBbstNodeOp<T, F, Nd, N>
+    public interface ILazyAvlOp<T, F, TOp, Nd, R, N, C> : IAvlOp<T, TOp, Nd, R, N, C>, ILazyBbstOp<T, F, TOp, Nd, R, N, C>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
-        where Nd : AvlTreeNodeBase<Nd, T>, ILazyAvlNode<F>
-        where N : IAvlNodeOp<T, F, TOp, Nd, N>
+        where Nd : IAvlNode<T, R>, ILazyBbstNode<T, F, R>
+        where N : ILazyAvlOp<T, F, TOp, Nd, R, N, C>
+        where C : IPoolRefOp<Nd, R>
     {
         [凾(256)]
-        static Nd ILazyBbstNodeOp<T, F, Nd, N>.Apply(Nd t, F f)
-        {
-            t.Lazy = new TOp().Composition(f, t.Lazy);
-            N.Propagate(ref t);
-            return t;
-        }
-
-        [凾(256)]
-        static Nd ILazyBbstNodeOp<T, F, Nd, N>.Reverse(Nd t)
-        {
-            if (t != null)
-            {
-                (t.Left, t.Right) = (t.Right, t.Left);
-                t.Sum = new TOp().Inverse(t.Sum);
-                t.IsReverse = !t.IsReverse;
-            }
-            return t;
-        }
-
-        [凾(256)]
-        static void IBbstNodeOp<Nd, N>.Propagate(ref Nd t)
+        static R IBbstOp<R, N>.Propagate(R t)
         {
             t = N.Copy(t);
-            if (t == null) return;
+            if (C.IsNull(t)) return t;
             var op = new TOp();
-            var lazy = !EqualityComparer<F>.Default.Equals(t.Lazy, op.FIdentity);
-            var rev = t.IsReverse;
+            ref Nd d = ref C.Load(t);
+            var lazy = !EqualityComparer<F>.Default.Equals(d.Lazy, op.FIdentity);
+            var rev = d.Reversed;
 
             if (lazy || rev)
             {
-                t.Left = N.Copy(t.Left);
-                t.Right = N.Copy(t.Right);
+                d.Left = N.Copy(d.Left);
+                d.Right = N.Copy(d.Right);
 
                 if (lazy)
                 {
-                    t.Value = op.Mapping(t.Lazy, t.Value, 1);
-                    if (t.Left is { } tl)
+                    d.Value = op.Mapping(d.Lazy, d.Value, 1);
+                    if (!C.IsNull(d.Left))
                     {
-                        tl.Lazy = op.Composition(t.Lazy, tl.Lazy);
-                        tl.Sum = op.Mapping(t.Lazy, tl.Sum, tl.Size);
+                        ref Nd tl = ref C.Load(d.Left);
+                        tl.Lazy = op.Composition(d.Lazy, tl.Lazy);
+                        tl.Sum = op.Mapping(d.Lazy, tl.Sum, tl.Size);
                     }
-                    if (t.Right is { } tr)
+                    if (!C.IsNull(d.Right))
                     {
-                        tr.Lazy = op.Composition(t.Lazy, tr.Lazy);
-                        tr.Sum = op.Mapping(t.Lazy, tr.Sum, tr.Size);
+                        ref Nd tr = ref C.Load(d.Right);
+                        tr.Lazy = op.Composition(d.Lazy, tr.Lazy);
+                        tr.Sum = op.Mapping(d.Lazy, tr.Sum, tr.Size);
                     }
-                    t.Lazy = op.FIdentity;
+                    d.Lazy = op.FIdentity;
                 }
                 if (rev)
                 {
-                    N.Reverse(t.Left);
-                    N.Reverse(t.Right);
+                    N.Reverse(d.Left);
+                    N.Reverse(d.Right);
                 }
-                t.IsReverse = false;
-                N.Update(t);
+                d.Reversed = false;
+                t = N.Update(t);
             }
+            return t;
         }
-
-        [凾(256)] static T IAvlNodeOp<T, Nd, N>.Prod(T l, T r) => new TOp().Operate(l, r);
-
-        [凾(256)]
-        static T IBbstNodeOp<T, Nd, N>.Sum(Nd t) => t != null ? t.Sum : new TOp().Identity;
     }
 }

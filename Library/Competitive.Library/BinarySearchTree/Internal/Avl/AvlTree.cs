@@ -1,6 +1,8 @@
 using AtCoder;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.Internal.Bbst
@@ -12,47 +14,51 @@ namespace Kzrnm.Competitive.Internal.Bbst
     public class AvlTree<T> : AvlTree<T, SingleBbstOp<T>>
     {
         public AvlTree() { }
-        public AvlTree(IEnumerable<T> v) : base(v) { }
+        public AvlTree(IEnumerable<T> v) : base(v.ToArray()) { }
         public AvlTree(T[] v) : base(v) { }
         public AvlTree(ReadOnlySpan<T> v) : base(v) { }
-        public AvlTree(AvlTreeNode<T, SingleBbstOp<T>> root) : base(root) { }
+        public AvlTree(int root) : base(root) { }
     }
 
     /// <summary>
     /// AVL木
     /// </summary>
-    public class AvlTree<T, TOp> : BinarySearchTreeBase<T, AvlTreeNode<T, TOp>, AvlTreeNode<T, TOp>.Op>
+    public class AvlTree<T, TOp> : BinarySearchTreeBase<T, int, AvlTreeNode<T, TOp>.Op>
         where TOp : struct, ISegtreeOperator<T>
     {
         public AvlTree() { }
-        public AvlTree(IEnumerable<T> v) : base(v) { }
+        public AvlTree(IEnumerable<T> v) : base(v.ToArray()) { }
         public AvlTree(T[] v) : base(v) { }
         public AvlTree(ReadOnlySpan<T> v) : base(v) { }
-        public AvlTree(AvlTreeNode<T, TOp> root) : base(root) { }
+        public AvlTree(int root) : base(root) { }
     }
 
-    public class AvlTreeNode<T, TOp> : AvlTreeNodeBase<AvlTreeNode<T, TOp>, T>
+    [StructLayout(LayoutKind.Auto)]
+    public struct AvlTreeNode<T, TOp> : IAvlNode<T, int>
         where TOp : struct, ISegtreeOperator<T>
     {
-        public AvlTreeNode(T v) : base(v) { }
-        public struct Op : IAvlNodeOp<T, TOp, AvlTreeNode<T, TOp>, Op>
+        public struct Op : IAvlOp<T, TOp, AvlTreeNode<T, TOp>, int, Op, PoolStructRefOp<AvlTreeNode<T, TOp>>>
+                , IBbstStructNodeOp<T, AvlTreeNode<T, TOp>, Op>
         {
-            [凾(256)]
-            public static AvlTreeNode<T, TOp> Create(T v) => new(v);
+            [凾(256)] public static AvlTreeNode<T, TOp> CreateNode(T v) => new(v);
         }
-    }
 
-    public interface IAvlNodeOp<T, TOp, Nd, N> : IAvlNodeOp<T, Nd, N>
-        where TOp : struct, ISegtreeOperator<T>
-        where Nd : AvlTreeNodeBase<Nd, T>
-        where N : IAvlNodeOp<T, TOp, Nd, N>
-    {
-        [凾(256)]
-        static void IBbstNodeOp<Nd, N>.Propagate(ref Nd t) => t = N.Copy(t);
+        public int Left { get; set; }
+        public int Right { get; set; }
+        public T Value { get; set; }
+        public T Sum { get; set; }
+        public int Height { get; set; }
+        public int Size { get; set; }
 
-        [凾(256)] static T IAvlNodeOp<T, Nd, N>.Prod(T l, T r) => new TOp().Operate(l, r);
+        public AvlTreeNode(T v)
+        {
+            Left = Right = -1;
+            Height = 1;
+            Size = 1;
+            Sum = Value = v;
+        }
 
-        [凾(256)]
-        static T IBbstNodeOp<T, Nd, N>.Sum(Nd t) => t != null ? t.Sum : new TOp().Identity;
+        [SourceExpander.NotEmbeddingSource]
+        public readonly override string ToString() => $"Size = {Size} Value = {Value} Sum = {Sum}";
     }
 }

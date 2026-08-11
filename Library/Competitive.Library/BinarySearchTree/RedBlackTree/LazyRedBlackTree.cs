@@ -1,7 +1,10 @@
+using AtCoder;
 using Kzrnm.Competitive.Internal;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -16,171 +19,177 @@ namespace Kzrnm.Competitive
         public LazyRedBlackTree(IEnumerable<T> v) : base(v) { }
         public LazyRedBlackTree(T[] v) : base(v) { }
         public LazyRedBlackTree(ReadOnlySpan<T> v) : base(v) { }
-        public LazyRedBlackTree(LazyRedBlackTreeNode<T, byte, SingleBbstOp<T>> root) : base(root) { }
+        public LazyRedBlackTree(int root) : base(root) { }
     }
 
     /// <summary>
     /// 遅延伝播反転可能赤黒木
     /// </summary>
-    public class LazyRedBlackTree<T, F, TOp> : LazyBinarySearchTreeBase<T, F, LazyRedBlackTreeNode<T, F, TOp>, LazyRedBlackTreeNode<T, F, TOp>.Op>
+    public class LazyRedBlackTree<T, F, TOp> : LazyBinarySearchTreeBase<T, F, int, LazyRedBlackTreeNode<T, F, TOp>.Op>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
         public LazyRedBlackTree() { }
-        public LazyRedBlackTree(IEnumerable<T> v) : base(v) { }
+        public LazyRedBlackTree(IEnumerable<T> v) : base(v.ToArray()) { }
         public LazyRedBlackTree(T[] v) : base(v) { }
         public LazyRedBlackTree(ReadOnlySpan<T> v) : base(v) { }
-        public LazyRedBlackTree(LazyRedBlackTreeNode<T, F, TOp> root) : base(root) { }
+        public LazyRedBlackTree(int root) : base(root) { }
     }
 
     namespace Internal
     {
-        public class LazyRedBlackTreeNode<T, F, TOp> : RedBlackTreeNodeBase<LazyRedBlackTreeNode<T, F, TOp>, T>, ILazyRbtNode<F>
+        [StructLayout(LayoutKind.Auto)]
+        public struct LazyRedBlackTreeNode<T, F, TOp> : IRbtNode<T, int>, ILazyBbstNode<T, F, int>
             where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
         {
+            public LazyRedBlackTreeNode(LazyRedBlackTreeNode<T, F, TOp> other)
+            {
+                Left = other.Left;
+                Right = other.Right;
+                IsBlack = other.IsBlack;
+                Level = other.Level;
+                Size = other.Size;
+                Sum = other.Sum;
+                Reversed = other.Reversed;
+                Lazy = other.Lazy;
+            }
+
+            public LazyRedBlackTreeNode(T v)
+            {
+                Left = Right = -1;
+                IsBlack = true;
+                Size = 1;
+                Sum = v;
+                Lazy = new TOp().FIdentity;
+            }
+
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            public int Left { get; set; }
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            public int Right { get; set; }
+            public bool IsBlack { get; set; }
+            public int Level { get; set; }
+            public T Sum { get; set; }
+            public int Size { get; set; }
+
             public F Lazy { get; set; }
-            public bool IsReverse { get; set; }
-            public LazyRedBlackTreeNode(T v) : base(v)
-            {
-                Lazy = new TOp().FIdentity;
-            }
-            public LazyRedBlackTreeNode(LazyRedBlackTreeNode<T, F, TOp> left, LazyRedBlackTreeNode<T, F, TOp> right)
-                : base(left, right, new TOp().Operate(left != null ? left.Sum : new TOp().Identity, right != null ? right.Sum : new TOp().Identity))
-            {
-                Lazy = new TOp().FIdentity;
-            }
+            public bool Reversed { get; set; }
 
             [SourceExpander.NotEmbeddingSource]
-            public override string ToString() => $"Lazy = {Lazy}{(IsReverse ? "!" : "")} {base.ToString()}";
+            public readonly override string ToString() => $"Lazy = {Lazy}{(Reversed ? "!" : "")} {((IRbtNode<T, int>)this).ToStringImpl()}";
 
-            public struct Op : IRbtNodeOp<T, F, TOp, LazyRedBlackTreeNode<T, F, TOp>, Op>
+            [SourceExpander.NotEmbeddingSource]
+            readonly object DebugLeft => BbstNodeConv.Load(new Op(), Left);
+            [SourceExpander.NotEmbeddingSource]
+            readonly object DebugRight => BbstNodeConv.Load(new Op(), Right);
+
+            public struct Op : ILazyRbtOp<T, F, TOp, LazyRedBlackTreeNode<T, F, TOp>, int, Op, PoolStructRefOp<LazyRedBlackTreeNode<T, F, TOp>>>
+                , IBbstStructNodeOp<T, LazyRedBlackTreeNode<T, F, TOp>, Op>
             {
-                [凾(256)]
-                public static LazyRedBlackTreeNode<T, F, TOp> Create(LazyRedBlackTreeNode<T, F, TOp> left, LazyRedBlackTreeNode<T, F, TOp> right) => new(left, right);
-                [凾(256)]
-                public static LazyRedBlackTreeNode<T, F, TOp> Create(T v) => new(v);
+                [凾(256)] public static LazyRedBlackTreeNode<T, F, TOp> CreateNode(T v) => new(v);
             }
         }
 
-        public interface ILazyRbtNode<F> : IBbstNode
-        {
-            F Lazy { get; set; }
-            bool IsReverse { get; set; }
-        }
-
-        public interface IRbtNodeOp<T, F, TOp, Nd, N> : IRbtNodeOp<T, Nd, N>, ILazyBbstNodeOp<T, F, Nd, N>
+        public interface ILazyRbtOp<T, F, TOp, Nd, R, N, C> : IRbtOp<T, TOp, Nd, R, N, C>, ILazyBbstOp<T, F, TOp, Nd, R, N, C>
             where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
-            where Nd : RedBlackTreeNodeBase<Nd, T>, ILazyRbtNode<F>
-            where N : IRbtNodeOp<T, F, TOp, Nd, N>
+            where Nd : IRbtNode<T, R>, ILazyBbstNode<T, F, R>
+            where N : ILazyRbtOp<T, F, TOp, Nd, R, N, C>
+            where C : IPoolRefOp<Nd, R>
         {
-            static Nd ILazyBbstNodeOp<T, F, Nd, N>.Apply(Nd t, F f)
-                => throw new NotImplementedException();
-
             [凾(256)]
-            static void ILazyBbstNodeOp<T, F, Nd, N>.Apply(ref Nd t, int l, int r, F f)
+            static R ILazyBbstOp<T, F, R, N>.Apply(R t, int l, int r, F f)
             {
                 if (l >= r)
-                    return;
-                Debug.Assert(t != null);
+                    return t;
+                Debug.Assert(!C.IsNull(t));
 
-                N.Propagate(ref t);
-                if (l == 0 && t.Size <= r)
+                t = N.Propagate(t);
+                ref Nd d = ref C.Load(t);
+                if (l == 0 && d.Size <= r)
                 {
-                    if (t.IsLeaf)
+                    if (IsLeaf(t))
                     {
-                        t.Sum = new TOp().Mapping(f, t.Sum, 1);
-                        t.Lazy = new TOp().FIdentity;
+                        d.Sum = new TOp().Mapping(f, d.Sum, 1);
+                        d.Lazy = new TOp().FIdentity;
                     }
                     else
                     {
-                        t.Sum = new TOp().Mapping(f, t.Sum, t.Size);
-                        t.Lazy = f;
+                        d.Sum = new TOp().Mapping(f, d.Sum, d.Size);
+                        d.Lazy = f;
                     }
-                    return;
+                    return t;
                 }
 
-                Debug.Assert(!t.IsLeaf);
+                Debug.Assert(!IsLeaf(t));
 
-                if (t.Left.Size <= l)
-                    N.Apply(ref t.Right, l - t.Left.Size, r - t.Left.Size, f);
-                else if (r <= t.Left.Size)
-                    N.Apply(ref t.Left, l, r, f);
-                else
+                var lc = N.Size(d.Left);
+
+                var ll = d.Left;
+                var rr = d.Right;
+                try
                 {
-                    N.Apply(ref t.Left, l, t.Left.Size, f);
-                    N.Apply(ref t.Right, 0, r - t.Left.Size, f);
+                    if (lc <= l)
+                        rr = N.Apply(rr, l - lc, r - lc, f);
+                    else if (r <= lc)
+                        ll = N.Apply(ll, l, r, f);
+                    else
+                    {
+                        ll = N.Apply(ll, l, lc, f);
+                        rr = N.Apply(rr, 0, r - lc, f);
+                    }
                 }
-
-                t = N.Update(t);
-            }
-
-            [凾(256)]
-            static Nd ILazyBbstNodeOp<T, F, Nd, N>.Reverse(Nd t)
-            {
-                if (t != null)
+                finally
                 {
-                    (t.Left, t.Right) = (t.Right, t.Left);
-                    t.Sum = new TOp().Inverse(t.Sum);
-                    t.IsReverse = !t.IsReverse;
+                    d = ref C.Load(t);
+                    d.Left = ll;
+                    d.Right = rr;
+                    N.Update(t);
                 }
                 return t;
             }
 
+
             [凾(256)]
-            static void IBbstNodeOp<Nd, N>.Propagate(ref Nd t)
+            static R IBbstOp<R, N>.Propagate(R t)
             {
                 t = N.Copy(t);
-                if (t == null || t.IsLeaf) return;
+                if (C.IsNull(t) || IsLeaf(t)) return t;
+
+                ref Nd d = ref C.Load(t);
                 var op = new TOp();
-                var lazy = !EqualityComparer<F>.Default.Equals(t.Lazy, op.FIdentity);
-                var rev = t.IsReverse;
+                var lazy = !EqualityComparer<F>.Default.Equals(d.Lazy, op.FIdentity);
+                var rev = d.Reversed;
 
                 if (lazy || rev)
                 {
-                    t.Left = N.Copy(t.Left);
-                    t.Right = N.Copy(t.Right);
+                    var ll = N.Copy(d.Left);
+                    var rr = N.Copy(d.Right);
+                    d = ref C.Load(t);
+                    d.Left = ll;
+                    d.Right = rr;
 
                     if (lazy)
                     {
-                        if (t.Left is { } tl)
+                        if (!C.IsNull(ll))
                         {
-                            tl.Lazy = op.Composition(t.Lazy, tl.Lazy);
-                            tl.Sum = op.Mapping(t.Lazy, tl.Sum, tl.Size);
+                            ref var ln = ref C.Load(ll);
+                            ln.Lazy = op.Composition(d.Lazy, ln.Lazy);
+                            ln.Sum = op.Mapping(d.Lazy, ln.Sum, ln.Size);
                         }
-                        if (t.Right is { } tr)
+                        if (!C.IsNull(rr))
                         {
-                            tr.Lazy = op.Composition(t.Lazy, tr.Lazy);
-                            tr.Sum = op.Mapping(t.Lazy, tr.Sum, tr.Size);
+                            ref var rn = ref C.Load(rr);
+                            rn.Lazy = op.Composition(d.Lazy, rn.Lazy);
+                            rn.Sum = op.Mapping(d.Lazy, rn.Sum, rn.Size);
                         }
-                        t.Lazy = op.FIdentity;
+                        C.Load(t).Lazy = op.FIdentity;
                     }
                     if (rev)
                     {
-                        N.Reverse(t.Left);
-                        N.Reverse(t.Right);
+                        N.Reverse(ll);
+                        N.Reverse(rr);
                     }
-                    t.IsReverse = false;
+                    C.Load(t).Reversed = false;
                     N.Update(t);
-                }
-            }
-
-            [凾(256)] static T IRbtNodeOp<T, Nd, N>.Prod(T l, T r) => new TOp().Operate(l, r);
-
-            [凾(256)]
-            static T IBbstNodeOp<T, Nd, N>.Sum(Nd t) => t != null ? t.Sum : new TOp().Identity;
-
-            [凾(256)]
-            static Nd IBbstNodeOp<Nd, N>.Update(Nd t)
-            {
-                if (t == null) return t;
-
-                Debug.Assert(!t.IsLeaf || t.Size == 1);
-
-                if (!t.IsLeaf)
-                {
-                    TOp op = new();
-                    t.Sum = op.Operate(t.Left != null ? t.Left.Sum : op.Identity, t.Right != null ? t.Right.Sum : op.Identity);
-                    t.Size = t.Left.Size + t.Right.Size;
-                    t.Level = t.Left.UpperLevel();
                 }
                 return t;
             }

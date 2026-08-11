@@ -8,26 +8,20 @@ namespace Kzrnm.Competitive.Internal
     /// </summary>
     /// <typeparam name="T">モノイド</typeparam>
     /// <typeparam name="F">モノイドへの作用素</typeparam>
-    /// <typeparam name="Nd">ノード</typeparam>
+    /// <typeparam name="R">ノード参照</typeparam>
     /// <typeparam name="M">平衡二分探索木生成型</typeparam>
     /// <typeparam name="N">ノード操作型</typeparam>
     /// <typeparam name="TSelf">自身の型</typeparam>
-    public abstract class ImmutableLazyBinarySearchTreeBase<T, F, TSelf, Nd, M, N> : ImmutableBinarySearchTreeBase<T, TSelf, Nd, M, N>
-        where TSelf : ImmutableLazyBinarySearchTreeBase<T, F, TSelf, Nd, M, N>
-        where Nd : class, IBbstNode
-        where M : IImmutableBbstMaker<TSelf, Nd>
-        where N : IBbstNodeOp<T, Nd, N>, ILazyBbstNodeOp<T, F, Nd, N>
+    public abstract class ImmutableLazyBinarySearchTreeBase<T, F, TSelf, R, M, N> : ImmutableBinarySearchTreeBase<T, TSelf, R, M, N>
+        where TSelf : ImmutableLazyBinarySearchTreeBase<T, F, TSelf, R, M, N>
+        where M : IImmutableBbstMaker<TSelf, R>
+        where N : IBbstOp<T, R, N>, ILazyBbstOp<T, F, R, N>
     {
         protected ImmutableLazyBinarySearchTreeBase(ReadOnlySpan<T> v) : base(N.Build(v)) { }
-        protected ImmutableLazyBinarySearchTreeBase(Nd root) : base(root) { }
+        protected ImmutableLazyBinarySearchTreeBase(R root) : base(root) { }
 
         [凾(256)]
-        public TSelf Apply(int l, int r, F f)
-        {
-            var t = root;
-            N.Apply(ref t, l, r, f);
-            return M.Create(t);
-        }
+        public TSelf Apply(int l, int r, F f) => M.Create(N.Apply(root, l, r, f));
         [凾(256)]
         public TSelf Reverse()
         {
@@ -36,11 +30,6 @@ namespace Kzrnm.Competitive.Internal
             return M.Create(t);
         }
         [凾(256)]
-        public TSelf Reverse(int l, int r)
-        {
-            var t = root;
-            N.Reverse(ref t, l, r);
-            return M.Create(t);
-        }
+        public TSelf Reverse(int l, int r) => M.Create(N.Reverse(root, l, r));
     }
 }

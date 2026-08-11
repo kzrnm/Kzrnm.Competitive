@@ -2,6 +2,8 @@ using AtCoder;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive.Internal.Bbst
@@ -16,52 +18,57 @@ namespace Kzrnm.Competitive.Internal.Bbst
         public SplayTree(IEnumerable<T> v) : base(v) { }
         public SplayTree(T[] v) : base(v) { }
         public SplayTree(ReadOnlySpan<T> v) : base(v) { }
-        public SplayTree(SplayTreeNode<T, SingleBbstOp<T>> root) : base(root) { }
     }
 
     /// <summary>
     /// Splay 木
     /// </summary>
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class SplayTree<T, TOp> : BinarySearchTreeBase<T, SplayTreeNode<T, TOp>, SplayTreeNode<T, TOp>.Op>
+    public class SplayTree<T, TOp> : BinarySearchTreeBase<T, int, SplayTreeNode<T, TOp>.Op>
         where TOp : struct, ISegtreeOperator<T>
     {
         public SplayTree() { }
-        public SplayTree(IEnumerable<T> v) : base(v) { }
+        public SplayTree(IEnumerable<T> v) : base(v.ToArray()) { }
         public SplayTree(T[] v) : base(v) { }
         public SplayTree(ReadOnlySpan<T> v) : base(v) { }
-        public SplayTree(SplayTreeNode<T, TOp> root) : base(root) { }
+        protected SplayTree(int root) : base(root) { }
     }
-    public class SplayTreeNode<T, TOp> : SplayTreeNodeBase<SplayTreeNode<T, TOp>, T>
+
+    [StructLayout(LayoutKind.Auto)]
+    public struct SplayTreeNode<T, TOp> : ISplayTreeNode<T, int>
         where TOp : struct, ISegtreeOperator<T>
     {
-        public struct Op : ISplayTreePusher<T, SplayTreeNode<T, TOp>, Op>
+        public struct Op : ISplayTreePusher<T, SplayTreeNode<T, TOp>, int, Op, PoolStructRefOp<SplayTreeNode<T, TOp>>>
+                , IBbstStructNodeOp<T, SplayTreeNode<T, TOp>, Op>
         {
-            [凾(256)]
-            public static SplayTreeNode<T, TOp> Create(T v) => new(v);
+            [凾(256)] public static SplayTreeNode<T, TOp> CreateNode(T v) => new(v);
 
             [凾(256)]
-            public static T Operate(T x, T y) => op.Operate(x, y);
+            public static T Prod(T x, T y) => op.Operate(x, y);
 
             [凾(256)]
-            public static void Push(SplayTreeNode<T, TOp> t)
-            {
-            }
-
-            [凾(256)]
-            public static T Sum(SplayTreeNode<T, TOp> t)
-                => t != null ? t.Sum : op.Identity;
+            public static T Sum(int t)
+                => t < 0 ? op.Identity : StructPool<SplayTreeNode<T, TOp>>.Default.Get(t).Sum;
         }
 
         static TOp op => new();
+
+        public int Parent { get; set; }
+        public int Left { get; set; }
+        public int Right { get; set; }
+        public T Value { get; set; }
+        public T Sum { get; set; }
+        public int Size { get; set; }
+
         public SplayTreeNode(T v)
         {
+            Parent = Left = Right = -1;
             Size = 1;
             Sum = Value = v;
         }
 
         [SourceExpander.NotEmbeddingSource]
         [凾(256)]
-        public override string ToString() => $"Size = {Size}, Value = {Value}, Sum = {Sum}";
+        public readonly override string ToString() => $"Size = {Size}, Value = {Value}, Sum = {Sum}";
     }
 }

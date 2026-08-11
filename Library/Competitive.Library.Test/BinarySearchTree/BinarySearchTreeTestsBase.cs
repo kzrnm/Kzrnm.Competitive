@@ -11,12 +11,16 @@ public readonly struct Starry : ISegtreeOperator<int>
     public int Operate(int x, int y) => x + y;
 }
 
-public abstract class BinarySearchTreeTestsBase<Node, N>
-    where Node : class, IBbstNode
-    where N : IBbstNodeOp<int, Node, N>
+public abstract class BinarySearchTreeTestsBase<R, N>
+    where N : IBbstOp<int, R, N>
 {
-    protected abstract BinarySearchTreeBase<int, Node, N> Create();
-    protected abstract BinarySearchTreeBase<int, Node, N> Create(IEnumerable<int> values);
+    [After(Test)]
+    public void Clear() => ClearNode();
+
+    protected virtual void ClearNode() { }
+    protected void ClearNode<Nd>() where Nd : struct => StructPool<Nd>.Default.Clear();
+    protected abstract BinarySearchTreeBase<int, R, N> Create();
+    protected abstract BinarySearchTreeBase<int, R, N> Create(IEnumerable<int> values);
 
     [Test]
     public async Task Zero()

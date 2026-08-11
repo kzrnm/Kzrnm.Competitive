@@ -3,6 +3,8 @@ using Kzrnm.Competitive.Internal;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -17,68 +19,66 @@ namespace Kzrnm.Competitive
         public RedBlackTree(IEnumerable<T> v) : base(v) { }
         public RedBlackTree(T[] v) : base(v) { }
         public RedBlackTree(ReadOnlySpan<T> v) : base(v) { }
-        public RedBlackTree(RedBlackTreeNode<T, SingleBbstOp<T>> root) : base(root) { }
+        public RedBlackTree(int root) : base(root) { }
     }
 
     /// <summary>
     /// 赤黒木
     /// </summary>
-    public class RedBlackTree<T, TOp> : BinarySearchTreeBase<T, RedBlackTreeNode<T, TOp>, RedBlackTreeNode<T, TOp>.Op>
+    public class RedBlackTree<T, TOp> : BinarySearchTreeBase<T, int, RedBlackTreeNode<T, TOp>.Op>
         where TOp : struct, ISegtreeOperator<T>
     {
         public RedBlackTree() { }
-        public RedBlackTree(IEnumerable<T> v) : base(v) { }
+        public RedBlackTree(IEnumerable<T> v) : base(v.ToArray()) { }
         public RedBlackTree(T[] v) : base(v) { }
         public RedBlackTree(ReadOnlySpan<T> v) : base(v) { }
-        public RedBlackTree(RedBlackTreeNode<T, TOp> root) : base(root) { }
+        public RedBlackTree(int root) : base(root) { }
     }
 
     namespace Internal
     {
-        public class RedBlackTreeNode<T, TOp> : RedBlackTreeNodeBase<RedBlackTreeNode<T, TOp>, T>
+        [StructLayout(LayoutKind.Auto)]
+        public struct RedBlackTreeNode<T, TOp> : IRbtNode<T, int>
             where TOp : struct, ISegtreeOperator<T>
         {
-            public RedBlackTreeNode(T v) : base(v) { }
-            public RedBlackTreeNode(RedBlackTreeNode<T, TOp> left, RedBlackTreeNode<T, TOp> right)
-                : base(left, right, new TOp().Operate(left != null ? left.Sum : new TOp().Identity, right != null ? right.Sum : new TOp().Identity)) { }
-
-            public struct Op : IRbtNodeOp<T, TOp, RedBlackTreeNode<T, TOp>, Op>
+            public RedBlackTreeNode(RedBlackTreeNode<T, TOp> other)
             {
-                [凾(256)]
-                public static RedBlackTreeNode<T, TOp> Create(RedBlackTreeNode<T, TOp> left, RedBlackTreeNode<T, TOp> right) => new(left, right);
-                [凾(256)]
-                public static RedBlackTreeNode<T, TOp> Create(T v) => new(v);
+                Left = other.Left;
+                Right = other.Right;
+                IsBlack = other.IsBlack;
+                Level = other.Level;
+                Size = other.Size;
+                Sum = other.Sum;
             }
-        }
 
-        public interface IRbtNodeOp<T, TOp, Nd, N> : IRbtNodeOp<T, Nd, N>
-            where TOp : struct, ISegtreeOperator<T>
-            where Nd : RedBlackTreeNodeBase<Nd, T>
-            where N : IRbtNodeOp<T, TOp, Nd, N>
-        {
-            [凾(256)]
-            static void IBbstNodeOp<Nd, N>.Propagate(ref Nd t) => t = N.Copy(t);
-
-            [凾(256)] static T IRbtNodeOp<T, Nd, N>.Prod(T l, T r) => new TOp().Operate(l, r);
-
-            [凾(256)]
-            static T IBbstNodeOp<T, Nd, N>.Sum(Nd t) => t != null ? t.Sum : new TOp().Identity;
-
-            [凾(256)]
-            static Nd IBbstNodeOp<Nd, N>.Update(Nd t)
+            public RedBlackTreeNode(T v)
             {
-                if (t == null) return t;
+                Left = Right = -1;
+                IsBlack = true;
+                Size = 1;
+                Sum = v;
+            }
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            public int Left { get; set; }
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            public int Right { get; set; }
+            public bool IsBlack { get; set; }
+            public int Level { get; set; }
+            public T Sum { get; set; }
+            public int Size { get; set; }
 
-                Debug.Assert(!t.IsLeaf || t.Size == 1);
+            [SourceExpander.NotEmbeddingSource]
+            public readonly override string ToString() => ((IRbtNode<T, int>)this).ToStringImpl();
 
-                if (!t.IsLeaf)
-                {
-                    TOp op = new();
-                    t.Sum = op.Operate(t.Left != null ? t.Left.Sum : op.Identity, t.Right != null ? t.Right.Sum : op.Identity);
-                    t.Size = t.Left.Size + t.Right.Size;
-                    t.Level = t.Left.UpperLevel();
-                }
-                return t;
+            [SourceExpander.NotEmbeddingSource]
+            readonly object DebugLeft => BbstNodeConv.Load(new Op(), Left);
+            [SourceExpander.NotEmbeddingSource]
+            readonly object DebugRight => BbstNodeConv.Load(new Op(), Right);
+
+            public struct Op : IRbtOp<T, TOp, RedBlackTreeNode<T, TOp>, int, Op, PoolStructRefOp<RedBlackTreeNode<T, TOp>>>
+                , IBbstStructNodeOp<T, RedBlackTreeNode<T, TOp>, Op>
+            {
+                [凾(256)] public static RedBlackTreeNode<T, TOp> CreateNode(T v) => new(v);
             }
         }
     }

@@ -5,15 +5,20 @@ using System.Runtime.InteropServices;
 
 namespace Kzrnm.Competitive.Testing.Collection.BinarySearchTree;
 
-public abstract class ImmutableBinarySearchTreeTestsBase<Node, M, N, TBbst>
-    where Node : class, IBbstNode
-    where M : IImmutableBbstMaker<TBbst, Node>
-    where N : IBbstNodeOp<int, Node, N>
-    where TBbst : ImmutableBinarySearchTreeBase<int, TBbst, Node, M, N>
+public abstract class ImmutableBinarySearchTreeTestsBase<R, M, N, TBbst>
+    where M : IImmutableBbstMaker<TBbst, R>
+    where N : IBbstOp<int, R, N>
+    where TBbst : ImmutableBinarySearchTreeBase<int, TBbst, R, M, N>
 {
+    [After(Test)]
+    public void Clear() => ClearNode();
+
+    protected virtual void ClearNode() { }
+    protected void ClearNode<Nd>() where Nd : struct => StructPool<Nd>.Default.Clear();
     protected virtual bool UseProd => true;
     protected abstract TBbst Empty { get; }
     protected abstract TBbst Create(IEnumerable<int> values);
+
 
     [Test]
     public async Task Zero()
@@ -99,7 +104,8 @@ public abstract class ImmutableBinarySearchTreeTestsBase<Node, M, N, TBbst>
         var savedTree = new List<TBbst>();
         var savedExpects = new List<int[]>();
         async Task Test()
-        {tree.Validate();
+        {
+            tree.Validate();
             savedTree.Add(tree);
             savedExpects.Add(list.ToArray());
             await tree.Should().BeStrictlyEquivalentTo(list);
@@ -154,7 +160,8 @@ public abstract class ImmutableBinarySearchTreeTestsBase<Node, M, N, TBbst>
         var savedTree = new List<TBbst>();
         var savedExpects = new List<int[]>();
         async Task Test()
-        {tree.Validate();
+        {
+            tree.Validate();
             savedTree.Add(tree);
             savedExpects.Add(list.ToArray());
             await tree.Should().BeStrictlyEquivalentTo(list);
@@ -196,7 +203,8 @@ public abstract class ImmutableBinarySearchTreeTestsBase<Node, M, N, TBbst>
         var savedTree = new List<TBbst>();
         var savedExpects = new List<int[]>();
         async Task Test()
-        {tree.Validate();
+        {
+            tree.Validate();
             savedTree.Add(tree);
             savedExpects.Add(list.ToArray());
             await tree.Should().BeStrictlyEquivalentTo(list);
@@ -236,7 +244,8 @@ public abstract class ImmutableBinarySearchTreeTestsBase<Node, M, N, TBbst>
         var savedTree = new List<TBbst>();
         var savedExpects = new List<int[]>();
         async Task Test()
-        {tree.Validate();
+        {
+            tree.Validate();
             savedTree.Add(tree);
             savedExpects.Add(list.ToArray());
             await tree.Should().BeStrictlyEquivalentTo(list);
@@ -276,7 +285,8 @@ public abstract class ImmutableBinarySearchTreeTestsBase<Node, M, N, TBbst>
         var savedTree = new List<TBbst>();
         var savedExpects = new List<int[]>();
         async Task Test()
-        {tree.Validate();
+        {
+            tree.Validate();
             savedTree.Add(tree);
             savedExpects.Add(list.ToArray());
             await tree.Should().BeStrictlyEquivalentTo(list);
@@ -314,7 +324,8 @@ public abstract class ImmutableBinarySearchTreeTestsBase<Node, M, N, TBbst>
         var savedTree = new List<TBbst>();
         var savedExpects = new List<int[]>();
         async Task Test()
-        {tree.Validate();
+        {
+            tree.Validate();
             savedTree.Add(tree);
             savedExpects.Add(list.ToArray());
             await tree.Should().BeStrictlyEquivalentTo(list);
