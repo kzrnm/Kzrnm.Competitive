@@ -27,6 +27,7 @@ namespace Kzrnm.Competitive.Internal
         [凾(256)] public void Apply(int l, int r, F f) => N.Apply(ref root, l, r, f);
         [凾(256)] public void Reverse() => N.Reverse(root);
         [凾(256)] public void Reverse(int l, int r) => N.Reverse(ref root, l, r);
+        public void Validate() => N.Validate(root);
     }
 
     /// <summary>

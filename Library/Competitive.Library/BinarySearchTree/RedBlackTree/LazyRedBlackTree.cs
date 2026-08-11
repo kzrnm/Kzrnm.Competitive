@@ -83,7 +83,7 @@ namespace Kzrnm.Competitive
                 Debug.Assert(t != null);
 
                 N.Propagate(ref t);
-                if (l == 0 && t.Size == r)
+                if (l == 0 && t.Size <= r)
                 {
                     if (t.IsLeaf)
                     {

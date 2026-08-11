@@ -63,6 +63,7 @@ public abstract class LazyBinarySearchTreeTestsBase<Node, N>
             {
                 var x = ((i << 5) + (i >> 2) + (i << 3) + i % 3) % 51;
                 tree[i] = expected[i] = x;
+                tree.Validate();
             }
             await Test();
 

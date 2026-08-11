@@ -157,7 +157,7 @@ namespace Kzrnm.Competitive.Internal
 
             N.Propagate(ref t);
 
-            if (l == 0 && t.Size == r)
+            if (l == 0 && t.Size <= r)
                 return N.Sum(t);
             if (t.Left.Size <= l)
                 return N.Prod(ref t.Right, l - t.Left.Size, r - t.Left.Size);
