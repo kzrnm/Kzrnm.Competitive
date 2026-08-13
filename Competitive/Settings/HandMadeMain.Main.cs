@@ -52,10 +52,11 @@ namespace Competitive.Runner
                     !string.IsNullOrWhiteSpace(fileInput))
                     sb.Add(fileInput);
 
-                if (IsNotWhiteSpace(sb.sb))
+                var input = sb.ToString();
+                sb.Clear();
+                if (!string.IsNullOrWhiteSpace(input))
                 {
                     stopwatch = new Stopwatch();
-                    var input = sb.ToString();
                     reader = new PropertyConsoleReader(new MemoryStream(utf8.GetBytes(input)), Encoding.UTF8);
                     if (input.Length < 1000)
                     {
@@ -195,13 +196,6 @@ namespace Competitive.Runner
                 is IReadOnlyDictionary<string, SourceExpander.Expanded.SourceCode> dic)
                 return dic.GetValueOrDefault(filePath);
             return null;
-        }
-        static bool IsNotWhiteSpace(StringBuilder sb)
-        {
-            foreach (var chunk in sb.GetChunks())
-                if (!chunk.Span.IsEmpty && !chunk.Span.IsWhiteSpace())
-                    return true;
-            return false;
         }
         static string LoadInput()
         {
