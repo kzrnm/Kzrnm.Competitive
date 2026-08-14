@@ -1,8 +1,9 @@
 namespace Kzrnm.Competitive.Testing.Collection;
 
+[NotInParallel(nameof(Set<>))]
 public class SetDictionaryTests
 {
-    [Test, MultipleAssertions]
+    [Test]
     public async Task SetDictionary()
     {
         var set = new SetDictionary<int, int>(new Dictionary<int, int>
@@ -46,13 +47,13 @@ public class SetDictionaryTests
             {8,3},
             {9,4},
         });
-        await set.FindNodeLowerBound(4).Pair.Should().BeEqualTo(KeyValuePair.Create(4, 8));
-        await set.FindNodeUpperBound(4).Pair.Should().BeEqualTo(KeyValuePair.Create(6, 1));
-        await set.FindNodeLowerBound(5).Pair.Should().BeEqualTo(KeyValuePair.Create(6, 1));
-        await set.FindNodeUpperBound(5).Pair.Should().BeEqualTo(KeyValuePair.Create(6, 1));
+        await set.FindNodeLowerBound(4).Node.Pair.Should().BeEqualTo(KeyValuePair.Create(4, 8));
+        await set.FindNodeUpperBound(4).Node.Pair.Should().BeEqualTo(KeyValuePair.Create(6, 1));
+        await set.FindNodeLowerBound(5).Node.Pair.Should().BeEqualTo(KeyValuePair.Create(6, 1));
+        await set.FindNodeUpperBound(5).Node.Pair.Should().BeEqualTo(KeyValuePair.Create(6, 1));
 
-        await set.FindNodeLowerBound(10).Should().BeNull();
-        await set.FindNodeUpperBound(10).Should().BeNull();
+        await set.FindNodeLowerBound(10).NodeRef.Should().BeEqualTo(-1);
+        await set.FindNodeUpperBound(10).NodeRef.Should().BeEqualTo(-1);
 
         int k, v;
         KeyValuePair<int, int> pair;
@@ -82,7 +83,7 @@ public class SetDictionaryTests
         await set.TryGetUpperBound(8, out _).Should().BeTrue();
         await set.TryGetUpperBound(9, out _).Should().BeFalse();
 
-        set.RemoveNode(set.FindNodeLowerBound(5));
+        set.Remove(set.FindNodeLowerBound(5));
         await set.ToArray().Should().BeStrictlyEquivalentTo(new Dictionary<int, int>
         {
             {1,5},
@@ -94,7 +95,7 @@ public class SetDictionaryTests
             {9,4},
         });
 
-        set.RemoveNode(set.FindNodeLowerBound(0));
+        set.Remove(set.FindNodeLowerBound(0));
         await set.ToArray().Should().BeStrictlyEquivalentTo(new Dictionary<int, int>
         {
             {2,6},
@@ -105,7 +106,7 @@ public class SetDictionaryTests
             {9,4},
         });
 
-        set.RemoveNode(set.FindNodeLowerBound(9));
+        set.Remove(set.FindNodeLowerBound(9));
         await set.ToArray().Should().BeStrictlyEquivalentTo(new Dictionary<int, int>
         {
             {2,6},
@@ -165,13 +166,13 @@ public class SetDictionaryTests
             KeyValuePair.Create(8,3),
             KeyValuePair.Create(9,4),
         ]);
-        await set.FindNodeLowerBound(4).Pair.Should().BeEqualTo(KeyValuePair.Create(4, 8));
-        await set.FindNodeUpperBound(4).Pair.Should().BeEqualTo(KeyValuePair.Create(5, 9));
-        await set.FindNodeLowerBound(5).Pair.Should().BeEqualTo(KeyValuePair.Create(5, 9));
-        await set.FindNodeUpperBound(5).Pair.Should().BeEqualTo(KeyValuePair.Create(6, 1));
+        await set.FindNodeLowerBound(4).Node.Pair.Should().BeEqualTo(KeyValuePair.Create(4, 8));
+        await set.FindNodeUpperBound(4).Node.Pair.Should().BeEqualTo(KeyValuePair.Create(5, 9));
+        await set.FindNodeLowerBound(5).Node.Pair.Should().BeEqualTo(KeyValuePair.Create(5, 9));
+        await set.FindNodeUpperBound(5).Node.Pair.Should().BeEqualTo(KeyValuePair.Create(6, 1));
 
-        await set.FindNodeLowerBound(10).Should().BeNull();
-        await set.FindNodeUpperBound(10).Should().BeNull();
+        await set.FindNodeLowerBound(10).NodeRef.Should().BeEqualTo(-1);
+        await set.FindNodeUpperBound(10).NodeRef.Should().BeEqualTo(-1);
 
         int k, v;
         KeyValuePair<int, int> pair;
@@ -201,7 +202,7 @@ public class SetDictionaryTests
         await set.TryGetUpperBound(8, out _).Should().BeTrue();
         await set.TryGetUpperBound(9, out _).Should().BeFalse();
     }
-    [Test, MultipleAssertions]
+    [Test]
     public async Task ReverseComparer()
     {
         var set = new SetDictionary<int, int, ReverseComparer<int>>(new Dictionary<int, int>
@@ -245,12 +246,12 @@ public class SetDictionaryTests
             {2,6},
             {1,5},
         });
-        await set.FindNodeLowerBound(6).Pair.Should().BeEqualTo(KeyValuePair.Create(6, 1));
-        await set.FindNodeUpperBound(6).Pair.Should().BeEqualTo(KeyValuePair.Create(4, 8));
-        await set.FindNodeLowerBound(5).Pair.Should().BeEqualTo(KeyValuePair.Create(4, 8));
-        await set.FindNodeUpperBound(5).Pair.Should().BeEqualTo(KeyValuePair.Create(4, 8));
+        await set.FindNodeLowerBound(6).Node.Pair.Should().BeEqualTo(KeyValuePair.Create(6, 1));
+        await set.FindNodeUpperBound(6).Node.Pair.Should().BeEqualTo(KeyValuePair.Create(4, 8));
+        await set.FindNodeLowerBound(5).Node.Pair.Should().BeEqualTo(KeyValuePair.Create(4, 8));
+        await set.FindNodeUpperBound(5).Node.Pair.Should().BeEqualTo(KeyValuePair.Create(4, 8));
 
-        await set.FindNodeLowerBound(0).Should().BeNull();
-        await set.FindNodeUpperBound(0).Should().BeNull();
+        await set.FindNodeLowerBound(0).NodeRef.Should().BeEqualTo(-1);
+        await set.FindNodeUpperBound(0).NodeRef.Should().BeEqualTo(-1);
     }
 }

@@ -1,9 +1,11 @@
+using AtCoder;
 using Kzrnm.Competitive.Internal;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
@@ -13,416 +15,81 @@ namespace Kzrnm.Competitive
     /// </summary>
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
     [DebuggerTypeProxy(typeof(SetInterval<>.DebugView))]
-    public class SetInterval<T>
-        : SetBase<(T From, T ToExclusive), SetInterval<T>.C<T>, SetInterval<T>.Node, DefaultComparerStruct<(T, T)>>
-        where T : IComparable<T>, IIncrementOperators<T>, IDecrementOperators<T>, IMinMaxValue<T>
+    public class SetInterval<T> : SetInterval<T, SetInterval<T>.Range, SetInterval<T>.Node, SetInterval<T>.Op>
+            where T : IComparable<T>, IMinMaxValue<T>
     {
-        public SetInterval() : base(false, new()) { }
-        public SetInterval(IEnumerable<(T From, T ToExclusive)> collection) : base(false, new(), collection) { }
-
-#pragma warning disable CS8981
-        static class op
-#pragma warning restore CS8981
+        public SetInterval() : base() { }
+        public SetInterval(IEnumerable<(T, T)> vals) : base(vals) { }
+        public readonly record struct Range(T From, T ToExclusive) : ISetIntervalRange<T>, IComparable<Range>, IComparable<T>
         {
-            [凾(256)] public static T Increment(T v) => ++v;
-            [凾(256)] public static T Decrement(T v) => --v;
-            public static T MaxValue => T.MaxValue;
-            public static T MinValue => T.MinValue;
-        }
+            T ISetIntervalRange<T>.To => ToExclusive;
 
-        protected override ReadOnlySpan<(T From, T ToExclusive)> InitArray(IEnumerable<(T From, T ToExclusive)> collection)
-        {
-            var list = new List<(T From, T ToExclusive)>(
-                collection.Where(t => t.From.CompareTo(t.ToExclusive) < 0));
-            if (list.Count == 0) return [];
+            [凾(256)]
+            public int CompareTo(Range other) => From.CompareTo(other.From) switch { 0 => ToExclusive.CompareTo(other.ToExclusive), var c => c };
 
-            list.Sort();
-            var resList = new List<(T From, T ToExclusive)>(list.Count)
+            [凾(256)]
+            public int CompareTo(T other)
             {
-                list[0]
-            };
-            for (int i = 1; i < list.Count; i++)
-            {
-                var pt = resList[^1].ToExclusive;
-                var (f, t) = list[i];
-                if (pt.CompareTo(f) >= 0)
-                {
-                    if (pt.CompareTo(t) < 0)
-                        resList[^1] = (resList[^1].From, t);
-                }
-                else
-                    resList.Add((f, t));
+                int c = From.CompareTo(other);
+                if (c > 0) return c;
+                c = ToExclusive.CompareTo(other);
+                if (c <= 0) return -1; // exclusive
+                return 0;
             }
 
-            return resList.ToArray();
-        }
+            public static implicit operator Range((T F, T T) t) => new(t.F, t.T);
+            public static implicit operator (T, T)(Range r) => (r.From, r.ToExclusive);
 
-        public new bool Add((T From, T ToExclusive) item) => Add(item.From, item.ToExclusive);
-        public bool Add(T from, T toExclusive)
-        {
-            var left = FindNodeLowerBound(op.Decrement(from));
-            var right = FindNodeLowerBound(op.Decrement(toExclusive));
-            if (left != null)
-            {
-                if (from.CompareTo(left.From) < 0 || from.CompareTo(left.ToExclusive) > 0)
-                    left = null;
-                else if (toExclusive.CompareTo(left.ToExclusive) <= 0)
-                    return false;
-            }
-            if (right != null && toExclusive.CompareTo(right.From) < 0)
-                right = null;
-
-            if (left != null && right != null)
-            {
-                var pt = right.ToExclusive;
-                Remove(left.ToExclusive, pt);
-                left.ToExclusive = pt;
-            }
-            else
-            {
-                Remove(op.Increment(from), op.Decrement(toExclusive));
-                if (left != null)
-                    left.ToExclusive = toExclusive;
-                else if (right != null)
-                    right.From = from;
-                else
-                    AddImpl(from, toExclusive);
-            }
-            return true;
-        }
-        private void AddImpl(T from, T toExclusive)
-        {
-            if (root == null)
-            {
-                root = new Node(from, toExclusive, NodeColor.Black);
-                return;
-            }
-
-            Node current = root;
-            Node parent = null;
-            Node grandParent = null;
-            Node greatGrandParent = null;
-            int order = 0;
-            while (current != null)
-            {
-                order = from.CompareTo(current.From);
-                if (current.Is4Node)
-                {
-                    current.Split4Node();
-                    if (parent.IsNonNullRed())
-                    {
-                        InsertionBalance(current, ref parent, grandParent, greatGrandParent);
-                    }
-                }
-                greatGrandParent = grandParent;
-                grandParent = parent;
-                parent = current;
-                current = (order < 0 ? current.Left : current.Right);
-            }
-            var node = new Node(from, toExclusive, NodeColor.Red);
-            if (order >= 0) parent.Right = node;
-            else parent.Left = node;
-            if (parent.IsRed) InsertionBalance(node, ref parent, grandParent, greatGrandParent);
-            root.ColorBlack();
-            return;
-        }
-
-        public bool Remove(T from, T toExclusive)
-        {
-            if (root == null) return false;
-            bool resultMatch = false;
-            bool foundMatch = true;
-            while (foundMatch)
-            {
-                foundMatch = false;
-                Node current = root;
-                Node parent = null;
-                Node grandParent = null;
-                Node match = null;
-                Node parentOfMatch = null;
-                while (current != null)
-                {
-                    if (current.Is2Node)
-                        Fix2Node(match, ref parentOfMatch, current, parent, grandParent);
-                    int order = foundMatch ? -1 : from.CompareTo(current.From);
-                    if (!foundMatch && order <= 0 && toExclusive.CompareTo(current.ToExclusive) >= 0)
-                    {
-                        resultMatch = foundMatch = true;
-                        match = current;
-                        parentOfMatch = parent;
-                        order = 0;
-                    }
-                    grandParent = parent;
-                    parent = current;
-                    current = (Node)(order < 0 ? current.Left : current.Right);
-                }
-                if (match != null)
-                {
-                    ReplaceNode(match, parentOfMatch, parent, grandParent);
-                }
-            }
-            {
-                var match = FindNodeLowerBound(from);
-                if (match != null)
-                {
-                    int order = from.CompareTo(match.From);
-                    if (order <= 0)
-                    {
-                        if (toExclusive.CompareTo(match.From) > 0) // 右側
-                        {
-                            resultMatch = true;
-                            match.From = toExclusive;
-                        }
-                    }
-                    else
-                    {
-                        if (toExclusive.CompareTo(match.ToExclusive) >= 0) // 左側
-                        {
-                            resultMatch = true;
-                            match.ToExclusive = from;
-
-                            match = FindNodeLowerBound(toExclusive);
-                            if (match != null && toExclusive.CompareTo(match.From) > 0)
-                                match.From = toExclusive;
-                        }
-                        else // 分割
-                        {
-                            resultMatch = true;
-                            var prevTo = match.ToExclusive;
-                            match.ToExclusive = from;
-                            root?.ColorBlack();
-                            AddImpl(toExclusive, prevTo);
-                        }
-                    }
-                }
-            }
-            root?.ColorBlack();
-            return resultMatch;
-        }
-        public new bool Contains((T From, T ToExclusive) item) => Contains(item.From, item.ToExclusive);
-        public bool Contains(T from, T toExclusive)
-        {
-            var node = FindNode(from);
-            return node != null && toExclusive.CompareTo(node.ToExclusive) <= 0;
-        }
-
-        /// <summary>
-        /// [<paramref name="from"/>, <paramref name="toExclusive"/>)の範囲を列挙する。はみ出た範囲は切り捨てる。
-        /// </summary>
-        public IEnumerable<(T From, T ToExclusive)> RangeTruncate(T from, T toExclusive)
-        {
-            if (from.CompareTo(Max.ToExclusive) >= 0) yield break;
-            foreach (var tup in EnumerateItem(FindNodeLowerBound(from)))
-            {
-                var (f, t) = tup;
-                if (f.CompareTo(from) < 0) f = from;
-                if (f.CompareTo(toExclusive) >= 0) yield break;
-                if (t.CompareTo(toExclusive) > 0) t = toExclusive;
-                yield return (f, t);
-            }
-        }
-
-        /// <summary>
-        /// [<paramref name="from"/>, <paramref name="toExclusive"/>)の範囲を列挙する。はみ出た範囲も含める。
-        /// </summary>
-        public IEnumerable<(T From, T ToExclusive)> RangeAll(T from, T toExclusive)
-        {
-            if (from.CompareTo(Max.ToExclusive) >= 0) yield break;
-            foreach (var (f, t) in EnumerateItem(FindNodeLowerBound(from)))
-            {
-                if (f.CompareTo(toExclusive) >= 0) yield break;
-                yield return (f, t);
-            }
-        }
-
-        /// <summary>
-        /// <paramref name="other"/> との和集合に更新します。
-        /// </summary>
-        public void UnionWith(IEnumerable<(T From, T ToExclusive)> other)
-        {
-            foreach (var (f, t) in other)
-                Add(f, t);
-        }
-
-        /// <summary>
-        /// <paramref name="other"/> との差集合に更新します。
-        /// </summary>
-        public void ExceptWith(IEnumerable<(T From, T ToExclusive)> other)
-        {
-            foreach (var (f, t) in other)
-                Remove(f, t);
-        }
-
-        /// <summary>
-        /// <paramref name="other"/> との積集合に更新します。
-        /// </summary>
-        public void IntersectWith(IEnumerable<(T From, T ToExclusive)> other)
-        {
-            bool isCalled = false;
-            (T From, T ToExclusive) last = default;
-            foreach (var tup in other)
-            {
-                if (isCalled)
-                {
-                    Remove(last.ToExclusive, tup.From);
-                }
-                else
-                {
-                    isCalled = true;
-                    Remove(op.MinValue, tup.From);
-                }
-                last = tup;
-            }
-            if (isCalled)
-                Remove(last.ToExclusive, op.MaxValue);
-        }
-
-        public class Node : SetNodeBase<Node>, ISetOperator<(T From, T ToExclusive), C<T>, Node, DefaultComparerStruct<(T, T)>>
-        {
-            public T From;
-            public T ToExclusive;
-            public (T From, T ToExclusive) Pair => (From, ToExclusive);
-            internal Node(T from, T toExclusive, NodeColor color) : base(color)
-            {
-                From = from;
-                ToExclusive = toExclusive;
-            }
             [SourceExpander.NotEmbeddingSource]
-            public override string ToString() => $"Range = [{From}, {ToExclusive}), Size = {Size}";
-            [凾(256)]
-            public static Node Create((T From, T ToExclusive) item, NodeColor color) => new Node(item.From, item.ToExclusive, color);
-            [凾(256)]
-            public static (T From, T ToExclusive) GetValue(Node node) => node.Pair;
-            [凾(256)]
-            public static int Compare((T From, T ToExclusive) x, (T From, T ToExclusive) y) => x.From.CompareTo(y.From);
-            [凾(256)]
-            public static C<T> GetCompareKey(DefaultComparerStruct<(T, T)> op, (T From, T ToExclusive) item) => new C<T>(item.From);
+            public override string ToString() => $"[{From}, {ToExclusive})";
         }
-        public readonly struct C<Tv> : IComparable<Node> where Tv : IComparable<T>
+
+#pragma warning disable IDE0251 // メンバーを 'readonly' にする
+        [StructLayout(LayoutKind.Auto)]
+        public struct Node : ISetNode<Range, int>, ISetIntervalRangeNode<T>
         {
-            private readonly Tv v;
-            public C(Tv val) { v = val; }
-            [凾(256)]
-            public int CompareTo(Node other)
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            public int Parent { get; set; }
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            public int Left { get; set; }
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            public int Right { get; set; }
+            public bool IsBlack { get; set; }
+            public int Size { get; set; }
+            [SourceExpander.NotEmbeddingSource]
+            readonly object DebugParent => SetNodeConv.Load<Node>(Parent);
+            [SourceExpander.NotEmbeddingSource]
+            readonly object DebugLeft => SetNodeConv.Load<Node>(Left);
+            [SourceExpander.NotEmbeddingSource]
+            readonly object DebugRight => SetNodeConv.Load<Node>(Right);
+
+            public T From { get; set; }
+            public T To { get; set; }
+            Range ISetNode<Range, int>.Value => new(From, To);
+
+            internal Node(Range item, bool isBlack)
             {
-                int forder = v.CompareTo(other.From);
-                if (forder < 0) return -1;
-                int torder = v.CompareTo(other.ToExclusive);
-                if (torder < 0)
-                    return 0;
-                return 1;
+                Parent = Left = Right = -1;
+                Size = 1;
+                IsBlack = isBlack;
+                From = item.From;
+                To = item.ToExclusive;
             }
+
+            [SourceExpander.NotEmbeddingSource]
+            public override string ToString() => $"Value = {((ISetNode<Range, int>)this).Value} Size = {Size}";
         }
 
-        #region Search
-        [凾(256)] public new Node FindNode<Tv>(Tv item) where Tv : IComparable<T> => base.FindNode(new C<Tv>(item));
-        [凾(256)] public bool Contains<Tv>(Tv item) where Tv : IComparable<T> => FindNode(item) != null;
-        /// <summary>
-        /// <paramref name="item"/> 以上の最初のノードを返します。
-        /// </summary>
-        [凾(256)] public Node FindNodeLowerBound<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new SetLower()).node;
-        /// <summary>
-        /// <paramref name="item"/> 以上の最初のインデックスを返します。なければ Count を返します。
-        /// </summary>
-        [凾(256)] public int LowerBoundIndex<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new SetLower()).index;
-        /// <summary>
-        /// <paramref name="item"/> 以上の最初の要素を返します。
-        /// </summary>
-        [凾(256)] public (T From, T ToExclusive) LowerBoundItem<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new SetLower()).node.Pair;
-        /// <summary>
-        /// <paramref name="item"/> を超える最初のノードを返します。
-        /// </summary>
-        [凾(256)] public Node FindNodeUpperBound<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new SetUpper()).node;
-        /// <summary>
-        /// <paramref name="item"/> を超える最初のインデックスを返します。なければ Count を返します。
-        /// </summary>
-        [凾(256)] public int UpperBoundIndex<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new SetUpper()).index;
-        /// <summary>
-        /// <paramref name="item"/> を超える最初の要素を返します。
-        /// </summary>
-        [凾(256)] public (T From, T ToExclusive) UpperBoundItem<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new SetUpper()).node.Pair;
+#pragma warning restore IDE0251 // メンバーを 'readonly' にする
 
-        /// <summary>
-        /// <paramref name="item"/> 以下の最後のノードを返します。
-        /// </summary>
-        [凾(256)] public Node FindNodeReverseLowerBound<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new SetLowerRev()).node;
-        /// <summary>
-        /// <paramref name="item"/> 以下の最後のインデックスを返します。なければ -1 を返します。
-        /// </summary>
-        [凾(256)] public int ReverseLowerBoundIndex<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new SetLowerRev()).index;
-        /// <summary>
-        /// <paramref name="item"/> 以下の最後の要素を返します。
-        /// </summary>
-        [凾(256)] public (T From, T ToExclusive) ReverseLowerBoundItem<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new SetLowerRev()).node.Pair;
+        public struct Op : ISetIntervalOp<T, Range, Node, Op>
+        {
+            [凾(256)]
+            public static Node CreateNode(Range v, bool isBlack) => new(v, isBlack);
 
-        /// <summary>
-        /// <paramref name="item"/> 未満の最後のノードを返します。
-        /// </summary>
-        [凾(256)] public Node FindNodeReverseUpperBound<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new SetUpperRev()).node;
-        /// <summary>
-        /// <paramref name="item"/> 未満の最後のインデックスを返します。なければ -1 を返します。
-        /// </summary>
-        [凾(256)] public int ReverseUpperBoundIndex<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new SetUpperRev()).index;
-        /// <summary>
-        /// <paramref name="item"/> 未満の最後の要素を返します。
-        /// </summary>
-        [凾(256)] public (T From, T ToExclusive) ReverseUpperBoundItem<Tv>(Tv item) where Tv : IComparable<T> => BinarySearch(new C<Tv>(item), new SetUpperRev()).node.Pair;
-        #endregion Search
-
-        #region Search<T>
-        [凾(256)] public Node FindNode(T item) => base.FindNode(new C<T>(item));
-        [凾(256)] public bool Contains(T item) => FindNode(item) != null;
-        /// <summary>
-        /// <paramref name="item"/> 以上の最初のノードを返します。
-        /// </summary>
-        [凾(256)] public Node FindNodeLowerBound(T item) => BinarySearch(new C<T>(item), new SetLower()).node;
-        /// <summary>
-        /// <paramref name="item"/> 以上の最初のインデックスを返します。なければ Count を返します。
-        /// </summary>
-        [凾(256)] public int LowerBoundIndex(T item) => BinarySearch(new C<T>(item), new SetLower()).index;
-        /// <summary>
-        /// <paramref name="item"/> 以上の最初の要素を返します。
-        /// </summary>
-        [凾(256)] public (T From, T ToExclusive) LowerBoundItem(T item) => BinarySearch(new C<T>(item), new SetLower()).node.Pair;
-        /// <summary>
-        /// <paramref name="item"/> を超える最初のノードを返します。
-        /// </summary>
-        [凾(256)] public Node FindNodeUpperBound(T item) => BinarySearch(new C<T>(item), new SetUpper()).node;
-        /// <summary>
-        /// <paramref name="item"/> を超える最初のインデックスを返します。なければ Count を返します。
-        /// </summary>
-        [凾(256)] public int UpperBoundIndex(T item) => BinarySearch(new C<T>(item), new SetUpper()).index;
-        /// <summary>
-        /// <paramref name="item"/> を超える最初の要素を返します。
-        /// </summary>
-        [凾(256)] public (T From, T ToExclusive) UpperBoundItem(T item) => BinarySearch(new C<T>(item), new SetUpper()).node.Pair;
-
-        /// <summary>
-        /// <paramref name="item"/> 以下の最後のノードを返します。
-        /// </summary>
-        [凾(256)] public Node FindNodeReverseLowerBound(T item) => BinarySearch(new C<T>(item), new SetLowerRev()).node;
-        /// <summary>
-        /// <paramref name="item"/> 以下の最後のインデックスを返します。なければ -1 を返します。
-        /// </summary>
-        [凾(256)] public int ReverseLowerBoundIndex(T item) => BinarySearch(new C<T>(item), new SetLowerRev()).index;
-        /// <summary>
-        /// <paramref name="item"/> 以下の最後の要素を返します。
-        /// </summary>
-        [凾(256)] public (T From, T ToExclusive) ReverseLowerBoundItem(T item) => BinarySearch(new C<T>(item), new SetLowerRev()).node.Pair;
-
-        /// <summary>
-        /// <paramref name="item"/> 未満の最後のノードを返します。
-        /// </summary>
-        [凾(256)] public Node FindNodeReverseUpperBound(T item) => BinarySearch(new C<T>(item), new SetUpperRev()).node;
-        /// <summary>
-        /// <paramref name="item"/> 未満の最後のインデックスを返します。なければ -1 を返します。
-        /// </summary>
-        [凾(256)] public int ReverseUpperBoundIndex(T item) => BinarySearch(new C<T>(item), new SetUpperRev()).index;
-        /// <summary>
-        /// <paramref name="item"/> 未満の最後の要素を返します。
-        /// </summary>
-        [凾(256)] public (T From, T ToExclusive) ReverseUpperBoundItem(T item) => BinarySearch(new C<T>(item), new SetUpperRev()).node.Pair;
-        #endregion Search<T>
+            [凾(256)]
+            public static Range CreateRange(T from, T to) => new(from, to);
+        }
 
         [SourceExpander.NotEmbeddingSource]
         private class DebugView
@@ -438,13 +105,536 @@ namespace Kzrnm.Competitive
                     this.ToExclusive = ToExclusive;
                 }
             }
-            private readonly IEnumerable<(T From, T ToExclusive)> collection;
-            public DebugView(IEnumerable<(T From, T ToExclusive)> collection)
+            private readonly IEnumerable<Range> collection;
+            public DebugView(IEnumerable<Range> collection)
             {
                 this.collection = collection ?? throw new ArgumentNullException(nameof(collection));
             }
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
             public DebugItem[] Items => collection.Select(t => new DebugItem(t.From, t.ToExclusive)).ToArray();
+        }
+    }
+
+    /// <summary>
+    /// 閉区間をSetで保持する
+    /// </summary>
+    [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
+    [DebuggerTypeProxy(typeof(SetIntervalClosed<>.DebugView))]
+    public class SetIntervalClosed<T> : SetInterval<T, SetIntervalClosed<T>.Range, SetIntervalClosed<T>.Node, SetIntervalClosed<T>.Op>
+            where T : IComparable<T>, IMinMaxValue<T>, IIncrementOperators<T>, IDecrementOperators<T>
+    {
+        public SetIntervalClosed() : base() { }
+        public SetIntervalClosed(IEnumerable<(T, T)> vals) : base(vals) { }
+        public readonly record struct Range(T From, T ToInclusive) : ISetIntervalRange<T>, IComparable<Range>, IComparable<T>
+        {
+            T ISetIntervalRange<T>.To => ToInclusive;
+
+            [凾(256)]
+            public int CompareTo(Range other) => From.CompareTo(other.From) switch { 0 => ToInclusive.CompareTo(other.ToInclusive), var c => c };
+
+            [凾(256)]
+            public int CompareTo(T other)
+            {
+                int c = From.CompareTo(other);
+                if (c > 0) return c;
+                c = ToInclusive.CompareTo(other);
+                if (c < 0) return c; // inclusive
+                return 0;
+            }
+            public static implicit operator Range((T F, T T) t) => new(t.F, t.T);
+            public static implicit operator (T, T)(Range r) => (r.From, r.ToInclusive);
+            [SourceExpander.NotEmbeddingSource]
+            public override string ToString() => $"[{From}, {ToInclusive}]";
+        }
+
+#pragma warning disable IDE0251 // メンバーを 'readonly' にする
+        [StructLayout(LayoutKind.Auto)]
+        public struct Node : ISetNode<Range, int>, ISetIntervalRangeNode<T>
+        {
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            public int Parent { get; set; }
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            public int Left { get; set; }
+            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+            public int Right { get; set; }
+            public bool IsBlack { get; set; }
+            public int Size { get; set; }
+            [SourceExpander.NotEmbeddingSource]
+            readonly object DebugParent => SetNodeConv.Load<Node>(Parent);
+            [SourceExpander.NotEmbeddingSource]
+            readonly object DebugLeft => SetNodeConv.Load<Node>(Left);
+            [SourceExpander.NotEmbeddingSource]
+            readonly object DebugRight => SetNodeConv.Load<Node>(Right);
+
+            public T From { get; set; }
+            public T To { get; set; }
+            Range ISetNode<Range, int>.Value => new(From, To);
+
+            internal Node(Range item, bool isBlack)
+            {
+                Parent = Left = Right = -1;
+                Size = 1;
+                IsBlack = isBlack;
+                From = item.From;
+                To = item.ToInclusive;
+            }
+
+            [SourceExpander.NotEmbeddingSource]
+            public override string ToString() => $"Value = {((ISetNode<Range, int>)this).Value} Size = {Size}";
+        }
+
+#pragma warning restore IDE0251 // メンバーを 'readonly' にする
+
+        public struct Op : ISetIntervalOp<T, Range, Node, Op>
+        {
+            [凾(256)]
+            public static Node CreateNode(Range v, bool isBlack) => new(v, isBlack);
+
+            [凾(256)]
+            public static Range CreateRange(T from, T to) => new(from, to);
+
+            [凾(256)]
+            public static SetResult<Range, int, Node> Remove(ref int root, Range item, DefaultComparerStruct<Range> comparer)
+                => Rm<Op>(ref root, item);
+            [凾(256)]
+            static SetResult<Range, int, Node> Rm<O>(ref int root, Range item) where O : ISetIntervalOp<T, Range, Node, Op>
+            {
+                var f = item.From;
+                var t = item.ToInclusive;
+                if (!EqualityComparer<T>.Default.Equals(f, T.MinValue)) --f;
+                if (!EqualityComparer<T>.Default.Equals(t, T.MaxValue)) ++t;
+                return O.Remove(ref root, f, t);
+            }
+        }
+
+        [SourceExpander.NotEmbeddingSource]
+        private class DebugView
+        {
+            [DebuggerDisplay("[{" + nameof(From) + "}, {" + nameof(ToInclusive) + "}]")]
+            public class DebugItem
+            {
+                T From;
+                T ToInclusive;
+                public DebugItem(T From, T ToInclusive)
+                {
+                    this.From = From;
+                    this.ToInclusive = ToInclusive;
+                }
+            }
+            private readonly IEnumerable<Range> collection;
+            public DebugView(IEnumerable<Range> collection)
+            {
+                this.collection = collection ?? throw new ArgumentNullException(nameof(collection));
+            }
+            [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+            public DebugItem[] Items => collection.Select(t => new DebugItem(t.From, t.ToInclusive)).ToArray();
+        }
+    }
+
+    namespace Internal
+    {
+        public class SetInterval<T, Tr, Nd, N> : SetBase<Tr, ISetIntervalOp<T, Tr, Nd, N>.C, DefaultComparerStruct<Tr>, Nd, N>
+            where T : IComparable<T>, IMinMaxValue<T>
+            where Tr : IComparable<Tr>, IComparable<T>, ISetIntervalRange<T>
+            where Nd : struct, ISetNode<Tr, int>, ISetIntervalRangeNode<T>
+            where N : ISetIntervalOp<T, Tr, Nd, N>
+        {
+            public SetInterval() : base(false, default) { }
+            public SetInterval(IEnumerable<(T, T)> vals) : base(false, default, vals.Select(t => N.CreateRange(t.Item1, t.Item2))) { }
+
+            public bool Add(T from, T to) => Add(N.CreateRange(from, to));
+            public bool Remove(T from, T to) => Remove(N.CreateRange(from, to));
+            public new bool Contains(Tr item) => Contains(item.From, item.To);
+            public bool Contains(T from, T to)
+            {
+                if (FindNode(from) is not { } b) return false;
+                Debug.Assert(b.NodeRef >= 0);
+                Debug.Assert(b.Node.Value.CompareTo(from) == 0);
+                return from.CompareTo(b.Node.From) >= 0 && to.CompareTo(b.Node.To) <= 0;
+            }
+
+            /// <summary>
+            /// [<paramref name="from"/>, <paramref name="to"/>)の範囲を列挙する。はみ出た範囲は切り捨てる。
+            /// </summary>
+            public IEnumerable<Tr> RangeTruncate(T from, T to)
+            {
+                var n = FindNodeLowerBound(from);
+                if (n.NodeRef >= 0)
+                {
+                    var r = N.CreateRange(from, to);
+                    foreach (var nnt in EnumerateNode(n.NodeRef))
+                    {
+                        var nt = nnt.Node.Value;
+                        int rcf = r.CompareTo(nt.From);
+
+                        // ノードが range を過ぎたら終了
+                        // |--| range
+                        //        ~~~~  node
+                        if (rcf < 0)
+                            yield break;
+
+                        int rct = r.CompareTo(nt.To);
+                        if (rcf == 0)
+                        {
+                            // ノードが range を過ぎかけ
+                            // |----| range
+                            //     ~~~~  node
+                            // 閉区間ならノードがギリギリ重なる場合があるがノードの途中までのパターンと同じ
+                            // |--| range
+                            //    ~~~~  node
+                            if (rct < 0)
+                                yield return N.CreateRange(nt.From, to);
+
+                            // ノードが range に覆われている
+                            // |-----------| range
+                            //     ~~~~  node
+                            else
+                                yield return nt;
+                        }
+                        else
+                        {
+                            // ノードが range を覆っている
+                            //    |-| range
+                            // ~~~~~~~~~~  node
+                            if (rct < 0)
+                                yield return r;
+
+
+                            // ノードが range より小さい場合(FindNodeLowerBoundのためありえない)
+                            //       |--| range
+                            // ~~~~  node
+                            // if (rct > 0) {}
+
+
+                            // ノードが range に重なる
+                            //   |----| range
+                            // ~~~~  node
+                            // 閉区間ならノードがギリギリ重なる場合があるがノードの途中までのパターンと同じ
+                            //    |--| range
+                            // ~~~~  node
+                            else
+                                yield return N.CreateRange(from, nt.To);
+                        }
+                    }
+                }
+            }
+
+            /// <summary>
+            /// [<paramref name="from"/>, <paramref name="to"/>)の範囲を列挙する。はみ出た範囲も含める。
+            /// </summary>
+            public IEnumerable<Tr> RangeAll(T from, T to)
+            {
+                var n = FindNodeLowerBound(from);
+                if (n.NodeRef >= 0)
+                {
+                    var r = N.CreateRange(from, to);
+                    foreach (var nnt in EnumerateNode(n.NodeRef))
+                    {
+                        var nt = nnt.Node.Value;
+                        int rcf = r.CompareTo(nt.From);
+
+                        // ノードが range を過ぎたら終了
+                        // |--| range
+                        //        ~~~~  node
+                        if (rcf < 0)
+                            yield break;
+                        yield return nt;
+                    }
+                }
+            }
+
+            /// <summary>
+            /// <paramref name="other"/> との和集合に更新します。
+            /// </summary>
+            public void UnionWith(IEnumerable<Tr> other)
+            {
+                foreach (var nt in other)
+                    Add(nt.From, nt.To);
+            }
+
+            /// <summary>
+            /// <paramref name="other"/> との差集合に更新します。
+            /// </summary>
+            public void ExceptWith(IEnumerable<Tr> other)
+            {
+                foreach (var nt in other)
+                    Remove(nt.From, nt.To);
+            }
+
+            /// <summary>
+            /// <paramref name="other"/> との積集合に更新します。
+            /// </summary>
+            public void IntersectWith(IEnumerable<Tr> other)
+            {
+                var a = other.ToArray().AsSpan();
+                a.Sort();
+
+                var ls = new List<Tr>();
+
+                while (Count > 0)
+                {
+                    var r = RemoveAt(0).Node;
+                    while (a.Length > 0)
+                    {
+                        int c1 = a[0].CompareTo(r.From);
+                        if (c1 < 0) { }
+                        else if (c1 == 0)
+                        {
+                            int c2 = a[0].CompareTo(r.To);
+                            if (c2 == 0)
+                            {
+                                ls.Add(r.Value);
+                                break;
+                            }
+                            Debug.Assert(c2 < 0);
+                            ls.Add(N.CreateRange(r.From, a[0].To));
+                        }
+                        else
+                        {
+                            int c2 = a[0].CompareTo(r.To);
+                            if (c2 > 0) break;
+                            if (c2 == 0)
+                            {
+                                ls.Add(N.CreateRange(a[0].From, r.To));
+                                break;
+                            }
+                            ls.Add(a[0]);
+                        }
+                        a = a[1..];
+                    }
+                }
+
+                root = N.ConstructRootFromSortedArray(CollectionsMarshal.AsSpan(ls), -1);
+            }
+
+            #region Search
+            /// <summary>
+            /// <paramref name="item"/> が含まれていれば返します。
+            /// </summary>
+            [凾(256)]
+            public SetFindResult<Tr, int, Nd>? FindNode(T item)
+                => FindNode(N.GetCompareKey(item));
+            [凾(256)] public bool Contains(T item) => Contains(item, item);
+            /// <summary>
+            /// <paramref name="item"/> 以上の最初のノードを返します。
+            /// </summary>
+            [凾(256)] public SetFindResult<Tr, int, Nd> FindNodeLowerBound(T item) => BinarySearch(N.GetCompareKey(item), new SetLower());
+            /// <summary>
+            /// <paramref name="item"/> 以上の最初のインデックスを返します。なければ Count を返します。
+            /// </summary>
+            [凾(256)] public int LowerBoundIndex(T item) => BinarySearch(N.GetCompareKey(item), new SetLower()).Index;
+            /// <summary>
+            /// <paramref name="item"/> を超える最初のノードを返します。
+            /// </summary>
+            [凾(256)] public SetFindResult<Tr, int, Nd> FindNodeUpperBound(T item) => BinarySearch(N.GetCompareKey(item), new SetUpper());
+            /// <summary>
+            /// <paramref name="item"/> を超える最初のインデックスを返します。なければ Count を返します。
+            /// </summary>
+            [凾(256)] public int UpperBoundIndex(T item) => BinarySearch(N.GetCompareKey(item), new SetUpper()).Index;
+
+            /// <summary>
+            /// <paramref name="item"/> 以下の最後のノードを返します。
+            /// </summary>
+            [凾(256)] public SetFindResult<Tr, int, Nd> FindNodeReverseLowerBound(T item) => BinarySearch(N.GetCompareKey(item), new SetLowerRev());
+            /// <summary>
+            /// <paramref name="item"/> 以下の最後のインデックスを返します。なければ -1 を返します。
+            /// </summary>
+            [凾(256)] public int ReverseLowerBoundIndex(T item) => BinarySearch(N.GetCompareKey(item), new SetLowerRev()).Index;
+
+            /// <summary>
+            /// <paramref name="item"/> 未満の最後のノードを返します。
+            /// </summary>
+            [凾(256)] public SetFindResult<Tr, int, Nd> FindNodeReverseUpperBound(T item) => BinarySearch(N.GetCompareKey(item), new SetUpperRev());
+            /// <summary>
+            /// <paramref name="item"/> 未満の最後のインデックスを返します。なければ -1 を返します。
+            /// </summary>
+            [凾(256)] public int ReverseUpperBoundIndex(T item) => BinarySearch(N.GetCompareKey(item), new SetUpperRev()).Index;
+            #endregion Search
+        }
+
+        public interface ISetIntervalRange<T>
+        {
+            T From { get; }
+            T To { get; }
+        }
+        public interface ISetIntervalRangeNode<T> : ISetIntervalRange<T>
+        {
+            new T From { get; set; }
+            new T To { get; set; }
+        }
+
+        [IsOperator]
+        public interface ISetIntervalOp<T, Tr, Nd, N> : ISetPOp<Tr, ISetIntervalOp<T, Tr, Nd, N>.C, DefaultComparerStruct<Tr>, Nd, N>
+            where T : IComparable<T>
+            where Tr : IComparable<Tr>, IComparable<T>, ISetIntervalRange<T>
+            where Nd : struct, ISetNode<Tr, int>, ISetIntervalRangeNode<T>
+            where N : ISetIntervalOp<T, Tr, Nd, N>
+        {
+            static abstract Tr CreateRange(T from, T to);
+
+            [凾(256)]
+            static virtual C GetCompareKey(T v) => new(v);
+
+            [凾(256)]
+            static C ISetOp<Tr, C, DefaultComparerStruct<Tr>, Nd, int, N, PoolStructRefOp<Nd>>.GetCompareKey(DefaultComparerStruct<Tr> comparer, Tr item)
+                => new(item.From);
+
+
+            static ReadOnlySpan<Tr> ISetOp<Tr, C, DefaultComparerStruct<Tr>, Nd, int, N, PoolStructRefOp<Nd>>.InitArray(IEnumerable<Tr> col, DefaultComparerStruct<Tr> op, bool multi)
+            {
+                Debug.Assert(!multi);
+
+                var list = new List<Tr>(col.Where(t => t.From.CompareTo(t.To) <= 0));
+                if (list.Count == 0) return [];
+
+                list.Sort();
+                var resList = new List<Tr>(list.Count)
+                {
+                    list[0]
+                };
+                for (int i = 1; i < list.Count; i++)
+                {
+                    var pt = resList[^1].To;
+                    var ll = list[i];
+                    var f = ll.From;
+                    var t = ll.To;
+                    if (pt.CompareTo(f) >= 0)
+                    {
+                        if (pt.CompareTo(t) < 0)
+                            resList[^1] = N.CreateRange(resList[^1].From, t);
+                    }
+                    else
+                        resList.Add(N.CreateRange(f, t));
+                }
+
+                return resList.ToArray();
+            }
+
+            /// <summary>
+            /// 閉区間として <typeparamref name="T"/> と比較。
+            /// </summary>
+            public readonly record struct L(T v) : IComparable<Nd>
+            {
+                [凾(256)]
+                public int CompareTo(Nd other)
+                {
+                    int c = v.CompareTo(other.Value.From);
+                    if (c <= 0) return c;
+                    c = v.CompareTo(other.Value.To);
+                    if (c <= 0) return 0;
+                    return c;
+                }
+            }
+            /// <summary>
+            /// <typeparamref name="Tr"/> の定義通りの <typeparamref name="T"/> と比較。
+            /// </summary>
+            public readonly record struct C(T v) : IComparable<Nd>
+            {
+                [凾(256)] public int CompareTo(Nd other) => -other.Value.CompareTo(v);
+            }
+            [凾(256)]
+            static int ISetOp<Tr, C, DefaultComparerStruct<Tr>, Nd, int, N, PoolStructRefOp<Nd>>.Add(ref int root, Tr item, DefaultComparerStruct<Tr> comparer, bool isMulti)
+            {
+                T f = item.From;
+                T t = item.To;
+
+                var fr = N.BinarySearch(root, new L(f), new SetLower());
+                var tr = N.BinarySearch(root, new L(t), new SetLowerRev());
+
+                if (fr.Index <= tr.Index)
+                {
+                    // 区間内に既存ノードがある
+
+                    // 最初のノードを除いて削除する
+                    for (int i = tr.Index; i > fr.Index; i--)
+                        N.RemoveAt(ref root, i);
+
+                    if (f.CompareTo(fr.Node.Value.From) > 0)
+                        f = fr.Node.Value.From;
+                    if (t.CompareTo(tr.Node.Value.To) < 0)
+                        t = tr.Node.Value.To;
+                    ref Nd d = ref StructPool<Nd>.Default.Get(fr.NodeRef);
+                    d.From = f;
+                    d.To = t;
+                    return fr.NodeRef;
+                }
+
+                // 新規ノード
+                return N.Add(ref root, N.GetCompareKey(comparer, item), item, comparer, isMulti);
+            }
+
+            [凾(256)]
+            static SetResult<Tr, int, Nd> ISetOp<Tr, C, DefaultComparerStruct<Tr>, Nd, int, N, PoolStructRefOp<Nd>>.Remove(ref int root, Tr item, DefaultComparerStruct<Tr> comparer)
+                => N.Remove(ref root, item.From, item.To);
+            [凾(256)]
+            static virtual SetResult<Tr, int, Nd> Remove(ref int root, T from, T to)
+            {
+                var fr = N.BinarySearch(root, new L(from), new SetLower());
+                var tr = N.BinarySearch(root, new L(to), new SetLowerRev());
+
+                SetResult<Tr, int, Nd> nullResult = new(-1, default);
+                bool ne;
+
+                if (fr.Index <= tr.Index)
+                {
+                    // 区間内に既存ノードがある
+
+                    // 区間内にノードが1つだけ
+                    if (fr.Index == tr.Index)
+                    {
+                        ref Nd d = ref StructPool<Nd>.Default.Get(fr.NodeRef);
+                        switch (from.CompareTo(d.From), to.CompareTo(d.To))
+                        {
+                            case ( <= 0, >= 0):
+                                return N.RemoveAt(ref root, fr.Index);
+                            case ( <= 0, _):
+                                ne = !EqualityComparer<T>.Default.Equals(d.From, to);
+                                d.From = to;
+                                return ne ? new(fr.NodeRef, d) : nullResult;
+                            case (_, >= 0):
+                                ne = !EqualityComparer<T>.Default.Equals(d.To, from);
+                                d.To = from;
+                                return ne ? new(fr.NodeRef, d) : nullResult;
+                        }
+                        Debug.Assert(from.CompareTo(d.From) > 0);
+                        Debug.Assert(to.CompareTo(d.To) < 0);
+                        var add = N.CreateRange(to, d.To);
+                        d.To = from;
+                        N.Add(ref root, N.GetCompareKey(new(), add), add, new(), false);
+                    }
+
+                    var rt = nullResult;
+                    if (tr.Node.Value.CompareTo(to) == 0)
+                    {
+                        ref Nd d = ref StructPool<Nd>.Default.Get(tr.NodeRef);
+                        ne = !EqualityComparer<T>.Default.Equals(d.From, to);
+                        d.From = to;
+                        if (ne)
+                            rt = new(tr.NodeRef, d);
+                    }
+                    else
+                        rt = N.RemoveAt(ref root, tr.Index);
+
+                    for (int i = tr.Index - 1; i > fr.Index; i--)
+                        rt = N.RemoveAt(ref root, i);
+
+                    if (from.CompareTo(fr.Node.Value.From) > 0)
+                    {
+                        ref Nd d = ref StructPool<Nd>.Default.Get(fr.NodeRef);
+                        ne = !EqualityComparer<T>.Default.Equals(d.To, from);
+                        d.To = from;
+                        if (ne)
+                            rt = new(fr.NodeRef, d);
+                    }
+                    else
+                        rt = N.RemoveAt(ref root, fr.Index);
+
+                    return rt;
+                }
+
+                // 既存ノードなし
+                return nullResult;
+            }
         }
     }
 }

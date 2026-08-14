@@ -14,14 +14,15 @@ internal class SetTest2 : BaseSolver
         {
             int t = cr;
             int x = cr;
+            int v;
             switch (t)
             {
                 case 0: set.Add(x); break;
                 case 1: set.Remove(x); break;
-                case 2: cw.WriteLine(x <= set.Count ? set.FindByIndex(x - 1).Value : -1); break;
+                case 2: cw.WriteLine(x <= set.Count ? set.FindByIndex(x - 1).Node.Value : -1); break;
                 case 3: cw.WriteLine(set.UpperBoundIndex(x)); break;
-                case 4: cw.WriteLine(set.FindNodeReverseLowerBound(x)?.Value ?? -1); break;
-                case 5: cw.WriteLine(set.FindNodeLowerBound(x)?.Value ?? -1); break;
+                case 4: cw.WriteLine(set.TryGetReverseLowerBound(x, out v) ? v : -1); break;
+                case 5: cw.WriteLine(set.TryGetLowerBound(x, out v) ? v : -1); break;
             }
         }
         return null;

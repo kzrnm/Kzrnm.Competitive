@@ -21,8 +21,8 @@ internal class SetTest : BaseSolver
                 0 => set.Add(k),
                 1 => set.Remove(k),
                 2 => cw.WriteLine(set.FindNode(k) is null ? 0 : 1),
-                3 => cw.WriteLine(set.FindNodeLowerBound(k)?.Value ?? -1),
-                _ => (object)cw.WriteLine(set.FindNodeReverseLowerBound(k)?.Value ?? -1),
+                3 => cw.WriteLine(set.TryGetLowerBound(k, out var v) ? v : -1),
+                _ => (object)cw.WriteLine(set.TryGetReverseLowerBound(k, out var v) ? v : -1),
             };
         }
         return null;

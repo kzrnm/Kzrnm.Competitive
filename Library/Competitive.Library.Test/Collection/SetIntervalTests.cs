@@ -1,8 +1,9 @@
 namespace Kzrnm.Competitive.Testing.Collection;
 
+[NotInParallel(nameof(Set<>))]
 public class SetIntervalTests
 {
-    public static IEnumerable<((int, int)[], (int, int)[])> Add_Data =>
+    public static IEnumerable<((int, int)[], SetIntervalInt.Range[])> Add_Data =>
     [
         ([], []),
         (
@@ -242,14 +243,15 @@ public class SetIntervalTests
     ];
     [Test]
     [MethodDataSource(nameof(Add_Data))]
-    public async Task Contructor((int, int)[] arg, (int, int)[] result)
+    public async Task Contructor((int, int)[] arg, SetIntervalInt.Range[] result)
     {
-        await new SetIntervalInt(arg).Should().BeStrictlyEquivalentTo(result);
+        var set = new SetIntervalInt(arg);
+        await set.Should().BeStrictlyEquivalentTo(result);
     }
 
     [Test]
     [MethodDataSource(nameof(Add_Data))]
-    public async Task AddTheory((int, int)[] arg, (int, int)[] result)
+    public async Task AddTheory((int, int)[] arg, SetIntervalInt.Range[] result)
     {
         var set = new SetIntervalInt();
         foreach (var (f, t) in arg)
@@ -260,64 +262,64 @@ public class SetIntervalTests
     public async Task Add()
     {
         var set = new SetIntervalInt();
-        await set.Should().BeStrictlyEquivalentTo(new (int, int)[0]);
+        await set.Should().BeStrictlyEquivalentTo(new SetIntervalInt.Range[0]);
 
         set.Add(50, 60);
-        await set.Should().BeStrictlyEquivalentTo([
+        await set.Should().BeStrictlyEquivalentTo((SetIntervalInt.Range[])[
             (50, 60),
         ]);
 
         set.Add(10, 20);
-        await set.Should().BeStrictlyEquivalentTo([
+        await set.Should().BeStrictlyEquivalentTo((SetIntervalInt.Range[])[
             (10, 20),
             (50, 60),
         ]);
 
         set.Add(30, 40);
-        await set.Should().BeStrictlyEquivalentTo([
+        await set.Should().BeStrictlyEquivalentTo((SetIntervalInt.Range[])[
             (10, 20),
             (30, 40),
             (50, 60),
         ]);
 
         set.Add(15, 25);
-        await set.Should().BeStrictlyEquivalentTo([
+        await set.Should().BeStrictlyEquivalentTo((SetIntervalInt.Range[])[
             (10, 25),
             (30, 40),
             (50, 60),
         ]);
 
         set.Add(25, 35);
-        await set.Should().BeStrictlyEquivalentTo([
+        await set.Should().BeStrictlyEquivalentTo((SetIntervalInt.Range[])[
             (10, 40),
             (50, 60),
         ]);
 
         set.Add(10, 41);
-        await set.Should().BeStrictlyEquivalentTo([
+        await set.Should().BeStrictlyEquivalentTo((SetIntervalInt.Range[])[
             (10, 41),
             (50, 60),
         ]);
 
         set.Add(49, 60);
-        await set.Should().BeStrictlyEquivalentTo([
+        await set.Should().BeStrictlyEquivalentTo((SetIntervalInt.Range[])[
             (10, 41),
             (49, 60),
         ]);
 
         set.Add(9, 61);
-        await set.Should().BeStrictlyEquivalentTo([
+        await set.Should().BeStrictlyEquivalentTo((SetIntervalInt.Range[])[
             (9, 61),
         ]);
 
         set.Add(70, 80);
-        await set.Should().BeStrictlyEquivalentTo([
+        await set.Should().BeStrictlyEquivalentTo((SetIntervalInt.Range[])[
             (9, 61),
             (70,80),
         ]);
 
         set.Add(5, 70);
-        await set.Should().BeStrictlyEquivalentTo([
+        await set.Should().BeStrictlyEquivalentTo((SetIntervalInt.Range[])[
             (5,80),
         ]);
     }
@@ -326,7 +328,7 @@ public class SetIntervalTests
     public async Task MinMax()
     {
         var set = new SetIntervalInt();
-        await set.Should().BeStrictlyEquivalentTo(new (int, int)[0]);
+        await set.Should().BeStrictlyEquivalentTo(new SetIntervalInt.Range[0]);
         await set.Min.Should().BeEqualTo(default);
         await set.Max.Should().BeEqualTo(default);
         set.Add(50, 60);
@@ -356,7 +358,7 @@ public class SetIntervalTests
     }
 
 
-    public static IEnumerable<(int, int, bool, (int, int)[])> Remove_Data =>
+    public static IEnumerable<(int, int, bool, SetIntervalInt.Range[])> Remove_Data =>
     [
         (1,10,false, [(10, 20),(25, 30),(35, 40),(50, 60)] ),
         (20,25,false, [(10, 20),(25, 30),(35, 40),(50, 60)] ),
@@ -373,9 +375,9 @@ public class SetIntervalTests
         (10,60,true,[]),
         (1,61,true,[]),
     ];
-    [Test, MultipleAssertions]
+    [Test]
     [MethodDataSource(nameof(Remove_Data))]
-    public async Task Remove(int from, int to, bool success, (int, int)[] result)
+    public async Task Remove(int from, int to, bool success, SetIntervalInt.Range[] result)
     {
         var set = new SetIntervalInt([
             (10, 20),
@@ -418,9 +420,9 @@ public class SetIntervalTests
         ]);
         await set.Contains(value).Should().BeEqualTo(isContains);
         if (isContains)
-            await set.FindNode(value).Should().NotBeNull();
+            await Assert.That(set.FindNode(value)).IsNotNull();
         else
-            await set.FindNode(value).Should().BeNull();
+            await Assert.That(set.FindNode(value)).IsNull();
     }
 
     [Test]
@@ -438,10 +440,10 @@ public class SetIntervalTests
             (30, 40),
             (50, 60),
         ]);
-        await ((ICollection<(int, int)>)set).Contains((from, to)).Should().BeEqualTo(isContains);
+        await ((ICollection<SetIntervalInt.Range>)set).Contains((from, to)).Should().BeEqualTo(isContains);
     }
 
-    public static IEnumerable<(int, int, (int, int)[])> RangeTruncate_Data =>
+    public static IEnumerable<(int, int, SetIntervalInt.Range[])> RangeTruncate_Data =>
     [
         ( 0, 10, [] ),
         (20, 30, [] ),
@@ -455,7 +457,7 @@ public class SetIntervalTests
     ];
     [Test]
     [MethodDataSource(nameof(RangeTruncate_Data))]
-    public async Task RangeTruncate(int from, int to, (int, int)[] expected)
+    public async Task RangeTruncate(int from, int to, SetIntervalInt.Range[] expected)
     {
         var set = new SetIntervalInt([
             (10, 20),
@@ -465,7 +467,7 @@ public class SetIntervalTests
         await set.RangeTruncate(from, to).Should().BeStrictlyEquivalentTo(expected);
     }
 
-    public static IEnumerable<(int, int, (int, int)[])> RangeAll_Data =>
+    public static IEnumerable<(int, int, SetIntervalInt.Range[])> RangeAll_Data =>
     [
         ( 0, 10, [] ),
         (20, 30, [] ),
@@ -479,7 +481,7 @@ public class SetIntervalTests
     ];
     [Test]
     [MethodDataSource(nameof(RangeAll_Data))]
-    public async Task RangeAll(int from, int to, (int, int)[] expected)
+    public async Task RangeAll(int from, int to, SetIntervalInt.Range[] expected)
     {
         var set = new SetIntervalInt([
             (10, 20),
@@ -503,7 +505,7 @@ public class SetIntervalTests
             (22, 25),
             (40, 75),
         ]);
-        await set.Should().BeStrictlyEquivalentTo([
+        await set.Should().BeStrictlyEquivalentTo((SetIntervalInt.Range[])[
             (7, 20),
             (22, 25),
             (30, 75),
@@ -528,7 +530,7 @@ public class SetIntervalTests
             (26, 44),
             (49, 105),
         ]);
-        await set.Should().BeStrictlyEquivalentTo([
+        await set.Should().BeStrictlyEquivalentTo((SetIntervalInt.Range[])[
             (12, 20),
             (105, 115),
         ]);
@@ -551,7 +553,7 @@ public class SetIntervalTests
             (26, 44),
             (49, 105),
         ]);
-        await set.Should().BeStrictlyEquivalentTo([
+        await set.Should().BeStrictlyEquivalentTo((SetIntervalInt.Range[])[
             (-10, -4),
             (10, 12),
             (30, 40),

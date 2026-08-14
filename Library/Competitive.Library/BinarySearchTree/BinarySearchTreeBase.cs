@@ -424,7 +424,7 @@ namespace Kzrnm.Competitive
             public static BbstNodeConv Load<Nd, R, N, C>(IBbstCnv<Nd, R, N, C> _, R t)
                 where Nd : IBbstNode<R>
                 where N : IBbstOp<R, N>
-                where C : IPoolRefOp<Nd, R> => new BbstNodeConv(t, C.IsNull(t) ? null : C.Load(t));
+                where C : IPoolRefOp<Nd, R> => new(t, C.IsNull(t) ? null : C.Load(t));
         }
     }
 }

@@ -113,6 +113,10 @@ namespace Kzrnm.Competitive.Internal
         /// 特に Immutable な場合は Get のつもりでもノードが生成されたりするので要注意。
         /// </remarks>
         static abstract ref T Load(in R t);
+        /// <summary>
+        /// <paramref name="t"/> を解放します。
+        /// </summary>
+        static virtual void Free(R t) { }
     }
 
     public struct PoolClassRefOp<T> : IPoolRefOp<T, T>
@@ -129,5 +133,6 @@ namespace Kzrnm.Competitive.Internal
         public static int Null => -1;
         [凾(256)] public static bool IsNull(int t) => t < 0;
         [凾(256)] public static ref T Load(in int t) => ref StructPool<T>.Default.Get(t);
+        [凾(256)] public static void Free(int t) => StructPool<T>.Default.Return(t);
     }
 }
