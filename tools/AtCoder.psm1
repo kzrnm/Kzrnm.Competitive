@@ -351,6 +351,13 @@ function ParseAtCoder {
         $StaticField
     )
 
+    if ($Url -notlike '*atcoder.jp/*' -and ($Url -match '([^/]+)_[^/_]+$')) {
+        $atcoderContestId = $Matches[1]
+        $atcoderProblemId = $Matches[0]
+        $Url = "https://atcoder.jp/contests/$atcoderContestId/tasks/$atcoderProblemId"
+        Write-Host "$atcoderProblemId → $Url"
+    }
+
     Set-Variable -Name "lastAtCoderUrl" -Value $Url -Scope Script
     $document = (Get-Parsed-AtCoder)
     Update-InOut (Get-InOut $document)

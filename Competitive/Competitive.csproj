@@ -15,11 +15,8 @@
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <AppDesignerFolder>Settings</AppDesignerFolder>
     <OutputPath>$(SolutionDir)bin\$(Configuration)</OutputPath>
+    <SourceExpanderGeneratorConfigFile>Settings/SourceExpander.Generator.Config.json</SourceExpanderGeneratorConfigFile>
   </PropertyGroup>
-
-  <ItemGroup>
-    <CompilerVisibleProperty Include="SourceExpander_Generator_IgnoreAssemblies" />
-  </ItemGroup>
 
   <PropertyGroup>
     <ExpandArgs>--writefile --toclipboard</ExpandArgs>
@@ -31,10 +28,6 @@
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Configuration)' != 'Release'">
     <Exec Command="dotnet $(TargetPath) expand $(ExpandArgs)" />
   </Target>
-
-  <ItemGroup>
-    <AdditionalFiles Include="Settings\SourceExpander.Generator.Config.json" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="TextCopy" Version="6.2.1" />
