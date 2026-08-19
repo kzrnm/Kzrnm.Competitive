@@ -18,7 +18,7 @@ public class LazySplayTreeClassTests : LazyBinarySearchTreeTestsBase<ClassNode, 
 
 [InheritsTests]
 [NotInParallel(nameof(LazySplayTreeTests))]
-public class LazySplayTreeTests : LazyBinarySearchTreeTestsBase<int, Node.Op>
+public class LazySplayTreeTests : LazyBinarySearchTreeTestsBase<int, Node.__LzySpltOp>
 {
     protected override void ClearNode() => ClearNode<Node>();
     protected override LazySplayTree<int, int, SumOp> Create() => new();

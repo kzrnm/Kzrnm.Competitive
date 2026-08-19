@@ -18,7 +18,7 @@ public class LazyRedBlackTreeClassTests : LazyBinarySearchTreeTestsBase<ClassNod
 
 [InheritsTests]
 [NotInParallel(nameof(LazyRedBlackTreeTests))]
-public class LazyRedBlackTreeTests : LazyBinarySearchTreeTestsBase<int, Node.Op>
+public class LazyRedBlackTreeTests : LazyBinarySearchTreeTestsBase<int, Node.__LzyRbtOp>
 {
     protected override void ClearNode() => ClearNode<Node>();
     protected override LazyRedBlackTree<int, int, SumOp> Create()

@@ -18,7 +18,7 @@ public class SplayTreeClassTests : BinarySearchTreeTestsBase<ClassNode, ClassNod
 
 [InheritsTests]
 [NotInParallel(nameof(SplayTreeTests))]
-public class SplayTreeTests : BinarySearchTreeTestsBase<int, Node.Op>
+public class SplayTreeTests : BinarySearchTreeTestsBase<int, Node.__SpltOp>
 {
     protected override void ClearNode() => ClearNode<Node>();
     protected override SplayTree<int, Starry> Create() => new();

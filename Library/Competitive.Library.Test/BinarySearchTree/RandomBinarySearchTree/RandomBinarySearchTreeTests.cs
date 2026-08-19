@@ -18,7 +18,7 @@ public class RandomBinarySearchTreeClassTests : BinarySearchTreeTestsBase<ClassN
 
 [InheritsTests]
 [NotInParallel(nameof(RandomBinarySearchTreeTests))]
-public class RandomBinarySearchTreeTests : BinarySearchTreeTestsBase<int, Node.Op>
+public class RandomBinarySearchTreeTests : BinarySearchTreeTestsBase<int, Node.__RbtsOp>
 {
     protected override void ClearNode() => ClearNode<Node>();
     protected override RandomBinarySearchTree<int, Starry> Create() => new();

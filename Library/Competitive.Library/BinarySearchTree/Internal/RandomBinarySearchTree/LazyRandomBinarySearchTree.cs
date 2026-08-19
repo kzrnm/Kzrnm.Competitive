@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
     /// 遅延伝播乱択平衡二分探索木
     /// </summary>
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class LazyRandomBinarySearchTree<T, F, TOp> : LazyBinarySearchTreeBase<T, F, int, LazyRbstNode<T, F, TOp>.Op>
+    public class LazyRandomBinarySearchTree<T, F, TOp> : LazyBinarySearchTreeBase<T, F, int, LazyRbstNode<T, F, TOp>.__LzyRbtsOp>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
         public LazyRandomBinarySearchTree() { }
@@ -37,8 +37,8 @@ namespace Kzrnm.Competitive.Internal.Bbst
     public struct LazyRbstNode<T, F, TOp> : IRbstNode<T, int>, ILazyBbstNode<T, F, int>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
-        public struct Op : ILazyRbstOp<T, F, TOp, LazyRbstNode<T, F, TOp>, int, Op, PoolStructRefOp<LazyRbstNode<T, F, TOp>>>
-                , IBbstStructNodeOp<T, LazyRbstNode<T, F, TOp>, Op>
+        public struct __LzyRbtsOp : ILazyRbstOp<T, F, TOp, LazyRbstNode<T, F, TOp>, int, __LzyRbtsOp, PoolStructRefOp<LazyRbstNode<T, F, TOp>>>
+                , IBbstStructNodeOp<T, LazyRbstNode<T, F, TOp>, __LzyRbtsOp>
         {
             [凾(256)] public static LazyRbstNode<T, F, TOp> CreateNode(T v) => new(v);
         }

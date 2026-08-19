@@ -20,7 +20,7 @@ public class LazyRandomBinarySearchTreeClassTests : LazyBinarySearchTreeTestsBas
 
 [InheritsTests]
 [NotInParallel(nameof(LazyRandomBinarySearchTreeTests))]
-public class LazyRandomBinarySearchTreeTests : LazyBinarySearchTreeTestsBase<int, Node.Op>
+public class LazyRandomBinarySearchTreeTests : LazyBinarySearchTreeTestsBase<int, Node.__LzyRbtsOp>
 {
     protected override void ClearNode() => ClearNode<Node>();
     protected override LazyRandomBinarySearchTree<int, int, SumOp> Create() => new();

@@ -24,7 +24,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
     /// Splay 木
     /// </summary>
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class SplayTree<T, TOp> : BinarySearchTreeBase<T, int, SplayTreeNode<T, TOp>.Op>
+    public class SplayTree<T, TOp> : BinarySearchTreeBase<T, int, SplayTreeNode<T, TOp>.__SpltOp>
         where TOp : struct, ISegtreeOperator<T>
     {
         public SplayTree() { }
@@ -38,8 +38,8 @@ namespace Kzrnm.Competitive.Internal.Bbst
     public struct SplayTreeNode<T, TOp> : ISplayTreeNode<T, int>
         where TOp : struct, ISegtreeOperator<T>
     {
-        public struct Op : ISplayTreePusher<T, SplayTreeNode<T, TOp>, int, Op, PoolStructRefOp<SplayTreeNode<T, TOp>>>
-                , IBbstStructNodeOp<T, SplayTreeNode<T, TOp>, Op>
+        public struct __SpltOp : ISplayTreePusher<T, SplayTreeNode<T, TOp>, int, __SpltOp, PoolStructRefOp<SplayTreeNode<T, TOp>>>
+                , IBbstStructNodeOp<T, SplayTreeNode<T, TOp>, __SpltOp>
         {
             [凾(256)] public static SplayTreeNode<T, TOp> CreateNode(T v) => new(v);
 

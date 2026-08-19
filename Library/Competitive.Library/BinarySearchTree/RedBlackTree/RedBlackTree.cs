@@ -25,7 +25,7 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 赤黒木
     /// </summary>
-    public class RedBlackTree<T, TOp> : BinarySearchTreeBase<T, int, RedBlackTreeNode<T, TOp>.Op>
+    public class RedBlackTree<T, TOp> : BinarySearchTreeBase<T, int, RedBlackTreeNode<T, TOp>.__RbtOp>
         where TOp : struct, ISegtreeOperator<T>
     {
         public RedBlackTree() { }
@@ -71,12 +71,12 @@ namespace Kzrnm.Competitive
             public readonly override string ToString() => ((IRbtNode<T, int>)this).ToStringImpl();
 
             [SourceExpander.NotEmbeddingSource]
-            readonly object DebugLeft => BbstNodeConv.Load(new Op(), Left);
+            readonly object DebugLeft => BbstNodeConv.Load(new __RbtOp(), Left);
             [SourceExpander.NotEmbeddingSource]
-            readonly object DebugRight => BbstNodeConv.Load(new Op(), Right);
+            readonly object DebugRight => BbstNodeConv.Load(new __RbtOp(), Right);
 
-            public struct Op : IRbtOp<T, TOp, RedBlackTreeNode<T, TOp>, int, Op, PoolStructRefOp<RedBlackTreeNode<T, TOp>>>
-                , IBbstStructNodeOp<T, RedBlackTreeNode<T, TOp>, Op>
+            public struct __RbtOp : IRbtOp<T, TOp, RedBlackTreeNode<T, TOp>, int, __RbtOp, PoolStructRefOp<RedBlackTreeNode<T, TOp>>>
+                , IBbstStructNodeOp<T, RedBlackTreeNode<T, TOp>, __RbtOp>
             {
                 [凾(256)] public static RedBlackTreeNode<T, TOp> CreateNode(T v) => new(v);
             }

@@ -22,7 +22,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
     /// <summary>
     /// 遅延伝播反転可能AVL木
     /// </summary>
-    public class LazyAvlTree<T, F, TOp> : LazyBinarySearchTreeBase<T, F, int, LazyAvlTreeNode<T, F, TOp>.Op>
+    public class LazyAvlTree<T, F, TOp> : LazyBinarySearchTreeBase<T, F, int, LazyAvlTreeNode<T, F, TOp>.__LzyAvlOp>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
         public LazyAvlTree() { }
@@ -36,8 +36,8 @@ namespace Kzrnm.Competitive.Internal.Bbst
     public struct LazyAvlTreeNode<T, F, TOp> : IAvlNode<T, int>, ILazyBbstNode<T, F, int>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
-        public struct Op : ILazyAvlOp<T, F, TOp, LazyAvlTreeNode<T, F, TOp>, int, Op, PoolStructRefOp<LazyAvlTreeNode<T, F, TOp>>>
-                , IBbstStructNodeOp<T, LazyAvlTreeNode<T, F, TOp>, Op>
+        public struct __LzyAvlOp : ILazyAvlOp<T, F, TOp, LazyAvlTreeNode<T, F, TOp>, int, __LzyAvlOp, PoolStructRefOp<LazyAvlTreeNode<T, F, TOp>>>
+                , IBbstStructNodeOp<T, LazyAvlTreeNode<T, F, TOp>, __LzyAvlOp>
         {
             [凾(256)] public static LazyAvlTreeNode<T, F, TOp> CreateNode(T v) => new(v);
         }

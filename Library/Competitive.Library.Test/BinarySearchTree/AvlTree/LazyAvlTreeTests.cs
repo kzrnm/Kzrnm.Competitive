@@ -19,7 +19,7 @@ public class LazyAvlTreeClassTests : LazyBinarySearchTreeTestsBase<ClassNode, Cl
 
 [InheritsTests]
 [NotInParallel(nameof(LazyAvlTreeTests))]
-public class LazyAvlTreeTests : LazyBinarySearchTreeTestsBase<int, Node.Op>
+public class LazyAvlTreeTests : LazyBinarySearchTreeTestsBase<int, Node.__LzyAvlOp>
 {
     protected override void ClearNode() => ClearNode<Node>();
     protected override LazyAvlTree<int, int, SumOp> Create()

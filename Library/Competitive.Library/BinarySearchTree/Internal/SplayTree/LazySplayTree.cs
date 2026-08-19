@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
     /// 遅延伝播反転可能 Splay 木
     /// </summary>
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class LazySplayTree<T, F, TOp> : LazyBinarySearchTreeBase<T, F, int, LazySplayTreeNode<T, F, TOp>.Op>
+    public class LazySplayTree<T, F, TOp> : LazyBinarySearchTreeBase<T, F, int, LazySplayTreeNode<T, F, TOp>.__LzySpltOp>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
         public LazySplayTree() { }
@@ -37,8 +37,8 @@ namespace Kzrnm.Competitive.Internal.Bbst
     public struct LazySplayTreeNode<T, F, TOp> : ISplayTreeNode<T, int>, ILazyBbstNode<T, F, int>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
-        public struct Op : ILazySplayOp<T, F, TOp, LazySplayTreeNode<T, F, TOp>, int, Op, PoolStructRefOp<LazySplayTreeNode<T, F, TOp>>>, ILazyBbstOp<T, F, int, Op>
-            , IBbstStructNodeOp<T, LazySplayTreeNode<T, F, TOp>, Op>
+        public struct __LzySpltOp : ILazySplayOp<T, F, TOp, LazySplayTreeNode<T, F, TOp>, int, __LzySpltOp, PoolStructRefOp<LazySplayTreeNode<T, F, TOp>>>, ILazyBbstOp<T, F, int, __LzySpltOp>
+            , IBbstStructNodeOp<T, LazySplayTreeNode<T, F, TOp>, __LzySpltOp>
         {
             [凾(256)] public static LazySplayTreeNode<T, F, TOp> CreateNode(T v) => new(v);
         }

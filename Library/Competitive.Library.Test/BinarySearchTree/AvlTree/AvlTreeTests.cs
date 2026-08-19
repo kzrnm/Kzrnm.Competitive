@@ -20,7 +20,7 @@ public class AvlTreeClassTests : BinarySearchTreeTestsBase<ClassNode, ClassNode.
 
 [InheritsTests]
 [NotInParallel(nameof(AvlTreeTests))]
-public class AvlTreeTests : BinarySearchTreeTestsBase<int, Node.Op>
+public class AvlTreeTests : BinarySearchTreeTestsBase<int, Node.__AvlOp>
 {
     protected override void ClearNode() => ClearNode<Node>();
     protected override AvlTree<int, Starry> Create()

@@ -5,7 +5,7 @@ namespace Kzrnm.Competitive.BinarySearchTree;
 
 using LazyRedBlackTree = LazyRedBlackTreeNode<ModInt, Mod998244353AffineTransformation, BbstBase.BbstOp>;
 
-internal class LazyRedBlackTreeTest : BbstBase<LazyRedBlackTree.Op>
+internal class LazyRedBlackTreeTest : BbstBase<LazyRedBlackTree.__LzyRbtOp>
 {
     protected override LazyRedBlackTree<ModInt, Mod998244353AffineTransformation, BbstOp> CreateTree()
         => new LazyRedBlackTree<ModInt, Mod998244353AffineTransformation, BbstOp>();

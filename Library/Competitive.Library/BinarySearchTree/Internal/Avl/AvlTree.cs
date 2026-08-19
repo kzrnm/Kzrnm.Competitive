@@ -23,7 +23,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
     /// <summary>
     /// AVL木
     /// </summary>
-    public class AvlTree<T, TOp> : BinarySearchTreeBase<T, int, AvlTreeNode<T, TOp>.Op>
+    public class AvlTree<T, TOp> : BinarySearchTreeBase<T, int, AvlTreeNode<T, TOp>.__AvlOp>
         where TOp : struct, ISegtreeOperator<T>
     {
         public AvlTree() { }
@@ -37,8 +37,8 @@ namespace Kzrnm.Competitive.Internal.Bbst
     public struct AvlTreeNode<T, TOp> : IAvlNode<T, int>
         where TOp : struct, ISegtreeOperator<T>
     {
-        public struct Op : IAvlOp<T, TOp, AvlTreeNode<T, TOp>, int, Op, PoolStructRefOp<AvlTreeNode<T, TOp>>>
-                , IBbstStructNodeOp<T, AvlTreeNode<T, TOp>, Op>
+        public struct __AvlOp : IAvlOp<T, TOp, AvlTreeNode<T, TOp>, int, __AvlOp, PoolStructRefOp<AvlTreeNode<T, TOp>>>
+                , IBbstStructNodeOp<T, AvlTreeNode<T, TOp>, __AvlOp>
         {
             [凾(256)] public static AvlTreeNode<T, TOp> CreateNode(T v) => new(v);
         }

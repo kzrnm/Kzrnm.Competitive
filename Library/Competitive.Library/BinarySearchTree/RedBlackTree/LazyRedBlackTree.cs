@@ -25,7 +25,7 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 遅延伝播反転可能赤黒木
     /// </summary>
-    public class LazyRedBlackTree<T, F, TOp> : LazyBinarySearchTreeBase<T, F, int, LazyRedBlackTreeNode<T, F, TOp>.Op>
+    public class LazyRedBlackTree<T, F, TOp> : LazyBinarySearchTreeBase<T, F, int, LazyRedBlackTreeNode<T, F, TOp>.__LzyRbtOp>
         where TOp : struct, IReversibleBinarySearchTreeOperator<T, F>
     {
         public LazyRedBlackTree() { }
@@ -78,12 +78,12 @@ namespace Kzrnm.Competitive
             public readonly override string ToString() => $"Lazy = {Lazy}{(Reversed ? "!" : "")} {((IRbtNode<T, int>)this).ToStringImpl()}";
 
             [SourceExpander.NotEmbeddingSource]
-            readonly object DebugLeft => BbstNodeConv.Load(new Op(), Left);
+            readonly object DebugLeft => BbstNodeConv.Load(new __LzyRbtOp(), Left);
             [SourceExpander.NotEmbeddingSource]
-            readonly object DebugRight => BbstNodeConv.Load(new Op(), Right);
+            readonly object DebugRight => BbstNodeConv.Load(new __LzyRbtOp(), Right);
 
-            public struct Op : ILazyRbtOp<T, F, TOp, LazyRedBlackTreeNode<T, F, TOp>, int, Op, PoolStructRefOp<LazyRedBlackTreeNode<T, F, TOp>>>
-                , IBbstStructNodeOp<T, LazyRedBlackTreeNode<T, F, TOp>, Op>
+            public struct __LzyRbtOp : ILazyRbtOp<T, F, TOp, LazyRedBlackTreeNode<T, F, TOp>, int, __LzyRbtOp, PoolStructRefOp<LazyRedBlackTreeNode<T, F, TOp>>>
+                , IBbstStructNodeOp<T, LazyRedBlackTreeNode<T, F, TOp>, __LzyRbtOp>
             {
                 [凾(256)] public static LazyRedBlackTreeNode<T, F, TOp> CreateNode(T v) => new(v);
             }

@@ -19,7 +19,7 @@ public class RedBlackTreeClassTests : BinarySearchTreeTestsBase<ClassNode, Class
 
 [InheritsTests]
 [NotInParallel(nameof(RedBlackTreeTests))]
-public class RedBlackTreeTests : BinarySearchTreeTestsBase<int, Node.Op>
+public class RedBlackTreeTests : BinarySearchTreeTestsBase<int, Node.__RbtOp>
 {
     protected override void ClearNode() => ClearNode<Node>();
     protected override RedBlackTree<int, Starry> Create()

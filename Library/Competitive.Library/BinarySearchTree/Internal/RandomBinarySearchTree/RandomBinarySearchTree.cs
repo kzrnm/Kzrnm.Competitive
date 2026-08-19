@@ -25,7 +25,7 @@ namespace Kzrnm.Competitive.Internal.Bbst
     /// 乱択平衡二分探索木
     /// </summary>
     [DebuggerDisplay("Count = {" + nameof(Count) + "}")]
-    public class RandomBinarySearchTree<T, TOp> : BinarySearchTreeBase<T, int, RbstNode<T, TOp>.Op>
+    public class RandomBinarySearchTree<T, TOp> : BinarySearchTreeBase<T, int, RbstNode<T, TOp>.__RbtsOp>
         where TOp : struct, ISegtreeOperator<T>
     {
         public RandomBinarySearchTree() { }
@@ -39,8 +39,8 @@ namespace Kzrnm.Competitive.Internal.Bbst
     public struct RbstNode<T, TOp> : IRbstNode<T, int>
         where TOp : struct, ISegtreeOperator<T>
     {
-        public struct Op : IRbstOp<T, TOp, RbstNode<T, TOp>, int, Op, PoolStructRefOp<RbstNode<T, TOp>>>
-                , IBbstStructNodeOp<T, RbstNode<T, TOp>, Op>
+        public struct __RbtsOp : IRbstOp<T, TOp, RbstNode<T, TOp>, int, __RbtsOp, PoolStructRefOp<RbstNode<T, TOp>>>
+                , IBbstStructNodeOp<T, RbstNode<T, TOp>, __RbtsOp>
         {
             [凾(256)] public static RbstNode<T, TOp> CreateNode(T v) => new(v);
         }
