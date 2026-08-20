@@ -5,22 +5,26 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Kzrnm.Competitive
 {
+    /// <summary>
+    /// <see cref="PriorityQueueOp{T, TOp}"/> などを生成します。デフォルトでは小さい方が高優先度です。
+    /// </summary>
     public static class PriorityQueue
     {
+        /// <summary>
+        /// 小さい方を優先とする PriorityQueue を作成します。
+        /// </summary>
         [凾(256)]
-        public static PriorityQueueOp<T, DefaultComparerStruct<T>> Create<T>()
-            where T : IComparable<T>
-            => new PriorityQueueOp<T, DefaultComparerStruct<T>>();
-
-        [凾(256)]
-        public static PriorityQueueOp<T, DefaultComparerStruct<T>> Create<T>(int capacity)
+        public static PriorityQueueOp<T, DefaultComparerStruct<T>> Create<T>(int capacity = 16)
             where T : IComparable<T>
             => new PriorityQueueOp<T, DefaultComparerStruct<T>>(capacity);
 
+        /// <summary>
+        /// 大きい方を優先とする PriorityQueue を作成します。
+        /// </summary>
         [凾(256)]
-        public static PriorityQueueOp<T, TOp> Create<T, TOp>()
-            where TOp : struct, IComparer<T>
-            => new(default(TOp));
+        public static PriorityQueueOp<T, ReverseComparer<T>> CreateDesc<T>(int capacity = 16)
+            where T : IComparable<T>
+            => new PriorityQueueOp<T, ReverseComparer<T>>(capacity);
 
         [凾(256)]
         public static PriorityQueueOp<T, TOp> Create<T, TOp>(TOp comparer)
@@ -28,7 +32,7 @@ namespace Kzrnm.Competitive
             => new(comparer);
 
         [凾(256)]
-        public static PriorityQueueOp<T, TOp> Create<T, TOp>(int capacity)
+        public static PriorityQueueOp<T, TOp> Create<T, TOp>(int capacity = 16)
             where TOp : IComparer<T>
             => new(capacity, default(TOp));
 
@@ -37,20 +41,21 @@ namespace Kzrnm.Competitive
             where TOp : IComparer<T>
             => new(capacity, comparer);
 
+        /// <summary>
+        /// 小さい方を優先とする PriorityQueue を作成します。
+        /// </summary>
         [凾(256)]
-        public static PriorityQueueOp<TKey, TValue, DefaultComparerStruct<TKey>> CreateDictionary<TKey, TValue>()
-            where TKey : IComparable<TKey>
-            => new();
-
-        [凾(256)]
-        public static PriorityQueueOp<TKey, TValue, DefaultComparerStruct<TKey>> CreateDictionary<TKey, TValue>(int capacity)
+        public static PriorityQueueOp<TKey, TValue, DefaultComparerStruct<TKey>> CreateDictionary<TKey, TValue>(int capacity = 16)
             where TKey : IComparable<TKey>
             => new(capacity);
 
+        /// <summary>
+        /// 大きい方を優先とする PriorityQueue を作成します。
+        /// </summary>
         [凾(256)]
-        public static PriorityQueueOp<TKey, TValue, TOp> CreateDictionary<TKey, TValue, TOp>()
-            where TOp : struct, IComparer<TKey>
-            => new(default(TOp));
+        public static PriorityQueueOp<TKey, TValue, ReverseComparer<TKey>> CreateDictionaryDesc<TKey, TValue>(int capacity = 16)
+            where TKey : IComparable<TKey>
+            => new(capacity);
 
         [凾(256)]
         public static PriorityQueueOp<TKey, TValue, TOp> CreateDictionary<TKey, TValue, TOp>(TOp comparer)
@@ -58,7 +63,7 @@ namespace Kzrnm.Competitive
             => new(comparer);
 
         [凾(256)]
-        public static PriorityQueueOp<TKey, TValue, TOp> CreateDictionary<TKey, TValue, TOp>(int capacity)
+        public static PriorityQueueOp<TKey, TValue, TOp> CreateDictionary<TKey, TValue, TOp>(int capacity = 16)
             where TOp : IComparer<TKey>
             => new(capacity, default(TOp));
 
