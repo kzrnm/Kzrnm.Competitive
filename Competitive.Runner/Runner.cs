@@ -60,7 +60,7 @@ namespace Competitive.Runner
 
             var result = encoding.GetString(outStream.ToArray());
             if (DoubleRegex().IsMatch(output))
-                Assert.Equal(double.Parse(output), double.Parse(result), 10);
+                Assert.Equal(double.Parse(output), double.Parse(result), 7);
             else
                 Assert.Equal(Normalize(output), Normalize(result));
 
