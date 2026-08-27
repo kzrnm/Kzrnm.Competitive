@@ -17,7 +17,7 @@ namespace Kzrnm.Competitive
         public static T[] NewArray<T>(int len0, Func<T> factory)
         {
             var arr = new T[len0];
-            for (int i = 0; i < arr.Length; i++) arr[i] = factory();
+            if (factory != null) for (int i = 0; i < arr.Length; i++) arr[i] = factory();
             return arr;
         }
         [凾(256)]
