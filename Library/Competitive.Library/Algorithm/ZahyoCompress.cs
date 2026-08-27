@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -27,7 +28,28 @@ namespace Kzrnm.Competitive
         /// 座標圧縮後の値に置換した配列を取得する
         /// </summary>
         [凾(256)]
-        public static int[] CompressedArray<T>(ReadOnlySpan<T> orig) => new ZahyoCompress<T>(orig).Replace(orig);
+        public static int[] CompressedArray<T>(ReadOnlySpan<T> orig)
+        {
+            if (orig.Length == 0) return [];
+            var a = orig.ToArray();
+            var ix = Enumerable.Range(0, a.Length).ToArray();
+            a.AsSpan().Sort(ix
+#if !NET10_0_OR_GREATER
+                .AsSpan()
+#endif
+                , typeof(T) == typeof(string)
+                ? (IComparer<T>)(object)StringComparer.Ordinal
+                : null);
+            int t = 0;
+            var r = new int[a.Length];
+            for (int i = 1; i < ix.Length; i++)
+            {
+                if (!EqualityComparer<T>.Default.Equals(a[i], a[i - 1]))
+                    ++t;
+                r[ix[i]] = t;
+            }
+            return r;
+        }
 
 #if !NET10_0_OR_GREATER
         /// <inheritdoc cref="Create{T}(IEnumerable{T})"/>

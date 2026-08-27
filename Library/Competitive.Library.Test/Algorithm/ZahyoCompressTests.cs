@@ -68,5 +68,19 @@ public class ZahyoCompressTests
 
         var a = new int[] { 3, 5, 6, 41, 6 };
         await ZahyoCompress.CompressedArray(a).Should().BeStrictlyEquivalentTo([0, 1, 2, 3, 2]);
+
+
+        await ZahyoCompress.CompressedArray([
+            "ytb",
+            "kx",
+            "abc",
+            "ABC",
+            "KIX",
+            "a",
+            "kix",
+            "KIX",
+            "abc",
+            "ytb",
+        ]).Should().BeStrictlyEquivalentTo([6, 5, 3, 0, 1, 2, 4, 1, 3, 6]);
     }
 }
