@@ -17,6 +17,7 @@ namespace Kzrnm.Competitive
         [DebuggerBrowsable(Never)]
         Array a;
 
+        public override string ToString() => a.ToString();
 
         [DebuggerDisplay("{" + nameof(Value) + ",nq}", Name = "{" + nameof(Key) + ",nq}")]
         public record struct DebugItem(
@@ -34,7 +35,7 @@ namespace Kzrnm.Competitive
                 var len = BitOperations.Log2((uint)a.Length - 1) + 1;
                 for (int i = 0; i < items.Length; i++)
                 {
-                    items[i] = new DebugItem(i, len, a.GetValue(i));
+                    items[i] = new DebugItem(i, len, a.GetValue(i) switch { Array v => new BitDebug(v), var x => x });
                 }
                 return items;
             }
