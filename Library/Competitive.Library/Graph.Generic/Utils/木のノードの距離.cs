@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Numerics;
 using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 
@@ -32,9 +34,61 @@ namespace Kzrnm.Competitive
             where TEdge : IWGraphEdge<T>
         {
             var l = tree.HlDecomposition.LowestCommonAncestor(u, v);
-            var ud = tree[u].DepthLength - tree[l].DepthLength;
-            var vd = tree[v].DepthLength - tree[l].DepthLength;
-            return ud + vd;
+            var ld = tree[l].DepthLength;
+            return tree[u].DepthLength + tree[v].DepthLength - ld - ld;
+        }
+
+        /// <summary>
+        /// 木の最遠頂点対(木の直径をなす頂点の組)を返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>計算量: O(N)</para>
+        /// </remarks>
+        [凾(256)]
+        public static (int, int) Diameter<TNode, TEdge>(this ITreeGraph<TNode, TEdge> tree)
+            where TNode : ITreeNode<TEdge>
+            where TEdge : IGraphEdge
+        {
+            var t = tree.AsArray();
+            var u = tree.Root;
+            int v = tree.Root;
+            var max = 0;
+
+            for (int i = 0; i < t.Length; i++)
+                if (max.UpdateMax(tree[i].Depth))
+                    u = i;
+
+            for (int i = 0; i < t.Length; i++)
+                if (max.UpdateMax(tree.Distance(u, i)))
+                    v = i;
+            return (u, v);
+        }
+
+        /// <summary>
+        /// 木の最遠頂点対(木の直径をなす頂点の組)を返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>計算量: O(N)</para>
+        /// </remarks>
+        [凾(256)]
+        public static (int, int) DiameterLength<T, TNode, TEdge>(this IWTreeGraph<T, TNode, TEdge> tree)
+            where T : struct, IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>, IComparable<T>
+            where TNode : ITreeNode<TEdge>, IWTreeNode<T>
+            where TEdge : IWGraphEdge<T>
+        {
+            var t = tree.AsArray();
+            var u = tree.Root;
+            int v = tree.Root;
+            T max = default;
+
+            for (int i = 0; i < t.Length; i++)
+                if (max.UpdateMax(tree[i].DepthLength))
+                    u = i;
+
+            for (int i = 0; i < t.Length; i++)
+                if (max.UpdateMax(tree.DistanceLength(u, i)))
+                    v = i;
+            return (u, v);
         }
     }
 }

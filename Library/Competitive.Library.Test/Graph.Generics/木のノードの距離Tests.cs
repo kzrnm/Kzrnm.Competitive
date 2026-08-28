@@ -100,4 +100,48 @@ public class 木のノードの距離Tests
         await tree.Distance(4, 3).Should().BeEqualTo(2);
         await tree.Distance(4, 4).Should().BeEqualTo(0);
     }
+
+    [Test]
+    public async Task 重み付きグラフの直径()
+    {
+        var gb = new GraphBuilder(5, false);
+        gb.Add(0, 1);
+        gb.Add(1, 2);
+        gb.Add(1, 3);
+        gb.Add(1, 4);
+
+        for (int i = 0; i < 5; i++)
+        {
+            await gb.ToTree().Diameter().Should()
+                .BeEqualTo((0, 2))
+                .Or.BeEqualTo((0, 3))
+                .Or.BeEqualTo((0, 4))
+                .Or.BeEqualTo((2, 3))
+                .Or.BeEqualTo((2, 4))
+                .Or.BeEqualTo((3, 4))
+
+                .Or.BeEqualTo((2, 0))
+                .Or.BeEqualTo((3, 0))
+                .Or.BeEqualTo((4, 0))
+                .Or.BeEqualTo((3, 2))
+                .Or.BeEqualTo((4, 2))
+                .Or.BeEqualTo((4, 3));
+        }
+    }
+
+    [Test]
+    public async Task 重みなしグラフの直径()
+    {
+        var gb = new WIntGraphBuilder(5, false);
+        gb.Add(0, 1, 1);
+        gb.Add(1, 2, 10);
+        gb.Add(1, 3, 30);
+        gb.Add(1, 4, 40);
+
+        for (int i = 0; i < 5; i++)
+        {
+            await gb.ToTree().DiameterLength().Should()
+                .BeEqualTo((3, 4)).Or.BeEqualTo((4, 3));
+        }
+    }
 }

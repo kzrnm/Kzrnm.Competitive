@@ -12,9 +12,9 @@ internal class TreeDiameterTest : BaseSolver
         var gb = new WULongGraphBuilder(N, false);
         for (var i = 1; i < N; i++)
             gb.Add(cr, cr, cr);
-        var root = gb.ToTree(0).AsArray().MaxBy(n => n.DepthLength).index;
+
+        var (root, ix) = gb.ToTree(0).DiameterLength();
         var tree = gb.ToTree(root);
-        var ix = tree.AsArray().MaxBy(n => n.DepthLength).index;
 
         var list = new List<int>();
         ulong sum = 0;
