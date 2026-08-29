@@ -114,10 +114,8 @@ namespace Kzrnm.Competitive
         /// </remarks>
         [凾(256)]
         public void PointAdd(F l, F r, T x) => mat.PointAdd(pos[(l, r)], x);
-        readonly struct TupleComp : IComparable<(F, F)>
+        readonly struct TupleComp(F v) : IComparable<(F, F)>
         {
-            readonly F v;
-            public TupleComp(F v) { this.v = v; }
             [凾(256)] public int CompareTo((F, F) other) => -(other.Item1.CompareTo(v) | 1); // 3 > (2, ~), 3 < (3,~) となるようにする
         }
     }
