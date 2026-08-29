@@ -1,4 +1,5 @@
 using AtCoder.Internal;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Numerics;
@@ -22,7 +23,7 @@ namespace Kzrnm.Competitive
     public class FenwickTreeRange<T>
         where T : INumberBase<T>
     {
-        readonly T[] data1, data2;
+        internal readonly T[] data1, data2;
 
         public int Length { get; }
 
@@ -94,42 +95,57 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public T Slice(int l, int len) => Sum(l, l + len);
 
-        [DebuggerDisplay("Value = {" + nameof(value) + "}, Sum = {" + nameof(sum) + "}")]
-        internal readonly struct DebugItem
+
+        /// <summary>
+        /// <c><see langword="this"/>[i]=<see langword="this"/>[i..(i+1)]</c> の値を返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>計算量: O(log <c>n</c>)</para>
+        /// </remarks>
+        public T Get(int i) => Sum(i, i + 1);
+
+        /// <summary>
+        /// <c>(<see langword="this"/>[i..(i+1)], <see langword="this"/>[..(i+1)])</c> のタプルを配列にして返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>計算量: O(<c>n</c>)</para>
+        /// </remarks>
+        [凾(256)]
+        public (T Item, T Sum)[] ToArray()
         {
-            public DebugItem(T value, T sum)
+            var items = new (T Item, T Sum)[Length];
+            var first = data1[1] + data2[1];
+            items[0] = (first, first);
+
+            var sum1 = new T[data1.Length];
+            var sum2 = new T[data2.Length];
+
+            sum1[1] = data1[1];
+            sum2[1] = data2[1];
+            for (int i = 2; i < data1.Length; i++)
             {
-                this.sum = sum;
-                this.value = value;
+                int length = (int)InternalBit.ExtractLowestSetBit(i);
+                var pr = i - length;
+
+                sum1[i] = data1[i] + (0 <= pr ? sum1[pr] : T.AdditiveIdentity);
+                sum2[i] = data2[i] + (0 <= pr ? sum2[pr] : T.AdditiveIdentity);
+
+                var sum = sum1[i] + sum2[i] * T.CreateChecked(i);
+                items[i - 1] = (sum - items[i - 2].Sum, sum);
             }
-            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            public readonly T value;
-            [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-            public readonly T sum;
+            return items;
         }
-        internal class DebugView
+
+        [SourceExpander.NotEmbeddingSource]
+        [DebuggerDisplay("Value = {" + nameof(Value) + "}, Sum = {" + nameof(Sum) + "}")]
+        internal readonly record struct DebugItem(
+            [property: DebuggerBrowsable(DebuggerBrowsableState.Never)] T Value,
+            [property: DebuggerBrowsable(DebuggerBrowsableState.Never)] T Sum);
+        [SourceExpander.NotEmbeddingSource]
+        internal class DebugView(FenwickTreeRange<T> fenwickTree)
         {
-            readonly FenwickTreeRange<T> fenwickTree;
-            public DebugView(FenwickTreeRange<T> fenwickTree)
-            {
-                this.fenwickTree = fenwickTree;
-            }
             [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-            public DebugItem[] Items
-            {
-                get
-                {
-                    var items = new DebugItem[fenwickTree.Length];
-                    T prev = default;
-                    for (int i = 0; i < items.Length; i++)
-                    {
-                        var sum = fenwickTree.Sum(i + 1);
-                        items[i] = new DebugItem(sum - prev, sum);
-                        prev = sum;
-                    }
-                    return items;
-                }
-            }
+            public DebugItem[] Items => fenwickTree.ToArray().AsSpan().Cast<(T, T), DebugItem>().ToArray();
         }
     }
 }
