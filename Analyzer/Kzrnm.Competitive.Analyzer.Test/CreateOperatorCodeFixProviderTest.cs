@@ -30,6 +30,7 @@ public partial class CreateOperatorCodeFixProviderTest
             LanguageVersion.CSharp7_1,
             LanguageVersion.CSharp7_2,
             LanguageVersion.CSharp10,
+            LanguageVersion.CSharp12,
         })
         {
             var test = new Test(languageVersion)
@@ -52,6 +53,7 @@ public partial class CreateOperatorCodeFixProviderTest
             LanguageVersion.CSharp7_1,
             LanguageVersion.CSharp7_2,
             LanguageVersion.CSharp10,
+            LanguageVersion.CSharp12,
         })
         {
             foreach ((string equivalenceKey, string fixedSource) in fixedSources)
@@ -82,7 +84,7 @@ public partial class CreateOperatorCodeFixProviderTest
                 "$$TypeDefinition$$" => "struct",
                 _ => throw new InvalidOperationException(),
             }),
-            LanguageVersion.CSharp7_2 => ConvertFixedSourceRegex().Replace(fixedSource, m => m.Value switch
+            LanguageVersion.CSharp7_2 or LanguageVersion.CSharp12 => ConvertFixedSourceRegex().Replace(fixedSource, m => m.Value switch
             {
                 "$$TypeDefinition$$" => "readonly struct",
                 _ => throw new InvalidOperationException(),

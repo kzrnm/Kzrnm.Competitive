@@ -203,7 +203,7 @@ public class CodeFixProvider : Microsoft.CodeAnalysis.CodeFixes.CodeFixProvider
                 {
                     case null:
                         goto default;
-                    case >= (int)LanguageVersion.CSharp10:
+                    case >= (int)LanguageVersion.CSharp10 and < (int)LanguageVersion.CSharp12:
                         return SyntaxFactory.RecordDeclaration(SyntaxKind.RecordStructDeclaration, SyntaxFactory.Token(SyntaxKind.RecordKeyword), operatorTypeName)
                             .WithClassOrStructKeyword(SyntaxFactory.Token(SyntaxKind.StructKeyword))
                             .WithModifiers(SyntaxTokenList.Create(SyntaxFactory.Token(SyntaxKind.ReadOnlyKeyword)))
