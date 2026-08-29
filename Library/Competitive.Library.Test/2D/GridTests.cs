@@ -254,18 +254,18 @@ public class GridTests
             [7, 8, 9],
             [10, 11, 12],
         ], -1);
-        await grid.Moves(0, 0).Select(ToTuples).Should().BeStrictlyEquivalentTo([(0, 1), (1, 0)]);
-        await grid.Moves(0, 1).Select(ToTuples).Should().BeStrictlyEquivalentTo([(0, 0), (0, 2), (1, 1)]);
-        await grid.Moves(0, 2).Select(ToTuples).Should().BeStrictlyEquivalentTo([(0, 1), (1, 2)]);
-        await grid.Moves(1, 0).Select(ToTuples).Should().BeStrictlyEquivalentTo([(0, 0), (1, 1), (2, 0)]);
-        await grid.Moves(1, 1).Select(ToTuples).Should().BeStrictlyEquivalentTo([(1, 0), (0, 1), (1, 2), (2, 1)]);
-        await grid.Moves(1, 2).Select(ToTuples).Should().BeStrictlyEquivalentTo([(1, 1), (0, 2), (2, 2)]);
-        await grid.Moves(2, 0).Select(ToTuples).Should().BeStrictlyEquivalentTo([(1, 0), (2, 1), (3, 0)]);
-        await grid.Moves(2, 1).Select(ToTuples).Should().BeStrictlyEquivalentTo([(2, 0), (1, 1), (2, 2), (3, 1)]);
-        await grid.Moves(2, 2).Select(ToTuples).Should().BeStrictlyEquivalentTo([(2, 1), (1, 2), (3, 2)]);
-        await grid.Moves(3, 0).Select(ToTuples).Should().BeStrictlyEquivalentTo([(2, 0), (3, 1)]);
-        await grid.Moves(3, 1).Select(ToTuples).Should().BeStrictlyEquivalentTo([(3, 0), (2, 1), (3, 2)]);
-        await grid.Moves(3, 2).Select(ToTuples).Should().BeStrictlyEquivalentTo([(3, 1), (2, 2)]);
+        await grid.Moves(0, 0).Select(ToTuples).Should().BeEquivalentTo([(0, 1), (1, 0)], EqualityComparer<(int, int)>.Default);
+        await grid.Moves(0, 1).Select(ToTuples).Should().BeEquivalentTo([(0, 2), (1, 1), (0, 0)], EqualityComparer<(int, int)>.Default);
+        await grid.Moves(0, 2).Select(ToTuples).Should().BeEquivalentTo([(1, 2), (0, 1)], EqualityComparer<(int, int)>.Default);
+        await grid.Moves(1, 0).Select(ToTuples).Should().BeEquivalentTo([(1, 1), (2, 0), (0, 0)], EqualityComparer<(int, int)>.Default);
+        await grid.Moves(1, 1).Select(ToTuples).Should().BeEquivalentTo([(1, 2), (2, 1), (1, 0), (0, 1)], EqualityComparer<(int, int)>.Default);
+        await grid.Moves(1, 2).Select(ToTuples).Should().BeEquivalentTo([(2, 2), (1, 1), (0, 2)], EqualityComparer<(int, int)>.Default);
+        await grid.Moves(2, 0).Select(ToTuples).Should().BeEquivalentTo([(1, 0), (2, 1), (3, 0)], EqualityComparer<(int, int)>.Default);
+        await grid.Moves(2, 1).Select(ToTuples).Should().BeEquivalentTo([(2, 0), (1, 1), (2, 2), (3, 1)], EqualityComparer<(int, int)>.Default);
+        await grid.Moves(2, 2).Select(ToTuples).Should().BeEquivalentTo([(2, 1), (1, 2), (3, 2)], EqualityComparer<(int, int)>.Default);
+        await grid.Moves(3, 0).Select(ToTuples).Should().BeEquivalentTo([(2, 0), (3, 1)], EqualityComparer<(int, int)>.Default);
+        await grid.Moves(3, 1).Select(ToTuples).Should().BeEquivalentTo([(3, 0), (2, 1), (3, 2)], EqualityComparer<(int, int)>.Default);
+        await grid.Moves(3, 2).Select(ToTuples).Should().BeEquivalentTo([(3, 1), (2, 2)], EqualityComparer<(int, int)>.Default);
 
         static (int, int) ToTuples(Grid<int>.Position p)
         {
@@ -273,32 +273,32 @@ public class GridTests
             return (h, w);
         }
 
-        await grid.Moves(0).Select(ToInt).Should().BeStrictlyEquivalentTo([1, 3]);
-        await grid.Moves(1).Select(ToInt).Should().BeStrictlyEquivalentTo([0, 2, 4]);
-        await grid.Moves(2).Select(ToInt).Should().BeStrictlyEquivalentTo([1, 5]);
-        await grid.Moves(3).Select(ToInt).Should().BeStrictlyEquivalentTo([0, 4, 6]);
-        await grid.Moves(4).Select(ToInt).Should().BeStrictlyEquivalentTo([3, 1, 5, 7]);
-        await grid.Moves(5).Select(ToInt).Should().BeStrictlyEquivalentTo([4, 2, 8]);
-        await grid.Moves(6).Select(ToInt).Should().BeStrictlyEquivalentTo([3, 7, 9]);
-        await grid.Moves(7).Select(ToInt).Should().BeStrictlyEquivalentTo([6, 4, 8, 10]);
-        await grid.Moves(8).Select(ToInt).Should().BeStrictlyEquivalentTo([7, 5, 11]);
-        await grid.Moves(9).Select(ToInt).Should().BeStrictlyEquivalentTo([6, 10]);
-        await grid.Moves(10).Select(ToInt).Should().BeStrictlyEquivalentTo([9, 7, 11]);
-        await grid.Moves(11).Select(ToInt).Should().BeStrictlyEquivalentTo([10, 8]);
+        await grid.Moves(0).Select(ToInt).Should().BeEquivalentTo([1, 3], EqualityComparer<int>.Default);
+        await grid.Moves(1).Select(ToInt).Should().BeEquivalentTo([0, 2, 4], EqualityComparer<int>.Default);
+        await grid.Moves(2).Select(ToInt).Should().BeEquivalentTo([5, 1], EqualityComparer<int>.Default);
+        await grid.Moves(3).Select(ToInt).Should().BeEquivalentTo([4, 6, 0], EqualityComparer<int>.Default);
+        await grid.Moves(4).Select(ToInt).Should().BeEquivalentTo([3, 1, 5, 7], EqualityComparer<int>.Default);
+        await grid.Moves(5).Select(ToInt).Should().BeEquivalentTo([4, 2, 8], EqualityComparer<int>.Default);
+        await grid.Moves(6).Select(ToInt).Should().BeEquivalentTo([3, 7, 9], EqualityComparer<int>.Default);
+        await grid.Moves(7).Select(ToInt).Should().BeEquivalentTo([6, 4, 8, 10], EqualityComparer<int>.Default);
+        await grid.Moves(8).Select(ToInt).Should().BeEquivalentTo([7, 5, 11], EqualityComparer<int>.Default);
+        await grid.Moves(9).Select(ToInt).Should().BeEquivalentTo([6, 10], EqualityComparer<int>.Default);
+        await grid.Moves(10).Select(ToInt).Should().BeEquivalentTo([9, 7, 11], EqualityComparer<int>.Default);
+        await grid.Moves(11).Select(ToInt).Should().BeEquivalentTo([10, 8], EqualityComparer<int>.Default);
 
         static int ToInt(Grid<int>.Position p)
         {
             return (int)p;
         }
 
-        Memory<int> q = new int[] { 3, 1, 5, 7 };
+        Memory<int> q = new int[] { 5, 7, 3, 1 };
         foreach (int ix in grid.Moves(1, 1))
         {
             await ix.Should().BeEqualTo(q.Span[0]);
             q = q[1..];
         }
 
-        Memory<(int, int)> r = new[] { (1, 0), (0, 1), (1, 2), (2, 1) };
+        Memory<(int, int)> r = new[] { (1, 2), (2, 1), (1, 0), (0, 1), };
         foreach (var (h, w) in grid.Moves(4))
         {
             await (h, w).Should().BeEqualTo(r.Span[0]);

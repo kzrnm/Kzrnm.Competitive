@@ -38,6 +38,14 @@ namespace Kzrnm.Competitive
             for (int i = 0; i < grid.H; i++)
                 cw.WriteLineJoin(grid.RowSpan(i));
         }
+
+        static (int, int)[] _Mv = [
+            (0, +1),
+            (+1, 0),
+            (0, -1),
+            (-1, 0),
+        ];
+        public static ReadOnlySpan<(int h, int w)> Moves => _Mv;
     }
 
     [DebuggerDisplay("""{ToStringSplit().Replace("\r\n","\n"),raw}""")]
@@ -222,83 +230,31 @@ namespace Kzrnm.Competitive
             int origH,
             int origW) : IEnumerator<Position>, IEnumerable<Position>
         {
-            enum Status
-            {
-                None,
-                Left,
-                Up,
-                Right,
-                Down,
-            }
-            Status status = Status.None;
-            public Position Current
-            {
-                [凾(256)]
-                get
-                {
-                    int dh = 0;
-                    int dw = 0;
-                    switch (status)
-                    {
-                        case Status.Up:
-                            dh = -1;
-                            break;
-                        case Status.Right:
-                            dw = 1;
-                            break;
-                        case Status.Left:
-                            dw = -1;
-                            break;
-                        case Status.Down:
-                            dh = 1;
-                            break;
-                    }
-                    return new(grid.Index(origH + dh, origW + dw), grid.W);
-                }
-            }
-
+            int St = -1;
+            public Position Current { get; private set; }
             object IEnumerator.Current => Current;
 
             [凾(256)]
             public bool MoveNext()
             {
-                switch (status)
+                while (++St < 4)
                 {
-                    case Status.None:
-                        if (origW > 0)
-                            status = Status.Left;
-                        else
-                            goto case Status.Left;
+                    var (dh, dw) = Grid.Moves[St];
+                    var i = grid.Index(origH + dh, origW + dw);
+                    if (i >= 0)
+                    {
+                        Current = new(i, grid.W);
                         return true;
-                    case Status.Left:
-                        if (origH > 0)
-                            status = Status.Up;
-                        else
-                            goto case Status.Up;
-                        return true;
-                    case Status.Up:
-                        if (origW + 1 < grid.W)
-                            status = Status.Right;
-                        else
-                            goto case Status.Right;
-                        return true;
-                    case Status.Right:
-                        if (origH + 1 < grid.H)
-                            status = Status.Down;
-                        else
-                            goto default;
-                        return true;
-                    default:
-                        status = Status.None;
-                        return false;
+                    }
                 }
+                return false;
             }
 
             [凾(256)]
             public MoveEnumerator GetEnumerator() => this;
             IEnumerator<Position> IEnumerable<Position>.GetEnumerator() => this;
             IEnumerator IEnumerable.GetEnumerator() => this;
-            public void Reset() => status = Status.None;
+            public void Reset() => St = -1;
             public void Dispose() { }
         }
 
