@@ -70,6 +70,22 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
+        /// 拡張ユークリッドの互助法で一次不定方程式 ax + by = gcd(a,b) となる特殊解 (gcd, x, y) を返します。
+        /// </summary>
+        /// <remarks>
+        /// <para>制約: 1≤<paramref name="b"/></para>
+        /// </remarks>
+        public static (T Gcd, T X, T Y) ExtGcd<T>(T a, T b) where T : IBinaryInteger<T>
+        {
+            if (T.IsZero(b)) return (a, T.One, T.Zero);
+
+            var (d, m) = T.DivRem(a, b);
+            var (g, y, x) = ExtGcd(b, m);
+            y -= d * x;
+            return (g, x, y);
+        }
+
+        /// <summary>
         /// <paramref name="n"/> の約数を返します。
         /// </summary>
         public static T[] Divisor<T>(T n)

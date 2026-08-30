@@ -122,6 +122,47 @@ public class MathLibExTests
         await MathLibEx.Lcm(nums).Should().BeEqualTo(expected);
     }
 
+    public static IEnumerable<(long, long)> ExtGcdLongTest_Data()
+    {
+        yield return (1, 2);
+        yield return (2, 845106);
+        yield return (44250, 2325);
+        yield return (230895518700, 230811434700);
+        yield return (230811434700, 230895518700);
+
+        var rnd = new Random(227);
+        for (int i = 4; i < 63; i++)
+        {
+            var upper = 1L << i;
+            for (int q = 0; q < 33; q++)
+            {
+                var a = rnd.NextInt64(1, upper);
+                var b = rnd.NextInt64(1, upper);
+                if (rnd.Next(2) != 0) a = -a;
+                if (rnd.Next(2) != 0) b = -b;
+                yield return (a, b);
+            }
+        }
+    }
+    [Test]
+    [Property("Category", "ExtGcd")]
+    [MethodDataSource(nameof(ExtGcdLongTest_Data), DeferEnumeration = true)]
+    public async Task ExtGcdLongTest(long num1, long num2)
+    {
+        var (g, x, y) = MathLibEx.ExtGcd(num1, num2);
+        if (g < 0)
+        {
+            g = -g;
+            x = -x;
+            y = -y;
+        }
+        using (Assert.Multiple())
+        {
+            await (num1 * x + num2 * y == g).Should().BeTrue();
+            await g.Should().BeEqualTo(MathLibEx.Gcd(num1, num2));
+        }
+    }
+
     public static IEnumerable<(int, int[])> DivisorInt_Data =>
     [
         (
