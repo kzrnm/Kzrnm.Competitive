@@ -36,6 +36,10 @@ namespace Kzrnm.Competitive
                 v = other.Y - Y;
             return (long)u * u + (long)v * v;
         }
+
+        /// <summary>
+        /// 原点との距離の 2 乗
+        /// </summary>
         [凾(256)]
         public long Distance2Origin() => (long)X * X + (long)Y * Y;
         /// <summary>

@@ -34,6 +34,14 @@ namespace Kzrnm.Competitive
             var v = other.Y - Y;
             return u * u + v * v;
         }
+
+
+        /// <summary>
+        /// 原点との距離の 2 乗
+        /// </summary>
+        [凾(256)]
+        public double Distance2Origin() => X * X + Y * Y;
+
         /// <summary>
         /// 内積
         /// </summary>
