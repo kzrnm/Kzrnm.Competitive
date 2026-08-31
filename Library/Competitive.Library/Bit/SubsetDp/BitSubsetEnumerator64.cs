@@ -13,20 +13,20 @@ namespace Kzrnm.Competitive
     {
         /// <summary>
         /// <para><paramref name="n"/> をビット集合としたときの部分集合を列挙します。</para>
-        /// <para><paramref name="proper"/> が <see langword="true"/> のときは真部分集合を列挙します。</para>
+        /// <para><paramref name="proper"/> が <see langword="true"/> のときは真部分集合(nを含まない集合)を列挙します。</para>
         /// </summary>
         [凾(256)]
         public static BitSubsetEnumerator64<long> BitSubset(this long n, bool proper = true) => new(n, proper);
         /// <summary>
         /// <para><paramref name="n"/> をビット集合としたときの部分集合を列挙します。</para>
-        /// <para><paramref name="proper"/> が <see langword="true"/> のときは真部分集合を列挙します。</para>
+        /// <para><paramref name="proper"/> が <see langword="true"/> のときは真部分集合(nを含まない集合)を列挙します。</para>
         /// </summary>
         [凾(256)]
         public static BitSubsetEnumerator64<ulong> BitSubset(this ulong n, bool proper = true) => new(n, proper);
 
         /// <summary>
         /// <para><paramref name="n"/> をビット集合としたときの部分集合とその補集合を列挙します。</para>
-        /// <para><paramref name="proper"/> が <see langword="true"/> のときは真部分集合を列挙します。</para>
+        /// <para><paramref name="proper"/> が <see langword="true"/> のときは真部分集合(nを含まない集合)を列挙します。</para>
         /// </summary>
         /// <remarks>
         /// <para>列挙する部分集合は常にその補集合よりも大きい値になります。</para>
@@ -35,7 +35,7 @@ namespace Kzrnm.Competitive
         public static BitSubsetEnumerator64<long>.Combination BitSubsetCombination(this long n, bool proper = true) => new(n, proper);
         /// <summary>
         /// <para><paramref name="n"/> をビット集合としたときの部分集合とその補集合を列挙します。</para>
-        /// <para><paramref name="proper"/> が <see langword="true"/> のときは真部分集合を列挙します。</para>
+        /// <para><paramref name="proper"/> が <see langword="true"/> のときは真部分集合(nを含まない集合)を列挙します。</para>
         /// </summary>
         /// <remarks>
         /// <para>列挙する部分集合は常にその補集合よりも大きい値になります。</para>
@@ -53,7 +53,7 @@ namespace Kzrnm.Competitive
         byte p;
         /// <summary>
         /// <para><paramref name="v"/> をビット集合としたときの部分集合を列挙します。</para>
-        /// <para><paramref name="proper"/> が <see langword="true"/> のときは真部分集合を列挙します。</para>
+        /// <para><paramref name="proper"/> が <see langword="true"/> のときは真部分集合(nを含まない集合)を列挙します。</para>
         /// <para>直接呼び出しは危険。</para>
         /// </summary>
         [凾(256)]
