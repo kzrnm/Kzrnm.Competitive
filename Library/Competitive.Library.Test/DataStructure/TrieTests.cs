@@ -236,6 +236,56 @@ public class TrieTests
         await all.MoveNext().Should().BeFalse();
     }
 
+    [Test]
+    public async Task EnumerateChildren()
+    {
+        var trie = new Trie<int, int>();
+        trie.Add([1], -2);
+        trie.Add([1, 2], 10);
+        trie.Add([1, 2, 3], -1);
+        trie.Add([1, -3], 35);
+        trie.Add([1, -2, 5], 6);
+
+
+        await trie.HasValue.Should().BeFalse();
+        await trie.Count.Should().BeEqualTo(5);
+
+        var children = trie.EnumerateChildren(false).ToArray();
+        await children.Should().HaveCount(1);
+        await children[0].HasValue.Should().BeTrue();
+        await children[0].Value.Should().BeEqualTo(-2);
+        await children[0].Count.Should().BeEqualTo(5);
+
+        children = trie.EnumerateChildren().ToArray();
+        using (Assert.Multiple())
+        {
+            await children.Should().HaveCount(6);
+
+            await children[0].HasValue.Should().BeTrue();
+            await children[0].Value.Should().BeEqualTo(-2);
+            await children[0].Count.Should().BeEqualTo(5);
+
+            await children[1].HasValue.Should().BeTrue();
+            await children[1].Value.Should().BeEqualTo(35);
+            await children[1].Count.Should().BeEqualTo(1);
+
+            await children[2].HasValue.Should().BeFalse();
+            await children[2].Count.Should().BeEqualTo(1);
+
+            await children[3].HasValue.Should().BeTrue();
+            await children[3].Value.Should().BeEqualTo(10);
+            await children[3].Count.Should().BeEqualTo(2);
+
+            await children[4].HasValue.Should().BeTrue();
+            await children[4].Value.Should().BeEqualTo(-1);
+            await children[4].Count.Should().BeEqualTo(1);
+
+            await children[5].HasValue.Should().BeTrue();
+            await children[5].Value.Should().BeEqualTo(6);
+            await children[5].Count.Should().BeEqualTo(1);
+        }
+    }
+
     [Test, MultipleAssertions]
     public async Task MatchGreedyTest()
     {

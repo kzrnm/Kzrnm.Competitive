@@ -50,6 +50,33 @@ namespace Kzrnm.Competitive
         }
 
         /// <summary>
+        /// <para>現在の子 Trie を列挙します。</para>
+        /// <para>計算量: O(N)</para>
+        /// </summary>
+        /// <param name="recursive"><see langword="true"/> ならば、子孫 Trie も列挙します。</param>
+        public IEnumerable<Trie<TKey, TValue>> EnumerateChildren(bool recursive = true)
+        {
+            if (!recursive)
+            {
+                foreach (var t in children.Values)
+                    yield return t;
+            }
+            else
+            {
+                var s = new Stack<Trie<TKey, TValue>>(Count);
+                s.Push(this);
+                while (s.TryPop(out var trie))
+                {
+                    foreach (var t in trie.children.Values)
+                    {
+                        yield return t;
+                        s.Push(t);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// <para>現在のTrieの<paramref name="key"/>子要素を取得する存在しなければnull。</para>
         /// <para>計算量: O(|<paramref name="key"/>|)</para>
         /// </summary>
