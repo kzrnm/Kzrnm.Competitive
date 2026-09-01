@@ -31,9 +31,6 @@ stroke: #0B3;
 			<text font-size="22px">Id</text>
 		</g>
 	</defs>
-	<text x="150" y="275" class="hd">Merge</text>
-	<text x="450" y="275" class="hd">Propagate</text>
-
 	<g id="tr">
 		<path d="M150 30 L150 90" class="ln"/>
 		<path d="M150 30 L70 90" class="ln"/>
@@ -56,8 +53,11 @@ stroke: #0B3;
 		<use x="240" y="230" xlink:href="#lf"/>
 	</g>
 	<use x="300" xlink:href="#tr"/>
-	<path class="rd" d="M116 255 C175 250 170 208 175 177 C186 35 150 82 160 56 C170 40 177 38 171 18 C162 2 140 0 130 8 L58 66 C32 96 32 106 32 140 C32 270 28 255 100 255 Z"/>
-	<path class="rd" d="M420 255 C446 255 452 230 438 213 L400 173 C390 161 390 148 390 132 L395 90 C396 78 384 64 369 66 C334 74 329 116 332 146 L332 218 C331 235 329 255 354 255 Z" />
-	<path class="gr" d="M189 71 C202 86 209 101 210 116 L212 239 C212 261 265 261 265 239 L265 135 C265 3 148 20 172 53 Z"></path>
-	<ellipse class="gr" transform="rotate(-38,411,59)" cx="411" cy="59" rx="27" ry="12"></ellipse>
+	<text x="150" y="275" class="hd">Propagate</text>
+	<text x="450" y="275" class="hd">Merge</text>
+
+	<path class="rd" d="M120 255 C146 255 152 230 138 213 L100 173 C90 161 90 148 90 132 L95 90 C96 78 84 64 69 66 C34 74 29 116 32 146 L32 218 C31 235 29 255 54 255 Z" />
+	<ellipse class="gr" transform="rotate(-38,111,59)" cx="111" cy="59" rx="27" ry="12"></ellipse>
+	<path class="rd" d="M416 255 C475 250 470 208 475 177 C486 35 450 82 460 56 S440 70 430 30 L358 66 C332 96 332 106 332 140 C332 270 328 255 400 255 Z"/>
+	<path class="gr" d="M489 71 C502 86 509 101 510 116 L512 239 C512 261 565 261 565 239 L565 135 C570 3 430 40 468 53 Z"></path>
 </svg>
