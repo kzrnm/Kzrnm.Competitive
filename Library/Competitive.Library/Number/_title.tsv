@@ -1,2 +1,3 @@
+FractionFactor.cs	有理数型の組み合わせ
 BigFraction.cs	有理数型(BigInteger)
 BinaryParser.cs	2進数のパース
