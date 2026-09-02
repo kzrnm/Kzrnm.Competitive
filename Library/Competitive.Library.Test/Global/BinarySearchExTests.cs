@@ -85,6 +85,9 @@ public class BinarySearchExTests
         await new DelegateOk<double>(num => num < .5).BinarySearch(-1000000000, 10).Should().BeEqualTo(0.49999995163374444);
         await new DelegateOk<double>(num => num < .5).BinarySearch(-1000000000, 1, 1).Should().BeEqualTo(0.06867742445319891);
         await new DelegateOk<double>(num => num < .5).BinarySearch(-1000000000, 10, 1).Should().BeEqualTo(-0.24454842321574688);
+
+        await new DelegateOk<double>(num => num < 1e25).BinarySearch(-1e40, 1e40).Should().BeCloseTo(1e25, 1e18);
+        await new DelegateOk<double>(num => num < 1e25).BinarySearch(-1e40, 1e40, 1e-2).Should().BeCloseTo(1e25, 1e24);
     }
 
 

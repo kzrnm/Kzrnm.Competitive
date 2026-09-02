@@ -196,6 +196,8 @@ namespace Kzrnm.Competitive
             while (Math.Abs(ok - ng) > eps)
             {
                 var m = (ok + ng) / 2;
+                if (Math.Abs(ng) is > 1 and var a && Math.Abs(ok - ng) / a < eps)
+                    break;
                 if (op.Ok(m)) ok = m;
                 else ng = m;
             }
