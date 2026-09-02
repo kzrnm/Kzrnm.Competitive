@@ -38,25 +38,27 @@ namespace Kzrnm.Competitive
     /// <summary>
     /// 2 次元平面上にある点が事前に与えられているとき、点への重みの加算と範囲内の重みの総和を求めるデータ構造。X 座標を可変とする。
     /// </summary>
-    /// <typeparam name="F">点の座標</typeparam>
+    /// <typeparam name="Fx">X座標</typeparam>
+    /// <typeparam name="Fy">X座標</typeparam>
     /// <typeparam name="T">重み</typeparam>
     /// <typeparam name="ROp">重みの総和を求めるデータ構造</typeparam>
-    public class WaveletMatrix2D<F, T, ROp>
-        where F : IComparable<F>
+    public class WaveletMatrix2D<Fx, Fy, T, ROp>
+        where Fx : IComparable<Fx>
+        where Fy : IComparable<Fy>
         where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>
         where ROp : struct, IWabeletSumOperator<T, ROp>
     {
         readonly WaveletMatrixRangeSumCompressed<T, ROp> mat;
-        readonly SortedDictionary<(F x, F y), int> pos;
-        readonly (F x, F y)[] ps;
-        readonly F[] ys;
+        readonly SortedDictionary<(Fx x, Fy y), int> pos;
+        readonly (Fx x, Fy y)[] ps;
+        readonly Fy[] ys;
 
         /// <summary>
         /// <para>各要素の座標と重み <paramref name="v"/> を初期値として構築する。</para>
         /// <para>計算量: O(N log(N) log(V))</para>
         /// <para>  N は要素数。 V は最大値。</para>
         /// </summary>
-        public WaveletMatrix2D(ReadOnlySpan<((F x, F y) p, T d)> v)
+        public WaveletMatrix2D(ReadOnlySpan<((Fx x, Fy y) p, T d)> v)
         {
             var zahyoCompressXY = ZahyoCompress.Create(v.Select(t => t.p));
             var zahyoCompressY = ZahyoCompress.Create(v.Select(t => t.p.y));
@@ -83,7 +85,7 @@ namespace Kzrnm.Competitive
         /// <para>  V は最大値。</para>
         /// </remarks>
         [凾(256)]
-        public T RectSum(F l, F r, F lower, F upper)
+        public T RectSum(Fx l, Fx r, Fy lower, Fy upper)
             => mat.RectSum(
                 ps.LowerBound(new TupleComp(l)),
                 ps.LowerBound(new TupleComp(r)),
@@ -98,25 +100,25 @@ namespace Kzrnm.Competitive
         /// <para>  V は最大値。</para>
         /// </remarks>
         [凾(256)]
-        public T RectSum(F l, F r, F upper)
+        public T RectSum(Fx l, Fx r, Fy upper)
             => mat.RectSum(
                 ps.LowerBound(new TupleComp(l)),
                 ps.LowerBound(new TupleComp(r)),
                 ys.LowerBound(upper));
 
         /// <summary>
-        /// <para>座標 (<paramref name="l"/>, <paramref name="r"/>) の要素に <paramref name="x"/> を加算する。</para>
+        /// <para>座標 (<paramref name="x"/>, <paramref name="y"/>) の要素に <paramref name="v"/> を加算する。</para>
         /// </summary>
         /// <remarks>
-        /// <para>制約: (<paramref name="l"/>, <paramref name="r"/>) は定義済みの座標</para>
+        /// <para>制約: (<paramref name="x"/>, <paramref name="y"/>) は定義済みの座標</para>
         /// <para>計算量: O(log(V))</para>
         /// <para>  V は最大値。</para>
         /// </remarks>
         [凾(256)]
-        public void PointAdd(F l, F r, T x) => mat.PointAdd(pos[(l, r)], x);
-        readonly struct TupleComp(F v) : IComparable<(F, F)>
+        public void PointAdd(Fx x, Fy y, T v) => mat.PointAdd(pos[(x, y)], v);
+        readonly struct TupleComp(Fx v) : IComparable<(Fx, Fy)>
         {
-            [凾(256)] public int CompareTo((F, F) other) => -(other.Item1.CompareTo(v) | 1); // 3 > (2, ~), 3 < (3,~) となるようにする
+            [凾(256)] public int CompareTo((Fx, Fy) other) => -(other.Item1.CompareTo(v) | 1); // 3 > (2, ~), 3 < (3,~) となるようにする
         }
     }
 

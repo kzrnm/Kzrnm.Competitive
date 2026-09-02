@@ -8,7 +8,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive
 {
     /// <inheritdoc />
-    public class WaveletMatrix2DWithFenwickTree<F, T> : WaveletMatrix2D<F, T, WaveletFwOp<T>>
+    public class WaveletMatrix2DWithFenwickTree<F, T> : WaveletMatrix2D<F, F, T, WaveletFwOp<T>>
         where F : IComparable<F>
         where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>, IAdditiveIdentity<T, T>
     {
