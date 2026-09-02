@@ -38,17 +38,22 @@ public class Analyzer : DiagnosticAnalyzer
             return;
 
         var containsMultiply = false;
-        for (; node is not null; node = GetParent(node))
+        SyntaxNode prev = null;
+        for (; node is not null; prev = node, node = GetParent(node))
         {
             containsMultiply |= node.Kind() is
                 SyntaxKind.MultiplyExpression
                 or SyntaxKind.LeftShiftExpression;
 
-            bool mayBeOverflow = node.Kind() is SyntaxKind.MultiplyExpression
-                    or SyntaxKind.LeftShiftExpression
+            bool mayBeOverflow = node.Kind() switch
+            {
+                SyntaxKind.MultiplyExpression
                     or SyntaxKind.DivideExpression
-                    or SyntaxKind.ModuloExpression
-                    or SyntaxKind.RightShiftExpression;
+                    or SyntaxKind.ModuloExpression => true,
+                SyntaxKind.LeftShiftExpression
+                or SyntaxKind.RightShiftExpression => node is BinaryExpressionSyntax b && !b.Right.Equals(prev),
+                _ => false,
+            };
 
             if (mayBeOverflow)
             {
