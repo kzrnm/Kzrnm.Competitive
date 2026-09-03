@@ -165,7 +165,7 @@ namespace Competitive.Runner
         [GeneratedRegex(@"using (M\=MethodImplAttribute|MI=System\.Runtime\.CompilerServices\.MethodImplAttribute);")]
         private static partial Regex UsingMethodImpl { get; }
 
-        [GeneratedRegex(@"#if SUBMIT\n(.*?)#endif\n", RegexOptions.Singleline)]
+        [GeneratedRegex(@"#if (!?)SUBMIT\n(.*?)#endif\n", RegexOptions.Singleline)]
         private static partial Regex ForSubmit { get; }
 
         [GeneratedRegex(@"(?<!\.)ReadOnlySpan<((c)har|(b)yte)>")]
@@ -175,7 +175,7 @@ namespace Competitive.Runner
             expandedCode = expandedCode
                 .Replace("\r\n", "\n")
                 .Replace("using 凾", "using MAttribute");
-            expandedCode = ForSubmit.Replace(expandedCode, "$1");
+            expandedCode = ForSubmit.Replace(expandedCode, m => m.Groups[1].ValueSpan.IsEmpty ? m.Groups[2].Value : "");
             expandedCode = UsingMethodImpl.Replace(expandedCode, "");
             expandedCode = AggressiveInlining.Replace(expandedCode, "256");
             expandedCode = ReadOnlySpanText.Replace(expandedCode, "ROS$2$3 ");
