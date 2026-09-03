@@ -179,4 +179,32 @@ public class FractionTests
         }
     }
 
+    public static IEnumerable<(Fraction num, Fraction expected)> RoundOff_Data()
+    {
+        yield return (new(12345678912345, 98765432123456724), new(490573, 3924585665));
+        yield return (new(-12345678912345, 98765432123456724), new(-981147, 7849171330));
+        yield return (new(9007199254740997, 2147483647), new(4294967296, 1023));
+        yield return (new(9007199254740997, 4194303), new(9007199254740997, 4194303));
+        yield return (new(9007199254740997, 4194304), new(2147483648, 1));
+        yield return (new(92709568269121, 9007199254740997), new(44207367, 4294967296));
+    }
+
+    [Test]
+    [MethodDataSource(nameof(RoundOff_Data))]
+    public async Task RoundOff(Fraction num, Fraction expected)
+    {
+        await num.RoundOff().Should().BeEqualTo(expected);
+    }
+
+    [Test]
+    [Arguments(-1.0, -1, 1)]
+    [Arguments(1.0, 1, 1)]
+    [Arguments(1.41235663e18, (long)1.41235663e18, 1)]
+    [Arguments(234567.432188907435523574, 8059675599664441, 34359738368)]
+    [Arguments(0.0000542342368976897423568974352, 125055636010577, 2305843009213693952)]
+    [Arguments(5.6784231532897532e-12, 818347, 144115188075855872)]
+    public async Task FromDouble(double num, long expectedNumerator, long expectedDenominator)
+    {
+        await ((Fraction)num).Should().BeEqualTo(new Fraction(expectedNumerator, expectedDenominator));
+    }
 }

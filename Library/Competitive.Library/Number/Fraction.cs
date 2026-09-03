@@ -66,12 +66,47 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static implicit operator Fraction(long x) => new Fraction(x, 1, true);
         [凾(256)]
-        public int CompareTo(Fraction other) => (Numerator * other.Denominator).CompareTo(other.Numerator * Denominator);
+        public int CompareTo(Fraction other) => ((Int128)Numerator * other.Denominator).CompareTo((Int128)other.Numerator * Denominator);
+
+
+        /// <summary>
+        /// 分母と分子を最大 <paramref name="bit"/> まで精度を落とします。
+        /// </summary>
+        [凾(256)]
+        public Fraction RoundOff(int bit = 32)
+        {
+            var hi = Math.Abs(Numerator);
+            var lo = Denominator;
+            if (hi < lo) (hi, lo) = (lo, hi);
+            int shift = BitOperations.Log2((ulong)hi) - bit;
+            if (shift >= BitOperations.Log2((ulong)lo)) return this;
+            return new(Numerator >> shift, Denominator >> shift);
+        }
 
         [凾(256)]
         public Fraction Inverse() => new Fraction(Denominator, Numerator);
+        [凾(256)] public double ToDouble() => (double)Numerator / Denominator;
+        [凾(256)] public static explicit operator double(Fraction x) => x.ToDouble();
         [凾(256)]
-        public double ToDouble() => (double)Numerator / Denominator;
+        public static explicit operator Fraction(double x)
+        {
+            var b = BitConverter.DoubleToInt64Bits(x);
+            var e = (int)((b >>> 52) & 0x7FF) - 1023 - 52;
+            var v = b & 0xFFFFFFFFFFFFF;
+
+            if (e == -1023 - 52) e++; // 非正規化数
+            else v |= 1L << 52; // 正規化のケチ表現
+
+            if (b < 0) v = -v;
+
+            if (e == 0) return v;
+            if (e > 0) return v << e;
+
+            if ((e = -e) < 63)
+                return new(v, 1L << e);
+
+            return new(v >> (e - 62), 1L << 62);
+        }
         public static Fraction operator +(Fraction x) => x;
         [凾(256)]
         public static Fraction operator -(Fraction x) => new Fraction(-x.Numerator, x.Denominator);
@@ -79,33 +114,44 @@ namespace Kzrnm.Competitive
         public static Fraction operator +(Fraction x, Fraction y)
         {
             var gcd = MathLibEx.Gcd(x.Denominator, y.Denominator);
-            var lcm = x.Denominator / gcd * y.Denominator;
-            return new Fraction((x.Numerator * y.Denominator + y.Numerator * x.Denominator) / gcd, lcm);
+            var xd = x.Denominator / gcd;
+            var yd = y.Denominator / gcd;
+            var lcm = xd * y.Denominator;
+            var numerator = (Int128)x.Numerator * yd + y.Numerator * xd;
+            return new Fraction((long)numerator, lcm);
         }
         [凾(256)]
         public static Fraction operator -(Fraction x, Fraction y)
         {
             var gcd = MathLibEx.Gcd(x.Denominator, y.Denominator);
-            var lcm = x.Denominator / gcd * y.Denominator;
-            return new Fraction((x.Numerator * y.Denominator - y.Numerator * x.Denominator) / gcd, lcm);
+            var xd = x.Denominator / gcd;
+            var yd = y.Denominator / gcd;
+            var lcm = xd * y.Denominator;
+            var numerator = (Int128)x.Numerator * yd - y.Numerator * xd;
+            return new Fraction((long)numerator, lcm);
         }
 
+        [凾(256)] public static Fraction operator *(Fraction x, Fraction y) => MulImpl(x.Numerator, x.Denominator, y.Numerator, y.Denominator);
+        [凾(256)] public static Fraction operator /(Fraction x, Fraction y) => MulImpl(x.Numerator, x.Denominator, y.Denominator, y.Numerator);
         [凾(256)]
-        public static Fraction operator *(Fraction x, Fraction y) => new Fraction(x.Numerator * y.Numerator, x.Denominator * y.Denominator);
-        [凾(256)]
-        public static Fraction operator /(Fraction x, Fraction y) => new Fraction(x.Numerator * y.Denominator, x.Denominator * y.Numerator);
-        [凾(256)]
-        public static bool operator ==(Fraction x, Fraction y) => x.Equals(y);
-        [凾(256)]
-        public static bool operator !=(Fraction x, Fraction y) => !x.Equals(y);
-        [凾(256)]
-        public static bool operator >=(Fraction x, Fraction y) => x.CompareTo(y) >= 0;
-        [凾(256)]
-        public static bool operator <=(Fraction x, Fraction y) => x.CompareTo(y) <= 0;
-        [凾(256)]
-        public static bool operator >(Fraction x, Fraction y) => x.CompareTo(y) > 0;
-        [凾(256)]
-        public static bool operator <(Fraction x, Fraction y) => x.CompareTo(y) < 0;
+        static Fraction MulImpl(long xn, long xd, long yn, long yd)
+        {
+            var g1 = MathLibEx.Gcd(xn, yd);
+            xn /= g1;
+            yd /= g1;
+
+            var g2 = MathLibEx.Gcd(yn, xd);
+            yn /= g2;
+            xd /= g2;
+
+            return new(xn * yn, xd * yd);
+        }
+        [凾(256)] public static bool operator ==(Fraction x, Fraction y) => x.Equals(y);
+        [凾(256)] public static bool operator !=(Fraction x, Fraction y) => !x.Equals(y);
+        [凾(256)] public static bool operator >=(Fraction x, Fraction y) => x.CompareTo(y) >= 0;
+        [凾(256)] public static bool operator <=(Fraction x, Fraction y) => x.CompareTo(y) <= 0;
+        [凾(256)] public static bool operator >(Fraction x, Fraction y) => x.CompareTo(y) > 0;
+        [凾(256)] public static bool operator <(Fraction x, Fraction y) => x.CompareTo(y) < 0;
         [凾(256)] public static Fraction operator --(Fraction v) => new Fraction(v.Numerator - v.Denominator, v.Denominator, true);
         [凾(256)] public static Fraction operator ++(Fraction v) => new Fraction(v.Numerator + v.Denominator, v.Denominator, true);
 

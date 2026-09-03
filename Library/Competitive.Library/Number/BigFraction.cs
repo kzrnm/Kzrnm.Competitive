@@ -70,8 +70,24 @@ namespace Kzrnm.Competitive
         public int CompareTo(BigFraction other) => (Numerator * other.Denominator).CompareTo(other.Numerator * Denominator);
         [凾(256)]
         public BigFraction Inverse() => new BigFraction(Denominator, Numerator);
+        [凾(256)] public double ToDouble() => (double)Numerator / (double)Denominator;
+        [凾(256)] public static explicit operator double(BigFraction x) => x.ToDouble();
         [凾(256)]
-        public double ToDouble() => (double)Numerator / (double)Denominator;
+        public static explicit operator BigFraction(double x)
+        {
+            var b = BitConverter.DoubleToInt64Bits(x);
+            var e = (int)((b >>> 52) & 0x7FF) - 1023 - 52;
+            var v = b & 0xFFFFFFFFFFFFF;
+
+            if (e == -1023 - 52) e++; // 非正規化数
+            else v |= 1L << 52; // 正規化のケチ表現
+
+            if (b < 0) v = -v;
+
+            if (e == 0) return v;
+            if (e > 0) return new BigInteger(v) << e;
+            return new(v, BigInteger.One << -e);
+        }
         public static BigFraction operator +(BigFraction x) => x;
         [凾(256)]
         public static BigFraction operator -(BigFraction x) => new BigFraction(-x.Numerator, x.Denominator);
@@ -79,32 +95,43 @@ namespace Kzrnm.Competitive
         public static BigFraction operator +(BigFraction x, BigFraction y)
         {
             var gcd = BigInteger.GreatestCommonDivisor(x.Denominator, y.Denominator);
-            var lcm = x.Denominator / gcd * y.Denominator;
-            return new BigFraction((x.Numerator * y.Denominator + y.Numerator * x.Denominator) / gcd, lcm);
+            var xd = x.Denominator / gcd;
+            var yd = y.Denominator / gcd;
+            var lcm = xd * y.Denominator;
+            var numerator = x.Numerator * yd + y.Numerator * xd;
+            return new BigFraction(numerator, lcm);
         }
         [凾(256)]
         public static BigFraction operator -(BigFraction x, BigFraction y)
         {
             var gcd = BigInteger.GreatestCommonDivisor(x.Denominator, y.Denominator);
-            var lcm = x.Denominator / gcd * y.Denominator;
-            return new BigFraction((x.Numerator * y.Denominator - y.Numerator * x.Denominator) / gcd, lcm);
+            var xd = x.Denominator / gcd;
+            var yd = y.Denominator / gcd;
+            var lcm = xd * y.Denominator;
+            var numerator = x.Numerator * yd - y.Numerator * xd;
+            return new BigFraction(numerator, lcm);
         }
+        [凾(256)] public static BigFraction operator *(BigFraction x, BigFraction y) => MulImpl(x.Numerator, x.Denominator, y.Numerator, y.Denominator);
+        [凾(256)] public static BigFraction operator /(BigFraction x, BigFraction y) => MulImpl(x.Numerator, x.Denominator, y.Denominator, y.Numerator);
         [凾(256)]
-        public static BigFraction operator *(BigFraction x, BigFraction y) => new BigFraction(x.Numerator * y.Numerator, x.Denominator * y.Denominator);
-        [凾(256)]
-        public static BigFraction operator /(BigFraction x, BigFraction y) => new BigFraction(x.Numerator * y.Denominator, x.Denominator * y.Numerator);
-        [凾(256)]
-        public static bool operator ==(BigFraction x, BigFraction y) => x.Equals(y);
-        [凾(256)]
-        public static bool operator !=(BigFraction x, BigFraction y) => !x.Equals(y);
-        [凾(256)]
-        public static bool operator >=(BigFraction x, BigFraction y) => x.CompareTo(y) >= 0;
-        [凾(256)]
-        public static bool operator <=(BigFraction x, BigFraction y) => x.CompareTo(y) <= 0;
-        [凾(256)]
-        public static bool operator >(BigFraction x, BigFraction y) => x.CompareTo(y) > 0;
-        [凾(256)]
-        public static bool operator <(BigFraction x, BigFraction y) => x.CompareTo(y) < 0;
+        static BigFraction MulImpl(BigInteger xn, BigInteger xd, BigInteger yn, BigInteger yd)
+        {
+            var g1 = BigInteger.GreatestCommonDivisor(xn, yd);
+            xn /= g1;
+            yd /= g1;
+
+            var g2 = BigInteger.GreatestCommonDivisor(yn, xd);
+            yn /= g2;
+            xd /= g2;
+
+            return new(xn * yn, xd * yd);
+        }
+        [凾(256)] public static bool operator ==(BigFraction x, BigFraction y) => x.Equals(y);
+        [凾(256)] public static bool operator !=(BigFraction x, BigFraction y) => !x.Equals(y);
+        [凾(256)] public static bool operator >=(BigFraction x, BigFraction y) => x.CompareTo(y) >= 0;
+        [凾(256)] public static bool operator <=(BigFraction x, BigFraction y) => x.CompareTo(y) <= 0;
+        [凾(256)] public static bool operator >(BigFraction x, BigFraction y) => x.CompareTo(y) > 0;
+        [凾(256)] public static bool operator <(BigFraction x, BigFraction y) => x.CompareTo(y) < 0;
         [凾(256)] public static BigFraction operator --(BigFraction v) => new BigFraction(v.Numerator - v.Denominator, v.Denominator, true);
         [凾(256)] public static BigFraction operator ++(BigFraction v) => new BigFraction(v.Numerator + v.Denominator, v.Denominator, true);
 
