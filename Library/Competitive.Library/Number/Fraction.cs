@@ -6,7 +6,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive
 {
     /// <summary>有理数を既約分数で表す</summary>
-    public readonly struct Fraction : IEquatable<Fraction>, IComparable<Fraction>, IIntBase<Fraction>
+    public readonly struct Fraction : IEquatable<Fraction>, IComparable<Fraction>, IIntBase<Fraction>, INumber<Fraction>
     {
         public static readonly Fraction NaN = new Fraction(0, -1, true);
         public static bool IsNaN(Fraction v) => v._denominator0 < 0;
@@ -109,6 +109,7 @@ namespace Kzrnm.Competitive
         [凾(256)] public static Fraction operator --(Fraction v) => new Fraction(v.Numerator - v.Denominator, v.Denominator, true);
         [凾(256)] public static Fraction operator ++(Fraction v) => new Fraction(v.Numerator + v.Denominator, v.Denominator, true);
 
+        static Fraction IModulusOperators<Fraction, Fraction, Fraction>.operator %(Fraction left, Fraction right) => default;
 
         [凾(256)] public static Fraction Abs(Fraction v) => new Fraction(Math.Abs(v.Numerator), v.Denominator, true);
         public static Fraction One => new Fraction(1, 1, true);
@@ -236,5 +237,7 @@ namespace Kzrnm.Competitive
             }
             return ok;
         }
+
+        int IComparable.CompareTo(object obj) => obj is Fraction f ? CompareTo(f) : ToDouble().CompareTo(Convert.ToDouble(obj));
     }
 }

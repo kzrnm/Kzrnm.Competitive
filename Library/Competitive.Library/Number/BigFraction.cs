@@ -7,8 +7,7 @@ using 凾 = System.Runtime.CompilerServices.MethodImplAttribute;
 namespace Kzrnm.Competitive
 {
     /// <summary>有理数を既約分数で表す</summary>
-    public readonly struct BigFraction : IEquatable<BigFraction>, IComparable<BigFraction>
-        , IIntBase<BigFraction>
+    public readonly struct BigFraction : IEquatable<BigFraction>, IComparable<BigFraction>, IIntBase<BigFraction>, INumber<BigFraction>
     {
         public static readonly BigFraction NaN = new BigFraction(0, -1, true);
         public static bool IsNaN(BigFraction v) => v._denominator0 < 0;
@@ -108,6 +107,8 @@ namespace Kzrnm.Competitive
         public static bool operator <(BigFraction x, BigFraction y) => x.CompareTo(y) < 0;
         [凾(256)] public static BigFraction operator --(BigFraction v) => new BigFraction(v.Numerator - v.Denominator, v.Denominator, true);
         [凾(256)] public static BigFraction operator ++(BigFraction v) => new BigFraction(v.Numerator + v.Denominator, v.Denominator, true);
+
+        static BigFraction IModulusOperators<BigFraction, BigFraction, BigFraction>.operator %(BigFraction left, BigFraction right) => default;
 
         [凾(256)] public static BigFraction Abs(BigFraction v) => new BigFraction(BigInteger.Abs(v.Numerator), v.Denominator, true);
 
@@ -238,5 +239,7 @@ namespace Kzrnm.Competitive
             }
             return ok;
         }
+
+        int IComparable.CompareTo(object obj) => obj is BigFraction f ? CompareTo(f) : ToDouble().CompareTo(Convert.ToDouble(obj));
     }
 }
