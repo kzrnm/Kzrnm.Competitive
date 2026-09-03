@@ -66,8 +66,12 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static implicit operator Fraction(long x) => new Fraction(x, 1, true);
         [凾(256)]
-        public int CompareTo(Fraction other) => ((Int128)Numerator * other.Denominator).CompareTo((Int128)other.Numerator * Denominator);
-
+        public int CompareTo(Fraction other) => (IsNegative(this), IsNegative(other)) switch
+        {
+            (true, false) => -1,
+            (false, true) => 1,
+            _ => ((Int128)Numerator * other.Denominator).CompareTo((Int128)other.Numerator * Denominator),
+        };
 
         /// <summary>
         /// 分母と分子を最大 <paramref name="bit"/> まで精度を落とします。
@@ -79,7 +83,7 @@ namespace Kzrnm.Competitive
             var lo = Denominator;
             if (hi < lo) (hi, lo) = (lo, hi);
             int shift = BitOperations.Log2((ulong)hi) - bit;
-            if (shift >= BitOperations.Log2((ulong)lo)) return this;
+            if (shift <= 0 || shift >= BitOperations.Log2((ulong)lo)) return this;
             return new(Numerator >> shift, Denominator >> shift);
         }
 

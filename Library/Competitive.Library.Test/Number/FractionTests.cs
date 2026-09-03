@@ -77,6 +77,39 @@ public class FractionTests
         }
     }
 
+    public static IEnumerable<(double, double)> CompareTo_Data()
+    {
+        var rnd = new Random(227);
+        for (int q = 0; q < 50; q++)
+        {
+            var a = Math.Pow(10, rnd.NextDouble() * (q % 2 == 0 ? 1 : 18));
+            yield return (a, a);
+            for (int r = 0; r < 50; r++)
+            {
+                var b = Math.Pow(10, rnd.NextDouble() * (q % 3 == 0 ? 1 : 18));
+                yield return (a, b);
+                yield return (b, a);
+            }
+        }
+    }
+
+    [Test]
+    [MethodDataSource(nameof(CompareTo_Data), DeferEnumeration = true)]
+    public async Task CompareTo(double a, double b)
+    {
+        await ((Fraction)a).CompareTo((Fraction)b).Should().BeEqualTo(a.CompareTo(b));
+    }
+
+    [Test]
+    public async Task CompareTo2()
+    {
+        await (-(Fraction)9223372036854775807).CompareTo(new Fraction(-549999999999999998, 3)).Should().BeEqualTo(-1);
+        await ((Fraction)9223372036854775807).CompareTo(new Fraction(549999999999999998, 3)).Should().BeEqualTo(1);
+
+        await new Fraction(-549999999999999998, 3).CompareTo(-(Fraction)9223372036854775807).Should().BeEqualTo(1);
+        await new Fraction(549999999999999998, 3).CompareTo((Fraction)9223372036854775807).Should().BeEqualTo(-1);
+    }
+
     public static IEnumerable<(Fraction, Fraction)> GreaterThan_Data =>
     [
         (new Fraction(3, 1), new Fraction(2, 1)),
@@ -187,6 +220,7 @@ public class FractionTests
         yield return (new(9007199254740997, 4194303), new(9007199254740997, 4194303));
         yield return (new(9007199254740997, 4194304), new(2147483648, 1));
         yield return (new(92709568269121, 9007199254740997), new(44207367, 4294967296));
+        yield return (new(2, 3), new(2, 3));
     }
 
     [Test]
