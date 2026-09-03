@@ -380,4 +380,29 @@ public class CollectionExtensionTests
     {
         await input.CompressCount().Should().BeStrictlyEquivalentTo(expected);
     }
+
+    [Test]
+    public async Task Contribution2()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            var nums = Enumerable.Range(0, i).ToArray();
+            var (a, b) = nums.Contribution(i => (i, (long)i));
+            await a.Should().BeStrictlyEquivalentTo(nums);
+            await b.Should().BeStrictlyEquivalentTo(nums.Select(i => (long)i));
+        }
+    }
+
+    [Test]
+    public async Task Contribution3()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            var nums = Enumerable.Range(0, i).ToArray();
+            var (a, b, c) = nums.Contribution(i => (i, (long)i, i.ToString()));
+            await a.Should().BeStrictlyEquivalentTo(nums);
+            await b.Should().BeStrictlyEquivalentTo(nums.Select(i => (long)i));
+            await c.Should().BeStrictlyEquivalentTo(nums.Select(i => i.ToString()));
+        }
+    }
 }
