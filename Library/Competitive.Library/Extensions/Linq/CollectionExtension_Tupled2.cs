@@ -22,6 +22,7 @@ namespace Kzrnm.Competitive
         [凾(256)]
         public static (T, T)[] Tupled2<T>(this ReadOnlySpan<T> a)
         {
+            if (a.Length <= 1) return [];
             var r = new (T, T)[a.Length - 1];
             for (int i = 0; i + 1 < a.Length; i++)
                 r[i] = (a[i], a[i + 1]);
