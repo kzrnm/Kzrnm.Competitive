@@ -22,6 +22,14 @@ namespace Kzrnm.Competitive
     {
         public WaveletMatrixWithFenwickTree(ReadOnlySpan<(F V, T d)> v) : base(v) { }
     }
+
+    /// <inheritdoc />
+    public class WaveletMatrixWithFenwickTree<T> : WaveletMatrixWithFenwickTree<T, T>
+        where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>, IAdditiveIdentity<T, T>, IComparable<T>
+    {
+        public WaveletMatrixWithFenwickTree(ReadOnlySpan<T> v) : base(v.Select(v => (v, v))) { }
+    }
+
     namespace Internal
     {
         public readonly struct WaveletFwOp<T> : IWabeletSumOperator<T, WaveletFwOp<T>>

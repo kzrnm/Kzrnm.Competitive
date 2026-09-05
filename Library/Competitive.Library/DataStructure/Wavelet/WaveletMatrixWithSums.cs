@@ -21,6 +21,14 @@ namespace Kzrnm.Competitive
     {
         public WaveletMatrixWithSums(ReadOnlySpan<(F V, T d)> v) : base(v) { }
     }
+
+    /// <inheritdoc />
+    public class WaveletMatrixWithSums<T> : WaveletMatrixWithSums<T, T>
+        where T : IAdditionOperators<T, T, T>, ISubtractionOperators<T, T, T>, IAdditiveIdentity<T, T>, IComparable<T>
+    {
+        public WaveletMatrixWithSums(ReadOnlySpan<T> v) : base(v.Select(v => (v, v))) { }
+    }
+
     namespace Internal
     {
         public readonly struct WaveletSumOp<T> : IWabeletSumOperator<T, WaveletSumOp<T>>
