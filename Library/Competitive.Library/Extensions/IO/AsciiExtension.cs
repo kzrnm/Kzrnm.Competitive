@@ -9,13 +9,13 @@ namespace Kzrnm.Competitive
     {
 #if !NET10_0_OR_GREATER
         /// <inheritdoc cref="AsBytes(ReadOnlySpan{Ascii})" />
-        [凾(256)]
-        public static ReadOnlySpan<byte> AsBytes(this Span<Ascii> a)
-            => ((ReadOnlySpan<Ascii>)a).AsBytes();
-        /// <inheritdoc cref="AsBytes(ReadOnlySpan{Ascii})" />
-        public static ReadOnlySpan<byte> AsBytes(this Ascii[] a)
-            => ((ReadOnlySpan<Ascii>)a).AsBytes();
+        public static Span<byte> AsBytes(this Ascii[] a)
+            => ((Span<Ascii>)a).AsBytes();
 #endif
+        /// <inheritdoc cref="AsBytes(ReadOnlySpan{Ascii})" />
+        [凾(256)]
+        public static Span<byte> AsBytes(this Span<Ascii> a)
+            => MemoryMarshal.Cast<Ascii, byte>(a);
         /// <summary>
         /// <see cref="Ascii"/> を byte として扱います。
         /// </summary>
