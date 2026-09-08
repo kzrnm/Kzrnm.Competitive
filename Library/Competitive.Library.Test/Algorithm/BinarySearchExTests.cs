@@ -1,4 +1,4 @@
-namespace Kzrnm.Competitive.Testing.GlobalNS;
+namespace Kzrnm.Competitive.Testing.Algorithm;
 
 public class BinarySearchExTests
 {

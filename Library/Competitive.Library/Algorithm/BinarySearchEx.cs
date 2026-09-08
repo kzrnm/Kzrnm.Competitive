@@ -255,7 +255,7 @@ namespace Kzrnm.Competitive
     [IsOperator]
     public interface IOk<in T>
     {
-        bool Ok(T value);
+        bool Ok(T v);
     }
 
     [IsOperator]
