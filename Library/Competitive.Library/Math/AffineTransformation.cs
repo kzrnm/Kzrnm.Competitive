@@ -32,5 +32,11 @@ namespace Kzrnm.Competitive
         /// </summary>
         [凾(256)]
         public AffineTransformation<T> Apply(AffineTransformation<T> other) => new(a * other.a, a * other.b + b);
+
+        [凾(256)] public static AffineTransformation<T> operator +(AffineTransformation<T> f) => f;
+        [凾(256)] public static AffineTransformation<T> operator -(AffineTransformation<T> f) => new(-f.a, -f.b);
+
+        [凾(256)] public static AffineTransformation<T> operator +(AffineTransformation<T> lhs, AffineTransformation<T> rhs) => new(lhs.a + rhs.a, lhs.b + rhs.b);
+        [凾(256)] public static AffineTransformation<T> operator -(AffineTransformation<T> lhs, AffineTransformation<T> rhs) => -rhs + lhs;
     }
 }
