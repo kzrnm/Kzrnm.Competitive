@@ -20,3 +20,9 @@ AtCoder に準ずる。
 dotnet add package Kzrnm.Competitive
 dotnet add package SourceExpander
 ```
+
+## メモ書き
+
+ライブラリにはしていないが役立ちそうなことをメモ書きしている
+
+- [アルゴリズムのメモ]({{ "/algorhythm-memo" | relative_url }})
