@@ -143,7 +143,7 @@ namespace Kzrnm.Competitive
         /// <para>計算量: ならしO(a(n))</para>
         /// </remarks>
         [凾(256)]
-        T Weight(int a)
+        public T Weight(int a)
         {
             Leader(a);
             return _w[a];
