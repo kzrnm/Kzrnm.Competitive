@@ -155,7 +155,7 @@ namespace Kzrnm.Competitive
                     }
                     grandParent = parent;
                     parent = current;
-                    current = (Node)(order < 0 ? current.Left : current.Right);
+                    current = order < 0 ? current.Left : current.Right;
                 }
                 if (match != null)
                 {
