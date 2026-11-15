@@ -177,7 +177,11 @@ jobs:
             echo ::endgroup::
 
             echo "::group::Publish $FRAMEWORK AOT"
-            dotnet publish $VERIFY_CSPROJ -c Release --use-current-runtime --framework $FRAMEWORK -p:PublishAot=true -p:IlcInstructionSet=x86-x64-v3 --output "publish/$FRAMEWORK"
+            IlcInstructionSet=x86-64-v3
+            if [ "$FRAMEWORK" = "net9.0" ]; then
+              IlcInstructionSet=x86-x64-v3
+            fi
+            dotnet publish $VERIFY_CSPROJ -c Release --use-current-runtime --framework $FRAMEWORK -p:PublishAot=true -p:IlcInstructionSet="$IlcInstructionSet" --output "publish/$FRAMEWORK"
             echo ::endgroup::
 
             echo "::group::Resolve $FRAMEWORK AOT"
